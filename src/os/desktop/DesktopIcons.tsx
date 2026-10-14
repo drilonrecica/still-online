@@ -70,7 +70,7 @@ export function DesktopIcons({ apps }: DesktopIconsProps) {
             height={32}
             draggable={false}
           />
-          <span className={styles.label}>{app.title}</span>
+          <span className={styles.label}>{app.label ?? app.title}</span>
         </div>
       ))}
     </div>

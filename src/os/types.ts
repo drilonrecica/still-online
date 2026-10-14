@@ -84,6 +84,8 @@ export interface AppComponentProps {
 export interface AppDefinition {
   id: AppId;
   title: string;
+  /** Short name for desktop icons and the Start menu; defaults to `title`. */
+  label?: string;
   /** Imported SVG URLs (`import icon from '@/assets/icons/x-16.svg'`). */
   icon16: string;
   icon32: string;

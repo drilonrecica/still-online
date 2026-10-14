@@ -77,3 +77,8 @@ textarea,
     /* sky */
     linear-gradient(180deg, #1f5fd0 0%, #4f93ea 45%, #a9d2f5 72%, #d5ebfb 100%);
 }
+
+/* xp.css names only "Trebuchet MS", which has no generic fallback (serif where it's not installed). */
+.title-bar {
+  font-family: 'Trebuchet MS', Tahoma, Verdana, sans-serif;
+}

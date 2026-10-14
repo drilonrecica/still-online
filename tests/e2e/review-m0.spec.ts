@@ -18,7 +18,7 @@ test('M0 preview serves the app under /still-online/ @review', async ({
 
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('./', { waitUntil: 'networkidle' });
-  await expect(page.getByText('still-online')).toBeVisible();
+  await expect(page.getByTestId('boot-screen')).toBeVisible();
   await expect(page).toHaveTitle('still-online');
   await page.screenshot({ path: 'docs/review/M0/preview.png' });
 

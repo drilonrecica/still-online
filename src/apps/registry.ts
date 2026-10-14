@@ -25,6 +25,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   notepad: {
     id: 'notepad',
     title: 'Untitled - Notepad',
+    label: 'Notepad',
     icon16: notepad16,
     icon32: notepad32,
     component: lazy(() => import('./notepad/Notepad')),

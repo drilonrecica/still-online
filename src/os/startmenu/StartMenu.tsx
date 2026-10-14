@@ -89,7 +89,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
           height={size}
           draggable={false}
         />
-        <span>{app.title}</span>
+        <span>{app.label ?? app.title}</span>
       </button>
     </li>
   );
