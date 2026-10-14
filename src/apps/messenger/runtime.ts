@@ -3,7 +3,7 @@ import { contacts } from '@/content/contacts';
 import type { ContactContent } from '@/content/types';
 import { useNowPlayingStore } from '@/os/nowPlaying';
 import { attentionKey, useAttentionStore } from '@/os/store/attention';
-import { playSound } from '@/os/sound';
+import { playSound, type SoundName } from '@/os/sound';
 import { useSettingsStore } from '@/os/store/settings';
 import { useToastStore } from '@/os/toast/store';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
@@ -42,9 +42,14 @@ function createEngine(): ConversationEngine {
     useWindowsStore.getState().openApp('messenger-chat', { contactId });
   });
   // Toasts: never for the chat the player is already looking at.
-  const toast = (contactId: string, title: string, text?: string) => {
+  const toast = (
+    contactId: string,
+    sound: SoundName,
+    title: string,
+    text?: string,
+  ) => {
     if (isChatFocused(contactId)) return;
-    playSound('notify');
+    playSound(sound);
     useToastStore.getState().push({
       title,
       text,
@@ -57,7 +62,8 @@ function createEngine(): ConversationEngine {
     contents.find((c) => c.contact.id === contactId)?.contact.displayName ??
     contactId;
   created.on('contactSignedIn', ({ contactId, toast: show }) => {
-    if (show) toast(contactId, `${nameOf(contactId)} has just signed in.`);
+    if (show)
+      toast(contactId, 'online', `${nameOf(contactId)} has just signed in.`);
   });
   created.on('message', ({ contactId, from, text }) => {
     if (from !== 'contact') return;
@@ -65,7 +71,7 @@ function createEngine(): ConversationEngine {
       text.length > TOAST_PREVIEW_CHARS
         ? `${text.slice(0, TOAST_PREVIEW_CHARS)}…`
         : text;
-    toast(contactId, `${nameOf(contactId)} says:`, preview);
+    toast(contactId, 'notify', `${nameOf(contactId)} says:`, preview);
   });
   // Now playing follows state, not single events, so a track that started before
   // Messenger or the toggle was on still shows, and stopping/unticking restores the

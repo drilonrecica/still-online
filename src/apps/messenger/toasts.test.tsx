@@ -62,14 +62,15 @@ async function signIn(ms = 4000) {
 }
 
 describe('toasts', () => {
-  it('shows sign-in and message toasts with the notify sound, then removes them', async () => {
+  it('shows sign-in and message toasts with their sounds, then removes them', async () => {
     const play = vi.spyOn(sound, 'playSound');
     render(<ToastLayer />);
     await signIn();
     expect(screen.getByText('Lena has just signed in.')).toBeTruthy();
     expect(screen.getByText('Lena says:')).toBeTruthy();
     expect(screen.getByText(`${LONG.slice(0, 40)}…`)).toBeTruthy();
-    expect(play).toHaveBeenCalledWith('notify');
+    // Like MSN: one sound for "signed in", another for a new message.
+    expect(play.mock.calls.map(([name]) => name)).toEqual(['online', 'notify']);
     await advance(TOAST_MS + 100);
     expect(screen.queryByText('Lena says:')).toBeNull();
     expect(screen.queryByText('Lena has just signed in.')).toBeNull();
