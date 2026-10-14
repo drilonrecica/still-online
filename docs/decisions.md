@@ -40,3 +40,4 @@
 - M2-05: six contacts (jess, pia, kayla, marco, theo, dex) sign in at 8s/35s/75s/150s/210s/270s and all use generated pattern avatars — staggered within 5 min, no new SVG assets to credit
 - M2-05: now-playing scripts (jess, marco, kayla) omit `trackId` so they react to any track — the Amplifier playlist (M3) doesn't exist yet; M3-08 doesn't need to add one
 - M2-05: content lint lives in `src/content/lint.ts` (graph: start/next exist, all nodes reachable, every node can reach an end; text: no non-`livemail.example` emails, no URLs, no Windows/MSN/Winamp/etc. or 2007 anachronisms, `{artist}`/`{title}` only in onNowPlaying) — reusable for future content, tested in `contacts.test.ts`
+- M2-06: toasts live in `src/os/toast/` (generic store + layer); the messenger runtime pushes them and is the only place that plays `notify` — one toast per sign-in/contact message, suppressed per contact while that chat is the active window, stack capped at 3 (oldest dropped)

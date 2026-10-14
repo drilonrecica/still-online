@@ -1,0 +1,85 @@
+/* XP/MSN-style slide-up toast, original CSS. Sits above the taskbar tray. */
+.layer {
+  position: fixed;
+  right: 8px;
+  bottom: calc(var(--xp-taskbar-height) + 8px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 10001;
+  pointer-events: none;
+}
+
+.toast {
+  position: relative;
+  width: 220px;
+  pointer-events: auto;
+  border: 1px solid #0c3a9b;
+  border-radius: 6px;
+  background: linear-gradient(to bottom, #fdfdff, #dbe7fb);
+  box-shadow: 2px 2px 6px rgb(0 0 0 / 40%);
+  animation: slide-up 300ms ease-out;
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 20px 8px 8px;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.icon {
+  flex: none;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.title {
+  font-weight: bold;
+  color: #0c3a9b;
+  overflow-wrap: anywhere;
+}
+
+.text {
+  color: #222;
+  overflow-wrap: anywhere;
+}
+
+.close {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+}

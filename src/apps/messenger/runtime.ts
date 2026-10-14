@@ -3,10 +3,15 @@ import { contacts } from '@/content/contacts';
 import type { ContactContent } from '@/content/types';
 import { playSound } from '@/os/sound';
 import { useSettingsStore } from '@/os/store/settings';
+import { useToastStore } from '@/os/toast/store';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { requestShake } from './chat/nudge';
 import { createConversationEngine, type ConversationEngine } from './engine';
 import { useMessengerStore } from './store';
+import messengerIcon from '@/assets/icons/messenger-32.svg';
+
+/** Characters of a message shown in its toast. */
+export const TOAST_PREVIEW_CHARS = 40;
 
 let engine: ConversationEngine | null = null;
 let contents: readonly ContactContent[] = contacts;
@@ -32,6 +37,32 @@ function createEngine(): ConversationEngine {
     playSound('nudge');
     requestShake(contactId);
     useWindowsStore.getState().openApp('messenger-chat', { contactId });
+  });
+  // Toasts: never for the chat the player is already looking at.
+  const toast = (contactId: string, title: string, text?: string) => {
+    if (isChatFocused(contactId)) return;
+    playSound('notify');
+    useToastStore.getState().push({
+      title,
+      text,
+      icon: messengerIcon,
+      onClick: () =>
+        useWindowsStore.getState().openApp('messenger-chat', { contactId }),
+    });
+  };
+  const nameOf = (contactId: string) =>
+    contents.find((c) => c.contact.id === contactId)?.contact.displayName ??
+    contactId;
+  created.on('contactSignedIn', ({ contactId, toast: show }) => {
+    if (show) toast(contactId, `${nameOf(contactId)} has just signed in.`);
+  });
+  created.on('message', ({ contactId, from, text }) => {
+    if (from !== 'contact') return;
+    const preview =
+      text.length > TOAST_PREVIEW_CHARS
+        ? `${text.slice(0, TOAST_PREVIEW_CHARS)}…`
+        : text;
+    toast(contactId, `${nameOf(contactId)} says:`, preview);
   });
   return created;
 }

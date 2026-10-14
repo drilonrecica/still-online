@@ -8,6 +8,7 @@ import { useSessionStore } from '@/os/store/session';
 import { OffScreen } from '@/os/startmenu/OffScreen';
 import { StartMenu } from '@/os/startmenu/StartMenu';
 import { Taskbar } from '@/os/taskbar/Taskbar';
+import { ToastLayer } from '@/os/toast/ToastLayer';
 import { WindowLayer } from '@/os/wm/WindowLayer';
 
 /** How long "Windows is shutting down" lasts before the screen goes black. */
@@ -20,6 +21,7 @@ function Desktop() {
       <DesktopIcons />
       <WindowLayer getApp={getApp} />
       <StartMenu open={startOpen} onClose={() => setStartOpen(false)} />
+      <ToastLayer />
       <Taskbar
         startOpen={startOpen}
         onStartClick={() => setStartOpen((open) => !open)}
