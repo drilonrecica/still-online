@@ -9,6 +9,7 @@ import { getMessengerEngine, setMessengerContentsForTests } from './runtime';
 import { useMessengerStore } from './store';
 import { Taskbar } from '@/os/taskbar/Taskbar';
 import { useWindowsStore } from '@/os/store/windows';
+import { createAmplifierStore } from '@/apps/amplifier/store';
 import '@/apps/registry';
 
 const contents = [
@@ -245,5 +246,37 @@ describe('now playing', () => {
     const transcript =
       useMessengerStore.getState().progress.contacts.ann?.transcript ?? [];
     expect(transcript.filter((m) => m.kind === 'message')).toHaveLength(1);
+  });
+
+  it('updates the personal message when the real Amplifier plays a track', async () => {
+    const audio = Object.assign(new EventTarget(), {
+      src: '',
+      currentTime: 0,
+      duration: NaN,
+      volume: 1,
+      muted: false,
+      play: vi.fn(() => Promise.resolve()),
+      pause: vi.fn(),
+      removeAttribute: vi.fn(),
+    }) as unknown as HTMLAudioElement;
+    const amplifier = createAmplifierStore({
+      audio,
+      playlist: [
+        {
+          id: 'p1',
+          title: 'Bloom',
+          artist: 'The Paper Kites',
+          file: 'music/p1.mp3',
+          durationSec: 200,
+          license: 'CC BY 4.0',
+        },
+      ],
+    });
+    const user = await signIn();
+    await user.click(screen.getByLabelText("Show what I'm listening to"));
+    act(() => amplifier.getState().play());
+    expect(screen.getByLabelText('Personal message')).toHaveValue(
+      '♫ The Paper Kites - Bloom',
+    );
   });
 });
