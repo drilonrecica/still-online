@@ -37,3 +37,6 @@
 - M2-04: reduced motion skips the window shake entirely; the nudge line and sound still happen
 - M2-04: added `setWindowTitle` to the windows store so chats are titled "<name> - Conversation" in the titlebar and taskbar
 - M2-04: `isChatFocused` (engine option) = that contact's chat is the active window; the chat also calls `markRead` while focused
+- M2-05: six contacts (jess, pia, kayla, marco, theo, dex) sign in at 8s/35s/75s/150s/210s/270s and all use generated pattern avatars — staggered within 5 min, no new SVG assets to credit
+- M2-05: now-playing scripts (jess, marco, kayla) omit `trackId` so they react to any track — the Amplifier playlist (M3) doesn't exist yet; M3-08 doesn't need to add one
+- M2-05: content lint lives in `src/content/lint.ts` (graph: start/next exist, all nodes reachable, every node can reach an end; text: no non-`livemail.example` emails, no URLs, no Windows/MSN/Winamp/etc. or 2007 anachronisms, `{artist}`/`{title}` only in onNowPlaying) — reusable for future content, tested in `contacts.test.ts`

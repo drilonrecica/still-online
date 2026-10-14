@@ -152,3 +152,7 @@ export const mika: ContactContent = {
   ],
 };
 ```
+
+## Content lint
+
+`src/content/lint.ts` checks what the types can't: `start`/`next` ids exist, every node is reachable, every node can reach an `end`, script ids are unique, there are no real-looking emails or URLs, no real product names or post-2007 terms, and `{artist}`/`{title}` appear only in `onNowPlaying` scripts. `src/content/contacts/contacts.test.ts` runs it on every shipped contact.
