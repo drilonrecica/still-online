@@ -83,7 +83,8 @@ const AudioCtor: typeof AudioContext | undefined =
 let ctx: AudioContext | null = null;
 let unlocked = false;
 
-function getContext(): AudioContext | null {
+/** The app-wide AudioContext, created lazily on first use and then reused. */
+export function getAudioContext(): AudioContext | null {
   if (ctx) return ctx;
   if (!AudioCtor) return null;
   try {
@@ -97,7 +98,7 @@ function getContext(): AudioContext | null {
 /** Marks a user gesture as seen: creates the context lazily and resumes it. */
 export function unlockAudio(): void {
   unlocked = true;
-  const c = getContext();
+  const c = getAudioContext();
   if (c && c.state === 'suspended') void c.resume().catch(() => {});
 }
 
@@ -118,7 +119,7 @@ export function installGestureUnlock(target: Window = window): () => void {
 export function playSound(name: SoundName): void {
   const { muted, volume } = useSettingsStore.getState();
   if (muted || volume <= 0 || !unlocked) return;
-  const c = getContext();
+  const c = getAudioContext();
   if (!c) return;
   if (c.state === 'suspended') void c.resume().catch(() => {});
 

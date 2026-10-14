@@ -80,6 +80,28 @@
   cursor: pointer;
 }
 
+.visualizer {
+  flex: none;
+  align-self: center;
+  width: 76px;
+  height: 16px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.visualizer:focus-visible {
+  outline: 1px dotted var(--amp-lcd);
+}
+
+.visualizer canvas {
+  display: block;
+  width: 76px;
+  height: 16px;
+  image-rendering: pixelated;
+}
+
 .marquee {
   flex: 1;
   min-width: 0;

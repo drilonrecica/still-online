@@ -320,6 +320,8 @@ export function createAmplifierStore(deps: AmplifierDeps) {
 }
 
 const audio = new Audio();
+/** The app's one audio element, for the visualizer's analyser. */
+export const amplifierAudio: HTMLAudioElement = audio;
 export const useAmplifierStore = create<AmplifierStore>()(
   withPersist({ audio }),
 );

@@ -6,7 +6,8 @@ import { useReducedMotion } from '@/os/useReducedMotion';
 import type { AppComponentProps } from '@/os/types';
 import { formatTime, nowPlayingText } from './format';
 import Playlist, { PLAYLIST_HEIGHT } from './Playlist';
-import { useAmplifierStore } from './store';
+import { amplifierAudio, useAmplifierStore } from './store';
+import { Visualizer } from './Visualizer';
 import styles from './Amplifier.module.css';
 
 const BASE_HEIGHT = 116;
@@ -115,6 +116,11 @@ export default function Amplifier({ windowId }: AppComponentProps) {
         >
           {timeText}
         </button>
+        <Visualizer
+          audio={amplifierAudio}
+          status={s.status}
+          reduced={reduced}
+        />
         <div
           className={styles.marquee}
           data-static={reduced}
