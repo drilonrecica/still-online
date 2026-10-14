@@ -9,6 +9,8 @@ import {
 } from '@/os/clock';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { useSettingsStore } from '@/os/store/settings';
+import { useMessengerStore } from '@/apps/messenger/store';
+import { StatusIcon } from '@/apps/messenger/StatusIcon';
 import styles from './Taskbar.module.css';
 
 export interface TaskbarProps {
@@ -51,6 +53,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
   const activeId = useWindowsStore(selectActiveWindowId);
   const muted = useSettingsStore((s) => s.muted);
   const toggleMuted = useSettingsStore((s) => s.toggleMuted);
+  const messengerSignedIn = useMessengerStore((s) => s.signedIn);
 
   function onWindowButton(id: string) {
     const actions = useWindowsStore.getState();
@@ -99,6 +102,20 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
         })}
       </div>
       <div className={styles.tray}>
+        <button
+          type="button"
+          className={styles.mute}
+          aria-label="Messenger"
+          title={
+            messengerSignedIn
+              ? 'Messenger (signed in)'
+              : 'Messenger (not signed in)'
+          }
+          data-signed-in={messengerSignedIn}
+          onClick={() => useWindowsStore.getState().openApp('messenger')}
+        >
+          <StatusIcon status={messengerSignedIn ? 'online' : 'offline'} />
+        </button>
         <button
           type="button"
           className={styles.mute}

@@ -2,6 +2,8 @@
 import { lazy } from 'react';
 import { setAppResolver } from '@/os/store/windows';
 import type { AppDefinition, AppId } from '@/os/types';
+import messenger16 from '@/assets/icons/messenger-16.svg';
+import messenger32 from '@/assets/icons/messenger-32.svg';
 import myComputer16 from '@/assets/icons/mycomputer-16.svg';
 import myComputer32 from '@/assets/icons/mycomputer-32.svg';
 import notepad16 from '@/assets/icons/notepad-16.svg';
@@ -21,6 +23,19 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     chrome: 'xp',
     showOnDesktop: true,
     showInStartMenu: false,
+  },
+  messenger: {
+    id: 'messenger',
+    title: 'Messenger',
+    icon16: messenger16,
+    icon32: messenger32,
+    component: lazy(() => import('./messenger/Messenger')),
+    defaultSize: { w: 300, h: 500 },
+    minSize: { w: 240, h: 320 },
+    singleInstance: true,
+    chrome: 'xp',
+    showOnDesktop: true,
+    showInStartMenu: true,
   },
   notepad: {
     id: 'notepad',

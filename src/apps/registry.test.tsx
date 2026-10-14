@@ -13,9 +13,10 @@ beforeEach(() => {
 });
 
 describe('registry', () => {
-  it('lists the three starter apps with 16/32px icons', () => {
+  it('lists the starter apps with 16/32px icons', () => {
     expect(listApps().map((a) => a.id)).toEqual([
       'mycomputer',
+      'messenger',
       'notepad',
       'recyclebin',
     ]);

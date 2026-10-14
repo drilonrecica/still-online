@@ -41,9 +41,7 @@ describe('StartMenu', () => {
     useSettingsStore.setState({ playerName: 'Ada' });
     render(<StartMenu open onClose={() => {}} />);
     expect(screen.getByText('Ada')).toBeTruthy();
-    expect(
-      screen.getByRole('button', { name: 'Notepad' }),
-    ).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Notepad' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'My Computer' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Recycle Bin' })).toBeTruthy();
   });

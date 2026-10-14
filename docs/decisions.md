@@ -30,3 +30,4 @@
 - M2-02: on contact sign-in the order is: resume the active script → fire onSignIn → drain the queue — opening scripts run before triggers that queued earlier
 - M2-02: a contact line is delivered (transcript + actions + `lineIndex++`) in one store write — a reload can't land between them, so nothing is duplicated; an interrupted line replays its delay + typing
 - M2-02: unresolvable placeholders (e.g. `{artist}` outside onNowPlaying) are left as written — authoring mistakes stay visible
+- M2-03: Messenger registered with desktop+Start menu; tray icon opens it. Contacts list comes from src/content/contacts (empty until M2-05); double-click is a no-op until messenger-chat is registered (M2-04) because openApp throws on unknown apps.
