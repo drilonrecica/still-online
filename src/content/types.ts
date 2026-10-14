@@ -174,6 +174,8 @@ export interface PlayerProgress {
   personalMessage: string;
   /** "Show what I'm listening to" (M2-07). */
   showNowPlaying: boolean;
+  /** The player's own message while a now-playing line replaces it; null when none is shown. */
+  personalMessageBeforeNowPlaying: string | null;
 }
 
 export interface MessengerProgress {

@@ -46,3 +46,4 @@
 - M3-07: visualizer sits inline in the LCD between time and marquee; canvas is a 76×16 bitmap scaled with `image-rendering: pixelated`; paused = one held frame, stopped/off/reduced motion = blank (scope: flat line); mode is not persisted (defaults to bars)
 - M3-07: `src/test/setup.ts` stubs `HTMLCanvasElement.getContext` to return null — jsdom has no canvas and otherwise logs "Not implemented" for every Amplifier render
 - Polish: Amplifier LCD split into two rows (time + visualizer + status / full-width marquee) — fills the fixed 116px skin without resizing the window and stops the marquee being squeezed to a few characters
+- Fix: now playing is OS state (`src/os/nowPlaying.ts`, loaded at boot) that Messenger syncs from, instead of a one-off event — a track started before Messenger/the toggle now shows, and stop/untick restore the player's own message; closing Amplifier (✕, log off, shut down) stops playback, minimizing doesn't

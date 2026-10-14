@@ -25,6 +25,7 @@ export const defaultPlayerProgress = (): PlayerProgress => ({
   status: 'online',
   personalMessage: '',
   showNowPlaying: false,
+  personalMessageBeforeNowPlaying: null,
 });
 
 export const defaultProgress = (): MessengerProgress => ({
@@ -157,6 +158,10 @@ export function sanitizeProgress(v: unknown): MessengerProgress {
       typeof p.personalMessage === 'string' ? p.personalMessage : '',
     showNowPlaying:
       typeof p.showNowPlaying === 'boolean' ? p.showNowPlaying : false,
+    personalMessageBeforeNowPlaying:
+      typeof p.personalMessageBeforeNowPlaying === 'string'
+        ? p.personalMessageBeforeNowPlaying
+        : null,
   };
   const contacts: Record<string, ContactProgress> = {};
   if (isRecord(v.contacts)) {

@@ -9,6 +9,7 @@ import { getMessengerEngine, setMessengerContentsForTests } from './runtime';
 import { useMessengerStore } from './store';
 import { Taskbar } from '@/os/taskbar/Taskbar';
 import { useWindowsStore } from '@/os/store/windows';
+import { useNowPlayingStore } from '@/os/nowPlaying';
 import { createAmplifierStore } from '@/apps/amplifier/store';
 import '@/apps/registry';
 
@@ -207,6 +208,8 @@ describe('now playing', () => {
     durationSec: 200,
   };
 
+  beforeEach(() => useNowPlayingStore.setState({ track: null }));
+
   it('puts the track in the personal message only while the toggle is on', async () => {
     const { events } = await import('@/os/events');
     const user = await signIn();
@@ -226,6 +229,49 @@ describe('now playing', () => {
     expect(useMessengerStore.getState().progress.player.personalMessage).toBe(
       '♫ The Paper Kites - Featherstone',
     );
+  });
+
+  it('shows a track that started before the toggle was ticked', async () => {
+    const { events } = await import('@/os/events');
+    act(() => events.emit('amplifier:trackChanged', track));
+    const user = await signIn();
+    const box = screen.getByLabelText('Personal message');
+    expect(box).toHaveValue('');
+
+    await user.click(screen.getByLabelText("Show what I'm listening to"));
+    expect(box).toHaveValue('♫ The Paper Kites - Bloom');
+  });
+
+  it('restores the own personal message on stop and on untick', async () => {
+    const { events } = await import('@/os/events');
+    const user = await signIn();
+    const box = screen.getByLabelText('Personal message');
+    await user.type(box, 'studying{Enter}');
+    const toggle = screen.getByLabelText("Show what I'm listening to");
+    await user.click(toggle);
+
+    act(() => events.emit('amplifier:trackChanged', track));
+    expect(box).toHaveValue('♫ The Paper Kites - Bloom');
+    act(() => events.emit('amplifier:stopped', { trackId: 't1' }));
+    expect(box).toHaveValue('studying');
+
+    act(() => events.emit('amplifier:trackChanged', track));
+    expect(box).toHaveValue('♫ The Paper Kites - Bloom');
+    await user.click(toggle);
+    expect(box).toHaveValue('studying');
+  });
+
+  it('keeps a message the player types while a track is shown', async () => {
+    const { events } = await import('@/os/events');
+    const user = await signIn();
+    const box = screen.getByLabelText('Personal message');
+    await user.click(screen.getByLabelText("Show what I'm listening to"));
+    act(() => events.emit('amplifier:trackChanged', track));
+
+    await user.clear(box);
+    await user.type(box, 'brb{Enter}');
+    act(() => events.emit('amplifier:stopped', { trackId: 't1' }));
+    expect(box).toHaveValue('brb');
   });
 
   it('fires onNowPlaying scripts once per trackId', async () => {

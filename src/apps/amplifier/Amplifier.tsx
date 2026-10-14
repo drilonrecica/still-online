@@ -1,5 +1,5 @@
 // Amplifier main window: original dark-metal player skin driven by the amplifier store.
-import { useState, type KeyboardEvent } from 'react';
+import { useEffect, useState, type KeyboardEvent } from 'react';
 import { useWindowsStore } from '@/os/store/windows';
 import { isFromControl, useWindowDrag } from '@/os/wm/useWindowDrag';
 import { useReducedMotion } from '@/os/useReducedMotion';
@@ -29,6 +29,10 @@ export default function Amplifier({ windowId }: AppComponentProps) {
   const reduced = useReducedMotion();
   const [remaining, setRemaining] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false);
+
+  // The audio element outlives this window: closing it (✕, log off, shut down) stops
+  // the music. Minimizing only hides the window, so playback continues.
+  useEffect(() => () => useAmplifierStore.getState().stop(), []);
 
   const s = useAmplifierStore();
   const track = s.playlist[s.index];

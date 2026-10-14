@@ -1,7 +1,7 @@
 // The app-wide conversation engine: one instance, created on first use, bound to the messenger store.
 import { contacts } from '@/content/contacts';
 import type { ContactContent } from '@/content/types';
-import { events } from '@/os/events';
+import { useNowPlayingStore } from '@/os/nowPlaying';
 import { playSound } from '@/os/sound';
 import { useSettingsStore } from '@/os/store/settings';
 import { useToastStore } from '@/os/toast/store';
@@ -66,19 +66,35 @@ function createEngine(): ConversationEngine {
         : text;
     toast(contactId, `${nameOf(contactId)} says:`, preview);
   });
-  // Now playing: with the toggle on, a new track becomes the personal message and
-  // fires `onNowPlaying` scripts (the engine runs each at most once per trackId).
-  stopListening?.();
-  stopListening = events.on('amplifier:trackChanged', (track) => {
+  // Now playing follows state, not single events, so a track that started before
+  // Messenger or the toggle was on still shows, and stopping/unticking restores the
+  // player's own message. `onNowPlaying` scripts run at most once per trackId (engine).
+  const syncNowPlaying = () => {
+    const track = useNowPlayingStore.getState().track;
     const store = useMessengerStore.getState();
-    if (!store.progress.player.showNowPlaying) return;
-    store.setPlayerPersonalMessage(`♫ ${track.artist} - ${track.title}`);
-    created.nowPlaying({
-      trackId: track.trackId,
-      artist: track.artist,
-      title: track.title,
-    });
+    if (store.progress.player.showNowPlaying && track) {
+      store.showNowPlayingLine(`♫ ${track.artist} - ${track.title}`);
+      created.nowPlaying(track);
+    } else {
+      store.clearNowPlayingLine();
+    }
+  };
+  stopListening?.();
+  const stopTrack = useNowPlayingStore.subscribe(syncNowPlaying);
+  const stopToggle = useMessengerStore.subscribe((s, prev) => {
+    // The engine ignores nowPlaying while signed out, so signing in syncs again.
+    if (
+      s.progress.player.showNowPlaying !==
+        prev.progress.player.showNowPlaying ||
+      s.signedIn !== prev.signedIn
+    )
+      syncNowPlaying();
   });
+  stopListening = () => {
+    stopTrack();
+    stopToggle();
+  };
+  syncNowPlaying();
   return created;
 }
 

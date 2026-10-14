@@ -50,13 +50,20 @@ function renderAmp(
       ...state,
     }),
   );
-  render(<Amplifier windowId="w1" props={{}} />);
-  return actions;
+  const { unmount } = render(<Amplifier windowId="w1" props={{}} />);
+  return { ...actions, unmount };
 }
 
 describe('Amplifier', () => {
   beforeEach(() => vi.mocked(useReducedMotion).mockReturnValue(false));
   afterEach(() => vi.clearAllMocks());
+
+  it('stops playback when the window closes', () => {
+    const amp = renderAmp();
+    expect(amp.stop).not.toHaveBeenCalled();
+    amp.unmount();
+    expect(amp.stop).toHaveBeenCalledOnce();
+  });
 
   it('shows elapsed time, toggles to remaining, and the marquee text', async () => {
     renderAmp();

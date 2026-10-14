@@ -101,3 +101,62 @@ test('amplifier: play, time advances, next track, playlist, Messenger now playin
   await expect(messenger).toBeVisible();
   await expect(page.getByLabel('Personal message')).toHaveValue(/^♫ .+ - .+/);
 });
+
+test('now playing: track started before Messenger shows, closing Amplifier stops it', async ({
+  page,
+}) => {
+  const wav = silentWav(30);
+  await page.route('**/music/*.mp3', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'audio/wav',
+      headers: { 'Accept-Ranges': 'none' },
+      body: wav,
+    }),
+  );
+
+  await page.goto('./?speed=fast');
+  await page.getByTestId('boot-screen').click();
+  await page.getByLabel('Your name').fill('Ada');
+  await page.getByRole('button', { name: 'Log on as Ada' }).click();
+  await expect(page.getByTestId('desktop')).toBeVisible();
+
+  // Music first, Messenger second (the order that used to show nothing).
+  await page.getByRole('option', { name: 'Amplifier' }).dblclick();
+  const amp = page.getByRole('group', { name: 'Amplifier' });
+  await amp.getByRole('button', { name: 'Play', exact: true }).click();
+  const time = amp.getByRole('button', { name: 'Time elapsed' });
+  await expect(time).not.toHaveText('0:00', { timeout: 10_000 });
+  await amp.getByRole('button', { name: 'Minimize' }).click();
+
+  await page.getByRole('option', { name: 'Messenger' }).dblclick();
+  await page.getByRole('button', { name: 'Sign in' }).click();
+  await expect(page.getByRole('group', { name: 'Contacts' })).toBeVisible();
+  const nudgeChat = page.getByRole('region', { name: /Conversation$/ });
+  await expect(nudgeChat).toBeVisible({ timeout: 10_000 });
+  await nudgeChat.getByRole('button', { name: 'Close' }).dispatchEvent('click');
+  await expect(nudgeChat).toBeHidden();
+
+  const personal = page.getByLabel('Personal message');
+  await expect(personal).toHaveValue('');
+  await page.getByText("Show what I'm listening to").click();
+  await expect(personal).toHaveValue(/^♫ .+ - .+/);
+
+  // Close Amplifier from the taskbar: playback stops and the message clears.
+  await page
+    .getByRole('toolbar', { name: 'Taskbar' })
+    .locator('button[title="Amplifier"]')
+    .click();
+  await amp.getByRole('button', { name: 'Close' }).click();
+  await expect(amp).toBeHidden();
+  await expect(personal).toHaveValue('');
+
+  // Reopened, the player is stopped rather than still playing in the background.
+  await page.getByRole('option', { name: 'Amplifier' }).dblclick();
+  await expect(
+    amp.getByRole('button', { name: 'Play', exact: true }),
+  ).toHaveAttribute('aria-pressed', 'false');
+  await expect(amp.getByRole('button', { name: 'Time elapsed' })).toHaveText(
+    '0:00',
+  );
+});

@@ -102,7 +102,10 @@ function PersonalMessage() {
       maxLength={120}
       value={draft}
       onChange={(e) => setDraft(e.target.value)}
-      onBlur={() => setPersonalMessage(draft.trim())}
+      onBlur={() => {
+        // Only a real edit counts: it replaces (and ends) any now-playing line.
+        if (draft.trim() !== saved) setPersonalMessage(draft.trim());
+      }}
       onKeyDown={(e) => {
         if (e.key === 'Enter') e.currentTarget.blur();
         if (e.key === 'Escape') {

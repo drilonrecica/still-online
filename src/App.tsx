@@ -3,6 +3,8 @@ import { getApp } from '@/apps/registry';
 import { Boot } from '@/os/boot/Boot';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
 import { Login } from '@/os/login/Login';
+// Side-effect import: track what's playing from boot, before any app that reads it loads.
+import '@/os/nowPlaying';
 import { SmallScreenNotice } from '@/os/notice/SmallScreenNotice';
 import { installGestureUnlock, playSound } from '@/os/sound';
 import { useSessionStore } from '@/os/store/session';

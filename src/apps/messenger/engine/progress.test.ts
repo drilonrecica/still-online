@@ -36,8 +36,9 @@ describe('sanitizeProgress', () => {
     const p = {
       player: {
         status: 'busy' as const,
-        personalMessage: 'hi',
+        personalMessage: '♫ Band - Song',
         showNowPlaying: true,
+        personalMessageBeforeNowPlaying: 'hi',
       },
       contacts: { mika: valid() },
     };
@@ -149,6 +150,7 @@ describe('messenger store', () => {
       status: 'away',
       personalMessage: 'brb',
       showNowPlaying: true,
+      personalMessageBeforeNowPlaying: null,
     });
     expect(b.getState()).toMatchObject({
       signedIn: false,
