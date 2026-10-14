@@ -14,6 +14,7 @@ import { StartMenu } from '@/os/startmenu/StartMenu';
 import { Taskbar } from '@/os/taskbar/Taskbar';
 import { ToastLayer } from '@/os/toast/ToastLayer';
 import { WindowLayer } from '@/os/wm/WindowLayer';
+import { useWorldStore } from '@/os/world';
 
 /** How long "Windows is shutting down" lasts before the screen goes black. */
 const SHUTDOWN_MS = 1500;
@@ -60,6 +61,12 @@ export function App() {
       window.removeEventListener('unhandledrejection', onError);
     };
   }, []);
+
+  // Days pass on a new real date or after a shutdown (docs/architecture-v0.2.md → "World").
+  useEffect(() => {
+    if (state === 'booting') useWorldStore.getState().onBoot();
+    else if (state === 'off') useWorldStore.getState().markShutdown();
+  }, [state]);
 
   useEffect(() => {
     if (state !== 'shuttingDown') return;
