@@ -29,3 +29,5 @@ still-online is a fan-made, non-commercial nostalgia project. It is **not** affi
 ## License
 
 Licensed under the [Apache License 2.0](LICENSE).
+
+Asset attributions are listed in [Credits](CREDITS.md).

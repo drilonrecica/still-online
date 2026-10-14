@@ -1,2 +1,3 @@
 - M0-01: used @vitejs/plugin-react@4 and Vite 6 — plugin-react latest requires Vite 8; stack says Vite 5.x/6.x
 - M0-01: excluded README.md, LICENSE, igris.toml, tasks.md from Prettier — task says to leave them untouched
+- M0-06: left CREDITS.md table empty (no assets yet) — rows get added as assets land
