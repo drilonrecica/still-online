@@ -3,6 +3,7 @@ import { getApp } from '@/apps/registry';
 import { installAmplifierRouter } from '@/os/amplifierRouter';
 import { Boot } from '@/os/boot/Boot';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
+import { installIdle } from '@/os/idle';
 import { Login } from '@/os/login/Login';
 // Side-effect import: track what's playing from boot, before any app that reads it loads.
 import '@/os/nowPlaying';
@@ -41,6 +42,7 @@ export function App() {
 
   useEffect(() => installGestureUnlock(), []);
   useEffect(() => installAmplifierRouter(), []);
+  useEffect(() => installIdle(), []);
 
   // Session sounds: startup at the welcome screen, logon/logoff on transitions.
   const previous = useRef(state);
