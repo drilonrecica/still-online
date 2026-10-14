@@ -65,6 +65,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
         className={styles.start}
         aria-pressed={startOpen}
         data-open={startOpen}
+        data-start-button
         onClick={onStartClick}
       >
         <span className={styles.startText}>start</span>

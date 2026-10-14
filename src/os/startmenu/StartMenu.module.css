@@ -1,0 +1,115 @@
+/* Luna-style Start menu, original CSS approximation. Sits just above the taskbar. */
+.menu {
+  position: fixed;
+  left: 0;
+  bottom: var(--xp-taskbar-height);
+  width: var(--xp-startmenu-width);
+  max-height: calc(100vh - var(--xp-taskbar-height));
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #0a3a9a;
+  border-radius: 8px 8px 0 0;
+  background: var(--xp-startmenu-left);
+  box-shadow: 2px -2px 6px rgb(0 0 0 / 40%);
+  font:
+    11px Tahoma,
+    sans-serif;
+  z-index: 10001;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: linear-gradient(to bottom, #2a64d8, #1a47b0);
+  color: #fff;
+}
+
+.header img {
+  border: 2px solid #fff;
+  border-radius: 4px;
+}
+
+.name {
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px #0a2a70;
+}
+
+.columns {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  height: calc(var(--xp-startmenu-height) - 80px);
+}
+
+.left,
+.right {
+  flex: 1;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.left {
+  background: var(--xp-startmenu-left);
+}
+
+.right {
+  background: var(--xp-startmenu-right);
+  border-left: 1px solid #95bdee;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border: 0;
+  background: none;
+  color: #000;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.right .item {
+  font-weight: bold;
+  color: #00136b;
+}
+
+.item:hover,
+.item:focus-visible {
+  background: var(--xp-selection);
+  color: #fff;
+  outline: none;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 6px 10px;
+  background: linear-gradient(to bottom, #2a64d8, #1a47b0);
+}
+
+.footerButton {
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.footerButton:hover,
+.footerButton:focus-visible {
+  background: rgb(255 255 255 / 25%);
+  outline: none;
+}
