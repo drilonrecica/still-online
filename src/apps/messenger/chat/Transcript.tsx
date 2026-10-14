@@ -2,10 +2,12 @@
 import { useEffect, useRef } from 'react';
 import type { TranscriptEntry } from '@/content/types';
 import styles from './Chat.module.css';
+import { events } from '@/os/events';
+import { splitLinks } from '@/os/linkify';
 import { parseEmoticons } from './emoticons';
 
-/** Text with emoticon codes replaced by their pictures (the code stays as alt text). */
-export function RichText({ text }: { text: string }) {
+/** Emoticon segments of `text` as images. */
+function Emoticons({ text }: { text: string }) {
   return (
     <>
       {parseEmoticons(text).map((s, i) =>
@@ -21,6 +23,28 @@ export function RichText({ text }: { text: string }) {
             width={19}
             height={19}
           />
+        ),
+      )}
+    </>
+  );
+}
+
+/** Text with `*.example` links as link-styled buttons (opening Web Explorer) and emoticon codes as pictures. */
+export function RichText({ text }: { text: string }) {
+  return (
+    <>
+      {splitLinks(text).map((s, i) =>
+        s.kind === 'text' ? (
+          <Emoticons key={i} text={s.text} />
+        ) : (
+          <button
+            key={i}
+            type="button"
+            className={styles.link}
+            onClick={() => events.emit('browser:open', { url: s.url })}
+          >
+            {s.text}
+          </button>
         ),
       )}
     </>

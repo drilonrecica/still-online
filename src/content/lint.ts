@@ -78,27 +78,63 @@ function strings(value: unknown, path: string): [string, string][] {
 }
 
 const EMAIL = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
-const URL =
-  /\b(?:https?:\/\/|www\.)|\b[\w-]+\.(?:com|net|org|edu|gov|info|biz|io|tv|uk|de|fr)\b/i;
+/** Explicit scheme or `www.` hosts; allowed only when the host ends in `.example`. */
+const EXPLICIT_URL = /(?:https?:\/\/|www\.)[^\s/"'<>)]+/gi;
+const BARE_URL = /\b[\w-]+\.(?:com|net|org|edu|gov|info|biz|io|tv|uk|de|fr)\b/i;
 /** Real product names the UI must not use, and things that don't exist in 2007. */
 const FORBIDDEN =
-  /\b(?:windows|msn|winamp|myspace|netlog|iphone|smartphone|selfie|DM)\b/i;
+  /\b(?:windows|msn|winamp|myspace|netlog|iphone|smartphone|selfie|DM|app store|hashtag|tweet|streaming)\b/i;
 const PLACEHOLDER = /\{[^}]*\}/g;
 
-/** Text checks: no real-looking emails/URLs, no forbidden names, only known placeholders. */
-export function lintContactText(content: ContactContent): string[] {
-  const problems: string[] = [];
-  const id = content.contact.id;
-  for (const [path, text] of strings(content, id)) {
-    for (const email of text.match(EMAIL) ?? []) {
-      if (!email.endsWith('@livemail.example'))
-        problems.push(`${path}: real-looking email "${email}"`);
-    }
-    if (URL.test(text)) problems.push(`${path}: real-looking URL in "${text}"`);
-    if (FORBIDDEN.test(text))
-      problems.push(`${path}: forbidden name or anachronism in "${text}"`);
-  }
+const isExample = (host: string) => /\.example$/i.test(host);
 
+export interface LintTextOptions {
+  /** Placeholder tokens allowed in this text; when omitted, placeholders aren't checked. */
+  placeholders?: readonly string[];
+}
+
+/**
+ * Text checks for any authored string: no real-looking emails/URLs (`.example` is fine),
+ * no forbidden names or anachronisms, and only known placeholders when `opts.placeholders` is given.
+ */
+export function lintText(
+  text: string,
+  path: string,
+  opts: LintTextOptions = {},
+): string[] {
+  const problems: string[] = [];
+  for (const email of text.match(EMAIL) ?? []) {
+    if (!isExample(email))
+      problems.push(`${path}: real-looking email "${email}"`);
+  }
+  // Emails contain a dotted domain that would otherwise look like a bare URL.
+  const noEmails = text.replace(EMAIL, ' ');
+  const explicit = noEmails.match(EXPLICIT_URL) ?? [];
+  const realUrl =
+    explicit.some((u) => !isExample(u.replace(/[.,;:!?]+$/, ''))) ||
+    BARE_URL.test(noEmails);
+  if (realUrl) problems.push(`${path}: real-looking URL in "${text}"`);
+  if (FORBIDDEN.test(text))
+    problems.push(`${path}: forbidden name or anachronism in "${text}"`);
+  const { placeholders } = opts;
+  if (placeholders) {
+    for (const token of text.match(PLACEHOLDER) ?? []) {
+      if (!placeholders.includes(token))
+        problems.push(`${path}: unknown placeholder ${token}`);
+    }
+  }
+  return problems;
+}
+
+/** Runs `lintText` over every string in any content object (no placeholder check). */
+export function lintContentStrings(value: unknown, path: string): string[] {
+  return strings(value, path).flatMap(([p, text]) => lintText(text, p));
+}
+
+/** Text checks for a contact: shared text lint, plus placeholders only where they resolve. */
+export function lintContactText(content: ContactContent): string[] {
+  const id = content.contact.id;
+  const problems = lintContentStrings(content, id);
   const known: readonly string[] = TEXT_PLACEHOLDERS;
   for (const script of content.scripts) {
     const nowPlaying = script.trigger.type === 'onNowPlaying';
