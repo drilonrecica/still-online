@@ -2,6 +2,10 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/e2e',
+  // @review specs (phase-gate screenshots) only run when asked for explicitly.
+  grepInvert: process.argv.some((a) => a.includes('@review'))
+    ? undefined
+    : /@review/,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
