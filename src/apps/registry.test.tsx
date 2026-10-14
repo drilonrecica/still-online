@@ -1,8 +1,9 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useWindowsStore } from '@/os/store/windows';
 import { WindowLayer } from '@/os/wm/WindowLayer';
+import { putBlob, getBlob } from '@/os/blobStore';
 import { clearStillOnlineStorage } from './mycomputer/reset';
 import { getApp, listApps } from './registry';
 import { useNotepadStore } from './notepad/store';
@@ -115,6 +116,7 @@ describe('reset', () => {
     vi.stubGlobal('location', { ...window.location, reload });
     vi.spyOn(window, 'confirm').mockReturnValue(true);
     localStorage.setItem('still-online:v1:notepad', '{}');
+    const blobKey = await putBlob(new Blob(['x']));
 
     render(<WindowLayer getApp={getApp} />);
     act(() => {
@@ -125,8 +127,9 @@ describe('reset', () => {
     );
 
     expect(window.confirm).toHaveBeenCalled();
+    await waitFor(() => expect(reload).toHaveBeenCalled());
     expect(localStorage.getItem('still-online:v1:notepad')).toBeNull();
-    expect(reload).toHaveBeenCalled();
+    expect(await getBlob(blobKey)).toBeNull();
     vi.unstubAllGlobals();
   });
 });

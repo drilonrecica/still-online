@@ -1,13 +1,13 @@
-import { clearStillOnlineStorage } from './reset';
+import { resetStillOnline } from './reset';
 
 const CREDITS_URL =
   'https://github.com/drilonrecica/still-online/blob/master/CREDITS.md';
 
 export default function MyComputer() {
-  function reset() {
+  async function reset() {
     if (!window.confirm('Reset still-online? All saved data will be erased.'))
       return;
-    clearStillOnlineStorage(window.localStorage);
+    await resetStillOnline(window.localStorage);
     window.location.reload();
   }
 
@@ -40,7 +40,7 @@ export default function MyComputer() {
           Credits
         </a>
       </p>
-      <button type="button" onClick={reset}>
+      <button type="button" onClick={() => void reset()}>
         Reset still-online…
       </button>
     </div>

@@ -1,3 +1,4 @@
+import { clearBlobs } from '@/os/blobStore';
 import { STORAGE_PREFIX } from '@/os/persist';
 
 export { STORAGE_PREFIX };
@@ -11,4 +12,10 @@ export function clearStillOnlineStorage(storage: Storage): number {
   }
   keys.forEach((key) => storage.removeItem(key));
   return keys.length;
+}
+
+/** Full reset: persisted keys plus player blobs. */
+export async function resetStillOnline(storage: Storage): Promise<void> {
+  clearStillOnlineStorage(storage);
+  await clearBlobs();
 }
