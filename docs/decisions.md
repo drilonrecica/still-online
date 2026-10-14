@@ -62,3 +62,8 @@
 - P0-01: site routing matches the exact path, then a `/*` catch-all page (Spaceport `/<contactId>`)
 - P0-01: content type files use relative imports — the e2e tsconfig (no `@/` alias) compiles `src/content` through review specs
 - P0-01: e2e `logIn` is quiet by default (screensaver and auto-away off via persisted settings) — idle thresholds go through `scaleMs`, so 5 idle minutes are 3 s under `?speed=fast`
+- P0-04: Recycle Bin items keep their original names (duplicates allowed in the bin); `restore` re-uniquifies against the target folder — matches XP and avoids restoring `a (2).txt`
+- P0-04: `createFile` throws when the parent isn't an existing folder; bad names are cleaned (`\/:*?"<>|` stripped) and fall back to `New Folder`/`New File` — a missing parent is a programming error, not player input
+- P0-04: `path('root')` is `My Computer` (root is otherwise left out) — so an address bar never shows an empty path
+- P0-04: a photo's date stamp comes from its seed (`'06`/`'07`), not `now()` — it's part of the picture, which must stay deterministic
+- P0-04: `seed()` validates seeds like persisted data and drops seeds whose parent is missing or purged — a purged seed folder never comes back through its children
