@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { closeNudgeChats, logIn } from './helpers';
 
 // Regenerates the README images: npx playwright test --grep @screenshots
 const DIR = 'docs/screenshots';
@@ -49,11 +50,7 @@ test('README screenshots @screenshots', async ({ page }) => {
   );
 
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto('./?speed=fast');
-  await page.getByTestId('boot-screen').click();
-  await page.getByLabel('Your name').fill('Ada');
-  await page.getByRole('button', { name: 'Log on as Ada' }).click();
-  await expect(page.getByTestId('desktop')).toBeVisible();
+  await logIn(page);
   await page.mouse.move(900, 700);
   await page.screenshot({ path: `${DIR}/desktop.png` });
 
@@ -62,10 +59,7 @@ test('README screenshots @screenshots', async ({ page }) => {
   await expect(page.getByRole('group', { name: 'Contacts' })).toBeVisible();
   // Jess nudges on sign-in and opens her chat over the contact list; close it
   // so the screenshot shows the list, then let a friend's toast arrive.
-  const chat = page.getByRole('region', { name: /Conversation$/ });
-  await expect(chat).toBeVisible({ timeout: 10_000 });
-  await chat.getByRole('button', { name: 'Close' }).dispatchEvent('click');
-  await expect(chat).toBeHidden();
+  await closeNudgeChats(page);
   await page.waitForTimeout(1500);
   await page.mouse.move(900, 700);
   await page.screenshot({ path: `${DIR}/messenger.png` });

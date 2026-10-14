@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { logIn, openMessenger } from './helpers';
 
 const DIR = 'docs/review/M3';
 
@@ -58,21 +59,10 @@ test('M3 gate: amplifier, playlist, messenger now playing @review', async ({
   );
 
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto('./?speed=fast');
-  await page.getByTestId('boot-screen').click();
-  await page.getByLabel('Your name').fill('Ada');
-  await page.getByRole('button', { name: 'Log on as Ada' }).click();
-  await expect(page.getByTestId('desktop')).toBeVisible();
+  await logIn(page);
 
-  await page.getByRole('option', { name: 'Messenger' }).dblclick();
-  await page.getByRole('button', { name: 'Sign in' }).click();
-  await expect(page.getByRole('group', { name: 'Contacts' })).toBeVisible();
-  // Jess nudges on sign-in, which opens (and shakes) her chat over Messenger.
-  // Wait for it and close it so it cannot intercept the clicks below.
-  const nudgeChat = page.getByRole('region', { name: /Conversation$/ });
-  await expect(nudgeChat).toBeVisible({ timeout: 10_000 });
-  await nudgeChat.getByRole('button', { name: 'Close' }).dispatchEvent('click');
-  await expect(nudgeChat).toBeHidden();
+  // Jess's nudge chat is closed so it cannot intercept the clicks below.
+  await openMessenger(page);
   await page.getByText("Show what I'm listening to").click();
   await expect(page.getByLabel("Show what I'm listening to")).toBeChecked();
   const messenger = page.getByRole('region', { name: 'Messenger' });

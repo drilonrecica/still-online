@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { logIn, openMessenger } from './helpers';
 
 // Chromium needs no user gesture to start audio; the tracks are replaced by a
 // short silent WAV so the spec does not depend on real MP3 download speed.
@@ -39,27 +40,13 @@ test('amplifier: play, time advances, next track, playlist, Messenger now playin
     }),
   );
 
-  await page.goto('./?speed=fast');
-  await page.getByTestId('boot-screen').click();
-  await expect(page.getByTestId('login-screen')).toBeVisible();
-  await page.getByLabel('Your name').fill('Ada');
-  await page.getByRole('button', { name: 'Log on as Ada' }).click();
-  await expect(page.getByTestId('desktop')).toBeVisible();
+  await logIn(page);
 
-  // Messenger first: sign in and turn on "show what I'm listening to".
-  await page.getByRole('option', { name: 'Messenger' }).dblclick();
-  await page.getByRole('button', { name: 'Sign in' }).click();
-  await expect(page.getByRole('group', { name: 'Contacts' })).toBeVisible();
-  // Jess nudges on sign-in, which opens (and shakes) her chat over Messenger.
-  // Wait for it and close it so it cannot intercept the clicks below.
-  const nudgeChat = page.getByRole('region', { name: /Conversation$/ });
-  await expect(nudgeChat).toBeVisible({ timeout: 10_000 });
-  await nudgeChat.getByRole('button', { name: 'Close' }).dispatchEvent('click');
-  await expect(nudgeChat).toBeHidden();
+  // Messenger first: sign in (closing Jess's nudge chat) and turn on "show what I'm listening to".
+  const messenger = await openMessenger(page);
   // The theme hides the native checkbox, so click its visible label text.
   await page.getByText("Show what I'm listening to").click();
   await expect(page.getByLabel("Show what I'm listening to")).toBeChecked();
-  const messenger = page.getByRole('region', { name: 'Messenger' });
 
   // Minimize it so it does not cover the Amplifier icon, then open and play.
   await messenger.getByRole('button', { name: 'Minimize' }).click();
@@ -115,11 +102,7 @@ test('now playing: track started before Messenger shows, closing Amplifier stops
     }),
   );
 
-  await page.goto('./?speed=fast');
-  await page.getByTestId('boot-screen').click();
-  await page.getByLabel('Your name').fill('Ada');
-  await page.getByRole('button', { name: 'Log on as Ada' }).click();
-  await expect(page.getByTestId('desktop')).toBeVisible();
+  await logIn(page);
 
   // Music first, Messenger second (the order that used to show nothing).
   await page.getByRole('option', { name: 'Amplifier' }).dblclick();
@@ -129,13 +112,7 @@ test('now playing: track started before Messenger shows, closing Amplifier stops
   await expect(time).not.toHaveText('0:00', { timeout: 10_000 });
   await amp.getByRole('button', { name: 'Minimize' }).click();
 
-  await page.getByRole('option', { name: 'Messenger' }).dblclick();
-  await page.getByRole('button', { name: 'Sign in' }).click();
-  await expect(page.getByRole('group', { name: 'Contacts' })).toBeVisible();
-  const nudgeChat = page.getByRole('region', { name: /Conversation$/ });
-  await expect(nudgeChat).toBeVisible({ timeout: 10_000 });
-  await nudgeChat.getByRole('button', { name: 'Close' }).dispatchEvent('click');
-  await expect(nudgeChat).toBeHidden();
+  await openMessenger(page);
 
   const personal = page.getByLabel('Personal message');
   await expect(personal).toHaveValue('');

@@ -1,15 +1,11 @@
 import { expect, test } from '@playwright/test';
+import { logIn } from './helpers';
 
 test('messenger: sign in, toast, chat, choice, reply, nudges', async ({
   page,
 }) => {
   // Fast clock: Messenger timers run at 1/100 of their real delays.
-  await page.goto('./?speed=fast');
-  await page.getByTestId('boot-screen').click();
-  await expect(page.getByTestId('login-screen')).toBeVisible();
-  await page.getByLabel('Your name').fill('Ada');
-  await page.getByRole('button', { name: 'Log on as Ada' }).click();
-  await expect(page.getByTestId('desktop')).toBeVisible();
+  await logIn(page);
 
   // Open Messenger and sign in.
   await page.getByRole('option', { name: 'Messenger' }).dblclick();

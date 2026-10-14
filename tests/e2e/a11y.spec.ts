@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { closeNudgeChats, logIn } from './helpers';
 
 // Chromium needs no user gesture to start audio (see amplifier.spec.ts).
 test.use({
@@ -33,20 +34,14 @@ test('a11y: login screen', async ({ page }) => {
 });
 
 test('a11y: desktop with Start menu open', async ({ page }) => {
-  await boot(page);
-  await page.getByLabel('Your name').fill('Ada');
-  await page.getByRole('button', { name: 'Log on as Ada' }).click();
-  await expect(page.getByTestId('desktop')).toBeVisible();
+  await logIn(page);
   await page.getByRole('button', { name: 'start' }).click();
   await expect(page.getByRole('menu', { name: 'Start menu' })).toBeVisible();
   await expectNoSeriousViolations(page);
 });
 
 test('a11y: Messenger chat and Amplifier', async ({ page }) => {
-  await boot(page);
-  await page.getByLabel('Your name').fill('Ada');
-  await page.getByRole('button', { name: 'Log on as Ada' }).click();
-  await expect(page.getByTestId('desktop')).toBeVisible();
+  await logIn(page);
 
   await page.getByRole('option', { name: 'Messenger' }).dblclick();
   await page.getByRole('button', { name: 'Sign in' }).click();
@@ -56,8 +51,7 @@ test('a11y: Messenger chat and Amplifier', async ({ page }) => {
   await expectNoSeriousViolations(page);
 
   // Clear the windows off the Amplifier icon, then open it.
-  await chat.getByRole('button', { name: 'Close' }).dispatchEvent('click');
-  await expect(chat).toBeHidden();
+  await closeNudgeChats(page, { wait: false });
   const messenger = page.getByRole('region', { name: 'Messenger' });
   await messenger.getByRole('button', { name: 'Minimize' }).click();
   await expect(messenger).toBeHidden();

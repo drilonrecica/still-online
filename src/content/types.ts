@@ -1,5 +1,6 @@
 // Messenger content format: authored contacts + scripts, and the persisted progress shape.
 // See docs/content-format.md for the semantics the engine (M2-02) implements.
+import type { AppId } from '../os/types';
 
 // ---------------------------------------------------------------------------
 // Contacts
@@ -187,4 +188,39 @@ export interface PlayerProgress {
 export interface MessengerProgress {
   player: PlayerProgress;
   contacts: Record<ContactId, ContactProgress>;
+}
+
+// ---------------------------------------------------------------------------
+// v0.2 single-module content (src/content/tunemole.ts, assistant.ts)
+// Sites, profiles and mail have their own `types.ts` in their folders.
+// ---------------------------------------------------------------------------
+
+/** One TuneMole search result (P4-08). */
+export interface TuneMoleResult {
+  fileName: string;
+  sizeKb: number;
+  bitrate: number;
+  /** Fictional peer nickname. */
+  peer: string;
+  /** track: a shipped playlist track · prank: a joke txt · stall: never finishes. */
+  kind: 'track' | 'prank' | 'stall';
+  /** Required for `track`. */
+  trackId?: string;
+  /** Extra search words besides the file name. */
+  keywords?: readonly string[];
+  /** prank: the Notepad text of the created file ("lol gotcha. - xXdj_kevXx"). */
+  prankText?: string;
+}
+
+export type AssistantEvent = 'newDay' | 'idle' | 'firstBoot' | 'notepadLetter';
+
+export type AssistantAction = 'dismiss' | 'never' | `openApp:${AppId}`;
+
+/** One Stapley tip (P6-06). Shown once (`settings.seenTips`) unless `trigger.event` is `idle`. */
+export interface AssistantTip {
+  id: string;
+  /** Matches when the app opens and/or the event fires; `minDay` gates by world day. */
+  trigger: { app?: AppId; event?: AssistantEvent; minDay?: number };
+  text: string;
+  options?: readonly { label: string; action: AssistantAction }[];
 }

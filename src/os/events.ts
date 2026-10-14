@@ -1,4 +1,5 @@
 // Typed event bus. The only channel for cross-app communication.
+import type { GameId } from '@/os/types';
 
 /** Event name → payload. Namespace names as `<app>:<event>`; add new events here. */
 export interface OsEventMap {
@@ -9,6 +10,25 @@ export interface OsEventMap {
     durationSec: number;
   };
   'amplifier:stopped': { trackId: string | null };
+  // v0.2 (docs/architecture-v0.2.md → "Events")
+  /** Open Web Explorer at `url` (`http://<host>.example/...`). Handled by `os/browserRouter.ts`. */
+  'browser:open': { url: string };
+  /** Add a playlist track if missing; `play` also starts it and opens the Amplifier. */
+  'amplifier:enqueue': { trackId: string; play?: boolean };
+  /** A finished game. Mines: `score` = seconds, `detail` = level. */
+  'game:score': { game: GameId; score: number; detail?: string };
+  /** The day advanced (at most +1 per boot). */
+  'world:dayChanged': { day: number };
+  /** An unlock id was added for the first time. */
+  'world:unlock': { id: string };
+  'network:connected': { kbps: number };
+  'network:disconnected': Record<string, never>;
+  /** The player has been idle for a threshold registered through `onIdle`. */
+  'os:idle': { minutes: number };
+  /** First input after an `os:idle`. */
+  'os:active': Record<string, never>;
+  /** fs nodes created, changed, moved or removed. */
+  'fs:changed': { ids: string[] };
 }
 
 export type Listener<P> = (payload: P) => void;

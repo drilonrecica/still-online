@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { logIn } from './helpers';
 import { contacts } from '../../src/content/contacts';
 
 const DIR = 'docs/review/M2';
@@ -15,11 +16,7 @@ test('M2 gate: every contact opening plays through @review', async ({
   page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`));
 
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto('./?speed=fast');
-  await page.getByTestId('boot-screen').click();
-  await page.getByLabel('Your name').fill('Ada');
-  await page.getByRole('button', { name: 'Log on as Ada' }).click();
-  await expect(page.getByTestId('desktop')).toBeVisible();
+  await logIn(page);
   await page.getByRole('option', { name: 'Messenger' }).dblclick();
   await page.getByRole('button', { name: 'Sign in' }).click();
   await expect(page.getByRole('group', { name: 'Contacts' })).toBeVisible();

@@ -46,7 +46,33 @@ export type AppId =
   | 'recyclebin'
   | 'messenger'
   | 'messenger-chat'
-  | 'amplifier';
+  | 'amplifier'
+  // v0.2 (docs/architecture-v0.2.md → "Apps")
+  | 'explorer'
+  | 'display'
+  | 'dialup'
+  | 'diskcleanup'
+  | 'messenger-history'
+  | 'browser'
+  | 'mail'
+  | 'tunemole'
+  | 'paint'
+  | 'photobooth'
+  | 'mines'
+  | 'henhunt'
+  | 'pinball'
+  | 'wrecker';
+
+/** Start menu → All Programs submenus, in display order. */
+export const APP_CATEGORIES = [
+  'accessories',
+  'games',
+  'internet',
+  'entertainment',
+  'system',
+] as const;
+
+export type AppCategory = (typeof APP_CATEGORIES)[number];
 
 export type JsonValue =
   string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
@@ -105,6 +131,23 @@ export interface AppDefinition {
   showOnDesktop: boolean;
   /** Left ("programs") column. The right column is a fixed list: mycomputer, recyclebin. */
   showInStartMenu: boolean;
+  /** All Programs submenu. Omitted = not launchable from menus (e.g. messenger-chat). */
+  category?: AppCategory;
+  /** Shown in the Start menu's left column (32px icon). */
+  pinned?: boolean;
+}
+
+/**
+ * A launcher entry on the desktop or in the Start menu's right column. Launching calls
+ * `openApp(appId, props)`. Label/icons default to the app's; entries whose app isn't registered
+ * are skipped.
+ */
+export interface Shortcut {
+  appId: AppId;
+  props?: WindowProps;
+  label: string;
+  icon16?: string;
+  icon32?: string;
 }
 
 export interface WindowsStore {
@@ -156,6 +199,60 @@ export interface SettingsStore {
   dismissSmallScreenNotice: () => void;
 }
 
+// v0.2 settings fields. Each implementing task moves its fields into `SettingsStore` (with a
+// sanitize) and its setter; the shapes and defaults below are fixed.
+
+export type WallpaperChoice =
+  /** A procedural homage from `src/os/wallpapers/`; `classic` is the CSS rolling hill. */
+  | { kind: 'builtin'; id: string }
+  /** The player's own image in the blob store. */
+  | { kind: 'custom'; blobKey: string }
+  /** "(None)" with a solid colour, `#rrggbb`. */
+  | { kind: 'color'; color: string };
+
+export type WallpaperPosition = 'center' | 'tile' | 'stretch';
+
+export type ThemeId = 'blue' | 'olive' | 'silver';
+
+export type ScreensaverId =
+  'none' | 'pipes' | 'panes' | 'marquee' | 'slideshow';
+
+export interface ScreensaverSettings {
+  id: ScreensaverId;
+  /** Idle minutes before it starts, 1–60; 0 = never. */
+  minutes: number;
+  /** Marquee text. */
+  text: string;
+}
+
+export interface SettingsV02 {
+  wallpaper: WallpaperChoice; // P1-01
+  wallpaperPosition: WallpaperPosition; // P1-01
+  theme: ThemeId; // P1-02
+  screensaver: ScreensaverSettings; // P1-02 / P1-03
+  /** Idle minutes before Messenger goes Away; 0 = off. */
+  awayMinutes: number; // P3-01
+  awayMessage: string; // P3-01
+  connectAutomatically: boolean; // P1-05
+  petEnabled: boolean; // P6-05
+  assistantEnabled: boolean; // P6-06
+  /** Balloon and Stapley tip ids already shown once. */
+  seenTips: string[]; // P1-04 / P6-06
+}
+
+export const SETTINGS_V02_DEFAULTS: Readonly<SettingsV02> = {
+  wallpaper: { kind: 'builtin', id: 'classic' },
+  wallpaperPosition: 'stretch',
+  theme: 'blue',
+  screensaver: { id: 'panes', minutes: 5, text: 'still online...' },
+  awayMinutes: 5,
+  awayMessage: 'brb',
+  connectAutomatically: true,
+  petEnabled: false,
+  assistantEnabled: true,
+  seenTips: [],
+};
+
 export type SoundName =
   'startup' | 'logon' | 'logoff' | 'error' | 'notify' | 'nudge' | 'click';
 
@@ -172,4 +269,20 @@ export interface SoundStore {
 
 /** Stores persisted under `still-online:v1:<name>`. */
 export type PersistedStoreName =
-  'settings' | 'windows' | 'notepad' | 'messenger' | 'amplifier';
+  | 'settings'
+  | 'windows'
+  | 'notepad'
+  | 'messenger'
+  | 'amplifier'
+  | 'fs'
+  | 'world'
+  | 'mail'
+  | 'web'
+  | 'games';
+
+// ---------------------------------------------------------------------------
+// Games
+// ---------------------------------------------------------------------------
+
+/** Games that report scores (`game:score`, the `games` store, friend reactions). */
+export type GameId = 'mines' | 'henhunt' | 'pinball';

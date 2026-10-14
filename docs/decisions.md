@@ -52,3 +52,13 @@
 - Feature: generic OS attention store (`src/os/store/attention.ts`, keys `appId` or `appId:instanceKey`) read by the taskbar; a window's button blinks orange 6× then stays orange while it wants attention and isn't the active window (static under reduced motion)
 - Feature: Messenger raises attention for each waiting contact's chat window, and for the Messenger window only while some waiting contact has no chat open; the footer counts waiting contacts
 - Sounds: synth rebuilt around voices (detuned/filtered tones, FM bells, band-passed noise) with a shared generated reverb and stereo panning, for the feel of 2007 desktop/IM sounds with original melodies; official Microsoft sounds are copyrighted and stay out of the repo (owner decision: keep original names, improve sound-alikes); new `online` sound for contact sign-ins, separate from the message `notify`
+- P0-01: v0.2 OS service contracts live in `src/os/serviceTypes.ts` (world, network, idle, balloons, games) and fs types in `src/os/fs/types.ts` — keeps `src/os/types.ts` under ~300 lines
+- P0-01: v0.2 settings fields are specified as `SettingsV02` + `SETTINGS_V02_DEFAULTS` instead of being added to `SettingsStore` now — each owning task adds its fields with setter and sanitize; default screensaver is Flying Panes
+- P0-01: payloads written `{}` in the plan are typed `Record<string, never>` — `{}` as a TS type accepts any non-null value
+- P0-01: overlay slots are fixed-position layers with z-indices in `Z_INDEX` (`src/os/overlay/slots.ts`); the WindowLayer gets `z-index: 1` when OverlayLayer lands — window `z` grows without bound and would otherwise climb over Fluff/Stapley and eventually the taskbar
+- P0-01: the dial-up dialog is a normal window (`dialup` app, per §P1-05), not an overlay, although the code conventions list it with the overlays
+- P0-01: Desktop Wrecker keeps its own `document.body` portal (§P6-04) but uses `Z_INDEX.wrecker`; the overlay layer only reserves that z
+- P0-01: `requireOnline()` callers share one dial attempt and resolve false on `network:disconnected`; `NetworkStore` also has `connectedAt` for the tray Status duration
+- P0-01: site routing matches the exact path, then a `/*` catch-all page (Spaceport `/<contactId>`)
+- P0-01: content type files use relative imports — the e2e tsconfig (no `@/` alias) compiles `src/content` through review specs
+- P0-01: e2e `logIn` is quiet by default (screensaver and auto-away off via persisted settings) — idle thresholds go through `scaleMs`, so 5 idle minutes are 3 s under `?speed=fast`

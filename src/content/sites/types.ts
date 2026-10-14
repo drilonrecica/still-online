@@ -1,0 +1,104 @@
+// Fictional web: the site registry contract (P4-01) and site content shapes (P4-03…P4-05).
+// See docs/architecture-v0.2.md → "Web".
+import type { ComponentType, LazyExoticComponent } from 'react';
+import type { PlayerProfile } from '../profiles/types';
+
+/** What every site page component receives from Web Explorer. */
+export interface SitePageProps {
+  /** Path without the query, always starting with `/` (`/`, `/band`, `/kayla`). */
+  path: string;
+  query: URLSearchParams;
+  /** Navigates this browser window (relative paths resolve against the current site). */
+  navigate: (url: string) => void;
+}
+
+export interface SitePage {
+  title: string;
+  keywords?: readonly string[];
+  /** `lazy(() => import('./Home'))`; the module default-exports the page. */
+  component: LazyExoticComponent<ComponentType<SitePageProps>>;
+}
+
+export interface SiteDefinition {
+  /** Lowercase, always ending in `.example` (`searchly.example`). */
+  host: string;
+  title: string;
+  /** Searchly snippet. */
+  description: string;
+  keywords: readonly string[];
+  /**
+   * Path → page; `/` = home. A key `/*` catches any other single-segment path
+   * (Spaceport `/<contactId>`); the page reads `path` to decide what to show.
+   */
+  pages: Readonly<Record<string, SitePage>>;
+}
+
+/** `resolve(url)` in `src/apps/browser/sites/index.ts` returns this, or null for unknown hosts/paths. */
+export interface ResolvedPage {
+  site: SiteDefinition;
+  page: SitePage;
+  /** Normalised `http://host/path?query`. */
+  url: string;
+  path: string;
+  query: URLSearchParams;
+}
+
+// ---------------------------------------------------------------------------
+// Site content (src/content/sites/<host-slug>.ts). Day-gated entries show when `day <= currentDay`.
+// ---------------------------------------------------------------------------
+
+export interface GuestbookEntry {
+  day: number;
+  name: string;
+  homepage?: string;
+  message: string;
+}
+
+export interface BlogComment {
+  user: string;
+  text: string;
+}
+
+export interface BlogPost {
+  id: string;
+  day: number;
+  title: string;
+  body: string;
+  tags: readonly string[];
+  comments: readonly BlogComment[];
+}
+
+export interface NewsPost {
+  day: number;
+  title: string;
+  author: string;
+  body: string;
+}
+
+export interface Poll {
+  id: string;
+  question: string;
+  options: readonly string[];
+}
+
+// ---------------------------------------------------------------------------
+// Persisted `web` store (src/apps/browser/store.ts)
+// ---------------------------------------------------------------------------
+
+export interface Favorite {
+  title: string;
+  url: string;
+}
+
+export interface WebState {
+  /** Seeded with Searchly, Tinfoil Comets, Spaceport, Westfield High, Celeb Gossip 07. */
+  favorites: Favorite[];
+  /** Hit counters by host (+1 per visit). */
+  counters: Record<string, number>;
+  /** Player-signed guestbook entries by host, oldest first. */
+  guestbook: Record<string, Omit<GuestbookEntry, 'day'>[]>;
+  /** Poll id → chosen option index. */
+  votes: Record<string, number>;
+  /** Spaceport `/me`; null until the player edits it (defaults derive from the player name). */
+  myProfile: PlayerProfile | null;
+}
