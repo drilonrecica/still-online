@@ -1,6 +1,6 @@
 plan = "tasks.md"
 backend = "auto"
-default_mode = "auto"
+default_mode = "yolo"
 needs_input_after = "30s"
 poll_interval = "2s"
 
@@ -19,8 +19,8 @@ poll_interval = "2s"
 [run]
   verify = "npm run verify"
   verify_timeout = "15m0s"
-  verify_max_attempts = 3
-  commit = "ask"
+  verify_max_attempts = 5
+  commit = "auto"
   commit_message = "{{.ID}}: {{.Title}}"
   prompt_template = ""
 
