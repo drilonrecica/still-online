@@ -18,3 +18,8 @@
 - M1-04: dragging a maximized window does nothing (no XP-style "restore and drag") — simpler; the store already keeps restore geometry
 - M1-04: chrome `'none'` windows get no resize grips and use the stored `w`/`h` — Amplifier has a fixed-size skin
 - M1-04: added Testing Library `cleanup` in `src/test/setup.ts` — Vitest globals are off, so auto-cleanup never ran
+- M2-01: contacts sign in with `initialStatus`; `offline` means "signed in, appearing offline" (triggers armed, no toast) — gives the spec's `offline` value a meaning without a separate flag
+- M2-01: one script per contact at a time, later triggers queue FIFO (persisted); scripts run once unless `repeat: true`, `onNowPlaying` at most once per trackId — no interleaved conversations, matches M2-07's "once per trackId"
+- M2-01: `afterMinutes` counts from the player's Messenger sign-in per page session — each script still runs once, so a reload only restarts the countdown; no elapsed-time bookkeeping
+- M2-01: choices are `{ text, label?, next }` and text supports `{name}`/`{artist}`/`{title}` placeholders — short button captions and now-playing reactions without more node types
+- M2-01: progress stores a per-contact transcript + `active.lineIndex` — reload resumes at the next undelivered line with no duplicates
