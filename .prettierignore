@@ -1,0 +1,10 @@
+node_modules
+dist
+playwright-report
+test-results
+package-lock.json
+.igris
+tasks.md
+README.md
+LICENSE
+igris.toml
