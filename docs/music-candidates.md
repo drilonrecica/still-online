@@ -1,6 +1,6 @@
 # Music candidates
 
-Candidates for the Amplifier playlist (M3-01). Nothing is downloaded yet; M3-02 picks 3–5 and M3-03 downloads them.
+Candidates for the Amplifier playlist (M3-01). Nothing is downloaded yet; M3-02 picked 5 (marked ✅ below) and M3-03 downloads them.
 
 ## Verification
 
@@ -18,15 +18,27 @@ Attribution text to use in `CREDITS.md`: `"<Title>" by Kevin MacLeod (incompetec
 | Title              | Artist        | Genre (vibe)                                       | Length | Size   | License   | Source page                                                                             | Direct download                                                                           |
 | ------------------ | ------------- | -------------------------------------------------- | ------ | ------ | --------- | --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | Fantasia Fantasia  | Kevin MacLeod | Rock (upbeat indie-rock / pop-punk-ish)            | 02:32  | 4.9 MB | CC BY 4.0 | [USUAN1800006](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1800006) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Fantasia%20Fantasia.mp3>      |
-| Surf Shimmy        | Kevin MacLeod | Rock (surf-punk energy, fast guitar)               | 02:03  | 3.9 MB | CC BY 4.0 | [USUAN1700018](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1700018) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Surf%20Shimmy.mp3>            |
-| Cool Rock          | Kevin MacLeod | Rock (driving guitar rock)                         | 03:29  | 3.4 MB | CC BY 4.0 | [USUAN1100279](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100279) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Cool%20Rock.mp3>              |
+| ✅ Surf Shimmy        | Kevin MacLeod | Rock (surf-punk energy, fast guitar)               | 02:03  | 3.9 MB | CC BY 4.0 | [USUAN1700018](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1700018) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Surf%20Shimmy.mp3>            |
+| ✅ Cool Rock          | Kevin MacLeod | Rock (driving guitar rock)                         | 03:29  | 3.4 MB | CC BY 4.0 | [USUAN1100279](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100279) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Cool%20Rock.mp3>              |
 | Delay Rock         | Kevin MacLeod | Rock (driving guitar rock)                         | 02:59  | 2.1 MB | CC BY 4.0 | [USUAN1100262](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100262) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Delay%20Rock.mp3>             |
-| Newer Wave         | Kevin MacLeod | Electronica (bright synth-pop / new wave)          | 02:55  | 3.5 MB | CC BY 4.0 | [USUAN2000024](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN2000024) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Newer%20Wave.mp3>             |
-| Voxel Revolution   | Kevin MacLeod | Electronica (bouncy electro)                       | 02:10  | 2.6 MB | CC BY 4.0 | [USUAN2000025](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN2000025) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Voxel%20Revolution.mp3>       |
+| ✅ Newer Wave         | Kevin MacLeod | Electronica (bright synth-pop / new wave)          | 02:55  | 3.5 MB | CC BY 4.0 | [USUAN2000024](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN2000024) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Newer%20Wave.mp3>             |
+| ✅ Voxel Revolution   | Kevin MacLeod | Electronica (bouncy electro)                       | 02:10  | 2.6 MB | CC BY 4.0 | [USUAN2000025](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN2000025) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Voxel%20Revolution.mp3>       |
 | Nowhere Land       | Kevin MacLeod | Electronica (uplifting electro)                    | 02:12  | 4.2 MB | CC BY 4.0 | [USUAN1600051](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1600051) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Nowhere%20Land.mp3>           |
 | Aerosol of my Love | Kevin MacLeod | Pop (bright synth-pop)                             | 02:22  | 2.8 MB | CC BY 4.0 | [USUAN2000020](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN2000020) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Aerosol%20of%20my%20Love.mp3> |
 | Neon Laser Horizon | Kevin MacLeod | Contemporary (uplifting electro-pop, fast)         | 02:59  | 3.6 MB | CC BY 4.0 | [USUAN2000023](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN2000023) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Neon%20Laser%20Horizon.mp3>   |
-| Pleasant Porridge  | Kevin MacLeod | Contemporary (chill R&B-ish electric piano groove) | 02:51  | 3.4 MB | CC BY 4.0 | [USUAN2100004](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN2100004) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Pleasant%20Porridge.mp3>      |
+| ✅ Pleasant Porridge  | Kevin MacLeod | Contemporary (chill R&B-ish electric piano groove) | 02:51  | 3.4 MB | CC BY 4.0 | [USUAN2100004](https://incompetech.com/music/royalty-free/index.html?isrc=USUAN2100004) | <https://incompetech.com/music/royalty-free/mp3-royaltyfree/Pleasant%20Porridge.mp3>      |
+
+## Picks (M3-02)
+
+All five are CC BY 4.0 (no CC0 option exists, see Notes), instrumental, and pass the URL/size checks above. Total about 16.8 MB, under the 25 MB budget.
+
+- ✅ **Surf Shimmy** — upbeat pop-punk/indie slot: fast surf-punk guitar, the most energetic rock option, and only 3.9 MB.
+- ✅ **Cool Rock** — second guitar-rock track, steadier and mid-tempo, so the rock pair has some range.
+- ✅ **Newer Wave** — electro/dance slot: bright new-wave synth-pop with an MSN-era feel.
+- ✅ **Voxel Revolution** — bouncy electro, shortest and smallest (2.6 MB), a different texture from Newer Wave.
+- ✅ **Pleasant Porridge** — the chill slot: electric-piano groove that suits a wind-down.
+
+Not picked: Fantasia Fantasia (4.9 MB, near the cap, overlaps Surf Shimmy), Delay Rock (overlaps Cool Rock), Nowhere Land, Aerosol of my Love and Neon Laser Horizon (overlap the electro picks).
 
 ## Notes
 
