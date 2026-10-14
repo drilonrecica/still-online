@@ -18,6 +18,7 @@ describe('registry', () => {
       'mycomputer',
       'messenger',
       'messenger-chat',
+      'amplifier',
       'notepad',
       'recyclebin',
     ]);

@@ -2,6 +2,8 @@
 import { lazy } from 'react';
 import { setAppResolver } from '@/os/store/windows';
 import type { AppDefinition, AppId } from '@/os/types';
+import amplifier16 from '@/assets/icons/amplifier-16.svg';
+import amplifier32 from '@/assets/icons/amplifier-32.svg';
 import messenger16 from '@/assets/icons/messenger-16.svg';
 import messenger32 from '@/assets/icons/messenger-32.svg';
 import myComputer16 from '@/assets/icons/mycomputer-16.svg';
@@ -50,6 +52,19 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     chrome: 'xp',
     showOnDesktop: false,
     showInStartMenu: false,
+  },
+  amplifier: {
+    id: 'amplifier',
+    title: 'Amplifier',
+    icon16: amplifier16,
+    icon32: amplifier32,
+    component: lazy(() => import('./amplifier/Amplifier')),
+    defaultSize: { w: 275, h: 116 },
+    minSize: { w: 275, h: 116 },
+    singleInstance: true,
+    chrome: 'none',
+    showOnDesktop: true,
+    showInStartMenu: true,
   },
   notepad: {
     id: 'notepad',
