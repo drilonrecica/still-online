@@ -1,4 +1,6 @@
-export const STORAGE_PREFIX = 'still-online:v1:';
+import { STORAGE_PREFIX } from '@/os/persist';
+
+export { STORAGE_PREFIX };
 
 /** Removes every persisted still-online key. Returns how many were removed. */
 export function clearStillOnlineStorage(storage: Storage): number {

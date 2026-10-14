@@ -16,7 +16,8 @@ export const useSessionStore = create<SessionStore>()((set, get) => {
   return {
     state: 'booting',
     bootComplete: () => go('login'),
-    logOn: () => go('desktop'),
+    // Open windows come back only once the player logs on, never during boot.
+    logOn: () => go('desktop', () => void useWindowsStore.persist.rehydrate()),
     logOff: () => go('login', closeWindows),
     shutDown: () => go('shuttingDown', closeWindows),
     shutdownComplete: () => go('off'),

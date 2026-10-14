@@ -71,6 +71,7 @@ describe('notepad persistence', () => {
 
 describe('reset', () => {
   it('clears only still-online:v1:* keys', () => {
+    localStorage.clear();
     localStorage.setItem('still-online:v1:notepad', '{}');
     localStorage.setItem('still-online:v1:settings', '{}');
     localStorage.setItem('other', 'keep');

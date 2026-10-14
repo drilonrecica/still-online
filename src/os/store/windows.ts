@@ -1,5 +1,7 @@
 // Window manager store. Semantics are documented in docs/architecture.md → "Windows".
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { isRecord, persistOptions } from '@/os/persist';
 import {
   CASCADE_ORIGIN,
   CASCADE_STEP,
@@ -96,8 +98,93 @@ function instanceMatches(
   );
 }
 
+const isNum = (v: unknown): v is number =>
+  typeof v === 'number' && Number.isFinite(v);
+
+/** Validates one persisted window; returns null when it can't be restored. */
+function restoreWindow(
+  raw: unknown,
+  deps: WindowsStoreDeps,
+): WindowState | null {
+  if (!isRecord(raw)) return null;
+  const { id, appId, title, x, y, w, h, z, minimized, maximized, props } = raw;
+  if (
+    typeof id !== 'string' ||
+    typeof appId !== 'string' ||
+    typeof title !== 'string' ||
+    !isNum(x) ||
+    !isNum(y) ||
+    !isNum(w) ||
+    !isNum(h) ||
+    !isNum(z) ||
+    typeof minimized !== 'boolean' ||
+    typeof maximized !== 'boolean' ||
+    !isRecord(props)
+  ) {
+    return null;
+  }
+  const app = deps.getApp(appId as AppId);
+  if (!app) return null;
+  const min = app.minSize ?? WM_MIN_SIZE;
+  const work = deps.getWorkArea();
+  const width = Math.max(w, min.w);
+  const height = Math.max(h, min.h);
+  return {
+    id,
+    appId: appId as AppId,
+    title,
+    ...clampPosition(x, y, width, work),
+    w: width,
+    h: height,
+    z,
+    minimized,
+    maximized,
+    props: props as WindowProps,
+  };
+}
+
+/**
+ * Persisted under `still-online:v1:windows` but not hydrated at creation: the session calls
+ * `useWindowsStore.persist.rehydrate()` on log on, so windows never restore during boot.
+ */
 export function createWindowsStore(deps: WindowsStoreDeps) {
-  return create<WindowsStore>()((set, get) => {
+  return create<WindowsStore>()(
+    persist(
+      windowsInitializer,
+      persistOptions<WindowsStore, Pick<WindowsStore, 'windows' | 'topZ'>>({
+        name: 'windows',
+        skipHydration: true,
+        partialize: ({ windows, topZ }) => ({ windows, topZ }),
+        sanitize: (persisted, current) => {
+          if (!isRecord(persisted) || !Array.isArray(persisted.windows)) {
+            return current;
+          }
+          const seen = new Set<string>();
+          const windows = persisted.windows
+            .map((raw) => restoreWindow(raw, deps))
+            .filter((win): win is WindowState => {
+              if (!win || seen.has(win.id)) return false;
+              seen.add(win.id);
+              return true;
+            });
+          const topZ = Math.max(
+            isNum(persisted.topZ) ? persisted.topZ : 0,
+            ...windows.map((win) => win.z),
+          );
+          return { ...current, windows, topZ };
+        },
+      }),
+    ),
+  );
+
+  function windowsInitializer(
+    set: (
+      partial:
+        | Partial<WindowsStore>
+        | ((state: WindowsStore) => Partial<WindowsStore>),
+    ) => void,
+    get: () => WindowsStore,
+  ): WindowsStore {
     function update(
       id: string,
       patch: (win: WindowState) => Partial<WindowState>,
@@ -206,7 +293,7 @@ export function createWindowsStore(deps: WindowsStoreDeps) {
         });
       },
     };
-  });
+  }
 }
 
 let resolveApp: AppResolver = () => undefined;
