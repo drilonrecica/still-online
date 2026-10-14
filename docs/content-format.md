@@ -70,6 +70,17 @@ Rules:
 
 **Resume after reload.** Delivered lines are in the transcript, and `lineIndex` points past them. So the engine continues with the next line and never repeats a message. If `awaitingChoice` is true, the choices are shown again. Timers restart: the pending line's `delayMs` and typing time run again from the moment the player signs in, and `afterMinutes` counts from the new sign-in.
 
+## Engine (M2-02)
+
+`createConversationEngine({ contents, store, scheduler?, getPlayerName?, isChatFocused? })` in `src/apps/messenger/engine/` is plain TS. Time comes from the injected `Scheduler` (`setTimeout`/`clearTimeout`/`now`); the default uses the browser timers, so Vitest fake timers work.
+
+- **Calls:** `signIn()`, `signOut()`, `choose(contactId, index)`, `getChoices(contactId)`, `playerNudge(contactId)`, `nowPlaying({ trackId, artist, title })`, `on/off(event, fn)`, `dispose()`. The engine doesn't listen to the OS event bus: the Messenger UI forwards `amplifier:trackChanged` to `nowPlaying` (M2-07). It doesn't rate-limit nudges either; the chat window does (M2-04).
+- **Events:** `contactSignedIn { status, toast }`, `contactSignedOut`, `typingStart`, `typingStop`, `message { from, text }`, `nudge { from }`, `statusChange`, `personalMessageChange`, `choices`, `scriptStarted`, `scriptEnded`, `signedOut`.
+- **Store** (`src/apps/messenger/store.ts`): `progress` is persisted. The runtime fields `signedIn`, `online[id]` and `typing[id]` are not, so everyone is offline again after a reload.
+- **Returning contacts** sign in with their last status. If that status is `offline` (signed out by a script), they use `initialStatus` instead.
+- **Scripts keep playing** after a `statusChange: 'offline'`, so a later line can sign the contact back in.
+- **Unread** counts contact messages that arrive while `isChatFocused(id)` is false.
+
 ## Example
 
 A complete contact with an opening script (one branch, two endings) and a repeatable nudge reaction. The same code is in `src/content/example.fixture.ts`, which is type-checked and graph-tested.

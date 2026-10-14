@@ -23,3 +23,10 @@
 - M2-01: `afterMinutes` counts from the player's Messenger sign-in per page session — each script still runs once, so a reload only restarts the countdown; no elapsed-time bookkeeping
 - M2-01: choices are `{ text, label?, next }` and text supports `{name}`/`{artist}`/`{title}` placeholders — short button captions and now-playing reactions without more node types
 - M2-01: progress stores a per-contact transcript + `active.lineIndex` — reload resumes at the next undelivered line with no duplicates
+- M2-02: the engine takes the store as `{ getState, setState }` (the Zustand hook satisfies it) and a `Scheduler`; no React, no event-bus subscription inside — the UI forwards `amplifier:trackChanged` and owns nudge rate-limiting
+- M2-02: presence (`signedIn`, `online`, `typing`) lives in the messenger store but is not persisted — every Messenger sign-in starts with all contacts offline, as content-format.md says
+- M2-02: returning contacts sign in with their last scripted status, or `initialStatus` if that is `offline` — otherwise a contact a script signed out would stay offline forever
+- M2-02: an active script keeps playing after `statusChange: 'offline'` — lets a script sign the contact out and back in
+- M2-02: on contact sign-in the order is: resume the active script → fire onSignIn → drain the queue — opening scripts run before triggers that queued earlier
+- M2-02: a contact line is delivered (transcript + actions + `lineIndex++`) in one store write — a reload can't land between them, so nothing is duplicated; an interrupted line replays its delay + typing
+- M2-02: unresolvable placeholders (e.g. `{artist}` outside onNowPlaying) are left as written — authoring mistakes stay visible
