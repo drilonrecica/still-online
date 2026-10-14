@@ -1,0 +1,124 @@
+/* Luna-style taskbar, original CSS approximations. */
+.taskbar {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: var(--xp-taskbar-height);
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  background: linear-gradient(
+    to bottom,
+    var(--xp-taskbar-from),
+    var(--xp-taskbar-to)
+  );
+  box-shadow: inset 0 1px 0 #5a8bf0;
+  z-index: 10000;
+  user-select: none;
+}
+
+.start {
+  flex: none;
+  min-width: 96px;
+  padding: 0 14px 0 10px;
+  border: 0;
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(
+    to bottom,
+    var(--xp-start-from),
+    var(--xp-start-to)
+  );
+  box-shadow: inset 0 1px 0 #7fd07f;
+  color: #fff;
+  font:
+    italic bold 16px 'Trebuchet MS',
+    Tahoma,
+    sans-serif;
+  text-shadow: 1px 1px 1px #1d4d1d;
+  cursor: pointer;
+}
+
+.start[data-open='true'] {
+  filter: brightness(0.85);
+}
+
+.startText {
+  letter-spacing: 0.5px;
+}
+
+.windows {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 0;
+}
+
+.windowButton {
+  flex: 0 1 160px;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  border: 1px solid #0b3a9c;
+  border-radius: 3px;
+  background: linear-gradient(to bottom, #4b84f1, #2a5fd6);
+  color: #fff;
+  font:
+    11px Tahoma,
+    sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+
+.windowButton[data-active='true'] {
+  background: linear-gradient(to bottom, #1e4cb8, #2f62d0);
+  box-shadow: inset 1px 1px 2px rgb(0 0 0 / 45%);
+  font-weight: bold;
+}
+
+.windowButton img {
+  flex: none;
+}
+
+.windowTitle {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.tray {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border-left: 1px solid #0a3a9a;
+  background: linear-gradient(
+    to bottom,
+    var(--xp-tray-from),
+    var(--xp-tray-to)
+  );
+  box-shadow: inset 1px 0 0 #3fa5f5;
+  color: #fff;
+  font:
+    11px Tahoma,
+    sans-serif;
+}
+
+.mute {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.clock {
+  white-space: nowrap;
+}
