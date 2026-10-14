@@ -129,7 +129,7 @@ export interface AppDefinition {
   /** `'none'`: no XP frame; the app draws its own and uses `useWindowDrag(id)`. */
   chrome: 'xp' | 'none';
   showOnDesktop: boolean;
-  /** Left ("programs") column. The right column is a fixed list: mycomputer, recyclebin. */
+  /** Legacy flag; the Start menu now lists `pinned` apps and the All Programs flyout. */
   showInStartMenu: boolean;
   /** All Programs submenu. Omitted = not launchable from menus (e.g. messenger-chat). */
   category?: AppCategory;

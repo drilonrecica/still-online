@@ -28,6 +28,20 @@ describe('registry', () => {
     }
   });
 
+  it('assigns menu categories and pins', () => {
+    const meta = Object.fromEntries(
+      listApps().map((a) => [a.id, [a.category, a.pinned ?? false]]),
+    );
+    expect(meta).toEqual({
+      mycomputer: ['system', false],
+      messenger: ['internet', true],
+      'messenger-chat': [undefined, false],
+      amplifier: ['entertainment', true],
+      notepad: ['accessories', true],
+      recyclebin: ['system', false],
+    });
+  });
+
   it('opens one chat window per contact, kept off the desktop and Start menu', () => {
     const chat = getApp('messenger-chat');
     expect(chat).toMatchObject({

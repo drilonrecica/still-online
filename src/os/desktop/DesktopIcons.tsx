@@ -1,31 +1,37 @@
-// Desktop icon grid: one icon per app with `showOnDesktop`, in a column top-left.
+// Desktop icon grid: one icon per resolved shortcut, in a column top-left.
 import { useState } from 'react';
 import type { KeyboardEvent } from 'react';
-import { listApps } from '@/apps/registry';
+import {
+  DESKTOP_SHORTCUTS,
+  appShortcut,
+  resolveShortcuts,
+} from '@/os/shortcuts';
 import { useWindowsStore } from '@/os/store/windows';
-import type { AppDefinition, AppId } from '@/os/types';
+import type { AppDefinition, Shortcut } from '@/os/types';
 import styles from './DesktopIcons.module.css';
 
 export interface DesktopIconsProps {
-  /** Defaults to every registered app with `showOnDesktop`. */
+  /** Defaults to `DESKTOP_SHORTCUTS`. */
+  shortcuts?: readonly Shortcut[];
+  /** Test override: shown as plain app shortcuts, bypassing the registry. */
   apps?: readonly AppDefinition[];
 }
 
-function desktopApps(): AppDefinition[] {
-  return listApps().filter((app) => app.showOnDesktop);
-}
-
-export function DesktopIcons({ apps }: DesktopIconsProps) {
-  const icons = apps ?? desktopApps();
+export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
+  const icons = apps
+    ? resolveShortcuts(apps.map(appShortcut), (id) =>
+        apps.find((app) => app.id === id),
+      )
+    : resolveShortcuts(shortcuts ?? DESKTOP_SHORTCUTS);
   const openApp = useWindowsStore((s) => s.openApp);
-  const [selected, setSelected] = useState<AppId | null>(null);
+  const [selected, setSelected] = useState<string | null>(null);
 
   function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
     if (icons.length === 0) return;
-    const index = icons.findIndex((app) => app.id === selected);
+    const index = icons.findIndex((app) => app.key === selected);
     const move = (to: number) => {
       e.preventDefault();
-      setSelected(icons[to]?.id ?? null);
+      setSelected(icons[to]?.key ?? null);
     };
     if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
       move(Math.min(index + 1, icons.length - 1));
@@ -33,7 +39,8 @@ export function DesktopIcons({ apps }: DesktopIconsProps) {
       move(Math.max(index - 1, 0));
     } else if (e.key === 'Enter' && selected) {
       e.preventDefault();
-      openApp(selected);
+      const target = icons.find((icon) => icon.key === selected);
+      if (target) openApp(target.appId, target.props);
     }
   }
 
@@ -49,18 +56,18 @@ export function DesktopIcons({ apps }: DesktopIconsProps) {
     >
       {icons.map((app) => (
         <div
-          key={app.id}
+          key={app.key}
           role="option"
-          aria-selected={selected === app.id}
+          aria-selected={selected === app.key}
           className={styles.icon}
-          data-selected={selected === app.id}
+          data-selected={selected === app.key}
           onClick={(e) => {
             e.stopPropagation();
-            setSelected(app.id);
+            setSelected(app.key);
           }}
           onDoubleClick={(e) => {
             e.stopPropagation();
-            openApp(app.id);
+            openApp(app.appId, app.props);
           }}
         >
           <img
@@ -70,7 +77,7 @@ export function DesktopIcons({ apps }: DesktopIconsProps) {
             height={32}
             draggable={false}
           />
-          <span className={styles.label}>{app.label ?? app.title}</span>
+          <span className={styles.label}>{app.label}</span>
         </div>
       ))}
     </div>

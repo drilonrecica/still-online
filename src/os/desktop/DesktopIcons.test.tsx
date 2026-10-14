@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { useWindowsStore } from '@/os/store/windows';
 import type { AppDefinition } from '@/os/types';
 import { DesktopIcons } from './DesktopIcons';
+import '@/apps/registry';
 
 function app(
   id: 'mycomputer' | 'notepad' | 'recyclebin',
@@ -103,5 +104,31 @@ describe('DesktopIcons', () => {
     for (const img of document.querySelectorAll('img')) {
       expect(img).toHaveAttribute('draggable', 'false');
     }
+  });
+
+  it('opens shortcuts with their window props and skips unregistered apps', () => {
+    render(
+      <DesktopIcons
+        shortcuts={[
+          { appId: 'notepad', label: 'Scratch', props: { note: 'x' } },
+          { appId: 'explorer', label: 'Missing' },
+        ]}
+      />,
+    );
+    expect(screen.getAllByRole('option')).toHaveLength(1);
+    fireEvent.doubleClick(screen.getByText('Scratch'));
+    expect(useWindowsStore.getState().windows[0]?.props).toEqual({ note: 'x' });
+  });
+
+  it('defaults to the desktop shortcut list', () => {
+    render(<DesktopIcons />);
+    const labels = screen.getAllByRole('option').map((o) => o.textContent);
+    expect(labels).toEqual([
+      'My Computer',
+      'Recycle Bin',
+      'Messenger',
+      'Amplifier',
+      'Notepad',
+    ]);
   });
 });

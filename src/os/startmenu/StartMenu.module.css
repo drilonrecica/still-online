@@ -16,10 +16,10 @@
     11px Tahoma,
     sans-serif;
   z-index: 10001;
-  overflow: hidden;
 }
 
 .header {
+  border-radius: 7px 7px 0 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -46,6 +46,14 @@
   height: calc(var(--xp-startmenu-height) - 80px);
 }
 
+.leftColumn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--xp-startmenu-left);
+}
+
 .left,
 .right {
   flex: 1;
@@ -56,7 +64,72 @@
 }
 
 .left {
+  flex: 1;
   background: var(--xp-startmenu-left);
+}
+
+.allPrograms {
+  padding: 4px 6px;
+  border-top: 1px solid #d3d3d3;
+}
+
+.allProgramsButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border: 0;
+  background: none;
+  color: #000;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.allProgramsButton:hover,
+.allProgramsButton:focus-visible,
+.allProgramsButton[aria-expanded='true'] {
+  background: var(--xp-selection);
+  color: #fff;
+  outline: none;
+}
+
+.arrow {
+  margin-left: auto;
+  font-size: 8px;
+  color: #3a9a3a;
+}
+
+.allProgramsButton .arrow {
+  margin-left: 0;
+}
+
+.flyout,
+.submenu {
+  position: absolute;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+  min-width: 170px;
+  border: 1px solid #7f9db9;
+  background: #fff;
+  box-shadow: 2px 2px 4px rgb(0 0 0 / 35%);
+}
+
+.flyout {
+  left: 100%;
+  bottom: 30px;
+}
+
+.submenu {
+  left: 100%;
+  top: -3px;
+}
+
+.categoryItem {
+  position: relative;
 }
 
 .right {
@@ -91,6 +164,7 @@
 }
 
 .footer {
+  border-radius: 0;
   display: flex;
   justify-content: flex-end;
   gap: 12px;

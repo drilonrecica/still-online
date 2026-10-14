@@ -25,6 +25,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     chrome: 'xp',
     showOnDesktop: true,
     showInStartMenu: false,
+    category: 'system',
   },
   messenger: {
     id: 'messenger',
@@ -38,6 +39,8 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     chrome: 'xp',
     showOnDesktop: true,
     showInStartMenu: true,
+    category: 'internet',
+    pinned: true,
   },
   'messenger-chat': {
     id: 'messenger-chat',
@@ -65,6 +68,8 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     chrome: 'none',
     showOnDesktop: true,
     showInStartMenu: true,
+    category: 'entertainment',
+    pinned: true,
   },
   notepad: {
     id: 'notepad',
@@ -78,6 +83,8 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     chrome: 'xp',
     showOnDesktop: true,
     showInStartMenu: true,
+    category: 'accessories',
+    pinned: true,
   },
   recyclebin: {
     id: 'recyclebin',
@@ -90,6 +97,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     chrome: 'xp',
     showOnDesktop: true,
     showInStartMenu: false,
+    category: 'system',
   },
 };
 

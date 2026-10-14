@@ -1,6 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { useState } from 'react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/apps/registry';
 import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
@@ -106,5 +106,94 @@ describe('StartMenu', () => {
     ).toBeTruthy();
     fireEvent.click(screen.getByTestId('off-screen'));
     expect(useSessionStore.getState().state).toBe('booting');
+  });
+
+  describe('All Programs', () => {
+    const open = () => {
+      render(<StartMenu open onClose={() => {}} />);
+      fireEvent.click(screen.getByRole('menuitem', { name: /All Programs/ }));
+    };
+
+    afterEach(() => vi.useRealTimers());
+
+    it('pinned apps fill the left column; non-pinned stay in the flyout', () => {
+      render(<StartMenu open onClose={() => {}} />);
+      expect(screen.getByRole('menuitem', { name: 'Amplifier' })).toBeTruthy();
+      expect(screen.getByRole('menuitem', { name: 'Messenger' })).toBeTruthy();
+      expect(screen.queryByRole('menu', { name: 'All Programs' })).toBeNull();
+    });
+
+    it('click opens the flyout with only non-empty categories', () => {
+      open();
+      const fly = screen.getByRole('menu', { name: 'All Programs' });
+      const names = within(fly)
+        .getAllByRole('menuitem')
+        .map((b) => b.textContent?.replace('▶', ''));
+      expect(names).toEqual([
+        'Accessories',
+        'Internet',
+        'Entertainment',
+        'System Tools',
+      ]);
+    });
+
+    it('click opens a submenu and launching an app closes the menu', () => {
+      const onClose = vi.fn();
+      render(<StartMenu open onClose={onClose} />);
+      fireEvent.click(screen.getByRole('menuitem', { name: /All Programs/ }));
+      fireEvent.click(screen.getByRole('menuitem', { name: /Accessories/ }));
+      const sub = screen.getByRole('menu', { name: 'Accessories' });
+      fireEvent.click(within(sub).getByRole('menuitem', { name: 'Notepad' }));
+      expect(useWindowsStore.getState().windows.map((w) => w.appId)).toEqual([
+        'notepad',
+      ]);
+      expect(onClose).toHaveBeenCalled();
+    });
+
+    it('hover opens a submenu after 300 ms', () => {
+      vi.useFakeTimers();
+      open();
+      const cat = screen.getByRole('menuitem', { name: /System Tools/ });
+      fireEvent.mouseEnter(cat.parentElement as HTMLElement);
+      expect(screen.queryByRole('menu', { name: 'System Tools' })).toBeNull();
+      act(() => {
+        vi.advanceTimersByTime(300);
+      });
+      expect(screen.getByRole('menu', { name: 'System Tools' })).toBeTruthy();
+    });
+
+    it('keyboard: → opens, ← closes, Esc closes one level at a time', () => {
+      const onClose = vi.fn();
+      render(<StartMenu open onClose={onClose} />);
+      const all = screen.getByRole('menuitem', { name: /All Programs/ });
+      all.focus();
+      fireEvent.keyDown(all, { key: 'ArrowRight' });
+      const fly = screen.getByRole('menu', { name: 'All Programs' });
+      const first = within(fly).getAllByRole('menuitem')[0] as HTMLElement;
+      expect(document.activeElement).toBe(first);
+
+      fireEvent.keyDown(first, { key: 'ArrowRight' });
+      const sub = screen.getByRole('menu', { name: 'Accessories' });
+      expect(document.activeElement).toBe(
+        within(sub).getAllByRole('menuitem')[0],
+      );
+
+      fireEvent.keyDown(document.activeElement as HTMLElement, {
+        key: 'ArrowLeft',
+      });
+      expect(screen.queryByRole('menu', { name: 'Accessories' })).toBeNull();
+      expect(document.activeElement).toBe(first);
+
+      fireEvent.keyDown(first, { key: 'ArrowDown' });
+      expect(document.activeElement).toBe(
+        within(fly).getAllByRole('menuitem')[1],
+      );
+
+      fireEvent.keyDown(document, { key: 'Escape' });
+      expect(screen.queryByRole('menu', { name: 'All Programs' })).toBeNull();
+      expect(onClose).not.toHaveBeenCalled();
+      fireEvent.keyDown(document, { key: 'Escape' });
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
   });
 });
