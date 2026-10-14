@@ -70,7 +70,7 @@ export const jess: ContactContent = {
         },
         who: {
           lines: [
-            { text: 'WHO??? {name} they r the best band EVER', delayMs: 700 },
+            { text: 'WHO??? the tinfoil comets they r the best band EVER', delayMs: 700 },
             {
               text: 'we played their cd at my bday like 40 times',
               delayMs: 900,

@@ -133,7 +133,7 @@ describe('contact list', () => {
     });
     const ann = screen.getByText('Ann').closest('[data-contact-id]')!;
     expect(ann.getAttribute('data-status')).toBe('busy');
-    expect(within(ann as HTMLElement).getByText('- studying!!')).toBeTruthy();
+    expect(ann).toHaveTextContent('- studying!!');
 
     await act(() => vi.advanceTimersByTimeAsync(60_000));
     expect(

@@ -6,6 +6,7 @@ import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import { buildContactList, type ListGroupId } from './contactList';
 import styles from './Messenger.module.css';
+import { RichText } from './chat/Transcript';
 import { getMessengerContents, getMessengerEngine } from './runtime';
 import { StatusIcon, STATUS_LABELS } from './StatusIcon';
 import { useMessengerStore } from './store';
@@ -208,11 +209,11 @@ function ContactListView() {
                   >
                     <StatusIcon status={s as ContactStatus} />
                     <span className={styles.contactName}>
-                      {contact.displayName}
+                      <RichText text={contact.displayName} />
                     </span>
                     {personalMessage && (
                       <span className={styles.contactMessage}>
-                        - {personalMessage}
+                        - <RichText text={personalMessage} />
                       </span>
                     )}
                   </div>
