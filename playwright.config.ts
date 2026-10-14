@@ -2,10 +2,13 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/e2e',
-  // @review specs (phase-gate screenshots) only run when asked for explicitly.
-  grepInvert: process.argv.some((a) => a.includes('@review'))
+  // @review (phase-gate) and @screenshots (README images) specs only run when
+  // asked for explicitly, e.g. `npx playwright test --grep @screenshots`.
+  grepInvert: process.argv.some(
+    (a) => a.includes('@review') || a.includes('@screenshots'),
+  )
     ? undefined
-    : /@review/,
+    : /@review|@screenshots/,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
