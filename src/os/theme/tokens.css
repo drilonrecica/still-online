@@ -1,0 +1,31 @@
+/* Luna Blue approximations (see tasks.md "Visual reference"). */
+:root {
+  --xp-face: #ece9d8;
+  --xp-titlebar-from: #0058ee;
+  --xp-titlebar-mid: #3a93ff;
+  --xp-titlebar-to: #0050d0;
+  --xp-titlebar-inactive-from: #7a96df;
+  --xp-titlebar-inactive-to: #a6bbeb;
+  --xp-taskbar-from: #245edc;
+  --xp-taskbar-to: #1941a5;
+  --xp-start-from: #3c9a3c;
+  --xp-start-to: #2f7d2f;
+  --xp-tray-from: #0f8bef;
+  --xp-tray-to: #0c59b9;
+  --xp-selection: #316ac5;
+  --xp-startmenu-left: #ffffff;
+  --xp-startmenu-right: #d3e5fa;
+  --xp-desktop-text-shadow: 1px 1px 1px #000;
+
+  --msn-accent: #7ba4d9;
+  --msn-panel: #e6eef8;
+
+  --amp-bg: #2a2a33;
+  --amp-lcd: #00e000;
+  --amp-lcd-bg: #000000;
+
+  --xp-titlebar-radius: 8px;
+  --xp-taskbar-height: 30px;
+  --xp-startmenu-width: 380px;
+  --xp-startmenu-height: 480px;
+}

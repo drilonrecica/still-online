@@ -1,3 +1,8 @@
 export function App() {
-  return <h1>still-online</h1>;
+  return (
+    <div className="desktop-root">
+      <h1 hidden>still-online</h1>
+      <button type="button">OK</button>
+    </div>
+  );
 }

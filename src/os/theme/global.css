@@ -1,0 +1,79 @@
+/* Global reset: the OS owns the whole viewport, the page never scrolls. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+/* Text inputs and content areas stay selectable. */
+input,
+textarea,
+[contenteditable='true'],
+.selectable {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Desktop root with a CSS-only, Bliss-like wallpaper (original gradients). */
+.desktop-root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background:
+    /* near hill highlight */
+    radial-gradient(
+      ellipse 120% 38% at 30% 108%,
+      #7fd34a 0%,
+      #4fa72a 45%,
+      transparent 70%
+    ),
+    /* far hill */
+    radial-gradient(
+        ellipse 140% 45% at 85% 112%,
+        #3f8f22 0%,
+        #2d6e17 55%,
+        transparent 72%
+      ),
+    /* sun glow */
+    radial-gradient(
+        circle at 78% 22%,
+        rgba(255, 255, 255, 0.55) 0%,
+        transparent 28%
+      ),
+    /* clouds */
+    radial-gradient(
+        ellipse 22% 8% at 25% 28%,
+        rgba(255, 255, 255, 0.75) 0%,
+        transparent 100%
+      ),
+    radial-gradient(
+      ellipse 30% 9% at 55% 40%,
+      rgba(255, 255, 255, 0.6) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 18% 6% at 12% 48%,
+      rgba(255, 255, 255, 0.55) 0%,
+      transparent 100%
+    ),
+    /* sky */
+    linear-gradient(180deg, #1f5fd0 0%, #4f93ea 45%, #a9d2f5 72%, #d5ebfb 100%);
+}
