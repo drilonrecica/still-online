@@ -113,4 +113,51 @@ describe('Amplifier', () => {
     renderAmp();
     expect(screen.getByTestId('marquee').dataset.static).toBe('true');
   });
+
+  describe('playlist panel', () => {
+    const tracks: PlaylistTrack[] = [
+      track,
+      { ...track, id: 't1', title: 'Other', durationSec: 60 },
+    ];
+
+    it('toggles with PL and shows durations and total', async () => {
+      renderAmp({ playlist: tracks });
+      expect(screen.queryByTestId('playlist')).toBeNull();
+      const pl = screen.getByRole('button', { name: 'Playlist' });
+      await userEvent.click(pl);
+      expect(pl.getAttribute('aria-pressed')).toBe('true');
+      const rows = screen.getAllByRole('option');
+      expect(rows[1]?.textContent).toContain('2. Band - Other');
+      expect(rows[1]?.textContent).toContain('1:00');
+      expect(screen.getByTestId('playlist').textContent).toContain(
+        '2 tracks / 4:07',
+      );
+      await userEvent.click(pl);
+      expect(screen.queryByTestId('playlist')).toBeNull();
+    });
+
+    it('highlights the current track and follows changes', async () => {
+      renderAmp({ playlist: tracks, index: 0 });
+      await userEvent.click(screen.getByRole('button', { name: 'Playlist' }));
+      const sel = () =>
+        screen
+          .getAllByRole('option')
+          .map((r) => r.getAttribute('aria-selected'));
+      expect(sel()).toEqual(['true', 'false']);
+      act(() => useAmplifierStore.setState({ index: 1 }));
+      expect(sel()).toEqual(['false', 'true']);
+    });
+
+    it('double-click and Enter play that track', async () => {
+      const playIndex = vi.fn();
+      renderAmp({ playlist: tracks, playIndex });
+      await userEvent.click(screen.getByRole('button', { name: 'Playlist' }));
+      const rows = screen.getAllByRole('option');
+      await userEvent.dblClick(rows[1] as HTMLElement);
+      expect(playIndex).toHaveBeenLastCalledWith(1);
+      rows[0]?.focus();
+      await userEvent.keyboard('{Enter}');
+      expect(playIndex).toHaveBeenLastCalledWith(0);
+    });
+  });
 });

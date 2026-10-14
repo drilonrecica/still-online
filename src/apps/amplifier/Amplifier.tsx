@@ -5,9 +5,11 @@ import { isFromControl, useWindowDrag } from '@/os/wm/useWindowDrag';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import type { AppComponentProps } from '@/os/types';
 import { formatTime, nowPlayingText } from './format';
+import Playlist, { PLAYLIST_HEIGHT } from './Playlist';
 import { useAmplifierStore } from './store';
 import styles from './Amplifier.module.css';
 
+const BASE_HEIGHT = 116;
 const SEEK_STEP = 5;
 const VOLUME_STEP = 0.05;
 const REPEAT_LABEL = {
@@ -20,6 +22,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
   const drag = useWindowDrag(windowId);
   const reduced = useReducedMotion();
   const [remaining, setRemaining] = useState(false);
+  const [showPlaylist, setShowPlaylist] = useState(false);
 
   const s = useAmplifierStore();
   const track = s.playlist[s.index];
@@ -59,6 +62,21 @@ export default function Amplifier({ windowId }: AppComponentProps) {
   }
 
   const windows = () => useWindowsStore.getState();
+
+  function togglePlaylist() {
+    const next = !showPlaylist;
+    setShowPlaylist(next);
+    // Same window: grow/shrink under the player.
+    const win = windows().windows.find((w) => w.id === windowId);
+    if (win) {
+      windows().resizeWindow(windowId, {
+        x: win.x,
+        y: win.y,
+        w: win.w,
+        h: BASE_HEIGHT + (next ? PLAYLIST_HEIGHT : 0),
+      });
+    }
+  }
 
   return (
     <div
@@ -179,11 +197,20 @@ export default function Amplifier({ windowId }: AppComponentProps) {
           type="button"
           className={styles.toggle}
           aria-label="Playlist"
-          aria-pressed={false}
+          aria-pressed={showPlaylist}
+          onClick={togglePlaylist}
         >
           PL
         </button>
       </div>
+
+      {showPlaylist && (
+        <Playlist
+          tracks={s.playlist}
+          currentIndex={s.index}
+          onPlay={s.playIndex}
+        />
+      )}
     </div>
   );
 }

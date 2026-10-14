@@ -155,3 +155,50 @@
 .spacer {
   flex: 1;
 }
+
+.playlist {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  background: var(--amp-lcd-bg);
+  border: 1px inset #555;
+  color: var(--amp-lcd);
+  font-family: 'Courier New', monospace;
+}
+
+.playlistList {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.playlistRow {
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+  padding: 1px 3px;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.playlistRow[data-current='true'] {
+  color: #fff;
+  background: #1f5a2c;
+}
+
+.playlistTitle {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlistFooter {
+  flex: none;
+  padding: 1px 3px;
+  text-align: right;
+  border-top: 1px solid #1f5a2c;
+}
