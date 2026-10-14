@@ -1,3 +1,10 @@
 - M0-01: used @vitejs/plugin-react@4 and Vite 6 — plugin-react latest requires Vite 8; stack says Vite 5.x/6.x
 - M0-01: excluded README.md, LICENSE, igris.toml, tasks.md from Prettier — task says to leave them untouched
 - M0-06: left CREDITS.md table empty (no assets yet) — rows get added as assets land
+- M1-01: `AppDefinition.instanceKey(props)` alongside boolean `singleInstance` — lets messenger-chat be single-instance per contact without a separate app concept
+- M1-01: maximize is a flag; `x/y/w/h` keep restore geometry — no separate "restore rect" field to keep in sync
+- M1-01: active window is derived (highest-z non-minimized), not stored — avoids stale state after minimize/close
+- M1-01: Start menu right column is a fixed list (mycomputer, recyclebin); `showInStartMenu` stays boolean and controls the left column only — matches spec field list
+- M1-01: WM constants (taskbar 30px, min size, cascade 24px, clamp 40px, titlebar 30px) live in `src/os/types.ts` — single source for M1-03/M1-04/M1-07
+- M1-01: clock formatting is hand-rolled, not Intl — newer ICU inserts U+202F before AM/PM, which breaks exact-string tests
+- M1-01: event bus catches and logs listener errors and keeps delivering — one broken app must not break others
