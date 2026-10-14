@@ -45,3 +45,4 @@
 - M3-07: the audio element is routed into Web Audio lazily (first time the visualizer is on, motion allowed, and playback is playing/paused) and cached per element in a WeakMap — createMediaElementSource can only run once per element, and with reduced motion the music never goes through Web Audio at all
 - M3-07: visualizer sits inline in the LCD between time and marquee; canvas is a 76×16 bitmap scaled with `image-rendering: pixelated`; paused = one held frame, stopped/off/reduced motion = blank (scope: flat line); mode is not persisted (defaults to bars)
 - M3-07: `src/test/setup.ts` stubs `HTMLCanvasElement.getContext` to return null — jsdom has no canvas and otherwise logs "Not implemented" for every Amplifier render
+- Polish: Amplifier LCD split into two rows (time + visualizer + status / full-width marquee) — fills the fixed 116px skin without resizing the window and stops the marquee being squeezed to a few characters

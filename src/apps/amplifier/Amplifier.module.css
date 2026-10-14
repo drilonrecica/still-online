@@ -4,6 +4,7 @@
   --amp-lcd-bg: #07170b;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 4px;
   width: 100%;
   height: 100%;
@@ -61,13 +62,26 @@
 
 .display {
   display: flex;
-  gap: 4px;
+  flex-direction: column;
+  gap: 2px;
   flex: none;
-  padding: 2px;
+  padding: 2px 4px;
   background: var(--amp-lcd-bg);
   border: 1px inset #555;
   color: var(--amp-lcd);
   font-family: 'Courier New', monospace;
+}
+
+.lcdTop {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.statusText {
+  margin-left: auto;
+  font-size: 9px;
+  letter-spacing: 1px;
 }
 
 .time {
@@ -106,11 +120,9 @@
 }
 
 .marquee {
-  flex: 1;
   min-width: 0;
   overflow: hidden;
   white-space: nowrap;
-  align-self: center;
 }
 
 .marqueeText {
@@ -149,6 +161,69 @@
 .volume {
   width: 60px;
   margin: 0;
+}
+
+/* Dark groove + metal thumb; overrides xp.css's light range styling. */
+.sliders input[type='range'] {
+  appearance: none;
+  height: 10px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.sliders input[type='range']:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.sliders input[type='range']::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #0d0f12;
+  border: 0;
+  border-bottom: 1px solid #555;
+  box-shadow: none;
+}
+
+.sliders input[type='range']::-moz-range-track {
+  height: 4px;
+  background: #0d0f12;
+  border: 0;
+  border-bottom: 1px solid #555;
+  box-shadow: none;
+}
+
+.sliders input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  width: 8px;
+  height: 10px;
+  margin-top: -3px;
+  background: linear-gradient(#8a93a3, #4a5160);
+  border: 1px solid #0d0f12;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+}
+
+.sliders input[type='range']::-moz-range-thumb {
+  width: 8px;
+  height: 10px;
+  background: linear-gradient(#8a93a3, #4a5160);
+  border: 1px solid #0d0f12;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+}
+
+.sliders input[type='range']:focus-visible {
+  outline: none;
+}
+
+.sliders input[type='range']:focus-visible::-webkit-slider-thumb {
+  outline: 1px solid var(--amp-lcd);
+}
+
+.sliders input[type='range']:focus-visible::-moz-range-thumb {
+  outline: 1px solid var(--amp-lcd);
 }
 
 .buttons {

@@ -137,6 +137,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  box-sizing: border-box;
+  height: 20px;
   padding: 2px 8px 2px 22px;
   cursor: default;
   user-select: none;
@@ -156,6 +158,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Emoticons render smaller here than in chat so every row keeps the same height. */
+.contactName img,
+.contactMessage img {
+  width: 14px;
+  height: 14px;
+  vertical-align: -3px;
 }
 
 .contact[data-status='offline'] .contactName {

@@ -21,7 +21,6 @@ The first playable MVP: a Windows XP–style desktop frozen in 2007, with a mess
 
 - Netlog/MySpace-style profiles and a changing "living world" are not part of this release.
 - Not designed for phones or tablets; small screens only get a notice.
-- Amplifier slider thumbs don't match the dark skin; minor cosmetic spacing in the Amplifier and the Messenger contact list.
 - Audio and sounds were verified by tests, not by ear, in the automated review.
 
 ## Credits

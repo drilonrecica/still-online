@@ -13,6 +13,11 @@ import styles from './Amplifier.module.css';
 const BASE_HEIGHT = 116;
 const SEEK_STEP = 5;
 const VOLUME_STEP = 0.05;
+const STATUS_LABEL = {
+  playing: 'PLAY',
+  paused: 'PAUSE',
+  stopped: 'STOP',
+};
 const REPEAT_LABEL = {
   off: 'Repeat: off',
   all: 'Repeat: all',
@@ -108,19 +113,24 @@ export default function Amplifier({ windowId }: AppComponentProps) {
       </div>
 
       <div className={styles.display}>
-        <button
-          type="button"
-          className={styles.time}
-          aria-label={remaining ? 'Time remaining' : 'Time elapsed'}
-          onClick={() => setRemaining((r) => !r)}
-        >
-          {timeText}
-        </button>
-        <Visualizer
-          audio={amplifierAudio}
-          status={s.status}
-          reduced={reduced}
-        />
+        <div className={styles.lcdTop}>
+          <button
+            type="button"
+            className={styles.time}
+            aria-label={remaining ? 'Time remaining' : 'Time elapsed'}
+            onClick={() => setRemaining((r) => !r)}
+          >
+            {timeText}
+          </button>
+          <Visualizer
+            audio={amplifierAudio}
+            status={s.status}
+            reduced={reduced}
+          />
+          <span className={styles.statusText} aria-hidden="true">
+            {STATUS_LABEL[s.status]}
+          </span>
+        </div>
         <div
           className={styles.marquee}
           data-static={reduced}
