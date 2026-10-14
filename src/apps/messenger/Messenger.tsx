@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ContactStatus, PlayerStatus } from '@/content/types';
 import { playSound } from '@/os/sound';
+import { scaleMs } from '@/os/speed';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import { buildContactList, type ListGroupId } from './contactList';
@@ -42,7 +43,7 @@ function SignInView() {
     timer.current = setTimeout(() => {
       playSound('logon');
       getMessengerEngine().signIn();
-    }, SIGN_IN_MS);
+    }, scaleMs(SIGN_IN_MS));
   }
 
   return (

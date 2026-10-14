@@ -95,4 +95,4 @@ events.off(type, listener);
 | `formatLongDate(d)`    | `Sunday, October 14, 2007`. The weekday is the 2007 weekday.                                  |
 | `msUntilNextMinute(d)` | The delay for scheduling the next tray update.                                                |
 
-Always use `now()` for any date the player can see, never `new Date()`. Timers (`setTimeout`) use real time. The `?speed=fast` test flag (M2-08) scales timers only, not the clock.
+Always use `now()` for any date the player can see, never `new Date()`. Timers (`setTimeout`) use real time. The `?speed=fast` test flag (`src/os/speed.ts`, `scaleMs`) multiplies Messenger timers by 0.01 (engine scheduler delays and the sign-in spinner), not the clock, toast lifetimes or animations. It is read once at load, so reload to change it.
