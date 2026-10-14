@@ -163,6 +163,9 @@ function ContactListView() {
       ),
     [progress, online],
   );
+  const waiting = groups
+    .flatMap((g) => g.entries)
+    .filter((e) => e.awaitingReply).length;
 
   function toggle(id: ListGroupId) {
     const next = new Set(collapsed);
@@ -261,7 +264,10 @@ function ContactListView() {
         })}
       </div>
       <div className={styles.footer}>
-        <span>{getMessengerContents().length} contacts</span>
+        <span>
+          {getMessengerContents().length} contacts
+          {waiting > 0 && ` · ${waiting} waiting`}
+        </span>
         <button
           type="button"
           className={styles.linkButton}

@@ -48,3 +48,6 @@
 - Polish: Amplifier LCD split into two rows (time + visualizer + status / full-width marquee) — fills the fixed 116px skin without resizing the window and stops the marquee being squeezed to a few characters
 - Fix: now playing is OS state (`src/os/nowPlaying.ts`, loaded at boot) that Messenger syncs from, instead of a one-off event — a track started before Messenger/the toggle now shows, and stop/untick restore the player's own message; closing Amplifier (✕, log off, shut down) stops playback, minimizing doesn't
 - Feature: contacts waiting for the player's reply (active script `awaitingChoice`, already persisted) show a bold name + orange speech-bubble icon in the contact list until a reply is picked
+- Feature: new `afterScript` trigger (N minutes after another script of the same contact ends) for follow-up conversations; end times aren't persisted, so after a reload the wait counts from the new sign-in
+- Feature: generic OS attention store (`src/os/store/attention.ts`, keys `appId` or `appId:instanceKey`) read by the taskbar; a window's button blinks orange 6× then stays orange while it wants attention and isn't the active window (static under reduced motion)
+- Feature: Messenger raises attention for each waiting contact's chat window, and for the Messenger window only while some waiting contact has no chat open; the footer counts waiting contacts

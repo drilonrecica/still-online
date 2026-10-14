@@ -121,8 +121,18 @@ export function lintContactText(content: ContactContent): string[] {
 export function lintContact(content: ContactContent): string[] {
   const ids = content.scripts.map((s) => s.id);
   const dupes = ids.filter((s, i) => ids.indexOf(s) !== i);
+  const followUps = content.scripts.flatMap((s) => {
+    const t = s.trigger;
+    if (t.type !== 'afterScript') return [];
+    const at = `${content.contact.id}: script "${s.id}"`;
+    if (t.scriptId === s.id) return [`${at} follows itself`];
+    if (!ids.includes(t.scriptId))
+      return [`${at} follows unknown script "${t.scriptId}"`];
+    return t.minutes > 0 ? [] : [`${at} needs minutes > 0`];
+  });
   return [
     ...dupes.map((s) => `${content.contact.id}: duplicate script id "${s}"`),
+    ...followUps,
     ...content.scripts.flatMap((s) =>
       lintScriptGraph(s).map((p) => `${content.contact.id}: ${p}`),
     ),

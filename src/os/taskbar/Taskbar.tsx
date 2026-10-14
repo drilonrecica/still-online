@@ -7,6 +7,7 @@ import {
   msUntilNextMinute,
   now,
 } from '@/os/clock';
+import { attentionKey, useAttentionStore } from '@/os/store/attention';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { useSettingsStore } from '@/os/store/settings';
 import { useMessengerStore } from '@/apps/messenger/store';
@@ -54,6 +55,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
   const muted = useSettingsStore((s) => s.muted);
   const toggleMuted = useSettingsStore((s) => s.toggleMuted);
   const messengerSignedIn = useMessengerStore((s) => s.signedIn);
+  const attention = useAttentionStore((s) => s.keys);
 
   function onWindowButton(id: string) {
     const actions = useWindowsStore.getState();
@@ -76,7 +78,14 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
       <div className={styles.windows}>
         {windows.map((win) => {
           const active = win.id === activeId;
-          const icon = getApp(win.appId)?.icon16;
+          const app = getApp(win.appId);
+          const icon = app?.icon16;
+          // The flash stops while the window is in front; it comes back if it still wants you.
+          const flashing =
+            !active &&
+            attention[
+              attentionKey(win.appId, app?.instanceKey?.(win.props))
+            ] === true;
           return (
             <button
               key={win.id}
@@ -84,6 +93,8 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
               className={styles.windowButton}
               aria-pressed={active}
               data-active={active}
+              data-attention={flashing}
+              aria-description={flashing ? 'wants your attention' : undefined}
               title={win.title}
               onClick={() => onWindowButton(win.id)}
             >

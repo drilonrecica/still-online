@@ -180,5 +180,209 @@ export const theo: ContactContent = {
         },
       },
     },
+    {
+      id: 'followup1',
+      trigger: { type: 'afterScript', scriptId: 'opening', minutes: 2 },
+      start: 'q',
+      nodes: {
+        q: {
+          lines: [
+            { text: 'um. sorry. me again', delayMs: 4000 },
+            { text: 'quick question about the project', delayMs: 2000 },
+            {
+              text: 'should we do a plant cell or an animal cell?',
+              delayMs: 2200,
+            },
+          ],
+          choices: [
+            { text: 'plant cell!', next: 'plant' },
+            { text: 'animal cell', next: 'animal' },
+            { text: 'idk u pick :)', label: 'U pick', next: 'pick' },
+          ],
+        },
+        pick: {
+          lines: [
+            { text: 'oh. um', delayMs: 3000 },
+            { text: 'ok', delayMs: 2000 },
+            { text: 'sorry. im bad at picking things', delayMs: 2200 },
+            { text: 'plant? i think plant', delayMs: 2500 },
+          ],
+          choices: [
+            { text: 'plant it is (Y)', next: 'plant' },
+            { text: 'good choice theo', next: 'plant' },
+          ],
+        },
+        plant: {
+          lines: [
+            { text: 'ok cool', delayMs: 1800 },
+            {
+              text: 'i can draw the chloroplasts. theyre like little green beans',
+              delayMs: 2500,
+            },
+            { text: 'sorry. that was a weird thing to say', delayMs: 2000 },
+          ],
+          choices: [
+            { text: 'lol no thats cute', next: 'cute' },
+            {
+              text: 'green beans r a good description tbh',
+              label: 'Accurate',
+              next: 'cute',
+            },
+          ],
+        },
+        animal: {
+          lines: [
+            { text: 'ok', delayMs: 1800 },
+            {
+              text: 'the mitochondria is the powerhouse of the cell',
+              delayMs: 2500,
+            },
+            { text: 'sorry. i had to', delayMs: 2000 },
+          ],
+          choices: [
+            { text: 'LOL theo', next: 'cute' },
+            {
+              text: 'mr dalton would be proud',
+              label: 'Dalton = proud',
+              next: 'proud',
+            },
+          ],
+        },
+        proud: {
+          lines: [
+            { text: 'he says it like every class', delayMs: 2200 },
+            { text: 'i counted once. 7 times', delayMs: 1800 },
+            { text: 'sorry. i get bored sometimes', delayMs: 2000 },
+          ],
+          end: true,
+        },
+        cute: {
+          lines: [
+            { text: ':)', delayMs: 2500 },
+            { text: 'ok. ill start sketching', delayMs: 1500 },
+            {
+              delayMs: 1500,
+              personalMessageChange: 'drawing cells. pls dont talk to me. jk',
+            },
+          ],
+          end: true,
+        },
+      },
+    },
+    {
+      id: 'followup2',
+      trigger: { type: 'afterScript', scriptId: 'followup1', minutes: 4 },
+      start: 'jello',
+      nodes: {
+        jello: {
+          lines: [
+            { text: 'hi. sorry', delayMs: 3000 },
+            { text: 'i told my mom about the project', delayMs: 2000 },
+            {
+              text: 'she said we could make a 3d cell out of jello',
+              delayMs: 2500,
+            },
+            { text: 'is that dumb. its probably dumb', delayMs: 2000 },
+          ],
+          choices: [
+            {
+              text: 'JELLO CELL!! thats genius',
+              label: 'Genius!!',
+              next: 'genius',
+            },
+            {
+              text: 'wouldnt it melt on the bus tho',
+              label: 'It would melt?',
+              next: 'melt',
+            },
+          ],
+        },
+        melt: {
+          lines: [
+            { text: 'oh', delayMs: 2500 },
+            { text: 'yeah. u r right. sorry', delayMs: 2000 },
+            { text: 'forget i said anything', delayMs: 1800 },
+          ],
+          choices: [
+            {
+              text: 'no wait we could keep it in a cooler!',
+              label: 'Use a cooler!',
+              next: 'cooler',
+            },
+            {
+              text: 'its a cool idea tho. maybe for extra credit?',
+              label: 'Extra credit?',
+              next: 'extra',
+            },
+          ],
+        },
+        cooler: {
+          lines: [
+            { text: 'oh. we have a cooler', delayMs: 2200 },
+            {
+              text: 'from when we went camping. it smells like fish a bit',
+              delayMs: 2500,
+            },
+            { text: 'but it would work', delayMs: 1500 },
+          ],
+          choices: [
+            { text: 'fishy jello cell lol', next: 'genius' },
+            { text: 'we can air it out', next: 'genius' },
+          ],
+        },
+        extra: {
+          lines: [
+            { text: 'maybe', delayMs: 2500 },
+            { text: 'ill ask mr dalton. if i can talk to him', delayMs: 2000 },
+            { text: 'ok i have piano now. sorry. bye', delayMs: 2200 },
+            { delayMs: 1500, statusChange: 'away' },
+          ],
+          end: true,
+        },
+        genius: {
+          lines: [
+            { text: 'really?', delayMs: 2000 },
+            { text: 'ok. grapes can be the mitochondria', delayMs: 2200 },
+            { text: 'and a plum for the nucleus', delayMs: 1800 },
+            { text: 'sorry. i got excited', delayMs: 2000 },
+          ],
+          choices: [
+            {
+              text: 'dont be sorry this is awesome',
+              label: 'Dont be sorry',
+              next: 'thanks',
+            },
+            {
+              text: 'can we eat it after?',
+              label: 'Eat it after?',
+              next: 'eat',
+            },
+          ],
+        },
+        eat: {
+          lines: [
+            {
+              text: 'i think that would be cannibalism. for cells',
+              delayMs: 2800,
+            },
+            { text: 'but yes', delayMs: 1500 },
+            { delayMs: 1500, personalMessageChange: 'jello cell (Y) dont ask' },
+          ],
+          end: true,
+        },
+        thanks: {
+          lines: [
+            { text: 'ok', delayMs: 2500 },
+            { text: 'um. thanks {name}', delayMs: 2000 },
+            {
+              text: 'im glad mr dalton paired us. sorry if thats weird',
+              delayMs: 2500,
+            },
+            { delayMs: 1500, personalMessageChange: 'jello cell (Y) dont ask' },
+          ],
+          end: true,
+        },
+      },
+    },
   ],
 };

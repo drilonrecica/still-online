@@ -176,4 +176,29 @@ describe('content lint: catches mistakes', () => {
       'mika: duplicate script id "s"',
     ]);
   });
+
+  it('follow-ups that wait on a missing script, themselves, or no time', () => {
+    const base = script({ a: { lines: [], end: true } });
+    const follow = (id: string, scriptId: string, minutes: number): Script => ({
+      ...base,
+      id,
+      trigger: { type: 'afterScript', scriptId, minutes },
+    });
+    expect(
+      lintContact({
+        ...exampleContact,
+        scripts: [
+          base,
+          follow('ok', 's', 2),
+          follow('ghost', 'nope', 2),
+          follow('self', 'self', 2),
+          follow('now', 's', 0),
+        ],
+      }),
+    ).toEqual([
+      'mika: script "ghost" follows unknown script "nope"',
+      'mika: script "self" follows itself',
+      'mika: script "now" needs minutes > 0',
+    ]);
+  });
 });

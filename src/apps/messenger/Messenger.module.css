@@ -149,10 +149,12 @@
 }
 
 .contactName {
+  flex: none;
   white-space: nowrap;
 }
 
 .contactMessage {
+  min-width: 0;
   color: #777;
   font-style: italic;
   overflow: hidden;
@@ -164,6 +166,8 @@
   font-weight: bold;
 }
 
+/* Icons keep their size; the personal message is what gets cut off in a long row. */
+.contact > svg,
 .awaitingReply {
   flex: none;
 }

@@ -79,6 +79,26 @@
   font-weight: bold;
 }
 
+/* Wants attention: blinks orange a few times, then stays orange (like 2007 IM windows). */
+.windowButton[data-attention='true'] {
+  background: linear-gradient(to bottom, #ffb54d, #f08a0c);
+  border-color: #b35e00;
+  animation: attention-blink 1s steps(1, end) 6;
+}
+
+@keyframes attention-blink {
+  50% {
+    background: linear-gradient(to bottom, #4b84f1, #2a5fd6);
+    border-color: #0b3a9c;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .windowButton[data-attention='true'] {
+    animation: none;
+  }
+}
+
 .windowButton img {
   flex: none;
 }

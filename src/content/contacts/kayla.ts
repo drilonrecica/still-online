@@ -207,5 +207,214 @@ export const kayla: ContactContent = {
         },
       },
     },
+    {
+      id: 'followup1',
+      trigger: { type: 'afterScript', scriptId: 'opening', minutes: 2 },
+      start: 'poll',
+      nodes: {
+        poll: {
+          lines: [
+            { text: '{name}', delayMs: 3000 },
+            { text: 'i need ur opinion. its urgent', delayMs: 1200 },
+            {
+              text: 'brianna checks my pm like every 5 min so it has to be PERFECT',
+              delayMs: 1300,
+            },
+            { text: 'option 1: "some ppl r just jealous"', delayMs: 1100 },
+            { text: 'option 2: "~*happy and thriving*~ :)"', delayMs: 1000 },
+            {
+              text: 'option 3: something sad so everyone asks whats wrong',
+              delayMs: 1300,
+            },
+          ],
+          choices: [
+            { text: '1 obviously', next: 'jealous' },
+            {
+              text: '2. be the bigger person',
+              label: '2, bigger person',
+              next: 'thriving',
+            },
+            {
+              text: '3 lol ur such a drama queen',
+              label: '3, drama queen',
+              next: 'sad',
+            },
+          ],
+        },
+        jealous: {
+          lines: [
+            { text: 'YES. subtle but deadly', delayMs: 1000 },
+            {
+              delayMs: 600,
+              personalMessageChange: 'some ppl r just jealous ;)',
+            },
+            { text: 'and now im going busy', delayMs: 1200 },
+            { delayMs: 500, statusChange: 'busy' },
+            {
+              text: 'im not actually busy. its a strategy',
+              delayMs: 1100,
+            },
+          ],
+          end: true,
+        },
+        thriving: {
+          lines: [
+            { text: 'ugh ur right. mature kayla. new kayla', delayMs: 1300 },
+            {
+              delayMs: 600,
+              personalMessageChange: '~*happy and thriving*~ :)',
+            },
+            { text: '...', delayMs: 2500 },
+            { text: 'this feels so fake', delayMs: 1000 },
+            { text: 'ok i lasted 30 seconds', delayMs: 1100 },
+            {
+              delayMs: 600,
+              personalMessageChange: '~*happy and thriving (kind of)*~',
+            },
+          ],
+          end: true,
+        },
+        sad: {
+          lines: [
+            { text: 'EXCUSE ME', delayMs: 900 },
+            { text: 'i am not a drama queen', delayMs: 1000 },
+            {
+              text: 'i am a drama PRINCESS. theres a difference',
+              delayMs: 1300,
+            },
+            { text: 'ok but what do i put', delayMs: 1100 },
+          ],
+          choices: [
+            {
+              text: 'something about rain. sad stuff is always about rain',
+              label: 'Something w rain',
+              next: 'rain',
+            },
+            {
+              text: 'make up ur own. ur deep',
+              label: 'Write ur own',
+              next: 'poet',
+            },
+          ],
+        },
+        rain: {
+          lines: [
+            { text: 'omg ur so right', delayMs: 1000 },
+            {
+              delayMs: 800,
+              personalMessageChange: '~*the rain knows my secrets*~ :(',
+            },
+            { text: 'perfect. so tragic. 10/10', delayMs: 1300 },
+          ],
+          end: true,
+        },
+        poet: {
+          lines: [
+            { text: 'ok hold on. its coming to me', delayMs: 2000 },
+            {
+              delayMs: 800,
+              personalMessageChange: 'u cant break what was never whole...',
+            },
+            { text: 'wait thats actually deep', delayMs: 1500 },
+            { text: 'im kind of crying', delayMs: 1000 },
+          ],
+          end: true,
+        },
+      },
+    },
+    {
+      id: 'followup2',
+      trigger: { type: 'afterScript', scriptId: 'followup1', minutes: 4 },
+      start: 'omg',
+      nodes: {
+        omg: {
+          lines: [
+            { text: 'omg. omg. {name}', delayMs: 2000 },
+            { text: 'brianna just IMed me', delayMs: 1200 },
+            { text: 'she said "cute pm"', delayMs: 1300 },
+            { text: 'WHAT DOES THAT MEAN', delayMs: 900 },
+            { delayMs: 500, personalMessageChange: '???????' },
+          ],
+          choices: [
+            {
+              text: 'maybe she just thinks its cute?',
+              label: 'Maybe its nice?',
+              next: 'literal',
+            },
+            {
+              text: 'thats DEFINITELY sarcastic',
+              label: 'Sarcastic',
+              next: 'sarcastic',
+            },
+            {
+              text: 'just say thanks lol',
+              label: 'Say thanks',
+              next: 'thanks',
+            },
+          ],
+        },
+        literal: {
+          lines: [
+            {
+              text: 'cute like CUTE or cute like "aww how sad"',
+              delayMs: 1300,
+            },
+            { text: 'there is a HUGE difference {name}', delayMs: 1000 },
+          ],
+          choices: [
+            { text: 'cute like cute. relax', label: 'Relax', next: 'thanks' },
+            {
+              text: 'ok yeah thats the sad kind',
+              label: 'The sad kind',
+              next: 'sarcastic',
+            },
+          ],
+        },
+        sarcastic: {
+          lines: [
+            { text: 'I KNEW IT', delayMs: 800, nudge: true },
+            {
+              text: 'ok im writing back "thx, cute away message"',
+              delayMs: 1400,
+            },
+            { text: 'wait is that too much', delayMs: 1100 },
+          ],
+          choices: [
+            { text: 'its perfect. send it', label: 'Send it', next: 'sent' },
+            {
+              text: 'too much. abort abort',
+              label: 'Abort!',
+              next: 'thanks',
+            },
+          ],
+        },
+        sent: {
+          lines: [
+            { text: 'SENT', delayMs: 1000 },
+            { text: '...', delayMs: 2500 },
+            { text: 'she sent back :P', delayMs: 1200 },
+            { text: 'is that war or is that peace', delayMs: 1100 },
+            { text: 'i need to lie down', delayMs: 1300 },
+            {
+              delayMs: 600,
+              statusChange: 'away',
+              personalMessageChange: '~*lying down. do not disturb*~',
+            },
+          ],
+          end: true,
+        },
+        thanks: {
+          lines: [
+            { text: 'fine. i said "thx :)"', delayMs: 1500 },
+            { text: '...', delayMs: 2500 },
+            { text: 'she said "np :)"', delayMs: 1200 },
+            { text: 'omg r we friends now??', delayMs: 1000 },
+            { text: 'i dont know how to feel about this', delayMs: 1200 },
+            { delayMs: 600, personalMessageChange: '~*confused*~ :O' },
+          ],
+          end: true,
+        },
+      },
+    },
   ],
 };

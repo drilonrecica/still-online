@@ -30,13 +30,25 @@ function paths(script: Script): number[][] {
 function playPath(content: ContactContent, script: Script, picks: number[]) {
   const id = content.contact.id;
   localStorage.clear(); // each path is a fresh player: scripts run once per save
-  const solo: ContactContent = { ...content, scripts: [script] };
+  const { trigger } = script;
+  // A follow-up needs its target to have run: a stand-in that ends at once on sign-in.
+  const target: Script[] =
+    trigger.type === 'afterScript'
+      ? [
+          {
+            id: trigger.scriptId,
+            trigger: { type: 'onSignIn' },
+            start: 'x',
+            nodes: { x: { lines: [], end: true } },
+          },
+        ]
+      : [];
+  const solo: ContactContent = { ...content, scripts: [...target, script] };
   const t = setup([solo]);
   t.engine.signIn();
   vi.advanceTimersByTime(content.contact.signInAfterMs + 1);
 
-  const { trigger } = script;
-  if (trigger.type === 'afterMinutes') {
+  if (trigger.type === 'afterMinutes' || trigger.type === 'afterScript') {
     vi.advanceTimersByTime(trigger.minutes * 60_000);
   } else if (trigger.type === 'onNowPlaying') {
     t.engine.nowPlaying({

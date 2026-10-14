@@ -34,6 +34,7 @@ export function createRunner(ctx: EngineContext) {
     playerName,
     isFocused,
     scheduler,
+    after,
   } = ctx;
 
   const running = (id: ContactId): Running | null => {
@@ -122,7 +123,17 @@ export function createRunner(ctx: EngineContext) {
       };
     });
     bus.emit('scriptEnded', { contactId: id, scriptId: script.id });
+    armFollowUps(id, script.id);
     pump(id);
+  };
+
+  /** Arms the `afterScript` scripts of `id` that wait on `scriptId`. */
+  const armFollowUps = (id: ContactId, scriptId: string) => {
+    for (const s of contentOf(id)?.scripts ?? []) {
+      const t = s.trigger;
+      if (t.type === 'afterScript' && t.scriptId === scriptId)
+        after(t.minutes * 60_000, () => fire(id, s, {}));
+    }
   };
 
   const choicesOf = (id: ContactId): ResolvedChoice[] | null => {
@@ -248,5 +259,13 @@ export function createRunner(ctx: EngineContext) {
     pump(id);
   };
 
-  return { running, fire, fireAll, choicesOf, playNext, contactSignIn };
+  return {
+    running,
+    fire,
+    fireAll,
+    choicesOf,
+    playNext,
+    contactSignIn,
+    armFollowUps,
+  };
 }

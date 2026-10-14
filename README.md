@@ -15,7 +15,7 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 ## What's in it
 
 - **Windows XP–style desktop**: boot and login screens, start menu, taskbar, draggable and resizable windows, desktop icons and an original wallpaper
-- **Messenger**: an MSN-style client with fictional contacts, statuses, personal messages, emoticons, nudges, sign-in toasts and a "now playing" line
+- **Messenger**: an MSN-style client with six fictional friends, statuses, personal messages, emoticons, nudges, sign-in toasts and a "now playing" line. Conversations continue over time, and friends waiting for your reply are marked and flash in the taskbar
 - **Amplifier**: a Winamp-style music player with an original skin, playlist, seek and volume, shuffle/repeat and a visualizer
 - **Notepad** and the usual desktop furniture
 

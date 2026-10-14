@@ -89,7 +89,13 @@ export type Trigger =
   /** When the Amplifier changes track; to one specific track if `trackId` is set. */
   | { type: 'onNowPlaying'; trackId?: string }
   /** When the player nudges this contact. */
-  | { type: 'onPlayerNudge' };
+  | { type: 'onPlayerNudge' }
+  /**
+   * N minutes after another script of the same contact ends (a follow-up conversation).
+   * Re-armed from each Messenger sign-in when the target already ran, since end times
+   * aren't persisted.
+   */
+  | { type: 'afterScript'; scriptId: ScriptId; minutes: number };
 
 export type TriggerType = Trigger['type'];
 

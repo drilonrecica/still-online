@@ -163,5 +163,189 @@ export const pia: ContactContent = {
         },
       },
     },
+    {
+      id: 'followup1',
+      trigger: { type: 'afterScript', scriptId: 'opening', minutes: 2 },
+      start: 'how',
+      nodes: {
+        how: {
+          lines: [
+            { text: '{name}', delayMs: 3000 },
+            { text: '{name} {name} {name}', delayMs: 700, nudge: true },
+            {
+              text: 'how do u change the grey writing under ur name',
+              delayMs: 1200,
+            },
+          ],
+          choices: [
+            {
+              text: 'click on it and type something',
+              label: 'Click on it',
+              next: 'helped',
+            },
+            {
+              text: 'why should i help u',
+              label: 'Why should i?',
+              next: 'bribe',
+            },
+          ],
+        },
+        bribe: {
+          lines: [
+            { text: 'bc i know who ate the last pudding cup', delayMs: 1100 },
+            { text: 'and its not biscuit', delayMs: 800 },
+          ],
+          choices: [
+            {
+              text: 'ok ok just click on it and type',
+              label: 'Ok ok',
+              next: 'helped',
+            },
+            { text: 'u wouldnt', next: 'mom' },
+          ],
+        },
+        mom: {
+          lines: [
+            { text: 'MOOOOOOOM', delayMs: 800, nudge: true },
+            { text: 'jk she is in the garden', delayMs: 1300 },
+            { text: 'i figured it out myself anyway. HA', delayMs: 1000 },
+            {
+              delayMs: 800,
+              personalMessageChange:
+                '{name} ate the pudding. ask me how i know',
+            },
+          ],
+          end: true,
+        },
+        helped: {
+          lines: [
+            { text: 'OMG it worked', delayMs: 1500 },
+            {
+              delayMs: 400,
+              personalMessageChange: 'pia is the BOSS of this house (L)',
+            },
+            { text: 'look look look', delayMs: 700 },
+          ],
+          choices: [
+            {
+              text: 'mom is the boss of the house',
+              label: 'Mom is',
+              next: 'boss',
+            },
+            { text: 'cute :)', next: 'cute' },
+          ],
+        },
+        boss: {
+          lines: [
+            { text: 'mom is the boss of MOM', delayMs: 1000 },
+            { text: 'i am the boss of the HOUSE', delayMs: 900 },
+            { text: 'its different. u wouldnt understand', delayMs: 1100 },
+          ],
+          end: true,
+        },
+        cute: {
+          lines: [
+            { text: 'its not CUTE its TRUE', delayMs: 900 },
+            { text: 'but thank u', delayMs: 1000 },
+          ],
+          end: true,
+        },
+      },
+    },
+    {
+      id: 'followup2',
+      trigger: { type: 'afterScript', scriptId: 'followup1', minutes: 4 },
+      start: 'sneak',
+      nodes: {
+        sneak: {
+          lines: [
+            { text: 'psst', delayMs: 3000 },
+            {
+              text: 'dad is on the phone with grandma so he forgot about the laptop :D',
+              delayMs: 1300,
+            },
+            { text: 'ok SERIOUS question', delayMs: 900 },
+            { text: 'did u go in my room', delayMs: 1000, nudge: true },
+          ],
+          choices: [
+            { text: 'no?? why would i', label: 'No??', next: 'denied' },
+            {
+              text: 'ok i moved ONE pony',
+              label: 'I moved one pony',
+              next: 'confess',
+            },
+            {
+              text: 'i sorted ur ponies by color. ur welcome',
+              label: 'Sorted them by color',
+              next: 'sorted',
+            },
+          ],
+        },
+        denied: {
+          lines: [
+            { text: 'bc my ponies are in a DIFFERENT ORDER', delayMs: 1000 },
+            { text: 'someone was in there', delayMs: 800 },
+          ],
+          choices: [
+            {
+              text: 'maybe it was biscuit',
+              label: 'Biscuit?',
+              next: 'biscuit',
+            },
+            {
+              text: 'maybe u did it urself',
+              label: 'U did it',
+              next: 'herself',
+            },
+          ],
+        },
+        biscuit: {
+          lines: [
+            { text: 'biscuit cant reach my shelf', delayMs: 1100 },
+            { text: '...', delayMs: 1200 },
+            {
+              text: 'unless he stands on the bean bag. he HAS been acting weird',
+              delayMs: 1300,
+            },
+            { text: 'ok ur off the hook. for now', delayMs: 900 },
+          ],
+          end: true,
+        },
+        herself: {
+          lines: [
+            { text: 'oh', delayMs: 1300 },
+            { text: 'i did do a pony wedding this morning', delayMs: 1100 },
+            { text: 'NOBODY IS ALLOWED TO KNOW THAT', delayMs: 800 },
+          ],
+          end: true,
+        },
+        confess: {
+          lines: [
+            { text: 'WHICH ONE', delayMs: 700, nudge: true },
+            { text: 'if its stardust i will SCREAM', delayMs: 900 },
+            { text: 'she is the queen she goes in the MIDDLE', delayMs: 1000 },
+            {
+              text: 'im telling mom. after dad gets off the phone',
+              delayMs: 1100,
+            },
+            { delayMs: 600, statusChange: 'busy' },
+          ],
+          end: true,
+        },
+        sorted: {
+          lines: [
+            { text: '...', delayMs: 1500 },
+            { text: 'ok actually thats kind of pretty', delayMs: 1100 },
+            { text: 'but DONT do it again', delayMs: 800 },
+            { text: 'and dont tell mom i said pretty', delayMs: 900 },
+            {
+              delayMs: 800,
+              personalMessageChange: 'ponies sorted by color :) DO NOT TOUCH',
+            },
+          ],
+          end: true,
+        },
+      },
+    },
   ],
 };

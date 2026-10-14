@@ -30,9 +30,16 @@ export function createConversationEngine(
 ): ConversationEngine {
   const ctx = createEngineContext(options);
   const { contents, store, scheduler, bus, data, contentOf } = ctx;
-  const { patchContact, visit, after, clearTimers } = ctx;
-  const { running, fire, fireAll, choicesOf, playNext, contactSignIn } =
-    createRunner(ctx);
+  const { patchContact, progressOf, visit, after, clearTimers } = ctx;
+  const {
+    running,
+    fire,
+    fireAll,
+    choicesOf,
+    playNext,
+    contactSignIn,
+    armFollowUps,
+  } = createRunner(ctx);
 
   return {
     signIn() {
@@ -46,6 +53,11 @@ export function createConversationEngine(
           const t = script.trigger;
           if (t.type === 'afterMinutes')
             after(t.minutes * 60_000, () => fire(contact.id, script, {}));
+        }
+        // Follow-ups whose target already ran (earlier session or before a reload).
+        const ran = progressOf(contact.id).scripts;
+        for (const s of scripts) {
+          if ((ran[s.id]?.runs ?? 0) > 0) armFollowUps(contact.id, s.id);
         }
       }
     },

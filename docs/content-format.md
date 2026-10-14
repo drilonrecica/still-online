@@ -45,12 +45,13 @@ They are resolved when the line is delivered. The transcript stores the resolved
 
 ## Triggers
 
-| Trigger                              | Fires                                                                                               |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| `{ type: 'onSignIn' }`               | When the contact signs in, including "appear offline".                                              |
-| `{ type: 'afterMinutes', minutes }`  | `minutes` after the player signed in to Messenger, counted per page session (a reload restarts it). |
-| `{ type: 'onNowPlaying', trackId? }` | On `amplifier:trackChanged`: for that `trackId` only, or for any track if it's omitted.             |
-| `{ type: 'onPlayerNudge' }`          | When the player nudges this contact.                                                                |
+| Trigger                                      | Fires                                                                                                                                                                                                                    |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `{ type: 'onSignIn' }`                       | When the contact signs in, including "appear offline".                                                                                                                                                                   |
+| `{ type: 'afterMinutes', minutes }`          | `minutes` after the player signed in to Messenger, counted per page session (a reload restarts it).                                                                                                                      |
+| `{ type: 'onNowPlaying', trackId? }`         | On `amplifier:trackChanged`: for that `trackId` only, or for any track if it's omitted.                                                                                                                                  |
+| `{ type: 'onPlayerNudge' }`                  | When the player nudges this contact.                                                                                                                                                                                     |
+| `{ type: 'afterScript', scriptId, minutes }` | `minutes` after another script **of the same contact** ends: a follow-up conversation. Chains are fine (a follow-up of a follow-up). End times aren't persisted, so after a reload the wait counts from the new sign-in. |
 
 Rules:
 
@@ -70,7 +71,7 @@ Rules:
   - `scripts[scriptId]`: `{ runs, visited, trackIds }`.
   - `transcript`: delivered messages and nudges, `{ kind, from, text?, at }`, where `at` is epoch ms.
 
-**Resume after reload.** Delivered lines are in the transcript, and `lineIndex` points past them. So the engine continues with the next line and never repeats a message. If `awaitingChoice` is true, the choices are shown again. Timers restart: the pending line's `delayMs` and typing time run again from the moment the player signs in, and `afterMinutes` counts from the new sign-in.
+**Resume after reload.** Delivered lines are in the transcript, and `lineIndex` points past them. So the engine continues with the next line and never repeats a message. If `awaitingChoice` is true, the choices are shown again. Timers restart: the pending line's `delayMs` and typing time run again from the moment the player signs in, and `afterMinutes` (and `afterScript`, when its target already ran) counts from the new sign-in.
 
 ## Engine (M2-02)
 
@@ -155,4 +156,4 @@ export const mika: ContactContent = {
 
 ## Content lint
 
-`src/content/lint.ts` checks what the types can't: `start`/`next` ids exist, every node is reachable, every node can reach an `end`, script ids are unique, there are no real-looking emails or URLs, no real product names or post-2007 terms, and `{artist}`/`{title}` appear only in `onNowPlaying` scripts. `src/content/contacts/contacts.test.ts` runs it on every shipped contact.
+`src/content/lint.ts` checks what the types can't: `start`/`next` ids exist, every node is reachable, every node can reach an `end`, script ids are unique, `afterScript` follows an existing other script of the same contact with `minutes > 0`, there are no real-looking emails or URLs, no real product names or post-2007 terms, and `{artist}`/`{title}` appear only in `onNowPlaying` scripts. `src/content/contacts/contacts.test.ts` runs it on every shipped contact.

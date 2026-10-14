@@ -3,13 +3,14 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useSettingsStore } from '@/os/store/settings';
 import { buildContactList } from './contactList';
-import { contactContent } from './engine/test-helpers';
+import { contactContent, line } from './engine/test-helpers';
 import Messenger, { handleFor, SIGN_IN_MS } from './Messenger';
 import { getMessengerEngine, setMessengerContentsForTests } from './runtime';
 import { useMessengerStore } from './store';
 import { Taskbar } from '@/os/taskbar/Taskbar';
 import { useWindowsStore } from '@/os/store/windows';
 import { useNowPlayingStore } from '@/os/nowPlaying';
+import { useAttentionStore } from '@/os/store/attention';
 import { createAmplifierStore } from '@/apps/amplifier/store';
 import '@/apps/registry';
 
@@ -39,6 +40,7 @@ beforeEach(() => {
   vi.useFakeTimers({ shouldAdvanceTime: true });
   useSettingsStore.setState({ playerName: 'Drilon', muted: true });
   useMessengerStore.setState(useMessengerStore.getInitialState(), true);
+  useAttentionStore.setState({ keys: {} });
   setMessengerContentsForTests(contents);
 });
 
@@ -144,47 +146,88 @@ describe('contact list', () => {
     expect(screen.getByRole('button', { name: /Offline \(2\)/ })).toBeTruthy();
   });
 
-  it('marks contacts waiting for a reply until the player answers', async () => {
-    const { line } = await import('./engine/test-helpers');
-    setMessengerContentsForTests([
-      contactContent(
-        'ann',
-        [
-          {
-            id: 'ask',
-            trigger: { type: 'onSignIn' },
-            start: 'q',
-            nodes: {
-              q: {
-                lines: [line('u there?', 0)],
-                choices: [
-                  { text: 'yep', next: 'done' },
-                  { text: 'nope', next: 'done' },
-                ],
-              },
-              done: { lines: [line('ok', 0)], end: true },
+  /** Ann asks a question on sign-in and waits for the player's reply. */
+  const askingAnn = () => [
+    contactContent(
+      'ann',
+      [
+        {
+          id: 'ask',
+          trigger: { type: 'onSignIn' } as const,
+          start: 'q',
+          nodes: {
+            q: {
+              lines: [line('u there?', 0)],
+              choices: [
+                { text: 'yep', next: 'done' },
+                { text: 'nope', next: 'done' },
+              ] as const,
             },
+            done: { lines: [line('ok', 0)], end: true as const },
           },
-        ],
-        { displayName: 'Ann', signInAfterMs: 0 },
-      ),
-    ]);
-    await signIn();
+        },
+      ],
+      { displayName: 'Ann', signInAfterMs: 0 },
+    ),
+  ];
+
+  async function signInWithAnnWaiting() {
+    setMessengerContentsForTests(askingAnn());
+    const user = await signIn();
     await act(() => vi.advanceTimersByTimeAsync(10_000));
+    return user;
+  }
+
+  async function reply() {
+    act(() => {
+      getMessengerEngine().choose('ann', 0);
+    });
+    await act(() => vi.advanceTimersByTimeAsync(10_000));
+  }
+
+  it('marks contacts waiting for a reply until the player answers', async () => {
+    await signInWithAnnWaiting();
     const ann = screen.getByText('Ann').closest('[data-contact-id]')!;
     expect(ann.getAttribute('data-awaiting-reply')).toBe('true');
     expect(
       within(ann as HTMLElement).getByLabelText('Waiting for your reply'),
     ).toBeTruthy();
 
-    act(() => {
-      getMessengerEngine().choose('ann', 0);
-    });
-    await act(() => vi.advanceTimersByTimeAsync(10_000));
+    await reply();
     expect(ann.getAttribute('data-awaiting-reply')).toBe('false');
     expect(
       within(ann as HTMLElement).queryByLabelText('Waiting for your reply'),
     ).toBeNull();
+  });
+
+  it('counts waiting contacts in the footer', async () => {
+    await signInWithAnnWaiting();
+    expect(screen.getByText('1 contacts · 1 waiting')).toBeTruthy();
+    await reply();
+    expect(screen.getByText('1 contacts')).toBeTruthy();
+  });
+
+  it('asks for attention: Messenger while no chat shows it, else that chat', async () => {
+    useWindowsStore.setState({ windows: [], topZ: 0 });
+    await signInWithAnnWaiting();
+    const keys = () => useAttentionStore.getState().keys;
+    expect(keys()).toEqual({ messenger: true, 'messenger-chat:ann': true });
+
+    act(() => {
+      useWindowsStore
+        .getState()
+        .openApp('messenger-chat', { contactId: 'ann' });
+    });
+    expect(keys()).toEqual({ 'messenger-chat:ann': true });
+
+    await reply();
+    expect(keys()).toEqual({});
+  });
+
+  it('drops attention on sign-out', async () => {
+    await signInWithAnnWaiting();
+    act(() => getMessengerEngine().signOut());
+    expect(useAttentionStore.getState().keys).toEqual({});
   });
 
   it('double-clicking a contact opens their chat window', async () => {
