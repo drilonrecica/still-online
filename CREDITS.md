@@ -11,3 +11,4 @@ Every file in `src/assets/` and `public/` that was not written by the project ge
 
 | File | Source | Author | License |
 | ---- | ------ | ------ | ------- |
+| `src/assets/icons/{mycomputer,notepad,recyclebin}-{16,32}.svg` | This repository | still-online contributors | original work |
