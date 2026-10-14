@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getApp } from '@/apps/registry';
 import { Boot } from '@/os/boot/Boot';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
 import { Login } from '@/os/login/Login';
+import { installGestureUnlock, playSound } from '@/os/sound';
 import { useSessionStore } from '@/os/store/session';
 import { OffScreen } from '@/os/startmenu/OffScreen';
 import { StartMenu } from '@/os/startmenu/StartMenu';
@@ -30,6 +31,28 @@ function Desktop() {
 export function App() {
   const state = useSessionStore((s) => s.state);
   const shutdownComplete = useSessionStore((s) => s.shutdownComplete);
+
+  useEffect(() => installGestureUnlock(), []);
+
+  // Session sounds: startup at the welcome screen, logon/logoff on transitions.
+  const previous = useRef(state);
+  useEffect(() => {
+    const from = previous.current;
+    previous.current = state;
+    if (state === 'login') playSound(from === 'desktop' ? 'logoff' : 'startup');
+    else if (state === 'desktop') playSound('logon');
+    else if (state === 'shuttingDown') playSound('logoff');
+  }, [state]);
+
+  useEffect(() => {
+    const onError = () => playSound('error');
+    window.addEventListener('error', onError);
+    window.addEventListener('unhandledrejection', onError);
+    return () => {
+      window.removeEventListener('error', onError);
+      window.removeEventListener('unhandledrejection', onError);
+    };
+  }, []);
 
   useEffect(() => {
     if (state !== 'shuttingDown') return;
