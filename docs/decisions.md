@@ -47,3 +47,4 @@
 - M3-07: `src/test/setup.ts` stubs `HTMLCanvasElement.getContext` to return null — jsdom has no canvas and otherwise logs "Not implemented" for every Amplifier render
 - Polish: Amplifier LCD split into two rows (time + visualizer + status / full-width marquee) — fills the fixed 116px skin without resizing the window and stops the marquee being squeezed to a few characters
 - Fix: now playing is OS state (`src/os/nowPlaying.ts`, loaded at boot) that Messenger syncs from, instead of a one-off event — a track started before Messenger/the toggle now shows, and stop/untick restore the player's own message; closing Amplifier (✕, log off, shut down) stops playback, minimizing doesn't
+- Feature: contacts waiting for the player's reply (active script `awaitingChoice`, already persisted) show a bold name + orange speech-bubble icon in the contact list until a reply is picked

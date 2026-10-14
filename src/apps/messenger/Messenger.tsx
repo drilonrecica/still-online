@@ -117,6 +117,29 @@ function PersonalMessage() {
   );
 }
 
+/** Orange speech bubble: this contact is waiting for your reply. Original artwork. */
+function AwaitingReplyIcon() {
+  return (
+    <svg
+      className={styles.awaitingReply}
+      width={14}
+      height={14}
+      viewBox="0 0 14 14"
+      role="img"
+      aria-label="Waiting for your reply"
+    >
+      <path
+        d="M2 1.5h10a1.5 1.5 0 0 1 1.5 1.5v5.5A1.5 1.5 0 0 1 12 10H6l-3 3v-3H2A1.5 1.5 0 0 1 .5 8.5V3A1.5 1.5 0 0 1 2 1.5z"
+        fill="#f5a623"
+        stroke="#b86e00"
+      />
+      <circle cx="4.5" cy="5.75" r="1" fill="#fff" />
+      <circle cx="7" cy="5.75" r="1" fill="#fff" />
+      <circle cx="9.5" cy="5.75" r="1" fill="#fff" />
+    </svg>
+  );
+}
+
 function ContactListView() {
   const playerName = useSettingsStore((s) => s.playerName);
   const status = useMessengerStore((s) => s.progress.player.status);
@@ -199,34 +222,40 @@ function ContactListView() {
                 {label}
               </button>
               {open &&
-                group.entries.map(({ contact, status: s, personalMessage }) => (
-                  <div
-                    key={contact.id}
-                    className={styles.contact}
-                    role="button"
-                    tabIndex={0}
-                    data-status={s}
-                    data-contact-id={contact.id}
-                    title={`${contact.displayName} <${contact.handle}>`}
-                    onDoubleClick={() => openChat(contact.id)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openChat(contact.id);
-                      }
-                    }}
-                  >
-                    <StatusIcon status={s as ContactStatus} />
-                    <span className={styles.contactName}>
-                      <RichText text={contact.displayName} />
-                    </span>
-                    {personalMessage && (
-                      <span className={styles.contactMessage}>
-                        - <RichText text={personalMessage} />
+                group.entries.map(
+                  ({ contact, status: s, personalMessage, awaitingReply }) => (
+                    <div
+                      key={contact.id}
+                      className={styles.contact}
+                      role="button"
+                      tabIndex={0}
+                      data-status={s}
+                      data-contact-id={contact.id}
+                      data-awaiting-reply={awaitingReply}
+                      title={`${contact.displayName} <${contact.handle}>${
+                        awaitingReply ? ' - waiting for your reply' : ''
+                      }`}
+                      onDoubleClick={() => openChat(contact.id)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          openChat(contact.id);
+                        }
+                      }}
+                    >
+                      <StatusIcon status={s as ContactStatus} />
+                      <span className={styles.contactName}>
+                        <RichText text={contact.displayName} />
                       </span>
-                    )}
-                  </div>
-                ))}
+                      {awaitingReply && <AwaitingReplyIcon />}
+                      {personalMessage && (
+                        <span className={styles.contactMessage}>
+                          - <RichText text={personalMessage} />
+                        </span>
+                      )}
+                    </div>
+                  ),
+                )}
             </div>
           );
         })}

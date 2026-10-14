@@ -14,6 +14,8 @@ export interface ListEntry {
   /** `offline` for anyone not signed in or appearing offline. */
   status: ContactStatus;
   personalMessage: string;
+  /** The contact asked something and is waiting for the player's reply. */
+  awaitingReply: boolean;
 }
 
 export interface ListGroup {
@@ -40,6 +42,7 @@ export function buildContactList(
       contact,
       status: signedIn ? (p?.status ?? contact.initialStatus) : 'offline',
       personalMessage: p?.personalMessage ?? contact.personalMessage,
+      awaitingReply: p?.active?.awaitingChoice === true,
     };
   };
 

@@ -160,6 +160,14 @@
   white-space: nowrap;
 }
 
+.contact[data-awaiting-reply='true'] .contactName {
+  font-weight: bold;
+}
+
+.awaitingReply {
+  flex: none;
+}
+
 /* Emoticons render smaller here than in chat so every row keeps the same height. */
 .contactName img,
 .contactMessage img {

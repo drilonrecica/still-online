@@ -144,6 +144,49 @@ describe('contact list', () => {
     expect(screen.getByRole('button', { name: /Offline \(2\)/ })).toBeTruthy();
   });
 
+  it('marks contacts waiting for a reply until the player answers', async () => {
+    const { line } = await import('./engine/test-helpers');
+    setMessengerContentsForTests([
+      contactContent(
+        'ann',
+        [
+          {
+            id: 'ask',
+            trigger: { type: 'onSignIn' },
+            start: 'q',
+            nodes: {
+              q: {
+                lines: [line('u there?', 0)],
+                choices: [
+                  { text: 'yep', next: 'done' },
+                  { text: 'nope', next: 'done' },
+                ],
+              },
+              done: { lines: [line('ok', 0)], end: true },
+            },
+          },
+        ],
+        { displayName: 'Ann', signInAfterMs: 0 },
+      ),
+    ]);
+    await signIn();
+    await act(() => vi.advanceTimersByTimeAsync(10_000));
+    const ann = screen.getByText('Ann').closest('[data-contact-id]')!;
+    expect(ann.getAttribute('data-awaiting-reply')).toBe('true');
+    expect(
+      within(ann as HTMLElement).getByLabelText('Waiting for your reply'),
+    ).toBeTruthy();
+
+    act(() => {
+      getMessengerEngine().choose('ann', 0);
+    });
+    await act(() => vi.advanceTimersByTimeAsync(10_000));
+    expect(ann.getAttribute('data-awaiting-reply')).toBe('false');
+    expect(
+      within(ann as HTMLElement).queryByLabelText('Waiting for your reply'),
+    ).toBeNull();
+  });
+
   it('double-clicking a contact opens their chat window', async () => {
     useWindowsStore.setState({ windows: [], topZ: 0 });
     const user = await signIn();
