@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getApp } from '@/apps/registry';
+import { Boot } from '@/os/boot/Boot';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
+import { Login } from '@/os/login/Login';
 import { useSessionStore } from '@/os/store/session';
 import { OffScreen } from '@/os/startmenu/OffScreen';
 import { StartMenu } from '@/os/startmenu/StartMenu';
@@ -38,6 +40,8 @@ export function App() {
   return (
     <div className="desktop-root">
       <h1 hidden>still-online</h1>
+      {state === 'booting' && <Boot />}
+      {state === 'login' && <Login />}
       {state === 'desktop' && <Desktop />}
       {state === 'off' && <OffScreen />}
     </div>

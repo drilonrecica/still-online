@@ -1,0 +1,64 @@
+.boot {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  background: #000;
+  color: #fff;
+  font-family: Tahoma, sans-serif;
+  cursor: pointer;
+  z-index: 20000;
+}
+
+.wordmark {
+  font-size: 40px;
+  font-weight: bold;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.track {
+  position: relative;
+  width: 200px;
+  height: 18px;
+  padding: 2px;
+  border: 2px solid #b2b2b2;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.blocks {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 54px;
+  height: 14px;
+  background: repeating-linear-gradient(
+    to right,
+    #2a5fd8 0 8px,
+    transparent 8px 11px
+  );
+  animation: slide linear infinite;
+}
+
+.staticFill {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to right,
+    #2a5fd8 0 8px,
+    transparent 8px 11px
+  );
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(-60px);
+  }
+  to {
+    transform: translateX(204px);
+  }
+}
