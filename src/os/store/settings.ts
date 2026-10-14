@@ -8,7 +8,11 @@ const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 
 type PersistedSettings = Pick<
   SettingsStore,
-  'playerName' | 'muted' | 'volume' | 'firstBootDone'
+  | 'playerName'
+  | 'muted'
+  | 'volume'
+  | 'firstBootDone'
+  | 'smallScreenNoticeDismissed'
 >;
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -18,19 +22,28 @@ export const useSettingsStore = create<SettingsStore>()(
       muted: false,
       volume: 0.7,
       firstBootDone: false,
+      smallScreenNoticeDismissed: false,
       setPlayerName: (playerName) => set({ playerName }),
       setMuted: (muted) => set({ muted }),
       toggleMuted: () => set((s) => ({ muted: !s.muted })),
       setVolume: (volume) => set({ volume: clamp01(volume) }),
       markFirstBootDone: () => set({ firstBootDone: true }),
+      dismissSmallScreenNotice: () => set({ smallScreenNoticeDismissed: true }),
     }),
     persistOptions<SettingsStore, PersistedSettings>({
       name: 'settings',
-      partialize: ({ playerName, muted, volume, firstBootDone }) => ({
+      partialize: ({
         playerName,
         muted,
         volume,
         firstBootDone,
+        smallScreenNoticeDismissed,
+      }) => ({
+        playerName,
+        muted,
+        volume,
+        firstBootDone,
+        smallScreenNoticeDismissed,
       }),
       sanitize: (persisted, current) => {
         if (!isRecord(persisted)) return current;
@@ -50,6 +63,10 @@ export const useSettingsStore = create<SettingsStore>()(
             typeof p.firstBootDone === 'boolean'
               ? p.firstBootDone
               : current.firstBootDone,
+          smallScreenNoticeDismissed:
+            typeof p.smallScreenNoticeDismissed === 'boolean'
+              ? p.smallScreenNoticeDismissed
+              : current.smallScreenNoticeDismissed,
         };
       },
     }),

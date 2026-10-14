@@ -146,11 +146,14 @@ export interface SettingsStore {
   /** 0..1 */
   volume: number;
   firstBootDone: boolean;
+  /** The "best on a desktop computer" notice was dismissed. */
+  smallScreenNoticeDismissed: boolean;
   setPlayerName: (name: string) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
   setVolume: (volume: number) => void;
   markFirstBootDone: () => void;
+  dismissSmallScreenNotice: () => void;
 }
 
 export type SoundName =

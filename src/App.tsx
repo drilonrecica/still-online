@@ -3,6 +3,7 @@ import { getApp } from '@/apps/registry';
 import { Boot } from '@/os/boot/Boot';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
 import { Login } from '@/os/login/Login';
+import { SmallScreenNotice } from '@/os/notice/SmallScreenNotice';
 import { installGestureUnlock, playSound } from '@/os/sound';
 import { useSessionStore } from '@/os/store/session';
 import { OffScreen } from '@/os/startmenu/OffScreen';
@@ -69,6 +70,7 @@ export function App() {
       {state === 'login' && <Login />}
       {state === 'desktop' && <Desktop />}
       {state === 'off' && <OffScreen />}
+      <SmallScreenNotice />
     </div>
   );
 }
