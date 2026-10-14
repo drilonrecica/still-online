@@ -9,6 +9,10 @@ interface DragStart {
   pointerY: number;
   winX: number;
   winY: number;
+  /** The window frame; moved with `transform` while dragging. */
+  frame: HTMLElement | null;
+  dx: number;
+  dy: number;
 }
 
 export interface WindowDragHandlers {
@@ -30,8 +34,16 @@ export function useWindowDrag(id: string): WindowDragHandlers {
   const drag = useRef<DragStart | null>(null);
 
   function end(e: PointerEvent<HTMLElement>) {
-    if (drag.current?.pointerId !== e.pointerId) return;
+    const start = drag.current;
+    if (start?.pointerId !== e.pointerId) return;
     drag.current = null;
+    // Commit the final position once; the store clamps it to the work area.
+    if (start.frame) start.frame.style.transform = '';
+    if (e.type !== 'pointercancel' && (start.dx !== 0 || start.dy !== 0)) {
+      useWindowsStore
+        .getState()
+        .moveWindow(id, start.winX + start.dx, start.winY + start.dy);
+    }
     if (e.currentTarget.hasPointerCapture?.(e.pointerId)) {
       e.currentTarget.releasePointerCapture(e.pointerId);
     }
@@ -53,18 +65,20 @@ export function useWindowDrag(id: string): WindowDragHandlers {
         pointerY: e.clientY,
         winX: win.x,
         winY: win.y,
+        frame: e.currentTarget.closest<HTMLElement>('[data-window-id]'),
+        dx: 0,
+        dy: 0,
       };
     },
     onPointerMove(e) {
       const start = drag.current;
       if (start?.pointerId !== e.pointerId) return;
-      useWindowsStore
-        .getState()
-        .moveWindow(
-          id,
-          start.winX + e.clientX - start.pointerX,
-          start.winY + e.clientY - start.pointerY,
-        );
+      // Transform only: no store update or React render per pointermove.
+      start.dx = e.clientX - start.pointerX;
+      start.dy = e.clientY - start.pointerY;
+      if (start.frame) {
+        start.frame.style.transform = `translate(${start.dx}px, ${start.dy}px)`;
+      }
     },
     onPointerUp: end,
     onPointerCancel: end,
