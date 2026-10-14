@@ -22,6 +22,9 @@
 }
 
 .body {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -56,6 +59,9 @@
 }
 
 .close {
+  /* xp.css gives every button min-width 75px / min-height 23px. */
+  min-width: 0;
+  min-height: 0;
   position: absolute;
   top: 2px;
   right: 4px;

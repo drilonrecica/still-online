@@ -50,6 +50,12 @@ test('amplifier: play, time advances, next track, playlist, Messenger now playin
   await page.getByRole('option', { name: 'Messenger' }).dblclick();
   await page.getByRole('button', { name: 'Sign in' }).click();
   await expect(page.getByRole('tree', { name: 'Contacts' })).toBeVisible();
+  // Jess nudges on sign-in, which opens (and shakes) her chat over Messenger.
+  // Wait for it and close it so it cannot intercept the clicks below.
+  const nudgeChat = page.getByRole('region', { name: /Conversation$/ });
+  await expect(nudgeChat).toBeVisible({ timeout: 10_000 });
+  await nudgeChat.getByRole('button', { name: 'Close' }).dispatchEvent('click');
+  await expect(nudgeChat).toBeHidden();
   // The theme hides the native checkbox, so click its visible label text.
   await page.getByText("Show what I'm listening to").click();
   await expect(page.getByLabel("Show what I'm listening to")).toBeChecked();
