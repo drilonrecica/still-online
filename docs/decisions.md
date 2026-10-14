@@ -8,3 +8,8 @@
 - M1-01: WM constants (taskbar 30px, min size, cascade 24px, clamp 40px, titlebar 30px) live in `src/os/types.ts` — single source for M1-03/M1-04/M1-07
 - M1-01: clock formatting is hand-rolled, not Intl — newer ICU inserts U+202F before AM/PM, which breaks exact-string tests
 - M1-01: event bus catches and logs listener errors and keeps delivering — one broken app must not break others
+- M1-03: windows store is built by `createWindowsStore({ getApp, getWorkArea })`; the shared `useWindowsStore` looks apps up through `setAppResolver()`, which the registry (M1-05) must call — the store must not import the registry (it doesn't exist yet, and it would create a cycle)
+- M1-03: `openApp` throws on an unknown appId — a programming error should fail loudly
+- M1-03: window ids are `win-<n>`, where n = max existing suffix + 1 — unique after a persisted reload with no separate counter to persist
+- M1-03: `toggleMaximize` also focuses the window, and `focusWindow` on a window that is already front-most and visible doesn't bump `topZ` — matches XP; avoids needless z growth
+- M1-03: `resizeWindow` enforces min size but leaves x/y as passed (then clamps) — keeping the right edge fixed on a left-edge resize is the Window component's (M1-04) job
