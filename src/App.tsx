@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { getApp } from '@/apps/registry';
+import { installAmplifierRouter } from '@/os/amplifierRouter';
 import { Boot } from '@/os/boot/Boot';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
 import { Login } from '@/os/login/Login';
@@ -38,6 +39,7 @@ export function App() {
   const shutdownComplete = useSessionStore((s) => s.shutdownComplete);
 
   useEffect(() => installGestureUnlock(), []);
+  useEffect(() => installAmplifierRouter(), []);
 
   // Session sounds: startup at the welcome screen, logon/logoff on transitions.
   const previous = useRef(state);

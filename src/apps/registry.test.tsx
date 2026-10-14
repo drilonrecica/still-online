@@ -16,6 +16,7 @@ beforeEach(() => {
 describe('registry', () => {
   it('lists the starter apps with 16/32px icons', () => {
     expect(listApps().map((a) => a.id)).toEqual([
+      'explorer',
       'mycomputer',
       'messenger',
       'messenger-chat',
@@ -34,6 +35,7 @@ describe('registry', () => {
       listApps().map((a) => [a.id, [a.category, a.pinned ?? false]]),
     );
     expect(meta).toEqual({
+      explorer: ['system', false],
       mycomputer: ['system', false],
       messenger: ['internet', true],
       'messenger-chat': [undefined, false],

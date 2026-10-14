@@ -4,6 +4,8 @@ import { setAppResolver } from '@/os/store/windows';
 import type { AppDefinition, AppId } from '@/os/types';
 import amplifier16 from '@/assets/icons/amplifier-16.svg';
 import amplifier32 from '@/assets/icons/amplifier-32.svg';
+import folder16 from '@/assets/icons/folder-16.svg';
+import folder32 from '@/assets/icons/folder-32.svg';
 import messenger16 from '@/assets/icons/messenger-16.svg';
 import messenger32 from '@/assets/icons/messenger-32.svg';
 import myComputer16 from '@/assets/icons/mycomputer-16.svg';
@@ -14,6 +16,22 @@ import recycleBin16 from '@/assets/icons/recyclebin-16.svg';
 import recycleBin32 from '@/assets/icons/recyclebin-32.svg';
 
 export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
+  explorer: {
+    id: 'explorer',
+    title: 'Explorer',
+    icon16: folder16,
+    icon32: folder32,
+    component: lazy(() => import('./explorer/Explorer')),
+    defaultSize: { w: 520, h: 380 },
+    minSize: { w: 320, h: 220 },
+    singleInstance: true,
+    instanceKey: (props) =>
+      typeof props.folder === 'string' ? props.folder : 'docs',
+    chrome: 'xp',
+    showOnDesktop: false,
+    showInStartMenu: false,
+    category: 'system',
+  },
   mycomputer: {
     id: 'mycomputer',
     title: 'My Computer',

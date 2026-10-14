@@ -1,6 +1,9 @@
 // Desktop icon grid: one icon per resolved shortcut, in a column top-left.
 import { useState } from 'react';
 import type { KeyboardEvent } from 'react';
+import recycleBinFull32 from '@/assets/icons/recyclebin-full-32.svg';
+import { FS_FOLDERS } from '@/os/fs/types';
+import { useFsStore } from '@/os/fs/store';
 import {
   DESKTOP_SHORTCUTS,
   appShortcut,
@@ -24,6 +27,9 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
       )
     : resolveShortcuts(shortcuts ?? DESKTOP_SHORTCUTS);
   const openApp = useWindowsStore((s) => s.openApp);
+  const binFull = useFsStore((s) =>
+    Object.values(s.nodes).some((n) => n.parentId === FS_FOLDERS.recycle),
+  );
   const [selected, setSelected] = useState<string | null>(null);
 
   function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
@@ -71,7 +77,11 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
           }}
         >
           <img
-            src={app.icon32}
+            src={
+              app.appId === 'recyclebin' && binFull
+                ? recycleBinFull32
+                : app.icon32
+            }
             alt=""
             width={32}
             height={32}

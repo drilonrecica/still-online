@@ -111,7 +111,7 @@ describe('DesktopIcons', () => {
       <DesktopIcons
         shortcuts={[
           { appId: 'notepad', label: 'Scratch', props: { note: 'x' } },
-          { appId: 'explorer', label: 'Missing' },
+          { appId: 'paint', label: 'Missing' },
         ]}
       />,
     );
@@ -124,6 +124,7 @@ describe('DesktopIcons', () => {
     render(<DesktopIcons />);
     const labels = screen.getAllByRole('option').map((o) => o.textContent);
     expect(labels).toEqual([
+      'My Documents',
       'My Computer',
       'Recycle Bin',
       'Messenger',

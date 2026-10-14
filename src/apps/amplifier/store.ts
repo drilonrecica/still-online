@@ -327,3 +327,17 @@ export const useAmplifierStore = create<AmplifierStore>()(
   withPersist({ audio }),
 );
 bindVolume(useAmplifierStore, audio);
+
+// `amplifier:enqueue`: add the track to the playlist if it's missing, then play it on request.
+// Opening the window is `os/amplifierRouter.ts`' job.
+events.on('amplifier:enqueue', ({ trackId, play }) => {
+  const state = useAmplifierStore.getState();
+  let index = state.playlist.findIndex((t) => t.id === trackId);
+  if (index < 0) {
+    const track = PLAYLIST.find((t) => t.id === trackId);
+    if (!track) return;
+    useAmplifierStore.setState({ playlist: [...state.playlist, track] });
+    index = state.playlist.length;
+  }
+  if (play) useAmplifierStore.getState().playIndex(index);
+});
