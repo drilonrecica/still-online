@@ -9,6 +9,7 @@ No Microsoft, MSN, Winamp, MySpace or Netlog logos, icons, sounds, wallpapers, s
 
 Every file in `src/assets/` and `public/` that was not written by the project gets a row in the table. Self-made assets are listed once as "original work".
 
-| File | Source | Author | License |
-| ---- | ------ | ------ | ------- |
+| File                                                           | Source          | Author                    | License       |
+| -------------------------------------------------------------- | --------------- | ------------------------- | ------------- |
 | `src/assets/icons/{mycomputer,notepad,recyclebin}-{16,32}.svg` | This repository | still-online contributors | original work |
+| `src/assets/emoticons/*.svg`                                   | This repository | still-online contributors | original work |

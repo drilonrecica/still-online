@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { getApp } from '@/apps/registry';
 import type { ContactStatus, PlayerStatus } from '@/content/types';
 import { playSound } from '@/os/sound';
 import { useSettingsStore } from '@/os/store/settings';
@@ -140,7 +139,6 @@ function ContactListView() {
   }
 
   function openChat(contactId: string) {
-    if (!getApp('messenger-chat')) return; // registered by the chat window task
     useWindowsStore.getState().openApp('messenger-chat', { contactId });
   }
 

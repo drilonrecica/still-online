@@ -17,6 +17,7 @@ describe('registry', () => {
     expect(listApps().map((a) => a.id)).toEqual([
       'mycomputer',
       'messenger',
+      'messenger-chat',
       'notepad',
       'recyclebin',
     ]);
@@ -24,6 +25,19 @@ describe('registry', () => {
       expect(app.icon16).toBeTruthy();
       expect(app.icon32).toBeTruthy();
     }
+  });
+
+  it('opens one chat window per contact, kept off the desktop and Start menu', () => {
+    const chat = getApp('messenger-chat');
+    expect(chat).toMatchObject({
+      showOnDesktop: false,
+      showInStartMenu: false,
+    });
+    const { openApp } = useWindowsStore.getState();
+    const a = openApp('messenger-chat', { contactId: 'ann' });
+    const b = openApp('messenger-chat', { contactId: 'bob' });
+    expect(openApp('messenger-chat', { contactId: 'ann' })).toBe(a);
+    expect(b).not.toBe(a);
   });
 
   it.each([

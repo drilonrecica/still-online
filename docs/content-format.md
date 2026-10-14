@@ -41,6 +41,8 @@ A line without `text` is a pure action and has no typing indicator. `statusChang
 
 They are resolved when the line is delivered. The transcript stores the resolved text.
 
+**Emoticons.** The chat window (M2-04) draws these codes as pictures, case-insensitive, in messages, display names and personal messages: `:) :( :D ;) :P :O (Y) (N) <3 (L)`. Other text stays as typed.
+
 ## Triggers
 
 | Trigger                              | Fires                                                                                               |

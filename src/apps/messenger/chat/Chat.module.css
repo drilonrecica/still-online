@@ -1,0 +1,199 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--msn-panel);
+  font:
+    11px Tahoma,
+    sans-serif;
+  color: #000;
+}
+
+.missing {
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  background: linear-gradient(to bottom, #fff, var(--msn-panel));
+  border-bottom: 1px solid var(--msn-accent);
+}
+
+.headerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.to {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+}
+
+.handle,
+.statusLabel {
+  color: #555;
+}
+
+.personal {
+  margin-top: 3px;
+  color: #777;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.picture {
+  flex: none;
+  line-height: 0;
+  padding: 2px;
+  background: #fff;
+  border: 1px solid var(--msn-accent);
+  border-radius: 4px;
+}
+
+.picture > * {
+  width: 48px;
+  height: 48px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 4px;
+  padding: 3px 8px;
+  border-bottom: 1px solid var(--msn-accent);
+}
+
+.tool {
+  min-width: 0;
+  padding: 1px 10px;
+}
+
+.transcript {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 6px 8px 0;
+  padding: 6px 8px;
+  background: #fff;
+  border: 1px solid var(--msn-accent);
+  user-select: text;
+}
+
+.transcript:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -3px;
+}
+
+.message + .message,
+.message + .nudgeLine,
+.nudgeLine + .message {
+  margin-top: 6px;
+}
+
+.says {
+  color: #666;
+}
+
+.line {
+  padding-left: 14px;
+  overflow-wrap: anywhere;
+}
+
+.emoticon {
+  width: 19px;
+  height: 19px;
+  vertical-align: middle;
+}
+
+.nudgeLine {
+  margin: 6px 0;
+  color: #666;
+  font-weight: bold;
+}
+
+.reply {
+  padding: 6px 8px;
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 5px;
+}
+
+.choice {
+  min-width: 0;
+  padding: 2px 8px;
+}
+
+.choice[aria-pressed='true'] {
+  background: var(--xp-selection);
+  color: #fff;
+}
+
+.compose {
+  display: flex;
+  gap: 4px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 4px;
+  font: inherit;
+}
+
+.send {
+  min-width: 60px;
+}
+
+.statusBar {
+  min-height: 15px;
+  padding: 2px 8px;
+  border-top: 1px solid var(--msn-accent);
+  color: #444;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Applied to the window frame, so the whole window shakes. Skipped under reduced motion. */
+.shaking {
+  animation: shake 500ms linear;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10%,
+  50%,
+  90% {
+    transform: translate(-6px, 2px);
+  }
+  20%,
+  60% {
+    transform: translate(6px, -2px);
+  }
+  30%,
+  70% {
+    transform: translate(-4px, -3px);
+  }
+  40%,
+  80% {
+    transform: translate(4px, 3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shaking {
+    animation: none;
+  }
+}

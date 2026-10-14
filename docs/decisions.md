@@ -31,3 +31,9 @@
 - M2-02: a contact line is delivered (transcript + actions + `lineIndex++`) in one store write — a reload can't land between them, so nothing is duplicated; an interrupted line replays its delay + typing
 - M2-02: unresolvable placeholders (e.g. `{artist}` outside onNowPlaying) are left as written — authoring mistakes stay visible
 - M2-03: Messenger registered with desktop+Start menu; tray icon opens it. Contacts list comes from src/content/contacts (empty until M2-05); double-click is a no-op until messenger-chat is registered (M2-04) because openApp throws on unknown apps.
+- M2-04: an incoming nudge opens/focuses that contact's chat window (sound played once by the messenger runtime, not per window) — a shake needs a window, and that's how the original-era messengers behaved
+- M2-04: the reply input is read-only; the player only sends scripted choices (click fills the input, Send/Enter sends) — there's no free-text chat in the MVP
+- M2-04: nudge rate limit is per contact (1 per 10s) and shared across chat windows; a refused nudge shows a status-bar notice and doesn't reset the wait
+- M2-04: reduced motion skips the window shake entirely; the nudge line and sound still happen
+- M2-04: added `setWindowTitle` to the windows store so chats are titled "<name> - Conversation" in the titlebar and taskbar
+- M2-04: `isChatFocused` (engine option) = that contact's chat is the active window; the chat also calls `markRead` while focused

@@ -8,6 +8,8 @@ import Messenger, { handleFor, SIGN_IN_MS } from './Messenger';
 import { getMessengerEngine, setMessengerContentsForTests } from './runtime';
 import { useMessengerStore } from './store';
 import { Taskbar } from '@/os/taskbar/Taskbar';
+import { useWindowsStore } from '@/os/store/windows';
+import '@/apps/registry';
 
 const contents = [
   contactContent('ann', [], { displayName: 'Ann', signInAfterMs: 0 }),
@@ -140,10 +142,13 @@ describe('contact list', () => {
     expect(screen.getByRole('button', { name: /Offline \(2\)/ })).toBeTruthy();
   });
 
-  it('double-clicking a contact does not throw before the chat app exists', async () => {
+  it('double-clicking a contact opens their chat window', async () => {
+    useWindowsStore.setState({ windows: [], topZ: 0 });
     const user = await signIn();
     await user.dblClick(screen.getByText('Ann'));
-    expect(screen.getByLabelText('Contacts')).toBeTruthy();
+    expect(useWindowsStore.getState().windows).toMatchObject([
+      { appId: 'messenger-chat', props: { contactId: 'ann' } },
+    ]);
   });
 });
 

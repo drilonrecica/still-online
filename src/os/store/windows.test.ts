@@ -234,6 +234,16 @@ describe('closeWindow / closeAll', () => {
   });
 });
 
+describe('setWindowTitle', () => {
+  it('renames one window', () => {
+    const a = s().openApp('notepad');
+    const b = s().openApp('notepad');
+    s().setWindowTitle(a, 'Lena - Conversation');
+    expect(win(a).title).toBe('Lena - Conversation');
+    expect(win(b).title).toBe('Untitled - Notepad');
+  });
+});
+
 describe('moveWindow', () => {
   it('moves within the work area', () => {
     const a = s().openApp('notepad');

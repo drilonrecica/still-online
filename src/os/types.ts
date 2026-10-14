@@ -117,6 +117,8 @@ export interface WindowsStore {
   focusWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
   toggleMaximize: (id: string) => void;
+  /** Apps set a more specific title, e.g. "Lena - Conversation". */
+  setWindowTitle: (id: string, title: string) => void;
   moveWindow: (id: string, x: number, y: number) => void;
   resizeWindow: (
     id: string,
