@@ -44,6 +44,15 @@ Apps keep their own stores in `src/apps/<id>/store.ts` (Notepad text, messenger 
 - Window ids are unique strings made by the store. They stay unique across reloads, so the store derives its counter from the persisted windows.
 - `props` must be JSON, because open windows are persisted.
 
+### Window component (`src/os/wm/`)
+
+- `WindowLayer getApp={…}` renders every window. It covers the work area (`bottom: TASKBAR_HEIGHT`) and lets clicks between windows pass through to the desktop. The registry lookup is a prop, so `os/wm` never imports `apps/`. Windows of unknown apps are skipped.
+- `Window` (chrome `'xp'`): xp.css `.window` + `.title-bar` with the 16px icon, the title, and Minimize / Maximize↔Restore / Close. The app renders lazily in `Suspense` inside a flex-column body with no padding. Apps that want xp.css padding add `.window-body` themselves.
+- Mousedown or focus anywhere in a window (capture phase) calls `focusWindow`. Inactive windows get the faded titlebar.
+- **Drag:** `useWindowDrag(id)` returns pointer handlers that use pointer capture. It focuses the window on pointerdown and never calls `preventDefault`, so `mousedown` still fires. It ignores presses on buttons and inputs and doesn't drag a maximized window. Chrome `'none'` apps spread these handlers on their own handle.
+- **Resize:** 8 invisible grips (edges and corners), not shown while maximized or for chrome `'none'`. `resizeRect` (`geometry.ts`) keeps the opposite edge fixed and respects `minSize`. The store then clamps the result.
+- Double-clicking the titlebar toggles maximize. A minimized window stays mounted but `hidden`, so app state (text, audio) survives.
+
 ## Apps (`src/apps/registry.ts`)
 
 `registry.ts` exports `apps: AppDefinition[]` and `getApp(id)`. In an `AppDefinition`:

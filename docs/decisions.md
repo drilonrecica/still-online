@@ -13,3 +13,8 @@
 - M1-03: window ids are `win-<n>`, where n = max existing suffix + 1 — unique after a persisted reload with no separate counter to persist
 - M1-03: `toggleMaximize` also focuses the window, and `focusWindow` on a window that is already front-most and visible doesn't bump `topZ` — matches XP; avoids needless z growth
 - M1-03: `resizeWindow` enforces min size but leaves x/y as passed (then clamps) — keeping the right edge fixed on a left-edge resize is the Window component's (M1-04) job
+- M1-04: `WindowLayer` takes `getApp` as a prop instead of importing the registry — keeps `os/wm` independent of `apps/`; M1-05/App wiring passes the registry's `getApp`
+- M1-04: minimized windows stay mounted (`hidden`) — app state like Notepad text or playing audio survives minimize
+- M1-04: dragging a maximized window does nothing (no XP-style "restore and drag") — simpler; the store already keeps restore geometry
+- M1-04: chrome `'none'` windows get no resize grips and use the stored `w`/`h` — Amplifier has a fixed-size skin
+- M1-04: added Testing Library `cleanup` in `src/test/setup.ts` — Vitest globals are off, so auto-cleanup never ran
