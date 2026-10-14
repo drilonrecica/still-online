@@ -63,7 +63,9 @@ test('shell: boot, login, Notepad, window management, persistence, power cycle',
   ).toHaveValue(text);
   await page.getByRole('button', { name: 'start' }).click();
   await expect(
-    page.getByRole('menu', { name: 'Start menu' }).getByText('Ada'),
+    page
+      .getByRole('menu', { name: 'Start menu' })
+      .getByText('Ada', { exact: true }),
   ).toBeVisible();
 
   // Turn Off Computer → off screen → power on.
