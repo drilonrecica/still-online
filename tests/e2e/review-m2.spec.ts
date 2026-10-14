@@ -22,17 +22,17 @@ test('M2 gate: every contact opening plays through @review', async ({
   await expect(page.getByTestId('desktop')).toBeVisible();
   await page.getByRole('option', { name: 'Messenger' }).dblclick();
   await page.getByRole('button', { name: 'Sign in' }).click();
-  await expect(page.getByRole('tree', { name: 'Contacts' })).toBeVisible();
+  await expect(page.getByRole('group', { name: 'Contacts' })).toBeVisible();
 
   // Everyone signs in within ~3s on the fast clock.
   await expect(
-    page.locator('[role=treeitem][data-status]:not([data-status=offline])'),
+    page.locator('[data-contact-id][data-status]:not([data-status=offline])'),
   ).toHaveCount(contacts.length, { timeout: 15_000 });
 
   // Contacts alternate between the first and last reply so both ends of the graph are exercised.
   for (const [i, { contact }] of contacts.entries()) {
     await page
-      .locator(`[role=treeitem][data-contact-id="${contact.id}"]`)
+      .locator(`[data-contact-id="${contact.id}"]`)
       .dispatchEvent('dblclick');
     const chat = page.getByRole('region', {
       name: `${contact.displayName} - Conversation`,

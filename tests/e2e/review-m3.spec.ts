@@ -66,7 +66,7 @@ test('M3 gate: amplifier, playlist, messenger now playing @review', async ({
 
   await page.getByRole('option', { name: 'Messenger' }).dblclick();
   await page.getByRole('button', { name: 'Sign in' }).click();
-  await expect(page.getByRole('tree', { name: 'Contacts' })).toBeVisible();
+  await expect(page.getByRole('group', { name: 'Contacts' })).toBeVisible();
   // Jess nudges on sign-in, which opens (and shakes) her chat over Messenger.
   // Wait for it and close it so it cannot intercept the clicks below.
   const nudgeChat = page.getByRole('region', { name: /Conversation$/ });

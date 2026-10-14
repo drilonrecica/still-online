@@ -76,9 +76,10 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
   }
 
   const entry = (app: AppDefinition, size: 32 | 16 = 32) => (
-    <li key={app.id}>
+    <li key={app.id} role="none">
       <button
         type="button"
+        role="menuitem"
         className={styles.item}
         onClick={() => launch(app.id)}
       >
@@ -107,12 +108,17 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
         <span className={styles.name}>{playerName}</span>
       </div>
       <div className={styles.columns}>
-        <ul className={styles.left}>{programs.map((app) => entry(app))}</ul>
-        <ul className={styles.right}>{places.map((app) => entry(app, 16))}</ul>
+        <ul className={styles.left} role="none">
+          {programs.map((app) => entry(app))}
+        </ul>
+        <ul className={styles.right} role="none">
+          {places.map((app) => entry(app, 16))}
+        </ul>
       </div>
       <div className={styles.footer}>
         <button
           type="button"
+          role="menuitem"
           className={styles.footerButton}
           onClick={() => {
             onClose();
@@ -123,6 +129,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
         </button>
         <button
           type="button"
+          role="menuitem"
           className={styles.footerButton}
           onClick={() => {
             onClose();

@@ -67,7 +67,7 @@ test('shell: boot, login, Notepad, window management, persistence, power cycle',
   ).toBeVisible();
 
   // Turn Off Computer → off screen → power on.
-  await page.getByRole('button', { name: 'Turn Off Computer' }).click();
+  await page.getByRole('menuitem', { name: 'Turn Off Computer' }).click();
   await expect(page.getByTestId('off-screen')).toBeVisible({ timeout: 5000 });
   await page.getByTestId('off-screen').click();
   await expect(page.getByTestId('boot-screen')).toBeVisible();

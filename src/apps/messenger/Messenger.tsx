@@ -177,7 +177,7 @@ function ContactListView() {
           Show what I&apos;m listening to
         </label>
       </div>
-      <div className={styles.list} role="tree" aria-label="Contacts">
+      <div className={styles.list} role="group" aria-label="Contacts">
         {groups.map((group) => {
           const open = !collapsed.has(group.id);
           const label =
@@ -200,12 +200,18 @@ function ContactListView() {
                   <div
                     key={contact.id}
                     className={styles.contact}
-                    role="treeitem"
-                    aria-selected={false}
+                    role="button"
+                    tabIndex={0}
                     data-status={s}
                     data-contact-id={contact.id}
                     title={`${contact.displayName} <${contact.handle}>`}
                     onDoubleClick={() => openChat(contact.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openChat(contact.id);
+                      }
+                    }}
                   >
                     <StatusIcon status={s as ContactStatus} />
                     <span className={styles.contactName}>

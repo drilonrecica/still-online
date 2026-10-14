@@ -52,7 +52,7 @@ test('M1 gate screenshots @review', async ({ page }) => {
   await page.screenshot({ path: `${DIR}/windows.png` });
 
   await page.getByRole('button', { name: 'start' }).click();
-  await page.getByRole('button', { name: 'Turn Off Computer' }).click();
+  await page.getByRole('menuitem', { name: 'Turn Off Computer' }).click();
   await expect(page.getByTestId('off-screen')).toBeVisible({ timeout: 5000 });
   await page.screenshot({ path: `${DIR}/off.png` });
 

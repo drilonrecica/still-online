@@ -41,15 +41,15 @@ describe('StartMenu', () => {
     useSettingsStore.setState({ playerName: 'Ada' });
     render(<StartMenu open onClose={() => {}} />);
     expect(screen.getByText('Ada')).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Notepad' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'My Computer' })).toBeTruthy();
-    expect(screen.getByRole('button', { name: 'Recycle Bin' })).toBeTruthy();
+    expect(screen.getByRole('menuitem', { name: 'Notepad' })).toBeTruthy();
+    expect(screen.getByRole('menuitem', { name: 'My Computer' })).toBeTruthy();
+    expect(screen.getByRole('menuitem', { name: 'Recycle Bin' })).toBeTruthy();
   });
 
   it('launching an app opens it and closes the menu', () => {
     render(<Shell />);
     fireEvent.click(screen.getByRole('button', { name: 'start' }));
-    fireEvent.click(screen.getByRole('button', { name: 'My Computer' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: 'My Computer' }));
     expect(useWindowsStore.getState().windows.map((w) => w.appId)).toEqual([
       'mycomputer',
     ]);
@@ -72,17 +72,17 @@ describe('StartMenu', () => {
 
   it('arrow keys move focus between entries', () => {
     render(<StartMenu open onClose={() => {}} />);
-    const first = screen.getAllByRole('button')[0];
+    const first = screen.getAllByRole('menuitem')[0];
     expect(document.activeElement).toBe(first);
     fireEvent.keyDown(first as HTMLElement, { key: 'ArrowDown' });
-    expect(document.activeElement).toBe(screen.getAllByRole('button')[1]);
+    expect(document.activeElement).toBe(screen.getAllByRole('menuitem')[1]);
   });
 
   it('Log Off returns to login and closes windows', () => {
     useWindowsStore.getState().openApp('notepad');
     render(<Shell />);
     fireEvent.click(screen.getByRole('button', { name: 'start' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Log Off' }));
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Log Off' }));
     expect(useSessionStore.getState().state).toBe('login');
     expect(useWindowsStore.getState().windows).toEqual([]);
     expect(menu()).toBeNull();
@@ -92,7 +92,9 @@ describe('StartMenu', () => {
     useWindowsStore.getState().openApp('notepad');
     render(<Shell />);
     fireEvent.click(screen.getByRole('button', { name: 'start' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Turn Off Computer' }));
+    fireEvent.click(
+      screen.getByRole('menuitem', { name: 'Turn Off Computer' }),
+    );
     expect(useSessionStore.getState().state).toBe('shuttingDown');
     expect(useWindowsStore.getState().windows).toEqual([]);
 

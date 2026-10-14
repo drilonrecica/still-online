@@ -14,7 +14,7 @@ test('messenger: sign in, toast, chat, choice, reply, nudges', async ({
   // Open Messenger and sign in.
   await page.getByRole('option', { name: 'Messenger' }).dblclick();
   await page.getByRole('button', { name: 'Sign in' }).click();
-  await expect(page.getByRole('tree', { name: 'Contacts' })).toBeVisible();
+  await expect(page.getByRole('group', { name: 'Contacts' })).toBeVisible();
 
   // A contact signs in: toast appears; clicking it opens the chat.
   const toast = page
