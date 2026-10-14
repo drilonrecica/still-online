@@ -197,3 +197,53 @@ describe('buildContactList', () => {
     expect(list[0]!.entries.map((e) => e.contact.id)).toEqual(['ann', 'bob']);
   });
 });
+
+describe('now playing', () => {
+  const track = {
+    trackId: 't1',
+    artist: 'The Paper Kites',
+    title: 'Bloom',
+    durationSec: 200,
+  };
+
+  it('puts the track in the personal message only while the toggle is on', async () => {
+    const { events } = await import('@/os/events');
+    const user = await signIn();
+    const box = screen.getByLabelText('Personal message');
+
+    act(() => events.emit('amplifier:trackChanged', track));
+    expect(box).toHaveValue('');
+
+    await user.click(screen.getByLabelText("Show what I'm listening to"));
+    act(() =>
+      events.emit('amplifier:trackChanged', {
+        ...track,
+        title: 'Featherstone',
+      }),
+    );
+    expect(box).toHaveValue('♫ The Paper Kites - Featherstone');
+    expect(useMessengerStore.getState().progress.player.personalMessage).toBe(
+      '♫ The Paper Kites - Featherstone',
+    );
+  });
+
+  it('fires onNowPlaying scripts once per trackId', async () => {
+    const { events } = await import('@/os/events');
+    const { say } = await import('./engine/test-helpers');
+    setMessengerContentsForTests([
+      contactContent(
+        'ann',
+        [say('np', { type: 'onNowPlaying' }, ['ooh {title}'], true)],
+        { displayName: 'Ann', signInAfterMs: 0 },
+      ),
+    ]);
+    const user = await signIn();
+    await user.click(screen.getByLabelText("Show what I'm listening to"));
+    act(() => events.emit('amplifier:trackChanged', track));
+    act(() => events.emit('amplifier:trackChanged', track));
+    await act(() => vi.advanceTimersByTimeAsync(10_000));
+    const transcript =
+      useMessengerStore.getState().progress.contacts.ann?.transcript ?? [];
+    expect(transcript.filter((m) => m.kind === 'message')).toHaveLength(1);
+  });
+});

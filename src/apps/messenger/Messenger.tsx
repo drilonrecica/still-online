@@ -89,7 +89,7 @@ function PersonalMessage() {
   );
   const [draft, setDraft] = useState(saved);
 
-  // Follow changes made elsewhere (e.g. "now playing" in M2-07).
+  // Follow changes made elsewhere (e.g. "now playing").
   useEffect(() => setDraft(saved), [saved]);
 
   return (
@@ -116,6 +116,10 @@ function ContactListView() {
   const playerName = useSettingsStore((s) => s.playerName);
   const status = useMessengerStore((s) => s.progress.player.status);
   const setStatus = useMessengerStore((s) => s.setPlayerStatus);
+  const showNowPlaying = useMessengerStore(
+    (s) => s.progress.player.showNowPlaying,
+  );
+  const setShowNowPlaying = useMessengerStore((s) => s.setShowNowPlaying);
   const progress = useMessengerStore((s) => s.progress.contacts);
   const online = useMessengerStore((s) => s.online);
   const [collapsed, setCollapsed] = useState<ReadonlySet<ListGroupId>>(
@@ -162,6 +166,14 @@ function ContactListView() {
           </select>
         </div>
         <PersonalMessage />
+        <label className={styles.nowPlaying}>
+          <input
+            type="checkbox"
+            checked={showNowPlaying}
+            onChange={(e) => setShowNowPlaying(e.target.checked)}
+          />
+          Show what I&apos;m listening to
+        </label>
       </div>
       <div className={styles.list} role="tree" aria-label="Contacts">
         {groups.map((group) => {

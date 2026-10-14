@@ -1,6 +1,7 @@
 // The app-wide conversation engine: one instance, created on first use, bound to the messenger store.
 import { contacts } from '@/content/contacts';
 import type { ContactContent } from '@/content/types';
+import { events } from '@/os/events';
 import { playSound } from '@/os/sound';
 import { useSettingsStore } from '@/os/store/settings';
 import { useToastStore } from '@/os/toast/store';
@@ -14,6 +15,7 @@ import messengerIcon from '@/assets/icons/messenger-32.svg';
 export const TOAST_PREVIEW_CHARS = 40;
 
 let engine: ConversationEngine | null = null;
+let stopListening: (() => void) | null = null;
 let contents: readonly ContactContent[] = contacts;
 
 /** The chat window for `contactId` is the active window. */
@@ -64,6 +66,19 @@ function createEngine(): ConversationEngine {
         : text;
     toast(contactId, `${nameOf(contactId)} says:`, preview);
   });
+  // Now playing: with the toggle on, a new track becomes the personal message and
+  // fires `onNowPlaying` scripts (the engine runs each at most once per trackId).
+  stopListening?.();
+  stopListening = events.on('amplifier:trackChanged', (track) => {
+    const store = useMessengerStore.getState();
+    if (!store.progress.player.showNowPlaying) return;
+    store.setPlayerPersonalMessage(`♫ ${track.artist} - ${track.title}`);
+    created.nowPlaying({
+      trackId: track.trackId,
+      artist: track.artist,
+      title: track.title,
+    });
+  });
   return created;
 }
 
@@ -79,6 +94,8 @@ export function getMessengerContents(): readonly ContactContent[] {
 
 /** Tests swap in their own content (and drop the engine so the next use rebuilds it). */
 export function setMessengerContentsForTests(next: readonly ContactContent[]) {
+  stopListening?.();
+  stopListening = null;
   engine?.dispose();
   engine = null;
   contents = next;

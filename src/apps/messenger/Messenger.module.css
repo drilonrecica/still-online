@@ -179,3 +179,10 @@
   cursor: pointer;
   padding: 0;
 }
+
+.nowPlaying {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+}
