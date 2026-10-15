@@ -42,8 +42,9 @@ export function Avatar({
       width={size}
       height={size}
       viewBox="0 0 7 7"
-      role="img"
-      aria-label={label}
+      {...(label
+        ? { role: 'img', 'aria-label': label }
+        : { 'aria-hidden': true })}
       shapeRendering="crispEdges"
     >
       <rect width="7" height="7" fill={bg} />

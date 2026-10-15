@@ -63,7 +63,7 @@
 
 .nav {
   padding: 4px 14px;
-  background: #6698cb;
+  background: #3d6f9f;
   color: #fff;
   font-weight: bold;
 }
@@ -99,7 +99,7 @@
 
 .hero h2 {
   margin: 0 0 6px;
-  color: #ff6600;
+  color: #b84400;
   font-size: 18px;
 }
 
@@ -343,7 +343,7 @@
 .boxTitle {
   margin: 0;
   padding: 3px 6px;
-  background: var(--sp-accent, #6698cb);
+  background: var(--sp-accent, #3d6f9f);
   color: #fff;
   font-size: 12px;
 }

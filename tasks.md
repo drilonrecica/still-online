@@ -324,14 +324,14 @@ Tests sit next to the code as `*.test.ts(x)`. Use path alias `@/` → `src/`.
 | P6-05 | **Fluff the sheep** — a desktop pet that walks on the taskbar and window title bars. | P5-G | done | opus | agent | — | fast | — | Walk/fall/sleep/drag behaviour driven by a tested state machine; follows window geometry; tray toggle persists. | §P6-05 |
 | P6-06 | **Stapley** — the original stapler assistant with contextual tips. | P5-G | done | sonnet | agent | — | fast | — | Tips fire on their triggers once; "don't show again" persists; Hide works; content lint passes. | §P6-06 |
 | P6-07 | **Game reactions** — `onGameScore` trigger and a reaction script per friend. | P6-01, P6-02, P6-03 | done | opus | agent | — | fast | — | Trigger tested; each friend reacts to at least one game; lint + playthrough pass. | §P6-07 |
-| P6-G | **P6 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: Mines won, Hen Hunt mid-round, Pinball, Wrecker damage, Fluff on a window, Stapley tip. | P6-01…P6-07 | in progress | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P6.md`. | §Gate |
+| P6-G | **P6 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: Mines won, Hen Hunt mid-round, Pinball, Wrecker damage, Fluff on a window, Stapley tip. | P6-01…P6-07 | done | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P6.md`. | §Gate |
 
 ## P7 — Release v0.2
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P7-01 | **Accessibility pass** — axe checks for every new app, plus keyboard paths through the main ones. | P6-G | blocked | sonnet | agent | — | e2e | — | No serious/critical axe violations in the new apps; keyboard paths documented. | §P7-01 |
-| P7-02 | **Performance pass** — lazy loading, the initial bundle budget, and canvases that pause when hidden. | P6-G | blocked | sonnet | agent | — | e2e | — | Initial JS ≤ 250 KB gzip; every app chunk lazy; hidden/minimized canvases stop animating (tested). | §P7-02 |
+| P7-01 | **Accessibility pass** — axe checks for every new app, plus keyboard paths through the main ones. | P6-G | in progress | sonnet | agent | — | e2e | — | No serious/critical axe violations in the new apps; keyboard paths documented. | §P7-01 |
+| P7-02 | **Performance pass** — lazy loading, the initial bundle budget, and canvases that pause when hidden. | P6-G | ready | sonnet | agent | — | e2e | — | Initial JS ≤ 250 KB gzip; every app chunk lazy; hidden/minimized canvases stop animating (tested). | §P7-02 |
 | P7-03 | **README, screenshots, release notes** — update the README and screenshots, and write `docs/release-notes-v0.2.0.md`. | P7-01, P7-02 | blocked | sonnet | agent | — | — | — | README lists v0.2 features truthfully; a screenshot grid; release notes drafted; CREDITS complete. | §P7-03 |
 | P7-G | **Release-ready gate (self-review)** — follow "Task specs → Gate procedure"; full playthrough over 3 days. **Do not tag, push or release.** | P7-01…P7-03 | blocked | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P7.md`; nothing pushed or tagged. | §Gate |
 

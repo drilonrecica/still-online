@@ -13,6 +13,7 @@ import { events } from '@/os/events';
 import { playSound } from '@/os/sound';
 import { useGamesStore } from '@/os/store/games';
 import { useSettingsStore } from '@/os/store/settings';
+import { useGameStatus, SR_ONLY } from '@/os/useGameStatus';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import { TABLE_X, VIEW_W } from './display';
 import type { Side } from './physics';
@@ -24,6 +25,7 @@ import {
   ScoresScreen,
 } from './Screens';
 import {
+  BALLS,
   createGame,
   nudge,
   onPlunger,
@@ -91,6 +93,10 @@ export default function Pinball() {
   }, []);
 
   const playing = screen === 'play';
+  const status = useGameStatus(() => {
+    const g = gameRef.current;
+    return `Score ${g.score}, ball ${g.ballNo} of ${BALLS}, multiplier ${g.multiplier}x`;
+  }, playing);
   useLoop(canvasRef, gameRef, {
     running: playing || screen === 'over',
     attract: screen !== 'play' && screen !== 'over',
@@ -194,6 +200,7 @@ export default function Pinball() {
         ref={canvasRef}
         className={styles.canvas}
         role="img"
+        aria-describedby={playing ? 'pinball-status' : undefined}
         aria-label={
           playing
             ? 'Star Pinball table. Space or Down launches, Z and / (or the Shift keys, or clicking each half) work the flippers, T nudges, Esc for the menu.'
@@ -204,6 +211,11 @@ export default function Pinball() {
         onPointerCancel={onPointerUp}
         onContextMenu={(e) => e.preventDefault()}
       />
+      {playing && (
+        <p id="pinball-status" style={SR_ONLY}>
+          {status}
+        </p>
+      )}
       {screen === 'menu' && (
         <MenuScreen
           onPlay={start}

@@ -33,7 +33,12 @@ export function PaintCanvas({ doc, tools, tool, zoom }: PaintCanvasProps) {
   const marked = tools.marquee ?? tools.selection?.rect ?? null;
 
   return (
-    <div className={styles.workspace}>
+    <div
+      className={styles.workspace}
+      role="region"
+      aria-label="Canvas"
+      tabIndex={0}
+    >
       <div
         className={styles.sheet}
         style={{ width: doc.size.w * zoom, height: doc.size.h * zoom }}

@@ -328,7 +328,12 @@ export default function Mail({ windowId }: AppComponentProps) {
                   ))}
                 </tbody>
               </table>
-              <div className={styles.preview} aria-label="Preview">
+              <div
+                className={styles.preview}
+                role="region"
+                aria-label="Preview"
+                tabIndex={0}
+              >
                 {selected ? (
                   <>
                     <dl className={styles.headers}>

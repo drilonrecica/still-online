@@ -13,6 +13,7 @@ import { events } from '@/os/events';
 import { playSound } from '@/os/sound';
 import { useGamesStore } from '@/os/store/games';
 import { useSettingsStore } from '@/os/store/settings';
+import { useGameStatus, SR_ONLY } from '@/os/useGameStatus';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import { VIEW_H, VIEW_W } from './layout';
 import { HelpScreen, MenuScreen, OverScreen, ScoresScreen } from './Screens';
@@ -72,6 +73,10 @@ export default function HenHunt() {
   }, []);
 
   const playing = screen === 'play';
+  const status = useGameStatus(() => {
+    const g = gameRef.current;
+    return `Score ${g.score}, ${g.shells} ${g.shells === 1 ? 'shell' : 'shells'}, ${Math.ceil(g.time)} seconds left`;
+  }, playing);
   useGameLoop(canvasRef, gameRef, {
     // A finished round keeps settling its feathers; the menu backdrop is still if reduced.
     running: playing || screen === 'over' || !reduced,
@@ -166,6 +171,7 @@ export default function HenHunt() {
         ref={canvasRef}
         className={`${styles.canvas} ${playing ? styles.aiming : ''}`}
         role="img"
+        aria-describedby={playing ? 'henhunt-status' : undefined}
         aria-label={
           playing
             ? 'Hen Hunt field. Aim with the mouse or arrow keys, shoot with a click or Enter, reload with a right-click or Space, Esc for the menu.'
@@ -176,6 +182,11 @@ export default function HenHunt() {
         onPointerDown={onPointerDown}
         onContextMenu={(e) => e.preventDefault()}
       />
+      {playing && (
+        <p id="henhunt-status" style={SR_ONLY}>
+          {status}
+        </p>
+      )}
       {screen === 'menu' && (
         <MenuScreen
           onPlay={start}

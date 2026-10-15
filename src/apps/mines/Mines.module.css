@@ -112,6 +112,11 @@
   border-color: #7b7b7b #fff #fff #7b7b7b;
 }
 
+.cursor {
+  outline: 1px dotted #000;
+  outline-offset: -4px;
+}
+
 .cell {
   box-sizing: border-box;
   display: flex;

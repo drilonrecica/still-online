@@ -62,6 +62,8 @@ interface CellViewProps {
   x: number;
   y: number;
   wrongFlag: boolean;
+  /** The keyboard cursor is on this cell. */
+  cursor: boolean;
 }
 
 const CellView = memo(function CellView({
@@ -70,6 +72,7 @@ const CellView = memo(function CellView({
   x,
   y,
   wrongFlag,
+  cursor,
 }: CellViewProps) {
   const open = cell.revealed;
   let label = 'hidden';
@@ -90,6 +93,7 @@ const CellView = memo(function CellView({
   const cls = [
     styles.cell,
     open && styles.open,
+    cursor && styles.cursor,
     cell.exploded && styles.boom,
     open && !cell.mine && cell.adjacent > 0 && styles[`n${cell.adjacent}`],
   ]
@@ -100,6 +104,7 @@ const CellView = memo(function CellView({
       type="button"
       tabIndex={-1}
       className={cls}
+      id={`mines-cell-${index}`}
       data-index={index}
       aria-label={`Row ${y + 1}, column ${x + 1}: ${label}`}
     >
@@ -116,6 +121,8 @@ export default function Mines({ windowId }: AppComponentProps) {
   );
   const [seconds, setSeconds] = useState(0);
   const [pressed, setPressed] = useState(false);
+  /** Keyboard cursor over the field (null until the field is used by keyboard). */
+  const [cursor, setCursor] = useState<number | null>(null);
   const [menu, setMenu] = useState(false);
   const [dialog, setDialog] = useState<Dialog | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -146,6 +153,7 @@ export default function Mines({ windowId }: AppComponentProps) {
       secondsRef.current = 0;
       setSeconds(0);
       setPressed(false);
+      setCursor(null);
       setDialog(null);
       setMenu(false);
       const win = useWindowsStore
@@ -227,6 +235,37 @@ export default function Mines({ windowId }: AppComponentProps) {
       e.preventDefault();
       newGame();
     }
+  }
+
+  /** Keyboard play: arrows move, Space/Enter reveal (or chord), F/M cycle the mark. */
+  function onFieldKeyDown(e: KeyboardEvent) {
+    const w = board.width;
+    const at = cursor ?? 0;
+    const x = at % w;
+    const y = Math.floor(at / w);
+    const moves: Record<string, number> = {
+      ArrowLeft: x > 0 ? at - 1 : at,
+      ArrowRight: x < w - 1 ? at + 1 : at,
+      ArrowUp: y > 0 ? at - w : at,
+      ArrowDown: y < board.height - 1 ? at + w : at,
+      Home: y * w,
+      End: y * w + w - 1,
+    };
+    const over = board.status === 'won' || board.status === 'lost';
+    if (e.key in moves) {
+      setCursor(cursor === null ? 0 : moves[e.key]!);
+    } else if (over) {
+      return;
+    } else if (e.key === ' ' || e.key === 'Enter') {
+      const cell = board.cells[at]!;
+      applyMove(cell.revealed ? chord(board, at) : reveal(board, at));
+    } else if (e.key === 'f' || e.key === 'F' || e.key === 'm') {
+      applyMove(cycleMark(board, at));
+    } else {
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   const face: FaceKind =
@@ -328,6 +367,12 @@ export default function Mines({ windowId }: AppComponentProps) {
           className={styles.grid}
           role="group"
           aria-label="Mine field"
+          tabIndex={0}
+          aria-activedescendant={
+            cursor === null ? undefined : `mines-cell-${cursor}`
+          }
+          onKeyDown={onFieldKeyDown}
+          onFocus={() => cursor === null && setCursor(0)}
           style={{
             gridTemplateColumns: `repeat(${board.width}, ${CELL_PX}px)`,
           }}
@@ -344,6 +389,7 @@ export default function Mines({ windowId }: AppComponentProps) {
               x={i % board.width}
               y={Math.floor(i / board.width)}
               wrongFlag={isWrongFlag(board, i)}
+              cursor={cursor === i}
             />
           ))}
         </div>
