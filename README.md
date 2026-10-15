@@ -63,7 +63,7 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 still online is fully playable in **German** as well as English. It is not a word-for-word translation: the six friends, the mail, the websites and the files were rewritten for a German 2007 (SchülerVZ-era chat-speak, a Gymnasium instead of a US high school, euros and Fischstäbchen), with the same storylines and the same ids underneath.
 
 - **What's localized:** the whole desktop and every app, all chats, mail, Spaceport profiles, Searchly and the other sites, seeded files, balloons, assistant tips, TuneMole results, and date/time/number formatting.
-- **How to switch:** a German browser starts in Deutsch automatically. Otherwise use the **Language / Sprache** box on the login screen, the **DE/EN** badge in the tray, or **Regional and Language Options** (*Regions- und Sprachoptionen*) in the Start menu. Switching is live, with no reload; your saves, chats and files carry over.
+- **How to switch:** a German browser starts in Deutsch automatically. Otherwise pick a flag under **Language / Sprache** on the login screen, the **DE/EN** badge in the tray, or **Regional and Language Options** (*Regions- und Sprachoptionen*) in the Start menu. Switching is live, with no reload; your saves, chats and files carry over.
 - **What stays as written:** things you typed or named yourself keep their language, like files on a real disk.
 
 ![Der still online Desktop mit geöffnetem Startmenü](docs/screenshots/desktop-de.png)
