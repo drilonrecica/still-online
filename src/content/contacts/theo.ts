@@ -1,5 +1,6 @@
 // Theo: the shy classmate from bio. Short, hesitant lines, apologises a lot.
 import type { ContactContent } from '../types';
+import { theoDayScripts, theoDays } from './theo-days';
 
 export const theo: ContactContent = {
   contact: {
@@ -11,6 +12,7 @@ export const theo: ContactContent = {
     initialStatus: 'online',
     personalMessage: 'bio project due fri...',
     signInAfterMs: 210_000,
+    days: theoDays,
   },
   scripts: [
     {
@@ -384,5 +386,6 @@ export const theo: ContactContent = {
         },
       },
     },
+    ...theoDayScripts,
   ],
 };

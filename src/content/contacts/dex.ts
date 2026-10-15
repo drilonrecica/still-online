@@ -1,5 +1,6 @@
 // Dex: the skater who is always "Away". Answers late, never changes his status back.
 import type { ContactContent } from '../types';
+import { dexDayScripts, dexDays } from './dex-days';
 
 export const dex: ContactContent = {
   contact: {
@@ -11,6 +12,7 @@ export const dex: ContactContent = {
     initialStatus: 'away',
     personalMessage: 'skating. leave a msg',
     signInAfterMs: 270_000,
+    days: dexDays,
   },
   scripts: [
     {
@@ -365,5 +367,6 @@ export const dex: ContactContent = {
         },
       },
     },
+    ...dexDayScripts,
   ],
 };

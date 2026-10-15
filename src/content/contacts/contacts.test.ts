@@ -52,7 +52,7 @@ describe('content lint: shipped contacts', () => {
   );
 
   // Friends whose days 2–5 are written (§P2-02); later tasks add theirs.
-  const storyFriends = ['jess', 'kayla'];
+  const storyFriends = ['jess', 'kayla', 'dex', 'theo'];
   it.each(
     contacts
       .filter((c) => storyFriends.includes(c.contact.id))
