@@ -43,7 +43,7 @@ export const contactContent = (
     displayName: id,
     handle: `${id}@livemail.example`,
     avatar: { kind: 'pattern', seed: id, colors: ['#000000', '#FFFFFF'] },
-    group: 'Friends',
+    group: 'friends',
     initialStatus: 'online',
     personalMessage: `${id}'s pm`,
     signInAfterMs: 0,

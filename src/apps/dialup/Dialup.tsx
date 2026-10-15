@@ -1,5 +1,6 @@
 // Connect to the Internet: the dial-up dialog. A thin view over the network store; dialling,
 // the modem sound and closing on success live in `src/os/network.ts`.
+import { usePlayerName } from '@/i18n/settingsText';
 import { useId, useState } from 'react';
 import { dial, useNetworkStore, type NetPhase } from '@/os/network';
 import { useSettingsStore } from '@/os/store/settings';
@@ -66,7 +67,7 @@ export default function Dialup({ windowId }: AppComponentProps) {
   const status = useNetworkStore((s) => s.status);
   const phase = useNetworkStore((s) => s.phase);
   const kbps = useNetworkStore((s) => s.kbps);
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
   const auto = useSettingsStore((s) => s.connectAutomatically);
   const setAuto = useSettingsStore((s) => s.setConnectAutomatically);
   const [userName, setUserName] = useState(() => userNameFor(playerName));

@@ -1,4 +1,5 @@
 import { act, render, screen, within } from '@testing-library/react';
+import { titleOf } from '@/test/windowTitle';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/apps/registry';
@@ -115,7 +116,7 @@ describe('chat window', () => {
     const win = useWindowsStore
       .getState()
       .windows.find((w) => w.id === windowId);
-    expect(win?.title).toBe('Lena - Conversation');
+    expect(titleOf(win?.id)).toBe('Lena - Conversation');
   });
 
   it('renders "<name> says:" lines with emoticons', async () => {

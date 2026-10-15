@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { cleanName, parseNode, sanitizeFsState, uniqueName } from './nodes';
+import { cleanName, parseNode, uniqueName } from './nodes';
+import { sanitizeFsState } from './records';
 import type { FsNode } from './types';
 
 const T = 1_000;

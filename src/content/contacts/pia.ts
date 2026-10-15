@@ -10,7 +10,7 @@ export const pia: ContactContent = {
     displayName: 'pia (L) ponies (L)',
     handle: 'pia.ponyfan@livemail.example',
     avatar: { kind: 'pattern', seed: 'pia', colors: ['#B47EDB', '#FFE0F4'] },
-    group: 'Family',
+    group: 'family',
     initialStatus: 'online',
     personalMessage: 'DO NOT GO IN MY ROOM',
     signInAfterMs: 35_000,

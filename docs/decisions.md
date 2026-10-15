@@ -169,3 +169,13 @@
 - P0-02: `setLanguage(null)` is allowed and means "back to detection"; unknown values also become `null`
 - P0-02: `t`/`useT` share one `translate(locale, key, …args)`; a key missing in a locale (or a stale key from an old save) falls back to English, then to the key text — rendering never throws
 - P0-02: the e2e `setLanguage(page, locale)` helper seeds `settings.language` once per tab (sessionStorage flag) so an in-game switch survives a reload; P0-07 swaps it for the login picker
+- P0-04: fs keeps rendered nodes in memory and makes only the saved shape neutral (`records.ts`: `toRecords` on save, `sanitizeFsState` on load, `localizeNodes` on a language switch) — ~30 consumers read `node.name`/`text`, and rendering on load/switch gives the same result without touching them
+- P0-04: a seed whose name `seed()`/`restore()` had to suffix (`(2)`) becomes `dirty` — its rendered name no longer equals the seed's, so it can't follow the language
+- P0-04: Notepad reloads its file while the buffer is unchanged — an open untouched seed then switches language live (and a save from another window shows up)
+- P0-04: sent/player mail stores the player as `{ name: '', address: '' }` and renders `playerAddress()` — otherwise the default name `Player` would be frozen English in the save
+- P0-04: `deliver()` stores content it can't render by id (test fixtures) as `text` — keeps the delivery tests' fake content working
+- P0-04: default favorites are named from `browser.defaultFavorites.*` in the catalog, not the site registry — sites have no per-locale text until P0-06/P2, and their titles ("Spaceport: a place for friends in orbit") aren't the favorite names
+- P0-04: German strings for the keys added here use the fixed terms from the "German defaults" table (app titles, folders, groups) instead of `TODO(P1)` English — the live-switch tests need German, and those terms are final
+- P0-04: the German mail reply prefix is `AW:` and the bounce sender „E-Mail-Zustellsystem" — what German mail clients of 2007 showed
+- P0-04: `MESSAGES` moved to `src/i18n/messages/index.ts` (re-exported from `t.ts`) — the settings store needs the catalogs for its defaults, and `t.ts` imports the settings store
+- P0-04: `tsconfig.app.json` gets `resolveJsonModule` — the v0.2 save fixture is plain JSON so the e2e migration spec (P3) can reuse it

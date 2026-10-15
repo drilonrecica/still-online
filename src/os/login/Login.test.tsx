@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Login } from '@/os/login/Login';
 import { useSessionStore } from '@/os/store/session';
+import { getPlayerName } from '@/i18n/settingsText';
 import { useSettingsStore } from '@/os/store/settings';
 
 beforeEach(() => {
@@ -27,7 +28,9 @@ describe('Login', () => {
       target: { value: '   ' },
     });
     fireEvent.submit(screen.getByRole('button').closest('form')!);
-    expect(useSettingsStore.getState().playerName).toBe('Player');
+    // The default is stored as null, so it follows the language.
+    expect(useSettingsStore.getState().playerName).toBeNull();
+    expect(getPlayerName()).toBe('Player');
   });
 
   it('return visit: shows the saved name without a name field', () => {

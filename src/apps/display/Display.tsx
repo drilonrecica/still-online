@@ -1,6 +1,8 @@
 // Display Properties: Themes · Desktop · Screen Saver · Appearance. Edits a draft that previews
 // inside the dialog; Apply/OK write it to the settings store.
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
+import { screensaverText } from '@/i18n/settingsText';
+import { useLocale } from '@/i18n/useT';
 import { deleteBlob, putBlob, useBlobUrl } from '@/os/blobStore';
 import { useScreensaverStore } from '@/os/screensaver/store';
 import { MAX_SCREENSAVER_TEXT, useSettingsStore } from '@/os/store/settings';
@@ -200,6 +202,7 @@ export default function Display({ windowId }: AppComponentProps) {
   const settings = useSettingsStore();
   const unlocks = useWorldStore((s) => s.unlocks);
   const closeWindow = useWindowsStore((s) => s.closeWindow);
+  const locale = useLocale();
   const startPreview = useScreensaverStore((s) => s.startPreview);
 
   const applied: Draft = {
@@ -307,6 +310,7 @@ export default function Display({ windowId }: AppComponentProps) {
     )?.id ?? null;
 
   const saver = draft.screensaver;
+  const saverText = screensaverText(saver, locale);
   const setSaver = (p: Partial<ScreensaverSettings>) =>
     patch({ screensaver: { ...saver, ...p } });
 
@@ -433,7 +437,7 @@ export default function Display({ windowId }: AppComponentProps) {
               <button
                 type="button"
                 disabled={saver.id === 'none'}
-                onClick={() => startPreview(saver.id, saver.text)}
+                onClick={() => startPreview(saver.id, saverText)}
               >
                 Preview
               </button>
@@ -446,7 +450,7 @@ export default function Display({ windowId }: AppComponentProps) {
                   type="text"
                   className={styles.grow}
                   maxLength={MAX_SCREENSAVER_TEXT}
-                  value={saver.text}
+                  value={saverText}
                   onChange={(e) => setSaver({ text: e.target.value })}
                 />
               </div>

@@ -10,7 +10,7 @@ export const marco: ContactContent = {
     displayName: 'marco | velvet lantern',
     handle: 'marco.bassline@livemail.example',
     avatar: { kind: 'pattern', seed: 'marco', colors: ['#2E3A4F', '#8FD3C8'] },
-    group: 'Family',
+    group: 'family',
     initialStatus: 'busy',
     personalMessage: 'studio session tonight. dont call.',
     signInAfterMs: 150_000,

@@ -1,6 +1,6 @@
 // Mail content (P4-07: src/content/mail/day1.ts … day5.ts, autoReplies.ts) and the persisted
 // `mail` store data (P4-06: src/apps/mail/store.ts).
-import type { ContactId } from '../types';
+import type { ContactId, MailRecord } from '../types';
 import type { PhotoSpec } from '../../os/fs/types';
 
 export interface MailAddress {
@@ -39,7 +39,7 @@ export interface AutoReply {
 
 export type MailFolder = 'inbox' | 'sent' | 'deleted';
 
-/** A mail in the player's mailbox. */
+/** A mail as the player reads it: a `MailRecord` rendered in the current locale. */
 export interface MailMessage {
   /** Content id for delivered mail; `m:<random>` for composed, replies and bounces. */
   id: string;
@@ -55,7 +55,8 @@ export interface MailMessage {
 }
 
 export interface MailState {
-  messages: MailMessage[];
+  /** Language-neutral records; `renderMail` turns them into `MailMessage`s at view time. */
+  messages: MailRecord[];
   /** Days whose content mails were delivered. */
   deliveredDays: number[];
 }

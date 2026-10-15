@@ -1,7 +1,7 @@
 // Chat window (app `messenger-chat`): one per contact via `props.contactId`.
+import { usePlayerName } from '@/i18n/settingsText';
 import { useEffect, useRef, useState } from 'react';
 import type { Contact } from '@/content/types';
-import { useSettingsStore } from '@/os/store/settings';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import type { AppComponentProps } from '@/os/types';
 import { useReducedMotion } from '@/os/useReducedMotion';
@@ -65,7 +65,7 @@ function ChatView({
   const online = useMessengerStore((s) => s.online[id] === true);
   const typing = useMessengerStore((s) => s.typing[id] === true);
   const markRead = useMessengerStore((s) => s.markRead);
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
   const focused = useWindowsStore((s) => selectActiveWindowId(s) === windowId);
   const [notice, setNotice] = useState<string | null>(null);
   const root = useShake(id);
@@ -77,9 +77,9 @@ function ChatView({
   const unread = progress?.unread ?? 0;
 
   useEffect(() => {
-    useWindowsStore
-      .getState()
-      .setWindowTitle(windowId, `${contact.displayName} - Conversation`);
+    useWindowsStore.getState().setWindowTitle(windowId, 'messenger.chatTitle', {
+      name: contact.displayName,
+    });
   }, [windowId, contact.displayName]);
 
   useEffect(() => {

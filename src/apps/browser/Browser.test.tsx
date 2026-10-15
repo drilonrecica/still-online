@@ -1,4 +1,5 @@
 import { act, render, screen, within } from '@testing-library/react';
+import { titleOf } from '@/test/windowTitle';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useNetworkStore } from '@/os/network';
@@ -27,8 +28,7 @@ function renderBrowser(url?: string) {
     .openApp('browser', url ? { url } : {});
   const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
   render(<Browser windowId={windowId} props={url ? { url } : {}} />);
-  const title = () =>
-    useWindowsStore.getState().windows.find((w) => w.id === windowId)?.title;
+  const title = () => titleOf(windowId);
   return { user, windowId, title };
 }
 
@@ -176,6 +176,16 @@ describe('Web Explorer', () => {
     expect(useWebStore.getState().favorites).toHaveLength(5);
   });
 
+  it('names the default favorites in the current language', async () => {
+    const { user } = renderBrowser('about.example/tips');
+    await finishLoad();
+    await user.click(screen.getByRole('button', { name: 'Favorites' }));
+    const pane = screen.getByRole('complementary', { name: 'Favorites' });
+    expect(within(pane).getByText('Westfield High')).toBeTruthy();
+    act(() => useSettingsStore.setState({ language: 'de' }));
+    expect(within(pane).getByText('Westfield-Gymnasium')).toBeTruthy();
+  });
+
   it('the Favorites pane opens and deletes favorites', async () => {
     const { user } = renderBrowser('about.example/tips');
     await finishLoad();
@@ -184,8 +194,8 @@ describe('Web Explorer', () => {
     await user.click(
       within(pane).getByRole('button', { name: 'Delete Spaceport' }),
     );
-    expect(useWebStore.getState().favorites.map((f) => f.title)).not.toContain(
-      'Spaceport',
+    expect(useWebStore.getState().favorites.map((f) => f.url)).not.toContain(
+      'http://spaceport.example/',
     );
     await user.click(within(pane).getByRole('button', { name: 'Searchly' }));
     expect(screen.getByLabelText('Address')).toHaveValue(

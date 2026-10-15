@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { lazy } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { useSettingsStore } from '@/os/store/settings';
 import { setAppResolver, useWindowsStore } from '@/os/store/windows';
 import type {
   AppComponentProps,
@@ -29,7 +30,7 @@ function BareStub({ windowId }: AppComponentProps) {
 const APPS: Partial<Record<AppId, AppDefinition>> = {
   notepad: {
     id: 'notepad',
-    title: 'Untitled - Notepad',
+    titleKey: 'apps.notepad.title',
     icon16: '/notepad-16.svg',
     icon32: '/notepad-32.svg',
     component: lazy(() => Promise.resolve({ default: NotepadStub })),
@@ -41,7 +42,7 @@ const APPS: Partial<Record<AppId, AppDefinition>> = {
   },
   amplifier: {
     id: 'amplifier',
-    title: 'Amplifier',
+    titleKey: 'apps.amplifier.title',
     icon16: '/amp-16.svg',
     icon32: '/amp-32.svg',
     component: lazy(() => Promise.resolve({ default: BareStub })),
@@ -114,6 +115,18 @@ describe('Window frame', () => {
       within(region).getByText(`notepad content ${id}`),
     ).toBeInTheDocument();
     expect(region).toHaveStyle({ left: '24px', top: '24px', width: '400px' });
+  });
+
+  it('re-renders the title when the language changes', async () => {
+    const [id = ''] = await renderWith('notepad');
+    act(() => useSettingsStore.setState({ language: 'de' }));
+    expect(
+      screen.getByRole('region', { name: 'Unbenannt - Editor' }),
+    ).toBeInTheDocument();
+    act(() =>
+      store().setWindowTitle(id, 'notepad.titleModified', { file: 'a.txt' }),
+    );
+    expect(titleBar(id)).toHaveTextContent('*a.txt - Editor');
   });
 
   it('titlebar buttons call the store actions', async () => {

@@ -1,0 +1,736 @@
+{
+  "settings": {
+    "state": {
+      "playerName": "Player",
+      "muted": false,
+      "volume": 0.7,
+      "firstBootDone": true,
+      "smallScreenNoticeDismissed": false,
+      "wallpaper": {
+        "kind": "builtin",
+        "id": "classic"
+      },
+      "wallpaperPosition": "stretch",
+      "theme": "blue",
+      "screensaver": {
+        "id": "marquee",
+        "minutes": 7,
+        "text": "still online..."
+      },
+      "seenTips": [],
+      "connectAutomatically": true,
+      "awayMinutes": 5,
+      "awayMessage": "brb",
+      "petEnabled": false,
+      "assistantEnabled": true
+    },
+    "version": 1
+  },
+  "windows": {
+    "state": {
+      "windows": [
+        {
+          "id": "win-1",
+          "appId": "notepad",
+          "title": "mine.txt - Notepad",
+          "x": 24,
+          "y": 24,
+          "w": 480,
+          "h": 360,
+          "z": 1,
+          "minimized": false,
+          "maximized": false,
+          "props": {
+            "fileId": "f:68d75e74-1f8a-438e-930c-90ab851775ac"
+          }
+        },
+        {
+          "id": "win-2",
+          "appId": "explorer",
+          "title": "My Pictures",
+          "x": 48,
+          "y": 48,
+          "w": 520,
+          "h": 380,
+          "z": 2,
+          "minimized": false,
+          "maximized": false,
+          "props": {
+            "folder": "pics"
+          }
+        },
+        {
+          "id": "win-3",
+          "appId": "messenger-chat",
+          "title": "Jess - Conversation",
+          "x": 72,
+          "y": 72,
+          "w": 420,
+          "h": 400,
+          "z": 3,
+          "minimized": false,
+          "maximized": false,
+          "props": {
+            "contactId": "jess"
+          }
+        }
+      ],
+      "topZ": 3
+    },
+    "version": 1
+  },
+  "fs": {
+    "state": {
+      "nodes": {
+        "root": {
+          "id": "root",
+          "parentId": null,
+          "name": "My Computer",
+          "type": "folder",
+          "createdAt": 1792053856615,
+          "modifiedAt": 1792053856615,
+          "system": true
+        },
+        "docs": {
+          "id": "docs",
+          "parentId": "root",
+          "name": "My Documents",
+          "type": "folder",
+          "createdAt": 1792053856615,
+          "modifiedAt": 1792053856615,
+          "system": true
+        },
+        "pics": {
+          "id": "pics",
+          "parentId": "docs",
+          "name": "My Pictures",
+          "type": "folder",
+          "createdAt": 1792053856615,
+          "modifiedAt": 1792053856615,
+          "system": true
+        },
+        "music": {
+          "id": "music",
+          "parentId": "docs",
+          "name": "My Music",
+          "type": "folder",
+          "createdAt": 1792053856615,
+          "modifiedAt": 1792053856615,
+          "system": true
+        },
+        "recycle": {
+          "id": "recycle",
+          "parentId": "root",
+          "name": "Recycle Bin",
+          "type": "folder",
+          "createdAt": 1792053856615,
+          "modifiedAt": 1792053856615,
+          "system": true
+        },
+        "seed:bio-project-draft": {
+          "id": "seed:bio-project-draft",
+          "parentId": "docs",
+          "name": "my renamed.txt",
+          "type": "txt",
+          "createdAt": 1191863040000,
+          "modifiedAt": 1792053856630,
+          "text": "CELL PROJECT\nby me + Theo\nBiology, Mr Dalton, period 3\nDUE: friday!!!\n\n=== INTRODUCTION ===\nThe cell is the smallest unit of life. Everything alive is made of cells,\neven you, even me, even Pia (unfortunately).\n\nThere are 2 kinds of cells: plant cells and animal cells. Plant cells have\na cell wall which is like a fence and animal cells dont, which is why\nanimals can move around and plants just stand there.\n\n=== PARTS OF THE CELL ===\n1. Nucleus - the boss of the cell. it has the DNA in it.\n   (our model: a plum)\n2. Cell membrane - the skin of the cell. it decides what comes in and out\n   like a bouncer.\n3. Mitochondria - the powerhouse of the cell\n   TODO ask theo about mitochondria (what does it actually DO besides\n   being the powerhouse??? mr dalton will ask)\n   (our model: grapes)\n4. Cytoplasm - the jelly that everything floats in\n   (our model: lime jello lol)\n5. Ribosomes - TODO\n6. Vacuole - TODO\n7. Golgi thing - TODO look up how to spell it\n\n=== OUR MODEL ===\nTheo's idea: a giant jello cell!!! in a baking dish.\n- lime jello = cytoplasm\n- plum = nucleus\n- grapes = mitochondria\n- sprinkles = ribosomes??\n- keep it in Theo's cooler so it doesnt melt on the bus\n  (the cooler smells like fish a bit. we will air it out)\n\n=== CONCLUSION ===\nIn conclusion, cells are"
+        },
+        "seed:homework-maths": {
+          "id": "seed:homework-maths",
+          "parentId": "docs",
+          "name": "homework_maths.txt",
+          "type": "txt",
+          "createdAt": 1192034400000,
+          "modifiedAt": 1792053856630,
+          "text": "edited by me"
+        },
+        "seed:mom-rules": {
+          "id": "seed:mom-rules",
+          "parentId": "recycle",
+          "name": "mom_rules_for_the_computer.txt",
+          "type": "txt",
+          "createdAt": 1188649800000,
+          "modifiedAt": 1188748500000,
+          "text": "RULES FOR THE NEW COMPUTER\n(written by Mom. Yes I know how to type.)\n\n1. ONE HOUR PER DAY!!! Weekends: two hours. Homework does not count\n   but I WILL check that it is really homework.\n2. No chatting with strangers. If someone you don't know adds you on\n   the Messenger, you say no and you tell me.\n3. Never give out our address, our phone number or the name of your\n   school. Not even to \"nice\" people. ESPECIALLY not to nice people.\n4. Pia gets the computer after dinner on weekdays. No arguing.\n5. NO food or drinks at the desk. I am looking at you and your pudding\n   cups. The man at the shop said one spilled soda can ruin everything.\n6. Do NOT download anything. The man at the shop also said that is how\n   you get viruses.\n7. The computer goes off at 9:30 PM. I will hear it if it is on.\n   (Dad says the modem screeching every night is normal. It is not\n   normal. It sounds like a robot fax machine crying.)\n8. If the phone is ringing and nobody can get through, it is because\n   of the internet. Disconnect when Grandma calls on Sundays.\n9. Be kind online. Everything you type, imagine I am reading it.\n   Because maybe I am.\n\nLove you,\nMom\n\np.s. clean your room\n\np.p.s. this is pia i found this file. ONE HOUR haha. i get it after\ndinner. its the RULES",
+          "deletedFrom": "docs"
+        },
+        "seed:read-me-first": {
+          "id": "seed:read-me-first",
+          "parentId": "docs",
+          "name": "READ ME FIRST.txt",
+          "type": "txt",
+          "createdAt": 1188634500000,
+          "modifiedAt": 1188634500000,
+          "text": "=================================================\n     PIXELPOINT COMPUTERS - READ ME FIRST!\n     \"Your family. Your future. Your PC.\"\n=================================================\n\nCongratulations on your new PixelPoint HomeStar 3000!\n\nYour system:\n  * 2.4 GHz processor (blazing fast!)\n  * 512 MB of memory\n  * 80 GB hard drive (room for 20,000 songs!)\n  * 56k modem (the internet is just a phone call away)\n  * CD burner + DVD player\n  * 2 speakers with REAL BASS\n\nGETTING STARTED\n1. Plug the phone cable into the back of the computer AND the wall.\n2. Double-click \"Connect to the Internet\" and listen for the\n   friendly connection sounds.\n3. Pick up the phone downstairs? You'll be disconnected. That's normal!\n4. Please do not put the computer in a cabinet. It gets hot. It\n   needs to breathe, just like you.\n\nTIPS FROM YOUR PIXELPOINT TECH TEAM\n  * Restarting fixes most problems. Try that first.\n  * Save often! Our techs have heard many sad stories.\n  * Do not open e-mail attachments from people you don't know,\n    even if they say you won a free cruise.\n  * Keep magnets away from the computer. Yes, even fridge magnets.\n\nWarranty: 1 year. Coffee damage is not covered.\nQuestions? Call our helpline: 555-0199 (Mon-Fri, 9-5)\nOr visit us at www.pixelpoint.example\n\nThank you for choosing PixelPoint Computers!\nAsk about our extended warranty (and our new mouse pads)."
+        },
+        "seed:poem-do-not-read": {
+          "id": "seed:poem-do-not-read",
+          "parentId": "docs",
+          "name": "poem_DO_NOT_READ.txt",
+          "type": "txt",
+          "createdAt": 1190321280000,
+          "modifiedAt": 1191957180000,
+          "text": "DO NOT READ THIS. I MEAN IT.\nif you are pia close this RIGHT NOW\n\n~*~ untitled (for now) ~*~\n\nyou sit two seats in front of me\nin third period maths\ni dont hear what the teacher says\ni only hear you laugh\n\nyour hair does a little swoosh thing\nwhen you turn around to ask\nif anybody has a pencil\n(i always have a pencil)\n\nmy heart goes like a dial-up modem\nbeeeep krrrsh connecting\nand then it says the line is busy\nand i go back to correcting\n\nmy homework.\n\n~ the end ~\n\n(the modem part is either genius or the worst thing ever written)"
+        },
+        "seed:song-lyrics-notebook": {
+          "id": "seed:song-lyrics-notebook",
+          "parentId": "docs",
+          "name": "song_lyrics_notebook.txt",
+          "type": "txt",
+          "createdAt": 1189783320000,
+          "modifiedAt": 1191678000000,
+          "text": "SONGS FOR VELVET LANTERN\n(marco said i can write lyrics for the band if they are \"not terrible\")\n\n--- song 1: \"lantern heart\" ---\nmy heart is a lantern\nmade out of velvet\ni wanted to give it to you\nbut i forgot where i left it\n\nyour eyes are like the night sky\nor maybe like a car\ni dont know much about cars\nbut i know that you are far\n\nCHORUS (everybody):\noh oh lantern\noh oh light\nvelvet lantern\nall night (all night)\n\n--- song 2: \"bus stop blues\" ---\nwaiting at the bus stop\nin the pouring rain\nthe bus is very late\nit is late again\n\ni am feeling sad\nmy socks are feeling wet\nthis is the saddest bus stop\ni have ever met\n\n--- song 3: \"untitled rock song\" ---\nyeah\nYEAH\n(guitar solo here, marco knows what to do)\nyeah\n\n--- notes ---\n- marco said song 1 \"has potential\". THATS A YES\n- what rhymes with lantern. pattern? lantern pattern. no\n- maybe a song about the rec hall show?? \"rec hall rock\""
+        },
+        "seed:top-8-drama": {
+          "id": "seed:top-8-drama",
+          "parentId": "docs",
+          "name": "top 8 drama.txt",
+          "type": "txt",
+          "createdAt": 1190743260000,
+          "modifiedAt": 1192219080000,
+          "text": "MY SPACEPORT TOP 8 (DO NOT SHOW ANYONE)\n\n--- version 1 ---\n1. Jess\n2. Kayla\n3. Brianna\n4. Theo\n5. Marco\n6. Dex\n7. Biscuit (he doesnt have a profile but he should)\n8. Pia (no wait she will see this) ~~Pia~~\n\n--- version 2 (after the away message thing) ---\n1. Jess\n2. ~~Brianna~~ Kayla\n3. ~~Kayla~~ Brianna (no wait)\n4. Theo\n5. Marco\n6. Dex\n7. the Tinfoil Comets fan profile\n8. ???\n\n--- version 3 ---\n1. Kayla (she said if she is not #1 we are \"done\")\n2. Jess (jess said she does not care) (she cares)\n3. Theo\n4. ~~Brianna~~ (Kayla is watching)\n5. Marco\n6. Dex (does dex even log in??)\n7. Tinfoil Comets\n8. Pia (ok FINE she cried)\n\n--- version 4 (FINAL) (for real) ---\n1. Jess + Kayla tied (can you tie?? NO you cant)\n1. Jess\n2. Kayla\n3. Theo\n4. Marco\n5. Dex\n6. Brianna (on the low)\n7. Pia\n8. Biscuit (made him a profile)\n\n(no wait if i move theo to 3 will he think something?? he wont notice.\nhe WILL notice. ok leaving it)"
+        },
+        "seed:concert-packing-list": {
+          "id": "seed:concert-packing-list",
+          "parentId": "docs",
+          "name": "concert_packing_list.txt",
+          "type": "txt",
+          "createdAt": 1192198020000,
+          "modifiedAt": 1192198020000,
+          "text": "TINFOIL COMETS CONCERT!!!!!!!!!!\nwith JESS!!! (she has 2 tickets!!!)\n\npack:\n[x] ticket (jess has it. CALL JESS TO CHECK SHE HAS IT)\n[x] earplugs (mom said or i cant go)\n[ ] glitter sign \"COMETS PLZ PLAY SPACE GIRL\" (needs more glitter)\n[ ] backup glitter\n[ ] disposable camera (27 pics. use wisely)\n[ ] $20 for a t-shirt + $5 for a soda\n[ ] mom's cell phone (DO NOT LOSE IT)\n[ ] gum\n[ ] hair clips (jess is doing my hair)\n[ ] sharpie for autographs!!!\n[ ] snacks for the line (we are going 3 hours early)\n[ ] jacket (mom) (i will not wear it)\n\ndont forget:\n- learn ALL the words to the new album\n- practice the dance from the video\n- DO NOT CRY when they play space girl (i will cry)"
+        },
+        "seed:summer-camp-2006": {
+          "id": "seed:summer-camp-2006",
+          "parentId": "recycle",
+          "name": "summer_camp_2006.jpg",
+          "type": "image",
+          "createdAt": 1153499400000,
+          "modifiedAt": 1153499400000,
+          "photo": {
+            "scene": "camp",
+            "seed": 2006,
+            "caption": "camp lakeview, cabin 4 forever"
+          },
+          "deletedFrom": "pics"
+        },
+        "seed:biscuit-the-dog": {
+          "id": "seed:biscuit-the-dog",
+          "parentId": "pics",
+          "name": "biscuit_the_dog.jpg",
+          "type": "image",
+          "createdAt": 1188723900000,
+          "modifiedAt": 1188723900000,
+          "photo": {
+            "scene": "pet",
+            "seed": 418,
+            "caption": "biscuit after eating a whole sock"
+          }
+        },
+        "seed:school-trip-museum": {
+          "id": "seed:school-trip-museum",
+          "parentId": "pics",
+          "name": "school_trip_museum.jpg",
+          "type": "image",
+          "createdAt": 1179314400000,
+          "modifiedAt": 1179314400000,
+          "photo": {
+            "scene": "trip",
+            "seed": 77,
+            "caption": "museum trip. the dinosaur was smaller than expected"
+          }
+        },
+        "seed:kaylas-party-blurry": {
+          "id": "seed:kaylas-party-blurry",
+          "parentId": "pics",
+          "name": "kaylas_party_BLURRY.jpg",
+          "type": "image",
+          "createdAt": 1188071100000,
+          "modifiedAt": 1188071100000,
+          "photo": {
+            "scene": "party",
+            "seed": 1313,
+            "caption": "kayla's party. everyone moved. it's art now"
+          }
+        },
+        "seed:beach-holiday": {
+          "id": "seed:beach-holiday",
+          "parentId": "pics",
+          "name": "beach_holiday.jpg",
+          "type": "image",
+          "createdAt": 1185801000000,
+          "modifiedAt": 1185801000000,
+          "photo": {
+            "scene": "beach",
+            "seed": 808,
+            "caption": "beach holiday, before the sunburn"
+          }
+        },
+        "seed:me-webcam-test": {
+          "id": "seed:me-webcam-test",
+          "parentId": "pics",
+          "name": "me_webcam_test.jpg",
+          "type": "image",
+          "createdAt": 1188655320000,
+          "modifiedAt": 1188655320000,
+          "photo": {
+            "scene": "selfportrait",
+            "seed": 3000,
+            "caption": "testing the new webcam. is my hair always like that"
+          }
+        },
+        "seed:surf-shimmy": {
+          "id": "seed:surf-shimmy",
+          "parentId": "music",
+          "name": "surf_shimmy.mp3",
+          "type": "audio",
+          "createdAt": 1188634500000,
+          "modifiedAt": 1188634500000,
+          "trackId": "surf-shimmy"
+        },
+        "seed:cool-rock": {
+          "id": "seed:cool-rock",
+          "parentId": "music",
+          "name": "cool_rock.mp3",
+          "type": "audio",
+          "createdAt": 1188634500000,
+          "modifiedAt": 1188634500000,
+          "trackId": "cool-rock"
+        },
+        "seed:letter-to-theo-never-send": {
+          "id": "seed:letter-to-theo-never-send",
+          "parentId": "recycle",
+          "name": "letter_to_theo_NEVER_SEND.txt",
+          "type": "txt",
+          "createdAt": 1191962460000,
+          "modifiedAt": 1191963120000,
+          "text": "dear theo,\n\nthis is a letter that i am never going to send so it doesnt matter\nwhat i write.\n\ni just wanted to say that you are really nice. you are the only person\nwho laughs at my jokes even the bad ones (the cell wall fence one).\nalso you always bring markers and you never take the good colours.\n\nwhen mr dalton paired us for the cell project i acted like i didnt care\nbut actually i did a little dance in my head.\n\nok that is all. this is so embarrassing. DELETE DELETE DELETE\n\nfrom,\nme\n\np.s. the jello cell is the best idea anyone has ever had",
+          "deletedFrom": "docs"
+        },
+        "seed:my-rap-lyrics": {
+          "id": "seed:my-rap-lyrics",
+          "parentId": "recycle",
+          "name": "my_rap_lyrics.txt",
+          "type": "txt",
+          "createdAt": 1189260000000,
+          "modifiedAt": 1189262040000,
+          "text": "MC MEGABYTE - \"DIAL IT UP\" (feat. nobody)\n\nyo\ni got a new computer and it's fast as a jet\ni'm on the information superhighway, you bet\nmy modem goes beep boop, krrsh, ding\nwhen i'm online i am the king\n\nmy mom says one hour, i say no way\nshe says \"you heard me\" so i say ok\ni do my homework, i do my chores\nthen i'm back online, the crowd ROARS\n\n(beatbox here)\n(pia says my beatbox sounds like biscuit sneezing)\n\nyo yo yo\nmegabyte OUT\n\n-----\nnote to self: NEVER perform this. not even at the sleepover.",
+          "deletedFrom": "docs"
+        },
+        "seed:diary-age-11": {
+          "id": "seed:diary-age-11",
+          "parentId": "recycle",
+          "name": "diary_age_11.txt",
+          "type": "txt",
+          "createdAt": 1079289000000,
+          "modifiedAt": 1188645120000,
+          "text": "MY DIARY!!!!!!\nPRIVATE PROPERTY - KEEP OUT - THIS MEANS YOU\n\ndear diary,\ntoday i turned 11!!! i got a scooter and a book about horses.\npia got a balloon even though it was MY birthday.\n\ndear diary,\ni have decided i will be a famous veterinarian AND a pop star.\non weekends i will be an astronaut.\n\ndear diary,\njess and i made a secret club. it is called the Secret Club.\nthe password is \"pudding\". do not tell anyone the password.\n\ndear diary,\ntoday at school i tripped in front of everybody in the lunch line and\nmy tray went everywhere. this is the worst day of my whole life.\ni am never going back. i am going to live in the garden shed.\n\ndear diary,\nwent back to school. nobody remembered. phew.\n\ndear diary,\ni think i am too old for a diary now. this is my last entry.\n\ndear diary,\nok one more. mom made lasagna. it was good.",
+          "deletedFrom": "docs"
+        },
+        "seed:pony-fanfic-by-pia": {
+          "id": "seed:pony-fanfic-by-pia",
+          "parentId": "recycle",
+          "name": "pony_fanfic_by_pia.txt",
+          "type": "txt",
+          "createdAt": 1190477700000,
+          "modifiedAt": 1191348180000,
+          "text": "PRINCESS STARDUST AND THE STORM OF TEARS\na story by PIA (age 9 3/4)\n(i wrote this on your computer bc mine is slow. DONT DELETE IT)\n\nCHAPTER 1: THE BEGINING\nOnce upon a time in the land of Rainbow Meadow there lived a pony\nnamed Princess Stardust. She had a purple mane and a sparkly horn and\nshe was the most beutiful pony in the WHOLE land.\n\nBut one day a STORM came. It was not a normal storm. It was a storm\nof TEARS. All the ponies were crying and nobody knew why!!!!\n\nCHAPTER 2: THE BETRAYAL\nPrincess Stardust went to her best friend Buttercup Swirl.\n\"Buttercup Swirl\" she said \"why are you crying?\"\n\"Because\" said Buttercup Swirl \"YOU ate the last magic apple.\"\nPrincess Stardust gasped. \"I would NEVER\" she said.\n(she did) (but she didnt know it was the last one)\n\nCHAPTER 3: THE STORM GETS WORSE\nThe storm got so bad that the rainbow broke in half.\nHalf of the ponies lived on the red side and half lived on the blue side.\nThey were not allowed to talk to each other.\nThis went on for 100 years. (or a week)\n\nCHAPTER 4: THE END\nPrincess Stardust said sorry and planted a new magic apple tree.\nEveryone stopped crying. The rainbow fixed itself.\nButtercup Swirl said \"I forgive you\" and they were best friends again\nFOREVER AND EVER.\n\nTHE END\n\n(the sequel is coming soon: PRINCESS STARDUST 2: THE REVENGE OF THE\nSTORM)\n\nps whoever reads this has to give it 10 out of 10",
+          "deletedFrom": "docs"
+        },
+        "f:68d75e74-1f8a-438e-930c-90ab851775ac": {
+          "name": "mine.txt",
+          "type": "txt",
+          "text": "player text",
+          "id": "f:68d75e74-1f8a-438e-930c-90ab851775ac",
+          "parentId": "docs",
+          "createdAt": 1792053856630,
+          "modifiedAt": 1792053856630
+        },
+        "f:20edb29b-bc1d-4483-b1bd-76057278bac2": {
+          "name": "New Folder",
+          "type": "folder",
+          "id": "f:20edb29b-bc1d-4483-b1bd-76057278bac2",
+          "parentId": "pics",
+          "createdAt": 1792053856630,
+          "modifiedAt": 1792053856630
+        }
+      },
+      "purgedSeeds": []
+    },
+    "version": 1
+  },
+  "mail": {
+    "state": {
+      "messages": [
+        {
+          "id": "d1-pixelpoint-welcome",
+          "folder": "inbox",
+          "from": {
+            "name": "PixelPoint Computers",
+            "address": "welcome@pixelpoint.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "Welcome to your new PixelPoint HomeStar 3000!",
+          "body": "Dear Valued Customer,\n\nThank you for choosing PixelPoint Computers! Your new HomeStar 3000 comes with everything you need to get the most out of the Information Superhighway:\n\n  * Web Explorer, for browsing the World Wide Web\n  * Mail, the program you are using right now (great job!)\n  * Messenger, for chatting with friends and family\n  * Amplifier, for your digital music collection\n\nNEW TO THE INTERNET? Start with a search at searchly.example, or read our beginner tips at about.example\n\nSafety tip: never open attachments from people you do not know, and never give your password to anyone, even if they say they are from PixelPoint. We will never ask.\n\nYour 90-day phone support starts today. Average wait time: 45 minutes.\n\nHappy computing!\nThe PixelPoint Team\n\"Your Point of Pixels\"",
+          "attachments": [],
+          "receivedAt": 1189998260000,
+          "read": true
+        },
+        {
+          "id": "d1-mom-rules",
+          "folder": "inbox",
+          "from": {
+            "name": "Mom",
+            "address": "mom.at.home@livemail.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "COMPUTER RULES (please read!!)",
+          "body": "Hi sweetie,\n\nDad set up an email for me so now I can email you from downstairs. Isnt that fun!! Here are the computer rules. I am also putting them on the fridge.\n\n1. Homework FIRST, then chatting.\n2. No talking to strangers on the internet. If you dont know them in real life they are a stranger.\n3. Do NOT give anyone our address or phone number.\n4. Do not stay on the internet all night. Other people in this house need the phone line!!\n5. Be nice to your sister. She is allowed 20 minutes on dads laptop.\n6. No downloading anything that says FREE. Nothing is free.\n\nI am trusting you!!\n\nLove,\nMom\n\nP.S. How do I make the letters bigger",
+          "attachments": [],
+          "receivedAt": 1189999820000,
+          "read": false
+        },
+        {
+          "id": "d1-dalton-reminder",
+          "folder": "inbox",
+          "from": {
+            "name": "Mr Dalton",
+            "address": "mr.dalton@westfield-high.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "Biology: cell project reminder",
+          "body": "Dear Biology students,\n\nA reminder that your cell models and written reports are due at the end of the week. Every organelle must be labeled. Partners were assigned in class. If you have not spoken to your partner yet, today is a good day to start.\n\nAcceptable materials: clay, cardboard, foam, jello (see below), and anything else that is not alive.\nUnacceptable materials: anything that is alive. This includes mold. I am looking at last year.\n\nIf you choose to make an edible model, please keep it covered. I will not eat your model. Please stop offering.\n\nDetails and updates will be posted on the school web site under News: westfield-high.example/news\n\nMr Dalton\nBiology, Room 12",
+          "attachments": [],
+          "receivedAt": 1189997300000,
+          "read": false
+        },
+        {
+          "id": "d1-pia-email-now",
+          "folder": "inbox",
+          "from": {
+            "name": "pia",
+            "address": "pia.ponyfan@livemail.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "THIS IS PIAS EMAIL NOW",
+          "body": "hi its pia\n\nthis is my email now. dad made it. it is pia.ponyfan because ponyfan was TAKEN. someone else has my name. i am very upset about it\n\nu can email me but only about important things. like ponies\n\nDO NOT forward me chain letters\n\nfrom pia (age almost 10)\n\np.s. dont go in my room",
+          "attachments": [],
+          "receivedAt": 1189994600000,
+          "read": false
+        },
+        {
+          "id": "d1-spam-mp3",
+          "folder": "inbox",
+          "from": {
+            "name": "PRIZE CENTER",
+            "address": "winner.notify@freeprize-zone.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "U have WON a FREE mp3 player!!!",
+          "body": "*** CONGRATULATIONS!!! ***\n\nYou are our 1,000,000th visitor!!! You have been SELECTED to receive a FREE 512 MB MP3 PLAYER (holds up to 120 songs!!!)\n\nThis is NOT A JOKE. This is NOT SPAM. To claim your prize simply:\n  1. Fill out 14 short surveys\n  2. Sign up for 6 magazine subscriptions\n  3. Refer 25 friends\n  4. Pay a small shipping fee of $39.99\n\nHURRY!!! This offer expires in 00:04:59!!!\n\nYour computer may also be infected! Scan now for free at virusguard.example\n\n(To unsubscribe, reply with the word UNSUBSCRIBE. We will read it. We promise.)",
+          "attachments": [],
+          "receivedAt": 1189995680000,
+          "read": false
+        },
+        {
+          "id": "d2-chain-love",
+          "folder": "inbox",
+          "from": {
+            "name": "~*kayla*~",
+            "address": "kayla.xoxo@livemail.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "FWD: FWD: FWD: send this to 10 ppl or u will have bad luck in love!!!",
+          "body": "i dont believe in these BUT just in case. do NOT send it to brianna. xoxo k\n\n----- Forwarded Message -----\n\n~*~*~ READ THIS ALL THE WAY 2 THE END ~*~*~\n\nonce there was a girl named ashley who got this email and DELETED IT. the next day her crush sat next to her in math and said \"can i borrow a pencil.\" she said yes. he NEVER GAVE IT BACK. she never got it back. not the pencil. not her heart. not ANYTHING.\n\nthen a girl named brittany got this email and sent it to 10 ppl. the next day her crush asked her to the winter formal AND she found $5 in her coat!!!!\n\nsend this to:\n  1 person = ur crush will look at u\n  5 people = ur crush will say hi\n  10 people = ur crush will ask u out 2 the movies\n  0 people = bad luck in love 4 EVER (or like 7 years)\n\nmake a wish before u scroll down!!!!\n\n\n\n\ndid u make it?? ok now send it. if u stop the chain u will know who u r <3",
+          "attachments": [],
+          "receivedAt": 1189995440000,
+          "read": false
+        },
+        {
+          "id": "d2-spaceport-views",
+          "folder": "inbox",
+          "from": {
+            "name": "Spaceport",
+            "address": "notifications@spaceport.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "Spaceport: 3 people viewed your profile",
+          "body": "Hey there, space cadet!\n\n3 people viewed your profile this week.\nWant to know who? Log in to Spaceport to find out!*\n\n  spaceport.example/me\n\nTip: profiles with a profile song get 4x more views! Pick yours today.\n\n* Spaceport does not tell you who viewed your profile. But they DID view it. Probably.\n\nSee you in orbit,\nThe Spaceport Crew\n\nYou are receiving this because you have a Spaceport account. To change your settings, log in and find the settings page. Good luck.",
+          "attachments": [],
+          "receivedAt": 1189997900000,
+          "read": false
+        },
+        {
+          "id": "d2-marco-flyer",
+          "folder": "inbox",
+          "from": {
+            "name": "marco",
+            "address": "marco.bassline@livemail.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "velvet lantern. flyer",
+          "body": "kid\n\nattached is the flyer. the original. before derek got to it with a marker\n\nvelvet lantern. live at the bean cellar. one night only. the bean cellar is the basement under the coffee place. 11 people max. you are one of them if your mom says ok\n\nprint it if you want. or dont. we are not a band that begs\n\nthere is a lantern on it. it is a lantern. if anyone tells you it looks like soup, they saw the other version\n\n- m",
+          "attachments": [
+            {
+              "name": "velvet_lantern_flyer.jpg",
+              "type": "image",
+              "photo": {
+                "scene": "concert",
+                "seed": 8402,
+                "caption": "VELVET LANTERN - live at the bean cellar - one night only"
+              }
+            }
+          ],
+          "receivedAt": 1189996940000,
+          "read": false
+        },
+        {
+          "id": "d2-pia-missing",
+          "folder": "inbox",
+          "from": {
+            "name": "pia",
+            "address": "pia.ponyfan@livemail.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "MISSING!!!!!!!! (important)",
+          "body": "*** MISSING PONY ***\n\nNAME: Stardust\nSHE IS: the QUEEN\nLOOKS LIKE: purple with silver hair and a star on her back leg\nLAST SEEN: the middle of the shelf. this morning\n\nREWARD: 1 sticker (the shiny kind)\n\nif u have seen her tell pia IMMEDIATELY\n\ni am sending this to everyone. that is u, mom, dad and grandma\n\nthis is not a chain letter. it is a POSTER\n\n- pia\n\np.s. if u took her and give her back now u wont be in trouble. (u will be a little in trouble)",
+          "attachments": [],
+          "receivedAt": 1189995320000,
+          "read": false
+        },
+        {
+          "id": "m:mv9alhfaxxjsoi",
+          "folder": "sent",
+          "from": {
+            "name": "Player",
+            "address": "player@livemail.example"
+          },
+          "to": [
+            {
+              "name": "nobody@nowhere.example",
+              "address": "nobody@nowhere.example"
+            }
+          ],
+          "subject": "(no subject)",
+          "body": "hello?",
+          "attachments": [],
+          "receivedAt": 1792053856630,
+          "read": true
+        },
+        {
+          "id": "m:mv9alhfaj6qxov",
+          "folder": "inbox",
+          "from": {
+            "name": "Mail Delivery Subsystem",
+            "address": "mailer-daemon@livemail.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "Undeliverable: (no subject)",
+          "body": "Your message to nobody@nowhere.example could not be delivered.\n\nThe address was not found on the server. Check the spelling and try again.",
+          "attachments": [],
+          "receivedAt": 1792053856630,
+          "read": false
+        },
+        {
+          "id": "m:mv9alhfa7ger79",
+          "folder": "sent",
+          "from": {
+            "name": "Player",
+            "address": "player@livemail.example"
+          },
+          "to": [
+            {
+              "name": "x@y.example",
+              "address": "x@y.example"
+            }
+          ],
+          "subject": "party",
+          "body": "come",
+          "attachments": [],
+          "receivedAt": 1792053856630,
+          "read": true
+        },
+        {
+          "id": "m:mv9alhfa8nw0sq",
+          "folder": "inbox",
+          "from": {
+            "name": "Mail Delivery Subsystem",
+            "address": "mailer-daemon@livemail.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "Undeliverable: party",
+          "body": "Your message to x@y.example could not be delivered.\n\nThe address was not found on the server. Check the spelling and try again.",
+          "attachments": [],
+          "receivedAt": 1792053856630,
+          "read": false
+        },
+        {
+          "id": "m:mv9alhfacb71i7",
+          "folder": "sent",
+          "from": {
+            "name": "Player",
+            "address": "player@livemail.example"
+          },
+          "to": [
+            {
+              "name": "pia (L) ponies (L)",
+              "address": "pia.ponyfan@livemail.example"
+            }
+          ],
+          "subject": "hey pia",
+          "body": "hi",
+          "attachments": [],
+          "receivedAt": 1792053856630,
+          "read": true
+        },
+        {
+          "id": "m:mv9alwuuv5feke",
+          "folder": "inbox",
+          "from": {
+            "name": "pia (L) ponies (L)",
+            "address": "pia.ponyfan@livemail.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "RE: hi",
+          "body": "hi!! i read ur email 2 times. my pony says hi too. - pia",
+          "attachments": [],
+          "receivedAt": 1792053876630,
+          "read": false
+        },
+        {
+          "id": "m:mv9amrpyqktke1",
+          "folder": "sent",
+          "from": {
+            "name": "Player",
+            "address": "player@livemail.example"
+          },
+          "to": [
+            {
+              "name": "pia (L) ponies (L)",
+              "address": "pia.ponyfan@livemail.example"
+            }
+          ],
+          "subject": "again",
+          "body": "hi2",
+          "attachments": [],
+          "receivedAt": 1792053916630,
+          "read": true
+        },
+        {
+          "id": "m:mv9an75i0k7mzp",
+          "folder": "inbox",
+          "from": {
+            "name": "pia (L) ponies (L)",
+            "address": "pia.ponyfan@livemail.example"
+          },
+          "to": [
+            {
+              "name": "Player",
+              "address": "player@livemail.example"
+            }
+          ],
+          "subject": "RE: again",
+          "body": "u know we can just chat right. i am on messenger. with the ponies.",
+          "attachments": [],
+          "receivedAt": 1792053936630,
+          "read": false
+        }
+      ],
+      "deliveredDays": [1, 2]
+    },
+    "version": 1
+  },
+  "web": {
+    "state": {
+      "favorites": [
+        {
+          "title": "Searchly",
+          "url": "http://searchly.example/"
+        },
+        {
+          "title": "Tinfoil Comets",
+          "url": "http://tinfoilcomets.example/"
+        },
+        {
+          "title": "Spaceport",
+          "url": "http://spaceport.example/"
+        },
+        {
+          "title": "Westfield High",
+          "url": "http://westfield-high.example/"
+        },
+        {
+          "title": "My Spaceport",
+          "url": "http://spaceport.example/me"
+        }
+      ],
+      "counters": {
+        "searchly.example": 1
+      },
+      "guestbook": {},
+      "votes": {},
+      "myProfile": null
+    },
+    "version": 1
+  }
+}

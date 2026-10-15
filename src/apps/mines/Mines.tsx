@@ -1,4 +1,5 @@
 // Mines: the minesweeper-style game. Board rules live in `board.ts`; this file is the window.
+import { usePlayerName } from '@/i18n/settingsText';
 import {
   memo,
   useCallback,
@@ -10,7 +11,6 @@ import {
 } from 'react';
 import { events } from '@/os/events';
 import { useGamesStore, MINES_LEVELS, type MinesLevel } from '@/os/store/games';
-import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import type { AppComponentProps } from '@/os/types';
 import {
@@ -130,7 +130,7 @@ export default function Mines({ windowId }: AppComponentProps) {
   /** A both-buttons chord is in progress; its button releases do nothing. */
   const chorded = useRef(false);
   const best = useGamesStore((s) => s.mines.best);
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
 
   const playing = board.status === 'playing';
   useEffect(() => {

@@ -10,7 +10,7 @@ Messenger content is authored as typed TS modules. The types are in `src/content
 | `displayName`     | 2007-style decorations are fine (`~*mika*~ (L)`). Emoticon codes render as emoticons.                       |
 | `handle`          | `<name>@livemail.example`. The type only accepts the fictional domain.                                      |
 | `avatar`          | `{ kind: 'svg', src }` (original SVG) or `{ kind: 'pattern', seed, colors }` (drawn from seed + 2 colors).  |
-| `group`           | `Friends`, `School` or `Family`.                                                                            |
+| `group`           | `friends`, `school` or `family` (ids; the list shows `messenger.groups.<id>` in the current language).      |
 | `initialStatus`   | The status the contact signs in with. `offline` means "appear offline" (see below).                         |
 | `personalMessage` | Shown in grey italics under the name.                                                                       |
 | `signInAfterMs`   | Delay after the player signs in to Messenger. `0` = already online when the list appears.                   |
@@ -110,7 +110,7 @@ export const mika: ContactContent = {
     displayName: '~*mika*~ (L)',
     handle: 'mika.sunshine@livemail.example',
     avatar: { kind: 'pattern', seed: 'mika', colors: ['#FF9ACB', '#FFE36E'] },
-    group: 'Friends',
+    group: 'friends',
     initialStatus: 'online',
     personalMessage: 'summer cant come soon enough!!',
     signInAfterMs: 20_000,

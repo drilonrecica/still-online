@@ -1,5 +1,6 @@
 // Data-driven launchers for the desktop and the Start menu's places column.
 import { getApp } from '@/apps/registry';
+import { t } from '@/i18n/t';
 import type { AppDefinition, AppId, Shortcut, WindowProps } from '@/os/types';
 
 /** A shortcut whose app is registered, with icons filled in from the app. */
@@ -79,5 +80,5 @@ export function resolveShortcuts(
 
 /** Wraps an app as a shortcut, for the `apps` override props. */
 export function appShortcut(app: AppDefinition): Shortcut {
-  return { appId: app.id, label: app.label ?? app.title };
+  return { appId: app.id, label: t(app.labelKey ?? app.titleKey) };
 }

@@ -1,5 +1,6 @@
 // Hen Hunt: the shooting-gallery window. The round is simulated in `sim.ts` and drawn by
 // `useGameLoop`; this file wires input, sounds, scores and the menu screens.
+import { usePlayerName } from '@/i18n/settingsText';
 import {
   useCallback,
   useEffect,
@@ -12,7 +13,6 @@ import { now } from '@/os/clock';
 import { events } from '@/os/events';
 import { playSound } from '@/os/sound';
 import { useGamesStore } from '@/os/store/games';
-import { useSettingsStore } from '@/os/store/settings';
 import { useGameStatus, SR_ONLY } from '@/os/useGameStatus';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import { VIEW_H, VIEW_W } from './layout';
@@ -57,7 +57,7 @@ export default function HenHunt({ windowId }: Partial<AppComponentProps>) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Game>(createGame(newSeed(), { attract: true }));
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
 
   const onEvents = useCallback((list: GameEvent[]) => {
     for (const e of list) {

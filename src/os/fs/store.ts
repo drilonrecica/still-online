@@ -1,7 +1,9 @@
-// Virtual file system store. Persisted under `still-online:v1:fs`.
-// See docs/architecture-v0.2.md → "File system".
+// Virtual file system store. Persisted under `still-online:v1:fs` in a language-neutral shape
+// (`records.ts`); in memory nodes are rendered in the current locale and re-render on a switch.
+// See docs/architecture-v0.2.md → "File system" and docs/i18n.md → "fs".
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { getLocale, t } from '@/i18n/t';
 import { deleteBlob } from '@/os/blobStore';
 import { events } from '@/os/events';
 import { persistOptions } from '@/os/persist';
@@ -14,12 +16,25 @@ import {
   parseNode,
   pathOf,
   pruneTree,
-  sanitizeFsState,
   subtreeIds,
   systemFolders,
   uniqueName,
 } from './nodes';
-import { FS_FOLDERS, type FsNode, type FsState, type FsStore } from './types';
+import {
+  localizeNodes,
+  sanitizeFsState,
+  seedLookup,
+  toRecords,
+  type FsNodeRecord,
+} from './records';
+import { seedFilesFor } from './seeds';
+import { useSettingsStore } from '@/os/store/settings';
+import { FS_FOLDERS, type FsNode, type FsStore } from './types';
+
+interface PersistedFs {
+  nodes: Record<string, FsNodeRecord>;
+  purgedSeeds: string[];
+}
 
 function newFileId(): string {
   const id =
@@ -68,21 +83,29 @@ export const useFsStore = create<FsStore>()(
         return doomed;
       }
 
-      /** Applies `patch` to an existing node and stamps `modifiedAt`. */
+      /**
+       * Applies `patch` to an existing node and stamps `modifiedAt`. An edit freezes a seed's
+       * rendered text (`dirty`), so it stays in the language it was edited in.
+       */
       function update(id: string, patch: Partial<FsNode>): void {
         const node = get().nodes[id];
         if (!node) return;
         set({
           nodes: {
             ...get().nodes,
-            [id]: { ...node, ...patch, modifiedAt: Date.now() },
+            [id]: {
+              ...node,
+              ...patch,
+              ...(isSeedId(id) ? { dirty: true } : {}),
+              modifiedAt: Date.now(),
+            },
           },
         });
         changed([id]);
       }
 
       return {
-        nodes: systemFolders(Date.now()),
+        nodes: systemFolders(Date.now(), getLocale()),
         purgedSeeds: [],
 
         list: (parentId) =>
@@ -99,7 +122,8 @@ export const useFsStore = create<FsStore>()(
           if (nodes[parentId]?.type !== 'folder') {
             throw new Error(`fs: no folder "${parentId}"`);
           }
-          const fallback = file.type === 'folder' ? 'New Folder' : 'New File';
+          const fallback =
+            file.type === 'folder' ? t('fs.newFolder') : t('fs.newFile');
           const id = newFileId();
           const time = Date.now();
           const node: FsNode = {
@@ -128,6 +152,7 @@ export const useFsStore = create<FsStore>()(
           const node = get().nodes[id];
           if (node?.type !== 'image' || node.blobKey === blobKey) return;
           const next: FsNode = { ...node, blobKey, modifiedAt: Date.now() };
+          if (isSeedId(id)) next.dirty = true;
           delete next.photo;
           set({ nodes: { ...get().nodes, [id]: next } });
           changed([id]);
@@ -171,11 +196,10 @@ export const useFsStore = create<FsStore>()(
             from?.type === 'folder' && !isInRecycle(nodes, from.id)
               ? from.id
               : FS_FOLDERS.docs;
-          const restored: FsNode = {
-            ...node,
-            parentId: target,
-            name: uniqueName(nodes, target, node.name, node.type, id),
-          };
+          const name = uniqueName(nodes, target, node.name, node.type, id);
+          const restored: FsNode = { ...node, parentId: target, name };
+          // A seed renamed to avoid a clash keeps that name in every language.
+          if (isSeedId(id) && name !== node.name) restored.dirty = true;
           delete restored.deletedFrom;
           set({ nodes: { ...nodes, [id]: restored } });
           changed([id]);
@@ -210,10 +234,9 @@ export const useFsStore = create<FsStore>()(
           const added = candidates.filter((n) => next[n.id]);
           for (const n of added) {
             if (n.parentId === null) continue;
-            next[n.id] = {
-              ...n,
-              name: uniqueName(next, n.parentId, n.name, n.type, n.id),
-            };
+            const name = uniqueName(next, n.parentId, n.name, n.type, n.id);
+            next[n.id] =
+              name === n.name ? n : { ...n, name, dirty: isSeedId(n.id) };
           }
           if (!added.length) return;
           set({ nodes: next });
@@ -221,9 +244,12 @@ export const useFsStore = create<FsStore>()(
         },
       };
     },
-    persistOptions<FsStore, FsState>({
+    persistOptions<FsStore, PersistedFs>({
       name: 'fs',
-      partialize: ({ nodes, purgedSeeds }) => ({ nodes, purgedSeeds }),
+      partialize: ({ nodes, purgedSeeds }) => ({
+        nodes: toRecords(nodes, ENGLISH_SEEDS),
+        purgedSeeds,
+      }),
       sanitize: (persisted, current) => ({
         ...current,
         ...sanitizeFsState(persisted, Date.now()),
@@ -231,3 +257,17 @@ export const useFsStore = create<FsStore>()(
     }),
   ),
 );
+
+/** Seed ids exist in every locale; English decides which nodes are seeds with content. */
+const ENGLISH_SEEDS = seedLookup(seedFilesFor('en'));
+
+// Live switching: system folder names and untouched seeds re-render in the new language.
+let renderedIn = getLocale();
+useSettingsStore.subscribe(() => {
+  const locale = getLocale();
+  if (locale === renderedIn) return;
+  renderedIn = locale;
+  const { nodes } = useFsStore.getState();
+  const next = localizeNodes(nodes, locale, seedLookup(seedFilesFor(locale)));
+  if (next !== nodes) useFsStore.setState({ nodes: next });
+});

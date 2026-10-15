@@ -1,8 +1,8 @@
 // tinfoilcomets.example `/guestbook`: friends' entries by day plus the player's (persisted in `web`).
+import { usePlayerName } from '@/i18n/settingsText';
 import { useId, useState, type FormEvent } from 'react';
 import { TINFOIL_GUESTBOOK, TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
 import type { PlayerGuestbookEntry } from '@/content/sites/types';
-import { useSettingsStore } from '@/os/store/settings';
 import { useWorldStore } from '@/os/world';
 import { resolve } from '..';
 import { SiteLink } from '../../SiteLink';
@@ -30,7 +30,7 @@ export default function Guestbook() {
   const day = useWorldStore((s) => s.day);
   const mine = useWebStore((s) => s.guestbook[TINFOIL_HOST] ?? NONE);
   const sign = useWebStore((s) => s.signGuestbook);
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
   const [form, setForm] = useState({
     name: playerName,
     message: '',

@@ -68,15 +68,15 @@ P5-01 adds `messenger:setDisplayPicture { fileId }`. Every new event goes into `
 
 Every persisted store uses `persistOptions` with a `sanitize` that drops invalid entries and falls back to defaults. **Settings v0.2.** Each task moves its fields into `SettingsStore` with a setter and a sanitize; the defaults come from `SETTINGS_V02_DEFAULTS`.
 
-| Field                                             | Default                                                | Task     |
-| ------------------------------------------------- | ------------------------------------------------------ | -------- |
-| `wallpaper: WallpaperChoice`, `wallpaperPosition` | `{ kind: 'builtin', id: 'classic' }`, `'stretch'`      | P1-01    |
-| `theme: 'blue' \| 'olive' \| 'silver'`            | `'blue'`                                               | P1-02    |
-| `screensaver: { id, minutes, text }`              | `{ id: 'panes', minutes: 5, text: 'still online...' }` | P1-02/03 |
-| `connectAutomatically`                            | `true`                                                 | P1-05    |
-| `seenTips: string[]`                              | `[]`                                                   | P1-04    |
-| `awayMinutes`, `awayMessage`                      | `5`, `'brb'`                                           | P3-01    |
-| `petEnabled`, `assistantEnabled`                  | `false`, `true`                                        | P6-05/06 |
+| Field                                             | Default                                               | Task     |
+| ------------------------------------------------- | ----------------------------------------------------- | -------- |
+| `wallpaper: WallpaperChoice`, `wallpaperPosition` | `{ kind: 'builtin', id: 'classic' }`, `'stretch'`     | P1-01    |
+| `theme: 'blue' \| 'olive' \| 'silver'`            | `'blue'`                                              | P1-02    |
+| `screensaver: { id, minutes, text }`              | `{ id: 'panes', minutes: 5, text: null }` (localized) | P1-02/03 |
+| `connectAutomatically`                            | `true`                                                | P1-05    |
+| `seenTips: string[]`                              | `[]`                                                  | P1-04    |
+| `awayMinutes`, `awayMessage`                      | `5`, `null` (localized `brb`)                         | P3-01    |
+| `petEnabled`, `assistantEnabled`                  | `false`, `true`                                       | P6-05/06 |
 
 `WallpaperChoice = { kind: 'builtin'; id } | { kind: 'custom'; blobKey } | { kind: 'color'; color }`. A builtin id that doesn't exist (or is locked) renders as `classic`.
 

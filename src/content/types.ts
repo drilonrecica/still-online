@@ -12,8 +12,6 @@ export type ContactId = string;
 
 export type ContactStatus = 'online' | 'away' | 'busy' | 'offline';
 
-export type ContactGroup = 'Friends' | 'School' | 'Family';
-
 /** Every handle uses the fictional domain. */
 export type Handle = `${string}@livemail.example`;
 
@@ -30,7 +28,8 @@ export interface Contact {
   displayName: string;
   handle: Handle;
   avatar: Avatar;
-  group: ContactGroup;
+  /** Language-neutral id; the list renders `messenger.groups.<id>`. */
+  group: ContactGroupId;
   /**
    * Status the contact signs in with. `'offline'` signs in "appearing offline": the contact stays
    * in the Offline group with no sign-in toast, but their triggers are armed.

@@ -11,33 +11,34 @@ import {
   type AppId,
   type Size,
 } from '@/os/types';
+import { renderWindowTitle } from '@/os/wm/title';
 
 const WORK: Size = { w: 1000, h: 700 };
 
 const APPS: Partial<Record<AppId, WindowAppSpec>> = {
   notepad: {
     id: 'notepad',
-    title: 'Untitled - Notepad',
+    titleKey: 'apps.notepad.title',
     defaultSize: { w: 400, h: 300 },
     singleInstance: false,
   },
   mycomputer: {
     id: 'mycomputer',
-    title: 'My Computer',
+    titleKey: 'apps.mycomputer.title',
     defaultSize: { w: 400, h: 300 },
     minSize: { w: 300, h: 200 },
     singleInstance: true,
   },
   'messenger-chat': {
     id: 'messenger-chat',
-    title: 'Conversation',
+    titleKey: 'apps.messenger-chat.title',
     defaultSize: { w: 400, h: 300 },
     singleInstance: true,
     instanceKey: (props) => String(props.contactId),
   },
   amplifier: {
     id: 'amplifier',
-    title: 'Amplifier',
+    titleKey: 'apps.amplifier.title',
     defaultSize: { w: 5000, h: 5000 },
     singleInstance: true,
   },
@@ -64,7 +65,6 @@ describe('openApp', () => {
     const id = s().openApp('notepad', { file: 'a.txt' });
     expect(win(id)).toMatchObject({
       appId: 'notepad',
-      title: 'Untitled - Notepad',
       w: 400,
       h: 300,
       z: 1,
@@ -72,6 +72,11 @@ describe('openApp', () => {
       maximized: false,
       props: { file: 'a.txt' },
     });
+    expect(win(id)).not.toHaveProperty('title');
+    expect(win(id)).not.toHaveProperty('titleKey');
+    expect(renderWindowTitle(win(id), APPS.notepad, 'en')).toBe(
+      'Untitled - Notepad',
+    );
     expect(s().topZ).toBe(1);
     expect(active()).toBe(id);
   });
@@ -235,12 +240,22 @@ describe('closeWindow / closeAll', () => {
 });
 
 describe('setWindowTitle', () => {
-  it('renames one window', () => {
+  it('renames one window with a key and params, rendered per locale', () => {
     const a = s().openApp('notepad');
     const b = s().openApp('notepad');
-    s().setWindowTitle(a, 'Lena - Conversation');
-    expect(win(a).title).toBe('Lena - Conversation');
-    expect(win(b).title).toBe('Untitled - Notepad');
+    s().setWindowTitle(a, 'messenger.chatTitle', { name: 'Lena' });
+    expect(win(a)).toMatchObject({
+      titleKey: 'messenger.chatTitle',
+      titleParams: { name: 'Lena' },
+    });
+    const title = (id: string, locale: 'en' | 'de') =>
+      renderWindowTitle(win(id), APPS[win(id).appId], locale);
+    expect(title(a, 'en')).toBe('Lena - Conversation');
+    expect(title(a, 'de')).toBe('Lena - Unterhaltung');
+    expect(title(b, 'en')).toBe('Untitled - Notepad');
+    expect(title(b, 'de')).toBe('Unbenannt - Editor');
+    s().setWindowTitle(a, 'apps.notepad.title');
+    expect(win(a)).not.toHaveProperty('titleParams');
   });
 });
 
@@ -298,7 +313,6 @@ describe('clampPosition', () => {
 const APPS_WINDOW = {
   id: 'win-1',
   appId: 'notepad' as const,
-  title: 'Untitled - Notepad',
   x: 24,
   y: 24,
   w: 400,

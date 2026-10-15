@@ -10,7 +10,7 @@ export const kayla: ContactContent = {
     displayName: '~*Kayla*~ <3',
     handle: 'kayla.xoxo@livemail.example',
     avatar: { kind: 'pattern', seed: 'kayla', colors: ['#D63A6E', '#FFD1DC'] },
-    group: 'Friends',
+    group: 'friends',
     initialStatus: 'online',
     personalMessage: 'some ppl need to learn what loyalty means...',
     signInAfterMs: 75_000,

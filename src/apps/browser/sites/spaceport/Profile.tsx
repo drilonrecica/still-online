@@ -1,10 +1,10 @@
 // spaceport.example `/<contactId>`: a friend's profile, with the comment wall up to today's day.
 // Any other single-segment path lands here too and shows "Lost in orbit!".
+import { usePlayerName } from '@/i18n/settingsText';
 import { PROFILES } from '@/content/profiles';
 import { SPACEPORT_TEXT as T } from '@/content/sites/spaceport';
 import type { SitePageProps } from '@/content/sites/types';
 import { now } from '@/os/clock';
-import { useSettingsStore } from '@/os/store/settings';
 import { useWorldStore } from '@/os/world';
 import { SiteLink } from '../../SiteLink';
 import { Layout } from './Layout';
@@ -20,7 +20,7 @@ import styles from './Spaceport.module.css';
 
 export default function Profile({ path }: SitePageProps) {
   const day = useWorldStore((s) => s.day);
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
   const id = path.slice(1).toLowerCase();
   const profile = PROFILES.find((p) => p.contactId === id);
 

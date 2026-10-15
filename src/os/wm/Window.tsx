@@ -1,9 +1,11 @@
 // One window: the XP frame (chrome 'xp') or a bare positioned box (chrome 'none').
 import { Suspense, type CSSProperties, type MouseEvent } from 'react';
+import { useLocale } from '@/i18n/useT';
 import { useWindowsStore } from '@/os/store/windows';
 import { WM_MIN_SIZE, type AppDefinition, type WindowState } from '@/os/types';
 import { requestClose } from './closeGuard';
 import { ResizeHandles } from './ResizeHandles';
+import { renderWindowTitle } from './title';
 import { isFromControl, useWindowDrag } from './useWindowDrag';
 import styles from './Window.module.css';
 
@@ -34,6 +36,7 @@ export function Window({ win, app, active }: WindowProps) {
   const drag = useWindowDrag(win.id);
   const actions = () => useWindowsStore.getState();
   const AppComponent = app.component;
+  const title = renderWindowTitle(win, app, useLocale());
 
   const focus = () => actions().focusWindow(win.id);
   const content = (
@@ -43,7 +46,7 @@ export function Window({ win, app, active }: WindowProps) {
   );
 
   const rootProps = {
-    'aria-label': win.title,
+    'aria-label': title,
     'data-window-id': win.id,
     'data-active': active,
     hidden: win.minimized,
@@ -91,9 +94,7 @@ export function Window({ win, app, active }: WindowProps) {
           width={16}
           height={16}
         />
-        <div className={cx('title-bar-text', styles.titleText)}>
-          {win.title}
-        </div>
+        <div className={cx('title-bar-text', styles.titleText)}>{title}</div>
         <div className="title-bar-controls">
           <button
             type="button"

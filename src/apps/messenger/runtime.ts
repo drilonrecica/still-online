@@ -1,4 +1,5 @@
 // The app-wide conversation engine: one instance, created on first use, bound to the messenger store.
+import { getAwayMessage, getPlayerName } from '@/i18n/settingsText';
 import { contacts } from '@/content/contacts';
 import type { ContactContent } from '@/content/types';
 import { events } from '@/os/events';
@@ -37,7 +38,7 @@ function createEngine(): ConversationEngine {
   const created = createConversationEngine({
     contents,
     store: useMessengerStore,
-    getPlayerName: () => useSettingsStore.getState().playerName,
+    getPlayerName: () => getPlayerName(),
     isChatFocused,
     getDay: () => useWorldStore.getState().day,
     onUnlock: (id) => useWorldStore.getState().unlock(id),
@@ -166,7 +167,7 @@ function createEngine(): ConversationEngine {
     stopIdle = onIdle(minutes, () => {
       const { signedIn, progress, goAway } = useMessengerStore.getState();
       if (!signedIn || progress.player.status !== 'online') return;
-      goAway(useSettingsStore.getState().awayMessage, true);
+      goAway(getAwayMessage(), true);
     });
   };
   armIdle(useSettingsStore.getState().awayMinutes);

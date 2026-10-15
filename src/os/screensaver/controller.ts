@@ -1,5 +1,6 @@
 // Starts the chosen screensaver after `settings.screensaver.minutes` idle. Installed by the desktop
 // (so never during boot, login or off); re-arms when the setting changes.
+import { screensaverText } from '@/i18n/settingsText';
 import { onIdle } from '@/os/idle';
 import { useSettingsStore } from '@/os/store/settings';
 import type { ScreensaverSettings } from '@/os/types';
@@ -16,7 +17,9 @@ export function installScreensaver(): () => void {
         ? () => undefined
         : onIdle(minutes, () => {
             const current = useSettingsStore.getState().screensaver;
-            useScreensaverStore.getState().startIdle(current.id, current.text);
+            useScreensaverStore
+              .getState()
+              .startIdle(current.id, screensaverText(current));
           });
   };
 

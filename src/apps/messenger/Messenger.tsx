@@ -1,9 +1,11 @@
+import { formatNumber } from '@/i18n/format';
+import { usePlayerName } from '@/i18n/settingsText';
+import { useLocale, useT } from '@/i18n/useT';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ContactStatus, PlayerStatus } from '@/content/types';
 import { requireOnline } from '@/os/network';
 import { playSound } from '@/os/sound';
 import { scaleMs } from '@/os/speed';
-import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import { AwayPrompt, OptionsDialog } from './AwayDialogs';
 import { buildContactList, type ListGroupId } from './contactList';
@@ -36,7 +38,7 @@ export function handleFor(playerName: string): string {
 }
 
 function SignInView() {
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
   const [handle, setHandle] = useState(() => handleFor(playerName));
   const [signingIn, setSigningIn] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -159,7 +161,9 @@ function AwaitingReplyIcon() {
 }
 
 function ContactListView() {
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
+  const t = useT();
+  const locale = useLocale();
   const status = useMessengerStore((s) => s.progress.player.status);
   const awayMessage = useMessengerStore((s) => s.progress.player.awayMessage);
   const setStatus = useMessengerStore((s) => s.setPlayerStatus);
@@ -295,12 +299,19 @@ function ContactListView() {
       <div className={styles.list} role="group" aria-label="Contacts">
         {groups.map((group) => {
           const open = !collapsed.has(group.id);
+          const name = t(`messenger.groups.${group.id}`);
           const label =
-            group.id === 'Offline'
-              ? `Offline (${group.total})`
-              : `${group.id} (${group.online}/${group.total})`;
+            group.id === 'offline'
+              ? t('messenger.groups.offlineCount', {
+                  total: formatNumber(group.total, locale),
+                })
+              : t('messenger.groups.count', {
+                  group: name,
+                  online: formatNumber(group.online, locale),
+                  total: formatNumber(group.total, locale),
+                });
           return (
-            <div key={group.id} role="group" aria-label={group.id}>
+            <div key={group.id} role="group" aria-label={name}>
               <button
                 type="button"
                 className={styles.groupHeader}

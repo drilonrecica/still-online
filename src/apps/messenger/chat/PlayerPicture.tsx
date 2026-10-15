@@ -1,8 +1,8 @@
 // The player's display picture: a My Pictures file, or the default pattern from the player name.
+import { usePlayerName } from '@/i18n/settingsText';
 import { useBlobUrl } from '@/os/blobStore';
 import { PhotoCanvas } from '@/os/fs/FsIcon';
 import { useFsStore } from '@/os/fs/store';
-import { useSettingsStore } from '@/os/store/settings';
 import { useMessengerStore } from '../store';
 import { Avatar } from './Avatar';
 
@@ -19,7 +19,7 @@ export function PictureFile({
   label: string;
 }) {
   const node = useFsStore((s) => (fileId ? s.nodes[fileId] : undefined));
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
   const blobKey =
     node?.type === 'image' && !node.deletedFrom && !node.photo
       ? (node.blobKey ?? null)

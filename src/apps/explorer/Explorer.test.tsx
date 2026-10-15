@@ -6,8 +6,10 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { titleOf } from '@/test/windowTitle';
 import { systemFolders } from '@/os/fs/nodes';
 import { useFsStore } from '@/os/fs/store';
+import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import { WindowLayer } from '@/os/wm/WindowLayer';
 import { getApp } from '@/apps/registry';
@@ -30,7 +32,9 @@ describe('explorer app', () => {
     expect(await screen.findByLabelText('Address')).toHaveValue('My Documents');
     // The title is set in an effect, which may land just after the address renders.
     await waitFor(() =>
-      expect(useWindowsStore.getState().windows[0]?.title).toBe('My Documents'),
+      expect(titleOf(useWindowsStore.getState().windows[0]?.id)).toBe(
+        'My Documents',
+      ),
     );
     fireEvent.doubleClick(screen.getByText('My Pictures'));
     expect(screen.getByLabelText('Address')).toHaveValue(
@@ -38,7 +42,27 @@ describe('explorer app', () => {
     );
     // The title is set in an effect, which may land just after the address renders.
     await waitFor(() =>
-      expect(useWindowsStore.getState().windows[0]?.title).toBe('My Pictures'),
+      expect(titleOf(useWindowsStore.getState().windows[0]?.id)).toBe(
+        'My Pictures',
+      ),
+    );
+  });
+
+  it('renames folders and the title live when the language changes', async () => {
+    openExplorer('pics');
+    await waitFor(() =>
+      expect(titleOf(useWindowsStore.getState().windows[0]?.id)).toBe(
+        'My Pictures',
+      ),
+    );
+    act(() => useSettingsStore.setState({ language: 'de' }));
+    expect(screen.getByLabelText('Address')).toHaveValue(
+      'Eigene Dateien\\Eigene Bilder',
+    );
+    await waitFor(() =>
+      expect(titleOf(useWindowsStore.getState().windows[0]?.id)).toBe(
+        'Eigene Bilder',
+      ),
     );
   });
 

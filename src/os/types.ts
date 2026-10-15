@@ -1,6 +1,6 @@
 // Shared OS contracts. See docs/architecture.md for how the pieces fit together.
 import type { ComponentType, LazyExoticComponent } from 'react';
-import type { Locale } from '@/i18n/types';
+import type { Locale, MessageArgs, MessageKey, TextParams } from '@/i18n/types';
 
 // ---------------------------------------------------------------------------
 // Session state machine
@@ -90,7 +90,12 @@ export interface Size {
 export interface WindowState {
   id: string;
   appId: AppId;
-  title: string;
+  /**
+   * A title set at runtime (`setWindowTitle`); without it the title is the app's `titleKey`.
+   * Rendered in the current locale (`renderWindowTitle`), never stored as text.
+   */
+  titleKey?: MessageKey;
+  titleParams?: TextParams;
   /** Restore geometry in px, relative to the work area (viewport minus taskbar). Kept while maximized. */
   x: number;
   y: number;
@@ -111,9 +116,10 @@ export interface AppComponentProps {
 
 export interface AppDefinition {
   id: AppId;
-  title: string;
-  /** Short name for desktop icons and the Start menu; defaults to `title`. */
-  label?: string;
+  /** Catalog key of the default window title (`apps.<id>.title`). */
+  titleKey: MessageKey;
+  /** Short name for the Start menu; defaults to `titleKey`. */
+  labelKey?: MessageKey;
   /** Imported SVG URLs (`import icon from '@/assets/icons/x-16.svg'`). */
   icon16: string;
   icon32: string;
@@ -164,8 +170,16 @@ export interface WindowsStore {
   focusWindow: (id: string) => void;
   minimizeWindow: (id: string) => void;
   toggleMaximize: (id: string) => void;
-  /** Apps set a more specific title, e.g. "Lena - Conversation". */
-  setWindowTitle: (id: string, title: string) => void;
+  /**
+   * Apps set a more specific title as a catalog key + params, e.g.
+   * `setWindowTitle(id, 'messenger.chatTitle', { name: 'Lena' })`. Params are names the title
+   * shows (a file the player named, a contact); the app sets them again on a language switch.
+   */
+  setWindowTitle: <K extends MessageKey>(
+    id: string,
+    key: K,
+    ...args: MessageArgs<K>
+  ) => void;
   /** Apps keep `props` in step with what the window shows, so a restore reopens the same thing. */
   setWindowProps: (id: string, props: WindowProps) => void;
   moveWindow: (id: string, x: number, y: number) => void;
@@ -190,7 +204,8 @@ export const TITLEBAR_HEIGHT = 30;
 // ---------------------------------------------------------------------------
 
 export interface SettingsStore {
-  playerName: string;
+  /** `null` = the localized default (`Player`/`Spieler`); read it with `getPlayerName()`. */
+  playerName: string | null;
   muted: boolean;
   /** 0..1 */
   volume: number;
@@ -207,8 +222,11 @@ export interface SettingsStore {
   connectAutomatically: boolean;
   /** Idle minutes before Messenger goes Away; 0 = off. */
   awayMinutes: number;
-  /** The away message auto-away and the manual prompt start from. */
-  awayMessage: string;
+  /**
+   * The away message auto-away and the manual prompt start from. `null` = the localized default
+   * (`brb`/`bin gleich wieder da`); read it with `getAwayMessage()`. `''` is a real (empty) value.
+   */
+  awayMessage: string | null;
   /** Fluff the sheep walks the desktop. */
   petEnabled: boolean;
   /** Stapley the stapler offers tips. */
@@ -218,6 +236,7 @@ export interface SettingsStore {
    * effective locale only through `getLocale()`/`useLocale()` from `src/i18n/`.
    */
   language: Locale | null;
+  /** A name equal to the current locale's default is stored as `null`. */
   setPlayerName: (name: string) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
@@ -232,6 +251,7 @@ export interface SettingsStore {
   addSeenTip: (id: string) => void;
   setConnectAutomatically: (on: boolean) => void;
   setAwayMinutes: (minutes: number) => void;
+  /** Trimmed; a message equal to the current locale's default is stored as `null`. */
   setAwayMessage: (message: string) => void;
   setPetEnabled: (on: boolean) => void;
   setAssistantEnabled: (on: boolean) => void;
@@ -261,8 +281,8 @@ export interface ScreensaverSettings {
   id: ScreensaverId;
   /** Idle minutes before it starts, 1–60; 0 = never. */
   minutes: number;
-  /** Marquee text. */
-  text: string;
+  /** Marquee text; `null` = the localized default (`screensaverText()`). */
+  text: string | null;
 }
 
 export interface SettingsV02 {
@@ -272,7 +292,7 @@ export interface SettingsV02 {
   screensaver: ScreensaverSettings; // P1-02 / P1-03
   /** Idle minutes before Messenger goes Away; 0 = off. */
   awayMinutes: number; // P3-01
-  awayMessage: string; // P3-01
+  awayMessage: string | null; // P3-01
   connectAutomatically: boolean; // P1-05
   petEnabled: boolean; // P6-05
   assistantEnabled: boolean; // P6-06
@@ -284,9 +304,9 @@ export const SETTINGS_V02_DEFAULTS: Readonly<SettingsV02> = {
   wallpaper: { kind: 'builtin', id: 'classic' },
   wallpaperPosition: 'stretch',
   theme: 'blue',
-  screensaver: { id: 'panes', minutes: 5, text: 'still online...' },
+  screensaver: { id: 'panes', minutes: 5, text: null },
   awayMinutes: 5,
-  awayMessage: 'brb',
+  awayMessage: null,
   connectAutomatically: true,
   petEnabled: false,
   assistantEnabled: true,

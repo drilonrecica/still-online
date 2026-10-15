@@ -252,7 +252,7 @@ export default function TuneMole({ windowId }: AppComponentProps) {
   const [tab, setTab] = useState<Tab>('search');
 
   useEffect(() => {
-    useWindowsStore.getState().setWindowTitle(windowId, APP_NAME);
+    useWindowsStore.getState().setWindowTitle(windowId, 'apps.tunemole.title');
     if (useNetworkStore.getState().status !== 'online') void requireOnline();
   }, [windowId]);
 

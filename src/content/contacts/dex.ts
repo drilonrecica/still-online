@@ -10,7 +10,7 @@ export const dex: ContactContent = {
     displayName: 'dex',
     handle: 'dex.kickflip@livemail.example',
     avatar: { kind: 'pattern', seed: 'dex', colors: ['#E07B22', '#FFF4E0'] },
-    group: 'School',
+    group: 'school',
     initialStatus: 'away',
     personalMessage: 'skating. leave a msg',
     signInAfterMs: 270_000,

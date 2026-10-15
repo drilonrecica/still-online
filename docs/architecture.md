@@ -31,7 +31,7 @@ Apps keep their own stores in `src/apps/<id>/store.ts` (Notepad text, messenger 
 
 ## Windows
 
-`WindowState` = `{ id, appId, title, x, y, w, h, z, minimized, maximized, props }`.
+`WindowState` = `{ id, appId, titleKey?, titleParams?, x, y, w, h, z, minimized, maximized, props }`. The title is rendered, never stored: `titleKey`/`titleParams` from `setWindowTitle`, else the app's `titleKey` (see docs/i18n.md → "windows").
 
 - **Coordinates** are px in the _work area_: the viewport minus the 30px taskbar (`TASKBAR_HEIGHT`).
 - **Maximize** is a flag. `x/y/w/h` keep the restore geometry, and the Window component draws a maximized window over the whole work area.

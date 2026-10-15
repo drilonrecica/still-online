@@ -36,10 +36,13 @@ export function usePaintFiles(
   const [dialog, setDialog] = useState<PaintDialog>(null);
   const file = useFsStore((s) => (fileId ? s.nodes[fileId] : undefined));
   const dirty = doc.revision !== savedRev;
-  const name = file?.name ?? 'untitled';
+  const name = file?.name;
 
   useEffect(() => {
-    useWindowsStore.getState().setWindowTitle(windowId, `${name} - Paint`);
+    const windows = useWindowsStore.getState();
+    if (name === undefined)
+      windows.setWindowTitle(windowId, 'apps.paint.title');
+    else windows.setWindowTitle(windowId, 'paint.title', { file: name });
   }, [windowId, name]);
 
   useEffect(

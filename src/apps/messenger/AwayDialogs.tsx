@@ -1,4 +1,5 @@
 // Two small in-window dialogs: the Away-message prompt and Options (auto-away settings).
+import { getAwayMessage } from '@/i18n/settingsText';
 import { useId, useState, type FormEvent, type ReactNode } from 'react';
 import {
   MAX_AWAY_MESSAGE,
@@ -57,9 +58,7 @@ export function AwayPrompt({
   onConfirm: (message: string) => void;
   onCancel: () => void;
 }) {
-  const [message, setMessage] = useState(
-    () => useSettingsStore.getState().awayMessage,
-  );
+  const [message, setMessage] = useState(() => getAwayMessage());
   return (
     <Dialog
       title="Away message"
@@ -83,7 +82,7 @@ export function AwayPrompt({
 export function OptionsDialog({ onClose }: { onClose: () => void }) {
   const settings = useSettingsStore.getState();
   const [minutes, setMinutes] = useState(String(settings.awayMinutes));
-  const [message, setMessage] = useState(settings.awayMessage);
+  const [message, setMessage] = useState(getAwayMessage);
   return (
     <Dialog
       title="Options"

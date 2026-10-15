@@ -1,5 +1,6 @@
 // Web Explorer (app `browser`): IE6-style chrome around the fictional `.example` web.
 import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useLocale, useT } from '@/i18n/useT';
 import { requireOnline } from '@/os/network';
 import { useWindowsStore } from '@/os/store/windows';
 import type { AppComponentProps } from '@/os/types';
@@ -21,11 +22,10 @@ import { MenuBar, type Menu, type MenuEntry } from './MenuBar';
 import { NavigatorContext, type BrowserNavigator } from './navigator';
 import { LoadProgress } from './LoadProgress';
 import { resolve } from './sites';
-import { useWebStore } from './store';
+import { renderFavorites, useWebStore } from './store';
 import { useNavigation } from './useNavigation';
 
 export const APP_NAME = 'Web Explorer';
-export const ERROR_TITLE = 'Cannot find server';
 
 export default function Browser({ windowId, props }: AppComponentProps) {
   const nav = useNavigation(
@@ -35,14 +35,23 @@ export default function Browser({ windowId, props }: AppComponentProps) {
   const [hovered, setHovered] = useState<string | null>(null);
   const [paneOpen, setPaneOpen] = useState(false);
   const [about, setAbout] = useState(false);
-  const favorites = useWebStore((s) => s.favorites);
+  const favoriteRecords = useWebStore((s) => s.favorites);
+  const t = useT();
+  const locale = useLocale();
+  // Default favorites are named in the current language.
+  const favorites = useMemo(
+    () => renderFavorites(favoriteRecords, locale),
+    [favoriteRecords, locale],
+  );
 
   const shown = nav.shown;
   const page = useMemo(
     () => (shown && !shown.offline ? resolve(shown.url) : null),
     [shown],
   );
-  const pageTitle = shown ? (page?.page.title ?? ERROR_TITLE) : null;
+  const pageTitle = shown
+    ? (page?.page.title ?? t('browser.cannotFindServer'))
+    : null;
 
   // The address bar follows navigation; the window remembers the page for a restore.
   useEffect(() => {
@@ -51,12 +60,10 @@ export default function Browser({ windowId, props }: AppComponentProps) {
   }, [nav.url, windowId]);
 
   useEffect(() => {
-    useWindowsStore
-      .getState()
-      .setWindowTitle(
-        windowId,
-        pageTitle ? `${pageTitle} - ${APP_NAME}` : APP_NAME,
-      );
+    const windows = useWindowsStore.getState();
+    if (pageTitle)
+      windows.setWindowTitle(windowId, 'browser.title', { page: pageTitle });
+    else windows.setWindowTitle(windowId, 'apps.browser.title');
   }, [pageTitle, windowId]);
 
   const navigator: BrowserNavigator = useMemo(

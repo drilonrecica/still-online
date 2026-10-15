@@ -2,17 +2,16 @@
 // which re-render on a language switch. See docs/i18n.md → "Catalogs".
 import { useSettingsStore } from '@/os/store/settings';
 import { detectBrowserLocale } from './detect';
-import { de } from './messages/de';
-import { en } from './messages/en';
+import { MESSAGES } from './messages';
 import type {
   Locale,
   MessageArgs,
   MessageKey,
-  Messages,
   TFunction,
+  TextParams,
 } from './types';
 
-export const MESSAGES: Readonly<Record<Locale, Messages>> = { en, de };
+export { MESSAGES };
 
 /** The effective locale: the player's choice, or detection until they choose. */
 export function getLocale(): Locale {
@@ -66,3 +65,19 @@ export function translate<K extends MessageKey>(
 /** Translates `key` in the current locale. Reads the locale on every call; never caches. */
 export const t: TFunction = (key, ...args) =>
   translate(getLocale(), key, ...args);
+
+/**
+ * Renders a persisted reference (`TextRef`, a window's `titleKey`/`titleParams`) whose params
+ * were type-checked when it was stored.
+ */
+export function translateRef(
+  locale: Locale,
+  key: MessageKey,
+  params?: TextParams,
+): string {
+  return (
+    renderMessage(MESSAGES[locale], key, params) ??
+    renderMessage(MESSAGES.en, key, params) ??
+    key
+  );
+}

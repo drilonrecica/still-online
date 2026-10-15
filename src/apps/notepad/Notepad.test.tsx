@@ -1,8 +1,10 @@
 import { act, render, screen, waitFor, within } from '@testing-library/react';
+import { titleOf } from '@/test/windowTitle';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getApp } from '@/apps/registry';
 import { useFsStore } from '@/os/fs/store';
+import { useSettingsStore } from '@/os/store/settings';
 import { FS_FOLDERS } from '@/os/fs/types';
 import { useWindowsStore } from '@/os/store/windows';
 import { WindowLayer } from '@/os/wm/WindowLayer';
@@ -61,15 +63,34 @@ describe('Notepad with files', () => {
     expect(await screen.findByLabelText('Notepad document')).toHaveValue(
       'roses are red',
     );
-    await waitFor(() => expect(win(id)?.title).toBe('poem.txt - Notepad'));
+    await waitFor(() => expect(titleOf(id)).toBe('poem.txt - Notepad'));
+  });
+
+  it('follows the file while the buffer is unchanged; titles in German', async () => {
+    const user = userEvent.setup();
+    const fileId = fs().createFile(FS_FOLDERS.docs, {
+      name: 'a.txt',
+      type: 'txt',
+      text: 'one',
+    });
+    const id = openNotepad({ fileId });
+    const area = await screen.findByLabelText('Notepad document');
+    // What an untouched seed does on a language switch: its text changes under the editor.
+    act(() => fs().writeText(fileId, 'two'));
+    expect(area).toHaveValue('two');
+    await user.type(area, '!');
+    act(() => fs().writeText(fileId, 'three'));
+    expect(area).toHaveValue('two!');
+    act(() => useSettingsStore.setState({ language: 'de' }));
+    expect(titleOf(id)).toBe('*a.txt - Editor');
   });
 
   it('Untitled without a file; typing marks the title with *', async () => {
     const user = userEvent.setup();
     const id = openNotepad();
-    expect(win(id)?.title).toBe('Untitled - Notepad');
+    expect(titleOf(id)).toBe('Untitled - Notepad');
     await user.type(await screen.findByLabelText('Notepad document'), 'hi');
-    expect(win(id)?.title).toBe('*Untitled - Notepad');
+    expect(titleOf(id)).toBe('*Untitled - Notepad');
   });
 
   it('Save writes back to the fs and clears the *', async () => {
@@ -81,10 +102,10 @@ describe('Notepad with files', () => {
     });
     const id = openNotepad({ fileId });
     await user.type(await screen.findByLabelText('Notepad document'), 'bc');
-    expect(win(id)?.title).toBe('*poem.txt - Notepad');
+    expect(titleOf(id)).toBe('*poem.txt - Notepad');
     await menu(user, 'File', 'Save');
     expect(fs().get(fileId)?.text).toBe('abc');
-    expect(win(id)?.title).toBe('poem.txt - Notepad');
+    expect(titleOf(id)).toBe('poem.txt - Notepad');
   });
 
   it('Save As creates a file in the chosen name, retitles and keeps the fileId in props', async () => {
@@ -98,7 +119,7 @@ describe('Notepad with files', () => {
 
     const created = docs().find((n) => n.name === 'plans.txt');
     expect(created?.text).toBe('draft');
-    expect(win(id)?.title).toBe('plans.txt - Notepad');
+    expect(titleOf(id)).toBe('plans.txt - Notepad');
     expect(win(id)?.props).toEqual({ fileId: created?.id });
   });
 
@@ -123,7 +144,7 @@ describe('Notepad with files', () => {
     const dialog = screen.getByRole('dialog', { name: 'Open' });
     await user.dblClick(within(dialog).getByText('chosen.txt'));
     expect(screen.getByLabelText('Notepad document')).toHaveValue('picked');
-    expect(win(id)?.title).toBe('chosen.txt - Notepad');
+    expect(titleOf(id)).toBe('chosen.txt - Notepad');
   });
 
   it('asks before closing with unsaved changes: Cancel keeps, No closes, Yes saves then closes', async () => {

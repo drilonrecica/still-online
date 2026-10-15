@@ -1,7 +1,7 @@
 // Message History (app `messenger-history`): per-contact transcript browser with dates, search and Clear History.
+import { usePlayerName } from '@/i18n/settingsText';
 import { Fragment, useMemo, useState } from 'react';
 import type { AppComponentProps } from '@/os/types';
-import { useSettingsStore } from '@/os/store/settings';
 import { getMessengerContents } from '../runtime';
 import { useMessengerStore } from '../store';
 import { Avatar } from '../chat/Avatar';
@@ -38,7 +38,7 @@ function Highlight({ text, query }: { text: string; query: string }) {
 }
 
 export default function History({ props }: AppComponentProps) {
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
   const progress = useMessengerStore((s) => s.progress.contacts);
   const clearTranscript = useMessengerStore((s) => s.clearTranscript);
   const [picked, setPicked] = useState<string | null>(

@@ -1,7 +1,9 @@
 // Settings store. Persisted under `still-online:v1:settings`.
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { isLocale } from '@/i18n/types';
+import { detectBrowserLocale } from '@/i18n/detect';
+import { MESSAGES } from '@/i18n/messages';
+import { LOCALES, isLocale, type Locale } from '@/i18n/types';
 import { isRecord, persistOptions } from '@/os/persist';
 import {
   SETTINGS_V02_DEFAULTS,
@@ -30,6 +32,41 @@ export function sanitizeAwayMinutes(v: unknown): number | null {
     ? Math.min(MAX_AWAY_MINUTES, Math.max(0, Math.round(v)))
     : null;
 }
+
+type DefaultField = keyof (typeof MESSAGES)['en']['defaults'];
+
+/** True when `value` is some locale's default for `field` (so it is stored as `null`). */
+function isLocalizedDefault(field: DefaultField, value: string): boolean {
+  return LOCALES.some((l) => MESSAGES[l].defaults[field] === value);
+}
+
+/** `null` for a value equal to `locale`'s default, so it follows later language switches. */
+function storedText(
+  field: DefaultField,
+  value: string,
+  locale: Locale,
+): string | null {
+  return MESSAGES[locale].defaults[field] === value ? null : value;
+}
+
+/**
+ * Untrusted persisted text for a field with a localized default: `null` stays `null`, and so
+ * does any locale's default (v0.2 saves stored `'Player'`, `'brb'` and `'still online...'`).
+ */
+function sanitizeDefaulted(
+  field: DefaultField,
+  v: unknown,
+  max: number,
+): string | null | undefined {
+  if (v === null) return null;
+  if (typeof v !== 'string') return undefined;
+  const text = v.slice(0, max);
+  return isLocalizedDefault(field, text) ? null : text;
+}
+
+/** `value` unless it is `undefined` (invalid); `null` is a real value here. */
+const orFallback = <T>(value: T | undefined, fallback: T): T =>
+  value === undefined ? fallback : value;
 
 const nonEmpty = (v: unknown): v is string => typeof v === 'string' && !!v;
 
@@ -84,9 +121,12 @@ export function sanitizeScreensaver(
       ? Math.min(60, Math.max(0, Math.round(v.minutes)))
       : fallback.minutes;
   const text =
-    typeof v.text === 'string' && v.text.trim()
-      ? v.text.slice(0, MAX_SCREENSAVER_TEXT)
-      : fallback.text;
+    typeof v.text === 'string' && !v.text.trim()
+      ? fallback.text
+      : orFallback(
+          sanitizeDefaulted('screensaverText', v.text, MAX_SCREENSAVER_TEXT),
+          fallback.text,
+        );
   return { id, minutes, text };
 }
 
@@ -112,61 +152,81 @@ type PersistedSettings = Pick<
 
 export const useSettingsStore = create<SettingsStore>()(
   persist(
-    (set) => ({
-      playerName: 'Player',
-      muted: false,
-      volume: 0.7,
-      firstBootDone: false,
-      smallScreenNoticeDismissed: false,
-      wallpaper: SETTINGS_V02_DEFAULTS.wallpaper,
-      wallpaperPosition: SETTINGS_V02_DEFAULTS.wallpaperPosition,
-      theme: SETTINGS_V02_DEFAULTS.theme,
-      screensaver: SETTINGS_V02_DEFAULTS.screensaver,
-      seenTips: SETTINGS_V02_DEFAULTS.seenTips,
-      connectAutomatically: SETTINGS_V02_DEFAULTS.connectAutomatically,
-      awayMinutes: SETTINGS_V02_DEFAULTS.awayMinutes,
-      awayMessage: SETTINGS_V02_DEFAULTS.awayMessage,
-      petEnabled: SETTINGS_V02_DEFAULTS.petEnabled,
-      assistantEnabled: SETTINGS_V02_DEFAULTS.assistantEnabled,
-      language: null,
-      setPlayerName: (playerName) => set({ playerName }),
-      setMuted: (muted) => set({ muted }),
-      toggleMuted: () => set((s) => ({ muted: !s.muted })),
-      setVolume: (volume) => set({ volume: clamp01(volume) }),
-      markFirstBootDone: () => set({ firstBootDone: true }),
-      dismissSmallScreenNotice: () => set({ smallScreenNoticeDismissed: true }),
-      setWallpaper: (wallpaper) =>
-        set((s) => ({
-          wallpaper: sanitizeWallpaper(wallpaper) ?? s.wallpaper,
-        })),
-      setWallpaperPosition: (position) =>
-        set((s) => ({
-          wallpaperPosition:
-            sanitizeWallpaperPosition(position) ?? s.wallpaperPosition,
-        })),
-      setTheme: (theme) =>
-        set((s) => ({ theme: sanitizeTheme(theme) ?? s.theme })),
-      setScreensaver: (screensaver) =>
-        set((s) => ({
-          screensaver: sanitizeScreensaver(screensaver, s.screensaver),
-        })),
-      addSeenTip: (id) =>
-        set((s) =>
-          s.seenTips.includes(id) ? s : { seenTips: [...s.seenTips, id] },
-        ),
-      setConnectAutomatically: (connectAutomatically) =>
-        set({ connectAutomatically }),
-      setAwayMinutes: (minutes) =>
-        set((s) => ({
-          awayMinutes: sanitizeAwayMinutes(minutes) ?? s.awayMinutes,
-        })),
-      setAwayMessage: (message) =>
-        set({ awayMessage: message.trim().slice(0, MAX_AWAY_MESSAGE) }),
-      setPetEnabled: (petEnabled) => set({ petEnabled }),
-      setAssistantEnabled: (assistantEnabled) => set({ assistantEnabled }),
-      setLanguage: (language) =>
-        set({ language: isLocale(language) ? language : null }),
-    }),
+    (set, get) => {
+      const locale = () => get().language ?? detectBrowserLocale();
+      return {
+        playerName: null,
+        muted: false,
+        volume: 0.7,
+        firstBootDone: false,
+        smallScreenNoticeDismissed: false,
+        wallpaper: SETTINGS_V02_DEFAULTS.wallpaper,
+        wallpaperPosition: SETTINGS_V02_DEFAULTS.wallpaperPosition,
+        theme: SETTINGS_V02_DEFAULTS.theme,
+        screensaver: SETTINGS_V02_DEFAULTS.screensaver,
+        seenTips: SETTINGS_V02_DEFAULTS.seenTips,
+        connectAutomatically: SETTINGS_V02_DEFAULTS.connectAutomatically,
+        awayMinutes: SETTINGS_V02_DEFAULTS.awayMinutes,
+        awayMessage: SETTINGS_V02_DEFAULTS.awayMessage,
+        petEnabled: SETTINGS_V02_DEFAULTS.petEnabled,
+        assistantEnabled: SETTINGS_V02_DEFAULTS.assistantEnabled,
+        language: null,
+        setPlayerName: (playerName) =>
+          set({ playerName: storedText('playerName', playerName, locale()) }),
+        setMuted: (muted) => set({ muted }),
+        toggleMuted: () => set((s) => ({ muted: !s.muted })),
+        setVolume: (volume) => set({ volume: clamp01(volume) }),
+        markFirstBootDone: () => set({ firstBootDone: true }),
+        dismissSmallScreenNotice: () =>
+          set({ smallScreenNoticeDismissed: true }),
+        setWallpaper: (wallpaper) =>
+          set((s) => ({
+            wallpaper: sanitizeWallpaper(wallpaper) ?? s.wallpaper,
+          })),
+        setWallpaperPosition: (position) =>
+          set((s) => ({
+            wallpaperPosition:
+              sanitizeWallpaperPosition(position) ?? s.wallpaperPosition,
+          })),
+        setTheme: (theme) =>
+          set((s) => ({ theme: sanitizeTheme(theme) ?? s.theme })),
+        setScreensaver: (screensaver) =>
+          set((s) => {
+            const next = sanitizeScreensaver(screensaver, s.screensaver);
+            return {
+              screensaver: {
+                ...next,
+                text:
+                  next.text === null
+                    ? null
+                    : storedText('screensaverText', next.text, locale()),
+              },
+            };
+          }),
+        addSeenTip: (id) =>
+          set((s) =>
+            s.seenTips.includes(id) ? s : { seenTips: [...s.seenTips, id] },
+          ),
+        setConnectAutomatically: (connectAutomatically) =>
+          set({ connectAutomatically }),
+        setAwayMinutes: (minutes) =>
+          set((s) => ({
+            awayMinutes: sanitizeAwayMinutes(minutes) ?? s.awayMinutes,
+          })),
+        setAwayMessage: (message) =>
+          set({
+            awayMessage: storedText(
+              'awayMessage',
+              message.trim().slice(0, MAX_AWAY_MESSAGE),
+              locale(),
+            ),
+          }),
+        setPetEnabled: (petEnabled) => set({ petEnabled }),
+        setAssistantEnabled: (assistantEnabled) => set({ assistantEnabled }),
+        setLanguage: (language) =>
+          set({ language: isLocale(language) ? language : null }),
+      };
+    },
     persistOptions<SettingsStore, PersistedSettings>({
       name: 'settings',
       partialize: ({
@@ -210,9 +270,12 @@ export const useSettingsStore = create<SettingsStore>()(
         return {
           ...current,
           playerName:
-            typeof p.playerName === 'string' && p.playerName
-              ? p.playerName
-              : current.playerName,
+            p.playerName === ''
+              ? current.playerName
+              : orFallback(
+                  sanitizeDefaulted('playerName', p.playerName, Infinity),
+                  current.playerName,
+                ),
           muted: typeof p.muted === 'boolean' ? p.muted : current.muted,
           volume:
             typeof p.volume === 'number' && Number.isFinite(p.volume)
@@ -247,10 +310,10 @@ export const useSettingsStore = create<SettingsStore>()(
               : current.connectAutomatically,
           awayMinutes:
             sanitizeAwayMinutes(p.awayMinutes) ?? current.awayMinutes,
-          awayMessage:
-            typeof p.awayMessage === 'string'
-              ? p.awayMessage.slice(0, MAX_AWAY_MESSAGE)
-              : current.awayMessage,
+          awayMessage: orFallback(
+            sanitizeDefaulted('awayMessage', p.awayMessage, MAX_AWAY_MESSAGE),
+            current.awayMessage,
+          ),
           petEnabled:
             typeof p.petEnabled === 'boolean'
               ? p.petEnabled

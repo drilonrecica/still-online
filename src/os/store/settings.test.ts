@@ -1,4 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
+import {
+  getAwayMessage,
+  getPlayerName,
+  screensaverText,
+} from '@/i18n/settingsText';
 import { storageKey } from '@/os/persist';
 import { SETTINGS_V02_DEFAULTS } from '@/os/types';
 import {
@@ -217,5 +222,72 @@ describe('language', () => {
       await useSettingsStore.persist.rehydrate();
       expect(useSettingsStore.getState().language).toBeNull();
     }
+  });
+});
+
+describe('localized defaults (playerName, awayMessage, screensaver text)', () => {
+  const s = () => useSettingsStore.getState();
+
+  it('start as null and render in the current language', () => {
+    useSettingsStore.setState({ language: 'en' });
+    expect(s()).toMatchObject({
+      playerName: null,
+      awayMessage: null,
+      screensaver: { text: null },
+    });
+    expect([getPlayerName(), getAwayMessage()]).toEqual(['Player', 'brb']);
+    useSettingsStore.setState({ language: 'de' });
+    expect([getPlayerName(), getAwayMessage()]).toEqual([
+      'Spieler',
+      'bin gleich wieder da',
+    ]);
+    expect(screensaverText(s().screensaver)).toBe('still online...');
+  });
+
+  it("store a value equal to the current language's default as null", () => {
+    useSettingsStore.setState({ language: 'de' });
+    s().setPlayerName('Spieler');
+    s().setAwayMessage('  bin gleich wieder da ');
+    s().setScreensaver({ ...s().screensaver, text: 'still online...' });
+    expect(s()).toMatchObject({
+      playerName: null,
+      awayMessage: null,
+      screensaver: { text: null },
+    });
+    s().setPlayerName('Player'); // a real name in German
+    s().setAwayMessage('');
+    expect(s()).toMatchObject({ playerName: 'Player', awayMessage: '' });
+  });
+
+  it('migrate the v0.2 English defaults to null and keep typed values', async () => {
+    const restore = async (state: object) => {
+      localStorage.setItem(
+        storageKey('settings'),
+        JSON.stringify({ state, version: 1 }),
+      );
+      await useSettingsStore.persist.rehydrate();
+    };
+    await restore({
+      playerName: 'Player',
+      awayMessage: 'brb',
+      screensaver: { id: 'marquee', minutes: 5, text: 'still online...' },
+    });
+    expect(s()).toMatchObject({
+      playerName: null,
+      awayMessage: null,
+      screensaver: { id: 'marquee', text: null },
+    });
+    await restore({
+      playerName: 'Ada',
+      awayMessage: '',
+      screensaver: { id: 'marquee', minutes: 5, text: 'hey' },
+    });
+    expect(s()).toMatchObject({
+      playerName: 'Ada',
+      awayMessage: '',
+      screensaver: { text: 'hey' },
+    });
+    await restore({ playerName: 3, awayMessage: null });
+    expect(s()).toMatchObject({ playerName: 'Ada', awayMessage: null });
   });
 });

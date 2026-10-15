@@ -44,7 +44,7 @@ import wrecker32 from '@/assets/icons/wrecker-32.svg';
 export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   explorer: {
     id: 'explorer',
-    title: 'Explorer',
+    titleKey: 'apps.explorer.title',
     icon16: folder16,
     icon32: folder32,
     component: lazy(() => import('./explorer/Explorer')),
@@ -60,8 +60,8 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   display: {
     id: 'display',
-    title: 'Display Properties',
-    label: 'Display',
+    titleKey: 'apps.display.title',
+    labelKey: 'apps.display.label',
     icon16: display16,
     icon32: display32,
     component: lazy(() => import('./display/Display')),
@@ -76,7 +76,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   diskcleanup: {
     id: 'diskcleanup',
-    title: 'Disk Cleanup',
+    titleKey: 'apps.diskcleanup.title',
     icon16: diskCleanup16,
     icon32: diskCleanup32,
     component: lazy(() => import('./diskcleanup/DiskCleanup')),
@@ -91,7 +91,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   mycomputer: {
     id: 'mycomputer',
-    title: 'My Computer',
+    titleKey: 'apps.mycomputer.title',
     icon16: myComputer16,
     icon32: myComputer32,
     component: lazy(() => import('./mycomputer/MyComputer')),
@@ -104,7 +104,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   messenger: {
     id: 'messenger',
-    title: 'Messenger',
+    titleKey: 'apps.messenger.title',
     icon16: messenger16,
     icon32: messenger32,
     component: lazy(() => import('./messenger/Messenger')),
@@ -119,7 +119,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   'messenger-chat': {
     id: 'messenger-chat',
-    title: 'Conversation',
+    titleKey: 'apps.messenger-chat.title',
     icon16: messenger16,
     icon32: messenger32,
     component: lazy(() => import('./messenger/chat/Chat')),
@@ -133,7 +133,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   'messenger-history': {
     id: 'messenger-history',
-    title: 'Message History',
+    titleKey: 'apps.messenger-history.title',
     icon16: messenger16,
     icon32: messenger32,
     component: lazy(() => import('./messenger/history/History')),
@@ -146,7 +146,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   dialup: {
     id: 'dialup',
-    title: 'Connect to the Internet',
+    titleKey: 'apps.dialup.title',
     icon16: dialup16,
     icon32: dialup32,
     component: lazy(() => import('./dialup/Dialup')),
@@ -161,7 +161,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   browser: {
     id: 'browser',
-    title: 'Web Explorer',
+    titleKey: 'apps.browser.title',
     icon16: browser16,
     icon32: browser32,
     component: lazy(() => import('./browser/Browser')),
@@ -176,7 +176,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   mail: {
     id: 'mail',
-    title: 'Mail',
+    titleKey: 'apps.mail.title',
     icon16: mail16,
     icon32: mail32,
     component: lazy(() => import('./mail/Mail')),
@@ -191,7 +191,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   tunemole: {
     id: 'tunemole',
-    title: 'TuneMole',
+    titleKey: 'apps.tunemole.title',
     icon16: tunemole16,
     icon32: tunemole32,
     component: lazy(() => import('./tunemole/TuneMole')),
@@ -205,7 +205,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   amplifier: {
     id: 'amplifier',
-    title: 'Amplifier',
+    titleKey: 'apps.amplifier.title',
     icon16: amplifier16,
     icon32: amplifier32,
     component: lazy(() => import('./amplifier/Amplifier')),
@@ -221,8 +221,8 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   notepad: {
     id: 'notepad',
-    title: 'Untitled - Notepad',
-    label: 'Notepad',
+    titleKey: 'apps.notepad.title',
+    labelKey: 'apps.notepad.label',
     icon16: notepad16,
     icon32: notepad32,
     component: lazy(() => import('./notepad/Notepad')),
@@ -236,8 +236,8 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   paint: {
     id: 'paint',
-    title: 'untitled - Paint',
-    label: 'Paint',
+    titleKey: 'apps.paint.title',
+    labelKey: 'apps.paint.label',
     icon16: paint16,
     icon32: paint32,
     component: lazy(() => import('./paint/Paint')),
@@ -252,7 +252,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   photobooth: {
     id: 'photobooth',
-    title: 'Snapshot Booth',
+    titleKey: 'apps.photobooth.title',
     icon16: photobooth16,
     icon32: photobooth32,
     component: lazy(() => import('./photobooth/Photobooth')),
@@ -266,7 +266,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   mines: {
     id: 'mines',
-    title: 'Mines',
+    titleKey: 'apps.mines.title',
     icon16: mines16,
     icon32: mines32,
     component: lazy(() => import('./mines/Mines')),
@@ -282,7 +282,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   henhunt: {
     id: 'henhunt',
-    title: 'Hen Hunt',
+    titleKey: 'apps.henhunt.title',
     icon16: henhunt16,
     icon32: henhunt32,
     component: lazy(() => import('./henhunt/HenHunt')),
@@ -296,7 +296,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   pinball: {
     id: 'pinball',
-    title: 'Star Pinball',
+    titleKey: 'apps.pinball.title',
     icon16: pinball16,
     icon32: pinball32,
     component: lazy(() => import('./pinball/Pinball')),
@@ -311,7 +311,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   // A full-screen overlay portalled to document.body; the window itself stays an empty box.
   wrecker: {
     id: 'wrecker',
-    title: 'Desktop Wrecker',
+    titleKey: 'apps.wrecker.title',
     icon16: wrecker16,
     icon32: wrecker32,
     component: lazy(() => import('./wrecker/Wrecker')),
@@ -326,7 +326,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   // No window of its own: opening it switches Stapley back on and closes at once (P6-06).
   stapley: {
     id: 'stapley',
-    title: 'Stapley',
+    titleKey: 'apps.stapley.title',
     icon16: stapley16,
     icon32: stapley32,
     component: lazy(() => import('./stapley/Stapley')),
@@ -340,7 +340,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   },
   recyclebin: {
     id: 'recyclebin',
-    title: 'Recycle Bin',
+    titleKey: 'apps.recyclebin.title',
     icon16: recycleBin16,
     icon32: recycleBin32,
     component: lazy(() => import('./recyclebin/RecycleBin')),

@@ -1,4 +1,5 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
+import { titleOf } from '@/test/windowTitle';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useWindowsStore } from '@/os/store/windows';
@@ -99,7 +100,7 @@ describe('registry', () => {
       expect((await screen.findAllByText(text)).length).toBeGreaterThan(0);
     } else {
       expect(await screen.findByLabelText('Notepad document')).toBeTruthy();
-      expect(useWindowsStore.getState().windows[0]?.title).toBe(
+      expect(titleOf(useWindowsStore.getState().windows[0]?.id)).toBe(
         'Untitled - Notepad',
       );
     }

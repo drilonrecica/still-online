@@ -1,4 +1,5 @@
-import { act, render, screen, within } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
+import { titleOf } from '@/test/windowTitle';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { MailContent } from '@/content/mail/types';
@@ -15,8 +16,14 @@ import {
   MAIL_DEFAULTS,
   cancelPendingReplies,
   installMailDelivery,
+  playerAddress,
   useMailStore,
 } from './store';
+import { renderMails } from './records';
+
+/** The mailbox as the player reads it, in English. */
+const shown = () =>
+  renderMails(useMailStore.getState().messages, 'en', playerAddress());
 
 const CONTENT: MailContent[] = [
   {
@@ -104,7 +111,7 @@ describe('mail store', () => {
     useMailStore
       .getState()
       .send({ to: 'nobody@nowhere.example', subject: 'hi', body: 'x' });
-    const msgs = useMailStore.getState().messages;
+    const msgs = shown();
     expect(msgs.find((m) => m.folder === 'sent')?.subject).toBe('hi');
     const bounce = msgs.find((m) => m.folder === 'inbox');
     expect(bounce?.from.name).toBe('Mail Delivery Subsystem');
@@ -121,15 +128,11 @@ describe('mail store', () => {
       useMailStore.getState().messages.filter((m) => m.folder === 'inbox'),
     ).toHaveLength(0);
     await act(() => vi.advanceTimersByTimeAsync(20_000));
-    const first = useMailStore
-      .getState()
-      .messages.filter((m) => m.folder === 'inbox');
+    const first = shown().filter((m) => m.folder === 'inbox');
     expect(first).toHaveLength(1);
     go();
     await act(() => vi.advanceTimersByTimeAsync(20_000));
-    const all = useMailStore
-      .getState()
-      .messages.filter((m) => m.folder === 'inbox');
+    const all = shown().filter((m) => m.folder === 'inbox');
     expect(all).toHaveLength(2);
     expect(all[1]?.body).toMatch(/chat/i);
     expect(all[1]?.body).not.toBe(first[0]?.body);
@@ -200,11 +203,26 @@ describe('Mail app', () => {
     await user.click(within(form).getByRole('button', { name: 'Send' }));
     await act(() => vi.advanceTimersByTimeAsync(0));
     expect(
-      useMailStore
-        .getState()
-        .messages.some((m) => m.folder === 'sent' && m.subject === 'hello'),
+      shown().some((m) => m.folder === 'sent' && m.subject === 'hello'),
     ).toBe(true);
     expect(screen.getByText('hello')).toBeTruthy();
+  });
+
+  it('renders folders, the title and generated mail in German after a switch', async () => {
+    useMailStore
+      .getState()
+      .send({ to: 'nobody@nowhere.example', subject: '', body: 'x' });
+    renderMail();
+    const windowId = useWindowsStore.getState().windows[0]?.id;
+    expect(screen.getByText('Undeliverable: (no subject)')).toBeTruthy();
+    act(() => useSettingsStore.setState({ language: 'de' }));
+    expect(
+      screen.getByRole('button', { name: 'Posteingang (4)' }),
+    ).toBeTruthy();
+    expect(screen.getByText('Unzustellbar: (kein Betreff)')).toBeTruthy();
+    await waitFor(() =>
+      expect(titleOf(windowId)).toBe('Posteingang (4) - Mail'),
+    );
   });
 
   it('shows the offline notice with Connect', () => {

@@ -1,6 +1,7 @@
 // Taskbar: Start button, one button per open window, and the tray (network, Messenger, Fluff, mute, clock).
 import { useEffect, useState } from 'react';
 import { getApp } from '@/apps/registry';
+import { useLocale } from '@/i18n/useT';
 import {
   formatLongDate,
   formatTrayTime,
@@ -15,6 +16,7 @@ import { useMessengerStore } from '@/apps/messenger/store';
 import { StatusIcon } from '@/apps/messenger/StatusIcon';
 import { PetTray } from '@/os/pet/PetTray';
 import { NetworkTray } from './NetworkTray';
+import { renderWindowTitle } from '@/os/wm/title';
 import styles from './Taskbar.module.css';
 
 export interface TaskbarProps {
@@ -55,6 +57,7 @@ function TrayClock() {
 
 export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
   const windows = useWindowsStore((s) => s.windows);
+  const locale = useLocale();
   const activeId = useWindowsStore(selectActiveWindowId);
   const muted = useSettingsStore((s) => s.muted);
   const toggleMuted = useSettingsStore((s) => s.toggleMuted);
@@ -99,7 +102,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
               data-active={active}
               data-attention={flashing}
               aria-description={flashing ? 'wants your attention' : undefined}
-              title={win.title}
+              title={renderWindowTitle(win, app, locale)}
               onClick={() => onWindowButton(win.id)}
             >
               {icon && (
@@ -111,7 +114,9 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
                   draggable={false}
                 />
               )}
-              <span className={styles.windowTitle}>{win.title}</span>
+              <span className={styles.windowTitle}>
+                {renderWindowTitle(win, app, locale)}
+              </span>
             </button>
           );
         })}

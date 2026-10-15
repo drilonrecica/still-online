@@ -1,6 +1,7 @@
 // Window manager store. Semantics are documented in docs/architecture.md → "Windows".
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { isMessageKey, sanitizeTextParams } from '@/i18n/refs';
 import { isRecord, persistOptions } from '@/os/persist';
 import {
   CASCADE_ORIGIN,
@@ -16,11 +17,17 @@ import {
   type WindowState,
   type WindowsStore,
 } from '@/os/types';
+import type { TextParams } from '@/i18n/types';
 
 /** The part of an `AppDefinition` the window manager needs. */
 export type WindowAppSpec = Pick<
   AppDefinition,
-  'id' | 'title' | 'defaultSize' | 'minSize' | 'singleInstance' | 'instanceKey'
+  | 'id'
+  | 'titleKey'
+  | 'defaultSize'
+  | 'minSize'
+  | 'singleInstance'
+  | 'instanceKey'
 >;
 
 export type AppResolver = (appId: AppId) => WindowAppSpec | undefined;
@@ -107,11 +114,11 @@ function restoreWindow(
   deps: WindowsStoreDeps,
 ): WindowState | null {
   if (!isRecord(raw)) return null;
-  const { id, appId, title, x, y, w, h, z, minimized, maximized, props } = raw;
+  // v0.2 saves have a rendered `title`: it is ignored, the app sets its title again on mount.
+  const { id, appId, x, y, w, h, z, minimized, maximized, props } = raw;
   if (
     typeof id !== 'string' ||
     typeof appId !== 'string' ||
-    typeof title !== 'string' ||
     !isNum(x) ||
     !isNum(y) ||
     !isNum(w) ||
@@ -129,10 +136,13 @@ function restoreWindow(
   const work = deps.getWorkArea();
   const width = Math.max(w, min.w);
   const height = Math.max(h, min.h);
+  const titleParams = sanitizeTextParams(raw.titleParams);
   return {
     id,
     appId: appId as AppId,
-    title,
+    ...(isMessageKey(raw.titleKey)
+      ? { titleKey: raw.titleKey, ...(titleParams ? { titleParams } : {}) }
+      : {}),
     ...clampPosition(x, y, width, work),
     w: width,
     h: height,
@@ -242,7 +252,6 @@ export function createWindowsStore(deps: WindowsStoreDeps) {
             {
               id,
               appId,
-              title: app.title,
               x,
               y,
               w,
@@ -278,8 +287,17 @@ export function createWindowsStore(deps: WindowsStoreDeps) {
         focus(id);
       },
 
-      setWindowTitle(id, title) {
-        update(id, () => ({ title }));
+      setWindowTitle(id, titleKey, ...args) {
+        const titleParams = args[0] as TextParams | undefined;
+        set((state) => ({
+          windows: state.windows.map((win) => {
+            if (win.id !== id) return win;
+            const next: WindowState = { ...win, titleKey };
+            if (titleParams) next.titleParams = titleParams;
+            else delete next.titleParams;
+            return next;
+          }),
+        }));
       },
 
       setWindowProps(id, props) {

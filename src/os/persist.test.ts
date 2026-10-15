@@ -8,7 +8,7 @@ import { storageKey } from '@/os/persist';
 
 const app = {
   id: 'notepad' as const,
-  title: 'Notepad',
+  titleKey: 'apps.notepad.title' as const,
   defaultSize: { w: 400, h: 300 },
   singleInstance: false,
 };
@@ -52,13 +52,14 @@ describe('settings', () => {
   );
 
   it('resets on a version mismatch', async () => {
+    // setState saves, so the old-version item is written after it.
+    useSettingsStore.setState({ playerName: 'Zed', muted: false });
     localStorage.setItem(
       storageKey('settings'),
       JSON.stringify({ state: { playerName: 'Old', muted: true }, version: 0 }),
     );
-    useSettingsStore.setState({ playerName: 'Player', muted: false });
     await useSettingsStore.persist.rehydrate();
-    expect(useSettingsStore.getState().playerName).toBe('Player');
+    expect(useSettingsStore.getState().playerName).toBe('Zed');
     expect(useSettingsStore.getState().muted).toBe(false);
   });
 

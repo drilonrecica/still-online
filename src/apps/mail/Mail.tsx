@@ -8,8 +8,10 @@ import type {
   MailMessage,
 } from '@/content/mail/types';
 import { toGameDate } from '@/os/clock';
-import { formatShortDate, formatTime } from '@/i18n/format';
+import { formatNumber, formatShortDate, formatTime } from '@/i18n/format';
 import { getLocale } from '@/i18n/t';
+import { usePlayerName } from '@/i18n/settingsText';
+import { useLocale, useT } from '@/i18n/useT';
 import { events } from '@/os/events';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
@@ -18,15 +20,11 @@ import { splitLinks } from '@/os/linkify';
 import { useWindowsStore } from '@/os/store/windows';
 import type { AppComponentProps } from '@/os/types';
 import styles from './Mail.module.css';
-import { useMailStore } from './store';
+import { renderMails } from './records';
+import { playerAddress, useMailStore } from './store';
 
 export const APP_NAME = 'Mail';
 
-const FOLDER_LABELS: Record<MailFolder, string> = {
-  inbox: 'Inbox',
-  sent: 'Sent Items',
-  deleted: 'Deleted Items',
-};
 const FOLDER_ORDER: readonly MailFolder[] = ['inbox', 'sent', 'deleted'];
 
 /** `10/14/2007 3:07 PM` in game time. */
@@ -158,7 +156,15 @@ function Compose({
 }
 
 export default function Mail({ windowId }: AppComponentProps) {
-  const messages = useMailStore((s) => s.messages);
+  const t = useT();
+  const locale = useLocale();
+  const records = useMailStore((s) => s.messages);
+  const playerName = usePlayerName();
+  // Rendered in the current language on every switch; only player-written mail is stored as text.
+  const messages = useMemo(
+    () => renderMails(records, locale, playerAddress(playerName)),
+    [records, locale, playerName],
+  );
   const online = useNetworkStore((s) => s.status === 'online');
   const [folder, setFolder] = useState<MailFolder>('inbox');
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -175,16 +181,19 @@ export default function Mail({ windowId }: AppComponentProps) {
   const selected = inFolder.find((m) => m.id === selectedId) ?? null;
   const unread = messages.filter((m) => m.folder === 'inbox' && !m.read).length;
 
+  // The folder name is localized text inside a param, so a language switch sets it again.
   useEffect(() => {
-    useWindowsStore
-      .getState()
-      .setWindowTitle(
-        windowId,
-        unread > 0
-          ? `${FOLDER_LABELS[folder]} (${unread}) - ${APP_NAME}`
-          : `${FOLDER_LABELS[folder]} - ${APP_NAME}`,
-      );
-  }, [windowId, folder, unread]);
+    const windows = useWindowsStore.getState();
+    const name = t(`mail.folders.${folder}`);
+    if (unread > 0) {
+      windows.setWindowTitle(windowId, 'mail.titleUnread', {
+        folder: name,
+        n: formatNumber(unread, locale),
+      });
+    } else {
+      windows.setWindowTitle(windowId, 'mail.title', { folder: name });
+    }
+  }, [windowId, folder, unread, t, locale]);
 
   const select = (m: MailMessage) => {
     setSelectedId(m.id);
@@ -282,7 +291,7 @@ export default function Mail({ windowId }: AppComponentProps) {
                     setDraft(null);
                   }}
                 >
-                  {FOLDER_LABELS[f]}
+                  {t(`mail.folders.${f}`)}
                   {n > 0 ? ` (${n})` : ''}
                 </button>
               </li>

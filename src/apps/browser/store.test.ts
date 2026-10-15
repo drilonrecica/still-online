@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import {
   DEFAULT_FAVORITES,
   WEB_DEFAULTS,
+  renderFavorites,
   sanitizeWeb,
   useWebStore,
 } from './store';
@@ -14,13 +15,35 @@ beforeEach(() => {
 });
 
 describe('web store', () => {
-  it('seeds the five favorite sites', () => {
-    expect(web().favorites.map((f) => f.title)).toEqual([
+  it('seeds the five favorite sites, named in the current language', () => {
+    expect(web().favorites.every((f) => f.title === undefined)).toBe(true);
+    const names = (locale: 'en' | 'de') =>
+      renderFavorites(web().favorites, locale).map((f) => f.title);
+    expect(names('en')).toEqual([
       'Searchly',
       'Tinfoil Comets',
       'Spaceport',
       'Westfield High',
       'Celeb Gossip 07',
+    ]);
+    expect(names('de')).toContain('Westfield-Gymnasium');
+  });
+
+  it('migrates v0.2 favorites: untouched defaults drop their English title', () => {
+    const out = sanitizeWeb(
+      {
+        favorites: [
+          { title: 'Searchly', url: 'http://searchly.example/' },
+          { title: 'My School', url: 'http://westfield-high.example/' },
+          { title: 'Spaceport', url: 'http://spaceport.example/me' },
+        ],
+      },
+      WEB_DEFAULTS,
+    );
+    expect(out.favorites).toEqual([
+      { url: 'http://searchly.example/' },
+      { title: 'My School', url: 'http://westfield-high.example/' },
+      { title: 'Spaceport', url: 'http://spaceport.example/me' },
     ]);
   });
 

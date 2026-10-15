@@ -3,6 +3,7 @@
 import type { ComponentType, LazyExoticComponent } from 'react';
 import type { PhotoSpec } from '@/os/fs/types';
 import type { PlayerProfile } from '../profiles/types';
+import type { FavoriteRecord } from '../types';
 
 /** What every site page component receives from Web Explorer. */
 export interface SitePageProps {
@@ -95,14 +96,18 @@ export interface Poll {
 // Persisted `web` store (src/apps/browser/store.ts)
 // ---------------------------------------------------------------------------
 
+/** A favorite as Web Explorer shows it: a `FavoriteRecord` with its title rendered. */
 export interface Favorite {
   title: string;
   url: string;
 }
 
 export interface WebState {
-  /** Seeded with Searchly, Tinfoil Comets, Spaceport, Westfield High, Celeb Gossip 07. */
-  favorites: Favorite[];
+  /**
+   * Seeded with Searchly, Tinfoil Comets, Spaceport, Westfield High, Celeb Gossip 07 as `{ url }`
+   * (named in the current language at render, `favoriteTitle`).
+   */
+  favorites: FavoriteRecord[];
   /** Hit counters by host (+1 per visit). */
   counters: Record<string, number>;
   /** Player-signed guestbook entries by host, oldest first (`day` = the day it was signed). */

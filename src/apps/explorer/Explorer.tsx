@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FolderView } from '@/os/fs/FolderView';
-import { compareNodes } from '@/os/fs/nodes';
+import { compareNodes, isSystemId } from '@/os/fs/nodes';
 import { openFsNode } from '@/os/fs/openNode';
 import { useFsStore } from '@/os/fs/store';
-import { FS_FOLDERS } from '@/os/fs/types';
+import { FS_FOLDERS, type FsFolderId } from '@/os/fs/types';
 import { useWindowsStore } from '@/os/store/windows';
 import type { AppComponentProps } from '@/os/types';
 import { ImageViewer } from './ImageViewer';
@@ -22,12 +22,16 @@ export default function Explorer({ windowId, props }: AppComponentProps) {
       ? nodes[folderId]
       : nodes[FS_FOLDERS.docs];
   const currentId = folder?.id ?? FS_FOLDERS.docs;
-  const title = folder?.name ?? 'My Documents';
+  const name = folder?.name;
 
-  useEffect(
-    () => setWindowTitle(windowId, title),
-    [windowId, title, setWindowTitle],
-  );
+  // System folders render from their key; other folders show their (rendered) name.
+  useEffect(() => {
+    if (isSystemId(currentId)) {
+      setWindowTitle(windowId, `fs.folders.${currentId as FsFolderId}`);
+    } else {
+      setWindowTitle(windowId, 'fs.folderTitle', { name: name ?? '' });
+    }
+  }, [windowId, currentId, name, setWindowTitle]);
 
   const images = useMemo(
     () =>

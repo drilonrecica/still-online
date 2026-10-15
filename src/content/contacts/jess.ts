@@ -10,7 +10,7 @@ export const jess: ContactContent = {
     displayName: 'xX~JeSs~Xx :D',
     handle: 'jessiebee@livemail.example',
     avatar: { kind: 'pattern', seed: 'jess', colors: ['#FF6FB5', '#FFF27A'] },
-    group: 'Friends',
+    group: 'friends',
     initialStatus: 'online',
     personalMessage: 'OMG 3 more days!!!1 (L)',
     signInAfterMs: 8_000,

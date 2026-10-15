@@ -42,8 +42,13 @@ export interface FsNode {
   url?: string;
   /** Set while in the Recycle Bin: the original parentId. */
   deletedFrom?: string;
-  /** Folders that can't be deleted or renamed. */
+  /** Folders that can't be deleted or renamed. Their `name` renders from `fs.folders.<id>`. */
   system?: boolean;
+  /**
+   * `seed:` nodes only: the player renamed or edited it, so `name`/`text`/`photo.caption` are
+   * frozen. Untouched seeds render those from the seed content of the current locale.
+   */
+  dirty?: boolean;
 }
 
 /** Well-known system folders, always present (sanitize re-creates them). */

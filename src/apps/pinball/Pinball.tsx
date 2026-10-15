@@ -1,5 +1,6 @@
 // Star Pinball: the table window. The game is simulated in `sim.ts` and drawn by `useLoop`;
 // this file wires keys, pointer flippers, sounds, scores and the menu screens.
+import { usePlayerName } from '@/i18n/settingsText';
 import {
   useCallback,
   useEffect,
@@ -12,7 +13,6 @@ import { now } from '@/os/clock';
 import { events } from '@/os/events';
 import { playSound } from '@/os/sound';
 import { useGamesStore } from '@/os/store/games';
-import { useSettingsStore } from '@/os/store/settings';
 import { useGameStatus, SR_ONLY } from '@/os/useGameStatus';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import { TABLE_X, VIEW_W } from './display';
@@ -80,7 +80,7 @@ export default function Pinball({ windowId }: Partial<AppComponentProps>) {
   const rootRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Game>(createGame(newSeed(), { attract: true }));
   const pointers = useRef(new Map<number, Control>());
-  const playerName = useSettingsStore((s) => s.playerName);
+  const playerName = usePlayerName();
 
   const onEvents = useCallback((list: GameEvent[]) => {
     for (const e of list) {

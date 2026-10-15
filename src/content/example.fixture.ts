@@ -7,7 +7,7 @@ export const exampleContact: ContactContent = {
     displayName: '~*mika*~ (L)',
     handle: 'mika.sunshine@livemail.example',
     avatar: { kind: 'pattern', seed: 'mika', colors: ['#FF9ACB', '#FFE36E'] },
-    group: 'Friends',
+    group: 'friends',
     initialStatus: 'online',
     personalMessage: 'summer cant come soon enough!!',
     signInAfterMs: 20_000,

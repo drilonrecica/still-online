@@ -2,17 +2,19 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { lazy } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { useWindowsStore } from '@/os/store/windows';
+import type { MessageKey } from '@/i18n/types';
 import type { AppDefinition, AppId } from '@/os/types';
 import { DesktopIcons } from './DesktopIcons';
 import '@/apps/registry';
 
 function app(
   id: 'mycomputer' | 'notepad' | 'recyclebin',
-  title: string,
+  labelKey: MessageKey,
 ): AppDefinition {
   return {
     id,
-    title,
+    titleKey: `apps.${id}.title`,
+    labelKey,
     icon16: 'a.svg',
     icon32: 'b.svg',
     component: lazy(() => Promise.resolve({ default: () => null })),
@@ -25,9 +27,9 @@ function app(
 }
 
 const apps = [
-  app('mycomputer', 'My Computer'),
-  app('notepad', 'Notepad'),
-  app('recyclebin', 'Recycle Bin'),
+  app('mycomputer', 'apps.mycomputer.title'),
+  app('notepad', 'apps.notepad.label'),
+  app('recyclebin', 'apps.recyclebin.title'),
 ];
 
 function openIds() {

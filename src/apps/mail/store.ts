@@ -1,35 +1,33 @@
 // Mail's persisted `mail` store: the player's mailbox plus delivery of authored mail per day,
-// composing, and friends' canned replies. See docs/architecture-v0.2.md → "Stores".
+// composing, and friends' canned replies. Mail is stored as language-neutral `MailRecord`s and
+// rendered at view time (`records.ts`). See docs/architecture-v0.2.md → "Stores", docs/i18n.md → "mail".
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { autoReplies } from '@/content/mail/autoReplies';
-import { MAIL_CONTENT } from '@/content/mail';
 import type {
   MailAddress,
   MailAttachment,
   MailContent,
-  MailFolder,
-  MailMessage,
   MailState,
 } from '@/content/mail/types';
+import type { MailRecord } from '@/content/types';
 import { contacts } from '@/content/contacts';
+import { getPlayerName } from '@/i18n/settingsText';
 import { events } from '@/os/events';
 import { isRecord, persistOptions } from '@/os/persist';
 import { mulberry32, randInt, seedFrom } from '@/os/random';
 import { scaleMs } from '@/os/speed';
-import { useSettingsStore } from '@/os/store/settings';
 import { currentDay } from '@/os/world';
+import {
+  PLAYER,
+  autoRepliesFor,
+  isContentId,
+  mailContentFor,
+  sanitizeRecord,
+} from './records';
 
 export const MAIL_DEFAULTS: MailState = { messages: [], deliveredDays: [] };
 
 export const REPLY_DELAY_MS = 20_000;
-
-export const MAILER_DAEMON: MailAddress = {
-  name: 'Mail Delivery Subsystem',
-  address: 'mailer-daemon@livemail.example',
-};
-
-const FOLDERS: readonly MailFolder[] = ['inbox', 'sent', 'deleted'];
 
 export interface ComposeInput {
   to: string;
@@ -53,8 +51,7 @@ export interface MailStore extends MailState {
 }
 
 /** The player's own address. */
-export function playerAddress(): MailAddress {
-  const name = useSettingsStore.getState().playerName;
+export function playerAddress(name: string = getPlayerName()): MailAddress {
   const user = name.toLowerCase().replace(/[^a-z0-9._-]+/g, '') || 'player';
   return { name, address: `${user}@livemail.example` };
 }
@@ -69,68 +66,17 @@ function newId(): string {
   return `m:${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
 }
 
-const str = (v: unknown): v is string => typeof v === 'string';
-
-function sanitizeAddress(v: unknown): MailAddress | null {
-  return isRecord(v) && str(v.name) && str(v.address)
-    ? { name: v.name, address: v.address }
-    : null;
-}
-
-function sanitizeAttachment(v: unknown): MailAttachment | null {
-  if (!isRecord(v) || !str(v.name) || (v.type !== 'txt' && v.type !== 'image'))
-    return null;
-  const out: MailAttachment = { name: v.name, type: v.type };
-  if (str(v.text)) out.text = v.text;
-  const p = v.photo;
-  if (isRecord(p) && str(p.scene) && typeof p.seed === 'number') {
-    out.photo = {
-      scene: p.scene as NonNullable<MailAttachment['photo']>['scene'],
-      seed: p.seed,
-      ...(str(p.caption) ? { caption: p.caption } : {}),
-    };
-  }
-  return out;
-}
-
-function sanitizeMessage(v: unknown): MailMessage | null {
-  if (!isRecord(v) || !str(v.id) || v.id === '') return null;
-  const from = sanitizeAddress(v.from);
-  if (
-    !from ||
-    !FOLDERS.includes(v.folder as MailFolder) ||
-    !str(v.subject) ||
-    !str(v.body) ||
-    typeof v.receivedAt !== 'number' ||
-    !Number.isFinite(v.receivedAt)
-  ) {
-    return null;
-  }
-  const list = (x: unknown) => (Array.isArray(x) ? x : []);
-  return {
-    id: v.id,
-    folder: v.folder as MailFolder,
-    from,
-    to: list(v.to).flatMap((a) => sanitizeAddress(a) ?? []),
-    subject: v.subject,
-    body: v.body,
-    attachments: list(v.attachments).flatMap(
-      (a) => sanitizeAttachment(a) ?? [],
-    ),
-    receivedAt: v.receivedAt,
-    read: v.read === true,
-  };
-}
-
 export function sanitizeMail(
   persisted: unknown,
   current: MailState,
 ): MailState {
   if (!isRecord(persisted)) return current;
   const seen = new Set<string>();
+  // Settings hydrate first, so this is the address v0.2 mail was sent from.
+  const player = playerAddress().address;
   const messages = Array.isArray(persisted.messages)
     ? persisted.messages.flatMap((m) => {
-        const msg = sanitizeMessage(m);
+        const msg = sanitizeRecord(m, player);
         if (!msg || seen.has(msg.id)) return [];
         seen.add(msg.id);
         return [msg];
@@ -161,7 +107,7 @@ export function cancelPendingReplies(): void {
 export const useMailStore = create<MailStore>()(
   persist(
     (set, get) => {
-      const add = (message: MailMessage) =>
+      const add = (message: MailRecord) =>
         set((s) => ({ messages: [...s.messages, message] }));
 
       return {
@@ -169,7 +115,7 @@ export const useMailStore = create<MailStore>()(
 
         deliver: (
           day = currentDay(),
-          content = MAIL_CONTENT,
+          content = mailContentFor('en'),
           now = Date.now(),
         ) => {
           const { deliveredDays, messages } = get();
@@ -179,20 +125,27 @@ export const useMailStore = create<MailStore>()(
               c.day <= day && !deliveredDays.includes(c.day) && !have.has(c.id),
           );
           if (!due.length) return 0;
-          const fresh = due.map((c): MailMessage => {
+          const fresh = due.map((c): MailRecord => {
             // A stable "arrived a while ago" offset, 2–90 minutes, so the list looks natural.
             const minutes = randInt(mulberry32(seedFrom(c.id)), 2, 90);
-            return {
+            const base = {
               id: c.id,
-              folder: 'inbox',
-              from: c.from,
-              to: [playerAddress()],
-              subject: c.subject,
-              body: c.body,
-              attachments: [...(c.attachments ?? [])],
+              folder: 'inbox' as const,
               receivedAt: now - minutes * 60_000,
               read: false,
             };
+            // Authored mail renders by id; content that isn't shipped (tests) is kept as text.
+            return isContentId(c.id)
+              ? { ...base, kind: 'content' }
+              : {
+                  ...base,
+                  kind: 'text',
+                  from: c.from,
+                  to: [PLAYER],
+                  subject: c.subject,
+                  body: c.body,
+                  attachments: [...(c.attachments ?? [])],
+                };
           });
           const days = new Set(deliveredDays);
           due.forEach((c) => days.add(c.day));
@@ -214,17 +167,20 @@ export const useMailStore = create<MailStore>()(
             : { name: address, address };
           const prior = get().messages.filter(
             (m) =>
+              m.kind === 'text' &&
               m.folder !== 'inbox' &&
               m.to.some(
                 (a) =>
                   a.address.toLowerCase() === recipient.address.toLowerCase(),
               ),
           ).length;
-          const sentSubject = subject.trim() || '(no subject)';
+          // '' renders as "(no subject)" in the current language.
+          const sentSubject = subject.trim();
           add({
             id: newId(),
+            kind: 'text',
             folder: 'sent',
-            from: playerAddress(),
+            from: PLAYER,
             to: [recipient],
             subject: sentSubject,
             body,
@@ -236,37 +192,27 @@ export const useMailStore = create<MailStore>()(
           if (!friend) {
             add({
               id: newId(),
+              kind: 'bounce',
               folder: 'inbox',
-              from: MAILER_DAEMON,
-              to: [playerAddress()],
-              subject: 'Undeliverable: ' + sentSubject,
-              body:
-                `Your message to ${address || 'the recipient'} could not be delivered.\n\n` +
-                'The address was not found on the server. Check the spelling and try again.',
-              attachments: [],
+              params: { to: address, subject: sentSubject },
               receivedAt: Date.now(),
               read: false,
             });
             return;
           }
 
-          const reply = autoReplies.find(
-            (r) => r.contactId === friend.contact.id,
-          );
-          if (!reply) return;
+          const contactId = friend.contact.id;
+          if (!autoRepliesFor('en').some((r) => r.contactId === contactId))
+            return;
           const timer = setTimeout(() => {
             pendingReplies.delete(timer);
             add({
               id: newId(),
+              kind: 'autoReply',
               folder: 'inbox',
-              from: {
-                name: friend.contact.displayName,
-                address: friend.contact.handle,
-              },
-              to: [playerAddress()],
-              subject: prior === 0 ? reply.subject : `RE: ${sentSubject}`,
-              body: prior === 0 ? reply.body : reply.again,
-              attachments: [],
+              contactId,
+              again: prior > 0,
+              params: { subject: sentSubject },
               receivedAt: Date.now(),
               read: false,
             });

@@ -56,7 +56,6 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
 
   const file = fileId ? nodes[fileId] : undefined;
   const dirty = text !== saved;
-  const title = `${dirty ? '*' : ''}${file?.name ?? 'Untitled'} - Notepad`;
 
   // Stapley's "writing a letter" tip: once each time typing makes the text start with "Dear".
   const wasLetter = useRef(/^\s*dear\b/i.test(text));
@@ -66,10 +65,32 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
     wasLetter.current = isLetter;
   }, [text]);
 
-  useEffect(
-    () => setWindowTitle(windowId, title),
-    [windowId, title, setWindowTitle],
-  );
+  // While the buffer is unchanged, follow the file: an untouched seed re-renders on a language
+  // switch (and another window may have saved it).
+  const fileText = file?.text;
+  useEffect(() => {
+    if (fileText === undefined || dirty || fileText === saved) return;
+    setText(fileText);
+    setSaved(fileText);
+  }, [fileText, dirty, saved]);
+
+  const fileName = file?.name;
+  useEffect(() => {
+    if (fileName === undefined) {
+      setWindowTitle(
+        windowId,
+        dirty ? 'notepad.untitledModified' : 'apps.notepad.title',
+      );
+    } else {
+      setWindowTitle(
+        windowId,
+        dirty ? 'notepad.titleModified' : 'notepad.title',
+        {
+          file: fileName,
+        },
+      );
+    }
+  }, [windowId, fileName, dirty, setWindowTitle]);
 
   // The titlebar Close button asks first when there are unsaved changes.
   useEffect(

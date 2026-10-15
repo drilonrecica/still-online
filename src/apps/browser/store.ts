@@ -8,16 +8,38 @@ import type {
   PlayerGuestbookEntry,
   WebState,
 } from '@/content/sites/types';
+import type { FavoriteRecord } from '@/content/types';
+import { translate } from '@/i18n/t';
+import type { Locale, MessageKey } from '@/i18n/types';
 import { isRecord, persistOptions } from '@/os/persist';
 import { normalizeUrl } from './url';
 
-export const DEFAULT_FAVORITES: readonly Favorite[] = [
-  { title: 'Searchly', url: 'http://searchly.example/' },
-  { title: 'Tinfoil Comets', url: 'http://tinfoilcomets.example/' },
-  { title: 'Spaceport', url: 'http://spaceport.example/' },
-  { title: 'Westfield High', url: 'http://westfield-high.example/' },
-  { title: 'Celeb Gossip 07', url: 'http://celebgossip07.example/' },
-];
+/** The default favorites' names, by url. */
+const DEFAULT_FAVORITE_KEYS: Readonly<Record<string, MessageKey>> = {
+  'http://searchly.example/': 'browser.defaultFavorites.searchly',
+  'http://tinfoilcomets.example/': 'browser.defaultFavorites.tinfoilcomets',
+  'http://spaceport.example/': 'browser.defaultFavorites.spaceport',
+  'http://westfield-high.example/': 'browser.defaultFavorites.westfield-high',
+  'http://celebgossip07.example/': 'browser.defaultFavorites.celebgossip07',
+};
+
+/** Stored without a title: they are named in the current language (`favoriteTitle`). */
+export const DEFAULT_FAVORITES: readonly FavoriteRecord[] = Object.keys(
+  DEFAULT_FAVORITE_KEYS,
+).map((url) => ({ url }));
+
+/** A favorite's title: the one the player added it with, else the default's name in `locale`. */
+export function favoriteTitle(f: FavoriteRecord, locale: Locale): string {
+  if (f.title !== undefined) return f.title;
+  const key = DEFAULT_FAVORITE_KEYS[f.url];
+  return key ? translate(locale, key) : f.url;
+}
+
+export const renderFavorites = (
+  favorites: readonly FavoriteRecord[],
+  locale: Locale,
+): Favorite[] =>
+  favorites.map((f) => ({ url: f.url, title: favoriteTitle(f, locale) }));
 
 export const WEB_DEFAULTS: WebState = {
   favorites: [...DEFAULT_FAVORITES],
@@ -45,16 +67,29 @@ const str = (v: unknown): v is string => typeof v === 'string';
 const count = (v: unknown): v is number =>
   typeof v === 'number' && Number.isInteger(v) && v >= 0;
 
-function sanitizeFavorites(v: unknown): Favorite[] | null {
+/**
+ * Favorites from untrusted data. A v0.2 favorite with a default's English url and name was never
+ * renamed: it drops its title, so it follows the language.
+ */
+function sanitizeFavorites(v: unknown): FavoriteRecord[] | null {
   if (!Array.isArray(v)) return null;
   const seen = new Set<string>();
-  const out: Favorite[] = [];
+  const out: FavoriteRecord[] = [];
   for (const f of v) {
-    if (!isRecord(f) || !str(f.title) || !str(f.url) || f.url === '') continue;
+    if (!isRecord(f) || !str(f.url) || f.url === '') continue;
+    if (f.title !== undefined && !str(f.title)) continue;
     const url = normalizeUrl(f.url);
     if (seen.has(url)) continue;
     seen.add(url);
-    out.push({ title: f.title, url });
+    const isDefaultName =
+      f.title !== undefined &&
+      url in DEFAULT_FAVORITE_KEYS &&
+      f.title === favoriteTitle({ url }, 'en');
+    out.push(
+      f.title === undefined || isDefaultName
+        ? { url }
+        : { url, title: f.title },
+    );
   }
   return out;
 }

@@ -1,4 +1,6 @@
 // Start menu: pinned programs + All Programs flyout | places, user header, Log Off / Turn Off footer.
+import { useT } from '@/i18n/useT';
+import { usePlayerName } from '@/i18n/settingsText';
 import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { listApps } from '@/apps/registry';
@@ -8,7 +10,6 @@ import {
   type ResolvedShortcut,
 } from '@/os/shortcuts';
 import { useSessionStore } from '@/os/store/session';
-import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import {
   APP_CATEGORIES,
@@ -39,7 +40,8 @@ export interface StartMenuProps {
 
 export function StartMenu({ open, onClose, apps }: StartMenuProps) {
   const rootRef = useRef<HTMLDivElement>(null);
-  const playerName = useSettingsStore((s) => s.playerName);
+  const t = useT();
+  const playerName = usePlayerName();
   const openApp = useWindowsStore((s) => s.openApp);
   const logOff = useSessionStore((s) => s.logOff);
   const shutDown = useSessionStore((s) => s.shutDown);
@@ -198,7 +200,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
   const appEntry = (app: AppDefinition, size: 32 | 16) =>
     iconEntry(
       app.id,
-      app.label ?? app.title,
+      t(app.labelKey ?? app.titleKey),
       size === 32 ? app.icon32 : app.icon16,
       size,
       () => launch(app.id),

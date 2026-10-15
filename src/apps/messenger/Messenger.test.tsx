@@ -29,12 +29,12 @@ const contents = [
   contactContent('cat', [], { displayName: 'Cat', signInAfterMs: 60_000 }),
   contactContent('sam', [], {
     displayName: 'Sam',
-    group: 'School',
+    group: 'school',
     signInAfterMs: 120_000,
   }),
   contactContent('mum', [], {
     displayName: 'Mum',
-    group: 'Family',
+    group: 'family',
     initialStatus: 'offline',
     signInAfterMs: 0,
   }),
@@ -172,6 +172,16 @@ describe('contact list', () => {
     const offline = screen.getByRole('group', { name: 'Offline' });
     for (const name of ['Cat', 'Sam', 'Mum'])
       expect(within(offline).getByText(name)).toBeTruthy();
+  });
+
+  it('names the groups in the current language', async () => {
+    await signIn();
+    act(() => useSettingsStore.setState({ language: 'de' }));
+    expect(
+      screen.getByRole('button', { name: /Freunde \(2\/3\)/ }),
+    ).toBeTruthy();
+    expect(screen.getByRole('group', { name: 'Schule' })).toBeTruthy();
+    expect(screen.getByRole('group', { name: 'Offline' })).toBeTruthy();
   });
 
   it('collapses and expands a group', async () => {
@@ -344,7 +354,7 @@ describe('buildContactList', () => {
       {},
       { ann: true, bob: true },
     );
-    expect(list.map((g) => g.id)).toEqual(['Friends']);
+    expect(list.map((g) => g.id)).toEqual(['friends']);
     expect(list[0]!.entries.map((e) => e.contact.id)).toEqual(['ann', 'bob']);
   });
 });

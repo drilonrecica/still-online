@@ -10,7 +10,7 @@ export const theo: ContactContent = {
     displayName: 'theo',
     handle: 'theo.k@livemail.example',
     avatar: { kind: 'pattern', seed: 'theo', colors: ['#5B8C5A', '#E8F1D4'] },
-    group: 'School',
+    group: 'school',
     initialStatus: 'online',
     personalMessage: 'bio project due fri...',
     signInAfterMs: 210_000,

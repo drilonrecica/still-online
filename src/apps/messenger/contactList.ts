@@ -1,13 +1,15 @@
 // Pure view-model for the contact list: which contacts sit in which group, with counts.
-import type {
-  Contact,
-  ContactGroup,
-  ContactId,
-  ContactProgress,
-  ContactStatus,
+import {
+  CONTACT_GROUP_IDS,
+  type Contact,
+  type ContactId,
+  type ContactListGroupId,
+  type ContactProgress,
+  type ContactStatus,
 } from '@/content/types';
 
-export type ListGroupId = ContactGroup | 'Offline';
+/** Group ids are language-neutral; the view renders `messenger.groups.<id>`. */
+export type ListGroupId = ContactListGroupId;
 
 export interface ListEntry {
   contact: Contact;
@@ -25,8 +27,6 @@ export interface ListGroup {
   online: number;
   total: number;
 }
-
-const GROUP_ORDER: readonly ContactGroup[] = ['Friends', 'School', 'Family'];
 
 export function buildContactList(
   contacts: readonly Contact[],
@@ -47,7 +47,7 @@ export function buildContactList(
   };
 
   const groups: ListGroup[] = [];
-  for (const id of GROUP_ORDER) {
+  for (const id of CONTACT_GROUP_IDS) {
     const members = contacts.filter((c) => c.group === id).map(entryOf);
     if (members.length === 0) continue;
     const visible = members.filter((e) => e.status !== 'offline').sort(byName);
@@ -64,7 +64,7 @@ export function buildContactList(
     .sort(byName);
   if (offline.length > 0)
     groups.push({
-      id: 'Offline',
+      id: 'offline',
       entries: offline,
       online: 0,
       total: offline.length,

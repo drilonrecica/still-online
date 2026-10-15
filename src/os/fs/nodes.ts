@@ -1,10 +1,12 @@
 // Pure helpers for the virtual file system: validation, naming, tree walks and sanitize.
 // The store (`store.ts`) stays a thin layer of actions over these.
+import { getLocale, translate } from '@/i18n/t';
+import type { Locale } from '@/i18n/types';
 import { isRecord } from '@/os/persist';
 import {
   FS_FOLDERS,
+  type FsFolderId,
   type FsNode,
-  type FsState,
   type FsType,
   type PhotoScene,
   type PhotoSpec,
@@ -24,30 +26,37 @@ const SCENES: readonly PhotoScene[] = [
   'selfportrait',
 ];
 
-/** The always-present folders, in creation order (parents first). */
+/** The always-present folders, in creation order (parents first). Names come from the catalog. */
 const SYSTEM_FOLDERS: readonly {
-  id: string;
+  id: FsFolderId;
   parentId: string | null;
-  name: string;
 }[] = [
-  { id: FS_FOLDERS.root, parentId: null, name: 'My Computer' },
-  { id: FS_FOLDERS.docs, parentId: FS_FOLDERS.root, name: 'My Documents' },
-  { id: FS_FOLDERS.pics, parentId: FS_FOLDERS.docs, name: 'My Pictures' },
-  { id: FS_FOLDERS.music, parentId: FS_FOLDERS.docs, name: 'My Music' },
-  { id: FS_FOLDERS.recycle, parentId: FS_FOLDERS.root, name: 'Recycle Bin' },
+  { id: FS_FOLDERS.root, parentId: null },
+  { id: FS_FOLDERS.docs, parentId: FS_FOLDERS.root },
+  { id: FS_FOLDERS.pics, parentId: FS_FOLDERS.docs },
+  { id: FS_FOLDERS.music, parentId: FS_FOLDERS.docs },
+  { id: FS_FOLDERS.recycle, parentId: FS_FOLDERS.root },
 ];
+
+/** A system folder's name in `locale`. */
+export const systemFolderName = (id: FsFolderId, locale: Locale): string =>
+  translate(locale, `fs.folders.${id}`);
 
 export const isSystemId = (id: string): boolean =>
   SYSTEM_FOLDERS.some((f) => f.id === id);
 
 export const isSeedId = (id: string): boolean => id.startsWith('seed:');
 
-/** Fresh system folders stamped with `time`. */
-export function systemFolders(time: number): Nodes {
+/** Fresh system folders stamped with `time`, named in `locale`. */
+export function systemFolders(
+  time: number,
+  locale: Locale = getLocale(),
+): Nodes {
   const nodes: Nodes = {};
   for (const f of SYSTEM_FOLDERS) {
     nodes[f.id] = {
       ...f,
+      name: systemFolderName(f.id, locale),
       type: 'folder',
       createdAt: time,
       modifiedAt: time,
@@ -196,6 +205,7 @@ export function parseNode(v: unknown): FsNode | null {
   for (const [key, value] of Object.entries(extras)) {
     if (value !== undefined) Object.assign(node, { [key]: value });
   }
+  if (v.dirty === true && isSeedId(id)) node.dirty = true;
   return node;
 }
 
@@ -229,32 +239,4 @@ export function pruneTree(nodes: Nodes): Nodes {
     }
   }
   return nodes;
-}
-
-/** Builds the fs state from untrusted persisted data; system folders always come back. */
-export function sanitizeFsState(persisted: unknown, time: number): FsState {
-  const nodes = systemFolders(time);
-  const p = isRecord(persisted) ? persisted : {};
-  if (isRecord(p.nodes)) {
-    for (const raw of Object.values(p.nodes)) {
-      const node = parseNode(raw);
-      if (!node) continue;
-      const system = nodes[node.id];
-      if (system?.system) {
-        // Keep the timestamps, force the structure.
-        system.createdAt = node.createdAt;
-        system.modifiedAt = node.modifiedAt;
-      } else if (!nodes[node.id]) {
-        nodes[node.id] = node;
-      }
-    }
-  }
-  const purgedSeeds = Array.isArray(p.purgedSeeds)
-    ? [
-        ...new Set(
-          p.purgedSeeds.filter((s): s is string => typeof s === 'string'),
-        ),
-      ]
-    : [];
-  return { nodes: pruneTree(nodes), purgedSeeds };
 }

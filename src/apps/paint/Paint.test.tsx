@@ -7,6 +7,7 @@ import {
   within,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { titleOf } from '@/test/windowTitle';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { installDisplayPictureRoute } from '@/apps/messenger/displayPictureRoute';
 import { useMessengerStore } from '@/apps/messenger/store';
@@ -119,7 +120,7 @@ describe('Paint', () => {
     ).toHaveLength(28);
     expect(shown && [shown.w, shown.h]).toEqual([640, 480]);
     expect(painted(shown!, [255, 255, 255, 255])).toHaveLength(640 * 480);
-    expect(useWindowsStore.getState().windows[0]?.title).toBe(
+    expect(titleOf(useWindowsStore.getState().windows[0]?.id)).toBe(
       'untitled - Paint',
     );
   });
@@ -255,7 +256,7 @@ describe('Paint', () => {
     expect(saved).toMatchObject({ name: 'untitled.png', type: 'image' });
     expect(saved.blobKey).toMatch(/^blob:/);
     await waitFor(() =>
-      expect(useWindowsStore.getState().windows[0]?.title).toBe(
+      expect(titleOf(useWindowsStore.getState().windows[0]?.id)).toBe(
         'untitled.png - Paint',
       ),
     );
@@ -291,7 +292,7 @@ describe('Paint', () => {
     });
     const canvas = await openPaint({ fileId });
     await waitFor(() => expect([shown!.w, shown!.h]).toEqual([2, 2]));
-    expect(useWindowsStore.getState().windows[0]?.title).toBe(
+    expect(titleOf(useWindowsStore.getState().windows[0]?.id)).toBe(
       'tiny.png - Paint',
     );
     drag(canvas, [0, 0], [1, 0]);

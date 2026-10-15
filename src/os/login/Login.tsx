@@ -1,4 +1,5 @@
 // Blue welcome screen with a single account tile. First visit asks for a name.
+import { usePlayerName } from '@/i18n/settingsText';
 import { Wordmark } from '@/os/brand/Wordmark';
 import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
@@ -7,15 +8,15 @@ import { useSettingsStore } from '@/os/store/settings';
 import avatar from '@/os/startmenu/avatar.svg';
 import styles from './Login.module.css';
 
-const DEFAULT_NAME = 'Player';
-
 export function Login() {
   const logOn = useSessionStore((s) => s.logOn);
-  const savedName = useSettingsStore((s) => s.playerName);
+  const savedName = usePlayerName();
   const firstVisit = !useSettingsStore((s) => s.firstBootDone);
   const setPlayerName = useSettingsStore((s) => s.setPlayerName);
   const markFirstBootDone = useSettingsStore((s) => s.markFirstBootDone);
-  const [draft, setDraft] = useState(savedName || DEFAULT_NAME);
+  // null = untouched: the field shows the saved (or localized default) name.
+  const [edited, setDraft] = useState<string | null>(null);
+  const draft = edited ?? savedName;
   const submitted = useRef(false);
 
   function submit(e?: FormEvent) {
@@ -23,13 +24,13 @@ export function Login() {
     if (submitted.current) return;
     submitted.current = true;
     if (firstVisit) {
-      setPlayerName(draft.trim() || DEFAULT_NAME);
+      setPlayerName(draft.trim() || savedName);
       markFirstBootDone();
     }
     logOn();
   }
 
-  const name = firstVisit ? draft.trim() || DEFAULT_NAME : savedName;
+  const name = firstVisit ? draft.trim() || savedName : savedName;
 
   return (
     <div className={styles.login} data-testid="login-screen">
