@@ -1,9 +1,12 @@
 // Scheduled tray balloons. The scheduler (`os/balloon/schedule.ts`) turns these into pushes.
 import type { BalloonIcon } from '@/os/serviceTypes';
+import type { Contact } from './types';
 
 /** What clicking a balloon does; resolved by the scheduler so content stays free of OS imports. */
 export type BalloonAction =
-  | { kind: 'openApp'; app: 'diskcleanup' }
+  | { kind: 'openApp'; app: 'diskcleanup' | 'messenger' }
+  /** Opens the dial-up connection flow. */
+  | { kind: 'connect' }
   | { kind: 'browse'; url: string }
   | { kind: 'balloon'; title: string; text: string; icon?: BalloonIcon };
 
@@ -63,3 +66,31 @@ export const CONNECTED_BALLOON = {
   text: string;
   icon: BalloonIcon;
 };
+
+/** Delay after the desktop mounts for the day / welcome balloons. */
+export const DAY_BALLOON_DELAY_MS = 5000;
+
+export const WELCOME_BALLOON = {
+  id: 'welcome',
+  title: 'Welcome to your new computer!',
+  text: 'Click here to connect to the Internet.',
+} as const;
+
+/** Friends whose `days[day]` entry sets a personal message (the "presence changed" count). */
+export function friendsChangedOn(
+  contacts: readonly Contact[],
+  day: number,
+): number {
+  return contacts.filter((c) => c.days?.[day]?.personalMessage !== undefined)
+    .length;
+}
+
+/** Text of the "new day" balloon: a count on days 2–5, a vague line from day 6 on. */
+export function newDayBalloonText(
+  contacts: readonly Contact[],
+  day: number,
+): string {
+  const n = day >= 6 ? 0 : friendsChangedOn(contacts, day);
+  if (n === 0) return 'Your friends are up to something.';
+  return `${n} ${n === 1 ? 'friend' : 'friends'} changed their personal message${n === 1 ? '' : 's'}.`;
+}

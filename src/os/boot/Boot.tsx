@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
+import { useWorldStore } from '@/os/world';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import styles from './Boot.module.css';
 
@@ -11,6 +12,7 @@ export const BOOT_RETURN_MS = 1000;
 export function Boot() {
   const bootComplete = useSessionStore((s) => s.bootComplete);
   const returning = useSettingsStore((s) => s.firstBootDone);
+  const day = useWorldStore((s) => s.day);
   const reducedMotion = useReducedMotion();
   const duration = returning ? BOOT_RETURN_MS : BOOT_MS;
 
@@ -31,6 +33,9 @@ export function Boot() {
       onClick={bootComplete}
     >
       <div className={styles.wordmark}>still-online</div>
+      <div className={styles.day} data-testid="boot-day">
+        Day {day}
+      </div>
       <div
         className={styles.track}
         role="progressbar"

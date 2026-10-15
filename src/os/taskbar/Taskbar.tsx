@@ -10,6 +10,7 @@ import {
 import { attentionKey, useAttentionStore } from '@/os/store/attention';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { useSettingsStore } from '@/os/store/settings';
+import { useWorldStore } from '@/os/world';
 import { useMessengerStore } from '@/apps/messenger/store';
 import { StatusIcon } from '@/apps/messenger/StatusIcon';
 import { NetworkTray } from './NetworkTray';
@@ -39,11 +40,12 @@ function useGameNow(): Date {
 
 function TrayClock() {
   const date = useGameNow();
+  const day = useWorldStore((s) => s.day);
   return (
     <span
       className={styles.clock}
       data-testid="tray-clock"
-      title={formatLongDate(date)}
+      title={`${formatLongDate(date)} · Day ${day}`}
     >
       {formatTrayTime(date)}
     </span>

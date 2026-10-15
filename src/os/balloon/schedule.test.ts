@@ -3,6 +3,8 @@ import { events } from '@/os/events';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import { useWorldStore } from '@/os/world';
+import { newDayBalloonText } from '@/content/balloons';
+import type { Contact } from '@/content/types';
 import { installBalloons } from './schedule';
 import { BALLOON_MS, useBalloonStore } from './store';
 
@@ -35,6 +37,49 @@ afterEach(() => {
   cleanup();
   vi.useRealTimers();
   useWorldStore.setState({ day: 1 });
+});
+
+describe('new-day balloons', () => {
+  it('shows the new-day balloon 5s after mount, counting changed friends', () => {
+    useWorldStore.setState({ day: 2 });
+    events.emit('world:dayChanged', { day: 2 });
+    cleanup = installBalloons();
+    vi.advanceTimersByTime(4999);
+    expect(current()).toBeNull();
+    vi.advanceTimersByTime(1);
+    expect(current()?.title).toBe('A new day!');
+    expect(current()?.text).toMatch(/^\d friends? changed their personal/);
+    current()?.onClick?.();
+    expect(
+      useWindowsStore.getState().windows.some((w) => w.appId === 'messenger'),
+    ).toBe(true);
+  });
+
+  it('uses the vague line from day 6 on', () => {
+    expect(newDayBalloonText([], 6)).toBe('Your friends are up to something.');
+    expect(newDayBalloonText([], 2)).toBe('Your friends are up to something.');
+  });
+
+  it('counts friends with a personal message for the day', () => {
+    const c = (days: Contact['days']) => ({ days }) as Contact;
+    expect(
+      newDayBalloonText(
+        [
+          c({ 2: { personalMessage: 'x' } }),
+          c({ 2: { status: 'away' } }),
+          c({}),
+        ],
+        2,
+      ),
+    ).toBe('1 friend changed their personal message.');
+  });
+
+  it('shows the welcome balloon on a first-ever day-1 boot, once', () => {
+    install(1);
+    vi.advanceTimersByTime(5000);
+    expect(current()?.title).toBe('Welcome to your new computer!');
+    expect(useSettingsStore.getState().seenTips).toContain('welcome');
+  });
 });
 
 describe('installBalloons', () => {

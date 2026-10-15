@@ -4,6 +4,7 @@ import '@/apps/registry';
 import { useAttentionStore } from '@/os/store/attention';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
+import { useWorldStore } from '@/os/world';
 import { Taskbar } from './Taskbar';
 
 function state() {
@@ -91,6 +92,15 @@ describe('Taskbar', () => {
     const clock = screen.getByTestId('tray-clock');
     expect(clock.getAttribute('title')).toContain('2007');
     expect(clock.textContent).toMatch(/^\d{1,2}:\d{2} (AM|PM)$/);
+  });
+
+  it('clock tooltip ends with the day', () => {
+    useWorldStore.setState({ day: 3 });
+    render(<Taskbar />);
+    expect(screen.getByTestId('tray-clock').getAttribute('title')).toMatch(
+      / · Day 3$/,
+    );
+    useWorldStore.setState({ day: 1 });
   });
 
   it('mute button toggles the setting', () => {

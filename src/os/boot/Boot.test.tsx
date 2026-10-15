@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Boot, BOOT_MS, BOOT_RETURN_MS } from '@/os/boot/Boot';
+import { useWorldStore } from '@/os/world';
 import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
 
@@ -27,6 +28,13 @@ afterEach(() => {
 });
 
 describe('Boot', () => {
+  it('shows the current day', () => {
+    useWorldStore.setState({ day: 4 });
+    render(<Boot />);
+    expect(screen.getByTestId('boot-day')).toHaveTextContent('Day 4');
+    useWorldStore.setState({ day: 1 });
+  });
+
   it('moves to login after the full duration on a first visit', () => {
     render(<Boot />);
     act(() => vi.advanceTimersByTime(BOOT_MS - 1));
