@@ -304,6 +304,172 @@
   border-top: 1px solid #1f5a2c;
 }
 
+/* Equalizer panel: 92px tall (EQ_HEIGHT minus the root's 4px gap). */
+.eq {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: none;
+  height: 92px;
+  box-sizing: border-box;
+  padding: 2px 4px;
+  background: var(--amp-lcd-bg);
+  border: 1px inset #555;
+  color: var(--amp-lcd);
+  font-family: 'Courier New', monospace;
+}
+
+.eqHeader {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  height: 14px;
+}
+
+.eqToggle {
+  min-width: 0;
+  min-height: 0;
+  height: 12px;
+  padding: 0 4px;
+  font-size: 8px;
+  line-height: 10px;
+  color: #6b7280;
+  background: #0d0f12;
+  border: 1px solid #555;
+  cursor: pointer;
+}
+
+.eqToggle[aria-pressed='true'] {
+  color: var(--amp-lcd);
+  border-color: var(--amp-lcd);
+  box-shadow: 0 0 3px var(--amp-lcd);
+}
+
+.eqPresets {
+  margin-left: auto;
+  height: 13px;
+  padding: 0 2px;
+  font:
+    9px Tahoma,
+    sans-serif;
+  color: var(--amp-lcd);
+  background: var(--amp-lcd-bg);
+  border: 1px solid #555;
+  cursor: pointer;
+}
+
+.eqToggle:focus-visible,
+.eqPresets:focus-visible {
+  outline: 1px dotted var(--amp-lcd);
+  outline-offset: 1px;
+}
+
+.eqSliders {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  justify-content: space-between;
+}
+
+.eqSliders[data-on='false'] {
+  opacity: 0.55;
+}
+
+.eqBand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  width: 20px;
+  font-size: 7px;
+  line-height: 8px;
+}
+
+.eqDivider {
+  width: 1px;
+  background: #555;
+}
+
+/* Vertical range: writing-mode turns it, rtl puts the maximum at the top. */
+input[type='range'].eqSlider {
+  appearance: none;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  flex: 1;
+  width: 10px;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type='range'].eqSlider::-webkit-slider-runnable-track {
+  width: 4px;
+  background: #0d0f12;
+  border: 0;
+  border-right: 1px solid #555;
+  box-shadow: none;
+}
+
+input[type='range'].eqSlider::-moz-range-track {
+  width: 4px;
+  background: #0d0f12;
+  border: 0;
+  border-right: 1px solid #555;
+  box-shadow: none;
+}
+
+input[type='range'].eqSlider::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 6px;
+  margin-left: -3px;
+  background: linear-gradient(90deg, #8a93a3, #4a5160);
+  border: 1px solid #0d0f12;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+}
+
+input[type='range'].eqSlider::-moz-range-thumb {
+  width: 10px;
+  height: 6px;
+  background: linear-gradient(90deg, #8a93a3, #4a5160);
+  border: 1px solid #0d0f12;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+}
+
+input[type='range'].eqSlider:focus-visible {
+  outline: none;
+}
+
+input[type='range'].eqSlider:focus-visible::-webkit-slider-thumb {
+  outline: 1px solid var(--amp-lcd);
+}
+
+input[type='range'].eqSlider:focus-visible::-moz-range-thumb {
+  outline: 1px solid var(--amp-lcd);
+}
+
+.root[data-skin='neon'] .eq {
+  border-color: #ff2bd6;
+}
+
+.root[data-skin='bubblegum'] .eq {
+  border: 2px solid #ff8fc2;
+  border-radius: 6px;
+}
+
+.root[data-skin='bubblegum']
+  input[type='range'].eqSlider::-webkit-slider-thumb {
+  background: linear-gradient(90deg, #fff, #9fd4ff);
+  border-color: #5aa8ee;
+  border-radius: 3px;
+}
+
 /* Windowshade: only the 14px titlebar strip remains. */
 .root[data-shade='true'] {
   padding: 0;

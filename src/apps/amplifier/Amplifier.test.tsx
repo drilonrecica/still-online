@@ -234,3 +234,81 @@ describe('Amplifier skins and windowshade', () => {
     expect(screen.getByTestId('marquee')).toBeTruthy();
   });
 });
+
+describe('Amplifier equalizer panel', () => {
+  beforeEach(() => vi.mocked(useReducedMotion).mockReturnValue(false));
+
+  async function withWindow() {
+    const resize = vi.fn();
+    const { useWindowsStore } = await import('@/os/store/windows');
+    act(() =>
+      useWindowsStore.setState({
+        windows: [{ id: 'w1', x: 10, y: 20, w: 275, h: 116 }],
+        resizeWindow: resize,
+      } as never),
+    );
+    const lastHeight = () =>
+      (resize.mock.lastCall?.[1] as { h: number } | undefined)?.h;
+    return { resize, lastHeight };
+  }
+
+  it('EQ and playlist heights stack and survive the windowshade', async () => {
+    const { lastHeight } = await withWindow();
+    renderAmp();
+    await userEvent.click(screen.getByRole('button', { name: 'Equalizer' }));
+    expect(screen.getByTestId('equalizer')).toBeTruthy();
+    expect(lastHeight()).toBe(116 + 96);
+    await userEvent.click(screen.getByRole('button', { name: 'Playlist' }));
+    expect(lastHeight()).toBe(116 + 96 + 160);
+    fireEvent.doubleClick(screen.getByTestId('titlebar'));
+    expect(lastHeight()).toBe(14);
+    fireEvent.doubleClick(screen.getByTestId('titlebar'));
+    expect(lastHeight()).toBe(116 + 96 + 160);
+    await userEvent.click(screen.getByRole('button', { name: 'Equalizer' }));
+    expect(lastHeight()).toBe(116 + 160);
+    expect(screen.queryByTestId('equalizer')).toBeNull();
+  });
+
+  it('ON, AUTO, presets and sliders drive the store', async () => {
+    await withWindow();
+    act(() =>
+      useAmplifierStore.setState({
+        eq: { on: false, preamp: 0, bands: Array(10).fill(0) },
+      }),
+    );
+    renderAmp();
+    await userEvent.click(screen.getByRole('button', { name: 'Equalizer' }));
+
+    const on = screen.getByRole('button', { name: 'Equalizer on' });
+    expect(on.getAttribute('aria-pressed')).toBe('false');
+    await userEvent.click(on);
+    expect(useAmplifierStore.getState().eq.on).toBe(true);
+    expect(on.getAttribute('aria-pressed')).toBe('true');
+
+    const auto = screen.getByRole('button', { name: 'Auto' });
+    await userEvent.click(auto);
+    expect(auto.getAttribute('aria-pressed')).toBe('true');
+
+    const presets = screen.getByLabelText('Presets') as HTMLSelectElement;
+    expect(presets.value).toBe('Flat');
+    await userEvent.selectOptions(presets, 'Treble Boost');
+    expect(useAmplifierStore.getState().eq.bands).toEqual([
+      0, 0, 0, 0, 0, 2, 5, 8, 9, 10,
+    ]);
+    expect(presets.value).toBe('Treble Boost');
+
+    fireEvent.change(screen.getByLabelText('60 Hz'), {
+      target: { value: '4' },
+    });
+    expect(useAmplifierStore.getState().eq.bands[0]).toBe(4);
+    expect(presets.value).toBe('');
+    expect(screen.getByLabelText('60 Hz').getAttribute('aria-valuetext')).toBe(
+      '+4 dB',
+    );
+    fireEvent.change(screen.getByLabelText('Preamp'), {
+      target: { value: '-3' },
+    });
+    expect(useAmplifierStore.getState().eq.preamp).toBe(-3);
+    expect(screen.getAllByRole('slider')).toHaveLength(2 + 11);
+  });
+});

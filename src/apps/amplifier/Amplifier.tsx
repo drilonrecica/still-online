@@ -9,6 +9,8 @@ import { useWindowsStore } from '@/os/store/windows';
 import { isFromControl, useWindowDrag } from '@/os/wm/useWindowDrag';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import type { AppComponentProps } from '@/os/types';
+import { setEqualizer } from './analyser';
+import Equalizer, { EQ_HEIGHT } from './Equalizer';
 import { formatTime, nowPlayingText } from './format';
 import Playlist, { PLAYLIST_HEIGHT } from './Playlist';
 import {
@@ -46,6 +48,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
   const reduced = useReducedMotion();
   const [remaining, setRemaining] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false);
+  const [showEq, setShowEq] = useState(false);
   const [shaded, setShaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [skinsOpen, setSkinsOpen] = useState(false);
@@ -55,6 +58,13 @@ export default function Amplifier({ windowId }: AppComponentProps) {
   useEffect(() => () => useAmplifierStore.getState().stop(), []);
 
   const s = useAmplifierStore();
+
+  // Keep the audio graph's filters on the stored curve. The graph is built only while
+  // the EQ is on and music plays (after a gesture), never on mount.
+  const playing = s.status === 'playing';
+  useEffect(() => {
+    setEqualizer(amplifierAudio, s.eq, s.eq.on && playing);
+  }, [s.eq, playing]);
   const track = s.playlist[s.index];
   const text = track
     ? nowPlayingText(track, s.index)
@@ -100,22 +110,29 @@ export default function Amplifier({ windowId }: AppComponentProps) {
     }
   }
 
-  const fullHeight = (playlist: boolean) =>
-    BASE_HEIGHT + (playlist ? PLAYLIST_HEIGHT : 0);
+  /** Player + the open panels, stacked in one window (EQ above the playlist). */
+  const fullHeight = (playlist: boolean, eq: boolean) =>
+    BASE_HEIGHT + (eq ? EQ_HEIGHT : 0) + (playlist ? PLAYLIST_HEIGHT : 0);
 
   function togglePlaylist() {
     const next = !showPlaylist;
     setShowPlaylist(next);
     // Same window: grow/shrink under the player.
-    resizeTo(fullHeight(next));
+    resizeTo(fullHeight(next, showEq));
+  }
+
+  function toggleEqPanel() {
+    const next = !showEq;
+    setShowEq(next);
+    resizeTo(fullHeight(showPlaylist, next));
   }
 
   function toggleShade() {
     const next = !shaded;
     setShaded(next);
     setMenuOpen(false);
-    // The playlist choice is remembered while shaded and comes back on restore.
-    resizeTo(next ? SHADE_HEIGHT : fullHeight(showPlaylist));
+    // The open panels are remembered while shaded and come back on restore.
+    resizeTo(next ? SHADE_HEIGHT : fullHeight(showPlaylist, showEq));
   }
 
   function onTitleDoubleClick(e: MouseEvent<HTMLElement>) {
@@ -321,6 +338,15 @@ export default function Amplifier({ windowId }: AppComponentProps) {
             <button
               type="button"
               className={styles.toggle}
+              aria-label="Equalizer"
+              aria-pressed={showEq}
+              onClick={toggleEqPanel}
+            >
+              EQ
+            </button>
+            <button
+              type="button"
+              className={styles.toggle}
               aria-label="Playlist"
               aria-pressed={showPlaylist}
               onClick={togglePlaylist}
@@ -336,6 +362,16 @@ export default function Amplifier({ windowId }: AppComponentProps) {
               SKN
             </button>
           </div>
+
+          {showEq && (
+            <Equalizer
+              eq={s.eq}
+              onToggle={s.toggleEq}
+              onPreamp={s.setPreamp}
+              onBand={s.setBand}
+              onPreset={s.applyPreset}
+            />
+          )}
 
           {showPlaylist && (
             <Playlist

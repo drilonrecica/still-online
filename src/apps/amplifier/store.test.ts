@@ -169,6 +169,49 @@ describe('amplifier store', () => {
     });
   });
 
+  it('EQ actions clamp, presets apply, and the curve persists', () => {
+    const { get } = setup();
+    expect(get().eq).toEqual({
+      on: false,
+      preamp: 0,
+      bands: Array(10).fill(0),
+    });
+    get().toggleEq();
+    get().setPreamp(30);
+    get().setBand(2, -5);
+    get().setBand(10, 5);
+    expect(get().eq).toEqual({
+      on: true,
+      preamp: 12,
+      bands: [0, 0, -5, 0, 0, 0, 0, 0, 0, 0],
+    });
+    expect(setup().get().eq).toEqual(get().eq);
+
+    get().toggleEq();
+    get().applyPreset('Bass Boost');
+    expect(get().eq).toEqual({
+      on: true,
+      preamp: -2,
+      bands: [9, 8, 6, 3, 0, 0, 0, 0, 0, 0],
+    });
+    get().applyPreset('Nope' as 'Rock');
+    expect(get().eq.preamp).toBe(-2);
+    expect(setup().get().eq.bands[0]).toBe(9);
+
+    localStorage.setItem(
+      'still-online:v1:amplifier',
+      JSON.stringify({
+        version: 1,
+        state: { eq: { on: 1, preamp: 'x', bands: [99] } },
+      }),
+    );
+    expect(setup().get().eq).toEqual({
+      on: false,
+      preamp: 0,
+      bands: [12, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    });
+  });
+
   it('cycles repeat off → all → one → off', () => {
     const { get } = setup();
     get().cycleRepeat();

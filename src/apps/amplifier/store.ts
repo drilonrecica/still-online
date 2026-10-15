@@ -1,5 +1,5 @@
 // Amplifier playback store: one HTMLAudioElement behind a Zustand store.
-// Persisted under `still-online:v1:amplifier` (volume, shuffle, repeat, skin).
+// Persisted under `still-online:v1:amplifier` (volume, shuffle, repeat, skin, eq).
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { createStore, type StateCreator, type StoreApi } from 'zustand/vanilla';
@@ -7,6 +7,15 @@ import { events } from '@/os/events';
 import { isRecord, persistOptions } from '@/os/persist';
 import { useSettingsStore } from '@/os/store/settings';
 import { PLAYLIST, type PlaylistTrack } from '@/content/playlist';
+import {
+  clampDb,
+  DEFAULT_EQ,
+  EQ_PRESET_NAMES,
+  presetSettings,
+  sanitizeEq,
+  type EqPresetName,
+  type EqSettings,
+} from './eq';
 
 export type RepeatMode = 'off' | 'all' | 'one';
 export type PlaybackStatus = 'stopped' | 'playing' | 'paused';
@@ -30,6 +39,7 @@ export interface AmplifierStore {
   shuffle: boolean;
   repeat: RepeatMode;
   skin: AmplifierSkin;
+  eq: EqSettings;
 
   load: (playlist: readonly PlaylistTrack[]) => void;
   /** Starts the track at `index` from the beginning. */
@@ -47,6 +57,10 @@ export interface AmplifierStore {
   cycleRepeat: () => void;
   setSkin: (skin: AmplifierSkin) => void;
   cycleSkin: () => void;
+  toggleEq: () => void;
+  setPreamp: (db: number) => void;
+  setBand: (band: number, db: number) => void;
+  applyPreset: (name: EqPresetName) => void;
 }
 
 interface PersistedAmplifier {
@@ -54,6 +68,7 @@ interface PersistedAmplifier {
   shuffle: boolean;
   repeat: RepeatMode;
   skin: AmplifierSkin;
+  eq: EqSettings;
 }
 
 export interface AmplifierDeps {
@@ -172,6 +187,7 @@ function createCreator({
       shuffle: false,
       repeat: 'off',
       skin: 'metal',
+      eq: DEFAULT_EQ,
 
       load: (list) => {
         audio.pause();
@@ -283,6 +299,24 @@ function createCreator({
         set((s) => ({
           skin: SKINS[(SKINS.indexOf(s.skin) + 1) % SKINS.length],
         })),
+
+      toggleEq: () => set((s) => ({ eq: { ...s.eq, on: !s.eq.on } })),
+
+      setPreamp: (db) => set((s) => ({ eq: { ...s.eq, preamp: clampDb(db) } })),
+
+      setBand: (band, db) => {
+        if (band < 0 || band >= get().eq.bands.length) return;
+        set((s) => ({
+          eq: {
+            ...s.eq,
+            bands: s.eq.bands.map((b, i) => (i === band ? clampDb(db) : b)),
+          },
+        }));
+      },
+
+      applyPreset: (name) => {
+        if (EQ_PRESET_NAMES.includes(name)) set({ eq: presetSettings(name) });
+      },
     };
   };
 }
@@ -292,11 +326,12 @@ function withPersist(deps: AmplifierDeps) {
     createCreator(deps),
     persistOptions<AmplifierStore, PersistedAmplifier>({
       name: 'amplifier',
-      partialize: ({ volume, shuffle, repeat, skin }) => ({
+      partialize: ({ volume, shuffle, repeat, skin, eq }) => ({
         volume,
         shuffle,
         repeat,
         skin,
+        eq,
       }),
       sanitize: (persisted, current) => {
         if (!isRecord(persisted)) return current;
@@ -316,6 +351,7 @@ function withPersist(deps: AmplifierDeps) {
           volume,
           repeat,
           skin,
+          eq: sanitizeEq(persisted.eq),
           shuffle:
             typeof persisted.shuffle === 'boolean'
               ? persisted.shuffle

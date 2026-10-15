@@ -137,3 +137,40 @@ test('now playing: track started before Messenger shows, closing Amplifier stops
     '0:00',
   );
 });
+
+test('amplifier equalizer: panel grows the window, preset applies and persists', async ({
+  page,
+}) => {
+  await logIn(page);
+  await page.getByRole('option', { name: 'Amplifier' }).dblclick();
+  const amp = page.getByRole('group', { name: 'Amplifier' });
+  await expect(amp).toBeVisible();
+  const before = (await amp.boundingBox())?.height ?? 0;
+
+  await amp.getByRole('button', { name: 'Equalizer', exact: true }).click();
+  const eq = amp.getByTestId('equalizer');
+  await expect(eq).toBeVisible();
+  await expect
+    .poll(async () => (await amp.boundingBox())?.height ?? 0)
+    .toBeGreaterThan(before + 80);
+
+  await eq.getByLabel('Presets').selectOption("Kayla's Party");
+  await expect(
+    eq.getByRole('button', { name: 'Equalizer on' }),
+  ).toHaveAttribute('aria-pressed', 'true');
+  // Keyboard: the 60 Hz slider is at +12 already; ArrowDown lowers it.
+  const low = eq.getByLabel('60 Hz');
+  await expect(low).toHaveValue('12');
+  await low.focus();
+  await page.keyboard.press('ArrowDown');
+  await expect(low).toHaveValue('11');
+
+  const stored = await page.evaluate(() =>
+    localStorage.getItem('still-online:v1:amplifier'),
+  );
+  expect(JSON.parse(stored ?? '{}').state.eq).toMatchObject({
+    on: true,
+    preamp: 4,
+  });
+  await amp.screenshot({ path: 'test-results/amplifier-eq.png' });
+});
