@@ -35,10 +35,13 @@ describe('sanitizeProgress', () => {
   it('keeps valid progress unchanged', () => {
     const p = {
       player: {
-        status: 'busy' as const,
+        status: 'away' as const,
         personalMessage: '♫ Band - Song',
         showNowPlaying: true,
         personalMessageBeforeNowPlaying: 'hi',
+        awayMessage: 'brb',
+        autoAway: true,
+        awaySince: 1000,
       },
       contacts: { mika: valid() },
     };
@@ -165,6 +168,9 @@ describe('messenger store', () => {
       personalMessage: 'brb',
       showNowPlaying: true,
       personalMessageBeforeNowPlaying: null,
+      awayMessage: '',
+      autoAway: false,
+      awaySince: expect.any(Number),
     });
     expect(b.getState()).toMatchObject({
       signedIn: false,

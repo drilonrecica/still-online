@@ -1,4 +1,5 @@
 .root {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -207,4 +208,103 @@
   align-items: center;
   gap: 4px;
   font-size: 11px;
+}
+
+.menuBar {
+  position: relative;
+  display: flex;
+  padding: 1px 4px;
+  background: var(--msn-panel);
+  border-bottom: 1px solid var(--msn-accent);
+}
+
+.menuButton {
+  border: 0;
+  padding: 2px 8px;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.menuButton:hover,
+.menuButton[aria-expanded='true'] {
+  background: var(--xp-selection);
+  color: #fff;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 4px;
+  z-index: 10;
+  min-width: 140px;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #808080;
+  box-shadow: 2px 2px 3px rgb(0 0 0 / 0.3);
+}
+
+.menuItem {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 3px 18px;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menuItem:hover,
+.menuItem:focus-visible {
+  background: var(--xp-selection);
+  color: #fff;
+}
+
+.awayNote {
+  color: #666;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: rgb(0 0 0 / 0.2);
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  background: var(--msn-panel);
+  border: 1px solid #0a246a;
+  box-shadow: 2px 2px 6px rgb(0 0 0 / 0.4);
+}
+
+.dialogTitle {
+  font-weight: bold;
+  color: #1d4f99;
+}
+
+.dialogButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.dialogButtons button {
+  min-width: 70px;
 }

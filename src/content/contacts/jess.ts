@@ -13,6 +13,7 @@ export const jess: ContactContent = {
     personalMessage: 'OMG 3 more days!!!1 (L)',
     signInAfterMs: 8_000,
     days: jessDays,
+    awayReply: 'UR AWAY?? ugh fine. BRB 2',
   },
   scripts: [
     {

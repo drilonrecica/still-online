@@ -4,17 +4,18 @@ Messenger content is authored as typed TS modules. The types are in `src/content
 
 ## Contact
 
-| Field             | Meaning                                                                                                    |
-| ----------------- | ---------------------------------------------------------------------------------------------------------- |
-| `id`              | Stable lowercase id. Used as the persistence key and as the chat window's `props.contactId`.               |
-| `displayName`     | 2007-style decorations are fine (`~*mika*~ (L)`). Emoticon codes render as emoticons.                      |
-| `handle`          | `<name>@livemail.example`. The type only accepts the fictional domain.                                     |
-| `avatar`          | `{ kind: 'svg', src }` (original SVG) or `{ kind: 'pattern', seed, colors }` (drawn from seed + 2 colors). |
-| `group`           | `Friends`, `School` or `Family`.                                                                           |
-| `initialStatus`   | The status the contact signs in with. `offline` means "appear offline" (see below).                        |
-| `personalMessage` | Shown in grey italics under the name.                                                                      |
-| `signInAfterMs`   | Delay after the player signs in to Messenger. `0` = already online when the list appears.                  |
-| `days?`           | Presence per world day: `{ [day]: { status?, personalMessage? } }`, keys ≥ 2. See "Days" below.            |
+| Field             | Meaning                                                                                                     |
+| ----------------- | ----------------------------------------------------------------------------------------------------------- |
+| `id`              | Stable lowercase id. Used as the persistence key and as the chat window's `props.contactId`.                |
+| `displayName`     | 2007-style decorations are fine (`~*mika*~ (L)`). Emoticon codes render as emoticons.                       |
+| `handle`          | `<name>@livemail.example`. The type only accepts the fictional domain.                                      |
+| `avatar`          | `{ kind: 'svg', src }` (original SVG) or `{ kind: 'pattern', seed, colors }` (drawn from seed + 2 colors).  |
+| `group`           | `Friends`, `School` or `Family`.                                                                            |
+| `initialStatus`   | The status the contact signs in with. `offline` means "appear offline" (see below).                         |
+| `personalMessage` | Shown in grey italics under the name.                                                                       |
+| `signInAfterMs`   | Delay after the player signs in to Messenger. `0` = already online when the list appears.                   |
+| `days?`           | Presence per world day: `{ [day]: { status?, personalMessage? } }`, keys ≥ 2. See "Days" below.             |
+| `awayReply?`      | One line said once per world day when the contact messages the player while they are Away. No placeholders. |
 
 **Sign-in.** Every contact is offline when the player signs in to Messenger. At `signInAfterMs` the contact signs in with `initialStatus` and gets a "has just signed in" toast. With `0` the contact is already in the list, so there's no toast. A contact that signs in with `offline` is _signed in but appearing offline_: they stay in the Offline group with no toast, but their triggers are armed. When a script later changes their status to something other than `offline`, that counts as signing in for the toast.
 

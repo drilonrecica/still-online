@@ -20,6 +20,16 @@ const WALLPAPER_POSITIONS: readonly WallpaperPosition[] = [
   'stretch',
 ];
 
+export const MAX_AWAY_MESSAGE = 60;
+export const MAX_AWAY_MINUTES = 60;
+
+/** Whole minutes, 0 (off) to 60. */
+export function sanitizeAwayMinutes(v: unknown): number | null {
+  return typeof v === 'number' && Number.isFinite(v)
+    ? Math.min(MAX_AWAY_MINUTES, Math.max(0, Math.round(v)))
+    : null;
+}
+
 const nonEmpty = (v: unknown): v is string => typeof v === 'string' && !!v;
 
 /** A valid `WallpaperChoice` from persisted data, or null. Unknown builtin ids are kept (they render as `classic`). */
@@ -92,6 +102,8 @@ type PersistedSettings = Pick<
   | 'screensaver'
   | 'seenTips'
   | 'connectAutomatically'
+  | 'awayMinutes'
+  | 'awayMessage'
 >;
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -108,6 +120,8 @@ export const useSettingsStore = create<SettingsStore>()(
       screensaver: SETTINGS_V02_DEFAULTS.screensaver,
       seenTips: SETTINGS_V02_DEFAULTS.seenTips,
       connectAutomatically: SETTINGS_V02_DEFAULTS.connectAutomatically,
+      awayMinutes: SETTINGS_V02_DEFAULTS.awayMinutes,
+      awayMessage: SETTINGS_V02_DEFAULTS.awayMessage,
       setPlayerName: (playerName) => set({ playerName }),
       setMuted: (muted) => set({ muted }),
       toggleMuted: () => set((s) => ({ muted: !s.muted })),
@@ -135,6 +149,12 @@ export const useSettingsStore = create<SettingsStore>()(
         ),
       setConnectAutomatically: (connectAutomatically) =>
         set({ connectAutomatically }),
+      setAwayMinutes: (minutes) =>
+        set((s) => ({
+          awayMinutes: sanitizeAwayMinutes(minutes) ?? s.awayMinutes,
+        })),
+      setAwayMessage: (message) =>
+        set({ awayMessage: message.trim().slice(0, MAX_AWAY_MESSAGE) }),
     }),
     persistOptions<SettingsStore, PersistedSettings>({
       name: 'settings',
@@ -150,6 +170,8 @@ export const useSettingsStore = create<SettingsStore>()(
         screensaver,
         seenTips,
         connectAutomatically,
+        awayMinutes,
+        awayMessage,
       }) => ({
         playerName,
         muted,
@@ -162,6 +184,8 @@ export const useSettingsStore = create<SettingsStore>()(
         screensaver,
         seenTips,
         connectAutomatically,
+        awayMinutes,
+        awayMessage,
       }),
       sanitize: (persisted, current) => {
         if (!isRecord(persisted)) return current;
@@ -204,6 +228,12 @@ export const useSettingsStore = create<SettingsStore>()(
             typeof p.connectAutomatically === 'boolean'
               ? p.connectAutomatically
               : current.connectAutomatically,
+          awayMinutes:
+            sanitizeAwayMinutes(p.awayMinutes) ?? current.awayMinutes,
+          awayMessage:
+            typeof p.awayMessage === 'string'
+              ? p.awayMessage.slice(0, MAX_AWAY_MESSAGE)
+              : current.awayMessage,
         };
       },
     }),

@@ -8,9 +8,11 @@ import { playSound, type SoundName } from '@/os/sound';
 import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
 import { useToastStore } from '@/os/toast/store';
+import { onIdle } from '@/os/idle';
 import { useWorldStore } from '@/os/world';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { requestShake } from './chat/nudge';
+import { summarizeAway } from './awaySummary';
 import { createConversationEngine, type ConversationEngine } from './engine';
 import { useMessengerStore } from './store';
 import messengerIcon from '@/assets/icons/messenger-32.svg';
@@ -144,7 +146,53 @@ function createEngine(): ConversationEngine {
     if (prev.state === 'desktop' && s.state !== 'desktop') created.signOut();
   });
 
+  // Auto-away: idle for `awayMinutes` while signed in and Online → Away; input → back.
+  let stopIdle = () => {};
+  const armIdle = (minutes: number) => {
+    stopIdle();
+    stopIdle = onIdle(minutes, () => {
+      const { signedIn, progress, goAway } = useMessengerStore.getState();
+      if (!signedIn || progress.player.status !== 'online') return;
+      goAway(useSettingsStore.getState().awayMessage, true);
+    });
+  };
+  armIdle(useSettingsStore.getState().awayMinutes);
+  const stopAwaySetting = useSettingsStore.subscribe((s, prev) => {
+    if (s.awayMinutes !== prev.awayMinutes) armIdle(s.awayMinutes);
+  });
+  const stopActive = events.on('os:active', () => {
+    const { progress, setPlayerStatus } = useMessengerStore.getState();
+    if (progress.player.status === 'away' && progress.player.autoAway)
+      setPlayerStatus('online');
+  });
+
+  // Back from Away: "While you were away" lists what arrived meanwhile.
+  const stopAwaySummary = useMessengerStore.subscribe((s, prev) => {
+    const was = prev.progress.player;
+    if (was.status !== 'away' || s.progress.player.status === 'away') return;
+    const summary = summarizeAway(
+      s.progress.contacts,
+      was.awaySince ?? 0,
+      nameOf,
+    );
+    if (!summary) return;
+    playSound('notify');
+    useToastStore.getState().push({
+      title: 'While you were away',
+      text: summary.text,
+      icon: messengerIcon,
+      onClick: () =>
+        useWindowsStore
+          .getState()
+          .openApp('messenger-chat', { contactId: summary.latestContactId }),
+    });
+  });
+
   stopListening = () => {
+    stopIdle();
+    stopAwaySetting();
+    stopActive();
+    stopAwaySummary();
     stopNetwork();
     stopSession();
     stopTrack();

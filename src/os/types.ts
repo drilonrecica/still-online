@@ -203,6 +203,10 @@ export interface SettingsStore {
   seenTips: string[];
   /** The dial-up dialog dials as soon as something needs a connection. */
   connectAutomatically: boolean;
+  /** Idle minutes before Messenger goes Away; 0 = off. */
+  awayMinutes: number;
+  /** The away message auto-away and the manual prompt start from. */
+  awayMessage: string;
   setPlayerName: (name: string) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
@@ -216,6 +220,8 @@ export interface SettingsStore {
   /** Records a show-once tip id; no-op if already recorded. */
   addSeenTip: (id: string) => void;
   setConnectAutomatically: (on: boolean) => void;
+  setAwayMinutes: (minutes: number) => void;
+  setAwayMessage: (message: string) => void;
 }
 
 // v0.2 settings fields. Each implementing task moves its fields into `SettingsStore` (with a

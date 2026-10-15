@@ -26,6 +26,9 @@ export const defaultPlayerProgress = (): PlayerProgress => ({
   personalMessage: '',
   showNowPlaying: false,
   personalMessageBeforeNowPlaying: null,
+  awayMessage: '',
+  autoAway: false,
+  awaySince: null,
 });
 
 export const defaultProgress = (): MessengerProgress => ({
@@ -118,7 +121,17 @@ function transcript(v: unknown): TranscriptEntry[] {
       return [];
     if (e.kind === 'nudge') return [{ kind: 'nudge', from: e.from, at: e.at }];
     if (e.kind === 'message' && typeof e.text === 'string') {
-      return [{ kind: 'message', from: e.from, text: e.text, at: e.at }];
+      return [
+        e.whileAway === true && e.from === 'contact'
+          ? {
+              kind: 'message',
+              from: e.from,
+              text: e.text,
+              at: e.at,
+              whileAway: true,
+            }
+          : { kind: 'message', from: e.from, text: e.text, at: e.at },
+      ];
     }
     return [];
   });
@@ -144,6 +157,7 @@ function contactProgress(v: unknown): ContactProgress | null {
     unread: isCount(v.unread) ? v.unread : 0,
     presenceDay:
       isCount(v.presenceDay) && v.presenceDay >= 1 ? v.presenceDay : 1,
+    ...(isCount(v.awayReplyDay) ? { awayReplyDay: v.awayReplyDay } : {}),
   };
 }
 
@@ -165,7 +179,14 @@ export function sanitizeProgress(v: unknown): MessengerProgress {
       typeof p.personalMessageBeforeNowPlaying === 'string'
         ? p.personalMessageBeforeNowPlaying
         : null,
+    awayMessage: typeof p.awayMessage === 'string' ? p.awayMessage : '',
+    autoAway: p.autoAway === true,
+    awaySince: typeof p.awaySince === 'number' ? p.awaySince : null,
   };
+  if (player.status !== 'away') {
+    player.autoAway = false;
+    player.awaySince = null;
+  }
   const contacts: Record<string, ContactProgress> = {};
   if (isRecord(v.contacts)) {
     for (const [id, c] of Object.entries(v.contacts)) {

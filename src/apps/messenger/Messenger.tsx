@@ -5,6 +5,7 @@ import { playSound } from '@/os/sound';
 import { scaleMs } from '@/os/speed';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
+import { AwayPrompt, OptionsDialog } from './AwayDialogs';
 import { buildContactList, type ListGroupId } from './contactList';
 import styles from './Messenger.module.css';
 import { RichText } from './chat/Transcript';
@@ -158,7 +159,11 @@ function AwaitingReplyIcon() {
 function ContactListView() {
   const playerName = useSettingsStore((s) => s.playerName);
   const status = useMessengerStore((s) => s.progress.player.status);
+  const awayMessage = useMessengerStore((s) => s.progress.player.awayMessage);
   const setStatus = useMessengerStore((s) => s.setPlayerStatus);
+  const goAway = useMessengerStore((s) => s.goAway);
+  const [dialog, setDialog] = useState<'away' | 'options' | null>(null);
+  const [fileMenu, setFileMenu] = useState(false);
   const showNowPlaying = useMessengerStore(
     (s) => s.progress.player.showNowPlaying,
   );
@@ -194,15 +199,53 @@ function ContactListView() {
 
   return (
     <>
+      <div className={styles.menuBar} role="menubar">
+        <button
+          type="button"
+          role="menuitem"
+          className={styles.menuButton}
+          aria-haspopup="menu"
+          aria-expanded={fileMenu}
+          onClick={() => setFileMenu(!fileMenu)}
+        >
+          File
+        </button>
+        {fileMenu && (
+          <ul className={styles.menu} role="menu">
+            <li role="none">
+              <button
+                type="button"
+                role="menuitem"
+                className={styles.menuItem}
+                onClick={() => {
+                  setFileMenu(false);
+                  setDialog('options');
+                }}
+              >
+                Options…
+              </button>
+            </li>
+          </ul>
+        )}
+      </div>
       <div className={styles.header}>
         <div className={styles.nameRow}>
           <StatusIcon status={status} />
           <span className={styles.playerName}>{playerName}</span>
+          {status === 'away' && (
+            <span className={styles.awayNote}>
+              ({awayMessage ? `Away: ${awayMessage}` : 'Away'})
+            </span>
+          )}
           <select
             className={styles.statusSelect}
             aria-label="My status"
             value={status}
-            onChange={(e) => setStatus(e.target.value as PlayerStatus)}
+            onChange={(e) => {
+              const next = e.target.value as PlayerStatus;
+              if (next === 'away') setDialog('away');
+              else setStatus(next);
+            }}
           >
             {PLAYER_STATUSES.map((s) => (
               <option key={s} value={s}>
@@ -291,6 +334,18 @@ function ContactListView() {
           Sign out
         </button>
       </div>
+      {dialog === 'away' && (
+        <AwayPrompt
+          onCancel={() => setDialog(null)}
+          onConfirm={(message) => {
+            goAway(message, false);
+            setDialog(null);
+          }}
+        />
+      )}
+      {dialog === 'options' && (
+        <OptionsDialog onClose={() => setDialog(null)} />
+      )}
     </>
   );
 }

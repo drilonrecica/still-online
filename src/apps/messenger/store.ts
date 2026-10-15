@@ -13,7 +13,10 @@ import { defaultProgress, sanitizeProgress } from './engine/progress';
 import type { MessengerData } from './engine/types';
 
 export interface MessengerStore extends MessengerData {
+  /** Any status but Away. Away goes through `goAway`; this also ends an auto-away. */
   setPlayerStatus: (status: PlayerStatus) => void;
+  /** Sets Away with `message`; `auto` marks an idle-triggered Away (activity ends it). */
+  goAway: (message: string, auto: boolean) => void;
   /** The player's own message; it also ends any now-playing line shown. */
   setPlayerPersonalMessage: (personalMessage: string) => void;
   /** Shows `line` instead of the player's message, keeping theirs to restore. */
@@ -39,7 +42,31 @@ const creator: StateCreator<MessengerStore> = (set) => {
     signedIn: false,
     online: {},
     typing: {},
-    setPlayerStatus: (status) => setPlayer({ status }),
+    setPlayerStatus: (status) =>
+      status === 'away'
+        ? set((s) => {
+            const p = s.progress.player;
+            if (p.status === 'away') return {};
+            return {
+              progress: {
+                ...s.progress,
+                player: {
+                  ...p,
+                  status,
+                  autoAway: false,
+                  awaySince: Date.now(),
+                },
+              },
+            };
+          })
+        : setPlayer({ status, autoAway: false, awaySince: null }),
+    goAway: (message, auto) =>
+      setPlayer({
+        status: 'away',
+        awayMessage: message,
+        autoAway: auto,
+        awaySince: Date.now(),
+      }),
     setPlayerPersonalMessage: (personalMessage) =>
       setPlayer({ personalMessage, personalMessageBeforeNowPlaying: null }),
     showNowPlayingLine: (line) =>

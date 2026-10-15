@@ -13,6 +13,7 @@ export const marco: ContactContent = {
     personalMessage: 'studio session tonight. dont call.',
     signInAfterMs: 150_000,
     days: marcoDays,
+    awayReply: 'away. classic.',
   },
   scripts: [
     {

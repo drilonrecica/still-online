@@ -43,6 +43,11 @@ export interface Contact {
    * script changes later that day win. From day 6 on, the day-5 entry stays.
    */
   days?: Partial<Record<number, DayPresence>>;
+  /**
+   * Said once per world day when this contact messages the player while they are Away
+   * (placeholders aren't resolved).
+   */
+  awayReply?: string;
 }
 
 export interface DayPresence {
@@ -182,7 +187,14 @@ export interface ScriptProgress {
 }
 
 export type TranscriptEntry =
-  | { kind: 'message'; from: 'contact' | 'player'; text: string; at: number }
+  | {
+      kind: 'message';
+      from: 'contact' | 'player';
+      text: string;
+      at: number;
+      /** A contact message that arrived while the player was Away. */
+      whileAway?: true;
+    }
   | { kind: 'nudge'; from: 'contact' | 'player'; at: number };
 
 export interface ContactProgress {
@@ -200,6 +212,8 @@ export interface ContactProgress {
   unread: number;
   /** The world day whose `Contact.days` presence was last applied (default 1). */
   presenceDay: number;
+  /** The world day this contact last sent their `awayReply` (absent until then). */
+  awayReplyDay?: number;
 }
 
 export interface PlayerProgress {
@@ -209,6 +223,12 @@ export interface PlayerProgress {
   showNowPlaying: boolean;
   /** The player's own message while a now-playing line replaces it; null when none is shown. */
   personalMessageBeforeNowPlaying: string | null;
+  /** The message shown as "(Away: …)" while status is Away. */
+  awayMessage: string;
+  /** Away was set by idling, so activity puts the player back Online. */
+  autoAway: boolean;
+  /** Epoch ms the current Away began; null unless status is Away. */
+  awaySince: number | null;
 }
 
 export interface MessengerProgress {

@@ -21,6 +21,9 @@ interface Running {
   active: ActiveScript;
 }
 
+/** How long after the message a contact's `awayReply` follows. */
+export const AWAY_REPLY_DELAY_MS = 1500;
+
 export type Runner = ReturnType<typeof createRunner>;
 
 /** The highest `days` entry with `key <= day`, or none. */
@@ -35,6 +38,7 @@ export function presenceFor(contact: Contact, day: number): DayPresence {
 export function createRunner(ctx: EngineContext) {
   const {
     bus,
+    data,
     contentOf,
     progressOf,
     patchContact,
@@ -202,9 +206,16 @@ export function createRunner(ctx: EngineContext) {
       line.personalMessageChange === undefined
         ? undefined
         : resolve(line.personalMessageChange);
+    const away = data().progress.player.status === 'away';
     const entries: TranscriptEntry[] = [];
     if (text !== undefined)
-      entries.push({ kind: 'message', from: 'contact', text, at });
+      entries.push({
+        kind: 'message',
+        from: 'contact',
+        text,
+        at,
+        ...(away ? { whileAway: true as const } : {}),
+      });
     if (line.nudge) entries.push({ kind: 'nudge', from: 'contact', at });
     const before = progressOf(id);
     const wasOnline = isOnline(id);
@@ -242,7 +253,36 @@ export function createRunner(ctx: EngineContext) {
       bus.emit('personalMessageChange', { contactId: id, personalMessage });
     }
     if (line.unlock !== undefined) onUnlock(line.unlock);
+    if (text !== undefined && away) awayReply(id);
     playNext(id);
+  };
+
+  /** A contact's one-per-day reaction to messaging someone who is Away. */
+  const awayReply = (id: ContactId) => {
+    const reply = contentOf(id)?.contact.awayReply;
+    const day = getDay();
+    if (reply === undefined || progressOf(id).awayReplyDay === day) return;
+    patchContact(id, (c) => ({ ...c, awayReplyDay: day }));
+    after(AWAY_REPLY_DELAY_MS, () => {
+      if (!isOnline(id)) return;
+      patchContact(id, (c) => ({
+        ...c,
+        transcript: [
+          ...c.transcript,
+          {
+            kind: 'message',
+            from: 'contact',
+            text: reply,
+            at: scheduler.now(),
+            ...(data().progress.player.status === 'away'
+              ? { whileAway: true as const }
+              : {}),
+          },
+        ],
+        unread: c.unread + (isFocused(id) ? 0 : 1),
+      }));
+      bus.emit('message', { contactId: id, from: 'contact', text: reply });
+    });
   };
 
   // --- sign-in -------------------------------------------------------------
