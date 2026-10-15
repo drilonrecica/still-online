@@ -3,7 +3,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { PlayerProfile } from '@/content/profiles/types';
-import type { Favorite, WebState } from '@/content/sites/types';
+import type {
+  Favorite,
+  PlayerGuestbookEntry,
+  WebState,
+} from '@/content/sites/types';
 import { isRecord, persistOptions } from '@/os/persist';
 import { normalizeUrl } from './url';
 
@@ -27,6 +31,10 @@ export interface WebStore extends WebState {
   /** Adds (or renames) the favorite for `url`. */
   addFavorite: (favorite: Favorite) => void;
   removeFavorite: (url: string) => void;
+  /** Counts one visit to `host` and returns its new total. */
+  hit: (host: string) => number;
+  /** Appends a player entry to `host`'s guestbook. */
+  signGuestbook: (host: string, entry: PlayerGuestbookEntry) => void;
 }
 
 const str = (v: unknown): v is string => typeof v === 'string';
@@ -66,6 +74,7 @@ function sanitizeGuestbook(v: unknown): WebState['guestbook'] | null {
               name: e.name,
               message: e.message,
               ...(str(e.homepage) ? { homepage: e.homepage } : {}),
+              ...(count(e.day) && e.day >= 1 ? { day: e.day } : {}),
             },
           ]
         : [],
@@ -122,8 +131,20 @@ export function sanitizeWeb(persisted: unknown, current: WebState): WebState {
 
 export const useWebStore = create<WebStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       ...WEB_DEFAULTS,
+      hit: (host) => {
+        const n = (get().counters[host] ?? 0) + 1;
+        set((s) => ({ counters: { ...s.counters, [host]: n } }));
+        return n;
+      },
+      signGuestbook: (host, entry) =>
+        set((s) => ({
+          guestbook: {
+            ...s.guestbook,
+            [host]: [...(s.guestbook[host] ?? []), entry],
+          },
+        })),
       addFavorite: ({ title, url }) =>
         set((s) => {
           const key = normalizeUrl(url);

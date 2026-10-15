@@ -512,9 +512,18 @@ export function scheduleSound(
     send.connect(reverb);
   }
 
-  const start = c.currentTime;
-  for (const voice of def.voices) playVoice(c, voice, start + voice.at, master);
+  scheduleVoices(c, def.voices, master, c.currentTime);
   return master;
+}
+
+/** Schedules raw voices into `out`, offset from `start` (context seconds). Used by `chiptune.ts`. */
+export function scheduleVoices(
+  c: BaseAudioContext,
+  voices: readonly Voice[],
+  out: AudioNode,
+  start: number,
+): void {
+  for (const voice of voices) playVoice(c, voice, start + voice.at, out);
 }
 
 /** Test helper: forget the context and gesture state. */

@@ -69,3 +69,44 @@ describe('web store', () => {
     expect(sanitizeWeb('garbage', WEB_DEFAULTS)).toBe(WEB_DEFAULTS);
   });
 });
+
+describe('web store: site actions', () => {
+  it('hit counts visits per host and returns the new total', () => {
+    expect(web().hit('tinfoilcomets.example')).toBe(1);
+    expect(web().hit('tinfoilcomets.example')).toBe(2);
+    expect(web().hit('other.example')).toBe(1);
+    expect(web().counters).toEqual({
+      'tinfoilcomets.example': 2,
+      'other.example': 1,
+    });
+  });
+
+  it('signGuestbook appends player entries per host', () => {
+    web().signGuestbook('a.example', { name: 'Ada', message: 'hi', day: 2 });
+    web().signGuestbook('a.example', { name: 'Ada', message: 'again' });
+    expect(web().guestbook['a.example']?.map((e) => e.message)).toEqual([
+      'hi',
+      'again',
+    ]);
+  });
+
+  it('sanitize keeps a valid guestbook day and drops a bad one', () => {
+    const out = sanitizeWeb(
+      {
+        guestbook: {
+          'a.example': [
+            { name: 'A', message: 'x', day: 3 },
+            { name: 'B', message: 'y', day: -1 },
+            { name: 'C', message: 'z', day: 'two' },
+          ],
+        },
+      },
+      WEB_DEFAULTS,
+    );
+    expect(out.guestbook['a.example']).toEqual([
+      { name: 'A', message: 'x', day: 3 },
+      { name: 'B', message: 'y' },
+      { name: 'C', message: 'z' },
+    ]);
+  });
+});

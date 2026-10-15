@@ -54,6 +54,11 @@ export interface GuestbookEntry {
   message: string;
 }
 
+/** A guestbook entry the player wrote; entries saved before P4-03 have no `day` (treated as day 1). */
+export type PlayerGuestbookEntry = Omit<GuestbookEntry, 'day'> & {
+  day?: number;
+};
+
 export interface BlogComment {
   user: string;
   text: string;
@@ -95,8 +100,8 @@ export interface WebState {
   favorites: Favorite[];
   /** Hit counters by host (+1 per visit). */
   counters: Record<string, number>;
-  /** Player-signed guestbook entries by host, oldest first. */
-  guestbook: Record<string, Omit<GuestbookEntry, 'day'>[]>;
+  /** Player-signed guestbook entries by host, oldest first (`day` = the day it was signed). */
+  guestbook: Record<string, PlayerGuestbookEntry[]>;
   /** Poll id → chosen option index. */
   votes: Record<string, number>;
   /** Spaceport `/me`; null until the player edits it (defaults derive from the player name). */
