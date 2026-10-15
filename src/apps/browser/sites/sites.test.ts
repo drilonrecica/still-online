@@ -6,9 +6,9 @@ import { SITES, pageTitle, resolve } from '.';
 
 const component = lazy(() => Promise.resolve({ default: () => null }));
 const FAKE: SiteDefinition = {
-  host: 'spaceport.example',
+  host: 'friendspace.example',
   meta: (locale) => ({
-    title: 'Spaceport',
+    title: 'Friendspace',
     description: 'friends in orbit',
     keywords: [],
     pages: {
@@ -26,18 +26,18 @@ const titleOf = (url: string, locale: 'en' | 'de' = 'en') => {
 
 describe('resolve', () => {
   it('matches exact paths first, then /* for one segment', () => {
-    expect(titleOf('spaceport.example')).toBe('Home');
-    expect(titleOf('spaceport.example', 'de')).toBe('Start');
-    expect(titleOf('http://spaceport.example/me/')).toBe('Me');
-    const profile = resolve('www.spaceport.example/kayla?x=1', [FAKE]);
+    expect(titleOf('friendspace.example')).toBe('Home');
+    expect(titleOf('friendspace.example', 'de')).toBe('Start');
+    expect(titleOf('http://friendspace.example/me/')).toBe('Me');
+    const profile = resolve('www.friendspace.example/kayla?x=1', [FAKE]);
     expect(profile).toMatchObject({
       path: '/kayla',
-      url: 'http://spaceport.example/kayla?x=1',
+      url: 'http://friendspace.example/kayla?x=1',
     });
     expect(profile?.key).toBe('/*');
-    expect(titleOf('www.spaceport.example/kayla?x=1')).toBe('Profile');
+    expect(titleOf('www.friendspace.example/kayla?x=1')).toBe('Profile');
     expect(profile?.query.get('x')).toBe('1');
-    expect(resolve('spaceport.example/a/b', [FAKE])).toBeNull();
+    expect(resolve('friendspace.example/a/b', [FAKE])).toBeNull();
   });
 
   it('returns null for unknown hosts and paths', () => {

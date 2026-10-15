@@ -161,7 +161,9 @@ describe('searchly in German', () => {
     expect(top('Gästebuch')).toBe('http://tinfoilcomets.example/guestbook');
     expect(top('Mensa')).toBe('http://westfield-high.example/cafeteria');
     expect(top('Lehrerkollegium')).toBe('http://westfield-high.example/staff');
-    expect(top('Kayla auf Spaceport')).toBe('http://spaceport.example/kayla');
+    expect(top('Kayla auf Friendspace')).toBe(
+      'http://friendspace.example/kayla',
+    );
     expect(top('Surftipps')).toBe('http://about.example/tips');
   });
 

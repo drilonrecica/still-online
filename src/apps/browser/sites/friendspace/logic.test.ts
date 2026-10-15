@@ -3,7 +3,7 @@ import type { PlayerProfile, ProfileContent } from '@/content/profiles/types';
 import {
   DEFAULT_PLAYER_PROFILE,
   THEME_PRESETS,
-} from '@/content/sites/spaceport';
+} from '@/content/sites/friendspace';
 import {
   cleanProfile,
   dayLabel,
@@ -25,7 +25,7 @@ const base: PlayerProfile = {
   top8: ['jess', 'pia'],
 };
 
-describe('spaceport logic', () => {
+describe('friendspace logic', () => {
   it('shows comments up to the current day, newest first', () => {
     const comments = [
       { day: 1, from: 'a', text: '1a' },

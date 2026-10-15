@@ -3,8 +3,8 @@ import { HOMEPAGE, normalizeUrl, parseUrl, resolveHref } from './url';
 
 describe('normalizeUrl', () => {
   it.each([
-    ['spaceport.example', 'http://spaceport.example/'],
-    ['  SpacePort.EXAMPLE/Kayla ', 'http://spaceport.example/Kayla'],
+    ['friendspace.example', 'http://friendspace.example/'],
+    ['  FriendSpace.EXAMPLE/Kayla ', 'http://friendspace.example/Kayla'],
     [
       'https://searchly.example/search?q=hi',
       'http://searchly.example/search?q=hi',
@@ -28,7 +28,7 @@ describe('resolveHref', () => {
     ['/guestbook', 'http://tinfoilcomets.example/guestbook'],
     ['pics', 'http://tinfoilcomets.example/pics'],
     ['?page=2', 'http://tinfoilcomets.example/band?page=2'],
-    ['spaceport.example/jess', 'http://spaceport.example/jess'],
+    ['friendspace.example/jess', 'http://friendspace.example/jess'],
     ['http://Searchly.example/', 'http://searchly.example/'],
   ])('%s → %s', (href, out) => {
     expect(resolveHref(base, href)).toBe(out);
@@ -37,11 +37,11 @@ describe('resolveHref', () => {
 
 describe('parseUrl', () => {
   it('strips www and trailing slashes and keeps the query', () => {
-    const p = parseUrl('www.Spaceport.example/kayla/?tab=comments');
+    const p = parseUrl('www.Friendspace.example/kayla/?tab=comments');
     expect(p).toMatchObject({
-      host: 'spaceport.example',
+      host: 'friendspace.example',
       path: '/kayla',
-      url: 'http://spaceport.example/kayla?tab=comments',
+      url: 'http://friendspace.example/kayla?tab=comments',
     });
     expect(p?.query.get('tab')).toBe('comments');
   });

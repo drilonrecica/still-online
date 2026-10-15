@@ -1,4 +1,4 @@
-// Kayla's German Spaceport profile: pink glitter, Drama-Prinzessin, *seufz*. The Brianna saga on her
+// Kayla's German Friendspace profile: pink glitter, Drama-Prinzessin, *seufz*. The Brianna saga on her
 // wall follows the same days as English.
 import { kaylaProfile as en } from '../../profiles/kayla';
 import type { ProfileContent } from '../../profiles/types';
@@ -102,7 +102,7 @@ export const kaylaProfile: ProfileContent = {
   commentsOnPlayer: [
     {
       day: 2,
-      text: 'omg du bist endlich auf spaceport!!! du bist in meinen top 8. platz 1 natürlich. sags nich jess ;)',
+      text: 'omg du bist endlich auf friendspace!!! du bist in meinen top 8. platz 1 natürlich. sags nich jess ;)',
     },
     {
       day: 3,

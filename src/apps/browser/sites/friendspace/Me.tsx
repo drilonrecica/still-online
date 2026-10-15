@@ -1,11 +1,11 @@
-// spaceport.example `/me`: the player's own profile, editable (persisted in `web.myProfile`).
+// friendspace.example `/me`: the player's own profile, editable (persisted in `web.myProfile`).
 // Friends comment on it on days 2–5.
 import { usePlayerName } from '@/i18n/settingsText';
 import { useState } from 'react';
 import { getProfiles } from '@/content/locale';
 import { useLocale, useT } from '@/i18n/useT';
 import { rich } from '../rich';
-import { SPACEPORT_HOST } from '@/content/sites/spaceport';
+import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import { useSiteText } from '../useSiteText';
 import { now } from '@/os/clock';
 import { useWorldStore } from '@/os/world';
@@ -20,10 +20,10 @@ import {
 } from './people';
 import { ProfileEditor } from './ProfileEditor';
 import { ProfileView } from './ProfileView';
-import styles from './Spaceport.module.css';
+import styles from './Friendspace.module.css';
 
 export default function Me() {
-  const { SPACEPORT_TEXT: T } = useSiteText(SPACEPORT_HOST);
+  const { FRIENDSPACE_TEXT: T } = useSiteText(FRIENDSPACE_HOST);
   const locale = useLocale();
   const t = useT();
   const PROFILES = getProfiles(locale);
@@ -52,7 +52,7 @@ export default function Me() {
   return (
     <Layout>
       <p className={styles.loggedIn}>
-        {rich(t('sites.spaceport.hello', { name: '{name}' }), {
+        {rich(t('sites.friendspace.hello', { name: '{name}' }), {
           name: <b>{playerName}</b>,
         })}
       </p>
@@ -80,7 +80,7 @@ export default function Me() {
             className={styles.bigButton}
             onClick={() => setEditing(true)}
           >
-            {t('sites.spaceport.editProfile')}
+            {t('sites.friendspace.editProfile')}
           </button>
         }
       />

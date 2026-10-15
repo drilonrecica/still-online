@@ -1,4 +1,4 @@
-// Theo's Spaceport profile: the plain default look (he never customised it), short and apologetic.
+// Theo's Friendspace profile: the plain default look (he never customised it), short and apologetic.
 // The cell project: jello (2), the earthquake cell (3), presentation nerves (4), the B+ (5).
 import type { ProfileContent } from './types';
 
@@ -43,7 +43,7 @@ export const theoProfile: ProfileContent = {
     {
       day: 1,
       from: 'frogfan_02',
-      text: 'ur frog drawing is the best thing on spaceport. no joke',
+      text: 'ur frog drawing is the best thing on friendspace. no joke',
     },
     {
       day: 2,

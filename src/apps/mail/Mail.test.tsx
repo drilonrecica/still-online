@@ -44,7 +44,7 @@ const CONTENT: MailContent[] = [
   {
     id: 'd2-a',
     day: 2,
-    from: { name: 'Spaceport', address: 'noreply@spaceport.example' },
+    from: { name: 'Friendspace', address: 'noreply@friendspace.example' },
     subject: '3 people viewed your profile',
     body: 'wow',
   },

@@ -2,7 +2,7 @@
 
 `tests/e2e/a11y.spec.ts` runs axe-core (serious and critical violations fail) over the login
 screen, desktop, Start menu, Messenger, Amplifier, Explorer (My Computer), Display Properties,
-the dial-up dialog, Web Explorer (home, Searchly results, the Tinfoil Comets fan page, Spaceport
+the dial-up dialog, Web Explorer (home, Searchly results, the Tinfoil Comets fan page, Friendspace
 home and a profile), Mail, TuneMole, Paint, Snapshot Booth (cartoon mode), Message History, Mines,
 Hen Hunt and Star Pinball.
 

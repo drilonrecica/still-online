@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useT } from '@/i18n/useT';
 import { events } from '@/os/events';
 import { trackLabel } from './logic';
-import styles from './Spaceport.module.css';
+import styles from './Friendspace.module.css';
 
 export function SongStrip({ trackId }: { trackId: string | null }) {
   const [playing, setPlaying] = useState(false);
@@ -14,7 +14,7 @@ export function SongStrip({ trackId }: { trackId: string | null }) {
     <div
       className={styles.song}
       role="region"
-      aria-label={t('sites.spaceport.profileSong')}
+      aria-label={t('sites.friendspace.profileSong')}
     >
       <button
         type="button"
@@ -28,8 +28,8 @@ export function SongStrip({ trackId }: { trackId: string | null }) {
       </button>
       <span className={styles.songStatus}>
         {playing
-          ? t('sites.spaceport.nowPlaying')
-          : t('sites.spaceport.clickToPlay')}
+          ? t('sites.friendspace.nowPlaying')
+          : t('sites.friendspace.clickToPlay')}
       </span>
     </div>
   );

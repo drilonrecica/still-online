@@ -1,4 +1,4 @@
-// Spaceport profiles (P4-04), one per Messenger contact, in sign-in order.
+// Friendspace profiles (P4-04), one per Messenger contact, in sign-in order.
 import { dexProfile } from './dex';
 import { jessProfile } from './jess';
 import { kaylaProfile } from './kayla';

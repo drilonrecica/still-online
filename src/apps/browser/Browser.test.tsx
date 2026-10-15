@@ -159,7 +159,7 @@ describe('Web Explorer', () => {
     await user.click(screen.getByRole('menuitem', { name: 'Favorites' }));
     const menu = screen.getByRole('menu', { name: 'Favorites' });
     expect(
-      within(menu).getByRole('menuitem', { name: 'Spaceport' }),
+      within(menu).getByRole('menuitem', { name: 'Friendspace' }),
     ).toBeTruthy();
     await user.click(
       within(menu).getByRole('menuitem', { name: 'Add to Favorites...' }),
@@ -192,10 +192,10 @@ describe('Web Explorer', () => {
     await user.click(screen.getByRole('button', { name: 'Favorites' }));
     const pane = screen.getByRole('complementary', { name: 'Favorites' });
     await user.click(
-      within(pane).getByRole('button', { name: 'Delete Spaceport' }),
+      within(pane).getByRole('button', { name: 'Delete Friendspace' }),
     );
     expect(useWebStore.getState().favorites.map((f) => f.url)).not.toContain(
-      'http://spaceport.example/',
+      'http://friendspace.example/',
     );
     await user.click(within(pane).getByRole('button', { name: 'Searchly' }));
     expect(screen.getByLabelText('Address')).toHaveValue(

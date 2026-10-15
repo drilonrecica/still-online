@@ -1,4 +1,4 @@
-// Dex's Spaceport profile: grey with skate stickers, few words, always away. The skate video:
+// Dex's Friendspace profile: grey with skate stickers, few words, always away. The skate video:
 // filming (2), the camcorder eats the tape (3), the kickflip with no camera (4), the 30-second blur (5).
 import type { ProfileContent } from './types';
 

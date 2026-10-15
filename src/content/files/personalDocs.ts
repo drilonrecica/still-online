@@ -70,7 +70,7 @@ yeah
 - what rhymes with lantern. pattern? lantern pattern. no
 - maybe a song about the rec hall show?? "rec hall rock"`;
 
-const TOP_8 = `MY SPACEPORT TOP 8 (DO NOT SHOW ANYONE)
+const TOP_8 = `MY FRIENDSPACE TOP 8 (DO NOT SHOW ANYONE)
 
 --- version 1 ---
 1. Jess

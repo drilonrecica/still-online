@@ -1,4 +1,4 @@
-// Pia's Spaceport profile: pastel ponies, bossy little sibling. The pony crisis: Stardust is missing
+// Pia's Friendspace profile: pastel ponies, bossy little sibling. The pony crisis: Stardust is missing
 // (2), it was Biscuit (3), found in the laundry (4), the present in the computer (5).
 import type { ProfileContent } from './types';
 
@@ -9,7 +9,7 @@ export const piaProfile: ProfileContent = {
   songTrackId: 'pleasant-porridge',
   aboutMe:
     'this is PIAS page. i have 23 ponies and they all have names. stardust is the QUEEN. ' +
-    'dad made me this page and i did the rest. it is the best page on spaceport. ' +
+    'dad made me this page and i did the rest. it is the best page on friendspace. ' +
     '{name} lives in the room next to me. sadly. DO NOT go in my room. DO NOT copy my page',
   wantToMeet: 'a REAL pony. not a toy one. a real one that lives in our garden',
   interests: [

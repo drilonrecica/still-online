@@ -1,4 +1,4 @@
-// Day 2 mail: Kayla forwards a love chain letter, Spaceport wants you to log in, Marco's gig flyer
+// Day 2 mail: Kayla forwards a love chain letter, Friendspace wants you to log in, Marco's gig flyer
 // goes out (before Derek's marker got to it), and Pia's MISSING poster for Stardust.
 import type { MailContent } from './types';
 
@@ -37,24 +37,24 @@ export const day2Mail: readonly MailContent[] = [
   {
     id: 'd2-spaceport-views',
     day: 2,
-    from: { name: 'Spaceport', address: 'notifications@spaceport.example' },
-    subject: 'Spaceport: 3 people viewed your profile',
+    from: { name: 'Friendspace', address: 'notifications@friendspace.example' },
+    subject: 'Friendspace: 3 people viewed your profile',
     body: [
       'Hey there, space cadet!',
       '',
       '3 people viewed your profile this week.',
-      'Want to know who? Log in to Spaceport to find out!*',
+      'Want to know who? Log in to Friendspace to find out!*',
       '',
-      '  spaceport.example/me',
+      '  friendspace.example/me',
       '',
       'Tip: profiles with a profile song get 4x more views! Pick yours today.',
       '',
-      '* Spaceport does not tell you who viewed your profile. But they DID view it. Probably.',
+      '* Friendspace does not tell you who viewed your profile. But they DID view it. Probably.',
       '',
       'See you in orbit,',
-      'The Spaceport Crew',
+      'The Friendspace Crew',
       '',
-      'You are receiving this because you have a Spaceport account. To change your settings, log in and find the settings page. Good luck.',
+      'You are receiving this because you have a Friendspace account. To change your settings, log in and find the settings page. Good luck.',
     ].join('\n'),
   },
   {

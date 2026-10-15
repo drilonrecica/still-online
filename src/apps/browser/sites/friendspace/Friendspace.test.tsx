@@ -1,7 +1,7 @@
 import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { SPACEPORT_HOST } from '@/content/sites/spaceport';
+import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import { events } from '@/os/events';
 import { useNetworkStore } from '@/os/network';
 import { useSettingsStore } from '@/os/store/settings';
@@ -15,7 +15,7 @@ import { pageTitle, resolve } from '..';
 const LOAD = 1400;
 
 function open(path: string) {
-  const url = `http://${SPACEPORT_HOST}${path}`;
+  const url = `http://${FRIENDSPACE_HOST}${path}`;
   const windowId = useWindowsStore.getState().openApp('browser', { url });
   const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
   const view = render(<Browser windowId={windowId} props={{ url }} />);
@@ -51,20 +51,20 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-describe('spaceport.example', () => {
+describe('friendspace.example', () => {
   it('registers a page per friend, /me and a catch-all', () => {
     const title = (path: string, locale: 'en' | 'de' = 'en') => {
-      const page = resolve(`${SPACEPORT_HOST}${path}`);
+      const page = resolve(`${FRIENDSPACE_HOST}${path}`);
       return page && pageTitle(page, locale);
     };
     for (const id of ['jess', 'pia', 'kayla', 'marco', 'theo', 'dex']) {
-      expect(title(`/${id}`)).toMatch(/on Spaceport$/);
-      expect(title(`/${id}`, 'de')).toMatch(/auf Spaceport$/);
+      expect(title(`/${id}`)).toMatch(/on Friendspace$/);
+      expect(title(`/${id}`, 'de')).toMatch(/auf Friendspace$/);
     }
-    expect(title('/me')).toBe('Spaceport - My Profile');
-    expect(title('/me', 'de')).toBe('Spaceport - Mein Profil');
-    expect(title('/nobody')).toBe('Spaceport - Lost in orbit');
-    expect(title('/nobody', 'de')).toBe('Spaceport - Verloren im All');
+    expect(title('/me')).toBe('Friendspace - My Profile');
+    expect(title('/me', 'de')).toBe('Friendspace - Mein Profil');
+    expect(title('/nobody')).toBe('Friendspace - Lost in orbit');
+    expect(title('/nobody', 'de')).toBe('Friendspace - Verloren im All');
   });
 
   it('landing lists the six friends and logs you in as the player', async () => {

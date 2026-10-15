@@ -9,24 +9,24 @@ const DIR = 'docs/review/v03-P2';
 // Web pages visited per day: one friend profile each day plus a site whose content the day changes.
 const PAGES: Record<number, readonly [string, string][]> = {
   1: [
-    ['spaceport-jess', 'spaceport.example/jess'],
+    ['spaceport-jess', 'friendspace.example/jess'],
     ['searchly', 'searchly.example/search?q=tinfoil'],
   ],
   2: [
-    ['spaceport-kayla', 'spaceport.example/kayla'],
+    ['spaceport-kayla', 'friendspace.example/kayla'],
     ['celebgossip', 'celebgossip07.example'],
   ],
   3: [
-    ['spaceport-dex', 'spaceport.example/dex'],
+    ['spaceport-dex', 'friendspace.example/dex'],
     ['westfield', 'westfield-high.example'],
   ],
   4: [
-    ['spaceport-theo', 'spaceport.example/theo'],
+    ['spaceport-theo', 'friendspace.example/theo'],
     ['tinfoil-guestbook', 'tinfoilcomets.example/guestbook'],
   ],
   5: [
-    ['spaceport-marco', 'spaceport.example/marco'],
-    ['spaceport-pia', 'spaceport.example/pia'],
+    ['spaceport-marco', 'friendspace.example/marco'],
+    ['spaceport-pia', 'friendspace.example/pia'],
     ['virusguard', 'virusguard.example'],
   ],
 };

@@ -22,7 +22,7 @@ describe('web store', () => {
     expect(names('en')).toEqual([
       'Searchly',
       'Tinfoil Comets',
-      'Spaceport',
+      'Friendspace',
       'Westfield High',
       'Celeb Gossip 07',
     ]);
@@ -35,7 +35,7 @@ describe('web store', () => {
         favorites: [
           { title: 'Searchly', url: 'http://searchly.example/' },
           { title: 'My School', url: 'http://westfield-high.example/' },
-          { title: 'Spaceport', url: 'http://spaceport.example/me' },
+          { title: 'Friendspace', url: 'http://friendspace.example/me' },
         ],
       },
       WEB_DEFAULTS,
@@ -43,7 +43,7 @@ describe('web store', () => {
     expect(out.favorites).toEqual([
       { url: 'http://searchly.example/' },
       { title: 'My School', url: 'http://westfield-high.example/' },
-      { title: 'Spaceport', url: 'http://spaceport.example/me' },
+      { title: 'Friendspace', url: 'http://friendspace.example/me' },
     ]);
   });
 
@@ -63,7 +63,7 @@ describe('web store', () => {
   });
 
   it('persists favorites under still-online:v1:web', () => {
-    web().removeFavorite('http://spaceport.example/');
+    web().removeFavorite('http://friendspace.example/');
     const saved = JSON.parse(
       localStorage.getItem('still-online:v1:web') ?? '{}',
     );

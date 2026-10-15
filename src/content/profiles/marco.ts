@@ -1,4 +1,4 @@
-// Marco's Spaceport profile: black and minimal. Marco never uses exclamation marks (others may).
+// Marco's Friendspace profile: black and minimal. Marco never uses exclamation marks (others may).
 // Velvet Lantern at the Bean Cellar: the flyer (2), Derek quits (3), Derek un-quits (4), 11 people (5).
 import type { ProfileContent } from './types';
 

@@ -33,7 +33,7 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 
 ### Internet
 
-- **Web Explorer** with history, favorites and a fully fictional, local web: **Searchly** (search over every page), **Spaceport** profiles for each friend and you (Top 8, comment wall, profile song), a cursed 2003 fan page, a gossip blog, a school site and more
+- **Web Explorer** with history, favorites and a fully fictional, local web: **Searchly** (search over every page), **Friendspace** profiles for each friend and you (Top 8, comment wall, profile song), a cursed 2003 fan page, a gossip blog, a school site and more
 - **Mail** with a new batch of messages per day: chain letters, spam, family and friends, with replies to what you send
 - **TuneMole**, a fake peer-to-peer client with slow, jittery downloads that lands tracks in My Music and the Amplifier
 
@@ -53,8 +53,8 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 | ![The desktop](docs/screenshots/desktop.png) | ![Messenger contact list](docs/screenshots/messenger.png) |
 | **Amplifier** | **Web Explorer** |
 | ![Amplifier with its playlist](docs/screenshots/amplifier.png) | ![Web Explorer on Searchly](docs/screenshots/browser.png) |
-| **Spaceport** | **Paint** |
-| ![A Spaceport profile](docs/screenshots/spaceport.png) | ![Paint with a drawing](docs/screenshots/paint.png) |
+| **Friendspace** | **Paint** |
+| ![A Friendspace profile](docs/screenshots/friendspace.png) | ![Paint with a drawing](docs/screenshots/paint.png) |
 | **Mines** | **Hen Hunt** |
 | ![Mines mid-game](docs/screenshots/mines.png) | ![Hen Hunt mid-round](docs/screenshots/henhunt.png) |
 
@@ -62,7 +62,7 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 
 still online is fully playable in **German** as well as English. It is not a word-for-word translation: the six friends, the mail, the websites and the files were rewritten for a German 2007 (SchülerVZ-era chat-speak, a Gymnasium instead of a US high school, euros and Fischstäbchen), with the same storylines and the same ids underneath.
 
-- **What's localized:** the whole desktop and every app, all chats, mail, Spaceport profiles, Searchly and the other sites, seeded files, balloons, assistant tips, TuneMole results, and date/time/number formatting.
+- **What's localized:** the whole desktop and every app, all chats, mail, Friendspace profiles, Searchly and the other sites, seeded files, balloons, assistant tips, TuneMole results, and date/time/number formatting.
 - **How to switch:** a German browser starts in Deutsch automatically. Otherwise pick a flag under **Language / Sprache** on the login screen, the **DE/EN** badge in the tray, or **Regional and Language Options** (*Regions- und Sprachoptionen*) in the Start menu. Switching is live, with no reload; your saves, chats and files carry over.
 - **What stays as written:** things you typed or named yourself keep their language, like files on a real disk.
 

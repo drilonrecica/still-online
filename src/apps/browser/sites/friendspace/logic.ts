@@ -1,6 +1,6 @@
 import { formatRelativeDay, formatShortDate } from '@/i18n/format';
 import { getLocale } from '@/i18n/t';
-// Pure helpers for spaceport.example: comment walls by day, the player's profile, themes, labels.
+// Pure helpers for friendspace.example: comment walls by day, the player's profile, themes, labels.
 import type {
   PlayerProfile,
   ProfileComment,
@@ -11,9 +11,9 @@ import { PLAYLIST } from '@/content/playlist';
 import { getSiteText } from '@/content/locale';
 import {
   PROFILE_LIMITS,
-  SPACEPORT_HOST,
+  FRIENDSPACE_HOST,
   THEME_PRESETS,
-} from '@/content/sites/spaceport';
+} from '@/content/sites/friendspace';
 import type { ContactId } from '@/content/types';
 import type { Locale } from '@/i18n/types';
 import { mulberry32, seedFrom } from '@/os/random';
@@ -98,7 +98,7 @@ export function effectiveProfile(
   known: readonly ContactId[],
   locale: Locale = 'en',
 ): PlayerProfile {
-  const { DEFAULT_PLAYER_PROFILE } = getSiteText(SPACEPORT_HOST, locale);
+  const { DEFAULT_PLAYER_PROFILE } = getSiteText(FRIENDSPACE_HOST, locale);
   const base = saved ?? { ...DEFAULT_PLAYER_PROFILE, top8: [] };
   return { ...base, top8: normalizeTop8(base.top8, known) };
 }

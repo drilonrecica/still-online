@@ -1,4 +1,4 @@
-// German day 2 mail (`src/content/mail/day2.ts`): Kayla's love Kettenbrief, Spaceport, Marco's
+// German day 2 mail (`src/content/mail/day2.ts`): Kayla's love Kettenbrief, Friendspace, Marco's
 // flyer (before Derek's marker got to it) and Pia's VERMISST poster for Sternenstaub.
 import type { MailContent } from '../../mail/types';
 
@@ -37,24 +37,24 @@ export const day2Mail: readonly MailContent[] = [
   {
     id: 'd2-spaceport-views',
     day: 2,
-    from: { name: 'Spaceport', address: 'notifications@spaceport.example' },
-    subject: 'Spaceport: 3 Leute haben dein Profil angeschaut',
+    from: { name: 'Friendspace', address: 'notifications@friendspace.example' },
+    subject: 'Friendspace: 3 Leute haben dein Profil angeschaut',
     body: [
       'Hallo aus dem Orbit!',
       '',
       '3 Leute haben diese Woche dein Profil angeschaut.',
-      'Willst du wissen, wer? Log dich bei Spaceport ein und finde es heraus!*',
+      'Willst du wissen, wer? Log dich bei Friendspace ein und finde es heraus!*',
       '',
-      '  spaceport.example/me',
+      '  friendspace.example/me',
       '',
       'Tipp: Profile mit Profilsong werden 4x öfter angeschaut! Such dir heute deinen aus.',
       '',
-      '* Spaceport sagt dir nicht, wer dein Profil angeschaut hat. Aber sie HABEN es angeschaut. Wahrscheinlich.',
+      '* Friendspace sagt dir nicht, wer dein Profil angeschaut hat. Aber sie HABEN es angeschaut. Wahrscheinlich.',
       '',
       'Wir sehen uns im Orbit,',
-      'Deine Spaceport-Crew',
+      'Deine Friendspace-Crew',
       '',
-      'Du bekommst diese Mail, weil du ein Spaceport-Konto hast. Um deine Einstellungen zu ändern, log dich ein und such die Einstellungsseite. Viel Glück.',
+      'Du bekommst diese Mail, weil du ein Friendspace-Konto hast. Um deine Einstellungen zu ändern, log dich ein und such die Einstellungsseite. Viel Glück.',
     ].join('\n'),
   },
   {

@@ -1,5 +1,5 @@
 // Web Explorer's persisted `web` store: favorites now; counters, guestbooks, votes and the
-// Spaceport profile for the site tasks (P4-03…P4-05). See docs/architecture-v0.2.md → "Stores".
+// Friendspace profile for the site tasks (P4-03…P4-05). See docs/architecture-v0.2.md → "Stores".
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { PlayerProfile } from '@/content/profiles/types';
@@ -12,13 +12,14 @@ import type { FavoriteRecord } from '@/content/types';
 import { translate } from '@/i18n/t';
 import type { Locale, MessageKey } from '@/i18n/types';
 import { isRecord, persistOptions } from '@/os/persist';
+import { LEGACY_DEFAULT_FAVORITE_NAMES } from './legacyHosts';
 import { normalizeUrl } from './url';
 
 /** The default favorites' names, by url. */
 const DEFAULT_FAVORITE_KEYS: Readonly<Record<string, MessageKey>> = {
   'http://searchly.example/': 'browser.defaultFavorites.searchly',
   'http://tinfoilcomets.example/': 'browser.defaultFavorites.tinfoilcomets',
-  'http://spaceport.example/': 'browser.defaultFavorites.spaceport',
+  'http://friendspace.example/': 'browser.defaultFavorites.friendspace',
   'http://westfield-high.example/': 'browser.defaultFavorites.westfield-high',
   'http://celebgossip07.example/': 'browser.defaultFavorites.celebgossip07',
 };
@@ -57,7 +58,7 @@ export interface WebStore extends WebState {
   hit: (host: string) => number;
   /** Appends a player entry to `host`'s guestbook. */
   signGuestbook: (host: string, entry: PlayerGuestbookEntry) => void;
-  /** Saves the player's Spaceport `/me` profile. */
+  /** Saves the player's Friendspace `/me` profile. */
   saveProfile: (profile: PlayerProfile) => void;
   /** Records the player's answer to poll `pollId`; the first vote sticks ("u already voted!!"). */
   vote: (pollId: string, option: number) => void;
@@ -69,7 +70,8 @@ const count = (v: unknown): v is number =>
 
 /**
  * Favorites from untrusted data. A v0.2 favorite with a default's English url and name was never
- * renamed: it drops its title, so it follows the language.
+ * renamed: it drops its title, so it follows the language. Renamed sites' urls redirect, and their
+ * old default name counts as untouched too.
  */
 function sanitizeFavorites(v: unknown): FavoriteRecord[] | null {
   if (!Array.isArray(v)) return null;
@@ -84,7 +86,8 @@ function sanitizeFavorites(v: unknown): FavoriteRecord[] | null {
     const isDefaultName =
       f.title !== undefined &&
       url in DEFAULT_FAVORITE_KEYS &&
-      f.title === favoriteTitle({ url }, 'en');
+      (f.title === favoriteTitle({ url }, 'en') ||
+        f.title === LEGACY_DEFAULT_FAVORITE_NAMES[f.url]);
     out.push(
       f.title === undefined || isDefaultName
         ? { url }

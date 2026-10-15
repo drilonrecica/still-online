@@ -93,7 +93,7 @@ test('README screenshots @screenshots', async ({ page }) => {
 
   await amp.getByRole('button', { name: 'Close' }).click();
 
-  // Web Explorer on the Searchly homepage, then a Spaceport profile.
+  // Web Explorer on the Searchly homepage, then a Friendspace profile.
   // Messenger's sign-in already dialed up, so the browser opens online.
   await page.getByRole('option', { name: 'Web Explorer' }).dblclick();
   const browser = page.getByRole('region', { name: /Web Explorer$/ });
@@ -103,10 +103,10 @@ test('README screenshots @screenshots', async ({ page }) => {
   await page.mouse.move(900, 700);
   await page.waitForTimeout(500);
   await page.screenshot({ path: `${DIR}/browser.png` });
-  await go(browser, 'spaceport.example/jess');
+  await go(browser, 'friendspace.example/jess');
   await page.mouse.move(900, 700);
   await page.waitForTimeout(500);
-  await page.screenshot({ path: `${DIR}/spaceport.png` });
+  await page.screenshot({ path: `${DIR}/friendspace.png` });
   await browser.getByRole('button', { name: 'Close' }).click();
 
   // Paint with a small drawing.

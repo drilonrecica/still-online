@@ -1,4 +1,4 @@
-// Jess's German Spaceport profile: neon chaos, CAPS, „!!!“, hdgdl. Same Top 8, days and theme.
+// Jess's German Friendspace profile: neon chaos, CAPS, „!!!“, hdgdl. Same Top 8, days and theme.
 import { jessProfile as en } from '../../profiles/jess';
 import type { ProfileContent } from '../../profiles/types';
 
@@ -122,7 +122,7 @@ export const jessProfile: ProfileContent = {
   commentsOnPlayer: [
     {
       day: 2,
-      text: '{name}!!! du bist auf spaceport!!! du bist in meinen top 8. platz 1. logisch :D',
+      text: '{name}!!! du bist auf friendspace!!! du bist in meinen top 8. platz 1. logisch :D',
     },
     {
       day: 3,

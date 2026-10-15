@@ -1,4 +1,4 @@
-// Spaceport profile content: one per contact, valid Top 8s and songs, day-gated comments.
+// Friendspace profile content: one per contact, valid Top 8s and songs, day-gated comments.
 import { describe, expect, it } from 'vitest';
 import { contacts } from '../contacts';
 import { PLAYLIST } from '../playlist';
@@ -6,7 +6,7 @@ import { PROFILES } from '.';
 
 const ids = contacts.map((c) => c.contact.id);
 
-describe('Spaceport profiles', () => {
+describe('Friendspace profiles', () => {
   it('has exactly one profile per contact', () => {
     expect(PROFILES.map((p) => p.contactId).sort()).toEqual([...ids].sort());
   });

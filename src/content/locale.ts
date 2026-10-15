@@ -16,7 +16,7 @@ import type { ProfileContent } from './profiles/types';
 import * as enAbout from './sites/about';
 import * as enGossip from './sites/celebgossip07';
 import * as enSearchly from './sites/searchly';
-import * as enSpaceport from './sites/spaceport';
+import * as enFriendspace from './sites/friendspace';
 import * as enTinfoil from './sites/tinfoilcomets';
 import * as enVirusguard from './sites/virusguard';
 import * as enWestfield from './sites/westfieldhigh';
@@ -31,7 +31,7 @@ const EN_SITES = {
   [enAbout.ABOUT_HOST]: enAbout,
   [enSearchly.SEARCHLY_HOST]: enSearchly,
   [enGossip.GOSSIP_HOST]: enGossip,
-  [enSpaceport.SPACEPORT_HOST]: enSpaceport,
+  [enFriendspace.FRIENDSPACE_HOST]: enFriendspace,
   [enTinfoil.TINFOIL_HOST]: enTinfoil,
   [enVirusguard.VIRUSGUARD_HOST]: enVirusguard,
   [enWestfield.WESTFIELD_HOST]: enWestfield,

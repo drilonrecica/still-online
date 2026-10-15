@@ -4,7 +4,7 @@ import { go, logIn, openBrowserOnline, openFromStart } from './helpers';
 const DIR = 'docs/review/P7';
 
 // Full playthrough over 3 days via Turn Off → power on, saving per-day evidence and logging
-// how much new content (mail, Spaceport comments, guestbook entries, chats) each day brings.
+// how much new content (mail, Friendspace comments, guestbook entries, chats) each day brings.
 test('P7 gate: three-day playthrough @review', async ({ page }) => {
   test.setTimeout(180_000);
   const problems: string[] = [];
@@ -47,7 +47,7 @@ test('P7 gate: three-day playthrough @review', async ({ page }) => {
         .getByRole('button', { name: 'Connect' });
       if (await connect.isVisible()) await connect.click();
     }
-    await go(web, 'spaceport.example/jess');
+    await go(web, 'friendspace.example/jess');
     const walls = await web
       .getByRole('list', { name: 'Comments' })
       .getByRole('listitem')

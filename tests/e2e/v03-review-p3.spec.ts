@@ -245,7 +245,7 @@ test('P3 gate: three German days with a mid-game switch to English and back @rev
   await openMail();
   await both('day1-mail');
   await closeAll();
-  await openWeb('spaceport.example/jess');
+  await openWeb('friendspace.example/jess');
   await both('day1-spaceport-jess');
 
   // ── Day 2, German, then the mid-game switch ──
@@ -307,7 +307,7 @@ test('P3 gate: three German days with a mid-game switch to English and back @rev
 
   // Play on in English: another website and the Start menu.
   await closeAll();
-  await openWeb('spaceport.example/kayla');
+  await openWeb('friendspace.example/kayla');
   await both('day2-spaceport-kayla');
   await closeAll();
   await page

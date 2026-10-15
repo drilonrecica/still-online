@@ -7,7 +7,7 @@ import { mergeOverlay } from '../overlay';
 import { ABOUT_HOST } from '../sites/about';
 import { GOSSIP_HOST } from '../sites/celebgossip07';
 import { SEARCHLY_HOST } from '../sites/searchly';
-import { SPACEPORT_HOST } from '../sites/spaceport';
+import { FRIENDSPACE_HOST } from '../sites/friendspace';
 import { TINFOIL_HOST } from '../sites/tinfoilcomets';
 import { VIRUSGUARD_HOST } from '../sites/virusguard';
 import { WESTFIELD_HOST } from '../sites/westfieldhigh';
@@ -21,7 +21,7 @@ import * as profiles from './profiles';
 import * as about from './sites/about';
 import * as gossip from './sites/celebgossip07';
 import * as searchly from './sites/searchly';
-import * as spaceport from './sites/spaceport';
+import * as friendspace from './sites/friendspace';
 import * as tinfoil from './sites/tinfoilcomets';
 import * as virusguard from './sites/virusguard';
 import * as westfield from './sites/westfieldhigh';
@@ -45,7 +45,7 @@ export const content: LocaleContent = {
     [ABOUT_HOST]: about,
     [SEARCHLY_HOST]: searchly,
     [GOSSIP_HOST]: gossip,
-    [SPACEPORT_HOST]: spaceport,
+    [FRIENDSPACE_HOST]: friendspace,
     [TINFOIL_HOST]: tinfoil,
     [VIRUSGUARD_HOST]: virusguard,
     [WESTFIELD_HOST]: westfield,

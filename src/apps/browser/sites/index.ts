@@ -6,7 +6,7 @@ import { parseUrl } from '../url';
 import { ABOUT_SITE } from './about';
 import { GOSSIP_SITE } from './celebgossip07';
 import { SEARCHLY_SITE } from './searchly';
-import { SPACEPORT_SITE } from './spaceport';
+import { FRIENDSPACE_SITE } from './friendspace';
 import { TINFOIL_SITE } from './tinfoilcomets';
 import { VIRUSGUARD_SITE } from './virusguard';
 import { WESTFIELD_SITE } from './westfieldhigh';
@@ -14,7 +14,7 @@ import { WESTFIELD_SITE } from './westfieldhigh';
 export const SITES: readonly SiteDefinition[] = [
   SEARCHLY_SITE,
   TINFOIL_SITE,
-  SPACEPORT_SITE,
+  FRIENDSPACE_SITE,
   WESTFIELD_SITE,
   GOSSIP_SITE,
   VIRUSGUARD_SITE,

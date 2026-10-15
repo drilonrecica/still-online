@@ -3,15 +3,15 @@
 import { act, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { getLocalizedContents } from '@/apps/messenger/runtime';
-import Home from '@/apps/browser/sites/spaceport/Home';
+import Home from '@/apps/browser/sites/friendspace/Home';
 import { useSettingsStore } from '@/os/store/settings';
 import { getContacts, getSiteText, type SiteTexts } from './locale';
-import { SPACEPORT_TEXT as DE_SPACEPORT_TEXT } from './de/sites/spaceport';
-import { SPACEPORT_HOST, SPACEPORT_TEXT } from './sites/spaceport';
+import { FRIENDSPACE_TEXT as DE_FRIENDSPACE_TEXT } from './de/sites/friendspace';
+import { FRIENDSPACE_HOST, FRIENDSPACE_TEXT } from './sites/friendspace';
 
 // A German module with different strings must type-check against the English shape.
-const german: SiteTexts[typeof SPACEPORT_HOST]['SPACEPORT_TEXT'] = {
-  ...SPACEPORT_TEXT,
+const german: SiteTexts[typeof FRIENDSPACE_HOST]['FRIENDSPACE_TEXT'] = {
+  ...FRIENDSPACE_TEXT,
   logIn: 'Einloggen',
 };
 
@@ -19,16 +19,16 @@ describe('content follows the language', () => {
   it('a site page re-renders with the German module on a switch', () => {
     expect(german.logIn).toBe('Einloggen');
     render(<Home path="/" query={new URLSearchParams()} navigate={() => {}} />);
-    expect(screen.getAllByText(SPACEPORT_TEXT.tagline).length).toBeGreaterThan(
-      0,
-    );
+    expect(
+      screen.getAllByText(FRIENDSPACE_TEXT.tagline).length,
+    ).toBeGreaterThan(0);
     act(() => useSettingsStore.setState({ language: 'de' }));
     expect(
-      screen.getAllByText(DE_SPACEPORT_TEXT.tagline).length,
+      screen.getAllByText(DE_FRIENDSPACE_TEXT.tagline).length,
     ).toBeGreaterThan(0);
-    expect(screen.queryByText(SPACEPORT_TEXT.tagline)).toBeNull();
-    expect(getSiteText(SPACEPORT_HOST, 'en').SPACEPORT_TEXT.tagline).toBe(
-      SPACEPORT_TEXT.tagline,
+    expect(screen.queryByText(FRIENDSPACE_TEXT.tagline)).toBeNull();
+    expect(getSiteText(FRIENDSPACE_HOST, 'en').FRIENDSPACE_TEXT.tagline).toBe(
+      FRIENDSPACE_TEXT.tagline,
     );
   });
 

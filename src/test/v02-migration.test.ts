@@ -48,6 +48,14 @@ function resave() {
 }
 
 const v02Mail = save.mail.state.messages;
+/** v0.4 renamed Spaceport to Friendspace: generated text and urls follow, player text doesn't. */
+const renamed = <T>(value: T): T =>
+  JSON.parse(
+    JSON.stringify(value)
+      .replace(/spaceport\.example/g, 'friendspace.example')
+      .replace(/Spaceport/g, 'Friendspace')
+      .replace(/d2-friendspace-views/g, 'd2-spaceport-views'),
+  ) as T;
 const v02Nodes = Object.values(save.fs.state.nodes);
 
 beforeEach(() => loadV02());
@@ -177,7 +185,7 @@ describe('v0.2 mail', () => {
     expect(kinds.filter((k) => k === 'autoReply')).toHaveLength(2);
     expect(kinds.filter((k) => k === 'text')).toHaveLength(4);
     expect(rendered()).toEqual(
-      v02Mail.map((m) => ({ ...m, attachments: m.attachments ?? [] })),
+      renamed(v02Mail).map((m) => ({ ...m, attachments: m.attachments ?? [] })),
     );
     expect(useMailStore.getState().deliveredDays).toEqual(
       save.mail.state.deliveredDays,
@@ -225,10 +233,15 @@ describe('v0.2 mail', () => {
 describe('v0.2 web', () => {
   it('keeps every favorite and names the untouched defaults per language', () => {
     const { favorites, counters } = useWebStore.getState();
+    // Spaceport favorites now point at Friendspace; the player's own name stays.
     expect(favorites.map((f) => f.url)).toEqual(
-      save.web.state.favorites.map((f) => f.url),
+      renamed(save.web.state.favorites.map((f) => f.url)),
     );
-    expect(renderFavorites(favorites, 'en')).toEqual(save.web.state.favorites);
+    expect(renderFavorites(favorites, 'en')).toEqual(
+      save.web.state.favorites.map((f) =>
+        f.title === 'Spaceport' ? renamed(f) : { ...f, url: renamed(f.url) },
+      ),
+    );
     expect(renderFavorites(favorites, 'de').map((f) => f.title)).toContain(
       'Westfield-Gymnasium',
     );

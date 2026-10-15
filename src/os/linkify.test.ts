@@ -10,12 +10,12 @@ describe('splitLinks', () => {
   });
 
   it('links bare, www and scheme hosts and normalises the url', () => {
-    expect(splitLinks('see spaceport.example now')).toEqual([
+    expect(splitLinks('see friendspace.example now')).toEqual([
       { kind: 'text', text: 'see ' },
       {
         kind: 'link',
-        text: 'spaceport.example',
-        url: 'http://spaceport.example',
+        text: 'friendspace.example',
+        url: 'http://friendspace.example',
       },
       { kind: 'text', text: ' now' },
     ]);

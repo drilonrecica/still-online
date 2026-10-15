@@ -69,7 +69,7 @@ yeah
 - was reimt sich auf laterne. kaserne? laterne kaserne. nein
 - vielleicht n song übers konzert im jugendzentrum?? „juz rock“`;
 
-const TOP_8 = `MEINE SPACEPORT TOP 8 (KEINEM ZEIGEN)
+const TOP_8 = `MEINE FRIENDSPACE TOP 8 (KEINEM ZEIGEN)
 
 --- version 1 ---
 1. Jess

@@ -149,9 +149,9 @@ test('a11y: Web Explorer pages (Searchly, fan page, profile)', async ({
   await go(browser, 'tinfoilcomets.example/');
   await expectNoSeriousViolations(page);
 
-  await go(browser, 'spaceport.example/');
+  await go(browser, 'friendspace.example/');
   await expectNoSeriousViolations(page);
-  await go(browser, 'spaceport.example/jess');
+  await go(browser, 'friendspace.example/jess');
   await expectNoSeriousViolations(page);
 });
 

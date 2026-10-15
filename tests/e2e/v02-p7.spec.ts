@@ -12,7 +12,7 @@ async function nextDay(page: Page, day: number) {
 }
 
 // The release playthrough: three power cycles, and each day delivers new mail and wall comments.
-test('P7: three days bring new mail and Spaceport comments', async ({
+test('P7: three days bring new mail and Friendspace comments', async ({
   page,
 }) => {
   test.setTimeout(150_000);
@@ -43,7 +43,7 @@ test('P7: three days bring new mail and Spaceport comments', async ({
         .getByRole('button', { name: 'Connect' });
       if (await connect.isVisible()) await connect.click();
     }
-    await go(web, 'spaceport.example/jess');
+    await go(web, 'friendspace.example/jess');
     const wall = web.getByRole('list', { name: 'Comments' });
     await expect(web.getByTestId('profile')).toBeVisible();
     wallCounts.push(await wall.getByRole('listitem').count());

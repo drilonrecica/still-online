@@ -100,7 +100,7 @@ Almost 10, on Papa's laptop for 20 minutes. Bossy, dramatic, ponies („Ponys", 
 | Mama                                         | „Hallo Schatz,", proper capitals, too many „!!", explains the computer wrong, signs „Hab dich lieb, Mama". P.S. questions about the computer („Wie mache ich die Schrift größer"). |
 | Herr Dalton                                  | Correct, dry teacher humor. Writes to the class with „ihr" („Liebe Klasse 9b, …"), never „Sie" to students. Signs „Herr Dalton, Biologie, Raum 12".                                |
 | PixelPoint, spam, VirusGuard, school website | Formal „Sie", like German companies and offices in 2007.                                                                                                                           |
-| Spaceport, Celeb Gossip 07, fan pages        | „du"/„ihr", exclamation-heavy.                                                                                                                                                     |
+| Friendspace, Celeb Gossip 07, fan pages      | „du"/„ihr", exclamation-heavy.                                                                                                                                                     |
 | Tacki (assistant)                            | „Sie", like the original assistants („Es sieht so aus, als würden Sie einen Brief schreiben…").                                                                                    |
 | Flocke (sheep)                               | „du".                                                                                                                                                                              |
 
@@ -254,7 +254,7 @@ Use these terms everywhere (chat, mail, files, profiles, sites) so callbacks con
 
 | English                                  | German                                                                  | Notes                                                             |
 | ---------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| Spaceport                                | Spaceport                                                               | site name stays; „ein Ort für Freunde im Orbit"                   |
+| Friendspace                              | Friendspace                                                             | site name stays; „ein Ort für Freunde im Orbit"                   |
 | Top 8                                    | Top 8                                                                   | stays                                                             |
 | comments                                 | „Kommentare"                                                            |                                                                   |
 | guestbook                                | „Gästebuch"                                                             |                                                                   |
@@ -282,7 +282,7 @@ Use these terms everywhere (chat, mail, files, profiles, sites) so callbacks con
 ## 6. Don'ts
 
 - **No anachronisms.** The lint's German list (`src/content/lint.ts`, case-sensitive) blocks: WhatsApp, Instagram, Facebook, Smartphone, Tablet, App/Apps, App-Store, posten/gepostet, Story/Stories, Selfie, Hashtag, streamen/Streaming, DM. Watch the easy traps: "in STORIES" → „in Geschichten"; "post" → „reinstellen"/„schreiben"; "app" → „Programm"; "stream" → „anhören". Also no „googeln", „liken", „teilen" (in the social sense), „Follower", „Feed", „Chat-Verlauf" of an app, „WLAN überall".
-- **No real brands, sites or people.** No StudiVZ, SchülerVZ, ICQ, MSN, Knuddels, wer-kennt-wen, Bravo, Jamba, Popstars/DSDS, real bands or celebrities. Use the existing fictional names (Spaceport, Searchly, Celeb Gossip 07, Tinfoil Comets) or invent a `.example` one.
+- **No real brands, sites or people.** No StudiVZ, SchülerVZ, ICQ, MSN, Knuddels, wer-kennt-wen, Bravo, Jamba, Popstars/DSDS, real bands or celebrities. Use the existing fictional names (Friendspace, Searchly, Celeb Gossip 07, Tinfoil Comets) or invent a `.example` one.
 - **No `.de` domains** (or `.com`, `.at`, `.ch` …), even in jokes. Hosts and email addresses stay exactly as in English.
 - **PG-13.** No slurs or schoolyard insults („Opfer", „Spast", „schwul" as an insult). „geil", „voll fies", „ätzend" are fine in moderation.
 - **No dialect parody.** No Bavarian, Saxon, Kölsch, Berlinerisch spelling, no „Kiezdeutsch". Casual standard German only („nich", „is", „ma" are colloquial, not dialect). „net" is dialect: don't use it.

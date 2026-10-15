@@ -59,7 +59,7 @@ export const VIRUSGUARD_THREATS: readonly Threat[] = [
   },
   {
     name: 'Worm.Glitter.Overload',
-    location: 'spaceport.example',
+    location: 'friendspace.example',
     risk: 'VERY HIGH',
   },
   {

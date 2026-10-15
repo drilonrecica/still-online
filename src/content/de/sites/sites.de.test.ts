@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { getProfiles, getSiteText } from '@/content/locale';
 import { PROFILES as EN_PROFILES } from '@/content/profiles';
 import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
-import { SPACEPORT_HOST } from '@/content/sites/spaceport';
+import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
 import { VIRUSGUARD_HOST } from '@/content/sites/virusguard';
 import { WESTFIELD_HOST } from '@/content/sites/westfieldhigh';
@@ -72,7 +72,7 @@ describe('German Tinfoil Comets fan page', () => {
   });
 });
 
-describe('German school site, Spaceport and VirusGuard', () => {
+describe('German school site, Friendspace and VirusGuard', () => {
   it('lists Herr Dalton: Biologie, Raum 12, same email', () => {
     const { WESTFIELD_STAFF, WESTFIELD_NEWS } = getSiteText(
       WESTFIELD_HOST,
@@ -93,9 +93,9 @@ describe('German school site, Spaceport and VirusGuard', () => {
     );
   });
 
-  it('keeps Spaceport theme ids and colours, German names', () => {
-    const en = getSiteText(SPACEPORT_HOST, 'en');
-    const de = getSiteText(SPACEPORT_HOST, 'de');
+  it('keeps Friendspace theme ids and colours, German names', () => {
+    const en = getSiteText(FRIENDSPACE_HOST, 'en');
+    const de = getSiteText(FRIENDSPACE_HOST, 'de');
     expect(de.THEME_PRESETS.map((t) => [t.id, t.theme])).toEqual(
       en.THEME_PRESETS.map((t) => [t.id, t.theme]),
     );
@@ -116,7 +116,7 @@ describe('German school site, Spaceport and VirusGuard', () => {
   });
 });
 
-describe('German Spaceport profiles', () => {
+describe('German Friendspace profiles', () => {
   it('are what getProfiles returns for de', () => {
     expect(getProfiles('de')).toBe(PROFILES);
   });

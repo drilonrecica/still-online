@@ -1,4 +1,4 @@
-// Theo's German Spaceport profile: shy, „ähm“, „sorry“, „…“, draws frogs. Mama comments formally.
+// Theo's German Friendspace profile: shy, „ähm“, „sorry“, „…“, draws frogs. Mama comments formally.
 import { theoProfile as en } from '../../profiles/theo';
 import type { ProfileContent } from '../../profiles/types';
 
@@ -43,7 +43,7 @@ export const theoProfile: ProfileContent = {
     {
       day: 1,
       from: 'froschfan_02',
-      text: 'deine froschzeichnung is das beste auf ganz spaceport. kein witz',
+      text: 'deine froschzeichnung is das beste auf ganz friendspace. kein witz',
     },
     {
       day: 2,

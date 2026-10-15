@@ -57,7 +57,7 @@ export const VIRUSGUARD_THREATS: readonly Threat[] = [
   },
   {
     name: 'Wurm.Glitzer.Overload',
-    location: 'spaceport.example',
+    location: 'friendspace.example',
     risk: 'SEHR HOCH',
   },
   {

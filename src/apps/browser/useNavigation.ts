@@ -40,7 +40,7 @@ export interface Navigation {
   shown: ShownPage | null;
   canBack: boolean;
   canForward: boolean;
-  /** An absolute or typed address (`spaceport.example`, `ponies` → Searchly). */
+  /** An absolute or typed address (`friendspace.example`, `ponies` → Searchly). */
   go: (address: string) => void;
   /** A link inside a page; relative paths resolve against the shown page. */
   follow: (href: string) => void;

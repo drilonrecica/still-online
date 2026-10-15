@@ -54,13 +54,13 @@ test('P2: German content in chat, mail and on the web', async ({ page }) => {
     mail.getByRole('table', { name: de.mail.ui.messages }),
   ).toContainText(welcome?.subject ?? '-', { timeout: 10_000 });
 
-  // Web Explorer: a German Spaceport profile and a German Searchly search.
+  // Web Explorer: a German Friendspace profile and a German Searchly search.
   await page
     .getByRole('option', { name: de.apps.browser.title, exact: true })
     .dispatchEvent('dblclick');
   const web = page.getByRole('region', { name: /Web Explorer$/ }).first();
   const address = web.getByLabel(de.browser.address);
-  await address.fill('spaceport.example/jess');
+  await address.fill('friendspace.example/jess');
   await address.press('Enter');
   await expect(web).toContainText(jessProfile.headline, { timeout: 10_000 });
   await address.fill('searchly.example/search?q=gästebuch');

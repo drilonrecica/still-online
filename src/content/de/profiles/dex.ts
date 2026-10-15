@@ -1,4 +1,4 @@
-// Dex's German Spaceport profile: slow, short, lowercase, always away. Same days and theme colours;
+// Dex's German Friendspace profile: slow, short, lowercase, always away. Same days and theme colours;
 // the skate stickers are German skater talk (Kickflip, Grip Tape and Board stay).
 import { dexProfile as en } from '../../profiles/dex';
 import type { ProfileContent } from '../../profiles/types';

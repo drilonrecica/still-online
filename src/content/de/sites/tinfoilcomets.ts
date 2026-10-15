@@ -241,7 +241,7 @@ export const TINFOIL_GUESTBOOK: readonly GuestbookEntry[] = [
   {
     day: 1,
     name: 'xX~JeSs~Xx :D',
-    homepage: 'spaceport.example/jess',
+    homepage: 'friendspace.example/jess',
     message:
       'OMG OMG ICH HAB IM RADIO KARTEN GEWONNEN!!!!! 2 KARTEN!!! FREITAG!!! ZIGGY WENN DU DAS LIEST ICH BIN DIE DIE SCHREIT (L) (L) (L)',
   },
@@ -283,7 +283,7 @@ export const TINFOIL_GUESTBOOK: readonly GuestbookEntry[] = [
   {
     day: 5,
     name: 'xX~JeSs~Xx :D',
-    homepage: 'spaceport.example/jess',
+    homepage: 'friendspace.example/jess',
     message:
       'ICH WAR DA!!!! ERSTE REIHE!!!! ziggy hat den drumstick-wirbel gemacht und ihn GEWORFEN und ICH HAB IHN GEFANGEN. ok erst hat er mich im gesicht getroffen. ZÄHLT TROTZDEM. beste nacht ALLER ZEITEN (L)',
   },

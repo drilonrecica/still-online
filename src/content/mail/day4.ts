@@ -1,5 +1,5 @@
 // Day 4 mail: presentations tomorrow, Pia forwards the girl-from-the-well chain letter, Jess's
-// official concert itinerary, mom's curfew, and a new comment on the player's Spaceport page.
+// official concert itinerary, mom's curfew, and a new comment on the player's Friendspace page.
 import type { MailContent } from './types';
 
 export const day4Mail: readonly MailContent[] = [
@@ -137,19 +137,19 @@ export const day4Mail: readonly MailContent[] = [
   {
     id: 'd4-spaceport-comment',
     day: 4,
-    from: { name: 'Spaceport', address: 'notifications@spaceport.example' },
-    subject: 'Spaceport: you have a new comment!',
+    from: { name: 'Friendspace', address: 'notifications@friendspace.example' },
+    subject: 'Friendspace: you have a new comment!',
     body: [
       'Hey there, space cadet!',
       '',
       'Someone left a comment on your profile! Go see what they said:',
       '',
-      '  spaceport.example/me',
+      '  friendspace.example/me',
       '',
       'Comments are a great way to keep in touch with your friends in orbit. Remember to leave one back!',
       '',
       'See you in orbit,',
-      'The Spaceport Crew',
+      'The Friendspace Crew',
     ].join('\n'),
   },
 ];

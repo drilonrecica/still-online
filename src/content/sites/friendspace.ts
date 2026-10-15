@@ -1,17 +1,17 @@
-// spaceport.example: "Spaceport: a place for friends in orbit". Site text, theme presets and the
+// friendspace.example: "Friendspace: a place for friends in orbit". Site text, theme presets and the
 // player's starting profile. Friend profiles live in src/content/profiles/.
 import type { PlayerProfile, ProfileTheme } from '../profiles/types';
 import type { SiteMeta } from './types';
 
-export const SPACEPORT_HOST = 'spaceport.example';
+export const FRIENDSPACE_HOST = 'friendspace.example';
 
 /** Friend pages (`/<contactId>`) are added from the profiles with `PROFILE_PAGE`. */
 export const SITE_META: SiteMeta = {
-  title: 'Spaceport: a place for friends in orbit',
+  title: 'Friendspace: a place for friends in orbit',
   description:
-    'Spaceport is the place for friends: profiles, Top 8, comments, moods and a song on your page. Join for free!',
+    'Friendspace is the place for friends: profiles, Top 8, comments, moods and a song on your page. Join for free!',
   keywords: [
-    'spaceport',
+    'friendspace',
     'friends',
     'profile',
     'social',
@@ -21,38 +21,38 @@ export const SITE_META: SiteMeta = {
   ],
   pages: {
     '/': {
-      title: 'Spaceport - a place for friends in orbit',
+      title: 'Friendspace - a place for friends in orbit',
       keywords: ['sign up', 'log in', 'cool new people'],
     },
     '/me': {
-      title: 'Spaceport - My Profile',
+      title: 'Friendspace - My Profile',
       keywords: ['my profile', 'edit', 'me'],
     },
-    '/*': { title: 'Spaceport - Lost in orbit' },
+    '/*': { title: 'Friendspace - Lost in orbit' },
   },
 };
 
 /** A friend's profile page; `{name}` is the friend's name. */
 export const PROFILE_PAGE = {
-  title: '{name} on Spaceport',
+  title: '{name} on Friendspace',
   keywords: ['profile', 'top 8', 'comments'],
 };
 
-export const SPACEPORT_TEXT = {
-  logo: 'Spaceport',
+export const FRIENDSPACE_TEXT = {
+  logo: 'Friendspace',
   tagline: 'a place for friends in orbit',
   welcome:
-    'Spaceport is the place to meet your friends, share your music and show the whole galaxy how cool you are. Join for free!!',
+    'Friendspace is the place to meet your friends, share your music and show the whole galaxy how cool you are. Join for free!!',
   signUp: 'Sign Up!',
   logIn: 'Log In',
   coolNewPeople: 'Cool New People',
   news: [
     'NEW: put a song on your profile!! everyone who visits can hear it',
     'Pick your Top 8 wisely. your friends WILL notice',
-    'Spaceport now has over 4,000,000 members in orbit!',
+    'Friendspace now has over 4,000,000 members in orbit!',
   ],
   footer:
-    'About · FAQ · Terms · Privacy · ©2007 Spaceport. All rights reserved in orbit.',
+    'About · FAQ · Terms · Privacy · ©2007 Friendspace. All rights reserved in orbit.',
   notFoundTitle: 'Lost in orbit!',
   notFoundText:
     'This profile has drifted off into space. Check the address, or go back to the launch pad.',
@@ -70,11 +70,11 @@ export interface ThemePreset {
 const COMIC = "'Comic Sans MS', 'Chalkboard', cursive";
 const PLAIN = 'Verdana, Tahoma, sans-serif';
 
-/** The six presets in the `/me` editor; `default` is Spaceport's own look. */
+/** The six presets in the `/me` editor; `default` is Friendspace's own look. */
 export const THEME_PRESETS: readonly ThemePreset[] = [
   {
     id: 'default',
-    label: 'Spaceport Classic',
+    label: 'Friendspace Classic',
     theme: {
       background: '#e5ecf9',
       text: '#000000',
@@ -169,10 +169,10 @@ export const PROFILE_LIMITS = {
 
 /** The player's `/me` until they save their own (`web.myProfile` is null). */
 export const DEFAULT_PLAYER_PROFILE: Omit<PlayerProfile, 'top8'> = {
-  headline: 'new to Spaceport!!',
+  headline: 'new to Friendspace!!',
   mood: { text: 'excited', emoticon: ':D' },
   aboutMe:
-    'Hi!! I just joined Spaceport. Click "Edit Profile" to tell the galaxy about yourself.',
+    'Hi!! I just joined Friendspace. Click "Edit Profile" to tell the galaxy about yourself.',
   songTrackId: null,
   themePreset: 'default',
   customColors: null,

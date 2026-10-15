@@ -1,4 +1,4 @@
-// German Spaceport profiles, same contact ids and order as `src/content/profiles`.
+// German Friendspace profiles, same contact ids and order as `src/content/profiles`.
 import type { ProfileContent } from '../../profiles/types';
 import { dexProfile } from './dex';
 import { jessProfile } from './jess';

@@ -1,5 +1,5 @@
 // German day 4 mail (`src/content/mail/day4.ts`): Referate tomorrow, Pia forwards the
-// girl-from-the-well Kettenbrief, Jess's official concert plan, Mama's curfew and a new Spaceport
+// girl-from-the-well Kettenbrief, Jess's official concert plan, Mama's curfew and a new Friendspace
 // comment.
 import type { MailContent } from '../../mail/types';
 
@@ -139,19 +139,19 @@ export const day4Mail: readonly MailContent[] = [
   {
     id: 'd4-spaceport-comment',
     day: 4,
-    from: { name: 'Spaceport', address: 'notifications@spaceport.example' },
-    subject: 'Spaceport: Du hast einen neuen Kommentar!',
+    from: { name: 'Friendspace', address: 'notifications@friendspace.example' },
+    subject: 'Friendspace: Du hast einen neuen Kommentar!',
     body: [
       'Hallo aus dem Orbit!',
       '',
       'Jemand hat einen Kommentar auf deinem Profil hinterlassen! Schau nach, was drinsteht:',
       '',
-      '  spaceport.example/me',
+      '  friendspace.example/me',
       '',
       'Kommentare sind super, um mit deinen Freunden im Orbit in Kontakt zu bleiben. Vergiss nicht, auch einen zurückzuschreiben!',
       '',
       'Wir sehen uns im Orbit,',
-      'Deine Spaceport-Crew',
+      'Deine Friendspace-Crew',
     ].join('\n'),
   },
 ];

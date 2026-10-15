@@ -1,4 +1,4 @@
-// Marco's German Spaceport profile: lowercase, deadpan, never „!“ (Tante Rita shouts for him).
+// Marco's German Friendspace profile: lowercase, deadpan, never „!“ (Tante Rita shouts for him).
 import { marcoProfile as en } from '../../profiles/marco';
 import type { ProfileContent } from '../../profiles/types';
 

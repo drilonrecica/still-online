@@ -56,7 +56,7 @@ export const ABOUT_TEXT = {
 export const COOL_SITES: readonly { label: string; url: string }[] = [
   { label: 'Searchly', url: 'http://searchly.example/' },
   { label: 'Tinfoil Comets', url: 'http://tinfoilcomets.example/' },
-  { label: 'Spaceport', url: 'http://spaceport.example/' },
+  { label: 'Friendspace', url: 'http://friendspace.example/' },
   { label: 'Westfield-Gymnasium', url: 'http://westfield-high.example/' },
   { label: 'Celeb Gossip 07', url: 'http://celebgossip07.example/' },
 ];

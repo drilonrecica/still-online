@@ -18,7 +18,7 @@ import {
   overlayFallbacks,
 } from './locale';
 import { PROFILES } from './profiles';
-import { SPACEPORT_HOST, SPACEPORT_TEXT } from './sites/spaceport';
+import { FRIENDSPACE_HOST, FRIENDSPACE_TEXT } from './sites/friendspace';
 import type { ContactLine } from './types';
 
 describe('accessors', () => {
@@ -27,8 +27,8 @@ describe('accessors', () => {
     expect(getSeedFiles('en')).toBe(SEED_FILES);
     expect(getMailContent('en')).toBe(MAIL_CONTENT);
     expect(getProfiles('en')).toBe(PROFILES);
-    expect(getSiteText(SPACEPORT_HOST, 'en').SPACEPORT_TEXT).toBe(
-      SPACEPORT_TEXT,
+    expect(getSiteText(FRIENDSPACE_HOST, 'en').FRIENDSPACE_TEXT).toBe(
+      FRIENDSPACE_TEXT,
     );
   });
 
@@ -49,9 +49,9 @@ describe('accessors', () => {
     expect(getProfiles('de').map((p) => p.contactId)).toEqual(
       PROFILES.map((p) => p.contactId),
     );
-    expect(getSiteText(SPACEPORT_HOST, 'de').SPACEPORT_TEXT.emptyWall).toMatch(
-      /^Noch keine Kommentare/,
-    );
+    expect(
+      getSiteText(FRIENDSPACE_HOST, 'de').FRIENDSPACE_TEXT.emptyWall,
+    ).toMatch(/^Noch keine Kommentare/);
     expect(getBalloons('de').SCHEDULED_BALLOONS.length).toBeGreaterThan(0);
     expect(getTips('de').TIPS.length).toBeGreaterThan(0);
     expect(getTuneMoleResults('de').length).toBeGreaterThan(0);

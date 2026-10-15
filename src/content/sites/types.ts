@@ -43,7 +43,7 @@ export interface SiteDefinition {
   meta: (locale: Locale) => SiteMeta;
   /**
    * Path → page; `/` = home. A key `/*` catches any other single-segment path
-   * (Spaceport `/<contactId>`); the page reads `path` to decide what to show.
+   * (Friendspace `/<contactId>`); the page reads `path` to decide what to show.
    */
   pages: Readonly<Record<string, SitePage>>;
 }
@@ -119,7 +119,7 @@ export interface Favorite {
 
 export interface WebState {
   /**
-   * Seeded with Searchly, Tinfoil Comets, Spaceport, Westfield High, Celeb Gossip 07 as `{ url }`
+   * Seeded with Searchly, Tinfoil Comets, Friendspace, Westfield High, Celeb Gossip 07 as `{ url }`
    * (named in the current language at render, `favoriteTitle`).
    */
   favorites: FavoriteRecord[];
@@ -129,6 +129,6 @@ export interface WebState {
   guestbook: Record<string, PlayerGuestbookEntry[]>;
   /** Poll id → chosen option index. */
   votes: Record<string, number>;
-  /** Spaceport `/me`; null until the player edits it (defaults derive from the player name). */
+  /** Friendspace `/me`; null until the player edits it (defaults derive from the player name). */
   myProfile: PlayerProfile | null;
 }

@@ -1043,7 +1043,7 @@ export const en = {
     defaultFavorites: {
       searchly: 'Searchly',
       tinfoilcomets: 'Tinfoil Comets',
-      spaceport: 'Spaceport',
+      friendspace: 'Friendspace',
       'westfield-high': 'Westfield High',
       celebgossip07: 'Celeb Gossip 07',
     },
@@ -1164,9 +1164,9 @@ export const en = {
       allTags: 'ALL TAGZ',
       tagged: 'posts tagged “{tag}”',
     },
-    spaceport: {
+    friendspace: {
       nav: {
-        label: 'Spaceport',
+        label: 'Friendspace',
         home: 'Home',
         myProfile: 'My Profile',
         search: 'Search',

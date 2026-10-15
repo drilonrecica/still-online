@@ -3,7 +3,7 @@ import { lintContentStrings, lintText } from './lint';
 
 describe('lintText', () => {
   it('passes plain text and .example links and emails', () => {
-    expect(lintText('hey :) see spaceport.example/kayla', 'p')).toEqual([]);
+    expect(lintText('hey :) see friendspace.example/kayla', 'p')).toEqual([]);
     expect(lintText('http://www.kayla.example/blog', 'p')).toEqual([]);
     expect(lintText('mail me: kim@livemail.example.', 'p')).toEqual([]);
   });

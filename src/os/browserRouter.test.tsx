@@ -16,23 +16,23 @@ describe('browser:open', () => {
   afterEach(() => off());
 
   it('opens a Web Explorer window per link', () => {
-    events.emit('browser:open', { url: 'http://spaceport.example/kayla' });
+    events.emit('browser:open', { url: 'http://friendspace.example/kayla' });
     events.emit('browser:open', { url: 'http://about.example/' });
     const windows = useWindowsStore.getState().windows;
     expect(windows.map((w) => [w.appId, w.props.url])).toEqual([
-      ['browser', 'http://spaceport.example/kayla'],
+      ['browser', 'http://friendspace.example/kayla'],
       ['browser', 'http://about.example/'],
     ]);
   });
 
   it('a Messenger link opens Web Explorer at that page', async () => {
-    render(<RichText text="omg look at spaceport.example/kayla!!" />);
+    render(<RichText text="omg look at friendspace.example/kayla!!" />);
     await userEvent.click(
-      screen.getByRole('button', { name: 'spaceport.example/kayla' }),
+      screen.getByRole('button', { name: 'friendspace.example/kayla' }),
     );
     expect(useWindowsStore.getState().windows[0]).toMatchObject({
       appId: 'browser',
-      props: { url: 'http://spaceport.example/kayla' },
+      props: { url: 'http://friendspace.example/kayla' },
     });
   });
 

@@ -1,5 +1,5 @@
-// spaceport.example `/`: the launch pad. Sign Up and Log In both just log you in as the player.
-import { SPACEPORT_HOST } from '@/content/sites/spaceport';
+// friendspace.example `/`: the launch pad. Sign Up and Log In both just log you in as the player.
+import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import { useLocale } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import type { SitePageProps } from '@/content/sites/types';
@@ -7,10 +7,10 @@ import { SiteLink } from '../../SiteLink';
 import { Layout } from './Layout';
 import { FRIEND_IDS, friendName, friendPicture } from './people';
 import { Picture } from './Picture';
-import styles from './Spaceport.module.css';
+import styles from './Friendspace.module.css';
 
 export default function Home({ navigate }: SitePageProps) {
-  const { SPACEPORT_TEXT: T } = useSiteText(SPACEPORT_HOST);
+  const { FRIENDSPACE_TEXT: T } = useSiteText(FRIENDSPACE_HOST);
   const locale = useLocale();
   return (
     <Layout>

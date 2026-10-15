@@ -1,9 +1,9 @@
-// spaceport.example `/<contactId>`: a friend's profile, with the comment wall up to today's day.
+// friendspace.example `/<contactId>`: a friend's profile, with the comment wall up to today's day.
 // Any other single-segment path lands here too and shows "Lost in orbit!".
 import { usePlayerName } from '@/i18n/settingsText';
 import { getProfiles } from '@/content/locale';
 import { useLocale, useT } from '@/i18n/useT';
-import { SPACEPORT_HOST } from '@/content/sites/spaceport';
+import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import { useSiteText } from '../useSiteText';
 import type { SitePageProps } from '@/content/sites/types';
 import { now } from '@/os/clock';
@@ -18,10 +18,10 @@ import {
   wallComment,
 } from './people';
 import { ProfileView } from './ProfileView';
-import styles from './Spaceport.module.css';
+import styles from './Friendspace.module.css';
 
 export default function Profile({ path }: SitePageProps) {
-  const { SPACEPORT_TEXT: T } = useSiteText(SPACEPORT_HOST);
+  const { FRIENDSPACE_TEXT: T } = useSiteText(FRIENDSPACE_HOST);
   const locale = useLocale();
   const t = useT();
   const PROFILES = getProfiles(locale);
@@ -36,7 +36,7 @@ export default function Profile({ path }: SitePageProps) {
         <div className={styles.notFound}>
           <h2>{T.notFoundTitle}</h2>
           <p>{T.notFoundText}</p>
-          <SiteLink href="/">{t('sites.spaceport.backToLaunchPad')}</SiteLink>
+          <SiteLink href="/">{t('sites.friendspace.backToLaunchPad')}</SiteLink>
         </div>
       </Layout>
     );

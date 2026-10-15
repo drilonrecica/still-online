@@ -1,4 +1,4 @@
-// Spaceport profiles (P4-04): one module per friend in src/content/profiles/<contactId>.ts.
+// Friendspace profiles (P4-04): one module per friend in src/content/profiles/<contactId>.ts.
 import type { ContactId } from '../types';
 
 export interface ProfileTheme {

@@ -3,12 +3,12 @@
 import { useId, useState } from 'react';
 import type { PlayerProfile } from '@/content/profiles/types';
 import { PLAYLIST } from '@/content/playlist';
-import { PROFILE_LIMITS, SPACEPORT_HOST } from '@/content/sites/spaceport';
+import { PROFILE_LIMITS, FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import { useLocale, useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import { cleanProfile, moveTop8 } from './logic';
 import { friendName } from './people';
-import styles from './Spaceport.module.css';
+import styles from './Friendspace.module.css';
 
 const DEFAULT_CUSTOM = { background: '#000033', text: '#ffff66' };
 
@@ -21,7 +21,7 @@ export function ProfileEditor({
   onSave: (profile: PlayerProfile) => void;
   onCancel: () => void;
 }) {
-  const { MOOD_EMOTICONS, THEME_PRESETS } = useSiteText(SPACEPORT_HOST);
+  const { MOOD_EMOTICONS, THEME_PRESETS } = useSiteText(FRIENDSPACE_HOST);
   const locale = useLocale();
   const t = useT();
   const [p, setP] = useState(initial);
@@ -33,16 +33,16 @@ export function ProfileEditor({
   return (
     <form
       className={styles.editor}
-      aria-label={t('sites.spaceport.editProfile')}
+      aria-label={t('sites.friendspace.editProfile')}
       onSubmit={(e) => {
         e.preventDefault();
         onSave(cleanProfile(p));
       }}
     >
-      <h2 className={styles.boxTitle}>{t('sites.spaceport.editProfile')}</h2>
+      <h2 className={styles.boxTitle}>{t('sites.friendspace.editProfile')}</h2>
       <div className={styles.editorGrid}>
         <label htmlFor={`${id}-headline`}>
-          {t('sites.spaceport.editor.headline')}
+          {t('sites.friendspace.editor.headline')}
         </label>
         <input
           id={`${id}-headline`}
@@ -51,7 +51,9 @@ export function ProfileEditor({
           onChange={(e) => set({ headline: e.target.value })}
         />
 
-        <label htmlFor={`${id}-mood`}>{t('sites.spaceport.editor.mood')}</label>
+        <label htmlFor={`${id}-mood`}>
+          {t('sites.friendspace.editor.mood')}
+        </label>
         <span className={styles.row}>
           <input
             id={`${id}-mood`}
@@ -60,7 +62,7 @@ export function ProfileEditor({
             onChange={(e) => set({ mood: { ...p.mood, text: e.target.value } })}
           />
           <select
-            aria-label={t('sites.spaceport.editor.moodEmoticon')}
+            aria-label={t('sites.friendspace.editor.moodEmoticon')}
             value={p.mood.emoticon}
             onChange={(e) =>
               set({ mood: { ...p.mood, emoticon: e.target.value } })
@@ -75,7 +77,7 @@ export function ProfileEditor({
         </span>
 
         <label htmlFor={`${id}-about`}>
-          {t('sites.spaceport.editor.aboutMe')}
+          {t('sites.friendspace.editor.aboutMe')}
         </label>
         <textarea
           id={`${id}-about`}
@@ -85,13 +87,15 @@ export function ProfileEditor({
           onChange={(e) => set({ aboutMe: e.target.value })}
         />
 
-        <label htmlFor={`${id}-song`}>{t('sites.spaceport.editor.song')}</label>
+        <label htmlFor={`${id}-song`}>
+          {t('sites.friendspace.editor.song')}
+        </label>
         <select
           id={`${id}-song`}
           value={p.songTrackId ?? ''}
           onChange={(e) => set({ songTrackId: e.target.value || null })}
         >
-          <option value="">{t('sites.spaceport.editor.noSong')}</option>
+          <option value="">{t('sites.friendspace.editor.noSong')}</option>
           {PLAYLIST.map((track) => (
             <option key={track.id} value={track.id}>
               {track.artist} - {track.title}
@@ -100,7 +104,7 @@ export function ProfileEditor({
         </select>
 
         <label htmlFor={`${id}-theme`}>
-          {t('sites.spaceport.editor.theme')}
+          {t('sites.friendspace.editor.theme')}
         </label>
         <select
           id={`${id}-theme`}
@@ -119,16 +123,16 @@ export function ProfileEditor({
             </option>
           ))}
           <option value="custom">
-            {t('sites.spaceport.editor.customColors')}
+            {t('sites.friendspace.editor.customColors')}
           </option>
         </select>
 
         {p.themePreset === 'custom' && (
           <>
-            <span>{t('sites.spaceport.editor.colors')}</span>
+            <span>{t('sites.friendspace.editor.colors')}</span>
             <span className={styles.row}>
               <label>
-                {t('sites.spaceport.editor.background')}{' '}
+                {t('sites.friendspace.editor.background')}{' '}
                 <input
                   type="color"
                   value={colors.background}
@@ -140,7 +144,7 @@ export function ProfileEditor({
                 />
               </label>
               <label>
-                {t('sites.spaceport.editor.text')}{' '}
+                {t('sites.friendspace.editor.text')}{' '}
                 <input
                   type="color"
                   value={colors.text}
@@ -153,10 +157,10 @@ export function ProfileEditor({
           </>
         )}
 
-        <span>{t('sites.spaceport.editor.top8')}</span>
+        <span>{t('sites.friendspace.editor.top8')}</span>
         <ol
           className={styles.orderList}
-          aria-label={t('sites.spaceport.editor.top8Order')}
+          aria-label={t('sites.friendspace.editor.top8Order')}
         >
           {p.top8.map((friend, i) => (
             <li key={friend}>
@@ -165,7 +169,7 @@ export function ProfileEditor({
               </span>
               <button
                 type="button"
-                aria-label={t('sites.spaceport.editor.moveUp', {
+                aria-label={t('sites.friendspace.editor.moveUp', {
                   name: friend,
                 })}
                 disabled={i === 0}
@@ -175,7 +179,7 @@ export function ProfileEditor({
               </button>
               <button
                 type="button"
-                aria-label={t('sites.spaceport.editor.moveDown', {
+                aria-label={t('sites.friendspace.editor.moveDown', {
                   name: friend,
                 })}
                 disabled={i === p.top8.length - 1}
@@ -189,10 +193,10 @@ export function ProfileEditor({
       </div>
       <div className={styles.editorButtons}>
         <button type="submit" className={styles.bigButton}>
-          {t('sites.spaceport.editor.save')}
+          {t('sites.friendspace.editor.save')}
         </button>
         <button type="button" onClick={onCancel}>
-          {t('sites.spaceport.editor.cancel')}
+          {t('sites.friendspace.editor.cancel')}
         </button>
       </div>
     </form>

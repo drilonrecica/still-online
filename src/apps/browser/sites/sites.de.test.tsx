@@ -1,4 +1,4 @@
-// P2-06: every fictional site and Spaceport profile in German, and a live switch back to English.
+// P2-06: every fictional site and Friendspace profile in German, and a live switch back to English.
 import { act, cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -221,10 +221,10 @@ describe('sites in German', () => {
   });
 });
 
-describe('Spaceport in German', () => {
+describe('Friendspace in German', () => {
   it('a friend profile is fully German', async () => {
     useWorldStore.setState({ day: 5 });
-    const { windowId } = open('http://spaceport.example/jess');
+    const { windowId } = open('http://friendspace.example/jess');
     await finishLoad();
     const profile = await screen.findByTestId('profile');
     expect(profile).toHaveTextContent(
@@ -239,7 +239,7 @@ describe('Spaceport in German', () => {
       within(profile).getByRole('region', { name: 'Kommentare an Jess' }),
     ).toHaveTextContent(/fotos oder es is nie passiert/);
     expect(windowTitle(windowId)?.titleParams).toEqual({
-      page: 'Jess auf Spaceport',
+      page: 'Jess auf Friendspace',
     });
   });
 
@@ -253,7 +253,7 @@ describe('Spaceport in German', () => {
       dex: /skaten\. essen\. schlafen/,
     };
     for (const [id, text] of Object.entries(samples)) {
-      open(`http://spaceport.example/${id}`);
+      open(`http://friendspace.example/${id}`);
       await finishLoad();
       expect(await screen.findByTestId('profile'), id).toHaveTextContent(text);
       cleanup();
@@ -262,17 +262,17 @@ describe('Spaceport in German', () => {
 
   it('/me starts with German defaults and a German editor', async () => {
     useWorldStore.setState({ day: 2 });
-    const { user } = open('http://spaceport.example/me');
+    const { user } = open('http://friendspace.example/me');
     await finishLoad();
     expect(await screen.findByText(/Du bist eingeloggt/)).toHaveTextContent(
       'Hallo Ada! Du bist eingeloggt.',
     );
     expect(screen.getByTestId('profile')).toHaveTextContent(
-      'neu auf Spaceport!!',
+      'neu auf Friendspace!!',
     );
     await user.click(screen.getByRole('button', { name: 'Profil bearbeiten' }));
     expect(screen.getByLabelText('Überschrift:')).toHaveValue(
-      'neu auf Spaceport!!',
+      'neu auf Friendspace!!',
     );
     expect(screen.getByRole('option', { name: 'Pink Glitzer' })).toBeTruthy();
     expect(screen.getByRole('option', { name: ':( traurig' })).toBeTruthy();

@@ -1,4 +1,4 @@
-// Pia's German Spaceport profile: bossy, Ponys (never „Ponies“), Sternenstaub is the queen, Keks the
+// Pia's German Friendspace profile: bossy, Ponys (never „Ponies“), Sternenstaub is the queen, Keks the
 // dog is a suspect. Same days and theme colours; the stickers are German.
 import { piaProfile as en } from '../../profiles/pia';
 import type { ProfileContent } from '../../profiles/types';
@@ -9,7 +9,7 @@ export const piaProfile: ProfileContent = {
   mood: { text: 'bestimmerisch', emoticon: ':P' },
   aboutMe:
     'das is PIAS seite. ich hab 23 ponys und alle haben namen. sternenstaub is die KÖNIGIN. ' +
-    'papa hat mir die seite gemacht und den rest hab ich gemacht. das is die beste seite auf spaceport. ' +
+    'papa hat mir die seite gemacht und den rest hab ich gemacht. das is die beste seite auf friendspace. ' +
     '{name} wohnt im zimmer neben mir. leider. NICHT in mein zimmer gehen. NICHT meine seite nachmachen',
   wantToMeet:
     'ein ECHTES pony. kein spielzeug. ein echtes das bei uns im garten wohnt',

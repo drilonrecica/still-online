@@ -1,4 +1,4 @@
-// Jess's Spaceport profile: neon chaos, all caps, concert week (sign → outfit → night before →
+// Jess's Friendspace profile: neon chaos, all caps, concert week (sign → outfit → night before →
 // front row + the drumstick). The concert is between days 4 and 5.
 import type { ProfileContent } from './types';
 
@@ -118,7 +118,7 @@ export const jessProfile: ProfileContent = {
   commentsOnPlayer: [
     {
       day: 2,
-      text: '{name}!!! ur on spaceport!!! ur in my top 8. #1. obviously :D',
+      text: '{name}!!! ur on friendspace!!! ur in my top 8. #1. obviously :D',
     },
     { day: 3, text: 'what r u wearing friday?? DONT say a sweater. i mean it' },
     { day: 4, text: 'TOMORROW!!! i cant sleep. i cant eat. i can only scream' },

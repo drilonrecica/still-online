@@ -1048,7 +1048,7 @@ export const de: Messages = {
     defaultFavorites: {
       searchly: 'Searchly',
       tinfoilcomets: 'Tinfoil Comets',
-      spaceport: 'Spaceport',
+      friendspace: 'Friendspace',
       'westfield-high': 'Westfield-Gymnasium',
       celebgossip07: 'Celeb Gossip 07',
     },
@@ -1172,9 +1172,9 @@ export const de: Messages = {
       allTags: 'ALLE TAGS',
       tagged: 'beiträge mit dem tag „{tag}“',
     },
-    spaceport: {
+    friendspace: {
       nav: {
-        label: 'Spaceport',
+        label: 'Friendspace',
         home: 'Startseite',
         myProfile: 'Mein Profil',
         search: 'Suche',
