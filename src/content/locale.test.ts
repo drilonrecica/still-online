@@ -32,12 +32,16 @@ describe('accessors', () => {
     );
   });
 
-  it('works for de with empty overlays: same contacts, English text as the fallback', () => {
+  it('works for de: same contacts in the same order, overlays merged over English', () => {
     const de = getContacts('de');
     expect(de.map((c) => c.contact.id)).toEqual(
       contacts.map((c) => c.contact.id),
     );
-    expect(de).toEqual(contacts);
+    de.forEach((c, i) =>
+      expect(c).toEqual(
+        mergeOverlay(contacts[i]!, CONTACT_OVERLAYS[c.contact.id]),
+      ),
+    );
     expect(getSeedFiles('de')).toHaveLength(SEED_FILES.length);
     expect(getMailContent('de').map((m) => m.id)).toEqual(
       MAIL_CONTENT.map((m) => m.id),
@@ -51,9 +55,9 @@ describe('accessors', () => {
     expect(getTuneMoleResults('de').length).toBeGreaterThan(0);
   });
 
-  it('reports every English text as a fallback while the overlays are empty', () => {
+  it('reports every English text as a fallback without an overlay', () => {
     for (const c of contacts) {
-      expect(overlayFallbacks(c, CONTACT_OVERLAYS[c.contact.id])).toContain(
+      expect(overlayFallbacks(c, undefined)).toContain(
         `${c.contact.id}.personalMessage`,
       );
     }

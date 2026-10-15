@@ -197,3 +197,8 @@
 - P2-01: German quotes „…" everywhere including chat lines — one rule is simpler for six parallel writers than a voice exception
 - P2-01: the player is never addressed with gendered nouns/adjectives in German (no „Lieblingscousin", „Held") — the game never asks for a gender
 - P2-01: Herr Dalton addresses the class with „ihr" (Klasse 9), companies/spam/school site/Tacki with „Sie", friends and Spaceport with „du"
+- P2-02 (v0.3): Jess DE — "ur the best" becomes „du bist SPITZE" / „HDGDL" (German „die/der Beste" would gender the player); the hen-hunt reaction uses the game's own term „goldenes Huhn"; "hold on" → „moment" (German chat-speak, not „mom", which reads as English Mom)
+- P2-02 (v0.3): Jess DE — "wear actual tinfoil" → „zieh echtes tinfoil an. also alufolie", so the band-name pun still lands when the follow-up is „ARMBÄNDER aus alufolie"
+- P2-02 (v0.3): Kayla DE — "be the bigger person" → „steh einfach drüber" (the German idiom „sei die Klügere" would gender the player); "taking the high road" → her own „die klügere gibt nach"
+- P2-02 (v0.3): Kayla DE — mint chip → stracciatella, "great minds!" → „zwei doofe, ein gedanke!", and „PLEASANT porridge?? „angenehmer haferbrei"??" translates the English track title (which stays) so the joke works
+- P2-02 (v0.3): `playthrough.test.ts` plays every path in `en` and `de`; a `TRANSLATED` list asserts `overlayFallbacks` is empty for jess and kayla (P2-03/P2-04 add their friends)

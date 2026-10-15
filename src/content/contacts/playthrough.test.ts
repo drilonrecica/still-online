@@ -3,6 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { setup } from '@/apps/messenger/engine/test-helpers';
 import { translate } from '@/i18n/t';
 import { WALLPAPERS } from '@/os/wallpapers/registry';
+import type { Locale } from '@/i18n/types';
+import { CONTACT_OVERLAYS, getContacts, overlayFallbacks } from '../locale';
 import { PLAYLIST } from '../playlist';
 import type { ContactContent, Script } from '../types';
 import { contacts } from './index';
@@ -97,23 +99,39 @@ function playPath(
   return { t, id, visited };
 }
 
-describe('M2 gate: every script, every path, plays to its end', () => {
-  for (const content of contacts) {
-    for (const script of content.scripts) {
-      const all = paths(script);
-      it(`${content.contact.id}/${script.id}: ${all.length} path(s) end cleanly`, () => {
-        expect(all.length).toBeGreaterThan(0);
-        for (const picks of all) {
-          const { t, id } = playPath(content, script, picks);
-          expect(t.log, picks.join(',')).toContain(`end ${id}/${script.id}`);
-          expect(t.progress(id).active).toBeNull();
-          const said = t.said(id).join('\n');
-          expect(said).not.toMatch(/\{[^}]*\}/);
-          expect(said).toContain('<');
-        }
-      });
+const LOCALES: readonly Locale[] = ['en', 'de'];
+
+describe.each(LOCALES)(
+  'M2 gate (%s): every script, every path, plays to its end',
+  (locale) => {
+    for (const content of getContacts(locale)) {
+      for (const script of content.scripts) {
+        const all = paths(script);
+        it(`${content.contact.id}/${script.id}: ${all.length} path(s) end cleanly`, () => {
+          expect(all.length).toBeGreaterThan(0);
+          for (const picks of all) {
+            const { t, id } = playPath(content, script, picks);
+            expect(t.log, picks.join(',')).toContain(`end ${id}/${script.id}`);
+            expect(t.progress(id).active).toBeNull();
+            const said = t.said(id).join('\n');
+            expect(said).not.toMatch(/\{[^}]*\}/);
+            expect(said).toContain('<');
+          }
+        });
+      }
     }
-  }
+  },
+);
+
+/** Friends whose German overlay is complete; P2-03/P2-04 add theirs. */
+const TRANSLATED = ['jess', 'kayla'];
+
+describe('P2-02: German overlays have no English fallback', () => {
+  it.each(TRANSLATED)('%s is fully German', (id) => {
+    const content = contacts.find((c) => c.contact.id === id);
+    if (!content) throw new Error(`${id} missing`);
+    expect(overlayFallbacks(content, CONTACT_OVERLAYS[id])).toEqual([]);
+  });
 });
 
 describe("P2-04: Pia's day-5 present", () => {
