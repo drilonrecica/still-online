@@ -9,6 +9,7 @@ import { getMessengerContents, getMessengerEngine } from '../runtime';
 import { StatusIcon, STATUS_LABELS } from '../StatusIcon';
 import { useMessengerStore } from '../store';
 import { Avatar } from './Avatar';
+import { PlayerPicture } from './PlayerPicture';
 import styles from './Chat.module.css';
 import { nudgeLimiter, onShake, SHAKE_MS } from './nudge';
 import { Reply } from './Reply';
@@ -158,7 +159,14 @@ function ChatView({
         contactName={contact.displayName}
         playerName={playerName}
       />
-      <Reply contactId={id} disabled={!signedIn} />
+      <div className={styles.bottom}>
+        <div className={styles.replyArea}>
+          <Reply contactId={id} disabled={!signedIn} />
+        </div>
+        <div className={styles.myPicture}>
+          <PlayerPicture size={64} />
+        </div>
+      </div>
       <div className={styles.statusBar} role="status">
         {statusText}
       </div>

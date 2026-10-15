@@ -7,7 +7,7 @@ import {
 } from '@/os/store/settings';
 import styles from './Messenger.module.css';
 
-function Dialog({
+export function Dialog({
   title,
   onSubmit,
   onCancel,

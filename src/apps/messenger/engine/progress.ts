@@ -183,6 +183,8 @@ export function sanitizeProgress(v: unknown): MessengerProgress {
     autoAway: p.autoAway === true,
     awaySince: typeof p.awaySince === 'number' ? p.awaySince : null,
   };
+  if (isRecord(p.displayPicture) && typeof p.displayPicture.fileId === 'string')
+    player.displayPicture = { fileId: p.displayPicture.fileId };
   if (player.status !== 'away') {
     player.autoAway = false;
     player.awaySince = null;

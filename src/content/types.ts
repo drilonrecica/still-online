@@ -229,6 +229,8 @@ export interface PlayerProgress {
   autoAway: boolean;
   /** Epoch ms the current Away began; null unless status is Away. */
   awaySince: number | null;
+  /** The My Pictures file shown as the player's picture; null/absent = the default pattern. */
+  displayPicture?: { fileId: string } | null;
 }
 
 export interface MessengerProgress {

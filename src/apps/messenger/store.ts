@@ -24,6 +24,8 @@ export interface MessengerStore extends MessengerData {
   /** Puts the player's own message back after a now-playing line. */
   clearNowPlayingLine: () => void;
   setShowNowPlaying: (showNowPlaying: boolean) => void;
+  /** Picks the player's display picture from My Pictures; null restores the default. */
+  setDisplayPicture: (fileId: string | null) => void;
   /** Clears the unread count when the player looks at the chat. */
   markRead: (contactId: ContactId) => void;
   /** Empties a contact's transcript only; script progress and unread are untouched. */
@@ -107,6 +109,8 @@ const creator: StateCreator<MessengerStore> = (set) => {
         };
       }),
     setShowNowPlaying: (showNowPlaying) => setPlayer({ showNowPlaying }),
+    setDisplayPicture: (fileId) =>
+      setPlayer({ displayPicture: fileId ? { fileId } : null }),
     clearTranscript: (contactId) =>
       set((s) => {
         const contact = s.progress.contacts[contactId];

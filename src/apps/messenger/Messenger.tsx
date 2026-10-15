@@ -8,7 +8,9 @@ import { useWindowsStore } from '@/os/store/windows';
 import { AwayPrompt, OptionsDialog } from './AwayDialogs';
 import { buildContactList, type ListGroupId } from './contactList';
 import styles from './Messenger.module.css';
+import { PlayerPicture } from './chat/PlayerPicture';
 import { RichText } from './chat/Transcript';
+import { PicturePicker } from './PicturePicker';
 import { getMessengerContents, getMessengerEngine } from './runtime';
 import { StatusIcon, STATUS_LABELS } from './StatusIcon';
 import { useMessengerStore } from './store';
@@ -162,7 +164,9 @@ function ContactListView() {
   const awayMessage = useMessengerStore((s) => s.progress.player.awayMessage);
   const setStatus = useMessengerStore((s) => s.setPlayerStatus);
   const goAway = useMessengerStore((s) => s.goAway);
-  const [dialog, setDialog] = useState<'away' | 'options' | null>(null);
+  const [dialog, setDialog] = useState<'away' | 'options' | 'picture' | null>(
+    null,
+  );
   const [fileMenu, setFileMenu] = useState(false);
   const showNowPlaying = useMessengerStore(
     (s) => s.progress.player.showNowPlaying,
@@ -241,41 +245,52 @@ function ContactListView() {
           </ul>
         )}
       </div>
-      <div className={styles.header}>
-        <div className={styles.nameRow}>
-          <StatusIcon status={status} />
-          <span className={styles.playerName}>{playerName}</span>
-          {status === 'away' && (
-            <span className={styles.awayNote}>
-              ({awayMessage ? `Away: ${awayMessage}` : 'Away'})
-            </span>
-          )}
-          <select
-            className={styles.statusSelect}
-            aria-label="My status"
-            value={status}
-            onChange={(e) => {
-              const next = e.target.value as PlayerStatus;
-              if (next === 'away') setDialog('away');
-              else setStatus(next);
-            }}
-          >
-            {PLAYER_STATUSES.map((s) => (
-              <option key={s} value={s}>
-                {s === 'offline' ? 'Appear Offline' : STATUS_LABELS[s]}
-              </option>
-            ))}
-          </select>
+      <div className={`${styles.header} ${styles.headerRow}`}>
+        <button
+          type="button"
+          className={styles.pictureButton}
+          aria-label="Change my picture"
+          title="Change my picture"
+          onClick={() => setDialog('picture')}
+        >
+          <PlayerPicture size={48} />
+        </button>
+        <div className={styles.headerBody}>
+          <div className={styles.nameRow}>
+            <StatusIcon status={status} />
+            <span className={styles.playerName}>{playerName}</span>
+            {status === 'away' && (
+              <span className={styles.awayNote}>
+                ({awayMessage ? `Away: ${awayMessage}` : 'Away'})
+              </span>
+            )}
+            <select
+              className={styles.statusSelect}
+              aria-label="My status"
+              value={status}
+              onChange={(e) => {
+                const next = e.target.value as PlayerStatus;
+                if (next === 'away') setDialog('away');
+                else setStatus(next);
+              }}
+            >
+              {PLAYER_STATUSES.map((s) => (
+                <option key={s} value={s}>
+                  {s === 'offline' ? 'Appear Offline' : STATUS_LABELS[s]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <PersonalMessage />
+          <label className={styles.nowPlaying}>
+            <input
+              type="checkbox"
+              checked={showNowPlaying}
+              onChange={(e) => setShowNowPlaying(e.target.checked)}
+            />
+            Show what I&apos;m listening to
+          </label>
         </div>
-        <PersonalMessage />
-        <label className={styles.nowPlaying}>
-          <input
-            type="checkbox"
-            checked={showNowPlaying}
-            onChange={(e) => setShowNowPlaying(e.target.checked)}
-          />
-          Show what I&apos;m listening to
-        </label>
       </div>
       <div className={styles.list} role="group" aria-label="Contacts">
         {groups.map((group) => {
@@ -355,6 +370,9 @@ function ContactListView() {
             setDialog(null);
           }}
         />
+      )}
+      {dialog === 'picture' && (
+        <PicturePicker onClose={() => setDialog(null)} />
       )}
       {dialog === 'options' && (
         <OptionsDialog onClose={() => setDialog(null)} />

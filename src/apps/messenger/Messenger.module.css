@@ -308,3 +308,59 @@
 .dialogButtons button {
   min-width: 70px;
 }
+
+.pictureButton {
+  flex: none;
+  padding: 2px;
+  line-height: 0;
+  background: #fff;
+  border: 1px solid var(--msn-accent);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.headerRow {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.headerBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pictureList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 200px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.pictureOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 72px;
+  padding: 3px;
+  font: inherit;
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: #fff;
+  border: 1px solid #7f9db9;
+}
+
+.pictureOption[aria-selected='true'] {
+  background: #316ac5;
+  color: #fff;
+}

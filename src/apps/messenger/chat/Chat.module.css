@@ -207,3 +207,25 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.bottom {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding-right: 6px;
+}
+
+.replyArea {
+  flex: 1;
+  min-width: 0;
+}
+
+.myPicture {
+  flex: none;
+  line-height: 0;
+  padding: 2px;
+  margin-bottom: 4px;
+  background: #fff;
+  border: 1px solid var(--msn-accent);
+  border-radius: 4px;
+}
