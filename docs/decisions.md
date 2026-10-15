@@ -191,3 +191,9 @@
 - P1-08: the dial-up desktop shortcut gets its own label (`apps.dialup.label`, DE „Mit Internet verbinden“, EN unchanged) — the full German title needs three lines in the 71 px icon label; desktop labels now use `hyphens: auto` (`lang="de"` is set on `<html>`)
 - P1-08: German Messenger reply-box placeholder shortened to „Oben eine Antwort wählen, dann Senden.“ — the long sentence was cut off in the single-line input; every other German string fit unchanged
 - P1-08: `tests/e2e/review-p1-layout.spec.ts` (`@review`) opens the shell and every desktop app in German, flags clipped/overflowing elements and writes screenshots to `docs/review/P1/de/`
+- P2-01: German pet/toy names are localized (Biscuit → „Keks", Stardust → „Sternenstaub"); people, bands, songs, venues (Bean Cellar, Riverside Arena) keep their names — pets read as family words, people/bands are proper nouns
+- P2-01: US swaps fixed in the glossary: jello → Wackelpudding (lime → Waldmeister), brownies → Muffins, Thanksgiving → „Omas Geburtstag", B+ → „2+", English essay → Deutsch-Aufsatz, rec hall → Jugendzentrum, college → Uni, $ → € — so the six friend tasks can't diverge
+- P2-01: Messenger personal message is „Spruch" in chat; Comet Chatter becomes „KOMETEN-KLATSCH"; mail prefixes are „WG:"/„AW:" — what German teens and mail clients said in 2007
+- P2-01: German quotes „…" everywhere including chat lines — one rule is simpler for six parallel writers than a voice exception
+- P2-01: the player is never addressed with gendered nouns/adjectives in German (no „Lieblingscousin", „Held") — the game never asks for a gender
+- P2-01: Herr Dalton addresses the class with „ihr" (Klasse 9), companies/spam/school site/Tacki with „Sie", friends and Spaceport with „du"
