@@ -63,4 +63,33 @@ describe('parseEmoticons', () => {
   it('gives every emoticon a picture', () => {
     for (const e of EMOTICONS) expect(e.src).toBeTruthy();
   });
+
+  it('recognises the six new built-ins and their alternate codes', () => {
+    const names: Record<string, string> = {
+      '(dog)': 'Dog',
+      '(cat)': 'Cat',
+      '(music)': 'Music',
+      '(8)': 'Music',
+      '(pizza)': 'Pizza',
+      '(pi)': 'Pizza',
+      '(party)': 'Party',
+      '<:o)': 'Party',
+      '(sun)': 'Sun',
+      '(#)': 'Sun',
+    };
+    for (const [code, name] of Object.entries(names))
+      expect(show(parseEmoticons(`a ${code} b`))).toBe(`a [${name}] b`);
+  });
+
+  it('parses custom codes case-insensitively alongside built-ins', () => {
+    const custom = [{ code: '[ponies]', fileId: 'f1' }];
+    const segments = parseEmoticons('so [PONIES] :)', custom);
+    expect(show(segments)).toBe('so [[ponies]] [Smile]');
+    expect(segments[1]).toMatchObject({
+      code: '[PONIES]',
+      emoticon: { fileId: 'f1' },
+    });
+    // Without the list the code stays text.
+    expect(show(parseEmoticons('[ponies]'))).toBe('[ponies]');
+  });
 });

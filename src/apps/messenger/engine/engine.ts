@@ -14,8 +14,11 @@ export interface ConversationEngine {
   signIn: () => void;
   /** Stops every timer. Undelivered lines stay pending and replay on the next sign-in. */
   signOut: () => void;
-  /** Player picks reply `index`. Returns false if that contact isn't waiting for a choice. */
-  choose: (contactId: ContactId, index: number) => boolean;
+  /**
+   * Player picks reply `index`; `flavor` (emoticon codes the player added) is appended to its text.
+   * Returns false if that contact isn't waiting for a choice.
+   */
+  choose: (contactId: ContactId, index: number, flavor?: string) => boolean;
   /** Current choices for a contact, or null if they aren't waiting for one. */
   getChoices: (contactId: ContactId) => ResolvedChoice[] | null;
   playerNudge: (contactId: ContactId) => void;
@@ -75,11 +78,15 @@ export function createConversationEngine(
       store.setState({ signedIn: false, online: {}, typing: {} });
       bus.emit('signedOut', {});
     },
-    choose(id, index) {
+    choose(id, index, flavor) {
       const r = running(id);
-      const choice = choicesOf(id)?.[index];
-      if (!data().signedIn || !r || !choice || !r.script.nodes[choice.next])
+      const picked = choicesOf(id)?.[index];
+      if (!data().signedIn || !r || !picked || !r.script.nodes[picked.next])
         return false;
+      const extra = flavor?.trim();
+      const choice = extra
+        ? { ...picked, text: `${picked.text} ${extra}` }
+        : picked;
       patchContact(id, (c) => ({
         ...c,
         transcript: [

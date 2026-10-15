@@ -249,6 +249,14 @@ export interface PlayerProgress {
   awaySince: number | null;
   /** The My Pictures file shown as the player's picture; null/absent = the default pattern. */
   displayPicture?: { fileId: string } | null;
+  /** Emoticons made from My Pictures files (P3-05); absent = none. */
+  customEmoticons?: CustomEmoticon[];
+}
+
+/** A player-made emoticon: `code` is e.g. `[ponies]`, `fileId` a My Pictures image. */
+export interface CustomEmoticon {
+  code: string;
+  fileId: string;
 }
 
 export interface MessengerProgress {

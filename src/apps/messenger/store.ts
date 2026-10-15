@@ -9,6 +9,7 @@ import type {
   MessengerProgress,
   PlayerStatus,
 } from '@/content/types';
+import { isCustomCode } from './customEmoticons';
 import { defaultProgress, sanitizeProgress } from './engine/progress';
 import type { MessengerData } from './engine/types';
 
@@ -26,6 +27,9 @@ export interface MessengerStore extends MessengerData {
   setShowNowPlaying: (showNowPlaying: boolean) => void;
   /** Picks the player's display picture from My Pictures; null restores the default. */
   setDisplayPicture: (fileId: string | null) => void;
+  /** Adds `[code]` → a My Pictures file. False if the code is invalid or already taken. */
+  addCustomEmoticon: (code: string, fileId: string) => boolean;
+  removeCustomEmoticon: (code: string) => void;
   /** Clears the unread count when the player looks at the chat. */
   markRead: (contactId: ContactId) => void;
   /** Empties a contact's transcript only; script progress and unread are untouched. */
@@ -36,7 +40,7 @@ interface PersistedMessenger {
   progress: MessengerProgress;
 }
 
-const creator: StateCreator<MessengerStore> = (set) => {
+const creator: StateCreator<MessengerStore> = (set, get) => {
   const setPlayer = (patch: Partial<MessengerProgress['player']>) =>
     set((s) => ({
       progress: { ...s.progress, player: { ...s.progress.player, ...patch } },
@@ -111,6 +115,19 @@ const creator: StateCreator<MessengerStore> = (set) => {
     setShowNowPlaying: (showNowPlaying) => setPlayer({ showNowPlaying }),
     setDisplayPicture: (fileId) =>
       setPlayer({ displayPicture: fileId ? { fileId } : null }),
+    addCustomEmoticon: (code, fileId) => {
+      const list = get().progress.player.customEmoticons ?? [];
+      const key = code.toLowerCase();
+      if (!isCustomCode(code) || list.some((e) => e.code.toLowerCase() === key))
+        return false;
+      setPlayer({ customEmoticons: [...list, { code, fileId }] });
+      return true;
+    },
+    removeCustomEmoticon: (code) => {
+      const list = get().progress.player.customEmoticons;
+      if (!list?.some((e) => e.code === code)) return;
+      setPlayer({ customEmoticons: list.filter((e) => e.code !== code) });
+    },
     clearTranscript: (contactId) =>
       set((s) => {
         const contact = s.progress.contacts[contactId];

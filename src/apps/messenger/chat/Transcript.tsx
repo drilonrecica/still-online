@@ -6,14 +6,27 @@ import { events } from '@/os/events';
 import { splitLinks } from '@/os/linkify';
 import { parseEmoticons } from './emoticons';
 import { WINKS } from '../winks/catalog';
+import { useMessengerStore } from '../store';
+import { PictureFile } from './PlayerPicture';
 
 /** Emoticon segments of `text` as images. */
 function Emoticons({ text }: { text: string }) {
+  const custom = useMessengerStore((s) => s.progress.player.customEmoticons);
   return (
     <>
-      {parseEmoticons(text).map((s, i) =>
+      {parseEmoticons(text, custom).map((s, i) =>
         s.kind === 'text' ? (
           <span key={i}>{s.text}</span>
+        ) : s.emoticon.fileId ? (
+          <span
+            key={i}
+            className={styles.emoticon}
+            role="img"
+            aria-label={s.code}
+            title={s.code}
+          >
+            <PictureFile fileId={s.emoticon.fileId} size={19} label="" />
+          </span>
         ) : (
           <img
             key={i}

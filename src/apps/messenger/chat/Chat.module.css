@@ -238,3 +238,52 @@
   border: 1px solid var(--msn-accent);
   border-radius: 4px;
 }
+
+/* A player-made emoticon: the picture, cropped to a 19 px square. */
+span.emoticon {
+  display: inline-block;
+  overflow: hidden;
+}
+
+span.emoticon > img,
+span.emoticon > canvas {
+  display: block;
+}
+
+.emoMenu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 150px;
+  max-height: 220px;
+  margin-bottom: 2px;
+  padding: 4px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--msn-accent, #7a96df);
+  box-shadow: 2px 2px 4px rgb(0 0 0 / 30%);
+}
+
+.emoItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 0;
+  padding: 2px 4px;
+  text-align: left;
+}
+
+.emoRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.emoWrap {
+  position: relative;
+}

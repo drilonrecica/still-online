@@ -14,6 +14,7 @@ import {
   type TranscriptEntry,
   type TriggerContext,
 } from '@/content/types';
+import { sanitizeCustomEmoticons } from '../customEmoticons';
 
 const STATUSES: readonly ContactStatus[] = [
   'online',
@@ -190,6 +191,8 @@ export function sanitizeProgress(v: unknown): MessengerProgress {
   };
   if (isRecord(p.displayPicture) && typeof p.displayPicture.fileId === 'string')
     player.displayPicture = { fileId: p.displayPicture.fileId };
+  const customEmoticons = sanitizeCustomEmoticons(p.customEmoticons);
+  if (customEmoticons.length > 0) player.customEmoticons = customEmoticons;
   if (player.status !== 'away') {
     player.autoAway = false;
     player.awaySince = null;

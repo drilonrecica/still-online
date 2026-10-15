@@ -4,6 +4,7 @@ import type { ContactId } from '@/content/types';
 import { getMessengerEngine } from '../runtime';
 import { useMessengerStore } from '../store';
 import styles from './Chat.module.css';
+import { EmoticonPicker } from './EmoticonPicker';
 
 export function Reply({
   contactId,
@@ -28,13 +29,18 @@ export function Reply({
   const [picked, setPicked] = useState<{ key: string; index: number } | null>(
     null,
   );
+  // Emoticon codes the player adds to the picked reply; sent with it.
+  const [flavor, setFlavor] = useState('');
   const input = useRef<HTMLInputElement>(null);
   const index = choices && picked?.key === choiceKey ? picked.index : null;
   const choice = index === null ? undefined : choices?.[index];
 
   function send() {
     if (index === null) return;
-    if (getMessengerEngine().choose(contactId, index)) setPicked(null);
+    if (getMessengerEngine().choose(contactId, index, flavor)) {
+      setPicked(null);
+      setFlavor('');
+    }
   }
 
   return (
@@ -65,13 +71,17 @@ export function Reply({
           send();
         }}
       >
+        <EmoticonPicker
+          disabled={disabled}
+          onPick={(code) => setFlavor((f) => (f ? `${f} ${code}` : code))}
+        />
         <input
           ref={input}
           className={styles.input}
           aria-label="Message"
           readOnly
           disabled={disabled}
-          value={choice?.text ?? ''}
+          value={choice ? [choice.text, flavor].filter(Boolean).join(' ') : ''}
           placeholder={choices ? 'Pick a reply above, then press Send.' : ''}
           onKeyDown={(e) => {
             // Explicit: implicit form submission from a read-only field varies by browser.
