@@ -35,6 +35,8 @@ export interface WebStore extends WebState {
   hit: (host: string) => number;
   /** Appends a player entry to `host`'s guestbook. */
   signGuestbook: (host: string, entry: PlayerGuestbookEntry) => void;
+  /** Saves the player's Spaceport `/me` profile. */
+  saveProfile: (profile: PlayerProfile) => void;
 }
 
 const str = (v: unknown): v is string => typeof v === 'string';
@@ -145,6 +147,7 @@ export const useWebStore = create<WebStore>()(
             [host]: [...(s.guestbook[host] ?? []), entry],
           },
         })),
+      saveProfile: (profile) => set({ myProfile: profile }),
       addFavorite: ({ title, url }) =>
         set((s) => {
           const key = normalizeUrl(url);

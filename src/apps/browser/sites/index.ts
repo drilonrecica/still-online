@@ -8,11 +8,13 @@ import type {
 import { parseUrl } from '../url';
 import { ABOUT_SITE } from './about';
 import { SEARCHLY_SITE } from './searchly';
+import { SPACEPORT_SITE } from './spaceport';
 import { TINFOIL_SITE } from './tinfoilcomets';
 
 export const SITES: readonly SiteDefinition[] = [
   SEARCHLY_SITE,
   TINFOIL_SITE,
+  SPACEPORT_SITE,
   ABOUT_SITE,
 ];
 

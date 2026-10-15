@@ -1,0 +1,80 @@
+// spaceport.example `/me`: the player's own profile, editable (persisted in `web.myProfile`).
+// Friends comment on it on days 2–5.
+import { useState } from 'react';
+import { PROFILES } from '@/content/profiles';
+import { SPACEPORT_TEXT as T } from '@/content/sites/spaceport';
+import { now } from '@/os/clock';
+import { useSettingsStore } from '@/os/store/settings';
+import { useWorldStore } from '@/os/world';
+import { useWebStore } from '../../store';
+import { Layout } from './Layout';
+import { effectiveProfile, playerTheme, playerWall, shortDate } from './logic';
+import {
+  FRIEND_IDS,
+  playerPicture,
+  topFriendView,
+  wallComment,
+} from './people';
+import { ProfileEditor } from './ProfileEditor';
+import { ProfileView } from './ProfileView';
+import styles from './Spaceport.module.css';
+
+export default function Me() {
+  const day = useWorldStore((s) => s.day);
+  const playerName = useSettingsStore((s) => s.playerName);
+  const saved = useWebStore((s) => s.myProfile);
+  const save = useWebStore((s) => s.saveProfile);
+  const [editing, setEditing] = useState(false);
+  const profile = effectiveProfile(saved, FRIEND_IDS);
+
+  if (editing) {
+    return (
+      <Layout>
+        <ProfileEditor
+          initial={profile}
+          onSave={(p) => {
+            save(p);
+            setEditing(false);
+          }}
+          onCancel={() => setEditing(false)}
+        />
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout>
+      <p className={styles.loggedIn}>
+        Hello, <b>{playerName}</b>! You are logged in.
+      </p>
+      <ProfileView
+        name={playerName}
+        displayName={playerName}
+        headline={profile.headline}
+        mood={profile.mood}
+        picture={playerPicture(playerName)}
+        lastLogin={shortDate(now())}
+        songTrackId={profile.songTrackId}
+        aboutMe={profile.aboutMe}
+        top8={profile.top8.map((id) =>
+          topFriendView({ kind: 'contact', id }, playerName),
+        )}
+        comments={playerWall(PROFILES, day).map((c) =>
+          wallComment(c, playerName),
+        )}
+        emptyWall={T.myEmptyWall}
+        day={day}
+        theme={playerTheme(profile)}
+        actions={
+          <button
+            type="button"
+            className={styles.bigButton}
+            onClick={() => setEditing(true)}
+          >
+            Edit Profile
+          </button>
+        }
+      />
+    </Layout>
+  );
+}

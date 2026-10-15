@@ -71,7 +71,10 @@ describe('tinfoilcomets.example', () => {
     const nav = screen.getByRole('navigation', { name: 'Site' });
     await user.click(within(nav).getByRole('link', { name: 'The Band' }));
     await finishLoad();
-    expect((await counter()).getAttribute('aria-label')).toBe('004,204 visits');
+    // The Band page is a lazy chunk; wait for it to replace Home rather than read Home's counter.
+    expect(
+      await screen.findByRole('img', { name: '004,204 visits' }),
+    ).toBeTruthy();
     expect(useWebStore.getState().counters[TINFOIL_HOST]).toBe(2);
   });
 

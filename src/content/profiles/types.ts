@@ -9,13 +9,19 @@ export interface ProfileTheme {
   glitter: boolean;
   /** A CSS font-family stack, no font files. */
   font: string;
+  /** Background of the content boxes (defaults to translucent white); keeps text readable. */
+  panel?: string;
+  /** Short sticker texts slapped on the page (Dex's skate stickers, Pia's pony ones). */
+  stickers?: readonly string[];
 }
 
 export type TopFriend =
   /** Another friend; links to their profile. */
   | { kind: 'contact'; id: ContactId }
   /** A fictional extra with no profile page; the picture is a pattern from `seed`. */
-  | { kind: 'extra'; name: string; seed: string };
+  | { kind: 'extra'; name: string; seed: string }
+  /** The player; links to `/me`. */
+  | { kind: 'player' };
 
 export interface ProfileComment {
   /** Shows when `day <= currentDay`; newest first. */
@@ -38,8 +44,9 @@ export interface ProfileContent {
   wantToMeet: string;
   /** Rows like "Music", "Movies", "Heroes". */
   interests: readonly { label: string; text: string }[];
-  /** Exactly 8. */
+  /** Exactly 8: the player, the five other friends and two fictional extras. */
   top8: readonly TopFriend[];
+  /** Text may use `{name}` (the player's name). */
   comments: readonly ProfileComment[];
   /** Comments this friend leaves on the player's `/me` page. */
   commentsOnPlayer: readonly { day: number; text: string }[];
