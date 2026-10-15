@@ -49,3 +49,48 @@ describe('lintContentStrings', () => {
     ).toEqual(['root.a[1].b: real-looking URL in "visit foo.com"']);
   });
 });
+
+describe('lint per locale', () => {
+  const de = { locale: 'de' } as const;
+
+  it('flags German anachronisms only in German text', () => {
+    for (const bad of [
+      'schreib mir auf WhatsApp',
+      'hast du Instagram?',
+      'neues Smartphone',
+      'die App ist cool',
+      'lad dir Apps runter',
+      'im App-Store',
+      'ich muss das posten',
+      'hab ich gepostet',
+      'meine Story',
+      'Stories gucken',
+      'streamen wir das',
+      'schick mir ne DM',
+    ])
+      // Some (Smartphone, DM, streamen…) are already caught by the shared list.
+      expect(lintText(bad, 'p', de), bad).toHaveLength(1);
+    expect(lintText('ich muss das posten', 'p', de)).toEqual([
+      'p: German anachronism in "ich muss das posten"',
+    ]);
+    expect(lintText('ich muss das posten', 'p')).toEqual([]);
+  });
+
+  it('keeps ordinary German words that contain or resemble them', () => {
+    for (const ok of [
+      'der Posten als Klassensprecher',
+      'stell das Tablett ab',
+      'Appetit auf Pizza',
+      'die Größe passt',
+      'bring den Müll raus',
+    ])
+      expect(lintText(ok, 'p', de), ok).toEqual([]);
+  });
+
+  it('forbids real TLDs in every locale, including .de/.at/.ch', () => {
+    for (const bad of ['schau auf foo.de', 'foo.at', 'www.foo.ch'])
+      expect(lintText(bad, 'p', de), bad).toHaveLength(1);
+    expect(lintText('kayla.example/blog', 'p', de)).toEqual([]);
+    expect(lintContentStrings({ a: 'meine Story' }, 'r', 'de')).toHaveLength(1);
+  });
+});

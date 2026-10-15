@@ -1,14 +1,9 @@
 // Starts the scheduled balloons when the desktop mounts. Each timer is armed on install and
 // dropped on cleanup, so boot, login and off never show balloons.
-import {
-  CONNECTED_BALLOON,
-  DAY_BALLOON_DELAY_MS,
-  newDayBalloonText,
-  SCHEDULED_BALLOONS,
-  WELCOME_BALLOON,
-} from '@/content/balloons';
-import { contacts } from '@/content/contacts';
+import { DAY_BALLOON_DELAY_MS, SCHEDULED_BALLOONS } from '@/content/balloons';
 import type { BalloonAction } from '@/content/balloons';
+import { getBalloons, getContacts } from '@/content/locale';
+import { getLocale } from '@/i18n/t';
 import { events } from '@/os/events';
 import { requireOnline } from '@/os/network';
 import type { BalloonInput } from '@/os/serviceTypes';
@@ -54,13 +49,19 @@ function runAction(action: BalloonAction): void {
   }
 }
 
+/** Balloon text in the language at the moment it shows. */
+const text = () => getBalloons(getLocale());
+
 /** Returns a cleanup that cancels pending timers and clears the queue. */
 export function installBalloons(): () => void {
   const day = currentDay();
-  const timers = SCHEDULED_BALLOONS.filter((b) => day >= b.minDay).map((b) => {
-    const id = b.id(day);
+  const timers = SCHEDULED_BALLOONS.flatMap((scheduled, index) => {
+    if (day < scheduled.minDay) return [];
+    const id = scheduled.id(day);
     return setTimeout(
       () => {
+        // Same order in every locale; timing comes from English.
+        const b = text().SCHEDULED_BALLOONS[index] ?? scheduled;
         const { action } = b;
         const balloon: BalloonInput = {
           id,
@@ -71,7 +72,7 @@ export function installBalloons(): () => void {
         };
         useBalloonStore.getState().push(balloon);
       },
-      scaleMs(b.afterMinutes * MINUTE_MS),
+      scaleMs(scheduled.afterMinutes * MINUTE_MS),
     );
   });
 
@@ -85,8 +86,8 @@ export function installBalloons(): () => void {
           useBalloonStore.getState().push({
             id: `newday-${newDay}`,
             title: 'A new day!',
-            text: newDayBalloonText(
-              contacts.map((c) => c.contact),
+            text: text().newDayBalloonText(
+              getContacts(getLocale()).map((c) => c.contact),
               newDay,
             ),
             onClick: () => runAction({ kind: 'openApp', app: 'messenger' }),
@@ -96,20 +97,20 @@ export function installBalloons(): () => void {
     );
   } else if (day === 1) {
     dayBalloons.push(
-      setTimeout(
-        () =>
-          useBalloonStore.getState().push({
-            id: WELCOME_BALLOON.id,
-            title: WELCOME_BALLOON.title,
-            text: WELCOME_BALLOON.text,
-            onClick: () => runAction({ kind: 'connect' }),
-          }),
-        scaleMs(DAY_BALLOON_DELAY_MS),
-      ),
+      setTimeout(() => {
+        const { WELCOME_BALLOON } = text();
+        useBalloonStore.getState().push({
+          id: WELCOME_BALLOON.id,
+          title: WELCOME_BALLOON.title,
+          text: WELCOME_BALLOON.text,
+          onClick: () => runAction({ kind: 'connect' }),
+        });
+      }, scaleMs(DAY_BALLOON_DELAY_MS)),
     );
   }
 
   const offConnected = events.on('network:connected', ({ kbps }) => {
+    const { CONNECTED_BALLOON } = text();
     useBalloonStore.getState().push({
       title: CONNECTED_BALLOON.title(kbps),
       text: CONNECTED_BALLOON.text,

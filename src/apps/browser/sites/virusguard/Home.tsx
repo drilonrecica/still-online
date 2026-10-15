@@ -1,11 +1,8 @@
 // virusguard.example `/`: a blinking scare banner, a fake scan list, a Buy button that goes nowhere,
 // and fine print saying it's all a joke.
 import { useState } from 'react';
-import {
-  VIRUSGUARD_TESTIMONIALS,
-  VIRUSGUARD_TEXT as T,
-  VIRUSGUARD_THREATS,
-} from '@/content/sites/virusguard';
+import { VIRUSGUARD_HOST } from '@/content/sites/virusguard';
+import { useSiteText } from '../useSiteText';
 import styles from './VirusGuard.module.css';
 
 function Shield() {
@@ -30,6 +27,11 @@ function Shield() {
 }
 
 export default function Home() {
+  const {
+    VIRUSGUARD_TESTIMONIALS,
+    VIRUSGUARD_TEXT: T,
+    VIRUSGUARD_THREATS,
+  } = useSiteText(VIRUSGUARD_HOST);
   const [message, setMessage] = useState<string | null>(null);
   return (
     <div className={styles.page}>

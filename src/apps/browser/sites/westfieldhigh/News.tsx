@@ -1,8 +1,6 @@
 // westfield-high.example `/news`: the whole news board, newest first.
-import {
-  WESTFIELD_NEWS,
-  WESTFIELD_TEXT as T,
-} from '@/content/sites/westfieldhigh';
+import { WESTFIELD_HOST } from '@/content/sites/westfieldhigh';
+import { useSiteText } from '../useSiteText';
 import { useWorldStore } from '@/os/world';
 import { upToDay } from '../daily';
 import { Layout } from './Layout';
@@ -10,6 +8,7 @@ import { NewsItem } from './NewsItem';
 import styles from './Westfield.module.css';
 
 export default function News() {
+  const { WESTFIELD_NEWS, WESTFIELD_TEXT: T } = useSiteText(WESTFIELD_HOST);
   const day = useWorldStore((s) => s.day);
   const news = upToDay(WESTFIELD_NEWS, day);
   return (

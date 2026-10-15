@@ -1,5 +1,6 @@
 // Content lint: checks authored contacts and scripts for mistakes the type system can't catch.
 // Each check returns human-readable problems; an empty list means the content is fine.
+import type { Locale } from '../i18n/types';
 import { isGameId } from '../os/types';
 import {
   CONTENT_UNLOCKS,
@@ -84,10 +85,17 @@ function strings(value: unknown, path: string): [string, string][] {
 const EMAIL = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
 /** Explicit scheme or `www.` hosts; allowed only when the host ends in `.example`. */
 const EXPLICIT_URL = /(?:https?:\/\/|www\.)[^\s/"'<>)]+/gi;
-const BARE_URL = /\b[\w-]+\.(?:com|net|org|edu|gov|info|biz|io|tv|uk|de|fr)\b/i;
+const BARE_URL =
+  /\b[\w-]+\.(?:com|net|org|edu|gov|info|biz|io|tv|uk|de|at|ch|fr)\b/i;
 /** Real product names the UI must not use, and things that don't exist in 2007. */
 const FORBIDDEN =
   /\b(?:windows|msn|winamp|myspace|netlog|iphone|smartphone|selfie|DM|app store|hashtag|tweet|streaming)\b/i;
+/**
+ * Post-2007 words in German text. Case-sensitive on purpose: „Posten" (a post, a job) and
+ * „Tablett" are fine, the verb „posten" and „Tablet" are not.
+ */
+const GERMAN_ANACHRONISMS =
+  /(?<![\p{L}\p{N}])(?:WhatsApp|Instagram|Facebook|Smartphone|Tablet|Apps?|App-Store|posten|gepostet|Story|Stories|Selfie|Hashtag|streamen|Streaming|DM)(?![\p{L}\p{N}])/u;
 const PLACEHOLDER = /\{[^}]*\}/g;
 
 const isExample = (host: string) => /\.example$/i.test(host);
@@ -95,11 +103,14 @@ const isExample = (host: string) => /\.example$/i.test(host);
 export interface LintTextOptions {
   /** Placeholder tokens allowed in this text; when omitted, placeholders aren't checked. */
   placeholders?: readonly string[];
+  /** Adds the rules of this locale (German: the anachronism list). Default `'en'`. */
+  locale?: Locale;
 }
 
 /**
  * Text checks for any authored string: no real-looking emails/URLs (`.example` is fine),
- * no forbidden names or anachronisms, and only known placeholders when `opts.placeholders` is given.
+ * no forbidden names or anachronisms (plus the German list for `locale: 'de'`), and only known
+ * placeholders when `opts.placeholders` is given.
  */
 export function lintText(
   text: string,
@@ -120,6 +131,8 @@ export function lintText(
   if (realUrl) problems.push(`${path}: real-looking URL in "${text}"`);
   if (FORBIDDEN.test(text))
     problems.push(`${path}: forbidden name or anachronism in "${text}"`);
+  else if (opts.locale === 'de' && GERMAN_ANACHRONISMS.test(text))
+    problems.push(`${path}: German anachronism in "${text}"`);
   const { placeholders } = opts;
   if (placeholders) {
     for (const token of text.match(PLACEHOLDER) ?? []) {
@@ -131,14 +144,23 @@ export function lintText(
 }
 
 /** Runs `lintText` over every string in any content object (no placeholder check). */
-export function lintContentStrings(value: unknown, path: string): string[] {
-  return strings(value, path).flatMap(([p, text]) => lintText(text, p));
+export function lintContentStrings(
+  value: unknown,
+  path: string,
+  locale: Locale = 'en',
+): string[] {
+  return strings(value, path).flatMap(([p, text]) =>
+    lintText(text, p, { locale }),
+  );
 }
 
 /** Text checks for a contact: shared text lint, plus placeholders only where they resolve. */
-export function lintContactText(content: ContactContent): string[] {
+export function lintContactText(
+  content: ContactContent,
+  locale: Locale = 'en',
+): string[] {
   const id = content.contact.id;
-  const problems = lintContentStrings(content, id);
+  const problems = lintContentStrings(content, id, locale);
   const known: readonly string[] = TEXT_PLACEHOLDERS;
   for (const script of content.scripts) {
     for (const [path, text] of strings(script.nodes, `${id}.${script.id}`)) {
@@ -233,8 +255,11 @@ function lintGameScores(content: ContactContent): string[] {
   });
 }
 
-/** All checks for one contact, including unique script ids. */
-export function lintContact(content: ContactContent): string[] {
+/** All checks for one contact, including unique script ids; text rules follow `locale`. */
+export function lintContact(
+  content: ContactContent,
+  locale: Locale = 'en',
+): string[] {
   const ids = content.scripts.map((s) => s.id);
   const dupes = ids.filter((s, i) => ids.indexOf(s) !== i);
   const followUps = content.scripts.flatMap((s) => {
@@ -256,6 +281,6 @@ export function lintContact(content: ContactContent): string[] {
     ...content.scripts.flatMap((s) =>
       lintScriptGraph(s).map((p) => `${content.contact.id}: ${p}`),
     ),
-    ...lintContactText(content),
+    ...lintContactText(content, locale),
   ];
 }

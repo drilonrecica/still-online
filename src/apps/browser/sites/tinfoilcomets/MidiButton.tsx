@@ -1,6 +1,7 @@
 // 🎵 "Play background MIDI": opt-in chiptune loop with Stop. Leaving the page stops the music.
 import { useEffect, useState, useSyncExternalStore } from 'react';
-import { TINFOIL_SITE_TEXT as T } from '@/content/sites/tinfoilcomets';
+import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
+import { useSiteText } from '../useSiteText';
 import {
   isChiptunePlaying,
   playChiptune,
@@ -10,6 +11,7 @@ import {
 import styles from './TinfoilComets.module.css';
 
 export function MidiButton() {
+  const { TINFOIL_SITE_TEXT: T } = useSiteText(TINFOIL_HOST);
   const playing = useSyncExternalStore(subscribeChiptune, isChiptunePlaying);
   const [muted, setMuted] = useState(false);
   useEffect(() => stopChiptune, []);

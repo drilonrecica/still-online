@@ -1,11 +1,13 @@
 // celebgossip07.example `/`: every post out by today, newest first.
-import { GOSSIP_POSTS } from '@/content/sites/celebgossip07';
+import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
+import { useSiteText } from '../useSiteText';
 import { useWorldStore } from '@/os/world';
 import { upToDay } from '../daily';
 import { Layout } from './Layout';
 import { PostCard } from './PostCard';
 
 export default function Home() {
+  const { GOSSIP_POSTS } = useSiteText(GOSSIP_HOST);
   const day = useWorldStore((s) => s.day);
   return (
     <Layout>

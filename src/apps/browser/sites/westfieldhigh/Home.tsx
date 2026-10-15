@@ -1,8 +1,6 @@
 // westfield-high.example `/`: the welcome, the principal's note and the three newest announcements.
-import {
-  WESTFIELD_NEWS,
-  WESTFIELD_TEXT as T,
-} from '@/content/sites/westfieldhigh';
+import { WESTFIELD_HOST } from '@/content/sites/westfieldhigh';
+import { useSiteText } from '../useSiteText';
 import { useWorldStore } from '@/os/world';
 import { SiteLink } from '../../SiteLink';
 import { upToDay } from '../daily';
@@ -13,6 +11,7 @@ import styles from './Westfield.module.css';
 const LATEST = 3;
 
 export default function Home() {
+  const { WESTFIELD_NEWS, WESTFIELD_TEXT: T } = useSiteText(WESTFIELD_HOST);
   const day = useWorldStore((s) => s.day);
   const news = upToDay(WESTFIELD_NEWS, day);
   return (

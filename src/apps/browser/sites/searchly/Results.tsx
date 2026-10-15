@@ -1,6 +1,7 @@
 // searchly.example `/search?q=&p=`: ranked results, pagination, typo suggestion.
 import { useMemo } from 'react';
 import type { SitePageProps } from '@/content/sites/types';
+import { useLocale } from '@/i18n/useT';
 import { SITES } from '..';
 import { SiteLink } from '../../SiteLink';
 import { Logo } from './Logo';
@@ -11,10 +12,12 @@ import { PAGE_SIZE, buildIndex, didYouMean, search, searchUrl } from './search';
 export default function Results({ query, navigate }: SitePageProps) {
   const q = (query.get('q') ?? '').trim();
   const requested = Number.parseInt(query.get('p') ?? '1', 10);
-  const { results, suggestion } = useMemo(() => {
-    const index = buildIndex(SITES);
-    return { results: search(q, index), suggestion: didYouMean(q, index) };
-  }, [q]);
+  const locale = useLocale();
+  const index = useMemo(() => buildIndex(SITES, locale), [locale]);
+  const { results, suggestion } = useMemo(
+    () => ({ results: search(q, index), suggestion: didYouMean(q, index) }),
+    [q, index],
+  );
   const pageCount = Math.max(1, Math.ceil(results.length / PAGE_SIZE));
   const page = Math.min(
     Math.max(Number.isFinite(requested) ? requested : 1, 1),

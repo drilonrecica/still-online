@@ -20,7 +20,7 @@ export const VIRUSGUARD_TEXT = {
   seals: ['100% Certified', 'Totally Secure', 'Award Winning*'],
   fineprint:
     'This is a joke website. VirusGuard 2007 does not exist, did not scan anything and cannot sell you anything. Your computer is fine. *The award was from our cousin.',
-} as const;
+};
 
 export interface Threat {
   name: string;

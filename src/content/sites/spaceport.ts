@@ -25,7 +25,7 @@ export const SPACEPORT_TEXT = {
   emptyWall:
     'No comments yet. Be the first!! (once commenting comes back from space)',
   myEmptyWall: 'No comments yet. Your friends will find you soon!',
-} as const;
+};
 
 export interface ThemePreset {
   id: string;

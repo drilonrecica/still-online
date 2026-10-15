@@ -1,11 +1,13 @@
 // Today's HOT or NOT poll. The player's vote persists in `web.votes`; after voting it shows results.
 import { useId, useState, type FormEvent } from 'react';
-import { GOSSIP_POLLS, GOSSIP_TEXT as T } from '@/content/sites/celebgossip07';
+import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
+import { useSiteText } from '../useSiteText';
 import { useWebStore } from '../../store';
 import styles from './CelebGossip.module.css';
 import { currentPoll, pollTally } from './logic';
 
 export function HotOrNot({ day }: { day: number }) {
+  const { GOSSIP_POLLS, GOSSIP_TEXT: T } = useSiteText(GOSSIP_HOST);
   const poll = currentPoll(GOSSIP_POLLS, day);
   const voted = useWebStore((s) => (poll ? s.votes[poll.id] : undefined));
   const vote = useWebStore((s) => s.vote);

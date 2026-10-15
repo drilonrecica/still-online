@@ -1,8 +1,10 @@
 // TuneMole: search a fictional peer network, watch slow downloads, play what finished.
 // Needs a connection; the state machine lives in `./store`.
 import { useEffect, useMemo, useState } from 'react';
+import { getTuneMoleResults } from '@/content/locale';
 import { searchTuneMole } from '@/content/tunemole';
 import type { TuneMoleResult } from '@/content/types';
+import { useLocale } from '@/i18n/useT';
 import { events } from '@/os/events';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
@@ -62,9 +64,11 @@ function Mascot() {
 function SearchTab({ online }: { online: boolean }) {
   const [text, setText] = useState('');
   const [query, setQuery] = useState<string | null>(null);
+  const locale = useLocale();
   const results = useMemo(
-    () => (query === null ? [] : searchTuneMole(query)),
-    [query],
+    () =>
+      query === null ? [] : searchTuneMole(query, getTuneMoleResults(locale)),
+    [query, locale],
   );
 
   const download = async (r: TuneMoleResult) => {

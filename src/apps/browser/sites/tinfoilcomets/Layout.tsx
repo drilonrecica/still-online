@@ -1,10 +1,8 @@
 // Shared frame for tinfoilcomets.example: rainbow title, nav, webring, hit counter, footer.
 // Every page view counts as one visit (pages remount per load), so the counter ticks as you browse.
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import {
-  TINFOIL_HOST,
-  TINFOIL_SITE_TEXT as T,
-} from '@/content/sites/tinfoilcomets';
+import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
+import { useSiteText } from '../useSiteText';
 import { SiteLink } from '../../SiteLink';
 import { useWebStore } from '../../store';
 import { HitCounter } from './HitCounter';
@@ -34,6 +32,7 @@ function useVisit(host: string): number {
 }
 
 export function Layout({ children }: { children: ReactNode }) {
+  const { TINFOIL_SITE_TEXT: T } = useSiteText(TINFOIL_HOST);
   const hits = useVisit(TINFOIL_HOST);
   return (
     <div className={styles.page}>

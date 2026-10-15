@@ -1,8 +1,10 @@
 // spaceport.example `/<contactId>`: a friend's profile, with the comment wall up to today's day.
 // Any other single-segment path lands here too and shows "Lost in orbit!".
 import { usePlayerName } from '@/i18n/settingsText';
-import { PROFILES } from '@/content/profiles';
-import { SPACEPORT_TEXT as T } from '@/content/sites/spaceport';
+import { getProfiles } from '@/content/locale';
+import { useLocale } from '@/i18n/useT';
+import { SPACEPORT_HOST } from '@/content/sites/spaceport';
+import { useSiteText } from '../useSiteText';
 import type { SitePageProps } from '@/content/sites/types';
 import { now } from '@/os/clock';
 import { useWorldStore } from '@/os/world';
@@ -19,6 +21,9 @@ import { ProfileView } from './ProfileView';
 import styles from './Spaceport.module.css';
 
 export default function Profile({ path }: SitePageProps) {
+  const { SPACEPORT_TEXT: T } = useSiteText(SPACEPORT_HOST);
+  const locale = useLocale();
+  const PROFILES = getProfiles(locale);
   const day = useWorldStore((s) => s.day);
   const playerName = usePlayerName();
   const id = path.slice(1).toLowerCase();
@@ -40,7 +45,7 @@ export default function Profile({ path }: SitePageProps) {
     <Layout>
       <ProfileView
         name={profileName(id)}
-        displayName={friendName(id)}
+        displayName={friendName(id, locale)}
         headline={profile.headline}
         mood={profile.mood}
         picture={friendPicture(id)}
@@ -49,9 +54,9 @@ export default function Profile({ path }: SitePageProps) {
         aboutMe={fillName(profile.aboutMe, playerName)}
         wantToMeet={profile.wantToMeet}
         interests={profile.interests}
-        top8={profile.top8.map((t) => topFriendView(t, playerName))}
+        top8={profile.top8.map((t) => topFriendView(t, playerName, locale))}
         comments={visibleComments(profile.comments, day).map((c) =>
-          wallComment(c, playerName),
+          wallComment(c, playerName, locale),
         )}
         emptyWall={T.emptyWall}
         day={day}

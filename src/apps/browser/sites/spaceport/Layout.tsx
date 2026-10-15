@@ -1,10 +1,12 @@
 // The Spaceport frame: logo bar, nav and footer around every page.
 import type { ReactNode } from 'react';
-import { SPACEPORT_TEXT as T } from '@/content/sites/spaceport';
+import { SPACEPORT_HOST } from '@/content/sites/spaceport';
+import { useSiteText } from '../useSiteText';
 import { SiteLink } from '../../SiteLink';
 import styles from './Spaceport.module.css';
 
 export function Logo() {
+  const { SPACEPORT_TEXT: T } = useSiteText(SPACEPORT_HOST);
   return (
     <span className={styles.logo}>
       <span className={styles.planet} aria-hidden />
@@ -14,6 +16,7 @@ export function Logo() {
 }
 
 export function Layout({ children }: { children: ReactNode }) {
+  const { SPACEPORT_TEXT: T } = useSiteText(SPACEPORT_HOST);
   return (
     <div className={styles.page}>
       <header className={styles.topBar}>

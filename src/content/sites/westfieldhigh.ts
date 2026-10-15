@@ -24,7 +24,7 @@ export const WESTFIELD_TEXT = {
     'To contact a staff member, please email them or leave a message with the Main Office.',
   menuIntro:
     'All lunches include milk (white or chocolate). Menu subject to change.',
-} as const;
+};
 
 export const WESTFIELD_NEWS: readonly NewsPost[] = [
   {

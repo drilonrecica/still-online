@@ -1,20 +1,22 @@
 // Turns profile content into what ProfileView shows: friends' names and pictures come from the
 // contact content (never from Messenger's state), the player's from their name.
-import { contacts } from '@/content/contacts';
+import { getContacts } from '@/content/locale';
 import type { ProfileComment, TopFriend } from '@/content/profiles/types';
 import type { ContactId } from '@/content/types';
+import type { Locale } from '@/i18n/types';
 import { extraColors, fillName } from './logic';
 import type { PictureSpec, TopFriendView, WallComment } from './ProfileView';
 
 /** The player's default pattern colours (the same as Messenger's default picture). */
 const PLAYER_COLORS = ['#dfe9f8', '#1d4f99'] as const;
 
-export const FRIEND_IDS: readonly ContactId[] = contacts.map(
+export const FRIEND_IDS: readonly ContactId[] = getContacts('en').map(
   (c) => c.contact.id,
 );
 
-export function friend(id: ContactId) {
-  return contacts.find((c) => c.contact.id === id)?.contact;
+/** A friend's contact, with names in `locale`. */
+export function friend(id: ContactId, locale: Locale = 'en') {
+  return getContacts(locale).find((c) => c.contact.id === id)?.contact;
 }
 
 export function friendPicture(id: ContactId): PictureSpec {
@@ -28,11 +30,15 @@ export function playerPicture(playerName: string): PictureSpec {
   return { seed: playerName, colors: PLAYER_COLORS };
 }
 
-export function friendName(id: ContactId): string {
-  return friend(id)?.displayName ?? id;
+export function friendName(id: ContactId, locale: Locale = 'en'): string {
+  return friend(id, locale)?.displayName ?? id;
 }
 
-export function topFriendView(t: TopFriend, playerName: string): TopFriendView {
+export function topFriendView(
+  t: TopFriend,
+  playerName: string,
+  locale: Locale = 'en',
+): TopFriendView {
   if (t.kind === 'player')
     return {
       key: 'player',
@@ -43,7 +49,7 @@ export function topFriendView(t: TopFriend, playerName: string): TopFriendView {
   if (t.kind === 'contact')
     return {
       key: t.id,
-      label: friendName(t.id),
+      label: friendName(t.id, locale),
       picture: friendPicture(t.id),
       href: `/${t.id}`,
     };
@@ -57,12 +63,13 @@ export function topFriendView(t: TopFriend, playerName: string): TopFriendView {
 export function wallComment(
   c: ProfileComment,
   playerName: string,
+  locale: Locale = 'en',
 ): WallComment {
   const text = fillName(c.text, playerName);
   if (c.contactId)
     return {
       day: c.day,
-      from: friendName(c.contactId),
+      from: friendName(c.contactId, locale),
       picture: friendPicture(c.contactId),
       href: `/${c.contactId}`,
       text,

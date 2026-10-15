@@ -1,11 +1,13 @@
 // celebgossip07.example `/celebs`: Roxi's Who's Who of (invented) celebrities.
-import { CELEBS } from '@/content/sites/celebgossip07';
+import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
+import { useSiteText } from '../useSiteText';
 import { SiteLink } from '../../SiteLink';
 import styles from './CelebGossip.module.css';
 import { Layout } from './Layout';
 import { tagHref } from './logic';
 
 export default function Celebs() {
+  const { CELEBS } = useSiteText(GOSSIP_HOST);
   return (
     <Layout>
       <h2 className={styles.heading}>WHO&apos;S WHO</h2>

@@ -2,8 +2,10 @@
 // Friends comment on it on days 2–5.
 import { usePlayerName } from '@/i18n/settingsText';
 import { useState } from 'react';
-import { PROFILES } from '@/content/profiles';
-import { SPACEPORT_TEXT as T } from '@/content/sites/spaceport';
+import { getProfiles } from '@/content/locale';
+import { useLocale } from '@/i18n/useT';
+import { SPACEPORT_HOST } from '@/content/sites/spaceport';
+import { useSiteText } from '../useSiteText';
 import { now } from '@/os/clock';
 import { useWorldStore } from '@/os/world';
 import { useWebStore } from '../../store';
@@ -20,12 +22,15 @@ import { ProfileView } from './ProfileView';
 import styles from './Spaceport.module.css';
 
 export default function Me() {
+  const { SPACEPORT_TEXT: T } = useSiteText(SPACEPORT_HOST);
+  const locale = useLocale();
+  const PROFILES = getProfiles(locale);
   const day = useWorldStore((s) => s.day);
   const playerName = usePlayerName();
   const saved = useWebStore((s) => s.myProfile);
   const save = useWebStore((s) => s.saveProfile);
   const [editing, setEditing] = useState(false);
-  const profile = effectiveProfile(saved, FRIEND_IDS);
+  const profile = effectiveProfile(saved, FRIEND_IDS, locale);
 
   if (editing) {
     return (
@@ -57,10 +62,10 @@ export default function Me() {
         songTrackId={profile.songTrackId}
         aboutMe={profile.aboutMe}
         top8={profile.top8.map((id) =>
-          topFriendView({ kind: 'contact', id }, playerName),
+          topFriendView({ kind: 'contact', id }, playerName, locale),
         )}
         comments={playerWall(PROFILES, day).map((c) =>
-          wallComment(c, playerName),
+          wallComment(c, playerName, locale),
         )}
         emptyWall={T.myEmptyWall}
         day={day}

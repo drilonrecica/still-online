@@ -2,6 +2,10 @@
 // with blue bullet options; right-click (or the balloon's link) hides him.
 import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, MouseEvent, PointerEvent } from 'react';
+import type { Tip } from '@/content/assistant';
+import { getTips } from '@/content/locale';
+import type { Locale } from '@/i18n/types';
+import { useLocale } from '@/i18n/useT';
 import { useSettingsStore } from '@/os/store/settings';
 import { TASKBAR_HEIGHT } from '@/os/types';
 import { StapleySprite } from './StapleySprite';
@@ -13,6 +17,12 @@ const DRAG_SLOP = 4;
 /** Stapley's footprint, for keeping him on screen. */
 const WIDTH = 72;
 const HEIGHT = 64;
+
+/** `tip` with its text in `locale`: same id, same options in the same order. */
+function localized(tip: Tip, locale: Locale): Tip {
+  const { TIPS, IDLE_JOKES } = getTips(locale);
+  return [...TIPS, ...IDLE_JOKES].find((t) => t.id === tip.id) ?? tip;
+}
 
 interface Drag {
   startX: number;
@@ -27,6 +37,7 @@ function Stapley() {
   const current = useAssistantStore((s) => s.current);
   const choose = useAssistantStore((s) => s.choose);
   const dismiss = useAssistantStore((s) => s.dismiss);
+  const locale = useLocale();
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [menu, setMenu] = useState(false);
   const drag = useRef<Drag | null>(null);
@@ -83,7 +94,13 @@ function Stapley() {
     if (e.key === 'Escape') setMenu(false);
   }
 
-  const tip = current?.tip;
+  // The store keeps the tip that was offered; text renders in the current language.
+  const tip = current && localized(current.tip, locale);
+  const replyIndex = current?.reply
+    ? (current.tip.options ?? []).findIndex((o) => o.reply === current.reply)
+    : -1;
+  const reply =
+    current?.reply && (tip?.options?.[replyIndex]?.reply ?? current.reply);
   return (
     <div
       className={styles.root}
@@ -96,21 +113,21 @@ function Stapley() {
     >
       {tip && (
         <div className={styles.balloon} role="status" data-assistant-balloon>
-          <p className={styles.text}>{current.reply ?? tip.text}</p>
+          <p className={styles.text}>{reply || tip.text}</p>
           <ul className={styles.options}>
-            {current.reply ? (
+            {reply ? (
               <li>
                 <button type="button" className={styles.link} onClick={dismiss}>
                   OK
                 </button>
               </li>
             ) : (
-              tip.options?.map((option) => (
+              tip.options?.map((option, i) => (
                 <li key={option.label}>
                   <button
                     type="button"
                     className={styles.link}
-                    onClick={() => choose(option)}
+                    onClick={() => choose(current.tip.options?.[i] ?? option)}
                   >
                     {option.label}
                   </button>

@@ -1,5 +1,7 @@
 // spaceport.example `/`: the launch pad. Sign Up and Log In both just log you in as the player.
-import { SPACEPORT_TEXT as T } from '@/content/sites/spaceport';
+import { SPACEPORT_HOST } from '@/content/sites/spaceport';
+import { useLocale } from '@/i18n/useT';
+import { useSiteText } from '../useSiteText';
 import type { SitePageProps } from '@/content/sites/types';
 import { SiteLink } from '../../SiteLink';
 import { Layout } from './Layout';
@@ -8,6 +10,8 @@ import { Picture } from './Picture';
 import styles from './Spaceport.module.css';
 
 export default function Home({ navigate }: SitePageProps) {
+  const { SPACEPORT_TEXT: T } = useSiteText(SPACEPORT_HOST);
+  const locale = useLocale();
   return (
     <Layout>
       <div className={styles.landing}>
@@ -50,7 +54,7 @@ export default function Home({ navigate }: SitePageProps) {
                       label=""
                       size={64}
                     />
-                    <span>{friendName(id)}</span>
+                    <span>{friendName(id, locale)}</span>
                   </SiteLink>
                 </li>
               );

@@ -1,5 +1,6 @@
 // Searchly's query form: the box plus the two buttons. Used on the home and results pages.
 import { type FormEvent, useState } from 'react';
+import { useLocale } from '@/i18n/useT';
 import { SITES } from '..';
 import { buildIndex, luckyUrl, searchUrl } from './search';
 import styles from './Searchly.module.css';
@@ -14,6 +15,7 @@ export function SearchBox({
   compact?: boolean;
 }) {
   const [text, setText] = useState(initial);
+  const locale = useLocale();
   const go = (e: FormEvent) => {
     e.preventDefault();
     navigate(searchUrl(text.trim()));
@@ -41,7 +43,7 @@ export function SearchBox({
           <button
             type="button"
             className={styles.button}
-            onClick={() => navigate(luckyUrl(text, buildIndex(SITES)))}
+            onClick={() => navigate(luckyUrl(text, buildIndex(SITES, locale)))}
           >
             I&apos;m Feeling Lucky
           </button>

@@ -1,6 +1,7 @@
 // Searchly's engine: an index built from site metadata (page titles, keywords, descriptions),
 // weighted scoring, "did you mean" for one-letter typos and the Lucky pick.
 import type { SiteDefinition } from '@/content/sites/types';
+import type { Locale } from '@/i18n/types';
 
 export const PAGE_SIZE = 10;
 export const WEIGHTS = { title: 3, keywords: 2, description: 1 } as const;
@@ -27,17 +28,34 @@ export interface SearchIndex {
   pages: readonly IndexedPage[];
   /** Every word that appears in a title, keyword or description (for typo suggestions). */
   vocabulary: ReadonlySet<string>;
+  /** Queries are tokenized like the index was. */
+  locale: Locale;
 }
 
-export function tokenize(text: string): string[] {
-  return text
-    .toLowerCase()
-    .split(/[^a-z0-9]+/)
-    .filter(Boolean);
+const GERMAN_FOLDS: Readonly<Record<string, string>> = {
+  ä: 'a',
+  ö: 'o',
+  ü: 'u',
+  ß: 'ss',
+};
+
+/**
+ * Lowercase words of any script (`Müll`, `Größe`). German folds umlauts and ß, applied to both
+ * the index and the query, so „Grösse" and „Grosse" find „Größe".
+ */
+export function tokenize(text: string, locale: Locale = 'en'): string[] {
+  const lower = text.toLocaleLowerCase(locale);
+  const folded =
+    locale === 'de' ? lower.replace(/[äöüß]/g, (c) => GERMAN_FOLDS[c]!) : lower;
+  return folded.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
 }
 
 /** One indexed page per concrete path; the `/*` catch-all has no address of its own. */
-export function buildIndex(sites: readonly SiteDefinition[]): SearchIndex {
+export function buildIndex(
+  sites: readonly SiteDefinition[],
+  locale: Locale = 'en',
+): SearchIndex {
+  const tokens = (text: string) => tokenize(text, locale);
   const pages: IndexedPage[] = [];
   const vocabulary = new Set<string>();
   for (const site of sites) {
@@ -45,13 +63,13 @@ export function buildIndex(sites: readonly SiteDefinition[]): SearchIndex {
       if (path.includes('*')) continue;
       const url = `http://${site.host}${path}`;
       const titleTokens = new Set(
-        tokenize(`${page.title} ${site.host.replace(/\.example$/, '')}`),
+        tokens(`${page.title} ${site.host.replace(/\.example$/, '')}`),
       );
       const keywordTokens = new Set(
-        tokenize([...(page.keywords ?? []), ...site.keywords].join(' ')),
+        tokens([...(page.keywords ?? []), ...site.keywords].join(' ')),
       );
       const descriptionTokens = new Set(
-        tokenize(`${site.title} ${site.description}`),
+        tokens(`${site.title} ${site.description}`),
       );
       for (const set of [titleTokens, keywordTokens, descriptionTokens]) {
         for (const word of set) vocabulary.add(word);
@@ -68,12 +86,12 @@ export function buildIndex(sites: readonly SiteDefinition[]): SearchIndex {
       });
     }
   }
-  return { pages, vocabulary };
+  return { pages, vocabulary, locale };
 }
 
 /** Ranked results: score = 3×title + 2×keywords + 1×description hits per distinct query word. */
 export function search(query: string, index: SearchIndex): SearchResult[] {
-  const terms = [...new Set(tokenize(query))];
+  const terms = [...new Set(tokenize(query, index.locale))];
   if (terms.length === 0) return [];
   const scored: SearchResult[] = [];
   const isHome = new Map(index.pages.map((p) => [p.url, p.path === '/']));
@@ -115,7 +133,7 @@ function oneEditApart(a: string, b: string): boolean {
 
 /** A corrected query when a word is unknown but one letter away from a known word. */
 export function didYouMean(query: string, index: SearchIndex): string | null {
-  const words = tokenize(query);
+  const words = tokenize(query, index.locale);
   let changed = false;
   const fixed = words.map((word) => {
     if (word.length < 3 || index.vocabulary.has(word)) return word;

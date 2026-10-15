@@ -1,5 +1,6 @@
 // celebgossip07.example `/tag?t=`: posts with one tag. Without a tag, the whole cloud.
-import { GOSSIP_POSTS, GOSSIP_TEXT as T } from '@/content/sites/celebgossip07';
+import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
+import { useSiteText } from '../useSiteText';
 import type { SitePageProps } from '@/content/sites/types';
 import { useWorldStore } from '@/os/world';
 import { upToDay } from '../daily';
@@ -10,6 +11,7 @@ import { PostCard } from './PostCard';
 import { TagCloud } from './TagCloud';
 
 export default function Tag({ query }: SitePageProps) {
+  const { GOSSIP_POSTS, GOSSIP_TEXT: T } = useSiteText(GOSSIP_HOST);
   const day = useWorldStore((s) => s.day);
   const posts = upToDay(GOSSIP_POSTS, day);
   const tag = query.get('t')?.trim().toLowerCase() ?? '';

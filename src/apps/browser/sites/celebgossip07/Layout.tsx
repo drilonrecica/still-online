@@ -1,7 +1,8 @@
 // Shared frame for celebgossip07.example: the glitter banner, nav, and a sidebar with Roxi's
 // "about me", the tag cloud and today's HOT or NOT poll.
 import type { ReactNode } from 'react';
-import { GOSSIP_POSTS, GOSSIP_TEXT as T } from '@/content/sites/celebgossip07';
+import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
+import { useSiteText } from '../useSiteText';
 import { useWorldStore } from '@/os/world';
 import { SiteLink } from '../../SiteLink';
 import { upToDay } from '../daily';
@@ -16,6 +17,7 @@ const NAV = [
 ] as const;
 
 export function Layout({ children }: { children: ReactNode }) {
+  const { GOSSIP_POSTS, GOSSIP_TEXT: T } = useSiteText(GOSSIP_HOST);
   const day = useWorldStore((s) => s.day);
   return (
     <div className={styles.page}>

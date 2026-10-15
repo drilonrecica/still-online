@@ -1,14 +1,13 @@
 // tinfoilcomets.example `/band`: the four members, the albums and the tour dates.
-import {
-  TINFOIL_ALBUMS,
-  TINFOIL_MEMBERS,
-  TINFOIL_TOUR,
-} from '@/content/sites/tinfoilcomets';
+import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
+import { useSiteText } from '../useSiteText';
 import { useWorldStore } from '@/os/world';
 import { Layout } from './Layout';
 import styles from './TinfoilComets.module.css';
 
 export default function Band() {
+  const { TINFOIL_ALBUMS, TINFOIL_MEMBERS, TINFOIL_TOUR } =
+    useSiteText(TINFOIL_HOST);
   const day = useWorldStore((s) => s.day);
   return (
     <Layout>

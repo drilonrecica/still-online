@@ -20,7 +20,7 @@ export const GOSSIP_TEXT = {
   pollHeading: 'HOT or NOT?!',
   noPostYet: 'that post doesnt exist (yet??). Roxi is on it!!!',
   noTagPosts: 'no posts with that tag yet. check back 2morrow!!!',
-} as const;
+};
 
 export interface Celeb {
   /** The tag used on posts about them. */

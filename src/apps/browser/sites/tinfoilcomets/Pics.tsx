@@ -1,11 +1,13 @@
 // tinfoilcomets.example `/pics`: the "photo gallery" of procedural concert pics.
-import { TINFOIL_PICS } from '@/content/sites/tinfoilcomets';
+import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
+import { useSiteText } from '../useSiteText';
 import { PhotoCanvas } from '@/os/fs/FsIcon';
 import { useWorldStore } from '@/os/world';
 import { Layout } from './Layout';
 import styles from './TinfoilComets.module.css';
 
 export default function Pics() {
+  const { TINFOIL_PICS } = useSiteText(TINFOIL_HOST);
   const day = useWorldStore((s) => s.day);
   const pics = TINFOIL_PICS.filter((p) => p.day <= day);
   return (

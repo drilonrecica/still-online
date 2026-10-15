@@ -33,6 +33,43 @@ const FAKES: SiteDefinition[] = [
   },
 ];
 
+describe('searchly: Unicode and German', () => {
+  const GERMAN: SiteDefinition[] = [
+    {
+      host: 'stadt.example',
+      title: 'Stadtwerke',
+      description: 'Abfuhrtermine für Müll und Papier',
+      keywords: ['müll', 'abfall'],
+      pages: { '/': { title: 'Größe der Tonnen', component } },
+    },
+  ];
+
+  it('keeps letters outside a–z as part of a word', () => {
+    expect(tokenize('Müll, Größe & Café!')).toEqual(['müll', 'größe', 'café']);
+  });
+
+  it('folds umlauts and ß in German, on both index and query', () => {
+    expect(tokenize('Müll Größe GRÖSSE', 'de')).toEqual([
+      'mull',
+      'grosse',
+      'grosse',
+    ]);
+    const index = buildIndex(GERMAN, 'de');
+    for (const q of ['Müll', 'müll', 'Mull', 'Größe', 'Grösse', 'grosse'])
+      expect(
+        search(q, index).map((r) => r.url),
+        q,
+      ).toEqual(['http://stadt.example/']);
+  });
+
+  it('finds Müll and Größe in English too, without folding', () => {
+    const index = buildIndex(GERMAN);
+    expect(search('Müll', index)).toHaveLength(1);
+    expect(search('Größe', index)).toHaveLength(1);
+    expect(search('Grösse', index)).toEqual([]);
+  });
+});
+
 describe('searchly engine', () => {
   const index = buildIndex(FAKES);
 

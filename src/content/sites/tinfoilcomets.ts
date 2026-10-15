@@ -54,7 +54,7 @@ export const TINFOIL_SITE_TEXT = {
   footer:
     'all pics + words (c) xX_CometGirl_Xx. DO NOT STEAL MY LAYOUT. i will know.',
   updated: 'last updated: like yesterday',
-} as const;
+};
 
 /** The scrolling news marquee on the home page. */
 export const TINFOIL_NEWS: readonly DayText[] = [

@@ -1,9 +1,7 @@
 // The `mail` store's language-neutral records (docs/i18n.md → "mail"): sanitize, v0.2 migration
 // and render-time text. Only player-written (`text`) mail stores prose; everything else renders
 // from content or the catalog in the current locale.
-import { contacts } from '@/content/contacts';
-import { MAIL_CONTENT } from '@/content/mail';
-import { autoReplies } from '@/content/mail/autoReplies';
+import { getAutoReplies, getContacts, getMailContent } from '@/content/locale';
 import type {
   AutoReply,
   MailAddress,
@@ -27,25 +25,19 @@ export const PLAYER: MailAddress = { name: '', address: '' };
 
 const isPlayer = (a: MailAddress) => a.address === '';
 
-// TODO(P0-06): per-locale content via `getMailContent(locale)`; both locales use English for now.
-const CONTENT: Readonly<Record<Locale, readonly MailContent[]>> = {
-  en: MAIL_CONTENT,
-  de: MAIL_CONTENT,
-};
-const REPLIES: Readonly<Record<Locale, readonly AutoReply[]>> = {
-  en: autoReplies,
-  de: autoReplies,
-};
-export const mailContentFor = (locale: Locale) => CONTENT[locale];
-export const autoRepliesFor = (locale: Locale) => REPLIES[locale];
+export const mailContentFor = (locale: Locale): readonly MailContent[] =>
+  getMailContent(locale);
+export const autoRepliesFor = (locale: Locale): readonly AutoReply[] =>
+  getAutoReplies(locale);
 
-const CONTENT_IDS = new Set(MAIL_CONTENT.map((c) => c.id));
+// Ids are the same in every locale.
+const CONTENT_IDS = new Set(getMailContent('en').map((c) => c.id));
 
 /** True when `id` is authored mail that renders by id. */
 export const isContentId = (id: string): boolean => CONTENT_IDS.has(id);
 
-export const friendById = (id: string) =>
-  contacts.find((c) => c.contact.id === id)?.contact;
+export const friendById = (id: string, locale: Locale = 'en') =>
+  getContacts(locale).find((c) => c.contact.id === id)?.contact;
 
 const FOLDERS: readonly MailFolder[] = ['inbox', 'sent', 'deleted'];
 const str = (v: unknown): v is string => typeof v === 'string';
@@ -154,11 +146,13 @@ export function migrateV02(
     };
   }
   const handle = m.from.address.toLowerCase();
-  const friend = contacts.find(
+  // v0.2 saves are English.
+  const friend = getContacts('en').find(
     (c) => c.contact.handle.toLowerCase() === handle,
   );
   const reply =
-    friend && autoReplies.find((r) => r.contactId === friend.contact.id);
+    friend &&
+    getAutoReplies('en').find((r) => r.contactId === friend.contact.id);
   if (
     friend &&
     reply &&
@@ -280,7 +274,7 @@ export function renderMail(
         attachments: [],
       };
     case 'autoReply': {
-      const friend = friendById(r.contactId);
+      const friend = friendById(r.contactId, locale);
       const reply = autoRepliesFor(locale).find(
         (x) => x.contactId === r.contactId,
       );

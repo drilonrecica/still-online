@@ -1,12 +1,11 @@
 // westfield-high.example `/cafeteria`: this week's lunch menu (the same every week).
-import {
-  WESTFIELD_MENU,
-  WESTFIELD_TEXT as T,
-} from '@/content/sites/westfieldhigh';
+import { WESTFIELD_HOST } from '@/content/sites/westfieldhigh';
+import { useSiteText } from '../useSiteText';
 import { Layout } from './Layout';
 import styles from './Westfield.module.css';
 
 export default function Cafeteria() {
+  const { WESTFIELD_MENU, WESTFIELD_TEXT: T } = useSiteText(WESTFIELD_HOST);
   return (
     <Layout>
       <h2 className={styles.heading}>Cafeteria Menu</h2>

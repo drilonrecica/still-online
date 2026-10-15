@@ -67,14 +67,14 @@ export const SCHEDULED_BALLOONS: readonly ScheduledBalloon[] = [
 ];
 
 /** Shown every time the modem connects (no id). */
-export const CONNECTED_BALLOON = {
-  title: (kbps: number) => `Connected at ${kbps.toFixed(1)} Kbps`,
-  text: 'Dial-up Connection is now active.',
-  icon: 'network',
-} as const satisfies {
+export const CONNECTED_BALLOON: {
   title: (kbps: number) => string;
   text: string;
   icon: BalloonIcon;
+} = {
+  title: (kbps: number) => `Connected at ${kbps.toFixed(1)} Kbps`,
+  text: 'Dial-up Connection is now active.',
+  icon: 'network',
 };
 
 /** Delay after the desktop mounts for the day / welcome balloons. */
@@ -84,7 +84,7 @@ export const WELCOME_BALLOON = {
   id: 'welcome',
   title: 'Welcome to your new computer!',
   text: 'Click here to connect to the Internet.',
-} as const;
+};
 
 /** Friends whose `days[day]` entry sets a personal message (the "presence changed" count). */
 export function friendsChangedOn(

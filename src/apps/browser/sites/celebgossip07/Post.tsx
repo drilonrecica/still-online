@@ -1,5 +1,6 @@
 // celebgossip07.example `/post?id=`: one post with its comments. Without an id, the newest post.
-import { GOSSIP_POSTS, GOSSIP_TEXT as T } from '@/content/sites/celebgossip07';
+import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
+import { useSiteText } from '../useSiteText';
 import type { SitePageProps } from '@/content/sites/types';
 import { useWorldStore } from '@/os/world';
 import { upToDay } from '../daily';
@@ -8,6 +9,7 @@ import { Layout } from './Layout';
 import { PostCard } from './PostCard';
 
 export default function Post({ query }: SitePageProps) {
+  const { GOSSIP_POSTS, GOSSIP_TEXT: T } = useSiteText(GOSSIP_HOST);
   const day = useWorldStore((s) => s.day);
   const posts = upToDay(GOSSIP_POSTS, day);
   const id = query.get('id');

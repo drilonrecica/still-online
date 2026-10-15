@@ -3,11 +3,9 @@
 import { useId, useState } from 'react';
 import type { PlayerProfile } from '@/content/profiles/types';
 import { PLAYLIST } from '@/content/playlist';
-import {
-  MOOD_EMOTICONS,
-  PROFILE_LIMITS,
-  THEME_PRESETS,
-} from '@/content/sites/spaceport';
+import { PROFILE_LIMITS, SPACEPORT_HOST } from '@/content/sites/spaceport';
+import { useLocale } from '@/i18n/useT';
+import { useSiteText } from '../useSiteText';
 import { cleanProfile, moveTop8 } from './logic';
 import { friendName } from './people';
 import styles from './Spaceport.module.css';
@@ -23,6 +21,8 @@ export function ProfileEditor({
   onSave: (profile: PlayerProfile) => void;
   onCancel: () => void;
 }) {
+  const { MOOD_EMOTICONS, THEME_PRESETS } = useSiteText(SPACEPORT_HOST);
+  const locale = useLocale();
   const [p, setP] = useState(initial);
   const id = useId();
   const set = (patch: Partial<PlayerProfile>) =>
@@ -148,7 +148,9 @@ export function ProfileEditor({
         <ol className={styles.orderList} aria-label="Top 8 order">
           {p.top8.map((friend, i) => (
             <li key={friend}>
-              <span className={styles.orderName}>{friendName(friend)}</span>
+              <span className={styles.orderName}>
+                {friendName(friend, locale)}
+              </span>
               <button
                 type="button"
                 aria-label={`Move ${friend} up`}

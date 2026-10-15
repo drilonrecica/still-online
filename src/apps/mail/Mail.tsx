@@ -1,7 +1,7 @@
 // Mail: folders, message list and preview over the persisted `mail` store. Needs a connection to
 // send and receive; reading what has already arrived works offline.
 import { useEffect, useMemo, useState } from 'react';
-import { contacts } from '@/content/contacts';
+import { getContacts } from '@/content/locale';
 import type {
   MailAttachment,
   MailFolder,
@@ -104,6 +104,7 @@ function Compose({
   onCancel: () => void;
 }) {
   const [draft, setDraft] = useState(initial);
+  const contacts = getContacts(useLocale());
   const set = (patch: Partial<Draft>) => setDraft((d) => ({ ...d, ...patch }));
   return (
     <form

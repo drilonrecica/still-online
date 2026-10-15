@@ -4,7 +4,7 @@ import { useLocale } from '@/i18n/useT';
 import { Fragment, useMemo, useState } from 'react';
 import type { AppComponentProps } from '@/os/types';
 import { renderTranscript } from '../engine';
-import { getMessengerContent, getMessengerContents } from '../runtime';
+import { getLocalizedContents, getMessengerContent } from '../runtime';
 import { useMessengerStore } from '../store';
 import { Avatar } from '../chat/Avatar';
 import { RichText } from '../chat/Transcript';
@@ -50,7 +50,7 @@ export default function History({ props }: AppComponentProps) {
   const [query, setQuery] = useState('');
   const [confirming, setConfirming] = useState(false);
 
-  const withHistory = getMessengerContents()
+  const withHistory = getLocalizedContents(locale)
     .map((c) => ({
       contact: c.contact,
       count: progress[c.contact.id]?.transcript.length ?? 0,

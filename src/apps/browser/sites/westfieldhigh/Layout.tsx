@@ -1,7 +1,8 @@
 // Shared frame for westfield-high.example: the crest header, the grey left nav table and the footer.
 // No hit counter, no animation: the district bought this template in 2001 and never touched it.
 import type { ReactNode } from 'react';
-import { WESTFIELD_TEXT as T } from '@/content/sites/westfieldhigh';
+import { WESTFIELD_HOST } from '@/content/sites/westfieldhigh';
+import { useSiteText } from '../useSiteText';
 import { formatLongDate, now } from '@/os/clock';
 import { SiteLink } from '../../SiteLink';
 import styles from './Westfield.module.css';
@@ -45,6 +46,7 @@ function Crest() {
 }
 
 export function Layout({ children }: { children: ReactNode }) {
+  const { WESTFIELD_TEXT: T } = useSiteText(WESTFIELD_HOST);
   return (
     <div className={styles.page}>
       <table className={styles.frame}>

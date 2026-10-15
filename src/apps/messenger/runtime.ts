@@ -3,7 +3,7 @@ import { getPlayerName } from '@/i18n/settingsText';
 import { getLocale } from '@/i18n/t';
 import type { Locale } from '@/i18n/types';
 import { useLocale } from '@/i18n/useT';
-import { contacts } from '@/content/contacts';
+import { getContacts } from '@/content/locale';
 import type { ContactContent, ContactId } from '@/content/types';
 import { events } from '@/os/events';
 import { useNowPlayingStore } from '@/os/nowPlaying';
@@ -31,9 +31,10 @@ export const TOAST_PREVIEW_CHARS = 40;
 
 let engine: ConversationEngine | null = null;
 let stopListening: (() => void) | null = null;
-let contents: readonly ContactContent[] = contacts;
-/** Test-only per-locale text (P0-06 replaces this with `getContacts(locale)`). */
-let localized: Partial<Record<Locale, readonly ContactContent[]>> = {};
+/** What the engine plays: the English structure (ids, scripts, nodes) of the shipped contacts. */
+let contents: readonly ContactContent[] = getContacts('en');
+/** Per-locale text; `null` = the shipped content (`getContacts(locale)`). Tests swap both. */
+let localized: Partial<Record<Locale, readonly ContactContent[]>> | null = null;
 
 /** The chat window for `contactId` is the active window. */
 function isChatFocused(contactId: string): boolean {
@@ -256,6 +257,7 @@ export function getMessengerContents(): readonly ContactContent[] {
 export function getLocalizedContents(
   locale: Locale,
 ): readonly ContactContent[] {
+  if (!localized) return getContacts(locale);
   return localized[locale] ?? contents;
 }
 

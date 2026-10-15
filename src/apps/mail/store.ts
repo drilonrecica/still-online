@@ -10,8 +10,9 @@ import type {
   MailState,
 } from '@/content/mail/types';
 import type { MailRecord } from '@/content/types';
-import { contacts } from '@/content/contacts';
+import { getContacts } from '@/content/locale';
 import { getPlayerName } from '@/i18n/settingsText';
+import type { Locale } from '@/i18n/types';
 import { events } from '@/os/events';
 import { isRecord, persistOptions } from '@/os/persist';
 import { mulberry32, randInt, seedFrom } from '@/os/random';
@@ -56,10 +57,12 @@ export function playerAddress(name: string = getPlayerName()): MailAddress {
   return { name, address: `${user}@livemail.example` };
 }
 
-/** A friend's name for `address` (their Messenger handle), or the address itself. */
-export function friendFor(address: string) {
+/** The friend whose Messenger handle is `address` (names in `locale`). */
+export function friendFor(address: string, locale: Locale = 'en') {
   const needle = address.trim().toLowerCase();
-  return contacts.find((c) => c.contact.handle.toLowerCase() === needle);
+  return getContacts(locale).find(
+    (c) => c.contact.handle.toLowerCase() === needle,
+  );
 }
 
 function newId(): string {

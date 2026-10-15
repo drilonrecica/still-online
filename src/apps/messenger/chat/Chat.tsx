@@ -9,8 +9,8 @@ import { useReducedMotion } from '@/os/useReducedMotion';
 import { renderPersonalMessage, renderTranscript } from '../engine';
 import {
   getMessengerContent,
-  getMessengerContents,
   getMessengerEngine,
+  useLocalizedContents,
 } from '../runtime';
 import { StatusIcon, STATUS_LABELS } from '../StatusIcon';
 import { useMessengerStore } from '../store';
@@ -204,7 +204,7 @@ function ChatView({
 
 export default function Chat({ windowId, props }: AppComponentProps) {
   const contactId = props.contactId;
-  const content = getMessengerContents().find(
+  const content = useLocalizedContents().find(
     (c) => c.contact.id === contactId,
   );
   if (!content)
