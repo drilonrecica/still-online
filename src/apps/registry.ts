@@ -26,6 +26,8 @@ import myComputer16 from '@/assets/icons/mycomputer-16.svg';
 import myComputer32 from '@/assets/icons/mycomputer-32.svg';
 import notepad16 from '@/assets/icons/notepad-16.svg';
 import notepad32 from '@/assets/icons/notepad-32.svg';
+import pinball16 from '@/assets/icons/pinball-16.svg';
+import pinball32 from '@/assets/icons/pinball-32.svg';
 import paint16 from '@/assets/icons/paint-16.svg';
 import paint32 from '@/assets/icons/paint-32.svg';
 import photobooth16 from '@/assets/icons/photobooth-16.svg';
@@ -281,6 +283,20 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     icon32: henhunt32,
     component: lazy(() => import('./henhunt/HenHunt')),
     defaultSize: { w: 800, h: 560 },
+    singleInstance: true,
+    chrome: 'xp',
+    fixedSize: true,
+    showOnDesktop: false,
+    showInStartMenu: true,
+    category: 'games',
+  },
+  pinball: {
+    id: 'pinball',
+    title: 'Star Pinball',
+    icon16: pinball16,
+    icon32: pinball32,
+    component: lazy(() => import('./pinball/Pinball')),
+    defaultSize: { w: 460, h: 640 },
     singleInstance: true,
     chrome: 'xp',
     fixedSize: true,

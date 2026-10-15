@@ -1,0 +1,186 @@
+/* Star Pinball: a full-window canvas with neon space panels on top. */
+.root {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: #05030f;
+  outline: none;
+  user-select: none;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+  padding: 18px 26px 22px;
+  border-radius: 14px;
+  background: rgb(5 3 20 / 55%);
+}
+
+.title {
+  margin: 0;
+  color: #ffd56a;
+  font:
+    italic 900 44px/1 'Arial Black',
+    Impact,
+    Tahoma,
+    sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  -webkit-text-stroke: 2px #6a1a8a;
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 10px #ff4fb0,
+    0 0 24px #3fe0ff;
+}
+
+.title span {
+  display: block;
+  color: #3fe0ff;
+  -webkit-text-stroke-color: #0a2a6a;
+}
+
+.menuButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.big {
+  min-width: 190px;
+  padding: 7px 16px;
+  border: 2px solid #3fe0ff;
+  border-radius: 18px;
+  background: linear-gradient(#1b2f6e, #0a1236);
+  box-shadow: 0 0 10px rgb(63 224 255 / 50%);
+  color: #e8fbff;
+  font:
+    bold 16px Tahoma,
+    Verdana,
+    sans-serif;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.big:hover {
+  background: linear-gradient(#2a46a0, #13205a);
+}
+
+.big:active {
+  transform: translateY(1px);
+}
+
+.big:focus-visible,
+.panel button:focus-visible,
+.panel input:focus-visible {
+  outline: 2px dotted #ffd56a;
+  outline-offset: 2px;
+}
+
+.panel {
+  min-width: 300px;
+  max-width: 400px;
+  max-height: 100%;
+  overflow: auto;
+  padding: 14px 18px;
+  border: 2px solid #3fe0ff;
+  border-radius: 12px;
+  background: rgb(8 10 36 / 94%);
+  box-shadow: 0 0 18px rgb(63 224 255 / 40%);
+  color: #dfeaff;
+  font-size: 12px;
+}
+
+.panel h2 {
+  margin: 0 0 10px;
+  color: #ffd56a;
+  font:
+    bold 22px Tahoma,
+    Verdana,
+    sans-serif;
+  text-align: center;
+}
+
+.panel kbd {
+  padding: 0 4px;
+  border: 1px solid #6b7bb0;
+  border-radius: 3px;
+  background: #1b2450;
+  font-family: inherit;
+}
+
+.help {
+  margin: 0 0 10px;
+  padding-left: 18px;
+  line-height: 1.55;
+}
+
+.scores {
+  width: 100%;
+  margin-bottom: 10px;
+  border-collapse: collapse;
+}
+
+.scores th,
+.scores td {
+  padding: 2px 8px;
+  text-align: left;
+}
+
+.scores thead th {
+  border-bottom: 1px solid #3fe0ff;
+}
+
+.scores tbody tr:nth-child(odd) {
+  background: rgb(63 224 255 / 10%);
+}
+
+.final {
+  margin: 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.nameForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+.nameForm label {
+  flex-basis: 100%;
+  font-weight: bold;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 8px;
+}

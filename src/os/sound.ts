@@ -17,6 +17,10 @@ export const SOUND_NAMES = [
   'shot',
   'reload',
   'cluck',
+  'bumper',
+  'flipper',
+  'launch',
+  'drain',
 ] as const;
 export type SoundName = (typeof SOUND_NAMES)[number];
 
@@ -343,6 +347,49 @@ export const SOUND_DEFS: Record<SoundName, SoundDef> = {
         glideTo: 66,
         gain: 0.11,
       }),
+    ],
+  },
+  // Star Pinball pop bumper: a bright electric "bwip" over a short thump (~0.25s).
+  bumper: {
+    reverb: 0.15,
+    voices: [
+      tone(84, 0, 0.12, {
+        wave: 'square',
+        cutoff: 3200,
+        glideTo: 96,
+        gain: 0.08,
+      }),
+      bell(72, 0, 0.25, { ratio: 3.5, index: 3, gain: 0.08 }),
+      tone(40, 0, 0.12, { glideTo: 30, gain: 0.3 }),
+    ],
+  },
+  // A flipper solenoid: a dull clack (~0.12s).
+  flipper: {
+    voices: [
+      noise(900, 0, 0.06, { q: 1.5, gain: 0.35 }),
+      tone(45, 0, 0.1, { wave: 'triangle', glideTo: 38, gain: 0.25 }),
+    ],
+  },
+  // The plunger: a spring "thwang" and a rising whoosh (~0.6s).
+  launch: {
+    reverb: 0.2,
+    voices: [
+      noise(1200, 0, 0.05, { q: 2, gain: 0.35 }),
+      tone(52, 0, 0.3, {
+        wave: 'sawtooth',
+        cutoff: 1400,
+        glideTo: 64,
+        gain: 0.08,
+      }),
+      noise(2400, 0.05, 0.55, { q: 0.8, gain: 0.12, attack: 0.2 }),
+    ],
+  },
+  // A ball down the drain: a sad falling sweep (~0.9s).
+  drain: {
+    reverb: 0.3,
+    voices: [
+      tone(67, 0, 0.9, { wave: 'triangle', glideTo: 43, gain: 0.14 }),
+      tone(55, 0.1, 0.8, { wave: 'sine', glideTo: 31, gain: 0.12 }),
     ],
   },
 };
