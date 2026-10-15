@@ -1,17 +1,18 @@
 // Default progress values and a sanitizer for persisted (untrusted) progress.
 import { isRecord } from '@/os/persist';
-import type {
-  ActiveScript,
-  Contact,
-  ContactProgress,
-  ContactStatus,
-  MessengerProgress,
-  PlayerProgress,
-  QueuedTrigger,
-  Script,
-  ScriptProgress,
-  TranscriptEntry,
-  TriggerContext,
+import {
+  isWinkId,
+  type ActiveScript,
+  type Contact,
+  type ContactProgress,
+  type ContactStatus,
+  type MessengerProgress,
+  type PlayerProgress,
+  type QueuedTrigger,
+  type Script,
+  type ScriptProgress,
+  type TranscriptEntry,
+  type TriggerContext,
 } from '@/content/types';
 
 const STATUSES: readonly ContactStatus[] = [
@@ -120,6 +121,10 @@ function transcript(v: unknown): TranscriptEntry[] {
     if (!isRecord(e) || !isSender(e.from) || typeof e.at !== 'number')
       return [];
     if (e.kind === 'nudge') return [{ kind: 'nudge', from: e.from, at: e.at }];
+    if (e.kind === 'wink')
+      return isWinkId(e.wink)
+        ? [{ kind: 'wink', from: e.from, wink: e.wink, at: e.at }]
+        : [];
     if (e.kind === 'message' && typeof e.text === 'string') {
       return [
         e.whileAway === true && e.from === 'contact'

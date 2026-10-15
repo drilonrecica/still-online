@@ -39,6 +39,11 @@ export const jess: ContactContent = {
         hamster: {
           lines: [
             { text: 'NO lol thats so random :P', delayMs: 900 },
+            {
+              text: 'here have a hamster anyway',
+              delayMs: 600,
+              wink: 'hamster',
+            },
             { text: 'ok its WAY better than a hamster', delayMs: 600 },
           ],
           choices: [

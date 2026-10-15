@@ -292,3 +292,35 @@ describe('content lint: catches mistakes', () => {
     ]);
   });
 });
+
+describe('winks', () => {
+  const winksOf = (c: ContactContent) =>
+    c.scripts.flatMap((s) =>
+      Object.values(s.nodes).flatMap((n) =>
+        n.lines.flatMap((l) => (l.wink ? [l.wink] : [])),
+      ),
+    );
+
+  it('jess, kayla and pia send their winks', () => {
+    const byId = (id: string) => contacts.find((c) => c.contact.id === id)!;
+    expect(winksOf(byId('jess'))).toContain('hamster');
+    expect(winksOf(byId('kayla'))).toContain('hearts');
+    expect(winksOf(byId('pia'))).toContain('pickle');
+  });
+
+  it('the lint rejects unknown wink ids', () => {
+    expect(
+      lintContact({
+        ...exampleContact,
+        scripts: [
+          script({
+            a: {
+              lines: [{ delayMs: 0, wink: 'disco' as 'kiss' }],
+              end: true,
+            },
+          }),
+        ],
+      }),
+    ).toEqual(['mika: script "s" node "a" sends unknown wink "disco"']);
+  });
+});

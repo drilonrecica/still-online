@@ -1,7 +1,7 @@
 // Conversation engine: plays contact scripts (docs/content-format.md) against the messenger store.
 // Pure TS: time comes from the injected scheduler, output goes to the store and engine events.
 import type { createEventBus } from '@/os/events';
-import type { ContactId, TriggerContext } from '@/content/types';
+import type { ContactId, TriggerContext, WinkId } from '@/content/types';
 import { createEngineContext, type ConversationEngineOptions } from './context';
 import { reconcileContact } from './progress';
 import { createRunner } from './runner';
@@ -19,6 +19,8 @@ export interface ConversationEngine {
   /** Current choices for a contact, or null if they aren't waiting for one. */
   getChoices: (contactId: ContactId) => ResolvedChoice[] | null;
   playerNudge: (contactId: ContactId) => void;
+  /** The player sends a wink: a transcript entry and a `wink` event (no script trigger). */
+  playerWink: (contactId: ContactId, wink: WinkId) => void;
   nowPlaying: (track: NowPlayingTrack) => void;
   on: ReturnType<typeof createEventBus<EngineEventMap>>['on'];
   off: ReturnType<typeof createEventBus<EngineEventMap>>['off'];
@@ -113,6 +115,17 @@ export function createConversationEngine(
       }));
       bus.emit('nudge', { contactId: id, from: 'player' });
       fireAll(id, 'onPlayerNudge');
+    },
+    playerWink(id, wink) {
+      if (!data().signedIn || !contentOf(id)) return;
+      patchContact(id, (c) => ({
+        ...c,
+        transcript: [
+          ...c.transcript,
+          { kind: 'wink', from: 'player', wink, at: scheduler.now() },
+        ],
+      }));
+      bus.emit('wink', { contactId: id, from: 'player', wink });
     },
     nowPlaying(track) {
       if (!data().signedIn) return;

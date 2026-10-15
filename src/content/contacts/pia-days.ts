@@ -301,6 +301,11 @@ export const piaDayScripts: readonly Script[] = [
         lines: [
           { text: 'YAY STARDUST (L)(L)(L)', delayMs: 800 },
           {
+            text: 'HAPPY DANCE!!! its a pickle. they didnt have a pony one',
+            delayMs: 900,
+            wink: 'pickle',
+          },
+          {
             text: 'she is back in the MIDDLE where she belongs',
             delayMs: 1100,
           },

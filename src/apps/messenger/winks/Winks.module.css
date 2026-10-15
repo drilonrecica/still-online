@@ -1,0 +1,264 @@
+/* Winks: the overlay over a chat transcript, the art's keyframes and the send menu. */
+
+.overlay {
+  position: absolute;
+  inset: 6px 8px 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Zero specificity, so each animated class below can set its own origin. */
+:where(.art g, .art line) {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* Reduced motion and menu previews: the resting styles are the still frame. */
+.still,
+.still * {
+  animation: none !important;
+}
+
+/* --- kiss --- */
+.stamp {
+  animation: stamp 3.2s ease-out both;
+}
+@keyframes stamp {
+  0% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+  12% {
+    transform: scale(0.92);
+    opacity: 1;
+  }
+  18%,
+  85% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.floatUp {
+  animation: floatUp 2.2s ease-out var(--d, 0s) both;
+}
+@keyframes floatUp {
+  0% {
+    transform: translateY(30px) scale(0.4);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-70px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* --- hamster --- */
+.roll {
+  animation: roll 3.6s linear both;
+}
+@keyframes roll {
+  from {
+    transform: translateX(-230px);
+  }
+  to {
+    transform: translateX(230px);
+  }
+}
+.spin {
+  animation: spin 3.6s linear both;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(760deg);
+  }
+}
+.laugh {
+  animation: laugh 0.3s ease-in-out 12 alternate both;
+}
+@keyframes laugh {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
+
+/* --- hearts --- */
+.fall {
+  animation: fall var(--dur, 2s) linear var(--d, 0s) both;
+}
+@keyframes fall {
+  from {
+    transform: translateY(var(--from)) rotate(-15deg);
+  }
+  to {
+    transform: translateY(var(--to)) rotate(15deg);
+  }
+}
+
+/* --- pickle --- */
+.popIn {
+  animation: popIn 0.3s ease-out both;
+}
+@keyframes popIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.dance {
+  transform-origin: 50% 100%;
+  animation: dance 0.8s ease-in-out 0.3s 4 both;
+}
+@keyframes dance {
+  0%,
+  100% {
+    transform: rotate(-12deg) translateY(0);
+  }
+  25%,
+  75% {
+    transform: rotate(0deg) translateY(-12px);
+  }
+  50% {
+    transform: rotate(12deg) translateY(0);
+  }
+}
+
+/* --- fireworks --- */
+.night {
+  opacity: 0.45;
+  animation: night 3.6s ease-out both;
+}
+@keyframes night {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  10%,
+  85% {
+    opacity: 0.45;
+  }
+}
+.rocket {
+  opacity: 0;
+  /* forwards only: hidden until its delay, like the still frame. */
+  animation: rocket 0.5s ease-in var(--d, 0s) forwards;
+}
+@keyframes rocket {
+  from {
+    transform: translateY(130px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+.burst {
+  animation: burst 1.4s ease-out var(--d, 0s) both;
+}
+@keyframes burst {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
+/* --- snowball --- */
+.splat {
+  transform-origin: 50% 0%;
+  animation: splat 2.4s ease-out var(--d, 0s) both;
+}
+@keyframes splat {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  6% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+  12%,
+  50% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(60px) scale(0.9, 1.3);
+    opacity: 0;
+  }
+}
+
+/* --- send menu --- */
+.menuWrap {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 72px);
+  gap: 4px;
+  margin-top: 2px;
+  padding: 4px;
+  background: #fff;
+  border: 1px solid var(--msn-accent, #7a96df);
+  box-shadow: 2px 2px 4px rgb(0 0 0 / 30%);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  min-height: 0;
+  padding: 3px;
+}
+
+.item:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -3px;
+}
+
+.preview {
+  display: block;
+  overflow: hidden;
+  width: 64px;
+  height: 36px;
+  background: #f4f7fd;
+  border: 1px solid #c9d6f2;
+}

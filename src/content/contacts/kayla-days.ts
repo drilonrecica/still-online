@@ -372,6 +372,11 @@ export const kaylaDayScripts: readonly Script[] = [
         lines: [
           { text: 'stop ur gonna make me cry', delayMs: 1200 },
           { text: 'ok i AM crying. drama princess things', delayMs: 1400 },
+          {
+            text: 'here. feelings. dont make it weird',
+            delayMs: 1000,
+            wink: 'hearts',
+          },
           { delayMs: 800, personalMessageChange: '~*peace (kind of)*~ <3' },
         ],
         end: true,

@@ -71,8 +71,23 @@ export const TEXT_PLACEHOLDERS = ['{name}', '{artist}', '{title}'] as const;
 /** World unlock ids content may grant (`world.unlock`); the lint rejects others. */
 export const CONTENT_UNLOCKS = ['ponies'] as const;
 
+/** The full-window animations a contact or the player can send (P3-04). */
+export const WINK_IDS = [
+  'kiss',
+  'hamster',
+  'hearts',
+  'pickle',
+  'fireworks',
+  'snowball',
+] as const;
+
+export type WinkId = (typeof WINK_IDS)[number];
+
+export const isWinkId = (v: unknown): v is WinkId =>
+  (WINK_IDS as readonly unknown[]).includes(v);
+
 /**
- * One step by the contact. Applied in this order: text, nudge, statusChange,
+ * One step by the contact. Applied in this order: text, nudge, wink, statusChange,
  * personalMessageChange, unlock.
  */
 export interface ContactLine {
@@ -81,6 +96,8 @@ export interface ContactLine {
   /** Pause before this line starts (before the typing indicator), in ms. */
   delayMs: number;
   nudge?: true;
+  /** Sends a wink: it plays over the chat (opening it like a nudge, without the shake). */
+  wink?: WinkId;
   statusChange?: ContactStatus;
   personalMessageChange?: string;
   /** World unlock id granted when the line is delivered (one of `CONTENT_UNLOCKS`). */
@@ -195,7 +212,8 @@ export type TranscriptEntry =
       /** A contact message that arrived while the player was Away. */
       whileAway?: true;
     }
-  | { kind: 'nudge'; from: 'contact' | 'player'; at: number };
+  | { kind: 'nudge'; from: 'contact' | 'player'; at: number }
+  | { kind: 'wink'; from: 'contact' | 'player'; wink: WinkId; at: number };
 
 export interface ContactProgress {
   /** True after the contact's first sign-in; never reset. */

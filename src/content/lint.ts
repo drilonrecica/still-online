@@ -2,6 +2,7 @@
 // Each check returns human-readable problems; an empty list means the content is fine.
 import {
   CONTENT_UNLOCKS,
+  isWinkId,
   TEXT_PLACEHOLDERS,
   type ContactContent,
   type Script,
@@ -200,6 +201,21 @@ function lintUnlocks(content: ContactContent): string[] {
   );
 }
 
+/** Every `wink` on a line is a known wink id (content typed loosely, e.g. from JSON). */
+function lintWinks(content: ContactContent): string[] {
+  return content.scripts.flatMap((s) =>
+    Object.entries(s.nodes).flatMap(([nodeId, node]) =>
+      node.lines.flatMap((line) =>
+        line.wink === undefined || isWinkId(line.wink)
+          ? []
+          : [
+              `${content.contact.id}: script "${s.id}" node "${nodeId}" sends unknown wink "${String(line.wink)}"`,
+            ],
+      ),
+    ),
+  );
+}
+
 /** All checks for one contact, including unique script ids. */
 export function lintContact(content: ContactContent): string[] {
   const ids = content.scripts.map((s) => s.id);
@@ -218,6 +234,7 @@ export function lintContact(content: ContactContent): string[] {
     ...followUps,
     ...lintDays(content),
     ...lintUnlocks(content),
+    ...lintWinks(content),
     ...content.scripts.flatMap((s) =>
       lintScriptGraph(s).map((p) => `${content.contact.id}: ${p}`),
     ),

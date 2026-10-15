@@ -5,6 +5,7 @@ import styles from './Chat.module.css';
 import { events } from '@/os/events';
 import { splitLinks } from '@/os/linkify';
 import { parseEmoticons } from './emoticons';
+import { WINKS } from '../winks/catalog';
 
 /** Emoticon segments of `text` as images. */
 function Emoticons({ text }: { text: string }) {
@@ -85,6 +86,19 @@ export function Transcript({
                 </>
               ) : (
                 'You have just sent a nudge!'
+              )}
+            </p>
+          );
+        if (entry.kind === 'wink')
+          return (
+            <p key={i} className={styles.nudgeLine}>
+              {entry.from === 'contact' ? (
+                <>
+                  <RichText text={contactName} /> sent you a wink:{' '}
+                  {WINKS[entry.wink].name}
+                </>
+              ) : (
+                `You sent a wink: ${WINKS[entry.wink].name}`
               )}
             </p>
           );

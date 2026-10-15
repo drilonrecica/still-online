@@ -12,6 +12,7 @@ import { onIdle } from '@/os/idle';
 import { useWorldStore } from '@/os/world';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { requestShake } from './chat/nudge';
+import { requestWink } from './winks/play';
 import { summarizeAway } from './awaySummary';
 import { createConversationEngine, type ConversationEngine } from './engine';
 import { useMessengerStore } from './store';
@@ -47,6 +48,13 @@ function createEngine(): ConversationEngine {
     playSound('nudge');
     requestShake(contactId);
     useWindowsStore.getState().openApp('messenger-chat', { contactId });
+  });
+  // Winks play over the chat; an incoming one brings the chat up like a nudge (no shake).
+  created.on('wink', ({ contactId, from, wink }) => {
+    playSound('notify');
+    requestWink(contactId, wink);
+    if (from === 'contact')
+      useWindowsStore.getState().openApp('messenger-chat', { contactId });
   });
   // Toasts: never for the chat the player is already looking at.
   const toast = (

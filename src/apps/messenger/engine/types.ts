@@ -5,6 +5,7 @@ import type {
   ContactStatus,
   MessengerProgress,
   ScriptId,
+  WinkId,
 } from '@/content/types';
 
 export type TimerHandle = unknown;
@@ -52,6 +53,7 @@ export interface EngineEventMap {
   typingStop: { contactId: ContactId };
   message: { contactId: ContactId; from: 'contact' | 'player'; text: string };
   nudge: { contactId: ContactId; from: 'contact' | 'player' };
+  wink: { contactId: ContactId; from: 'contact' | 'player'; wink: WinkId };
   statusChange: { contactId: ContactId; status: ContactStatus };
   personalMessageChange: { contactId: ContactId; personalMessage: string };
   /** The player can reply now (also re-emitted when a waiting script resumes). */

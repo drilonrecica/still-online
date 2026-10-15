@@ -110,6 +110,16 @@ describe('History', () => {
     expect(within(list).queryByText('Cy')).toBeNull();
   });
 
+  it('shows winks both ways', () => {
+    seed('bob', [
+      { kind: 'wink', from: 'contact', wink: 'hearts', at: at(9, 17) },
+      { kind: 'wink', from: 'player', wink: 'snowball', at: at(9, 17) },
+    ]);
+    render(<History {...props({ contactId: 'bob' })} />);
+    expect(screen.getByText('Bob sent you a wink: Hearts')).toBeInTheDocument();
+    expect(screen.getByText('You sent a wink: Snowball')).toBeInTheDocument();
+  });
+
   it('shows date separators and selects the contact from props', async () => {
     render(<History {...props({ contactId: 'bob' })} />);
     expect(screen.getByText('Wednesday, October 17, 2007')).toBeInTheDocument();

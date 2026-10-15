@@ -65,6 +65,7 @@ const FORMAT: Formatters = {
   message: (p) =>
     `${p.from === 'player' ? '>' : '<'} ${p.contactId}: ${p.text}`,
   nudge: (p) => `nudge ${p.from} ${p.contactId}`,
+  wink: (p) => `wink ${p.from} ${p.contactId} ${p.wink}`,
   statusChange: (p) => `status ${p.contactId} ${p.status}`,
   personalMessageChange: (p) => `pm ${p.contactId} ${p.personalMessage}`,
   choices: (p) =>
@@ -102,7 +103,9 @@ export function setup(
     progress(id).transcript.map((e) =>
       e.kind === 'message'
         ? `${e.from === 'player' ? '>' : '<'} ${e.text}`
-        : `nudge ${e.from}`,
+        : e.kind === 'wink'
+          ? `wink ${e.from} ${e.wink}`
+          : `nudge ${e.from}`,
     );
   /** Returns and clears the log. */
   const take = () => log.splice(0, log.length);

@@ -6,6 +6,7 @@ import { getMessengerContents } from '../runtime';
 import { useMessengerStore } from '../store';
 import { Avatar } from '../chat/Avatar';
 import { RichText } from '../chat/Transcript';
+import { WINKS } from '../winks/catalog';
 import { groupByDay } from './groups';
 import styles from './History.module.css';
 
@@ -138,6 +139,12 @@ export default function History({ props }: AppComponentProps) {
                         {e.from === 'contact'
                           ? `${selected.contact.displayName} just sent you a nudge!`
                           : 'You have just sent a nudge!'}
+                      </p>
+                    ) : e.kind === 'wink' ? (
+                      <p key={i} className={styles.nudge}>
+                        {e.from === 'contact'
+                          ? `${selected.contact.displayName} sent you a wink: ${WINKS[e.wink].name}`
+                          : `You sent a wink: ${WINKS[e.wink].name}`}
                       </p>
                     ) : (
                       <div key={i} className={styles.message}>

@@ -217,6 +217,8 @@ export function createRunner(ctx: EngineContext) {
         ...(away ? { whileAway: true as const } : {}),
       });
     if (line.nudge) entries.push({ kind: 'nudge', from: 'contact', at });
+    if (line.wink)
+      entries.push({ kind: 'wink', from: 'contact', wink: line.wink, at });
     const before = progressOf(id);
     const wasOnline = isOnline(id);
     const status = line.statusChange;
@@ -235,6 +237,8 @@ export function createRunner(ctx: EngineContext) {
     if (text !== undefined)
       bus.emit('message', { contactId: id, from: 'contact', text });
     if (line.nudge) bus.emit('nudge', { contactId: id, from: 'contact' });
+    if (line.wink)
+      bus.emit('wink', { contactId: id, from: 'contact', wink: line.wink });
     if (status !== undefined) {
       if (status === 'offline') setFlag('online', id, false);
       else if (!wasOnline) setFlag('online', id, true);

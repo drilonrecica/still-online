@@ -14,6 +14,8 @@ import styles from './Chat.module.css';
 import { nudgeLimiter, onShake, SHAKE_MS } from './nudge';
 import { Reply } from './Reply';
 import { RichText, Transcript } from './Transcript';
+import { WinkMenu } from '../winks/WinkMenu';
+import { WinkOverlay } from '../winks/WinkOverlay';
 
 const NOTICE_MS = 4000;
 /** Unprocessed CSS modules (tests) give no class name, and `classList.add('')` throws. */
@@ -142,6 +144,11 @@ function ChatView({
         >
           Nudge
         </button>
+        <WinkMenu
+          disabled={!signedIn}
+          buttonClassName={styles.tool}
+          onSend={(wink) => getMessengerEngine().playerWink(id, wink)}
+        />
         <button
           type="button"
           className={styles.tool}
@@ -154,11 +161,14 @@ function ChatView({
           History
         </button>
       </div>
-      <Transcript
-        entries={progress?.transcript ?? []}
-        contactName={contact.displayName}
-        playerName={playerName}
-      />
+      <div className={styles.stage}>
+        <Transcript
+          entries={progress?.transcript ?? []}
+          contactName={contact.displayName}
+          playerName={playerName}
+        />
+        <WinkOverlay contactId={id} />
+      </div>
       <div className={styles.bottom}>
         <div className={styles.replyArea}>
           <Reply contactId={id} disabled={!signedIn} />
