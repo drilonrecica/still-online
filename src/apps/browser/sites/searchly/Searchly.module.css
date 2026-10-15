@@ -1,0 +1,233 @@
+/* searchly.example: white page, chunky coloured logo, beveled grey buttons. */
+.page {
+  position: relative;
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: 16px 24px;
+  background: #fff;
+  color: #222;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+}
+
+.home {
+  max-width: 520px;
+  margin: 40px auto 0;
+  text-align: center;
+}
+
+.logo {
+  display: inline-block;
+  font-family: 'Trebuchet MS', 'Comic Sans MS', cursive;
+  font-size: 68px;
+  font-weight: bold;
+  letter-spacing: -2px;
+  text-shadow: 2px 2px 0 #ddd;
+}
+
+.logo span:nth-child(odd) {
+  display: inline-block;
+  transform: rotate(-4deg);
+}
+
+.logo span:nth-child(even) {
+  display: inline-block;
+  transform: translateY(3px) rotate(3deg);
+}
+
+.logoSmall {
+  display: inline-block;
+  font-family: 'Trebuchet MS', 'Comic Sans MS', cursive;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.tagline {
+  margin: 4px 0 18px;
+  color: #555;
+  font-style: italic;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.formCompact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input {
+  width: 100%;
+  max-width: 380px;
+  box-sizing: border-box;
+  padding: 4px;
+  border: 2px inset #999;
+  font-size: 16px;
+}
+
+.formCompact .input {
+  width: 300px;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.button {
+  padding: 3px 10px;
+  border: 2px outset #eee;
+  background: #e6e6e6;
+  color: #000;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.button:active {
+  border-style: inset;
+}
+
+.toolbarLine {
+  margin: 24px 0 6px;
+}
+
+.blink {
+  color: #c1121f;
+  font-weight: bold;
+  animation: blink 1.2s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blink {
+    animation: none;
+  }
+}
+
+.small {
+  color: #555;
+  font-size: 11px;
+}
+
+.footer {
+  margin-top: 36px;
+  color: #777;
+  font-size: 11px;
+}
+
+.dialog {
+  position: absolute;
+  top: 120px;
+  left: 50%;
+  width: 280px;
+  margin-left: -140px;
+  border: 2px outset #d4d0c8;
+  background: #d4d0c8;
+  box-shadow: 3px 3px 0 rgb(0 0 0 / 35%);
+}
+
+.dialogTitle {
+  padding: 3px 6px;
+  background: linear-gradient(90deg, #0a246a, #a6caf0);
+  color: #fff;
+  font-weight: bold;
+}
+
+.dialogBody {
+  padding: 10px 14px;
+  text-align: center;
+}
+
+.bar {
+  height: 16px;
+  margin: 8px 0;
+  border: 2px inset #999;
+  background: #fff;
+}
+
+.barFill {
+  width: 3%;
+  height: 100%;
+  background: #0a246a;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #b6c9f0;
+  background: #f0f5ff;
+  margin: -16px -24px 12px;
+  padding: 10px 24px;
+}
+
+.summary {
+  padding: 2px 0 8px;
+  color: #444;
+}
+
+.suggest {
+  margin: 0 0 10px;
+  color: #c1121f;
+  font-size: 14px;
+}
+
+.none {
+  margin: 12px 0;
+  padding: 10px 14px;
+  border: 1px solid #f2a900;
+  background: #fff8e1;
+}
+
+.results {
+  margin: 0;
+  padding-left: 28px;
+}
+
+.results li {
+  margin-bottom: 14px;
+  max-width: 560px;
+}
+
+.resultTitle {
+  color: #1a0dab;
+  font-size: 16px;
+}
+
+.snippet {
+  margin: 2px 0;
+}
+
+.url {
+  color: #1a7f37;
+  font-size: 12px;
+}
+
+.pager {
+  margin: 18px 0 8px;
+  text-align: center;
+  font-size: 15px;
+}
+
+.pagerLogo {
+  font-family: 'Trebuchet MS', cursive;
+  font-size: 22px;
+  color: #1c5fd6;
+}
+
+.pagerLogo a,
+.pagerLogo b {
+  font-size: 22px;
+  padding: 0 1px;
+}

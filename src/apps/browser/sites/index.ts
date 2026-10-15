@@ -7,8 +7,9 @@ import type {
 } from '@/content/sites/types';
 import { parseUrl } from '../url';
 import { ABOUT_SITE } from './about';
+import { SEARCHLY_SITE } from './searchly';
 
-export const SITES: readonly SiteDefinition[] = [ABOUT_SITE];
+export const SITES: readonly SiteDefinition[] = [SEARCHLY_SITE, ABOUT_SITE];
 
 /** Exact path first, then `/*` for a single extra segment. Null for unknown hosts or paths. */
 export function resolve(
