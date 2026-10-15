@@ -1,5 +1,6 @@
 // The floating tool palette: a little tool window dragged by its title bar.
 import { useRef, useState, type PointerEvent } from 'react';
+import { useT } from '@/i18n/useT';
 import { TOOL_IDS, TOOLS, type ToolId } from './engine';
 import { PaletteIcon } from './icons';
 import styles from './Wrecker.module.css';
@@ -31,6 +32,7 @@ export function Palette({
     y: 24,
   }));
   const drag = useRef<{ dx: number; dy: number } | null>(null);
+  const t = useT();
 
   const onDown = (e: PointerEvent<HTMLDivElement>) => {
     if (e.button !== 0) return;
@@ -54,7 +56,7 @@ export function Palette({
       className={styles.palette}
       style={{ left: pos.x, top: pos.y, width: WIDTH }}
       role="toolbar"
-      aria-label="Wrecking tools"
+      aria-label={t('wrecker.palette')}
       aria-orientation="vertical"
     >
       <div
@@ -64,7 +66,7 @@ export function Palette({
         onPointerUp={onUp}
         onPointerCancel={onUp}
       >
-        Wrecker
+        {t('wrecker.grip')}
       </div>
       <div className={styles.tools}>
         {TOOL_IDS.map((id) => (
@@ -72,9 +74,12 @@ export function Palette({
             key={id}
             type="button"
             className={styles.tool}
-            aria-label={TOOLS[id].label}
+            aria-label={t(TOOLS[id].labelKey)}
             aria-pressed={tool === id}
-            title={`${TOOLS[id].label}: ${TOOLS[id].hint}`}
+            title={t('wrecker.toolHint', {
+              tool: t(TOOLS[id].labelKey),
+              hint: t(TOOLS[id].hintKey),
+            })}
             disabled={repairing}
             onClick={() => onSelect(id)}
           >
@@ -84,8 +89,8 @@ export function Palette({
         <button
           type="button"
           className={styles.tool}
-          aria-label="Repair"
-          title="Repair: sweep the glass away"
+          aria-label={t('wrecker.repair')}
+          title={t('wrecker.repairHint')}
           disabled={repairing}
           onClick={onRepair}
         >
@@ -94,7 +99,7 @@ export function Palette({
       </div>
       <button type="button" className={styles.exit} onClick={onExit}>
         <PaletteIcon id="exit" />
-        Exit
+        {t('wrecker.exit')}
       </button>
     </div>
   );

@@ -1,6 +1,7 @@
 // Hen Hunt: the shooting-gallery window. The round is simulated in `sim.ts` and drawn by
 // `useGameLoop`; this file wires input, sounds, scores and the menu screens.
 import { usePlayerName } from '@/i18n/settingsText';
+import { useT } from '@/i18n/useT';
 import {
   useCallback,
   useEffect,
@@ -58,6 +59,7 @@ export default function HenHunt({ windowId }: Partial<AppComponentProps>) {
   const rootRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Game>(createGame(newSeed(), { attract: true }));
   const playerName = usePlayerName();
+  const t = useT();
 
   const onEvents = useCallback((list: GameEvent[]) => {
     for (const e of list) {
@@ -78,7 +80,11 @@ export default function HenHunt({ windowId }: Partial<AppComponentProps>) {
   const playing = screen === 'play';
   const status = useGameStatus(() => {
     const g = gameRef.current;
-    return `Score ${g.score}, ${g.shells} ${g.shells === 1 ? 'shell' : 'shells'}, ${Math.ceil(g.time)} seconds left`;
+    return t('henhunt.status', {
+      score: g.score,
+      shells: g.shells,
+      seconds: Math.ceil(g.time),
+    });
   }, playing);
   useGameLoop(canvasRef, gameRef, {
     // A finished round keeps settling its feathers; the menu backdrop is still if reduced.
@@ -176,11 +182,7 @@ export default function HenHunt({ windowId }: Partial<AppComponentProps>) {
         className={`${styles.canvas} ${playing ? styles.aiming : ''}`}
         role="img"
         aria-describedby={playing ? 'henhunt-status' : undefined}
-        aria-label={
-          playing
-            ? 'Hen Hunt field. Aim with the mouse or arrow keys, shoot with a click or Enter, reload with a right-click or Space, Esc for the menu.'
-            : 'Hen Hunt countryside'
-        }
+        aria-label={t(playing ? 'henhunt.field' : 'henhunt.countryside')}
         onPointerMove={(e) => playing && aim(e)}
         onPointerLeave={() => setPointer(gameRef.current, null)}
         onPointerDown={onPointerDown}

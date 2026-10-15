@@ -606,6 +606,125 @@ export const de: Messages = {
     henhunt: 'Hühnerjagd',
     pinball: 'Sternen-Flipper',
   },
+  /** Shared by the games' high-score tables. */
+  highScores: {
+    /** Shown for an empty name; the store keeps `Anonymous` as its legacy fallback. */
+    anonymous: 'Anonym',
+  },
+  mines: {
+    menuBar: 'Minen',
+    menu: {
+      game: 'Spiel',
+      new: 'Neu',
+      custom: 'Benutzerdefiniert…',
+      bestTimes: 'Bestzeiten…',
+      exit: 'Beenden',
+    },
+    level: {
+      beginner: 'Anfänger',
+      intermediate: 'Fortgeschrittene',
+      expert: 'Profis',
+    },
+    levelInline: {
+      beginner: 'Anfänger',
+      intermediate: 'Fortgeschrittene',
+      expert: 'Profis',
+    },
+    minesLeft: 'Verbleibende Minen',
+    time: 'Zeit',
+    newGame: 'Neues Spiel (F2)',
+    newGameWon: 'Neues Spiel (Sie haben gewonnen)',
+    newGameLost: 'Neues Spiel (Sie haben verloren)',
+    field: 'Minenfeld',
+    cell: 'Zeile {row}, Spalte {col}: {state}',
+    state: {
+      hidden: 'verdeckt',
+      explodedMine: 'explodierte Mine',
+      mine: 'Mine',
+      empty: 'leer',
+      wrongFlag: 'falsche Flagge',
+      flag: 'Flagge',
+      question: 'Fragezeichen',
+    },
+    custom: {
+      title: 'Benutzerdefiniertes Feld',
+      height: 'Höhe',
+      width: 'Breite',
+      mines: 'Minen',
+    },
+    best: {
+      title: 'Schnellste Minenräumer',
+      seconds: '{n} Sekunden',
+      reset: 'Zeiten zurücksetzen',
+    },
+    name: {
+      prompt:
+        'Sie haben die schnellste Zeit in der Stufe „{level}“ ({seconds} Sekunden).',
+      enter: 'Bitte geben Sie Ihren Namen ein.',
+      label: 'Ihr Name',
+    },
+  },
+  henhunt: {
+    countryside: 'Hühnerjagd, Landschaft',
+    field:
+      'Hühnerjagd-Feld. Zielen Sie mit der Maus oder den Pfeiltasten, schießen Sie mit Klick oder Eingabetaste, laden Sie mit Rechtsklick oder Leertaste nach, Esc öffnet das Menü.',
+    status: (p: { score: number; shells: number; seconds: number }) =>
+      `Punkte ${p.score}, ${p.shells} ${p.shells === 1 ? 'Patrone' : 'Patronen'}, noch ${p.seconds} Sekunden`,
+    tagline: '{seconds} Sekunden. {shells} Patronen. Ein Himmel voller Hühner.',
+    menuLabel: 'Hühnerjagd-Menü',
+    play: 'Spielen',
+    playAgain: 'Nochmal spielen',
+    highScores: 'Bestenliste',
+    help: 'Hilfe',
+    back: 'Zurück',
+    mainMenu: 'Hauptmenü',
+    helpTitle: 'Spielanleitung',
+    helpAim:
+      'Du hast {seconds} Sekunden. Klicke zum Schießen; ziele mit der Maus (oder den Pfeiltasten und der Eingabetaste).',
+    helpReload:
+      'Die Flinte fasst {shells} Patronen. Mit Rechtsklick oder Leertaste lädst du nach – das dauert eine Sekunde.',
+    helpScroll:
+      'Fahre an den linken oder rechten Rand, um dich auf dem Land umzusehen.',
+    helpHens:
+      'Ferne Hühner sind {far} Punkte wert, mittlere {mid}, nahe {near}.',
+    helpBonus:
+      'Behalte das Mühlenfenster ({window}) und das goldene Huhn ({golden}, einmal pro Runde, und schnell!) im Auge.',
+    helpHat:
+      'Lass die Vogelscheuche in Ruhe: Ihr Hut kostet dich {penalty} Punkte.',
+    noScores: 'Noch keine Punkte. Schnapp dir die Hühner!',
+    colRank: 'Nr.',
+    colName: 'Name',
+    colScore: 'Punkte',
+    colDate: 'Datum',
+    roundOver: 'Runde vorbei',
+    timesUp: 'Die Zeit ist um!',
+    finalScore: 'Punkte: {score}',
+    accuracy: '{hits} Treffer bei {shots} Schüssen ({accuracy} % Trefferquote)',
+    newHigh: 'Neuer Rekord! Gib deinen Namen ein:',
+    hud: {
+      score: 'PUNKTE',
+      lastSeconds: 'Noch {seconds} Sekunden!',
+      reload: 'Nachladen! (Rechtsklick oder Leertaste)',
+    },
+  },
+  wrecker: {
+    surface:
+      'Desktop-Randale. 1 bis 5 wählen ein Werkzeug, die Leertaste setzt es ein, R repariert, Esc beendet.',
+    palette: 'Randale-Werkzeuge',
+    grip: 'Randale',
+    repair: 'Reparieren',
+    repairHint: 'Reparieren: Scherben wegfegen',
+    exit: 'Beenden',
+    boom: 'BUMM!',
+    toolHint: '{tool}: {hint}',
+    tool: {
+      hammer: { label: 'Hammer', hint: 'Klicken zum Zerschlagen' },
+      chainsaw: { label: 'Kettensäge', hint: 'Halten und ziehen zum Sägen' },
+      flamethrower: { label: 'Flammenwerfer', hint: 'Halten zum Brennen' },
+      machinegun: { label: 'Maschinengewehr', hint: 'Halten zum Feuern' },
+      stamp: { label: 'Stempel', hint: 'Klicken zum Stempeln' },
+    },
+  },
   messenger: {
     chatTitle: '{name} - Unterhaltung',
     groups: {

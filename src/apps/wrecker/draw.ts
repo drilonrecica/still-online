@@ -1,5 +1,6 @@
 // Draws Desktop Wrecker: marks are painted once onto the persistent damage canvas; particles
 // and Repair's sweep are redrawn every frame on the effects canvas. Coordinates are CSS px.
+import { t } from '@/i18n/t';
 import type { Mark, Point } from './damage';
 import type { Particle } from './particles';
 
@@ -131,9 +132,10 @@ function boom(ctx: Ctx) {
   ctx.textBaseline = 'middle';
   ctx.lineWidth = 6;
   ctx.strokeStyle = '#7a0d05';
-  ctx.strokeText('BOOM!', 0, 2);
+  const word = t('wrecker.boom');
+  ctx.strokeText(word, 0, 2);
   ctx.fillStyle = '#ff4a1c';
-  ctx.fillText('BOOM!', 0, 2);
+  ctx.fillText(word, 0, 2);
 }
 
 function stamp(ctx: Ctx, m: Extract<Mark, { kind: 'stamp' }>) {

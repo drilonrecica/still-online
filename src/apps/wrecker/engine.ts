@@ -4,6 +4,7 @@
 // Phases: idle ⇄ using (pointer held with a tool) → repairing (Repair's wipe) → idle.
 // Click tools (Hammer, Stamp) act once on press; hold tools (Chainsaw, Flamethrower, Machine
 // Gun) act on press and keep acting while held. Nothing happens while repairing.
+import type { MessageKey } from '@/i18n/types';
 import type { SoundName } from '@/os/sound';
 import { mulberry32, type Rand } from '@/os/random';
 import {
@@ -36,18 +37,38 @@ export const TOOL_IDS = [
 export type ToolId = (typeof TOOL_IDS)[number];
 
 export interface ToolInfo {
-  label: string;
+  labelKey: MessageKey;
   /** `click`: one hit per press. `hold`: keeps going while the pointer is down. */
   mode: 'click' | 'hold';
-  hint: string;
+  hintKey: MessageKey;
 }
 
 export const TOOLS: Readonly<Record<ToolId, ToolInfo>> = {
-  hammer: { label: 'Hammer', mode: 'click', hint: 'Click to smash' },
-  chainsaw: { label: 'Chainsaw', mode: 'hold', hint: 'Hold and drag to cut' },
-  flamethrower: { label: 'Flamethrower', mode: 'hold', hint: 'Hold to burn' },
-  machinegun: { label: 'Machine Gun', mode: 'hold', hint: 'Hold to fire' },
-  stamp: { label: 'Stamp', mode: 'click', hint: 'Click to stamp' },
+  hammer: {
+    labelKey: 'wrecker.tool.hammer.label',
+    mode: 'click',
+    hintKey: 'wrecker.tool.hammer.hint',
+  },
+  chainsaw: {
+    labelKey: 'wrecker.tool.chainsaw.label',
+    mode: 'hold',
+    hintKey: 'wrecker.tool.chainsaw.hint',
+  },
+  flamethrower: {
+    labelKey: 'wrecker.tool.flamethrower.label',
+    mode: 'hold',
+    hintKey: 'wrecker.tool.flamethrower.hint',
+  },
+  machinegun: {
+    labelKey: 'wrecker.tool.machinegun.label',
+    mode: 'hold',
+    hintKey: 'wrecker.tool.machinegun.hint',
+  },
+  stamp: {
+    labelKey: 'wrecker.tool.stamp.label',
+    mode: 'click',
+    hintKey: 'wrecker.tool.stamp.hint',
+  },
 };
 
 export type Phase = 'idle' | 'using' | 'repairing';

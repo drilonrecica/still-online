@@ -1,4 +1,5 @@
 // Hen Hunt's heads-up display: clock, score, shells, score popups and the crosshair.
+import { t } from '@/i18n/t';
 import {
   LAST_SECONDS,
   RELOAD_SECONDS,
@@ -49,23 +50,31 @@ export function drawHud(c: Ctx, g: Game) {
   c.fillStyle = late && Math.ceil(g.time * 2) % 2 ? '#ff4b3a' : '#fff6d8';
   c.fillText(formatClock(g.time), 72, 36);
 
-  panel(c, VIEW_W - 192, 10, 180, 50);
-  c.textAlign = 'right';
+  // The score panel grows to fit the (localized) label plus the number, never narrower than 180.
+  const label = t('henhunt.hud.score');
+  c.font = `bold 13px ${FONT}`;
+  const labelW = c.measureText(label).width;
   c.font = `bold 32px ${FONT}`;
+  const scoreW = c.measureText(String(g.score)).width;
+  const panelW = Math.max(180, Math.ceil(labelW + scoreW) + 36);
+  panel(c, VIEW_W - panelW - 12, 10, panelW, 50);
+  c.textAlign = 'right';
   c.fillStyle = '#fff6d8';
   c.fillText(String(g.score), VIEW_W - 24, 36);
   c.font = `bold 13px ${FONT}`;
   c.textAlign = 'left';
-  c.fillText('SCORE', VIEW_W - 180, 36);
+  c.fillText(label, VIEW_W - panelW, 36);
 
   if (late && g.time > LAST_SECONDS - 2.5) {
     c.textAlign = 'center';
     c.font = `bold 34px ${FONT}`;
     c.lineWidth = 6;
     c.strokeStyle = '#5a1206';
-    c.strokeText('Last 10 seconds!', VIEW_W / 2, 92);
+    const warning = t('henhunt.hud.lastSeconds', { seconds: LAST_SECONDS });
+    const maxW = VIEW_W - 40;
+    c.strokeText(warning, VIEW_W / 2, 92, maxW);
     c.fillStyle = '#ffd23a';
-    c.fillText('Last 10 seconds!', VIEW_W / 2, 92);
+    c.fillText(warning, VIEW_W / 2, 92, maxW);
   }
   drawShells(c, g);
   c.textBaseline = 'alphabetic';
@@ -99,7 +108,7 @@ function drawShells(c: Ctx, g: Game) {
     c.textAlign = 'right';
     c.font = `bold 15px ${FONT}`;
     c.fillStyle = '#ffd23a';
-    c.fillText('Reload! (right-click or Space)', VIEW_W - 16, y0 - 18);
+    c.fillText(t('henhunt.hud.reload'), VIEW_W - 16, y0 - 18, VIEW_W - 32);
   }
 }
 

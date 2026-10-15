@@ -10,6 +10,7 @@ import {
   type PointerEvent,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { useT } from '@/i18n/useT';
 import { Z_INDEX } from '@/os/overlay/slots';
 import { seedFrom } from '@/os/random';
 import { scaleMs } from '@/os/speed';
@@ -48,6 +49,7 @@ export default function Wrecker({ windowId }: AppComponentProps) {
     (s) => s.windows.find((w) => w.id === windowId)?.minimized ?? false,
   );
   const reduced = useReducedMotion();
+  const t = useT();
   const engineRef = useRef(
     createEngine(SEED, window.innerWidth, window.innerHeight),
   );
@@ -140,7 +142,7 @@ export default function Wrecker({ windowId }: AppComponentProps) {
         ref={surfaceRef}
         className={styles.surface}
         role="application"
-        aria-label="Desktop Wrecker. 1 to 5 pick a tool, Space uses it, R repairs, Escape exits."
+        aria-label={t('wrecker.surface')}
         tabIndex={0}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}

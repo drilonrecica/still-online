@@ -1,5 +1,7 @@
 // Mines: the minesweeper-style game. Board rules live in `board.ts`; this file is the window.
 import { usePlayerName } from '@/i18n/settingsText';
+import type { MessageKey } from '@/i18n/types';
+import { useT } from '@/i18n/useT';
 import {
   memo,
   useCallback,
@@ -27,6 +29,7 @@ import {
   type Cell,
   type Config,
 } from './board';
+import { scoreName } from '@/i18n/scoreName';
 import { Face, FlagIcon, Lcd, MineIcon, type FaceKind } from './graphics';
 import styles from './Mines.module.css';
 
@@ -35,11 +38,17 @@ export const MAX_SECONDS = 999;
 
 type Level = MinesLevel | 'custom';
 
-export const LEVEL_LABELS: Record<MinesLevel, string> = {
-  beginner: 'Beginner',
-  intermediate: 'Intermediate',
-  expert: 'Expert',
-};
+export const LEVEL_KEYS = {
+  beginner: 'mines.level.beginner',
+  intermediate: 'mines.level.intermediate',
+  expert: 'mines.level.expert',
+} as const satisfies Record<MinesLevel, MessageKey>;
+
+const LEVEL_INLINE_KEYS = {
+  beginner: 'mines.levelInline.beginner',
+  intermediate: 'mines.levelInline.intermediate',
+  expert: 'mines.levelInline.expert',
+} as const satisfies Record<MinesLevel, MessageKey>;
 
 /** Window size that fits a board of `config` exactly (menubar, header and frames included). */
 export function windowSizeFor(config: Config): { w: number; h: number } {
@@ -74,20 +83,21 @@ const CellView = memo(function CellView({
   wrongFlag,
   cursor,
 }: CellViewProps) {
+  const t = useT();
   const open = cell.revealed;
-  let label = 'hidden';
+  let label = t('mines.state.hidden');
   let content: React.ReactNode = null;
   if (open && cell.mine) {
-    label = cell.exploded ? 'exploded mine' : 'mine';
+    label = t(cell.exploded ? 'mines.state.explodedMine' : 'mines.state.mine');
     content = <MineIcon />;
   } else if (open) {
-    label = cell.adjacent ? String(cell.adjacent) : 'empty';
+    label = cell.adjacent ? String(cell.adjacent) : t('mines.state.empty');
     content = cell.adjacent ? cell.adjacent : null;
   } else if (cell.mark === 'flag') {
-    label = wrongFlag ? 'wrong flag' : 'flag';
+    label = t(wrongFlag ? 'mines.state.wrongFlag' : 'mines.state.flag');
     content = <FlagIcon wrong={wrongFlag} />;
   } else if (cell.mark === 'question') {
-    label = 'question';
+    label = t('mines.state.question');
     content = '?';
   }
   const cls = [
@@ -106,7 +116,7 @@ const CellView = memo(function CellView({
       className={cls}
       id={`mines-cell-${index}`}
       data-index={index}
-      aria-label={`Row ${y + 1}, column ${x + 1}: ${label}`}
+      aria-label={t('mines.cell', { row: y + 1, col: x + 1, state: label })}
     >
       {content}
     </button>
@@ -114,6 +124,7 @@ const CellView = memo(function CellView({
 });
 
 export default function Mines({ windowId }: AppComponentProps) {
+  const t = useT();
   const [level, setLevel] = useState<Level>('beginner');
   const [config, setConfig] = useState<Config>(LEVELS.beginner);
   const [board, setBoard] = useState<Board>(() =>
@@ -278,14 +289,14 @@ export default function Mines({ windowId }: AppComponentProps) {
           : 'smile';
 
   const gameMenu: { label: string; hint?: string; run: () => void }[] = [
-    { label: 'New', hint: 'F2', run: newGame },
+    { label: t('mines.menu.new'), hint: 'F2', run: newGame },
     ...MINES_LEVELS.map((l) => ({
-      label: LEVEL_LABELS[l],
+      label: t(LEVEL_KEYS[l]),
       hint: level === l ? '✓' : undefined,
       run: () => startGame(l, LEVELS[l]),
     })),
     {
-      label: 'Custom…',
+      label: t('mines.menu.custom'),
       hint: level === 'custom' ? '✓' : undefined,
       run: () => {
         setMenu(false);
@@ -293,14 +304,14 @@ export default function Mines({ windowId }: AppComponentProps) {
       },
     },
     {
-      label: 'Best Times…',
+      label: t('mines.menu.bestTimes'),
       run: () => {
         setMenu(false);
         setDialog({ kind: 'best' });
       },
     },
     {
-      label: 'Exit',
+      label: t('mines.menu.exit'),
       run: () => useWindowsStore.getState().closeWindow(windowId),
     },
   ];
@@ -313,7 +324,11 @@ export default function Mines({ windowId }: AppComponentProps) {
       onKeyDown={onKeyDown}
       onClick={() => menu && setMenu(false)}
     >
-      <div className={styles.menubar} role="menubar" aria-label="Mines">
+      <div
+        className={styles.menubar}
+        role="menubar"
+        aria-label={t('mines.menuBar')}
+      >
         <div className={styles.menu}>
           <button
             type="button"
@@ -326,10 +341,14 @@ export default function Mines({ windowId }: AppComponentProps) {
               setMenu(!menu);
             }}
           >
-            Game
+            {t('mines.menu.game')}
           </button>
           {menu && (
-            <div className={styles.dropdown} role="menu" aria-label="Game">
+            <div
+              className={styles.dropdown}
+              role="menu"
+              aria-label={t('mines.menu.game')}
+            >
               {gameMenu.map((item) => (
                 <button
                   key={item.label}
@@ -352,21 +371,27 @@ export default function Mines({ windowId }: AppComponentProps) {
 
       <div className={styles.game}>
         <div className={styles.header}>
-          <Lcd value={minesLeft(board)} label="Mines left" />
+          <Lcd value={minesLeft(board)} label={t('mines.minesLeft')} />
           <button
             type="button"
             className={styles.face}
-            aria-label={`New game (${face === 'cool' ? 'you won' : face === 'dead' ? 'you lost' : 'F2'})`}
+            aria-label={t(
+              face === 'cool'
+                ? 'mines.newGameWon'
+                : face === 'dead'
+                  ? 'mines.newGameLost'
+                  : 'mines.newGame',
+            )}
             onClick={newGame}
           >
             <Face kind={face} />
           </button>
-          <Lcd value={seconds} label="Time" />
+          <Lcd value={seconds} label={t('mines.time')} />
         </div>
         <div
           className={styles.grid}
           role="group"
-          aria-label="Mine field"
+          aria-label={t('mines.field')}
           tabIndex={0}
           aria-activedescendant={
             cursor === null ? undefined : `mines-cell-${cursor}`
@@ -459,6 +484,7 @@ function CustomDialog({
   const [height, setHeight] = useState(String(initial.height));
   const [width, setWidth] = useState(String(initial.width));
   const [mines, setMines] = useState(String(initial.mines));
+  const t = useT();
   const field = (
     label: string,
     value: string,
@@ -482,23 +508,29 @@ function CustomDialog({
     </>
   );
   return (
-    <Dialog title="Custom Field">
+    <Dialog title={t('mines.custom.title')}>
       <div className={styles.fields}>
         {field(
-          'Height',
+          t('mines.custom.height'),
           height,
           setHeight,
           CUSTOM_LIMITS.minHeight,
           CUSTOM_LIMITS.maxHeight,
         )}
         {field(
-          'Width',
+          t('mines.custom.width'),
           width,
           setWidth,
           CUSTOM_LIMITS.minWidth,
           CUSTOM_LIMITS.maxWidth,
         )}
-        {field('Mines', mines, setMines, CUSTOM_LIMITS.minMines, 667)}
+        {field(
+          t('mines.custom.mines'),
+          mines,
+          setMines,
+          CUSTOM_LIMITS.minMines,
+          667,
+        )}
       </div>
       <div className={styles.buttons}>
         <button
@@ -511,10 +543,10 @@ function CustomDialog({
             })
           }
         >
-          OK
+          {t('common.ok')}
         </button>
         <button type="button" onClick={onCancel}>
-          Cancel
+          {t('common.cancel')}
         </button>
       </div>
     </Dialog>
@@ -523,18 +555,19 @@ function CustomDialog({
 
 function BestDialog({ onClose }: { onClose: () => void }) {
   const best = useGamesStore((s) => s.mines.best);
+  const t = useT();
   return (
-    <Dialog title="Fastest Mine Sweepers">
+    <Dialog title={t('mines.best.title')}>
       <table className={styles.times}>
         <tbody>
           {MINES_LEVELS.map((l) => (
             <tr key={l}>
-              <th scope="row">{LEVEL_LABELS[l]}:</th>
+              <th scope="row">{t(LEVEL_KEYS[l])}:</th>
               <td>
                 <div>
-                  {best[l] ? `${best[l].seconds} seconds` : '999 seconds'}
+                  {t('mines.best.seconds', { n: best[l]?.seconds ?? 999 })}
                 </div>
-                <div>{best[l]?.name ?? 'Anonymous'}</div>
+                <div>{scoreName(best[l]?.name, t)}</div>
               </td>
             </tr>
           ))}
@@ -545,10 +578,10 @@ function BestDialog({ onClose }: { onClose: () => void }) {
           type="button"
           onClick={() => useGamesStore.getState().resetScores('mines')}
         >
-          Reset Scores
+          {t('mines.best.reset')}
         </button>
         <button type="button" onClick={onClose}>
-          OK
+          {t('common.ok')}
         </button>
       </div>
     </Dialog>
@@ -567,16 +600,19 @@ function NameDialog({
   onDone: (name: string) => void;
 }) {
   const [name, setName] = useState(initial);
+  const t = useT();
   return (
-    <Dialog title="Fastest Mine Sweepers">
+    <Dialog title={t('mines.best.title')}>
       <p>
-        You have the fastest time for {LEVEL_LABELS[level].toLowerCase()} level
-        ({seconds} seconds).
+        {t('mines.name.prompt', {
+          level: t(LEVEL_INLINE_KEYS[level]),
+          seconds,
+        })}
         <br />
-        Please enter your name.
+        {t('mines.name.enter')}
       </p>
       <input
-        aria-label="Your name"
+        aria-label={t('mines.name.label')}
         autoFocus
         maxLength={20}
         value={name}
@@ -585,7 +621,7 @@ function NameDialog({
       />
       <div className={styles.buttons}>
         <button type="button" onClick={() => onDone(name)}>
-          OK
+          {t('common.ok')}
         </button>
       </div>
     </Dialog>

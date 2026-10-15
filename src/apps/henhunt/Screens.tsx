@@ -1,5 +1,7 @@
 // Hen Hunt's menu, help, high-score and end-of-round screens, laid over the canvas.
 import { useState, type ReactNode } from 'react';
+import { scoreName } from '@/i18n/scoreName';
+import { useT } from '@/i18n/useT';
 import { MAX_SCORE_NAME, useGamesStore } from '@/os/store/games';
 import {
   DEPTH,
@@ -24,9 +26,11 @@ function Panel({ label, children }: { label: string; children: ReactNode }) {
 
 /** The chunky "HEN HUNT" title, each letter tipped a little. */
 export function TitleArt() {
-  const letters = [...'HEN HUNT'];
+  const t = useT();
+  const title = t('apps.henhunt.title');
+  const letters = [...title.toLocaleUpperCase()];
   return (
-    <h1 className={styles.title} aria-label="Hen Hunt">
+    <h1 className={styles.title} aria-label={title}>
       {letters.map((ch, i) => (
         <span
           key={i}
@@ -49,27 +53,28 @@ export function MenuScreen({
   onScores: () => void;
   onHelp: () => void;
 }) {
+  const t = useT();
   return (
     <div className={styles.overlay}>
       <div className={styles.menu}>
         <TitleArt />
         <p className={styles.tagline}>
-          {ROUND_SECONDS} seconds. 8 shells. A sky full of hens.
+          {t('henhunt.tagline', { seconds: ROUND_SECONDS, shells: SHELLS })}
         </p>
-        <nav className={styles.menuButtons} aria-label="Hen Hunt menu">
+        <nav className={styles.menuButtons} aria-label={t('henhunt.menuLabel')}>
           <button
             type="button"
             className={styles.big}
             autoFocus
             onClick={onPlay}
           >
-            Play
+            {t('henhunt.play')}
           </button>
           <button type="button" className={styles.big} onClick={onScores}>
-            High Scores
+            {t('henhunt.highScores')}
           </button>
           <button type="button" className={styles.big} onClick={onHelp}>
-            Help
+            {t('henhunt.help')}
           </button>
         </nav>
       </div>
@@ -78,34 +83,32 @@ export function MenuScreen({
 }
 
 export function HelpScreen({ onBack }: { onBack: () => void }) {
+  const t = useT();
   return (
-    <Panel label="How to play">
-      <h2>How to play</h2>
+    <Panel label={t('henhunt.helpTitle')}>
+      <h2>{t('henhunt.helpTitle')}</h2>
       <ul className={styles.help}>
+        <li>{t('henhunt.helpAim', { seconds: ROUND_SECONDS })}</li>
+        <li>{t('henhunt.helpReload', { shells: SHELLS })}</li>
+        <li>{t('henhunt.helpScroll')}</li>
         <li>
-          You have {ROUND_SECONDS} seconds. Click to shoot; aim with the mouse
-          (or the arrow keys and Enter).
+          {t('henhunt.helpHens', {
+            far: DEPTH.far.points,
+            mid: DEPTH.mid.points,
+            near: DEPTH.near.points,
+          })}
         </li>
         <li>
-          The gun holds {SHELLS} shells. Right-click or press Space to reload
-          &mdash; it takes a second.
+          {t('henhunt.helpBonus', {
+            window: WINDOW_HEN.points,
+            golden: GOLDEN.points,
+          })}
         </li>
-        <li>Move to the left or right edge to look around the countryside.</li>
-        <li>
-          Far hens are worth {DEPTH.far.points}, middle ones {DEPTH.mid.points},
-          close ones {DEPTH.near.points}.
-        </li>
-        <li>
-          Keep an eye on the windmill window ({WINDOW_HEN.points}) and the
-          golden hen ({GOLDEN.points}, once a round, and quick!).
-        </li>
-        <li>
-          Leave the scarecrow alone: his hat costs you {HAT_PENALTY} points.
-        </li>
+        <li>{t('henhunt.helpHat', { penalty: HAT_PENALTY })}</li>
       </ul>
       <div className={styles.buttons}>
         <button type="button" autoFocus onClick={onBack}>
-          Back
+          {t('henhunt.back')}
         </button>
       </div>
     </Panel>
@@ -120,26 +123,27 @@ export function ScoresScreen({
   onPlay: () => void;
 }) {
   const high = useGamesStore((s) => s.henhunt.high);
+  const t = useT();
   return (
-    <Panel label="High scores">
-      <h2>High Scores</h2>
+    <Panel label={t('henhunt.highScores')}>
+      <h2>{t('henhunt.highScores')}</h2>
       {high.length === 0 ? (
-        <p>No scores yet. Go get those hens!</p>
+        <p>{t('henhunt.noScores')}</p>
       ) : (
         <table className={styles.scores}>
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Score</th>
-              <th scope="col">Date</th>
+              <th scope="col">{t('henhunt.colRank')}</th>
+              <th scope="col">{t('henhunt.colName')}</th>
+              <th scope="col">{t('henhunt.colScore')}</th>
+              <th scope="col">{t('henhunt.colDate')}</th>
             </tr>
           </thead>
           <tbody>
             {high.map((h, i) => (
               <tr key={i}>
                 <td>{i + 1}.</td>
-                <td>{h.name}</td>
+                <td>{scoreName(h.name, t)}</td>
                 <td>{h.score}</td>
                 <td>{h.date}</td>
               </tr>
@@ -149,10 +153,10 @@ export function ScoresScreen({
       )}
       <div className={styles.buttons}>
         <button type="button" autoFocus onClick={onPlay}>
-          Play
+          {t('henhunt.play')}
         </button>
         <button type="button" onClick={onBack}>
-          Main Menu
+          {t('henhunt.mainMenu')}
         </button>
       </div>
     </Panel>
@@ -175,17 +179,22 @@ export function OverScreen({
   onMenu: () => void;
 }) {
   const [name, setName] = useState(defaultName);
+  const t = useT();
   const accuracy = result.shots
     ? Math.round((result.hits / result.shots) * 100)
     : 0;
   return (
-    <Panel label="Round over">
-      <h2>Time&rsquo;s up!</h2>
+    <Panel label={t('henhunt.roundOver')}>
+      <h2>{t('henhunt.timesUp')}</h2>
       <p className={styles.final}>
-        Score: <strong>{result.score}</strong>
+        <strong>{t('henhunt.finalScore', { score: result.score })}</strong>
       </p>
       <p>
-        {result.hits} hits from {result.shots} shots ({accuracy}% accuracy)
+        {t('henhunt.accuracy', {
+          hits: result.hits,
+          shots: result.shots,
+          accuracy,
+        })}
       </p>
       {result.high ? (
         <form
@@ -195,9 +204,7 @@ export function OverScreen({
             onSaveName(name);
           }}
         >
-          <label htmlFor="henhunt-name">
-            A new high score! Enter your name:
-          </label>
+          <label htmlFor="henhunt-name">{t('henhunt.newHigh')}</label>
           <input
             id="henhunt-name"
             autoFocus
@@ -205,18 +212,18 @@ export function OverScreen({
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <button type="submit">OK</button>
+          <button type="submit">{t('common.ok')}</button>
         </form>
       ) : (
         <div className={styles.buttons}>
           <button type="button" autoFocus onClick={onPlay}>
-            Play Again
+            {t('henhunt.playAgain')}
           </button>
           <button type="button" onClick={onScores}>
-            High Scores
+            {t('henhunt.highScores')}
           </button>
           <button type="button" onClick={onMenu}>
-            Main Menu
+            {t('henhunt.mainMenu')}
           </button>
         </div>
       )}

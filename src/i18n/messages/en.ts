@@ -603,6 +603,125 @@ export const en = {
     henhunt: 'Hen Hunt',
     pinball: 'Star Pinball',
   },
+  /** Shared by the games' high-score tables. */
+  highScores: {
+    /** Shown for an empty name; the store keeps `Anonymous` as its legacy fallback. */
+    anonymous: 'Anonymous',
+  },
+  mines: {
+    menuBar: 'Mines',
+    menu: {
+      game: 'Game',
+      new: 'New',
+      custom: 'Custom…',
+      bestTimes: 'Best Times…',
+      exit: 'Exit',
+    },
+    level: {
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      expert: 'Expert',
+    },
+    /** Used inside the sentence of the name dialog ("… for beginner level"). */
+    levelInline: {
+      beginner: 'beginner',
+      intermediate: 'intermediate',
+      expert: 'expert',
+    },
+    minesLeft: 'Mines left',
+    time: 'Time',
+    newGame: 'New game (F2)',
+    newGameWon: 'New game (you won)',
+    newGameLost: 'New game (you lost)',
+    field: 'Mine field',
+    cell: 'Row {row}, column {col}: {state}',
+    state: {
+      hidden: 'hidden',
+      explodedMine: 'exploded mine',
+      mine: 'mine',
+      empty: 'empty',
+      wrongFlag: 'wrong flag',
+      flag: 'flag',
+      question: 'question',
+    },
+    custom: {
+      title: 'Custom Field',
+      height: 'Height',
+      width: 'Width',
+      mines: 'Mines',
+    },
+    best: {
+      title: 'Fastest Mine Sweepers',
+      seconds: '{n} seconds',
+      reset: 'Reset Scores',
+    },
+    name: {
+      prompt:
+        'You have the fastest time for {level} level ({seconds} seconds).',
+      enter: 'Please enter your name.',
+      label: 'Your name',
+    },
+  },
+  henhunt: {
+    countryside: 'Hen Hunt countryside',
+    field:
+      'Hen Hunt field. Aim with the mouse or arrow keys, shoot with a click or Enter, reload with a right-click or Space, Esc for the menu.',
+    status: (p: { score: number; shells: number; seconds: number }) =>
+      `Score ${p.score}, ${p.shells} ${p.shells === 1 ? 'shell' : 'shells'}, ${p.seconds} seconds left`,
+    tagline: '{seconds} seconds. {shells} shells. A sky full of hens.',
+    menuLabel: 'Hen Hunt menu',
+    play: 'Play',
+    playAgain: 'Play Again',
+    highScores: 'High Scores',
+    help: 'Help',
+    back: 'Back',
+    mainMenu: 'Main Menu',
+    helpTitle: 'How to play',
+    helpAim:
+      'You have {seconds} seconds. Click to shoot; aim with the mouse (or the arrow keys and Enter).',
+    helpReload:
+      'The gun holds {shells} shells. Right-click or press Space to reload — it takes a second.',
+    helpScroll:
+      'Move to the left or right edge to look around the countryside.',
+    helpHens: 'Far hens are worth {far}, middle ones {mid}, close ones {near}.',
+    helpBonus:
+      'Keep an eye on the windmill window ({window}) and the golden hen ({golden}, once a round, and quick!).',
+    helpHat: 'Leave the scarecrow alone: his hat costs you {penalty} points.',
+    noScores: 'No scores yet. Go get those hens!',
+    colRank: '#',
+    colName: 'Name',
+    colScore: 'Score',
+    colDate: 'Date',
+    roundOver: 'Round over',
+    timesUp: 'Time’s up!',
+    finalScore: 'Score: {score}',
+    accuracy: '{hits} hits from {shots} shots ({accuracy}% accuracy)',
+    newHigh: 'A new high score! Enter your name:',
+    hud: {
+      score: 'SCORE',
+      lastSeconds: 'Last {seconds} seconds!',
+      reload: 'Reload! (right-click or Space)',
+    },
+  },
+  wrecker: {
+    surface:
+      'Desktop Wrecker. 1 to 5 pick a tool, Space uses it, R repairs, Escape exits.',
+    palette: 'Wrecking tools',
+    grip: 'Wrecker',
+    repair: 'Repair',
+    repairHint: 'Repair: sweep the glass away',
+    exit: 'Exit',
+    /** Comic burst stamped onto the screen. */
+    boom: 'BOOM!',
+    toolHint: '{tool}: {hint}',
+    tool: {
+      hammer: { label: 'Hammer', hint: 'Click to smash' },
+      chainsaw: { label: 'Chainsaw', hint: 'Hold and drag to cut' },
+      flamethrower: { label: 'Flamethrower', hint: 'Hold to burn' },
+      machinegun: { label: 'Machine Gun', hint: 'Hold to fire' },
+      stamp: { label: 'Stamp', hint: 'Click to stamp' },
+    },
+  },
   messenger: {
     chatTitle: '{name} - Conversation',
     groups: {
