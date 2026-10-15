@@ -1,4 +1,5 @@
 // Amplifier main window: original dark-metal player skin driven by the amplifier store.
+import { useWindowMinimized } from '@/os/useAnimationFrame';
 import {
   useEffect,
   useState,
@@ -45,6 +46,7 @@ const REPEAT_LABEL = {
 
 export default function Amplifier({ windowId }: AppComponentProps) {
   const drag = useWindowDrag(windowId);
+  const minimized = useWindowMinimized(windowId);
   const reduced = useReducedMotion();
   const [remaining, setRemaining] = useState(false);
   const [showPlaylist, setShowPlaylist] = useState(false);
@@ -252,6 +254,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
                 audio={amplifierAudio}
                 status={s.status}
                 reduced={reduced}
+                minimized={minimized}
               />
               <span className={styles.statusText} aria-hidden="true">
                 {STATUS_LABEL[s.status]}

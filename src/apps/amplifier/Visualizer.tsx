@@ -1,5 +1,6 @@
 // Tiny spectrum/oscilloscope display; click cycles bars → oscilloscope → off.
 import { useEffect, useRef, useState } from 'react';
+import { useAnimationFrame } from '@/os/useAnimationFrame';
 import { getAnalyser } from './analyser';
 import type { PlaybackStatus } from './store';
 import {
@@ -25,12 +26,21 @@ interface VisualizerProps {
   status: PlaybackStatus;
   /** Reduced motion: draw a static frame only. */
   reduced: boolean;
+  /** The Amplifier window is minimized: stop animating. */
+  minimized?: boolean;
 }
 
-export function Visualizer({ audio, status, reduced }: VisualizerProps) {
+export function Visualizer({
+  audio,
+  status,
+  reduced,
+  minimized = false,
+}: VisualizerProps) {
   const [mode, setMode] = useState<VisualizerMode>('bars');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef(createVisualizerState());
+  const frameRef = useRef<((now: number) => void) | null>(null);
+  const lastRef = useRef(-Infinity);
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext('2d') ?? null;
@@ -46,18 +56,18 @@ export function Visualizer({ audio, status, reduced }: VisualizerProps) {
       drawFrame(ctx, mode, analyser, state);
       return;
     }
-    let raf = 0;
-    let last = -Infinity;
-    const tick = (now: number) => {
-      raf = requestAnimationFrame(tick);
+    frameRef.current = (now: number) => {
       // Small slack so a 60Hz display reliably draws every other frame.
-      if (now - last < 1000 / FPS - 2) return;
-      last = now;
+      if (now - lastRef.current < 1000 / FPS - 2) return;
+      lastRef.current = now;
       drawFrame(ctx, mode, analyser, state);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      frameRef.current = null;
+    };
   }, [audio, mode, reduced, status]);
+  const animating = !(mode === 'off' || reduced || status !== 'playing');
+  useAnimationFrame((now) => frameRef.current?.(now), animating && !minimized);
 
   return (
     <button

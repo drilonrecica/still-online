@@ -26,6 +26,8 @@ import {
   type Game,
   type GameEvent,
 } from './sim';
+import { useWindowMinimized } from '@/os/useAnimationFrame';
+import type { AppComponentProps } from '@/os/types';
 import { toView, useGameLoop } from './useGameLoop';
 import styles from './HenHunt.module.css';
 
@@ -47,7 +49,8 @@ const newSeed = () => (Math.random() * 0x100000000) >>> 0;
 const isoDate = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-export default function HenHunt() {
+export default function HenHunt({ windowId }: Partial<AppComponentProps>) {
+  const minimized = useWindowMinimized(windowId);
   const reduced = useReducedMotion();
   const [screen, setScreen] = useState<Screen>('menu');
   const [result, setResult] = useState<RoundResult | null>(null);
@@ -82,6 +85,7 @@ export default function HenHunt() {
     running: playing || screen === 'over' || !reduced,
     hud: playing || screen === 'over',
     motion: !reduced,
+    active: !minimized,
     onEvents,
   });
 

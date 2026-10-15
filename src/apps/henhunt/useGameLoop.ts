@@ -11,6 +11,7 @@ import { drawFrame } from './draw';
 import { VIEW_H, VIEW_W } from './layout';
 import { buildScenery, type Scenery } from './scene';
 import { STEP, drainEvents, step, type Game, type GameEvent } from './sim';
+import { useAnimationFrame } from '@/os/useAnimationFrame';
 
 const SCENERY_SEED = 0x4e4e;
 /** Most fixed steps per frame, so a stalled tab doesn't fast-forward the round. */
@@ -38,6 +39,8 @@ export interface LoopOptions {
   hud: boolean;
   /** Screen shake on shots and turning sails. */
   motion: boolean;
+  /** False while the window is minimized: no frames are scheduled. */
+  active: boolean;
   onEvents: (events: GameEvent[]) => void;
 }
 
@@ -51,6 +54,8 @@ export function useGameLoop(
     optsRef.current = opts;
   });
 
+  const tickRef = useRef<((time: number, dtMs: number) => void) | null>(null);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -58,18 +63,14 @@ export function useGameLoop(
     const ctx = canvas.getContext('2d');
     let scenery: Scenery | null = null;
     let sceneryRes = 0;
-    let frame = 0;
-    let last: number | null = null;
     let acc = 0;
     let sails = 0.4;
     let shake = 0;
 
-    const tick = (time: number) => {
-      frame = requestAnimationFrame(tick);
+    const tick = (_time: number, dtMs: number) => {
       const o = optsRef.current;
       const game = gameRef.current;
-      const dt = last === null ? 0 : Math.min((time - last) / 1000, 0.25);
-      last = time;
+      const dt = Math.min(dtMs / 1000, 0.25);
 
       if (o.running) {
         acc += dt;
@@ -118,16 +119,10 @@ export function useGameLoop(
       ctx.restore();
     };
 
-    const onVisibility = () => {
-      cancelAnimationFrame(frame);
-      last = null;
-      if (!document.hidden) frame = requestAnimationFrame(tick);
-    };
-    onVisibility();
-    document.addEventListener('visibilitychange', onVisibility);
+    tickRef.current = tick;
     return () => {
-      cancelAnimationFrame(frame);
-      document.removeEventListener('visibilitychange', onVisibility);
+      tickRef.current = null;
     };
   }, [canvasRef, gameRef]);
+  useAnimationFrame((time, dt) => tickRef.current?.(time, dt), opts.active);
 }

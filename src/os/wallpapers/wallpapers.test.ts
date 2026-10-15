@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import {
   CLASSIC_WALLPAPER_ID,
   getWallpaper,
@@ -6,7 +6,12 @@ import {
   resolveWallpaperId,
   WALLPAPERS,
 } from './registry';
-import { bucketSize, renderWallpaper, wallpaperUrl } from './render';
+import {
+  bucketSize,
+  loadPainters,
+  renderWallpaper,
+  wallpaperUrl,
+} from './render';
 import { backgroundStyle, DESKTOP_COLOR } from './useDesktopBackground';
 import type { WallpaperDef } from './types';
 
@@ -50,7 +55,9 @@ function draw(def: WallpaperDef, w = 320, h = 200) {
   return log;
 }
 
-const PAINTED = WALLPAPERS.filter((w) => w.render);
+const PAINTED = WALLPAPERS.filter((w) => w.painted);
+
+beforeAll(loadPainters);
 
 describe('wallpaper registry', () => {
   it('has classic plus 9 homages and 2 hidden easter eggs', () => {
@@ -69,7 +76,7 @@ describe('wallpaper registry', () => {
       'retro',
     ]);
     expect(PAINTED).toHaveLength(11);
-    expect(getWallpaper(CLASSIC_WALLPAPER_ID)?.render).toBeUndefined();
+    expect(getWallpaper(CLASSIC_WALLPAPER_ID)?.painted).toBeUndefined();
     expect(new Set(WALLPAPERS.map((w) => w.name)).size).toBe(WALLPAPERS.length);
   });
 

@@ -3,6 +3,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useBlobUrl } from '@/os/blobStore';
 import { useFsStore } from '@/os/fs/store';
 import { playSound } from '@/os/sound';
+import type { AppComponentProps } from '@/os/types';
+import { useAnimationFrame, useWindowMinimized } from '@/os/useAnimationFrame';
 import {
   cycle,
   DEFAULT_LOOK,
@@ -54,7 +56,8 @@ function Thumb({ id }: { id: string }) {
   );
 }
 
-export default function Photobooth() {
+export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
+  const minimized = useWindowMinimized(windowId);
   const [mode, setMode] = useState<Mode>('start');
   const [notice, setNotice] = useState<string | null>(null);
   const [filter, setFilter] = useState<FilterId>('normal');
@@ -143,13 +146,12 @@ export default function Photobooth() {
   }, [mode]);
 
   // The render loop: source (video or cartoon) → filter → visible canvas.
+  const tickRef = useRef<((now: number) => void) | null>(null);
   useEffect(() => {
     if (mode === 'start') return;
-    let raf = 0;
     let last = 0;
     let frame = 0;
     const tick = (now: number) => {
-      raf = requestAnimationFrame(tick);
       if (now - last < FRAME_MS) return;
       last = now;
       const out = context2d(canvasRef.current);
@@ -180,9 +182,15 @@ export default function Photobooth() {
         0,
       );
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    tickRef.current = tick;
+    return () => {
+      tickRef.current = null;
+    };
   }, [mode]);
+  useAnimationFrame(
+    (now) => tickRef.current?.(now),
+    mode !== 'start' && !minimized,
+  );
 
   const choose = (next: 'webcam' | 'cartoon') => {
     if (next === 'cartoon') goCartoon(null);

@@ -36,6 +36,8 @@ import {
   type GameEvent,
 } from './sim';
 import { LANE_X } from './table';
+import { useWindowMinimized } from '@/os/useAnimationFrame';
+import type { AppComponentProps } from '@/os/types';
 import { toView, useLoop } from './useLoop';
 import styles from './Pinball.module.css';
 
@@ -69,7 +71,8 @@ const SOUNDS: Partial<
   target: 'click',
 };
 
-export default function Pinball() {
+export default function Pinball({ windowId }: Partial<AppComponentProps>) {
+  const minimized = useWindowMinimized(windowId);
   const reduced = useReducedMotion();
   const [screen, setScreen] = useState<Screen>('menu');
   const [result, setResult] = useState<GameResult | null>(null);
@@ -101,6 +104,7 @@ export default function Pinball() {
     running: playing || screen === 'over',
     attract: screen !== 'play' && screen !== 'over',
     motion: !reduced,
+    active: !minimized,
     onEvents,
   });
 

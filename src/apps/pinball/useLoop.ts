@@ -11,6 +11,7 @@ import { buildBackdrop } from './backdrop';
 import { VIEW_H, VIEW_W } from './display';
 import { drawFrame } from './draw';
 import { STEP, drainEvents, step, type Game, type GameEvent } from './sim';
+import { useAnimationFrame } from '@/os/useAnimationFrame';
 
 const BACKDROP_SEED = 0x57a2;
 /** Most fixed steps per frame (0.1 s), so a stalled tab doesn't fast-forward the ball. */
@@ -39,6 +40,8 @@ export interface LoopOptions {
   attract: boolean;
   /** Blinking and chasing lights (off under reduced motion). */
   motion: boolean;
+  /** False while the window is minimized: no frames are scheduled. */
+  active: boolean;
   onEvents: (events: GameEvent[]) => void;
 }
 
@@ -52,6 +55,8 @@ export function useLoop(
     optsRef.current = opts;
   });
 
+  const tickRef = useRef<((time: number, dtMs: number) => void) | null>(null);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -59,17 +64,13 @@ export function useLoop(
     const ctx = canvas.getContext('2d');
     let backdrop: HTMLCanvasElement | null = null;
     let backdropRes = 0;
-    let frame = 0;
-    let last: number | null = null;
     let acc = 0;
     let clock = 0;
 
-    const tick = (time: number) => {
-      frame = requestAnimationFrame(tick);
+    const tick = (_time: number, dtMs: number) => {
       const o = optsRef.current;
       const game = gameRef.current;
-      const dt = last === null ? 0 : Math.min((time - last) / 1000, 0.25);
-      last = time;
+      const dt = Math.min(dtMs / 1000, 0.25);
       if (o.motion) clock += dt;
 
       if (o.running) {
@@ -108,16 +109,10 @@ export function useLoop(
       drawFrame(ctx, game, backdrop, { clock, attract: o.attract });
     };
 
-    const onVisibility = () => {
-      cancelAnimationFrame(frame);
-      last = null;
-      if (!document.hidden) frame = requestAnimationFrame(tick);
-    };
-    onVisibility();
-    document.addEventListener('visibilitychange', onVisibility);
+    tickRef.current = tick;
     return () => {
-      cancelAnimationFrame(frame);
-      document.removeEventListener('visibilitychange', onVisibility);
+      tickRef.current = null;
     };
   }, [canvasRef, gameRef]);
+  useAnimationFrame((time, dt) => tickRef.current?.(time, dt), opts.active);
 }

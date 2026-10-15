@@ -16,6 +16,7 @@ export interface WallpaperDef {
   /** Not listed until `unlock` is in the world store's unlocks. */
   hidden?: boolean;
   unlock?: string;
-  /** Absent for `classic`, which is the CSS rolling hill in `global.css`. */
-  render?: Painter;
+  /** False for `classic`, which is the CSS rolling hill in `global.css`. Painters live in
+   *  `painters.ts`, a separate chunk loaded the first time a painted wallpaper is needed. */
+  painted?: boolean;
 }

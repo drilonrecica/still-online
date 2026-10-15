@@ -20,6 +20,7 @@ import {
   update,
   type Engine,
 } from './engine';
+import { useAnimationFrame } from '@/os/useAnimationFrame';
 
 /** Marks kept for repainting after a resize (resizing a canvas wipes it). */
 const MAX_HISTORY = 6000;
@@ -60,6 +61,8 @@ export function useWreckerLoop(
     optsRef.current = opts;
   });
 
+  const tickRef = useRef<((time: number, dtMs: number) => void) | null>(null);
+
   useEffect(() => {
     const damage = damageRef.current;
     const fx = fxRef.current;
@@ -67,16 +70,12 @@ export function useWreckerLoop(
     const dctx = damage.getContext('2d');
     const fctx = fx.getContext('2d');
     const history: Mark[] = [];
-    let frame = 0;
-    let last: number | null = null;
     let clock = 0;
 
-    const tick = (time: number) => {
-      frame = requestAnimationFrame(tick);
+    const tick = (_time: number, dtMs: number) => {
       const o = optsRef.current;
       const e = engineRef.current;
-      const dt = last === null ? 0 : Math.min((time - last) / 1000, 0.1);
-      last = time;
+      const dt = Math.min(dtMs / 1000, 0.1);
       if (!o.reduced) clock += dt;
 
       const w = window.innerWidth;
@@ -126,16 +125,10 @@ export function useWreckerLoop(
         });
     };
 
-    const onVisibility = () => {
-      cancelAnimationFrame(frame);
-      last = null;
-      if (!document.hidden) frame = requestAnimationFrame(tick);
-    };
-    onVisibility();
-    document.addEventListener('visibilitychange', onVisibility);
+    tickRef.current = tick;
     return () => {
-      cancelAnimationFrame(frame);
-      document.removeEventListener('visibilitychange', onVisibility);
+      tickRef.current = null;
     };
   }, [damageRef, fxRef, engineRef]);
+  useAnimationFrame((time, dt) => tickRef.current?.(time, dt), !opts.paused);
 }

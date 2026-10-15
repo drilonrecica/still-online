@@ -1,7 +1,8 @@
 // Renders wallpapers to JPEG data URLs on an offscreen canvas, cached per id and bucketed size.
+import { useSyncExternalStore } from 'react';
 import { mulberry32, seedFrom } from '@/os/random';
 import { getWallpaper } from './registry';
-import type { WallpaperDef } from './types';
+import type { Painter, WallpaperDef } from './types';
 
 /** Sizes are rounded to this, so small resizes reuse the cached image. */
 export const SIZE_BUCKET = 256;
@@ -12,6 +13,30 @@ export function bucketSize(n: number): number {
   return Math.max(SIZE_BUCKET, Math.round(n / SIZE_BUCKET) * SIZE_BUCKET);
 }
 
+let painters: Readonly<Record<string, Painter>> | null = null;
+let loading: Promise<void> | null = null;
+const listeners = new Set<() => void>();
+
+/** Loads the painter chunk once; resolves when `wallpaperUrl` can paint. */
+export function loadPainters(): Promise<void> {
+  loading ??= import('./painters').then((m) => {
+    painters = m.PAINTERS;
+    listeners.forEach((fn) => fn());
+  });
+  return loading;
+}
+
+/** Re-renders the caller once the painters have loaded (false until then, true forever after). */
+export function usePaintersReady(): boolean {
+  return useSyncExternalStore(
+    (fn) => {
+      listeners.add(fn);
+      return () => listeners.delete(fn);
+    },
+    () => painters !== null,
+  );
+}
+
 /** Paints `def` at `w`×`h`, seeded by its id, so the same size always gives the same picture. */
 export function renderWallpaper(
   def: WallpaperDef,
@@ -19,9 +44,10 @@ export function renderWallpaper(
   w: number,
   h: number,
 ): void {
-  if (!def.render) return;
+  const paint = painters?.[def.id];
+  if (!paint) return;
   ctx.save();
-  def.render(ctx, w, h, mulberry32(seedFrom(def.id)));
+  paint(ctx, w, h, mulberry32(seedFrom(def.id)));
   ctx.restore();
 }
 
@@ -33,7 +59,11 @@ const cache = new Map<string, string>();
  */
 export function wallpaperUrl(id: string, w: number, h: number): string | null {
   const def = getWallpaper(id);
-  if (!def?.render || typeof document === 'undefined') return null;
+  if (!def?.painted || typeof document === 'undefined') return null;
+  if (!painters) {
+    void loadPainters();
+    return null;
+  }
   const bw = bucketSize(w);
   const bh = bucketSize(h);
   const key = `${id}@${bw}x${bh}`;

@@ -12,6 +12,7 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "e2e": "playwright test",
+    "size": "node scripts/check-bundle.mjs",
     "verify": "npm run typecheck && npm run lint && npm run test && npm run build"
   },
   "dependencies": {

@@ -5,7 +5,7 @@ import { useSettingsStore } from '@/os/store/settings';
 import type { WallpaperPosition } from '@/os/types';
 import { useWorldStore } from '@/os/world';
 import { resolveWallpaperId } from './registry';
-import { bucketSize, wallpaperUrl } from './render';
+import { bucketSize, usePaintersReady, wallpaperUrl } from './render';
 
 /** Shown around a centred image, like XP's plain desktop. */
 export const DESKTOP_COLOR = '#3a6ea5';
@@ -60,6 +60,7 @@ export function useDesktopBackground(): CSSProperties | undefined {
   const position = useSettingsStore((s) => s.wallpaperPosition);
   const unlocks = useWorldStore((s) => s.unlocks);
   const { w, h } = useViewportSize();
+  usePaintersReady();
   const blobUrl = useBlobUrl(
     wallpaper.kind === 'custom' ? wallpaper.blobKey : null,
   );

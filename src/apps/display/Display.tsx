@@ -14,7 +14,7 @@ import type {
   WallpaperPosition,
 } from '@/os/types';
 import { listWallpapers } from '@/os/wallpapers/registry';
-import { wallpaperUrl } from '@/os/wallpapers/render';
+import { usePaintersReady, wallpaperUrl } from '@/os/wallpapers/render';
 import {
   backgroundStyle,
   type BackgroundSource,
@@ -101,6 +101,7 @@ function useThumbStyle(
   const blobUrl = useBlobUrl(
     wallpaper.kind === 'custom' ? wallpaper.blobKey : null,
   );
+  usePaintersReady();
   let source: BackgroundSource | null;
   if (wallpaper.kind === 'color') {
     source = { kind: 'color', color: wallpaper.color };

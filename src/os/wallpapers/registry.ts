@@ -1,36 +1,32 @@
 // Every desktop wallpaper. Original procedural art "in the spirit of" famous ones; see tasks.md §P1-01.
-import { paintOrbit, paintRipple } from './abstract';
-import { paintPonies, paintRetro } from './hidden';
-import { paintAutumn, paintDunes, paintHill, paintStones } from './landscapes';
-import { paintBloom, paintPeaks, paintTulips } from './nature';
 import type { WallpaperDef } from './types';
 
 export const CLASSIC_WALLPAPER_ID = 'classic';
 
 export const WALLPAPERS: readonly WallpaperDef[] = [
   { id: CLASSIC_WALLPAPER_ID, name: 'Rolling Hill' },
-  { id: 'hill', name: 'Green Hill Sky', render: paintHill },
-  { id: 'ripple', name: 'Blue Ripple', render: paintRipple },
-  { id: 'autumn', name: 'Autumn Lane', render: paintAutumn },
-  { id: 'dunes', name: 'Red Moon Dunes', render: paintDunes },
-  { id: 'stones', name: 'Stone Circle', render: paintStones },
-  { id: 'tulips', name: 'Tulip Field', render: paintTulips },
-  { id: 'orbit', name: 'Home Orbit', render: paintOrbit },
-  { id: 'bloom', name: 'Violet Bloom', render: paintBloom },
-  { id: 'peaks', name: 'Crystal Peaks', render: paintPeaks },
+  { id: 'hill', name: 'Green Hill Sky', painted: true },
+  { id: 'ripple', name: 'Blue Ripple', painted: true },
+  { id: 'autumn', name: 'Autumn Lane', painted: true },
+  { id: 'dunes', name: 'Red Moon Dunes', painted: true },
+  { id: 'stones', name: 'Stone Circle', painted: true },
+  { id: 'tulips', name: 'Tulip Field', painted: true },
+  { id: 'orbit', name: 'Home Orbit', painted: true },
+  { id: 'bloom', name: 'Violet Bloom', painted: true },
+  { id: 'peaks', name: 'Crystal Peaks', painted: true },
   {
     id: 'ponies',
     name: 'Pony Paradise',
     hidden: true,
     unlock: 'ponies',
-    render: paintPonies,
+    painted: true,
   },
   {
     id: 'retro',
     name: 'Retro Grid',
     hidden: true,
     unlock: 'konami',
-    render: paintRetro,
+    painted: true,
   },
 ];
 

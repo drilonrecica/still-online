@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
 import { mulberry32 } from '@/os/random';
+import { useAnimationFrame } from '@/os/useAnimationFrame';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import { createDismissal, swallowNextClick } from './dismiss';
 import { SAVERS } from './savers';
@@ -29,6 +30,7 @@ function useSaverLoop(
   run: ScreensaverRun,
   enabled: boolean,
 ) {
+  const frameRef = useRef<((dtMs: number) => void) | null>(null);
   useEffect(() => {
     const canvas = ref.current;
     const ctx = enabled ? canvas?.getContext('2d') : null;
@@ -46,28 +48,16 @@ function useSaverLoop(
       text: run.text,
       slides: run.id === 'slideshow' ? myPictures() : [],
     });
-    let frame = 0;
-    let last: number | null = null;
-    const tick = (time: number) => {
+    frameRef.current = (dtMs: number) => {
       // Cap the step so a long stall doesn't jump the animation.
-      const dt = last === null ? 16 : Math.min(time - last, 100);
-      last = time;
-      saver.frame(ctx, dt);
-      frame = requestAnimationFrame(tick);
+      saver.frame(ctx, dtMs === 0 ? 16 : Math.min(dtMs, 100));
     };
-    const onVisibility = () => {
-      cancelAnimationFrame(frame);
-      last = null;
-      if (!document.hidden) frame = requestAnimationFrame(tick);
-    };
-    onVisibility();
-    document.addEventListener('visibilitychange', onVisibility);
     return () => {
-      cancelAnimationFrame(frame);
-      document.removeEventListener('visibilitychange', onVisibility);
+      frameRef.current = null;
       saver.dispose?.();
     };
   }, [ref, run, enabled]);
+  useAnimationFrame((_time, dt) => frameRef.current?.(dt), enabled);
 }
 
 /** Stops the saver on the first real input and keeps that input from reaching the desktop. */
