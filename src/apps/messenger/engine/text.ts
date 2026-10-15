@@ -1,3 +1,5 @@
+import { formatNumber } from '@/i18n/format';
+import { getLocale } from '@/i18n/t';
 import type { TriggerContext } from '@/content/types';
 import type { GameId } from '@/os/types';
 
@@ -30,7 +32,9 @@ export function resolveText(
     name: playerName,
     artist: context.artist,
     title: context.title,
-    score: context.score?.toLocaleString('en-US'),
+    score: context.score === undefined
+      ? undefined
+      : formatNumber(context.score, getLocale()),
     game: context.game && GAME_NAMES[context.game],
   };
   return text.replace(

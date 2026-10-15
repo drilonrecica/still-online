@@ -1,3 +1,6 @@
+import { formatNumber } from '@/i18n/format';
+import { getLocale } from '@/i18n/t';
+import type { Locale } from '@/i18n/types';
 // A 5×7 dot-matrix font for the score display: each glyph is 7 rows of 5 bits (MSB = left).
 
 const GLYPHS: Record<string, readonly number[]> = {
@@ -67,10 +70,7 @@ export function textDots(text: string): {
   return { dots, width: Math.max(0, chars.length * (GLYPH_W + 1) - 1) };
 }
 
-/** 1234567 → "1,234,567". */
-export function formatScore(n: number): string {
-  return String(Math.max(0, Math.floor(n))).replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    ',',
-  );
+/** 1234567 → "1,234,567" (en) / "1.234.567" (de). */
+export function formatScore(n: number, locale: Locale = getLocale()): string {
+  return formatNumber(Math.max(0, Math.floor(n)), locale);
 }

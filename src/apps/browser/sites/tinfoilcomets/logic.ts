@@ -1,3 +1,5 @@
+import { formatRelativeDay } from '@/i18n/format';
+import { getLocale } from '@/i18n/t';
 // Pure helpers for tinfoilcomets.example: guestbook order, day labels, the odometer and the webring.
 import type {
   GuestbookEntry,
@@ -40,9 +42,7 @@ export function guestbookEntries(
 /** "today", "yesterday" or "3 days ago" (story days don't have weekday names). */
 export function signedLabel(entryDay: number, currentDay: number): string {
   const ago = Math.max(0, currentDay - entryDay);
-  if (ago === 0) return 'today';
-  if (ago === 1) return 'yesterday';
-  return `${ago} days ago`;
+  return formatRelativeDay(ago, getLocale());
 }
 
 export type SignResult =

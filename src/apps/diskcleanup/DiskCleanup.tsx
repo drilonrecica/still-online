@@ -1,3 +1,5 @@
+import { formatNumber } from '@/i18n/format';
+import { getLocale } from '@/i18n/t';
 // Disk Cleanup: a never-quick "scan", a list of joke categories, and a cleanup that frees 0 KB.
 import { useEffect, useId, useState } from 'react';
 import { useFsStore } from '@/os/fs/store';
@@ -61,7 +63,7 @@ export function buildCategories(recycleItems: number): Category[] {
 }
 
 export function formatKb(kb: number): string {
-  return `${kb.toLocaleString('en-US')} KB`;
+  return `${formatNumber(kb, getLocale())} KB`;
 }
 
 type Phase = 'scanning' | 'list' | 'confirm' | 'cleaning' | 'done';

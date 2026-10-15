@@ -1,3 +1,5 @@
+import { formatDateTime } from '@/i18n/format';
+import { getLocale } from '@/i18n/t';
 // XP Explorer-style folder window content: address bar, task pane, icon/details list.
 // Shared by the Explorer app and the Recycle Bin.
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -34,9 +36,7 @@ const TYPE_LABELS: Record<FsNode['type'], string> = {
 };
 
 function formatDate(ms: number): string {
-  const d = new Date(ms);
-  const pad = (n: number) => String(n).padStart(2, '0');
-  return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  return formatDateTime(new Date(ms), getLocale());
 }
 
 export function FolderView(props: FolderViewProps) {

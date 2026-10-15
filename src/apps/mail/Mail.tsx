@@ -7,7 +7,9 @@ import type {
   MailFolder,
   MailMessage,
 } from '@/content/mail/types';
-import { toGameDate, formatTrayTime } from '@/os/clock';
+import { toGameDate } from '@/os/clock';
+import { formatShortDate, formatTime } from '@/i18n/format';
+import { getLocale } from '@/i18n/t';
 import { events } from '@/os/events';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
@@ -30,7 +32,8 @@ const FOLDER_ORDER: readonly MailFolder[] = ['inbox', 'sent', 'deleted'];
 /** `10/14/2007 3:07 PM` in game time. */
 export function formatReceived(ms: number): string {
   const d = toGameDate(new Date(ms));
-  return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()} ${formatTrayTime(d)}`;
+  const locale = getLocale();
+  return `${formatShortDate(d, locale)} ${formatTime(d, locale)}`;
 }
 
 interface Draft {

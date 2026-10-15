@@ -1,3 +1,5 @@
+import { formatRelativeDay, formatShortDate } from '@/i18n/format';
+import { getLocale } from '@/i18n/t';
 // Pure helpers for spaceport.example: comment walls by day, the player's profile, themes, labels.
 import type {
   PlayerProfile,
@@ -55,14 +57,12 @@ export function playerWall(
 /** "today", "yesterday" or "3 days ago" (story days have no weekday names). */
 export function dayLabel(entryDay: number, currentDay: number): string {
   const ago = Math.max(0, currentDay - entryDay);
-  if (ago === 0) return 'today';
-  if (ago === 1) return 'yesterday';
-  return `${ago} days ago`;
+  return formatRelativeDay(ago, getLocale());
 }
 
 /** "10/15/2007" from an in-game date. */
 export function shortDate(date: Date): string {
-  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+  return formatShortDate(date, getLocale());
 }
 
 /** "Artist - Title" for a playlist track, or null when the id isn't on the playlist. */

@@ -1,3 +1,5 @@
+import { formatShortDate, formatTime } from '@/i18n/format';
+import { getLocale } from '@/i18n/t';
 // Notepad: one buffer per window, files live in the fs store (the fs is the source of truth on save).
 import { useEffect, useRef, useState } from 'react';
 import { now } from '@/os/clock';
@@ -29,11 +31,8 @@ interface MenuItem {
 
 /** XP's Time/Date format: `3:07 PM 10/14/2007`. */
 export function formatTimeDate(date: Date): string {
-  const hours = date.getHours();
-  const h12 = hours % 12 === 0 ? 12 : hours % 12;
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const time = `${h12}:${minutes} ${hours < 12 ? 'AM' : 'PM'}`;
-  return `${time} ${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+  const locale = getLocale();
+  return `${formatTime(date, locale)} ${formatShortDate(date, locale)}`;
 }
 
 export default function Notepad({ windowId, props }: AppComponentProps) {
