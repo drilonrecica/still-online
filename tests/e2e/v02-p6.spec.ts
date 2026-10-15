@@ -1,5 +1,45 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+import { LEVELS, createBoard, reveal } from '../../src/apps/mines/board';
 import { logIn, openFromStart } from './helpers';
+
+/** Pins `Math.random` so Mines' next game has a known seed, and returns the seed. */
+async function pinMinesSeed(page: Page) {
+  await page.evaluate(`Math.random = () => 0.5`);
+  return (0.5 * 0x100000000) >>> 0;
+}
+
+test('P6: Mines is won by revealing every safe cell', async ({ page }) => {
+  await logIn(page);
+  const seed = await pinMinesSeed(page);
+  await openFromStart(page, 'Mines');
+  const game = page.getByRole('region', { name: /Mines$/ });
+  const field = game.getByRole('group', { name: 'Mine field' });
+  await expect(field).toBeVisible();
+  // Mines are placed by the first reveal, so replay the same board logic to learn where they are.
+  const { width, height } = LEVELS.beginner;
+  const first = 4 * width + 4;
+  const board = reveal(createBoard(LEVELS.beginner, seed), first);
+  const cell = (i: number) => field.locator(`[data-index="${i}"]`);
+  await cell(first).click();
+  for (let i = 0; i < width * height; i++) {
+    if (!board.cells[i]!.mine && !board.cells[i]!.revealed) {
+      await cell(i).click();
+    }
+  }
+  await expect(
+    game.getByRole('button', { name: /New game \(you won\)/ }),
+  ).toBeVisible();
+});
+
+test('P6: Stapley greets on first boot and the tip is shown once', async ({
+  page,
+}) => {
+  await logIn(page);
+  const balloon = page.locator('[data-assistant-balloon]');
+  await expect(balloon).toContainText("I'm Stapley", { timeout: 10_000 });
+  await balloon.getByRole('button', { name: 'Hide Stapley' }).click();
+  await expect(page.locator('[data-assistant]')).toHaveCount(0);
+});
 
 test('P6: Hen Hunt starts a round, shoots and reloads', async ({ page }) => {
   await logIn(page);

@@ -484,8 +484,12 @@ function BestDialog({ onClose }: { onClose: () => void }) {
           {MINES_LEVELS.map((l) => (
             <tr key={l}>
               <th scope="row">{LEVEL_LABELS[l]}:</th>
-              <td>{best[l] ? `${best[l].seconds} seconds` : '999 seconds'}</td>
-              <td>{best[l]?.name ?? 'Anonymous'}</td>
+              <td>
+                <div>
+                  {best[l] ? `${best[l].seconds} seconds` : '999 seconds'}
+                </div>
+                <div>{best[l]?.name ?? 'Anonymous'}</div>
+              </td>
             </tr>
           ))}
         </tbody>
