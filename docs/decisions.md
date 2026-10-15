@@ -226,7 +226,7 @@
 - P2-G: Theo spells correctly in every German text, including his comments on other friends' Spaceport walls and his auto-replies (lowercase stays); „klassiker" is Marco's word only, „nice" became Dex's „fett".
 - P2-G: the 5-day review playthrough answers every waiting conversation with its first choice each day, because a friend's next day script waits until the current one is answered (game design, not a bug).
 - P3-G: Messenger's system lines for incoming nudges and winks say „Sie" („… hat Ihnen einen Nudge geschickt!"), like the outgoing ones; they are system UI, not a friend talking.
-- P3-G: game help text (Hühnerjagd, Sternen-Flipper high-score prompts) keeps „du", the way German arcade games of the time talked to the player; Minen and all other system UI stay „Sie".
+- P3-G: ~~game help text (Hühnerjagd, Sternen-Flipper high-score prompts) keeps „du"~~ Superseded in v0.3.1: the games say „Sie" like all other system UI; only friends say „du".
 - P3-G: unit tests that open a lazy-loaded app through `WindowLayer` import the app module in `beforeAll`, so a cold transform can't outlast `findBy*`'s 1 s default.
 
 ## v0.3.1
@@ -235,3 +235,4 @@
 - Login: the language choice is a radio group of flag buttons in the centre of the screen (UK flag for English, German flag for Deutsch). The tray badge and Regional and Language Options show the flag next to the name.
 - Gossip tags are language-neutral ids (the English words); each language labels them in `GOSSIP_TAG_LABELS`. `/tag?t=` URLs work in both languages, and v0.3 German tag URLs (`/tag?t=zoff`) are mapped back to their ids.
 - Notepad opens at 640×420 (was 480×360): about 78 columns, so the seeded files' hand-broken lines (up to ~77 chars) no longer soft-wrap a few words early. Word Wrap stays on by default; the text keeps its line breaks.
+- Game help and high-score prompts in Hühnerjagd and Sternen-Flipper say „Sie" (replaces the P3-G „du" exception).

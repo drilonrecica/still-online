@@ -28,7 +28,7 @@ describe('Hen Hunt in German', () => {
     expect(screen.getByRole('button', { name: 'Spielen' })).toBeVisible();
     expect(screen.getByText(/90 Sekunden\. 8 Patronen/)).toBeVisible();
     fireEvent.click(screen.getByRole('button', { name: 'Hilfe' }));
-    expect(screen.getByText(/kostet dich 25 Punkte/)).toBeVisible();
+    expect(screen.getByText(/kostet Sie 25 Punkte/)).toBeVisible();
     fireEvent.click(screen.getByRole('button', { name: 'Zurück' }));
     fireEvent.click(screen.getByRole('button', { name: 'Bestenliste' }));
     expect(screen.getByText(/Noch keine Punkte/)).toBeVisible();

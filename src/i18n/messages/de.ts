@@ -683,18 +683,18 @@ export const de: Messages = {
     mainMenu: 'Hauptmenü',
     helpTitle: 'Spielanleitung',
     helpAim:
-      'Du hast {seconds} Sekunden. Klicke zum Schießen; ziele mit der Maus (oder den Pfeiltasten und der Eingabetaste).',
+      'Sie haben {seconds} Sekunden. Klicken Sie zum Schießen; zielen Sie mit der Maus (oder den Pfeiltasten und der Eingabetaste).',
     helpReload:
-      'Die Flinte fasst {shells} Patronen. Mit Rechtsklick oder Leertaste lädst du nach – das dauert eine Sekunde.',
+      'Die Flinte fasst {shells} Patronen. Mit Rechtsklick oder Leertaste laden Sie nach – das dauert eine Sekunde.',
     helpScroll:
-      'Fahre an den linken oder rechten Rand, um dich auf dem Land umzusehen.',
+      'Fahren Sie an den linken oder rechten Rand, um sich auf dem Land umzusehen.',
     helpHens:
       'Ferne Hühner sind {far} Punkte wert, mittlere {mid}, nahe {near}.',
     helpBonus:
-      'Behalte das Mühlenfenster ({window}) und das goldene Huhn ({golden}, einmal pro Runde, und schnell!) im Auge.',
+      'Behalten Sie das Mühlenfenster ({window}) und das goldene Huhn ({golden}, einmal pro Runde, und schnell!) im Auge.',
     helpHat:
-      'Lass die Vogelscheuche in Ruhe: Ihr Hut kostet dich {penalty} Punkte.',
-    noScores: 'Noch keine Punkte. Schnapp dir die Hühner!',
+      'Lassen Sie die Vogelscheuche in Ruhe: Ihr Hut kostet Sie {penalty} Punkte.',
+    noScores: 'Noch keine Punkte. Auf zur Hühnerjagd!',
     colRank: 'Nr.',
     colName: 'Name',
     colScore: 'Punkte',
@@ -703,7 +703,7 @@ export const de: Messages = {
     timesUp: 'Die Zeit ist um!',
     finalScore: 'Punkte: {score}',
     accuracy: '{hits} Treffer bei {shots} Schüssen ({accuracy} % Trefferquote)',
-    newHigh: 'Neuer Rekord! Gib deinen Namen ein:',
+    newHigh: 'Neuer Rekord! Geben Sie Ihren Namen ein:',
     hud: {
       score: 'PUNKTE',
       lastSeconds: 'Noch {seconds} Sekunden!',
@@ -728,18 +728,18 @@ export const de: Messages = {
       `Punkte ${p.score}, Kugel ${p.ball} von ${p.balls}, Multiplikator ${p.mult}x`,
     helpTitle: 'Spielanleitung',
     helpLaunch:
-      'Halte [Leertaste] oder [↓] gedrückt, um den Abzug zu spannen, und lass los, um abzuschießen. Oder halte die Maus auf der Abschussbahn gedrückt.',
+      'Halten Sie [Leertaste] oder [↓] gedrückt, um den Abzug zu spannen, und lassen Sie los, um abzuschießen. Oder halten Sie die Maus auf der Abschussbahn gedrückt.',
     helpFlippers:
       'Flipper: [Z] oder linke [Umschalt], und [/] oder rechte [Umschalt]. Ein Klick auf die linke oder rechte Tischhälfte geht auch.',
     helpNudge:
       '[T] rüttelt am Tisch. Nach drei Warnungen kippt der nächste Stoß den Tisch („Tilt“) und die Kugel ist weg.',
     helpLanes:
-      'Lass alle drei oberen Bahnen leuchten, dann gibt’s den 2×-Multiplikator. Die Flipper verschieben die leuchtenden Bahnen.',
-    helpRanks: 'Räum S-T-A-R ab, um befördert zu werden: {ranks}.',
+      'Bringen Sie alle drei oberen Bahnen zum Leuchten, dann gibt es den 2×-Multiplikator. Die Flipper verschieben die leuchtenden Bahnen.',
+    helpRanks: 'Räumen Sie S-T-A-R ab, um befördert zu werden: {ranks}.',
     helpRamp:
       'Die Hyperspace-Rampe links bringt {ramp} Punkte, Planeten bringen {bumper}.',
     helpBalls:
-      '{balls} Kugeln. Verlierst du eine in den ersten {seconds} Sekunden, kommt sie einmal zurück. [Esc] beendet zum Menü.',
+      '{balls} Kugeln. Verlieren Sie eine in den ersten {seconds} Sekunden, kommt sie einmal zurück. [Esc] beendet zum Menü.',
     noScores: 'Noch keine Punkte. Die Galaxis wartet!',
     colRank: 'Nr.',
     colName: 'Name',
@@ -748,7 +748,7 @@ export const de: Messages = {
     gameOver: 'Spiel aus',
     finalScore: 'Punkte:',
     finalRank: 'Endrang: {rank}',
-    newHigh: 'Neuer Rekord! Gib deinen Namen ein:',
+    newHigh: 'Neuer Rekord! Geben Sie Ihren Namen ein:',
     rank: {
       cadet: 'Kadett',
       ensign: 'Fähnrich',
