@@ -44,7 +44,7 @@ export const DESKTOP_SHORTCUTS: readonly Shortcut[] = [
   { appId: 'browser', labelKey: 'apps.browser.title' },
   { appId: 'messenger', labelKey: 'apps.messenger.title' },
   { appId: 'mail', labelKey: 'apps.mail.title' },
-  { appId: 'dialup', labelKey: 'apps.dialup.title' },
+  { appId: 'dialup', labelKey: 'apps.dialup.label' },
   { appId: 'amplifier', labelKey: 'apps.amplifier.title' },
   { appId: 'tunemole', labelKey: 'apps.tunemole.title' },
   {

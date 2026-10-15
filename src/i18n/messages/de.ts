@@ -36,7 +36,10 @@ export const de: Messages = {
     messenger: { title: 'Messenger' },
     'messenger-chat': { title: 'Unterhaltung' },
     'messenger-history': { title: 'Nachrichtenverlauf' },
-    dialup: { title: 'Mit dem Internet verbinden' },
+    dialup: {
+      title: 'Mit dem Internet verbinden',
+      label: 'Mit Internet verbinden',
+    },
     browser: { title: 'Web Explorer' },
     mail: { title: 'Mail' },
     tunemole: { title: 'TuneMole' },
@@ -856,8 +859,7 @@ export const de: Messages = {
         'Dieser Kontakt befindet sich nicht mehr in Ihrer Kontaktliste.',
       replies: 'Antworten',
       message: 'Nachricht',
-      pickReply:
-        'Wählen Sie oben eine Antwort aus und klicken Sie dann auf Senden.',
+      pickReply: 'Oben eine Antwort wählen, dann Senden.',
       send: 'Senden',
     },
     transcript: {

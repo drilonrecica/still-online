@@ -38,7 +38,10 @@ export const en = {
     messenger: { title: 'Messenger' },
     'messenger-chat': { title: 'Conversation' },
     'messenger-history': { title: 'Message History' },
-    dialup: { title: 'Connect to the Internet' },
+    dialup: {
+      title: 'Connect to the Internet',
+      label: 'Connect to the Internet',
+    },
     browser: { title: 'Web Explorer' },
     mail: { title: 'Mail' },
     tunemole: { title: 'TuneMole' },

@@ -164,6 +164,7 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   dialup: {
     id: 'dialup',
     titleKey: 'apps.dialup.title',
+    labelKey: 'apps.dialup.label',
     icon16: dialup16,
     icon32: dialup32,
     component: lazy(() => import('./dialup/Dialup')),
