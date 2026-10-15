@@ -1,0 +1,109 @@
+/* XP balloon tip, original CSS. Anchored just above the tray, tail pointing at the clock. */
+.balloon {
+  position: fixed;
+  right: 12px;
+  bottom: calc(var(--xp-taskbar-height) + 10px);
+  width: 250px;
+  box-sizing: border-box;
+  border: 1px solid #000;
+  border-radius: 8px;
+  background: #ffffe1;
+  box-shadow: 2px 2px 4px rgb(0 0 0 / 35%);
+  pointer-events: auto;
+  animation: balloon-in 200ms ease-out;
+}
+
+.body {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 8px 22px 8px 8px;
+  border: 0;
+  background: none;
+  color: #000;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.text {
+  overflow-wrap: anywhere;
+}
+
+.close {
+  /* xp.css gives every button min-width 75px / min-height 23px. */
+  min-width: 0;
+  min-height: 0;
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* The tail: a black triangle with a yellow one on top, pointing down at the tray. */
+.tail {
+  position: absolute;
+  right: 28px;
+  bottom: -10px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #000;
+}
+
+.tail::after {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: -11px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 9px solid #ffffe1;
+}
+
+@keyframes balloon-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .balloon {
+    animation: none;
+  }
+}

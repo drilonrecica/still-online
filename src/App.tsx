@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { getApp } from '@/apps/registry';
 import { installAmplifierRouter } from '@/os/amplifierRouter';
+import { installBalloons } from '@/os/balloon/schedule';
 import { Boot } from '@/os/boot/Boot';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
 import { installIdle } from '@/os/idle';
@@ -29,6 +30,7 @@ function Desktop() {
   const [startOpen, setStartOpen] = useState(false);
   // Only on the desktop: no screensaver during boot, login or off.
   useEffect(() => installScreensaver(), []);
+  useEffect(() => installBalloons(), []);
   return (
     <>
       <DesktopIcons />

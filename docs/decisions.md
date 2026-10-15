@@ -78,3 +78,4 @@
 - P1-03: The stopping key is `preventDefault`ed (and the overlay holds focus) but not stopped — `idle.ts` must still see it to re-arm; the stopping click is eaten by a one-shot capture listener instead.
 - P1-03: Saver animation runs in real time, not `scaleMs` — it's visual only; the idle wait before it does use `scaleMs`.
 - P1-03: My Pictures Slideshow falls back to five built-in procedural sample photos when My Pictures has no images (P1-06 fills the folder).
+- P1-04: Balloon click actions are declarative (`openApp`/`browse`/`balloon`) in content/balloons.ts and resolved by schedule.ts; `diskcleanup` isn't registered yet, so that click logs a warning instead of throwing (P1-xx Disk Cleanup will make it work). VirusGuard opens via `browser:open`; the virusguard.example site is a TODO for the P4 site list.

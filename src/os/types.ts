@@ -197,6 +197,8 @@ export interface SettingsStore {
   wallpaperPosition: WallpaperPosition;
   theme: ThemeId;
   screensaver: ScreensaverSettings;
+  /** Balloon tip ids already shown once. */
+  seenTips: string[];
   setPlayerName: (name: string) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
@@ -207,6 +209,8 @@ export interface SettingsStore {
   setWallpaperPosition: (position: WallpaperPosition) => void;
   setTheme: (theme: ThemeId) => void;
   setScreensaver: (screensaver: ScreensaverSettings) => void;
+  /** Records a show-once tip id; no-op if already recorded. */
+  addSeenTip: (id: string) => void;
 }
 
 // v0.2 settings fields. Each implementing task moves its fields into `SettingsStore` (with a

@@ -90,6 +90,7 @@ type PersistedSettings = Pick<
   | 'wallpaperPosition'
   | 'theme'
   | 'screensaver'
+  | 'seenTips'
 >;
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -104,6 +105,7 @@ export const useSettingsStore = create<SettingsStore>()(
       wallpaperPosition: SETTINGS_V02_DEFAULTS.wallpaperPosition,
       theme: SETTINGS_V02_DEFAULTS.theme,
       screensaver: SETTINGS_V02_DEFAULTS.screensaver,
+      seenTips: SETTINGS_V02_DEFAULTS.seenTips,
       setPlayerName: (playerName) => set({ playerName }),
       setMuted: (muted) => set({ muted }),
       toggleMuted: () => set((s) => ({ muted: !s.muted })),
@@ -125,6 +127,10 @@ export const useSettingsStore = create<SettingsStore>()(
         set((s) => ({
           screensaver: sanitizeScreensaver(screensaver, s.screensaver),
         })),
+      addSeenTip: (id) =>
+        set((s) =>
+          s.seenTips.includes(id) ? s : { seenTips: [...s.seenTips, id] },
+        ),
     }),
     persistOptions<SettingsStore, PersistedSettings>({
       name: 'settings',
@@ -138,6 +144,7 @@ export const useSettingsStore = create<SettingsStore>()(
         wallpaperPosition,
         theme,
         screensaver,
+        seenTips,
       }) => ({
         playerName,
         muted,
@@ -148,6 +155,7 @@ export const useSettingsStore = create<SettingsStore>()(
         wallpaperPosition,
         theme,
         screensaver,
+        seenTips,
       }),
       sanitize: (persisted, current) => {
         if (!isRecord(persisted)) return current;
@@ -177,6 +185,15 @@ export const useSettingsStore = create<SettingsStore>()(
             current.wallpaperPosition,
           theme: sanitizeTheme(p.theme) ?? current.theme,
           screensaver: sanitizeScreensaver(p.screensaver, current.screensaver),
+          seenTips: Array.isArray(p.seenTips)
+            ? [
+                ...new Set(
+                  p.seenTips.filter(
+                    (t): t is string => typeof t === 'string' && t !== '',
+                  ),
+                ),
+              ]
+            : current.seenTips,
         };
       },
     }),
