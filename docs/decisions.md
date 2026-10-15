@@ -186,7 +186,7 @@
 - P0-05: picking the Away prompt's untouched localized default stores `player.awayMessage = null`, so it follows the language like the settings default
 - P1-07: Star Pinball keeps 5 ranks; German is Kadett, Fähnrich, Leutnant, Kapitän, Admiral („Kommodore“ from the spec list dropped) — the spec says keep the same count and English has no Commodore
 - P1-07: `Game.message` stores a message id + number (`say(g, 'warning', 2)`), rendered by `displayLines` in the current locale — a language switch mid-ball updates the display at once
-- P1-07: the dot-matrix display draws ß as SS and squeezes Ä/Ö/Ü into the 7 glyph rows (dots on row 0); lines wider than 21 characters scroll as a marquee (static start under reduced motion); the play status line closes its double spaces when it would overflow (fixes the English "BALL 1  LIEUTENANT  2X", 22 chars, that was cut off)
+- P1-07: the dot-matrix display draws ß as SS and squeezes Ä/Ö/Ü into the 7 glyph rows (dots on row 0); lines wider than 21 characters scroll as a marquee (static start under reduced motion); the play status line closes its double spaces when it would overflow (fixes the English "BALL 1 LIEUTENANT 2X", 22 chars, that was cut off)
 - P1-07: the printed table title and the display's attract title follow the localized product name („STERNEN-FLIPPER“); HYPERSPACE, TILT, the S-T-A-R letters, „BALL n“ and the 2X lamp stay as in English, as German pinball machines print them
 - P1-08: the dial-up desktop shortcut gets its own label (`apps.dialup.label`, DE „Mit Internet verbinden“, EN unchanged) — the full German title needs three lines in the 71 px icon label; desktop labels now use `hyphens: auto` (`lang="de"` is set on `<html>`)
 - P1-08: German Messenger reply-box placeholder shortened to „Oben eine Antwort wählen, dann Senden.“ — the long sentence was cut off in the single-line input; every other German string fit unchanged
@@ -202,3 +202,8 @@
 - P2-02 (v0.3): Kayla DE — "be the bigger person" → „steh einfach drüber" (the German idiom „sei die Klügere" would gender the player); "taking the high road" → her own „die klügere gibt nach"
 - P2-02 (v0.3): Kayla DE — mint chip → stracciatella, "great minds!" → „zwei doofe, ein gedanke!", and „PLEASANT porridge?? „angenehmer haferbrei"??" translates the English track title (which stays) so the joke works
 - P2-02 (v0.3): `playthrough.test.ts` plays every path in `en` and `de`; a `TRANSLATED` list asserts `overlayFallbacks` is empty for jess and kayla (P2-03/P2-04 add their friends)
+- P2-03 (v0.3): Dex DE — "take 41" → „klappe 41" (the German film slate), "dex + {name} productions. coming soon" → „dex + {name} filmproduktion. bald im kino"; the blurry video is „verschwommen" / „KÜNSTLERISCH verschwommen"
+- P2-03 (v0.3): Dex DE — "cool rock" (track title, stays English) is explained as „cooler stein" so the "they looked at a rock" joke lands; "its a good rock" → „is n guter stein"
+- P2-03 (v0.3): Dex DE — "credit" → „im abspann stehen", "hint hint" → „wink mit dem zaunpfahl", the high five "signature" → „abgeklatscht … quasi ne unterschrift"
+- P2-03 (v0.3): Theo DE — "partner(s)" is never used for the player (Partner/Partnerin would gender them): „wir machen das zell-referat zusammen", „danke, dass wir das zusammen gemacht haben", pm „ne 2+ und ein gutes team :)"
+- P2-03 (v0.3): Theo DE — "extra credit" → „zusatznote", "10/10" → „glatte eins", "structural issues" → „statische mängel"; he writes „ist"/„nicht" (correct spelling) while the player's choices stay casual („is", „nich")

@@ -123,8 +123,8 @@ describe.each(LOCALES)(
   },
 );
 
-/** Friends whose German overlay is complete; P2-03/P2-04 add theirs. */
-const TRANSLATED = ['jess', 'kayla'];
+/** Friends whose German overlay is complete; P2-04 adds marco and pia. */
+const TRANSLATED = ['jess', 'kayla', 'dex', 'theo'];
 
 describe('P2-02: German overlays have no English fallback', () => {
   it.each(TRANSLATED)('%s is fully German', (id) => {
