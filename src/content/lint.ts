@@ -1,9 +1,11 @@
 // Content lint: checks authored contacts and scripts for mistakes the type system can't catch.
 // Each check returns human-readable problems; an empty list means the content is fine.
+import { isGameId } from '../os/types';
 import {
   CONTENT_UNLOCKS,
   isWinkId,
   TEXT_PLACEHOLDERS,
+  TRIGGER_PLACEHOLDERS,
   type ContactContent,
   type Script,
   type ScriptNode,
@@ -139,16 +141,13 @@ export function lintContactText(content: ContactContent): string[] {
   const problems = lintContentStrings(content, id);
   const known: readonly string[] = TEXT_PLACEHOLDERS;
   for (const script of content.scripts) {
-    const nowPlaying = script.trigger.type === 'onNowPlaying';
     for (const [path, text] of strings(script.nodes, `${id}.${script.id}`)) {
       for (const token of text.match(PLACEHOLDER) ?? []) {
+        const needs = TRIGGER_PLACEHOLDERS[token];
         if (!known.includes(token))
           problems.push(`${path}: unknown placeholder ${token}`);
-        else if (!nowPlaying && token !== '{name}') {
-          problems.push(
-            `${path}: ${token} only resolves in onNowPlaying scripts`,
-          );
-        }
+        else if (needs && script.trigger.type !== needs)
+          problems.push(`${path}: ${token} only resolves in ${needs} scripts`);
       }
     }
   }
@@ -216,6 +215,24 @@ function lintWinks(content: ContactContent): string[] {
   );
 }
 
+/** `onGameScore` names a known game, with a `minScore` (if any) that is a number ≥ 0. */
+function lintGameScores(content: ContactContent): string[] {
+  return content.scripts.flatMap((s) => {
+    const t = s.trigger;
+    if (t.type !== 'onGameScore') return [];
+    const at = `${content.contact.id}: script "${s.id}"`;
+    return [
+      ...(isGameId(t.game)
+        ? []
+        : [`${at} reacts to unknown game "${String(t.game)}"`]),
+      ...(t.minScore === undefined ||
+      (Number.isFinite(t.minScore) && t.minScore >= 0)
+        ? []
+        : [`${at} needs minScore >= 0`]),
+    ];
+  });
+}
+
 /** All checks for one contact, including unique script ids. */
 export function lintContact(content: ContactContent): string[] {
   const ids = content.scripts.map((s) => s.id);
@@ -235,6 +252,7 @@ export function lintContact(content: ContactContent): string[] {
     ...lintDays(content),
     ...lintUnlocks(content),
     ...lintWinks(content),
+    ...lintGameScores(content),
     ...content.scripts.flatMap((s) =>
       lintScriptGraph(s).map((p) => `${content.contact.id}: ${p}`),
     ),

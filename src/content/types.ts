@@ -1,6 +1,6 @@
 // Messenger content format: authored contacts + scripts, and the persisted progress shape.
 // See docs/content-format.md for the semantics the engine (M2-02) implements.
-import type { AppId } from '../os/types';
+import type { AppId, GameId } from '../os/types';
 
 // ---------------------------------------------------------------------------
 // Contacts
@@ -64,9 +64,25 @@ export type NodeId = string;
 
 /**
  * Placeholders allowed in line text, choice text/labels and personal messages. `{artist}` and
- * `{title}` resolve only in `onNowPlaying` scripts.
+ * `{title}` resolve only in `onNowPlaying` scripts, `{score}` and `{game}` only in `onGameScore`.
  */
-export const TEXT_PLACEHOLDERS = ['{name}', '{artist}', '{title}'] as const;
+export const TEXT_PLACEHOLDERS = [
+  '{name}',
+  '{artist}',
+  '{title}',
+  '{score}',
+  '{game}',
+] as const;
+
+/** Which placeholders need which trigger; any other placeholder resolves everywhere. */
+export const TRIGGER_PLACEHOLDERS: Readonly<
+  Record<string, Script['trigger']['type']>
+> = {
+  '{artist}': 'onNowPlaying',
+  '{title}': 'onNowPlaying',
+  '{score}': 'onGameScore',
+  '{game}': 'onGameScore',
+};
 
 /** World unlock ids content may grant (`world.unlock`); the lint rejects others. */
 export const CONTENT_UNLOCKS = ['ponies'] as const;
@@ -142,7 +158,12 @@ export type Trigger =
    * On Messenger sign-in once the world day is `day` or later (a missed day still fires).
    * Runs once ever; queued until the contact signs in, after their `onSignIn` scripts.
    */
-  | { type: 'onDay'; day: number };
+  | { type: 'onDay'; day: number }
+  /**
+   * When the player finishes a game (`game:score`) with `score >= minScore` (raw score: Mines
+   * reports seconds). Ignored while signed out of Messenger.
+   */
+  | { type: 'onGameScore'; game: GameId; minScore?: number };
 
 export type TriggerType = Trigger['type'];
 
@@ -176,6 +197,9 @@ export interface TriggerContext {
   trackId?: string;
   artist?: string;
   title?: string;
+  /** `onGameScore`: the game that reported the score, and the score. */
+  game?: GameId;
+  score?: number;
 }
 
 export interface ActiveScript {

@@ -157,3 +157,4 @@
 - **Re-enable path:** a registered `stapley` app (chrome `none`, no UI) that sets `assistantEnabled` and closes its window in an effect; simpler than a Start-menu special case and it keeps Accessories generated from the registry.
 - **"Don't show again":** every tip is shown once already (`seenTips`), so `never` matters for idle jokes: it records the joke's id and the cycle skips it. Tips raised while one is showing queue; jokes are dropped.
 - **Letter reply:** options may carry a `reply` that replaces the balloon text (with OK); used for "lol no".
+- P6-07: `onGameScore` is ignored while signed out of Messenger (like `onNowPlaying`) — a friend can't know about a game played offline; reactions run once ever, Hen Hunt/Pinball ones need `minScore: 1` so a scoreless round gets no "OMG 0??"; `{score}` uses thousands separators and Mines' score is its time in seconds.

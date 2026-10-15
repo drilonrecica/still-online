@@ -40,6 +40,7 @@ A line without `text` is a pure action and has no typing indicator. `statusChang
 
 - `{name}` is the player name.
 - `{artist}` and `{title}` resolve only in `onNowPlaying` scripts, from the track that fired the trigger.
+- `{score}` and `{game}` resolve only in `onGameScore` scripts: the score with thousands separators (Mines reports seconds) and the game's name ("Mines", "Hen Hunt", "Star Pinball").
 
 They are resolved when the line is delivered. The transcript stores the resolved text.
 
@@ -52,6 +53,7 @@ They are resolved when the line is delivered. The transcript stores the resolved
 | `{ type: 'onSignIn' }`                       | When the contact signs in, including "appear offline".                                                                                                                                                                   |
 | `{ type: 'afterMinutes', minutes }`          | `minutes` after the player signed in to Messenger, counted per page session (a reload restarts it).                                                                                                                      |
 | `{ type: 'onNowPlaying', trackId? }`         | On `amplifier:trackChanged`: for that `trackId` only, or for any track if it's omitted.                                                                                                                                  |
+| `{ type: 'onGameScore', game, minScore? }`   | On `game:score` for that game, when `score >= minScore` (raw score; omitted = any). Ignored while the player is signed out of Messenger. Game reactions live in `src/content/contacts/game-reactions.ts`.                |
 | `{ type: 'onPlayerNudge' }`                  | When the player nudges this contact.                                                                                                                                                                                     |
 | `{ type: 'onDay', day }`                     | On Messenger sign-in once the world day is `day` or later (a missed day still fires). Queued until the contact signs in, so it starts after their `onSignIn` scripts. Runs once ever; `repeat` isn't allowed.            |
 | `{ type: 'afterScript', scriptId, minutes }` | `minutes` after another script **of the same contact** ends: a follow-up conversation. Chains are fine (a follow-up of a follow-up). End times aren't persisted, so after a reload the wait counts from the new sign-in. |
@@ -167,4 +169,4 @@ export const mika: ContactContent = {
 
 ## Content lint
 
-`src/content/lint.ts` checks what the types can't: `start`/`next` ids exist, every node is reachable, every node can reach an `end`, script ids are unique, `afterScript` follows an existing other script of the same contact with `minutes > 0`, there are no real-looking emails or URLs, no real product names or post-2007 terms, `{artist}`/`{title}` appear only in `onNowPlaying` scripts, `onDay` days and `days` keys are whole days ≥ 2, `onDay` scripts don't `repeat`, `days` personal messages have no placeholders, every `unlock` is in `CONTENT_UNLOCKS`, and every `wink` is in `WINK_IDS`. `src/content/contacts/contacts.test.ts` runs it on every shipped contact.
+`src/content/lint.ts` checks what the types can't: `start`/`next` ids exist, every node is reachable, every node can reach an `end`, script ids are unique, `afterScript` follows an existing other script of the same contact with `minutes > 0`, there are no real-looking emails or URLs, no real product names or post-2007 terms, `{artist}`/`{title}` appear only in `onNowPlaying` scripts and `{score}`/`{game}` only in `onGameScore` scripts, `onGameScore` names a known game with `minScore >= 0`, `onDay` days and `days` keys are whole days ≥ 2, `onDay` scripts don't `repeat`, `days` personal messages have no placeholders, every `unlock` is in `CONTENT_UNLOCKS`, and every `wink` is in `WINK_IDS`. `src/content/contacts/contacts.test.ts` runs it on every shipped contact.

@@ -2,6 +2,7 @@
 // Pure TS: time comes from the injected scheduler, output goes to the store and engine events.
 import type { createEventBus } from '@/os/events';
 import type { ContactId, TriggerContext, WinkId } from '@/content/types';
+import type { GameId } from '@/os/types';
 import { createEngineContext, type ConversationEngineOptions } from './context';
 import { reconcileContact } from './progress';
 import { createRunner } from './runner';
@@ -25,6 +26,8 @@ export interface ConversationEngine {
   /** The player sends a wink: a transcript entry and a `wink` event (no script trigger). */
   playerWink: (contactId: ContactId, wink: WinkId) => void;
   nowPlaying: (track: NowPlayingTrack) => void;
+  /** A finished game (`game:score`): fires matching `onGameScore` scripts while signed in. */
+  gameScore: (game: GameId, score: number) => void;
   on: ReturnType<typeof createEventBus<EngineEventMap>>['on'];
   off: ReturnType<typeof createEventBus<EngineEventMap>>['off'];
   dispose: () => void;
@@ -142,6 +145,18 @@ export function createConversationEngine(
           const t = script.trigger;
           if (t.type !== 'onNowPlaying') continue;
           if (t.trackId === undefined || t.trackId === track.trackId)
+            fire(contact.id, script, context);
+        }
+      }
+    },
+    gameScore(game, score) {
+      if (!data().signedIn) return;
+      const context: TriggerContext = { game, score };
+      for (const { contact, scripts } of contents) {
+        for (const script of scripts) {
+          const t = script.trigger;
+          if (t.type !== 'onGameScore' || t.game !== game) continue;
+          if (t.minScore === undefined || score >= t.minScore)
             fire(contact.id, script, context);
         }
       }

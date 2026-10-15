@@ -317,4 +317,8 @@ export type PersistedStoreName =
 // ---------------------------------------------------------------------------
 
 /** Games that report scores (`game:score`, the `games` store, friend reactions). */
-export type GameId = 'mines' | 'henhunt' | 'pinball';
+export const GAME_IDS = ['mines', 'henhunt', 'pinball'] as const;
+export type GameId = (typeof GAME_IDS)[number];
+
+export const isGameId = (v: unknown): v is GameId =>
+  (GAME_IDS as readonly unknown[]).includes(v);

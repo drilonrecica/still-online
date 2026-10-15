@@ -77,6 +77,20 @@ describe('messenger runtime: world wiring', () => {
     useSessionStore.setState({ state: 'booting' });
   });
 
+  it('game:score on the event bus fires onGameScore scripts', () => {
+    setMessengerContentsForTests([
+      contactContent('pia', [
+        say('pb', { type: 'onGameScore', game: 'pinball' }, ['{score}??']),
+      ]),
+    ]);
+    signIn();
+    events.emit('game:score', { game: 'pinball', score: 9000 });
+    vi.advanceTimersByTime(10_000);
+    expect(
+      pia()?.transcript.map((e) => e.kind === 'message' && e.text),
+    ).toEqual(['9,000??']);
+  });
+
   it('an unlock line calls world.unlock, which emits world:unlock', () => {
     const unlocked = vi.fn();
     const stop = events.on('world:unlock', unlocked);

@@ -1,6 +1,7 @@
 // Pia: the little sibling on dad's laptop downstairs. Bossy, pony-obsessed, tells mom everything.
 import type { ContactContent } from '../types';
 import { piaDayScripts, piaDays } from './pia-days';
+import { piaGameScore } from './game-reactions';
 import { piaNowPlaying2 } from './now-playing';
 
 export const pia: ContactContent = {
@@ -352,5 +353,6 @@ export const pia: ContactContent = {
     },
     ...piaDayScripts,
     piaNowPlaying2,
+    piaGameScore,
   ],
 };

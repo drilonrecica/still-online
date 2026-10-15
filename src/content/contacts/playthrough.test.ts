@@ -65,6 +65,8 @@ function playPath(
       artist: 'The Dial-Up Kids',
       title: 'Away Message',
     });
+  } else if (trigger.type === 'onGameScore') {
+    t.engine.gameScore(trigger.game, Math.max(trigger.minScore ?? 0, 420));
   } else if (trigger.type === 'onPlayerNudge') {
     t.engine.playerNudge(id);
   }
@@ -123,5 +125,16 @@ describe("P2-04: Pia's day-5 present", () => {
     expect(WALLPAPERS.find((w) => w.unlock === 'ponies')?.name).toBe(
       'Pony Paradise',
     );
+  });
+});
+
+describe('P6-07: game reactions', () => {
+  it('every friend reacts to at least one game', () => {
+    for (const { contact, scripts } of contacts) {
+      expect(
+        scripts.some((s) => s.trigger.type === 'onGameScore'),
+        contact.id,
+      ).toBe(true);
+    }
   });
 });

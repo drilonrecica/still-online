@@ -239,6 +239,42 @@ describe('content lint: catches mistakes', () => {
     expect(problems).toContain('unknown placeholder {colour}');
   });
 
+  it('{score}/{game} only in onGameScore scripts, which need a known game and minScore >= 0', () => {
+    const node = {
+      a: { lines: [{ text: '{score} in {game}', delayMs: 0 }], end: true },
+    } as const;
+    const game = (trigger: Script['trigger']): Script => ({
+      ...script(node),
+      trigger,
+    });
+    expect(
+      lintContact({
+        ...exampleContact,
+        scripts: [game({ type: 'onGameScore', game: 'mines', minScore: 5 })],
+      }),
+    ).toEqual([]);
+    expect(lintContact({ ...exampleContact, scripts: [script(node)] })).toEqual(
+      [
+        'mika.s.a.lines[0].text: {score} only resolves in onGameScore scripts',
+        'mika.s.a.lines[0].text: {game} only resolves in onGameScore scripts',
+      ],
+    );
+    const bad = game({
+      type: 'onGameScore',
+      game: 'chess' as 'mines',
+      minScore: -1,
+    });
+    expect(lintContact({ ...exampleContact, scripts: [bad] })).toEqual([
+      'mika: script "s" reacts to unknown game "chess"',
+      'mika: script "s" needs minScore >= 0',
+    ]);
+    const music = game({ type: 'onNowPlaying' });
+    expect(lintContactText({ ...exampleContact, scripts: [music] })).toEqual([
+      'mika.s.a.lines[0].text: {score} only resolves in onGameScore scripts',
+      'mika.s.a.lines[0].text: {game} only resolves in onGameScore scripts',
+    ]);
+  });
+
   it('duplicate script ids', () => {
     const one = script({ a: { lines: [], end: true } });
     expect(lintContact({ ...exampleContact, scripts: [one, one] })).toEqual([

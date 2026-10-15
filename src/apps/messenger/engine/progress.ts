@@ -1,5 +1,6 @@
 // Default progress values and a sanitizer for persisted (untrusted) progress.
 import { isRecord } from '@/os/persist';
+import { isGameId } from '@/os/types';
 import {
   isWinkId,
   type ActiveScript,
@@ -71,6 +72,9 @@ function context(v: unknown): TriggerContext {
   if (typeof v.trackId === 'string') out.trackId = v.trackId;
   if (typeof v.artist === 'string') out.artist = v.artist;
   if (typeof v.title === 'string') out.title = v.title;
+  if (isGameId(v.game)) out.game = v.game;
+  if (typeof v.score === 'number' && Number.isFinite(v.score))
+    out.score = v.score;
   return out;
 }
 

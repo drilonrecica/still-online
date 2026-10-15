@@ -143,6 +143,11 @@ function createEngine(): ConversationEngine {
     useWindowsStore.subscribe(syncAttention),
   ];
 
+  // Friends react to finished games (`onGameScore` scripts).
+  const stopGames = events.on('game:score', ({ game, score }) =>
+    created.gameScore(game, score),
+  );
+
   // No line, no Messenger: hanging up the modem signs out.
   const stopNetwork = events.on('network:disconnected', () => {
     if (useMessengerStore.getState().signedIn) created.signOut();
@@ -202,6 +207,7 @@ function createEngine(): ConversationEngine {
     stopActive();
     stopAwaySummary();
     stopNetwork();
+    stopGames();
     stopSession();
     stopTrack();
     stopToggle();

@@ -1,6 +1,7 @@
 // Jess: the hyperactive best friend. ALL CAPS, many exclamation marks, nudges constantly.
 import type { ContactContent } from '../types';
 import { jessDayScripts, jessDays } from './jess-days';
+import { jessGameScore } from './game-reactions';
 import { jessNowPlaying2 } from './now-playing';
 
 export const jess: ContactContent = {
@@ -470,5 +471,6 @@ export const jess: ContactContent = {
     },
     ...jessDayScripts,
     jessNowPlaying2,
+    jessGameScore,
   ],
 };
