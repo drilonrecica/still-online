@@ -11,7 +11,12 @@ export interface ResolvedShortcut {
   label: string;
   icon16: string;
   icon32: string;
+  /** Draws XP's little shortcut arrow; false for system icons and folders. */
+  shortcut: boolean;
 }
+
+/** Desktop items that are the real thing in XP, not shortcuts to it. */
+const SYSTEM_ICONS: readonly AppId[] = ['mycomputer', 'recyclebin', 'explorer'];
 
 /** Start menu right column, in order. */
 export const START_PLACES: readonly Shortcut[] = [
@@ -23,16 +28,31 @@ export const START_PLACES: readonly Shortcut[] = [
   { appId: 'recyclebin', label: 'Recycle Bin' },
 ];
 
-/** Desktop icons, in order (top-left column first). */
+/**
+ * Desktop icons, in order (columns fill top-down, left to right). Deliberately
+ * cluttered, like a 2007 family PC: everything that was ever installed got an icon.
+ */
 export const DESKTOP_SHORTCUTS: readonly Shortcut[] = [
   { appId: 'explorer', props: { folder: 'docs' }, label: 'My Documents' },
   { appId: 'mycomputer', label: 'My Computer' },
   { appId: 'recyclebin', label: 'Recycle Bin' },
-  { appId: 'messenger', label: 'Messenger' },
   { appId: 'browser', label: 'Web Explorer' },
+  { appId: 'messenger', label: 'Messenger' },
   { appId: 'mail', label: 'Mail' },
+  { appId: 'dialup', label: 'Connect to the Internet' },
   { appId: 'amplifier', label: 'Amplifier' },
+  { appId: 'tunemole', label: 'TuneMole' },
+  { appId: 'explorer', props: { folder: 'music' }, label: 'My Music' },
+  { appId: 'mines', label: 'Mines' },
+  { appId: 'henhunt', label: 'Hen Hunt' },
+  { appId: 'pinball', label: 'Star Pinball' },
+  { appId: 'wrecker', label: 'Desktop Wrecker' },
+  { appId: 'paint', label: 'Paint' },
+  { appId: 'photobooth', label: 'Snapshot Booth' },
+  { appId: 'explorer', props: { folder: 'pics' }, label: 'My Pictures' },
   { appId: 'notepad', label: 'Notepad' },
+  { appId: 'messenger-history', label: 'Message History' },
+  { appId: 'diskcleanup', label: 'Disk Cleanup' },
 ];
 
 /** Resolves shortcuts against the registry; shortcuts to unregistered apps are dropped. */
@@ -51,6 +71,7 @@ export function resolveShortcuts(
       label: s.label,
       icon16: s.icon16 ?? app.icon16,
       icon32: s.icon32 ?? app.icon32,
+      shortcut: !SYSTEM_ICONS.includes(s.appId),
     });
   });
   return out;

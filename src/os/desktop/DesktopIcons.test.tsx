@@ -128,12 +128,37 @@ describe('DesktopIcons', () => {
       'My Documents',
       'My Computer',
       'Recycle Bin',
-      'Messenger',
       'Web Explorer',
+      'Messenger',
       'Mail',
+      'Connect to the Internet',
       'Amplifier',
+      'TuneMole',
+      'My Music',
+      'Mines',
+      'Hen Hunt',
+      'Star Pinball',
+      'Desktop Wrecker',
+      'Paint',
+      'Snapshot Booth',
+      'My Pictures',
       'Notepad',
+      'Message History',
+      'Disk Cleanup',
     ]);
+  });
+
+  it('marks app shortcuts with an arrow, but not system icons or folders', () => {
+    render(<DesktopIcons />);
+    const hasArrow = (name: string) =>
+      screen
+        .getByRole('option', { name, exact: true } as { name: string })
+        .querySelector('[data-testid="shortcut-arrow"]') !== null;
+    expect(hasArrow('Mines')).toBe(true);
+    expect(hasArrow('Messenger')).toBe(true);
+    expect(hasArrow('My Computer')).toBe(false);
+    expect(hasArrow('Recycle Bin')).toBe(false);
+    expect(hasArrow('My Documents')).toBe(false);
   });
 });
 

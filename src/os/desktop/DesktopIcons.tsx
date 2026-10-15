@@ -97,17 +97,26 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
             openApp(app.appId, app.props);
           }}
         >
-          <img
-            src={
-              app.appId === 'recyclebin' && binFull
-                ? recycleBinFull32
-                : app.icon32
-            }
-            alt=""
-            width={32}
-            height={32}
-            draggable={false}
-          />
+          <span className={styles.art}>
+            <img
+              src={
+                app.appId === 'recyclebin' && binFull
+                  ? recycleBinFull32
+                  : app.icon32
+              }
+              alt=""
+              width={32}
+              height={32}
+              draggable={false}
+            />
+            {app.shortcut && (
+              <span
+                className={styles.arrow}
+                data-testid="shortcut-arrow"
+                aria-hidden
+              />
+            )}
+          </span>
           <span className={styles.label}>{app.label}</span>
         </div>
       ))}
