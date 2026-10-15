@@ -1,5 +1,5 @@
 // One window: the XP frame (chrome 'xp') or a bare positioned box (chrome 'none').
-import { Suspense, type CSSProperties, type MouseEvent } from 'react';
+import { Suspense, useId, type CSSProperties, type MouseEvent } from 'react';
 import { useLocale, useT } from '@/i18n/useT';
 import { useWindowsStore } from '@/os/store/windows';
 import { WM_MIN_SIZE, type AppDefinition, type WindowState } from '@/os/types';
@@ -38,6 +38,7 @@ export function Window({ win, app, active }: WindowProps) {
   const AppComponent = app.component;
   const title = renderWindowTitle(win, app, useLocale());
   const t = useT();
+  const labelId = useId();
 
   const focus = () => actions().focusWindow(win.id);
   const content = (
@@ -96,23 +97,37 @@ export function Window({ win, app, active }: WindowProps) {
           height={16}
         />
         <div className={cx('title-bar-text', styles.titleText)}>{title}</div>
+        {/* xp.css draws each control's icon from an English `aria-label`, so that attribute is a
+            styling hook only; `aria-labelledby` carries the localized accessible name. */}
         <div className="title-bar-controls">
           <button
             type="button"
-            aria-label={t('wm.minimize')}
+            aria-label="Minimize"
+            aria-labelledby={`${labelId}-min`}
             onClick={() => actions().minimizeWindow(win.id)}
           />
           <button
             type="button"
-            aria-label={win.maximized ? t('wm.restore') : t('wm.maximize')}
+            aria-label={win.maximized ? 'Restore' : 'Maximize'}
+            aria-labelledby={`${labelId}-max`}
             disabled={app.fixedSize}
             onClick={() => actions().toggleMaximize(win.id)}
           />
           <button
             type="button"
-            aria-label={t('wm.close')}
+            aria-label="Close"
+            aria-labelledby={`${labelId}-close`}
             onClick={() => requestClose(win.id)}
           />
+          <span hidden id={`${labelId}-min`}>
+            {t('wm.minimize')}
+          </span>
+          <span hidden id={`${labelId}-max`}>
+            {win.maximized ? t('wm.restore') : t('wm.maximize')}
+          </span>
+          <span hidden id={`${labelId}-close`}>
+            {t('wm.close')}
+          </span>
         </div>
       </div>
       <div className={styles.body}>{content}</div>

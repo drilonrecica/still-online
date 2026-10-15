@@ -129,6 +129,19 @@ describe('Window frame', () => {
     expect(titleBar(id)).toHaveTextContent('*a.txt - Editor');
   });
 
+  it('titlebar buttons are named in German and keep their xp.css icon hooks', async () => {
+    useSettingsStore.setState({ language: 'de' });
+    await renderWith('notepad');
+
+    const minimize = screen.getByRole('button', { name: 'Minimieren' });
+    const maximize = screen.getByRole('button', { name: 'Maximieren' });
+    const close = screen.getByRole('button', { name: 'Schließen' });
+    // xp.css selects the icon by the English aria-label, so it must not be localized.
+    expect(minimize).toHaveAttribute('aria-label', 'Minimize');
+    expect(maximize).toHaveAttribute('aria-label', 'Maximize');
+    expect(close).toHaveAttribute('aria-label', 'Close');
+  });
+
   it('titlebar buttons call the store actions', async () => {
     const [id = ''] = await renderWith('notepad');
     const minimizeWindow = vi.fn();
