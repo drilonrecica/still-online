@@ -311,13 +311,13 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 | P2-05 | **Files + mail in German** — seeded documents, pictures captions, Recycle Bin files, mail days 1–5, auto-replies. | P2-01 | done | opus | agent | — | fast | — | Every file and mail has a German version with the same id; lint + content tests green in DE. | §P2-05 |
 | P2-06 | **Websites + profiles in German** — Spaceport profiles, all site content, inline site text moved to content, Searchly DE index. | P2-01 | done | opus | agent | — | fast | — | Every site and profile renders fully German in DE; Searchly finds German pages; site tests in both locales. | §P2-06 |
 | P2-07 | **Small content in German** — tray balloons, Tacki tips, TuneMole results, celeb gossip polls, game names in chat placeholders. | P2-01 | done | sonnet | agent | — | fast | — | All remaining `src/content/**` modules have German versions; no English fallback reachable in DE (spec check). | §P2-07 |
-| P2-G | **P2 gate (content self-review)** — follow "Task specs → Gate procedure" + German content rubric; full DE playthrough over 5 days. | P2-02…P2-07 | in progress | opus | agent | — | e2e | — | verify + e2e pass; rubric checked per friend; 5-day DE playthrough screenshots; `docs/review/v03-P2.md`. | §Gate |
+| P2-G | **P2 gate (content self-review)** — follow "Task specs → Gate procedure" + German content rubric; full DE playthrough over 5 days. | P2-02…P2-07 | done | opus | agent | — | e2e | — | verify + e2e pass; rubric checked per friend; 5-day DE playthrough screenshots; `docs/review/v03-P2.md`. | §Gate |
 
 ## P3 — Release v0.3
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P3-01 | **Bilingual e2e** — German happy paths, auto-detection, mid-game language switch re-rendering old chats/mail/files/titles, v0.2 save migration. | P2-G | blocked | sonnet | agent | — | e2e | — | New specs in `tests/e2e/i18n-*.spec.ts` pass in the default suite; switching shows no English leftovers on the checked screens. | §P3-01 |
+| P3-01 | **Bilingual e2e** — German happy paths, auto-detection, mid-game language switch re-rendering old chats/mail/files/titles, v0.2 save migration. | P2-G | in progress | sonnet | agent | — | e2e | — | New specs in `tests/e2e/i18n-*.spec.ts` pass in the default suite; switching shows no English leftovers on the checked screens. | §P3-01 |
 | P3-02 | **Docs + release notes** — README "Deutsch" section, German screenshot, `docs/release-notes-v0.3.0.md`, CREDITS, architecture docs updated. | P3-01 | blocked | sonnet | agent | — | — | — | Docs accurate; release notes list user-visible changes; screenshot committed. | §P3-02 |
 | P3-G | **Release-ready gate (self-review)** — follow "Task specs → Gate procedure"; play 3 days in German, switch to English mid-game, then back. **Do not tag, push or release.** | P3-01, P3-02 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v03-P3.md`; nothing pushed or tagged. | §Gate |
 
