@@ -7,14 +7,20 @@ import type {
 } from '@/content/sites/types';
 import { parseUrl } from '../url';
 import { ABOUT_SITE } from './about';
+import { GOSSIP_SITE } from './celebgossip07';
 import { SEARCHLY_SITE } from './searchly';
 import { SPACEPORT_SITE } from './spaceport';
 import { TINFOIL_SITE } from './tinfoilcomets';
+import { VIRUSGUARD_SITE } from './virusguard';
+import { WESTFIELD_SITE } from './westfieldhigh';
 
 export const SITES: readonly SiteDefinition[] = [
   SEARCHLY_SITE,
   TINFOIL_SITE,
   SPACEPORT_SITE,
+  WESTFIELD_SITE,
+  GOSSIP_SITE,
+  VIRUSGUARD_SITE,
   ABOUT_SITE,
 ];
 

@@ -1,0 +1,83 @@
+import { describe, expect, it } from 'vitest';
+import { GOSSIP_POLLS } from '@/content/sites/celebgossip07';
+import type { BlogPost, Poll } from '@/content/sites/types';
+import {
+  currentPoll,
+  pollTally,
+  postHref,
+  postsWithTag,
+  tagCloud,
+  tagHref,
+} from './logic';
+
+const post = (id: string, tags: string[]): BlogPost => ({
+  id,
+  day: 1,
+  title: id,
+  body: '',
+  tags,
+  comments: [],
+});
+
+describe('tagCloud', () => {
+  it('counts tags alphabetically and scales the most used to size 5', () => {
+    const posts = [
+      post('a', ['omg', 'starla']),
+      post('b', ['starla']),
+      post('c', ['starla', 'feud']),
+    ];
+    expect(tagCloud(posts)).toEqual([
+      { tag: 'feud', count: 1, size: 1 },
+      { tag: 'omg', count: 1, size: 1 },
+      { tag: 'starla', count: 3, size: 5 },
+    ]);
+  });
+
+  it('handles no posts and all-equal counts', () => {
+    expect(tagCloud([])).toEqual([]);
+    expect(tagCloud([post('a', ['x'])])).toEqual([
+      { tag: 'x', count: 1, size: 1 },
+    ]);
+  });
+});
+
+describe('links and lookups', () => {
+  it('builds encoded tag and post links', () => {
+    expect(tagHref('tinfoil comets')).toBe('/tag?t=tinfoil%20comets');
+    expect(postHref('kyle-tips')).toBe('/post?id=kyle-tips');
+  });
+
+  it('finds posts by tag, ignoring case and spaces around it', () => {
+    const posts = [post('a', ['omg']), post('b', ['feud'])];
+    expect(postsWithTag(posts, ' OMG ').map((p) => p.id)).toEqual(['a']);
+    expect(postsWithTag(posts, 'nope')).toEqual([]);
+  });
+});
+
+describe('polls', () => {
+  it('picks the newest poll that has started', () => {
+    expect(currentPoll(GOSSIP_POLLS, 0)).toBeNull();
+    expect(currentPoll(GOSSIP_POLLS, 1)?.day).toBe(1);
+    expect(currentPoll(GOSSIP_POLLS, 3)?.day).toBe(3);
+    expect(currentPoll(GOSSIP_POLLS, 12)?.day).toBe(5);
+  });
+
+  it('tallies deterministic reader votes plus the player vote', () => {
+    const poll: Poll = {
+      id: 'p',
+      day: 1,
+      question: 'q',
+      options: ['HOT', 'NOT'],
+    };
+    const before = pollTally(poll, undefined);
+    expect(pollTally(poll, undefined)).toEqual(before);
+    const after = pollTally(poll, 1);
+    expect(after[0]?.votes).toBe(before[0]?.votes);
+    expect(after[1]?.votes).toBe((before[1]?.votes ?? 0) + 1);
+    for (const r of after) {
+      expect(r.votes).toBeGreaterThanOrEqual(40);
+      expect(r.percent).toBeGreaterThanOrEqual(0);
+      expect(r.percent).toBeLessThanOrEqual(100);
+    }
+  });
+});

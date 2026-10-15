@@ -1,0 +1,190 @@
+/* virusguard.example: loud 2007 scareware parody. Red alert box with a (motion-safe) blink,
+   a green shield, a beveled yellow BUY button. */
+.page {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: 12px 18px 20px;
+  color: #111111;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 12px;
+  background: linear-gradient(180deg, #ffffff 0%, #e8f3ff 100%);
+}
+
+.page button:focus-visible {
+  outline: 2px dashed #000000;
+  outline-offset: 2px;
+}
+
+.header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-bottom: 8px;
+  border-bottom: 3px solid #1f8f3a;
+}
+
+.brand {
+  margin: 0;
+  color: #0b4d1c;
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 26px;
+}
+
+.slogan {
+  margin: 0;
+  color: #555555;
+  font-style: italic;
+}
+
+.alert {
+  margin: 12px 0;
+  padding: 10px;
+  color: #ffffff;
+  text-align: center;
+  background: #cc0000;
+  border: 3px solid #ffcc00;
+  animation: blink 0.9s steps(2, start) infinite;
+}
+
+.alert p {
+  margin: 4px 0;
+}
+
+.alertBig {
+  font-family: Impact, 'Arial Black', sans-serif;
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+
+.scan h2,
+.testimonials h2 {
+  margin: 8px 0 4px;
+  font-size: 15px;
+}
+
+.progress {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin: 4px 0 8px;
+}
+
+.meter {
+  display: inline-block;
+  width: 160px;
+  height: 12px;
+  background: #ffffff;
+  border: 1px solid #555555;
+}
+
+.meter span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(90deg, #1f8f3a 0 8px, #ffffff 8px 10px);
+}
+
+.threats {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.threats th,
+.threats td {
+  padding: 3px 6px;
+  text-align: left;
+  border: 1px solid #aaaaaa;
+}
+
+.threats th {
+  background: #dddddd;
+}
+
+.risk {
+  color: #cc0000;
+  font-weight: bold;
+}
+
+.offer {
+  margin: 14px 0;
+  padding: 10px;
+  text-align: center;
+  background: #fffbe0;
+  border: 2px dashed #cc9900;
+}
+
+.price {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.offerNote {
+  margin: 2px 0 8px;
+  color: #cc0000;
+}
+
+.buy {
+  padding: 6px 22px;
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 16px;
+  background: linear-gradient(180deg, #ffee66, #ffbb00);
+  border: 3px outset #ffcc33;
+  cursor: pointer;
+}
+
+.buy:active {
+  border-style: inset;
+}
+
+.rescan {
+  padding: 6px 12px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.message {
+  margin: 8px 0 0;
+  font-weight: bold;
+}
+
+.seals {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0 0;
+}
+
+.seals span {
+  padding: 4px 8px;
+  color: #0b4d1c;
+  font-size: 10px;
+  font-weight: bold;
+  border: 2px solid #1f8f3a;
+  border-radius: 50%;
+}
+
+.testimonials blockquote {
+  margin: 4px 0 4px 12px;
+  font-style: italic;
+}
+
+.fineprint {
+  margin-top: 16px;
+  color: #666666;
+  font-size: 10px;
+  text-align: center;
+}
+
+@keyframes blink {
+  to {
+    background: #990000;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .alert {
+    animation: none;
+  }
+}

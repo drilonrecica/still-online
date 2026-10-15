@@ -109,4 +109,16 @@ describe('web store: site actions', () => {
       { name: 'C', message: 'z' },
     ]);
   });
+
+  it('vote records the first answer per poll and persists it', () => {
+    web().vote('scrunchies', 1);
+    web().vote('scrunchies', 0);
+    web().vote('kyle-hair', 2);
+    web().vote('bad', -1);
+    expect(web().votes).toEqual({ scrunchies: 1, 'kyle-hair': 2 });
+    const saved = JSON.parse(
+      localStorage.getItem('still-online:v1:web') ?? '{}',
+    );
+    expect(saved.state.votes).toEqual({ scrunchies: 1, 'kyle-hair': 2 });
+  });
 });

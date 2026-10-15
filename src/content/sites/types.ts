@@ -1,6 +1,7 @@
 // Fictional web: the site registry contract (P4-01) and site content shapes (P4-03…P4-05).
 // See docs/architecture-v0.2.md → "Web".
 import type { ComponentType, LazyExoticComponent } from 'react';
+import type { PhotoSpec } from '@/os/fs/types';
 import type { PlayerProfile } from '../profiles/types';
 
 /** What every site page component receives from Web Explorer. */
@@ -71,6 +72,8 @@ export interface BlogPost {
   body: string;
   tags: readonly string[];
   comments: readonly BlogComment[];
+  /** A "paparazzi pic" drawn by `renderPhoto`; `caption` is shown under it. */
+  photo?: PhotoSpec;
 }
 
 export interface NewsPost {
@@ -82,6 +85,8 @@ export interface NewsPost {
 
 export interface Poll {
   id: string;
+  /** The poll runs from this day until a newer one starts. */
+  day: number;
   question: string;
   options: readonly string[];
 }

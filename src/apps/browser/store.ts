@@ -37,6 +37,8 @@ export interface WebStore extends WebState {
   signGuestbook: (host: string, entry: PlayerGuestbookEntry) => void;
   /** Saves the player's Spaceport `/me` profile. */
   saveProfile: (profile: PlayerProfile) => void;
+  /** Records the player's answer to poll `pollId`; the first vote sticks ("u already voted!!"). */
+  vote: (pollId: string, option: number) => void;
 }
 
 const str = (v: unknown): v is string => typeof v === 'string';
@@ -148,6 +150,12 @@ export const useWebStore = create<WebStore>()(
           },
         })),
       saveProfile: (profile) => set({ myProfile: profile }),
+      vote: (pollId, option) =>
+        set((s) =>
+          pollId in s.votes || !count(option)
+            ? s
+            : { votes: { ...s.votes, [pollId]: option } },
+        ),
       addFavorite: ({ title, url }) =>
         set((s) => {
           const key = normalizeUrl(url);

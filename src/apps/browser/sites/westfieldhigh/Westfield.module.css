@@ -1,0 +1,171 @@
+/* westfield-high.example: a slightly boring 2001 district template. Maroon and gold header,
+   a grey nav column, Times New Roman, table layout. No counters, no animation. */
+.page {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  color: #000000;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 14px;
+  background: #e8e4d8;
+}
+
+.page a {
+  color: #0000cc;
+}
+
+.page a:visited {
+  color: #551a8b;
+}
+
+.page a:focus-visible {
+  outline: 2px solid #7a1020;
+  outline-offset: 1px;
+}
+
+.frame {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background: #ffffff;
+  border: 1px solid #999999;
+}
+
+.header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 12px;
+  color: #ffffff;
+  background: #7a1020;
+  border-bottom: 4px solid #d8b84a;
+}
+
+.crest {
+  flex: none;
+}
+
+.name {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.motto {
+  margin: 0;
+  color: #d8b84a;
+  font-style: italic;
+}
+
+.today {
+  margin: 0 0 0 auto;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+}
+
+.side {
+  width: 150px;
+  padding: 10px 8px;
+  vertical-align: top;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  background: #d4d0c8;
+  border-right: 1px solid #999999;
+}
+
+.side ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.side li {
+  margin: 0 0 6px;
+}
+
+.side li::before {
+  content: '» ';
+  color: #7a1020;
+}
+
+.sideNote {
+  margin-top: 16px;
+  font-weight: bold;
+}
+
+.sideNote span {
+  color: #666666;
+  font-weight: normal;
+}
+
+.content {
+  padding: 10px 14px;
+  vertical-align: top;
+}
+
+.heading {
+  margin: 4px 0 8px;
+  color: #7a1020;
+  font-size: 18px;
+  border-bottom: 1px solid #d8b84a;
+}
+
+.principal {
+  padding: 6px 8px;
+  font-style: italic;
+  background: #f6f1dc;
+  border: 1px solid #d8b84a;
+}
+
+.news {
+  margin: 0 0 12px;
+}
+
+.news h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.byline {
+  margin: 0 0 4px;
+  color: #666666;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+}
+
+.news p {
+  margin-top: 0;
+}
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.grid th,
+.grid td {
+  padding: 3px 6px;
+  text-align: left;
+  border: 1px solid #999999;
+}
+
+.grid th {
+  color: #ffffff;
+  background: #7a1020;
+}
+
+.grid tbody tr:nth-child(even) {
+  background: #f2f2f2;
+}
+
+.footer {
+  padding: 8px;
+  color: #444444;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  text-align: center;
+  background: #eeeeee;
+  border-top: 1px solid #999999;
+}
