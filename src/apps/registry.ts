@@ -24,6 +24,8 @@ import notepad16 from '@/assets/icons/notepad-16.svg';
 import notepad32 from '@/assets/icons/notepad-32.svg';
 import paint16 from '@/assets/icons/paint-16.svg';
 import paint32 from '@/assets/icons/paint-32.svg';
+import photobooth16 from '@/assets/icons/photobooth-16.svg';
+import photobooth32 from '@/assets/icons/photobooth-32.svg';
 import tunemole16 from '@/assets/icons/tunemole-16.svg';
 import tunemole32 from '@/assets/icons/tunemole-32.svg';
 import recycleBin16 from '@/assets/icons/recyclebin-16.svg';
@@ -236,6 +238,20 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     showInStartMenu: true,
     category: 'accessories',
     pinned: true,
+  },
+  photobooth: {
+    id: 'photobooth',
+    title: 'Snapshot Booth',
+    icon16: photobooth16,
+    icon32: photobooth32,
+    component: lazy(() => import('./photobooth/Photobooth')),
+    defaultSize: { w: 560, h: 480 },
+    minSize: { w: 420, h: 380 },
+    singleInstance: true,
+    chrome: 'xp',
+    showOnDesktop: false,
+    showInStartMenu: true,
+    category: 'accessories',
   },
   recyclebin: {
     id: 'recyclebin',

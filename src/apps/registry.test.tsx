@@ -30,6 +30,7 @@ describe('registry', () => {
       'amplifier',
       'notepad',
       'paint',
+      'photobooth',
       'recyclebin',
     ]);
     for (const app of listApps()) {
@@ -57,6 +58,7 @@ describe('registry', () => {
       amplifier: ['entertainment', true],
       notepad: ['accessories', true],
       paint: ['accessories', true],
+      photobooth: ['accessories', false],
       recyclebin: ['system', false],
     });
   });
