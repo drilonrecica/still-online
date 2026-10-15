@@ -65,6 +65,18 @@
   outline: none;
 }
 
+.tile:disabled {
+  cursor: default;
+  background: transparent;
+  border-color: transparent;
+}
+
+.noName {
+  font-weight: normal;
+  font-style: italic;
+  opacity: 0.8;
+}
+
 .tile img {
   border: 2px solid #fff;
   border-radius: 4px;

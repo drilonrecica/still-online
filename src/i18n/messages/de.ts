@@ -12,7 +12,6 @@ export const de: Messages = {
     browse: 'Durchsuchen…',
   },
   defaults: {
-    playerName: 'Spieler',
     awayMessage: 'bin gleich wieder da',
     screensaverText: 'still online...',
   },
@@ -61,6 +60,7 @@ export const de: Messages = {
   login: {
     prompt: 'Klicken Sie auf Ihren Benutzernamen, um zu beginnen',
     logOnAs: 'Als {name} anmelden',
+    enterName: 'Geben Sie Ihren Namen ein',
     yourName: 'Ihr Name',
     hint: 'Nach der Anmeldung können Sie mit dem Chatten beginnen.',
   },

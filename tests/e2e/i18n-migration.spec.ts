@@ -32,7 +32,14 @@ for (const [locale, lang] of [
       await expect(page.getByTestId('login-screen')).toBeVisible();
       await expect(page.locator('html')).toHaveAttribute('lang', lang);
 
-      await page.getByRole('button', { name: /^(Log on as|Als) / }).click();
+      // The v0.2 save has the old default name 'Player', which no longer counts as a name:
+      // logon waits until the player types one.
+      const logOn = page.getByRole('button', { name: /^(Log on as|Als) / });
+      await expect(logOn).toHaveCount(0);
+      await page
+        .getByLabel(lang === 'de' ? 'Ihr Name' : 'Your name')
+        .fill('Ada');
+      await logOn.click();
       await expect(page.getByTestId('desktop')).toBeVisible();
 
       // Restored windows re-render their titles in the active language.

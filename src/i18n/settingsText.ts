@@ -6,19 +6,14 @@ import { getLocale, translate } from './t';
 import type { Locale } from './types';
 import { useT } from './useT';
 
-/** The player's name in the current locale. */
+/** The player's name. Login won't log on without one, so `''` only ever shows before logon. */
 export function getPlayerName(): string {
-  return (
-    useSettingsStore.getState().playerName ??
-    translate(getLocale(), 'defaults.playerName')
-  );
+  return useSettingsStore.getState().playerName ?? '';
 }
 
-/** `getPlayerName()` for components; re-renders on a name or language change. */
+/** `getPlayerName()` for components; re-renders on a name change. */
 export function usePlayerName(): string {
-  const name = useSettingsStore((s) => s.playerName);
-  const t = useT();
-  return name ?? t('defaults.playerName');
+  return useSettingsStore((s) => s.playerName) ?? '';
 }
 
 /** The away message auto-away and the manual prompt start from. */

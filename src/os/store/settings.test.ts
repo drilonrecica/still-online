@@ -235,10 +235,10 @@ describe('localized defaults (playerName, awayMessage, screensaver text)', () =>
       awayMessage: null,
       screensaver: { text: null },
     });
-    expect([getPlayerName(), getAwayMessage()]).toEqual(['Player', 'brb']);
+    expect([getPlayerName(), getAwayMessage()]).toEqual(['', 'brb']);
     useSettingsStore.setState({ language: 'de' });
     expect([getPlayerName(), getAwayMessage()]).toEqual([
-      'Spieler',
+      '',
       'bin gleich wieder da',
     ]);
     expect(screensaverText(s().screensaver)).toBe('still online...');
@@ -246,15 +246,15 @@ describe('localized defaults (playerName, awayMessage, screensaver text)', () =>
 
   it("store a value equal to the current language's default as null", () => {
     useSettingsStore.setState({ language: 'de' });
-    s().setPlayerName('Spieler');
     s().setAwayMessage('  bin gleich wieder da ');
     s().setScreensaver({ ...s().screensaver, text: 'still online...' });
     expect(s()).toMatchObject({
-      playerName: null,
       awayMessage: null,
       screensaver: { text: null },
     });
-    s().setPlayerName('Player'); // a real name in German
+    s().setPlayerName(' Spieler '); // typed at logon: a real name, kept trimmed
+    expect(s().playerName).toBe('Spieler');
+    s().setPlayerName('Player');
     s().setAwayMessage('');
     expect(s()).toMatchObject({ playerName: 'Player', awayMessage: '' });
   });

@@ -63,9 +63,9 @@ describe('v0.2 settings', () => {
       language: null,
     });
     expect(getLocale()).toBe('en');
-    expect(getPlayerName()).toBe('Player');
+    // 'Player' was the old default name, so the player is asked for a real one at logon.
+    expect(getPlayerName()).toBe('');
     useSettingsStore.getState().setLanguage('de');
-    expect(getPlayerName()).toBe('Spieler');
     expect(screensaverText(useSettingsStore.getState().screensaver)).toBe(
       'still online...',
     );
@@ -168,6 +168,8 @@ describe('v0.2 mail', () => {
     renderMails(useMailStore.getState().messages, 'en', playerAddress());
 
   it('migrates by kind and renders exactly the old mail in English', () => {
+    // The v0.2 player logs on again and types the name they had.
+    useSettingsStore.getState().setPlayerName('Player');
     const records = useMailStore.getState().messages;
     const kinds = records.map((r) => r.kind);
     expect(kinds.filter((k) => k === 'content')).toHaveLength(9);

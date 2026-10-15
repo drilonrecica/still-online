@@ -205,7 +205,7 @@ export const TITLEBAR_HEIGHT = 30;
 // ---------------------------------------------------------------------------
 
 export interface SettingsStore {
-  /** `null` = the localized default (`Player`/`Spieler`); read it with `getPlayerName()`. */
+  /** `null` = no name chosen yet (Login asks for one); read it with `getPlayerName()`. */
   playerName: string | null;
   muted: boolean;
   /** 0..1 */

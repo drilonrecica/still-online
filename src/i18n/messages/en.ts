@@ -12,7 +12,6 @@ export const en = {
   },
   /** Localized defaults for settings stored as `null` (docs/i18n.md → "settings"). */
   defaults: {
-    playerName: 'Player',
     awayMessage: 'brb',
     screensaverText: 'still online...',
   },
@@ -63,6 +62,7 @@ export const en = {
   login: {
     prompt: 'To begin, click your user name',
     logOnAs: 'Log on as {name}',
+    enterName: 'Enter a name to log on',
     yourName: 'Your name',
     hint: 'After you log on, you can start chatting.',
   },

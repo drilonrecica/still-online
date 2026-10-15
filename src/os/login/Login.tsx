@@ -1,4 +1,5 @@
-// Blue welcome screen with a single account tile. First visit asks for a name.
+// Blue welcome screen with a single account tile. Asks for a name until one is saved: there is
+// no default name, so the tile can't log on while the name is blank.
 import { LanguageSelect } from '@/i18n/LanguageSelect';
 import { usePlayerName } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
@@ -14,11 +15,13 @@ export function Login() {
   const logOn = useSessionStore((s) => s.logOn);
   const savedName = usePlayerName();
   const firstVisit = !useSettingsStore((s) => s.firstBootDone);
+  const askName = firstVisit || !savedName;
   const setPlayerName = useSettingsStore((s) => s.setPlayerName);
   const markFirstBootDone = useSettingsStore((s) => s.markFirstBootDone);
-  // null = untouched: the field shows the saved (or localized default) name.
+  // null = untouched: the field shows the saved name (empty when there is none).
   const [edited, setDraft] = useState<string | null>(null);
   const draft = edited ?? savedName;
+  const name = askName ? draft.trim() : savedName;
   const submitted = useRef(false);
   const t = useT();
   const locale = useLocale();
@@ -26,16 +29,14 @@ export function Login() {
 
   function submit(e?: FormEvent) {
     e?.preventDefault();
-    if (submitted.current) return;
+    if (submitted.current || !name) return;
     submitted.current = true;
-    if (firstVisit) {
-      setPlayerName(draft.trim() || savedName);
+    if (askName) {
+      setPlayerName(name);
       markFirstBootDone();
     }
     logOn();
   }
-
-  const name = firstVisit ? draft.trim() || savedName : savedName;
 
   return (
     <div className={styles.login} data-testid="login-screen">
@@ -47,12 +48,17 @@ export function Login() {
         <button
           type="submit"
           className={styles.tile}
-          aria-label={t('login.logOnAs', { name })}
+          disabled={!name}
+          aria-label={
+            name ? t('login.logOnAs', { name }) : t('login.enterName')
+          }
         >
           <img src={avatar} alt="" width={48} height={48} />
-          <span className={styles.name}>{name}</span>
+          <span className={name ? styles.name : styles.noName}>
+            {name || t('login.enterName')}
+          </span>
         </button>
-        {firstVisit && (
+        {askName && (
           <label className={styles.field}>
             {t('login.yourName')}
             <input

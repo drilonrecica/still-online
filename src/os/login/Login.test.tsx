@@ -7,7 +7,7 @@ import { useSettingsStore } from '@/os/store/settings';
 
 beforeEach(() => {
   useSessionStore.setState({ state: 'login' });
-  useSettingsStore.setState({ playerName: 'Player', firstBootDone: false });
+  useSettingsStore.setState({ playerName: null, firstBootDone: false });
 });
 
 describe('Login', () => {
@@ -22,15 +22,29 @@ describe('Login', () => {
     expect(useSessionStore.getState().state).toBe('desktop');
   });
 
-  it('falls back to "Player" for an empty name', () => {
+  it('has no default name: a blank name cannot log on', () => {
+    render(<Login />);
+    const field = screen.getByLabelText('Your name');
+    expect(field).toHaveValue('');
+    const tile = screen.getByRole('button', { name: 'Enter a name to log on' });
+    expect(tile).toBeDisabled();
+    fireEvent.change(field, { target: { value: '   ' } });
+    expect(tile).toBeDisabled();
+    fireEvent.submit(tile.closest('form')!);
+    expect(useSettingsStore.getState().playerName).toBeNull();
+    expect(getPlayerName()).toBe('');
+    expect(useSessionStore.getState().state).toBe('login');
+  });
+
+  it('asks again on a return visit that has no name (old default migrated away)', () => {
+    useSettingsStore.setState({ playerName: null, firstBootDone: true });
     render(<Login />);
     fireEvent.change(screen.getByLabelText('Your name'), {
-      target: { value: '   ' },
+      target: { value: ' Mo ' },
     });
-    fireEvent.submit(screen.getByRole('button').closest('form')!);
-    // The default is stored as null, so it follows the language.
-    expect(useSettingsStore.getState().playerName).toBeNull();
-    expect(getPlayerName()).toBe('Player');
+    fireEvent.click(screen.getByRole('button', { name: /log on as mo/i }));
+    expect(useSettingsStore.getState().playerName).toBe('Mo');
+    expect(useSessionStore.getState().state).toBe('desktop');
   });
 
   it('return visit: shows the saved name without a name field', () => {

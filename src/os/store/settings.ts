@@ -23,6 +23,7 @@ const WALLPAPER_POSITIONS: readonly WallpaperPosition[] = [
   'stretch',
 ];
 
+export const MAX_PLAYER_NAME = 20;
 export const MAX_AWAY_MESSAGE = 60;
 export const MAX_AWAY_MINUTES = 60;
 
@@ -51,7 +52,7 @@ function storedText(
 
 /**
  * Untrusted persisted text for a field with a localized default: `null` stays `null`, and so
- * does any locale's default (v0.2 saves stored `'Player'`, `'brb'` and `'still online...'`).
+ * does any locale's default (v0.2 saves stored `'brb'` and `'still online...'`).
  */
 function sanitizeDefaulted(
   field: DefaultField,
@@ -62,6 +63,17 @@ function sanitizeDefaulted(
   if (typeof v !== 'string') return undefined;
   const text = v.slice(0, max);
   return isLocalizedDefault(field, text) ? null : text;
+}
+
+/** The default names v0.2/v0.3 stored or showed; a save holding one has no real name yet. */
+const LEGACY_DEFAULT_NAMES: readonly string[] = ['Player', 'Spieler'];
+
+/** The player's name: trimmed, 1–20 chars, or `null` (not chosen yet, so Login asks). */
+export function sanitizePlayerName(v: unknown): string | null | undefined {
+  if (v === null) return null;
+  if (typeof v !== 'string') return undefined;
+  const name = v.trim().slice(0, MAX_PLAYER_NAME);
+  return name && !LEGACY_DEFAULT_NAMES.includes(name) ? name : null;
 }
 
 /** `value` unless it is `undefined` (invalid); `null` is a real value here. */
@@ -172,7 +184,9 @@ export const useSettingsStore = create<SettingsStore>()(
         assistantEnabled: SETTINGS_V02_DEFAULTS.assistantEnabled,
         language: null,
         setPlayerName: (playerName) =>
-          set({ playerName: storedText('playerName', playerName, locale()) }),
+          set({
+            playerName: playerName.trim().slice(0, MAX_PLAYER_NAME) || null,
+          }),
         setMuted: (muted) => set({ muted }),
         toggleMuted: () => set((s) => ({ muted: !s.muted })),
         setVolume: (volume) => set({ volume: clamp01(volume) }),
@@ -269,13 +283,10 @@ export const useSettingsStore = create<SettingsStore>()(
         const p = persisted;
         return {
           ...current,
-          playerName:
-            p.playerName === ''
-              ? current.playerName
-              : orFallback(
-                  sanitizeDefaulted('playerName', p.playerName, Infinity),
-                  current.playerName,
-                ),
+          playerName: orFallback(
+            sanitizePlayerName(p.playerName),
+            current.playerName,
+          ),
           muted: typeof p.muted === 'boolean' ? p.muted : current.muted,
           volume:
             typeof p.volume === 'number' && Number.isFinite(p.volume)
