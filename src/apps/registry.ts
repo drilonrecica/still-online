@@ -4,6 +4,8 @@ import { setAppResolver } from '@/os/store/windows';
 import type { AppDefinition, AppId } from '@/os/types';
 import amplifier16 from '@/assets/icons/amplifier-16.svg';
 import amplifier32 from '@/assets/icons/amplifier-32.svg';
+import display16 from '@/assets/icons/display-16.svg';
+import display32 from '@/assets/icons/display-32.svg';
 import folder16 from '@/assets/icons/folder-16.svg';
 import folder32 from '@/assets/icons/folder-32.svg';
 import messenger16 from '@/assets/icons/messenger-16.svg';
@@ -28,6 +30,22 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     instanceKey: (props) =>
       typeof props.folder === 'string' ? props.folder : 'docs',
     chrome: 'xp',
+    showOnDesktop: false,
+    showInStartMenu: false,
+    category: 'system',
+  },
+  display: {
+    id: 'display',
+    title: 'Display Properties',
+    label: 'Display',
+    icon16: display16,
+    icon32: display32,
+    component: lazy(() => import('./display/Display')),
+    defaultSize: { w: 400, h: 440 },
+    minSize: { w: 400, h: 440 },
+    singleInstance: true,
+    chrome: 'xp',
+    fixedSize: true,
     showOnDesktop: false,
     showInStartMenu: false,
     category: 'system',

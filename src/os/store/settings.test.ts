@@ -103,3 +103,30 @@ describe('wallpaper settings', () => {
     expect(useSettingsStore.getState().wallpaperPosition).toBe('stretch');
   });
 });
+
+describe('theme and screensaver settings', () => {
+  it('defaults to blue and the Flying Panes saver', () => {
+    const s = useSettingsStore.getState();
+    expect(s.theme).toBe('blue');
+    expect(s.screensaver).toEqual(SETTINGS_V02_DEFAULTS.screensaver);
+  });
+
+  it('sets valid values and ignores invalid ones', () => {
+    const { setTheme, setScreensaver } = useSettingsStore.getState();
+    setTheme('olive');
+    setTheme('pink' as never);
+    expect(useSettingsStore.getState().theme).toBe('olive');
+    setScreensaver({ id: 'marquee', minutes: 99, text: 'hi' });
+    expect(useSettingsStore.getState().screensaver).toEqual({
+      id: 'marquee',
+      minutes: 60,
+      text: 'hi',
+    });
+    setScreensaver({ id: 'bogus' as never, minutes: 3, text: '' });
+    expect(useSettingsStore.getState().screensaver).toEqual({
+      id: 'marquee',
+      minutes: 3,
+      text: 'hi',
+    });
+  });
+});

@@ -29,3 +29,32 @@
   --xp-startmenu-width: 380px;
   --xp-startmenu-height: 480px;
 }
+
+/* Colour schemes (Display Properties → Appearance). `blue` is the :root default above. */
+[data-theme='olive'] {
+  --xp-titlebar-from: #8ba169;
+  --xp-titlebar-mid: #a3b87c;
+  --xp-titlebar-to: #b8c88f;
+  --xp-titlebar-inactive-from: #a9b595;
+  --xp-titlebar-inactive-to: #c4cdb0;
+  --xp-taskbar-from: #94a869;
+  --xp-taskbar-to: #7a8d52;
+  --xp-tray-from: #a3b87c;
+  --xp-tray-to: #7a8d52;
+  --xp-selection: #7a8d52;
+  --xp-startmenu-right: #e3e9cf;
+}
+
+[data-theme='silver'] {
+  --xp-titlebar-from: #a6a7b8;
+  --xp-titlebar-mid: #bfc0d0;
+  --xp-titlebar-to: #d6d7e4;
+  --xp-titlebar-inactive-from: #b9bac6;
+  --xp-titlebar-inactive-to: #dadbe3;
+  --xp-taskbar-from: #c3c4d0;
+  --xp-taskbar-to: #9c9db0;
+  --xp-tray-from: #b4b5c4;
+  --xp-tray-to: #9c9db0;
+  --xp-selection: #7d7e96;
+  --xp-startmenu-right: #e4e5ee;
+}

@@ -17,6 +17,7 @@ describe('registry', () => {
   it('lists the starter apps with 16/32px icons', () => {
     expect(listApps().map((a) => a.id)).toEqual([
       'explorer',
+      'display',
       'mycomputer',
       'messenger',
       'messenger-chat',
@@ -36,6 +37,7 @@ describe('registry', () => {
     );
     expect(meta).toEqual({
       explorer: ['system', false],
+      display: ['system', false],
       mycomputer: ['system', false],
       messenger: ['internet', true],
       'messenger-chat': [undefined, false],

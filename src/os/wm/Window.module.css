@@ -25,6 +25,21 @@
   height: auto;
 }
 
+/* Active window colours come from the colour scheme tokens (xp.css hard-codes Luna Blue). */
+.frame:global(.window) {
+  background: var(--xp-titlebar-from);
+}
+
+.frame:global(.window):not(.inactive) > .titleBar {
+  background: linear-gradient(
+    180deg,
+    var(--xp-titlebar-mid) 0%,
+    var(--xp-titlebar-from) 12%,
+    var(--xp-titlebar-from) 88%,
+    var(--xp-titlebar-to) 100%
+  );
+}
+
 .titleBar {
   flex: none;
   gap: 4px;

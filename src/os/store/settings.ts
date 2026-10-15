@@ -4,7 +4,10 @@ import { persist } from 'zustand/middleware';
 import { isRecord, persistOptions } from '@/os/persist';
 import {
   SETTINGS_V02_DEFAULTS,
+  type ScreensaverId,
+  type ScreensaverSettings,
   type SettingsStore,
+  type ThemeId,
   type WallpaperChoice,
   type WallpaperPosition,
 } from '@/os/types';
@@ -44,6 +47,38 @@ export function sanitizeWallpaperPosition(
   return WALLPAPER_POSITIONS.find((p) => p === v) ?? null;
 }
 
+const THEMES: readonly ThemeId[] = ['blue', 'olive', 'silver'];
+const SCREENSAVER_IDS: readonly ScreensaverId[] = [
+  'none',
+  'pipes',
+  'panes',
+  'marquee',
+  'slideshow',
+];
+export const MAX_SCREENSAVER_TEXT = 60;
+
+export function sanitizeTheme(v: unknown): ThemeId | null {
+  return THEMES.find((t) => t === v) ?? null;
+}
+
+/** Field-by-field: a bad field keeps `fallback`'s value. Minutes are whole, 0 (never) or 1–60. */
+export function sanitizeScreensaver(
+  v: unknown,
+  fallback: ScreensaverSettings,
+): ScreensaverSettings {
+  if (!isRecord(v)) return fallback;
+  const id = SCREENSAVER_IDS.find((s) => s === v.id) ?? fallback.id;
+  const minutes =
+    typeof v.minutes === 'number' && Number.isFinite(v.minutes)
+      ? Math.min(60, Math.max(0, Math.round(v.minutes)))
+      : fallback.minutes;
+  const text =
+    typeof v.text === 'string' && v.text.trim()
+      ? v.text.slice(0, MAX_SCREENSAVER_TEXT)
+      : fallback.text;
+  return { id, minutes, text };
+}
+
 type PersistedSettings = Pick<
   SettingsStore,
   | 'playerName'
@@ -53,6 +88,8 @@ type PersistedSettings = Pick<
   | 'smallScreenNoticeDismissed'
   | 'wallpaper'
   | 'wallpaperPosition'
+  | 'theme'
+  | 'screensaver'
 >;
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -65,6 +102,8 @@ export const useSettingsStore = create<SettingsStore>()(
       smallScreenNoticeDismissed: false,
       wallpaper: SETTINGS_V02_DEFAULTS.wallpaper,
       wallpaperPosition: SETTINGS_V02_DEFAULTS.wallpaperPosition,
+      theme: SETTINGS_V02_DEFAULTS.theme,
+      screensaver: SETTINGS_V02_DEFAULTS.screensaver,
       setPlayerName: (playerName) => set({ playerName }),
       setMuted: (muted) => set({ muted }),
       toggleMuted: () => set((s) => ({ muted: !s.muted })),
@@ -80,6 +119,12 @@ export const useSettingsStore = create<SettingsStore>()(
           wallpaperPosition:
             sanitizeWallpaperPosition(position) ?? s.wallpaperPosition,
         })),
+      setTheme: (theme) =>
+        set((s) => ({ theme: sanitizeTheme(theme) ?? s.theme })),
+      setScreensaver: (screensaver) =>
+        set((s) => ({
+          screensaver: sanitizeScreensaver(screensaver, s.screensaver),
+        })),
     }),
     persistOptions<SettingsStore, PersistedSettings>({
       name: 'settings',
@@ -91,6 +136,8 @@ export const useSettingsStore = create<SettingsStore>()(
         smallScreenNoticeDismissed,
         wallpaper,
         wallpaperPosition,
+        theme,
+        screensaver,
       }) => ({
         playerName,
         muted,
@@ -99,6 +146,8 @@ export const useSettingsStore = create<SettingsStore>()(
         smallScreenNoticeDismissed,
         wallpaper,
         wallpaperPosition,
+        theme,
+        screensaver,
       }),
       sanitize: (persisted, current) => {
         if (!isRecord(persisted)) return current;
@@ -126,6 +175,8 @@ export const useSettingsStore = create<SettingsStore>()(
           wallpaperPosition:
             sanitizeWallpaperPosition(p.wallpaperPosition) ??
             current.wallpaperPosition,
+          theme: sanitizeTheme(p.theme) ?? current.theme,
+          screensaver: sanitizeScreensaver(p.screensaver, current.screensaver),
         };
       },
     }),

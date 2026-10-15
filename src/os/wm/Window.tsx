@@ -64,7 +64,7 @@ export function Window({ win, app, active }: WindowProps) {
   }
 
   function onTitleDoubleClick(e: MouseEvent<HTMLDivElement>) {
-    if (isFromControl(e.target)) return;
+    if (isFromControl(e.target) || app.fixedSize) return;
     actions().toggleMaximize(win.id);
   }
 
@@ -102,6 +102,7 @@ export function Window({ win, app, active }: WindowProps) {
           <button
             type="button"
             aria-label={win.maximized ? 'Restore' : 'Maximize'}
+            disabled={app.fixedSize}
             onClick={() => actions().toggleMaximize(win.id)}
           />
           <button
@@ -112,7 +113,7 @@ export function Window({ win, app, active }: WindowProps) {
         </div>
       </div>
       <div className={styles.body}>{content}</div>
-      {!win.maximized && (
+      {!win.maximized && !app.fixedSize && (
         <ResizeHandles windowId={win.id} minSize={app.minSize ?? WM_MIN_SIZE} />
       )}
     </section>

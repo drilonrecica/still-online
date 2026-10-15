@@ -1,0 +1,166 @@
+/* Display Properties: xp.css tabs, with the dialog's own layout on top. */
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px 8px 6px;
+  background: var(--xp-face);
+  font-size: 11px;
+}
+
+.panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 10px;
+  overflow: auto;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+.buttons button {
+  min-width: 75px;
+}
+
+.monitor {
+  display: block;
+  margin: 0 auto;
+}
+
+.screen {
+  position: relative;
+  width: 152px;
+  height: 112px;
+  margin: 0 auto;
+  background: #3a6ea5;
+  overflow: hidden;
+}
+
+.monitorFrame {
+  position: relative;
+  width: 192px;
+  padding: 18px 20px 30px;
+  margin: 0 auto;
+  background: linear-gradient(#e6e4d6, #bdbbad);
+  border: 1px solid #6b6a60;
+  border-radius: 8px 8px 4px 4px;
+}
+
+.monitorFrame::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  width: 70px;
+  height: 8px;
+  transform: translateX(-50%);
+  background: #bdbbad;
+  border: 1px solid #6b6a60;
+  border-top: none;
+}
+
+.list {
+  flex: 1;
+  min-height: 70px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #fff;
+  border: 2px inset #fff;
+  box-shadow: inset 0 0 0 1px #7f9db9;
+  overflow-y: auto;
+}
+
+.option {
+  padding: 2px 4px;
+  cursor: default;
+}
+
+.option[aria-selected='true'] {
+  background: var(--xp-selection);
+  color: #fff;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.row label {
+  white-space: nowrap;
+}
+
+.grow {
+  flex: 1;
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(8, 18px);
+  gap: 3px;
+}
+
+.swatch {
+  width: 18px;
+  height: 18px;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid #555;
+}
+
+.swatch[aria-pressed='true'] {
+  outline: 2px solid #000;
+  outline-offset: 1px;
+}
+
+.hint {
+  margin: 0;
+  color: #555;
+}
+
+.schemePreview {
+  position: relative;
+  height: 110px;
+  background: #3a6ea5;
+  border: 1px solid #555;
+}
+
+.schemeWindow {
+  position: absolute;
+  left: 20px;
+  top: 16px;
+  width: 150px;
+  height: 64px;
+  border: 3px solid var(--xp-titlebar-from);
+  background: var(--xp-face);
+}
+
+.schemeTitle {
+  height: 14px;
+  margin: -1px -1px 0;
+  background: linear-gradient(
+    90deg,
+    var(--xp-titlebar-from),
+    var(--xp-titlebar-to)
+  );
+}
+
+.schemeTaskbar {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 14px;
+  background: linear-gradient(
+    180deg,
+    var(--xp-taskbar-from),
+    var(--xp-taskbar-to)
+  );
+}

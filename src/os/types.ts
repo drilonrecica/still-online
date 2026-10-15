@@ -135,6 +135,8 @@ export interface AppDefinition {
   category?: AppCategory;
   /** Shown in the Start menu's left column (32px icon). */
   pinned?: boolean;
+  /** No resize handles and no maximize (dialogs such as Display Properties). */
+  fixedSize?: boolean;
 }
 
 /**
@@ -193,6 +195,8 @@ export interface SettingsStore {
   smallScreenNoticeDismissed: boolean;
   wallpaper: WallpaperChoice;
   wallpaperPosition: WallpaperPosition;
+  theme: ThemeId;
+  screensaver: ScreensaverSettings;
   setPlayerName: (name: string) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
@@ -201,6 +205,8 @@ export interface SettingsStore {
   dismissSmallScreenNotice: () => void;
   setWallpaper: (wallpaper: WallpaperChoice) => void;
   setWallpaperPosition: (position: WallpaperPosition) => void;
+  setTheme: (theme: ThemeId) => void;
+  setScreensaver: (screensaver: ScreensaverSettings) => void;
 }
 
 // v0.2 settings fields. Each implementing task moves its fields into `SettingsStore` (with a

@@ -1,5 +1,5 @@
 // Desktop icon grid: one icon per resolved shortcut, in a column top-left.
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import recycleBinFull32 from '@/assets/icons/recyclebin-full-32.svg';
 import { FS_FOLDERS } from '@/os/fs/types';
@@ -31,6 +31,22 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
     Object.values(s.nodes).some((n) => n.parentId === FS_FOLDERS.recycle),
   );
   const [selected, setSelected] = useState<string | null>(null);
+  const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
+
+  // Any click elsewhere, Escape or a blur closes the context menu.
+  useEffect(() => {
+    if (!menu) return;
+    const close = () => setMenu(null);
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+    };
+    window.addEventListener('pointerdown', close);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('pointerdown', close);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [menu]);
 
   function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
     if (icons.length === 0) return;
@@ -59,6 +75,11 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
       tabIndex={0}
       onKeyDown={onKeyDown}
       onClick={() => setSelected(null)}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setSelected(null);
+        setMenu({ x: e.clientX, y: e.clientY });
+      }}
     >
       {icons.map((app) => (
         <div
@@ -90,6 +111,44 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
           <span className={styles.label}>{app.label}</span>
         </div>
       ))}
+      {menu && (
+        <ul
+          className={styles.menu}
+          role="menu"
+          style={{ left: menu.x, top: menu.y }}
+          // Keep the window-level close handler from running before the item's click.
+          onPointerDown={(e) => e.stopPropagation()}
+          onContextMenu={(e) => e.preventDefault()}
+        >
+          <li
+            role="menuitem"
+            className={styles.menuItem}
+            onClick={() => {
+              setMenu(null);
+              openApp('display');
+            }}
+          >
+            Properties
+          </li>
+          <li
+            role="menuitem"
+            className={styles.menuItem}
+            onClick={() => setMenu(null)}
+          >
+            Arrange Icons By ▸ Name
+          </li>
+          <li
+            role="menuitem"
+            className={styles.menuItem}
+            onClick={() => {
+              setMenu(null);
+              setSelected(null);
+            }}
+          >
+            Refresh
+          </li>
+        </ul>
+      )}
     </div>
   );
 }

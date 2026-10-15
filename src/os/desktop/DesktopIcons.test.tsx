@@ -133,3 +133,20 @@ describe('DesktopIcons', () => {
     ]);
   });
 });
+
+describe('desktop context menu', () => {
+  beforeEach(() => {
+    useWindowsStore.setState({ windows: [], topZ: 0 });
+  });
+
+  it('right-click shows Properties, which opens Display Properties', () => {
+    render(<DesktopIcons apps={apps} />);
+    fireEvent.contextMenu(screen.getByTestId('desktop'));
+    expect(screen.getByRole('menuitem', { name: /Refresh/ })).toBeVisible();
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Properties' }));
+    expect(useWindowsStore.getState().windows.map((w) => w.appId)).toEqual([
+      'display',
+    ]);
+    expect(screen.queryByRole('menu')).toBeNull();
+  });
+});

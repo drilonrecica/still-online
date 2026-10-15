@@ -4,12 +4,14 @@ import { installAmplifierRouter } from '@/os/amplifierRouter';
 import { Boot } from '@/os/boot/Boot';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
 import { installIdle } from '@/os/idle';
+import { installKonami } from '@/os/konami';
 import { Login } from '@/os/login/Login';
 // Side-effect import: track what's playing from boot, before any app that reads it loads.
 import '@/os/nowPlaying';
 import { SmallScreenNotice } from '@/os/notice/SmallScreenNotice';
 import { installGestureUnlock, playSound } from '@/os/sound';
 import { useSessionStore } from '@/os/store/session';
+import { useSettingsStore } from '@/os/store/settings';
 import { OffScreen } from '@/os/startmenu/OffScreen';
 import { StartMenu } from '@/os/startmenu/StartMenu';
 import { Taskbar } from '@/os/taskbar/Taskbar';
@@ -41,10 +43,17 @@ export function App() {
   const state = useSessionStore((s) => s.state);
   const shutdownComplete = useSessionStore((s) => s.shutdownComplete);
   const background = useDesktopBackground();
+  const theme = useSettingsStore((s) => s.theme);
+
+  // The colour scheme: tokens.css restyles the shell from this attribute.
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
 
   useEffect(() => installGestureUnlock(), []);
   useEffect(() => installAmplifierRouter(), []);
   useEffect(() => installIdle(), []);
+  useEffect(() => (state === 'desktop' ? installKonami() : undefined), [state]);
 
   // Session sounds: startup at the welcome screen, logon/logoff on transitions.
   const previous = useRef(state);

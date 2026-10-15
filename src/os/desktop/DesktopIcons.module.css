@@ -48,3 +48,27 @@
   background: #316ac5;
   text-shadow: none;
 }
+
+/* Desktop right-click menu. */
+.menu {
+  position: fixed;
+  z-index: 5;
+  min-width: 170px;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #848484;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.35);
+  font-size: 11px;
+}
+
+.menuItem {
+  padding: 4px 22px;
+  color: #000;
+}
+
+.menuItem:hover {
+  background: var(--xp-selection);
+  color: #fff;
+}
