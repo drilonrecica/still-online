@@ -1,6 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { App } from '@/App';
+import { useFsStore } from '@/os/fs/store';
 import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWorldStore, WORLD_DEFAULTS } from '@/os/world';
@@ -33,6 +34,15 @@ describe('App', () => {
       day: 2,
       shutdownPending: false,
     });
+  });
+
+  it('seeds the family computer files on start', () => {
+    render(<App />);
+    const fs = useFsStore.getState();
+    expect(fs.get('seed:bio-project-draft')?.parentId).toBe('docs');
+    expect(fs.list('recycle').map((n) => n.name)).toContain(
+      'pony_fanfic_by_pia.txt',
+    );
   });
 
   it('paints the chosen wallpaper on the desktop root', () => {

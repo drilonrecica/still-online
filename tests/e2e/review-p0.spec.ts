@@ -29,7 +29,7 @@ test('P0 gate: All Programs, My Documents, Recycle Bin @review', async ({
   await page.getByRole('option', { name: 'My Documents' }).first().dblclick();
   const docs = page.getByRole('region', { name: 'My Documents' });
   await expect(docs).toBeVisible();
-  await docs.getByRole('option', { name: /bio_project/ }).click();
+  await docs.getByRole('option', { name: /bio_project\.txt/ }).click();
   await page.mouse.move(900, 650);
   await page.screenshot({ path: `${DIR}/my-documents.png` });
 

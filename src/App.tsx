@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { getApp } from '@/apps/registry';
+import { SEED_FILES } from '@/content/files';
 import { installAmplifierRouter } from '@/os/amplifierRouter';
 import { installBalloons } from '@/os/balloon/schedule';
 import { Boot } from '@/os/boot/Boot';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
 import { installIdle } from '@/os/idle';
+import { useFsStore } from '@/os/fs/store';
 import { installKonami } from '@/os/konami';
 import { Login } from '@/os/login/Login';
 // Side-effect import: track what's playing from boot, before any app that reads it loads.
@@ -57,6 +59,8 @@ export function App() {
     document.documentElement.dataset.theme = theme;
   }, [theme]);
 
+  // Seed the family computer's files; ids the player purged or already has are skipped.
+  useEffect(() => useFsStore.getState().seed(SEED_FILES), []);
   useEffect(() => installGestureUnlock(), []);
   useEffect(() => installAmplifierRouter(), []);
   useEffect(() => installIdle(), []);

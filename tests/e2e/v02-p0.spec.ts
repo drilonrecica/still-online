@@ -23,7 +23,9 @@ test('P0: All Programs flyout, My Documents, delete → Recycle Bin → restore'
   const docs = page.getByRole('region', { name: 'My Documents' });
   await expect(docs).toBeVisible();
   const list = docs.getByRole('listbox', { name: 'My Documents' });
-  await expect(list.getByRole('option', { name: /bio_project/ })).toBeVisible();
+  await expect(
+    list.getByRole('option', { name: /bio_project\.txt/ }),
+  ).toBeVisible();
 
   // Delete a file: it leaves the folder and shows up in the Recycle Bin.
   await list.getByRole('option', { name: /todo/ }).click();

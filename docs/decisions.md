@@ -86,3 +86,6 @@
 - P1-05: Sound voices gained `release` (hold the peak, fade only at the end) besides the spec's `glideTo`; telephone tones are steady, and the default envelope decays over the whole voice.
 - P1-05: `playSound` now returns a stopper; `cancel()` uses it to cut the handshake short.
 - P1-05: The P1 e2e file is `tests/e2e/v02-p1.spec.ts` (lowercase, like `v02-p0.spec.ts`). It records balloon texts with a MutationObserver because balloons last only 90 ms under `?speed=fast`.
+- P1-06: `notes.txt` is not seeded: P1-07's migration creates it only when it's missing, so a seeded empty file would block moving old Notepad text into it. My Documents ships the other 8 files.
+- P1-06: Seed files carry fixed 2006–2007 timestamps (the family computer's history), not the real time; the diary keeps a 2004 creation date as if copied from the old PC.
+- P1-06: `App` calls `fs.seed(SEED_FILES)` once on mount (before boot), so the files exist from the first Explorer open; e2e selectors for `bio_project.txt` now match the exact name.
