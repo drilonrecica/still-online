@@ -36,6 +36,15 @@ describe('App', () => {
     });
   });
 
+  it('keeps <html lang> on the locale', () => {
+    render(<App />);
+    expect(document.documentElement.lang).toBe('en');
+    act(() => useSettingsStore.getState().setLanguage('de'));
+    expect(document.documentElement.lang).toBe('de');
+    act(() => useSettingsStore.getState().setLanguage('en'));
+    expect(document.documentElement.lang).toBe('en');
+  });
+
   it('seeds the family computer files on start', () => {
     render(<App />);
     const fs = useFsStore.getState();

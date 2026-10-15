@@ -165,3 +165,7 @@
 - P0-01: files the player creates from generated content (saved attachments, TuneMole downloads, snapshots) freeze in the language they were made in; seeds freeze only on rename/edit (`dirty`) — like files on a real disk, and keeps P0-04 bounded
 - P0-01: dynamic window titles store rendered names as `titleParams` and the owning app re-sets them on locale change — params can't name what to localize, and the app already knows the contact/folder/page
 - P0-01: the games store's `'Anonymous'` fallback becomes `''` + catalog text, assigned to P1-06 (games strings) — P0-04's store list doesn't include `games`
+- P0-02: `detectLocale` returns the first _supported_ language in the list (so `['en-GB','de']` → `en`, `['fr','de-DE']` → `de`), which is what the spec's examples require; a literal "first `de` entry" would make the first one German
+- P0-02: `setLanguage(null)` is allowed and means "back to detection"; unknown values also become `null`
+- P0-02: `t`/`useT` share one `translate(locale, key, …args)`; a key missing in a locale (or a stale key from an old save) falls back to English, then to the key text — rendering never throws
+- P0-02: the e2e `setLanguage(page, locale)` helper seeds `settings.language` once per tab (sessionStorage flag) so an in-game switch survives a reload; P0-07 swaps it for the login picker

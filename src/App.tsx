@@ -4,6 +4,7 @@ import { installMailDelivery } from '@/apps/mail/store';
 import { installDisplayPictureRoute } from '@/apps/messenger/displayPictureRoute';
 import { getApp } from '@/apps/registry';
 import { SEED_FILES } from '@/content/files';
+import { useLocale } from '@/i18n/useT';
 import { installAmplifierRouter } from '@/os/amplifierRouter';
 import { installAssistant } from '@/os/assistant/controller';
 import { installBalloons } from '@/os/balloon/schedule';
@@ -59,11 +60,17 @@ export function App() {
   const shutdownComplete = useSessionStore((s) => s.shutdownComplete);
   const background = useDesktopBackground();
   const theme = useSettingsStore((s) => s.theme);
+  const locale = useLocale();
 
   // The colour scheme: tokens.css restyles the shell from this attribute.
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
   }, [theme]);
+
+  // `<html lang>` follows the locale (index.html ships `lang="en"` until this runs).
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   // Seed the family computer's files; ids the player purged or already has are skipped.
   useEffect(() => {

@@ -1,5 +1,6 @@
 // Shared OS contracts. See docs/architecture.md for how the pieces fit together.
 import type { ComponentType, LazyExoticComponent } from 'react';
+import type { Locale } from '@/i18n/types';
 
 // ---------------------------------------------------------------------------
 // Session state machine
@@ -212,6 +213,11 @@ export interface SettingsStore {
   petEnabled: boolean;
   /** Stapley the stapler offers tips. */
   assistantEnabled: boolean;
+  /**
+   * The language the player chose; `null` = not chosen yet, so `detectLocale` decides. Read the
+   * effective locale only through `getLocale()`/`useLocale()` from `src/i18n/`.
+   */
+  language: Locale | null;
   setPlayerName: (name: string) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
@@ -229,6 +235,8 @@ export interface SettingsStore {
   setAwayMessage: (message: string) => void;
   setPetEnabled: (on: boolean) => void;
   setAssistantEnabled: (on: boolean) => void;
+  /** `null` goes back to detection. */
+  setLanguage: (language: Locale | null) => void;
 }
 
 // v0.2 settings fields. Each implementing task moves its fields into `SettingsStore` (with a

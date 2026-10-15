@@ -1,6 +1,7 @@
 // Settings store. Persisted under `still-online:v1:settings`.
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { isLocale } from '@/i18n/types';
 import { isRecord, persistOptions } from '@/os/persist';
 import {
   SETTINGS_V02_DEFAULTS,
@@ -106,6 +107,7 @@ type PersistedSettings = Pick<
   | 'awayMessage'
   | 'petEnabled'
   | 'assistantEnabled'
+  | 'language'
 >;
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -126,6 +128,7 @@ export const useSettingsStore = create<SettingsStore>()(
       awayMessage: SETTINGS_V02_DEFAULTS.awayMessage,
       petEnabled: SETTINGS_V02_DEFAULTS.petEnabled,
       assistantEnabled: SETTINGS_V02_DEFAULTS.assistantEnabled,
+      language: null,
       setPlayerName: (playerName) => set({ playerName }),
       setMuted: (muted) => set({ muted }),
       toggleMuted: () => set((s) => ({ muted: !s.muted })),
@@ -161,6 +164,8 @@ export const useSettingsStore = create<SettingsStore>()(
         set({ awayMessage: message.trim().slice(0, MAX_AWAY_MESSAGE) }),
       setPetEnabled: (petEnabled) => set({ petEnabled }),
       setAssistantEnabled: (assistantEnabled) => set({ assistantEnabled }),
+      setLanguage: (language) =>
+        set({ language: isLocale(language) ? language : null }),
     }),
     persistOptions<SettingsStore, PersistedSettings>({
       name: 'settings',
@@ -180,6 +185,7 @@ export const useSettingsStore = create<SettingsStore>()(
         awayMessage,
         petEnabled,
         assistantEnabled,
+        language,
       }) => ({
         playerName,
         muted,
@@ -196,6 +202,7 @@ export const useSettingsStore = create<SettingsStore>()(
         awayMessage,
         petEnabled,
         assistantEnabled,
+        language,
       }),
       sanitize: (persisted, current) => {
         if (!isRecord(persisted)) return current;
@@ -252,6 +259,8 @@ export const useSettingsStore = create<SettingsStore>()(
             typeof p.assistantEnabled === 'boolean'
               ? p.assistantEnabled
               : current.assistantEnabled,
+          // Unknown or missing → null: not chosen yet, so detection decides.
+          language: isLocale(p.language) ? p.language : null,
         };
       },
     }),

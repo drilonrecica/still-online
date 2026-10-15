@@ -183,3 +183,39 @@ describe('assistantEnabled', () => {
     useSettingsStore.getState().setAssistantEnabled(true);
   });
 });
+
+describe('language', () => {
+  it('defaults to null (detect), sets, and resets to detection', () => {
+    expect(initial.language).toBeNull();
+    const { setLanguage } = useSettingsStore.getState();
+    setLanguage('de');
+    expect(useSettingsStore.getState().language).toBe('de');
+    setLanguage('fr' as never);
+    expect(useSettingsStore.getState().language).toBeNull();
+    setLanguage('en');
+    setLanguage(null);
+    expect(useSettingsStore.getState().language).toBeNull();
+  });
+
+  it('persists and restores the choice', async () => {
+    useSettingsStore.getState().setLanguage('de');
+    const saved = localStorage.getItem(storageKey('settings')) ?? '';
+    expect(JSON.parse(saved).state.language).toBe('de');
+    useSettingsStore.setState(initial, true);
+    localStorage.setItem(storageKey('settings'), saved);
+    await useSettingsStore.persist.rehydrate();
+    expect(useSettingsStore.getState().language).toBe('de');
+  });
+
+  it('restores unknown or missing values (v0.2 saves) as null', async () => {
+    for (const state of [{ language: 'fr' }, { language: 7 }, {}]) {
+      useSettingsStore.setState(initial, true);
+      localStorage.setItem(
+        storageKey('settings'),
+        JSON.stringify({ version: 1, state }),
+      );
+      await useSettingsStore.persist.rehydrate();
+      expect(useSettingsStore.getState().language).toBeNull();
+    }
+  });
+});

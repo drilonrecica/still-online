@@ -1,5 +1,6 @@
 // Shared e2e steps. See docs/architecture-v0.2.md → "Testing".
 import { expect, type Locator, type Page } from '@playwright/test';
+import type { Locale } from '../../src/i18n/types';
 import { SETTINGS_V02_DEFAULTS } from '../../src/os/types';
 
 const SETTINGS_KEY = 'still-online:v1:settings';
@@ -46,6 +47,39 @@ async function quietIdle(page: Page) {
       }
     },
     { key: SETTINGS_KEY, screensaver: SETTINGS_V02_DEFAULTS.screensaver },
+  );
+}
+
+/**
+ * Chooses the game language before the app loads. Call it before `logIn`/`page.goto`. Seeds
+ * `settings.language` once per tab, so a later in-game switch survives a reload.
+ * TODO(P0-07): pick the language in the login screen's picker instead.
+ */
+export async function setLanguage(page: Page, language: Locale) {
+  await page.addInitScript(
+    ({ key, language }) => {
+      try {
+        if (sessionStorage.getItem('e2e:language-seeded')) return;
+        sessionStorage.setItem('e2e:language-seeded', '1');
+        const raw = localStorage.getItem(key);
+        const saved = raw
+          ? (JSON.parse(raw) as {
+              state?: Record<string, unknown>;
+              version?: number;
+            })
+          : {};
+        localStorage.setItem(
+          key,
+          JSON.stringify({
+            version: saved.version ?? 1,
+            state: { ...saved.state, language },
+          }),
+        );
+      } catch {
+        // Storage blocked: detection decides.
+      }
+    },
+    { key: SETTINGS_KEY, language },
   );
 }
 
