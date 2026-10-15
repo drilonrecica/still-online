@@ -299,18 +299,18 @@ Tests sit next to the code as `*.test.ts(x)`. Use path alias `@/` → `src/`.
 | P4-06 | **Mail** — the mail client app and store: folders, read/unread, compose with friends' auto-replies, attachments to the fs. | P3-G | done | sonnet | agent | — | fast | — | Inbox/Sent/Deleted work; per-day delivery; compose to a friend gets a canned reply; attachments save; needs a connection. | §P4-06 |
 | P4-07 | **Mail content** — days 1–5 of mail: chain letters, spam, Mr Dalton, mom, Spaceport notifications, friends. | P4-06 | done | opus | agent | — | — | — | ≥ 3 mails per day; links open sites; content lint passes; PG-13. | §P4-07 |
 | P4-08 | **TuneMole** — the fictional P2P app: search, peers, slow jittery downloads, stalls, a prank file; finished tracks land in My Music and the Amplifier. | P4-01 | done | sonnet | agent | — | fast | — | Search → download → progress → My Music file → enqueue; the prank opens Notepad; needs a connection; tested with fake timers. | §P4-08 |
-| P4-G | **P4 gate (self-review)** — follow "Task specs → Gate procedure" plus the web content rubric; screenshots of every site and page, Mail, TuneMole. | P4-01…P4-08 | in progress | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P4.md`. | §Gate |
+| P4-G | **P4 gate (self-review)** — follow "Task specs → Gate procedure" plus the web content rubric; screenshots of every site and page, Mail, TuneMole. | P4-01…P4-08 | done | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P4.md`. | §Gate |
 
 ## P5 — Creative and media
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P5-01 | **Paint** — the classic drawing app: tools, palette, undo, open/save to My Pictures, set as wallpaper or display picture. | P4-G | blocked | opus | agent | — | fast | — | Every tool works (logic unit-tested on a pixel buffer); save/open round-trip; set-as-wallpaper and DP work. | §P5-01 |
-| P5-02 | **Snapshot Booth** — webcam photos (local only) with filters and countdown, with an avatar-puppet fallback; saves to My Pictures. | P4-G | blocked | sonnet | agent | — | fast | — | Consent screen first; camera stops on close; filters render; fallback path works without a camera; photos saved. | §P5-02 |
-| P5-03 | **Amplifier skins + windowshade** — 3 original skins and a mini windowshade mode. | P4-G | blocked | sonnet | agent | — | fast | — | Skin menu switches and persists; windowshade toggles on titlebar double-click and resizes the window. | §P5-03 |
+| P5-01 | **Paint** — the classic drawing app: tools, palette, undo, open/save to My Pictures, set as wallpaper or display picture. | P4-G | in progress | opus | agent | — | fast | — | Every tool works (logic unit-tested on a pixel buffer); save/open round-trip; set-as-wallpaper and DP work. | §P5-01 |
+| P5-02 | **Snapshot Booth** — webcam photos (local only) with filters and countdown, with an avatar-puppet fallback; saves to My Pictures. | P4-G | ready | sonnet | agent | — | fast | — | Consent screen first; camera stops on close; filters render; fallback path works without a camera; photos saved. | §P5-02 |
+| P5-03 | **Amplifier skins + windowshade** — 3 original skins and a mini windowshade mode. | P4-G | ready | sonnet | agent | — | fast | — | Skin menu switches and persists; windowshade toggles on titlebar double-click and resizes the window. | §P5-03 |
 | P5-04 | **Amplifier equalizer** — 10-band EQ in the audio graph, with presets, a toggle and an EQ panel. | P5-03 | blocked | opus | agent | — | fast | — | Filters inserted once in the media-element graph; presets apply; persisted; panel resizes the window like the playlist. | §P5-04 |
 | P5-05 | **Amplifier playlist editing + Burn CD** — remove/reorder/add from My Music, `amplifier:enqueue`, and a "Burn CD…" joke. | P5-03 | blocked | sonnet | agent | — | fast | — | Edits persist; enqueue from TuneMole/Explorer/Spaceport plays; Burn CD fails with a "buffer underrun". | §P5-05 |
-| P5-06 | **More now-playing reactions** — a second `onNowPlaying` script for every friend, track-specific where it's funny. | P4-G | blocked | opus | agent | — | — | — | Lint + playthrough pass; ≥ 1 new script per contact. | §P5-06 |
+| P5-06 | **More now-playing reactions** — a second `onNowPlaying` script for every friend, track-specific where it's funny. | P4-G | ready | opus | agent | — | — | — | Lint + playthrough pass; ≥ 1 new script per contact. | §P5-06 |
 | P5-G | **P5 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: Paint with a drawing, Booth fallback, each skin, EQ, windowshade. | P5-01…P5-06 | blocked | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P5.md`. | §Gate |
 
 ## P6 — Games and cult

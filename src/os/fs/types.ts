@@ -78,6 +78,9 @@ export interface FsStore extends FsState {
   /** Returns the new id. Clashing names become `name (2).txt`, `name (3).txt`, … */
   createFile: (parentId: string, file: FsNewFile) => string;
   writeText: (id: string, text: string) => void;
+  /** Points an image at new bytes in the blob store (Paint's Save); drops a procedural photo
+   * and deletes the old blob. */
+  writeImage: (id: string, blobKey: string) => void;
   rename: (id: string, name: string) => void;
   /** Moves to `recycle` and sets `deletedFrom`; folders move with their contents. */
   remove: (id: string) => void;

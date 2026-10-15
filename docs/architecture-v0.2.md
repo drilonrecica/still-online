@@ -37,18 +37,19 @@ apps/<id>/ talk to each other only through `events`; they may import anything in
 
 Added to `OsEventMap`. Payloads written `{}` in the plan are typed `Record<string, never>`, so emit them as `emit('os:active', {})`.
 
-| Event                  | Payload                    | Emitted by → handled by                                                                                      |
-| ---------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `browser:open`         | `{ url }`                  | linkify links, Mail, Explorer links, balloons → `os/browserRouter.ts` opens `browser`                        |
-| `amplifier:enqueue`    | `{ trackId, play? }`       | Explorer, Spaceport, TuneMole → amplifier store; `os/amplifierRouter.ts` opens the window when `play` is set |
-| `game:score`           | `{ game, score, detail? }` | Mines/Hen Hunt/Pinball → Messenger runtime (`gameScore`)                                                     |
-| `world:dayChanged`     | `{ day }`                  | `world.onBoot` → new-day balloon, Stapley                                                                    |
-| `world:unlock`         | `{ id }`                   | `world.unlock` → Display Properties list                                                                     |
-| `network:connected`    | `{ kbps }`                 | `network` → balloon, Mail delivery                                                                           |
-| `network:disconnected` | `{}`                       | `network` → Messenger signs out                                                                              |
-| `os:idle`              | `{ minutes }`              | `idle` (one per threshold reached)                                                                           |
-| `os:active`            | `{}`                       | `idle` (first input after an `os:idle`) → Messenger leaves auto-away                                         |
-| `fs:changed`           | `{ ids }`                  | every fs mutation → views not driven by the store                                                            |
+| Event                         | Payload                    | Emitted by → handled by                                                                                      |
+| ----------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `browser:open`                | `{ url }`                  | linkify links, Mail, Explorer links, balloons → `os/browserRouter.ts` opens `browser`                        |
+| `amplifier:enqueue`           | `{ trackId, play? }`       | Explorer, Spaceport, TuneMole → amplifier store; `os/amplifierRouter.ts` opens the window when `play` is set |
+| `game:score`                  | `{ game, score, detail? }` | Mines/Hen Hunt/Pinball → Messenger runtime (`gameScore`)                                                     |
+| `world:dayChanged`            | `{ day }`                  | `world.onBoot` → new-day balloon, Stapley                                                                    |
+| `world:unlock`                | `{ id }`                   | `world.unlock` → Display Properties list                                                                     |
+| `network:connected`           | `{ kbps }`                 | `network` → balloon, Mail delivery                                                                           |
+| `network:disconnected`        | `{}`                       | `network` → Messenger signs out                                                                              |
+| `os:idle`                     | `{ minutes }`              | `idle` (one per threshold reached)                                                                           |
+| `os:active`                   | `{}`                       | `idle` (first input after an `os:idle`) → Messenger leaves auto-away                                         |
+| `fs:changed`                  | `{ ids }`                  | every fs mutation → views not driven by the store                                                            |
+| `messenger:setDisplayPicture` | `{ fileId }`               | Paint → `apps/messenger/displayPictureRoute.ts` (installed by App at boot) sets the player's display picture |
 
 P5-01 adds `messenger:setDisplayPicture { fileId }`. Every new event goes into `OsEventMap` first.
 

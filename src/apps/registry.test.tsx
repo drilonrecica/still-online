@@ -29,6 +29,7 @@ describe('registry', () => {
       'tunemole',
       'amplifier',
       'notepad',
+      'paint',
       'recyclebin',
     ]);
     for (const app of listApps()) {
@@ -55,6 +56,7 @@ describe('registry', () => {
       tunemole: ['internet', false],
       amplifier: ['entertainment', true],
       notepad: ['accessories', true],
+      paint: ['accessories', true],
       recyclebin: ['system', false],
     });
   });

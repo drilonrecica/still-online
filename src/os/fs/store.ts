@@ -124,6 +124,16 @@ export const useFsStore = create<FsStore>()(
           if (get().nodes[id]?.type === 'txt') update(id, { text });
         },
 
+        writeImage: (id, blobKey) => {
+          const node = get().nodes[id];
+          if (node?.type !== 'image' || node.blobKey === blobKey) return;
+          const next: FsNode = { ...node, blobKey, modifiedAt: Date.now() };
+          delete next.photo;
+          set({ nodes: { ...get().nodes, [id]: next } });
+          changed([id]);
+          dropBlobs([node]);
+        },
+
         rename: (id, name) => {
           const node = get().nodes[id];
           const cleaned = cleanName(name);

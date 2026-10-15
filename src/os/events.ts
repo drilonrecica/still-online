@@ -27,6 +27,8 @@ export interface OsEventMap {
   'os:idle': { minutes: number };
   /** First input after an `os:idle`. */
   'os:active': Record<string, never>;
+  /** Make an fs image the player's Messenger display picture (Paint). Messenger handles it. */
+  'messenger:setDisplayPicture': { fileId: string };
   /** fs nodes created, changed, moved or removed. */
   'fs:changed': { ids: string[] };
 }

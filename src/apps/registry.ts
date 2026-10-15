@@ -22,6 +22,8 @@ import myComputer16 from '@/assets/icons/mycomputer-16.svg';
 import myComputer32 from '@/assets/icons/mycomputer-32.svg';
 import notepad16 from '@/assets/icons/notepad-16.svg';
 import notepad32 from '@/assets/icons/notepad-32.svg';
+import paint16 from '@/assets/icons/paint-16.svg';
+import paint32 from '@/assets/icons/paint-32.svg';
 import tunemole16 from '@/assets/icons/tunemole-16.svg';
 import tunemole32 from '@/assets/icons/tunemole-32.svg';
 import recycleBin16 from '@/assets/icons/recyclebin-16.svg';
@@ -215,6 +217,22 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     singleInstance: false,
     chrome: 'xp',
     showOnDesktop: true,
+    showInStartMenu: true,
+    category: 'accessories',
+    pinned: true,
+  },
+  paint: {
+    id: 'paint',
+    title: 'untitled - Paint',
+    label: 'Paint',
+    icon16: paint16,
+    icon32: paint32,
+    component: lazy(() => import('./paint/Paint')),
+    defaultSize: { w: 720, h: 560 },
+    minSize: { w: 420, h: 320 },
+    singleInstance: false,
+    chrome: 'xp',
+    showOnDesktop: false,
     showInStartMenu: true,
     category: 'accessories',
     pinned: true,

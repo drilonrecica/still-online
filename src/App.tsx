@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { migrateLegacyNotepad } from '@/apps/notepad/migrate';
 import { installMailDelivery } from '@/apps/mail/store';
+import { installDisplayPictureRoute } from '@/apps/messenger/displayPictureRoute';
 import { getApp } from '@/apps/registry';
 import { SEED_FILES } from '@/content/files';
 import { installAmplifierRouter } from '@/os/amplifierRouter';
@@ -71,6 +72,7 @@ export function App() {
   useEffect(() => installAmplifierRouter(), []);
   useEffect(() => installBrowserRouter(), []);
   useEffect(() => installMailDelivery(), []);
+  useEffect(() => installDisplayPictureRoute(), []);
   useEffect(() => installIdle(), []);
   useEffect(() => (state === 'desktop' ? installKonami() : undefined), [state]);
 

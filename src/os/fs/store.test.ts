@@ -134,6 +134,25 @@ describe('fs store: writing', () => {
     expect(changes).toEqual([[id]]);
   });
 
+  it('points images at new blob bytes, dropping the old blob or photo', () => {
+    const id = fs().createFile('pics', {
+      name: 'a.png',
+      type: 'image',
+      photo: { scene: 'pet', seed: 1 },
+    });
+    changes = [];
+    fs().writeImage(id, 'blob:1');
+    expect(fs().get(id)).toMatchObject({ blobKey: 'blob:1' });
+    expect(fs().get(id)?.photo).toBeUndefined();
+    fs().writeImage(id, 'blob:2');
+    expect(fs().get(id)?.blobKey).toBe('blob:2');
+    expect(deleteBlob).toHaveBeenCalledWith('blob:1');
+    const txt = fs().createFile('docs', { name: 'b.txt', type: 'txt' });
+    fs().writeImage(txt, 'blob:3');
+    expect(fs().get(txt)?.blobKey).toBeUndefined();
+    expect(changes).toEqual([[id], [id], [txt]]);
+  });
+
   it('renames uniquely, allows case changes, refuses system folders and empty names', () => {
     const a = fs().createFile('docs', { name: 'a.txt', type: 'txt' });
     const b = fs().createFile('docs', { name: 'b.txt', type: 'txt' });

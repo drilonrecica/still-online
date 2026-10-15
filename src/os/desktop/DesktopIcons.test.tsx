@@ -111,7 +111,7 @@ describe('DesktopIcons', () => {
       <DesktopIcons
         shortcuts={[
           { appId: 'notepad', label: 'Scratch', props: { note: 'x' } },
-          { appId: 'paint', label: 'Missing' },
+          { appId: 'photobooth', label: 'Missing' },
         ]}
       />,
     );
