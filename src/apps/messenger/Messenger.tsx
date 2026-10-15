@@ -225,6 +225,19 @@ function ContactListView() {
                 Options…
               </button>
             </li>
+            <li role="none">
+              <button
+                type="button"
+                role="menuitem"
+                className={styles.menuItem}
+                onClick={() => {
+                  setFileMenu(false);
+                  useWindowsStore.getState().openApp('messenger-history');
+                }}
+              >
+                View Message History…
+              </button>
+            </li>
           </ul>
         )}
       </div>

@@ -26,6 +26,8 @@ export interface MessengerStore extends MessengerData {
   setShowNowPlaying: (showNowPlaying: boolean) => void;
   /** Clears the unread count when the player looks at the chat. */
   markRead: (contactId: ContactId) => void;
+  /** Empties a contact's transcript only; script progress and unread are untouched. */
+  clearTranscript: (contactId: ContactId) => void;
 }
 
 interface PersistedMessenger {
@@ -105,6 +107,20 @@ const creator: StateCreator<MessengerStore> = (set) => {
         };
       }),
     setShowNowPlaying: (showNowPlaying) => setPlayer({ showNowPlaying }),
+    clearTranscript: (contactId) =>
+      set((s) => {
+        const contact = s.progress.contacts[contactId];
+        if (!contact || contact.transcript.length === 0) return {};
+        return {
+          progress: {
+            ...s.progress,
+            contacts: {
+              ...s.progress.contacts,
+              [contactId]: { ...contact, transcript: [] },
+            },
+          },
+        };
+      }),
     markRead: (contactId) =>
       set((s) => {
         const contact = s.progress.contacts[contactId];

@@ -141,6 +141,17 @@ function ChatView({
         >
           Nudge
         </button>
+        <button
+          type="button"
+          className={styles.tool}
+          onClick={() =>
+            useWindowsStore
+              .getState()
+              .openApp('messenger-history', { contactId: id })
+          }
+        >
+          History
+        </button>
       </div>
       <Transcript
         entries={progress?.transcript ?? []}
