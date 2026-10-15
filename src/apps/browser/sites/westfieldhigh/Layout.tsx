@@ -2,19 +2,21 @@
 // No hit counter, no animation: the district bought this template in 2001 and never touched it.
 import type { ReactNode } from 'react';
 import { WESTFIELD_HOST } from '@/content/sites/westfieldhigh';
+import { useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import { formatLongDate, now } from '@/os/clock';
 import { SiteLink } from '../../SiteLink';
 import styles from './Westfield.module.css';
 
 const NAV = [
-  ['Home', '/'],
-  ['News & Announcements', '/news'],
-  ['Staff Directory', '/staff'],
-  ['Cafeteria Menu', '/cafeteria'],
+  ['home', '/'],
+  ['news', '/news'],
+  ['staff', '/staff'],
+  ['cafeteria', '/cafeteria'],
 ] as const;
 
 function Crest() {
+  const t = useT();
   return (
     <svg
       className={styles.crest}
@@ -22,7 +24,7 @@ function Crest() {
       width="40"
       height="48"
       role="img"
-      aria-label="Westfield Wildcats crest"
+      aria-label={t('sites.westfieldhigh.crest')}
     >
       <path
         d="M2 2h36v22c0 12-8 19-18 22C10 43 2 36 2 24z"
@@ -47,6 +49,7 @@ function Crest() {
 
 export function Layout({ children }: { children: ReactNode }) {
   const { WESTFIELD_TEXT: T } = useSiteText(WESTFIELD_HOST);
+  const t = useT();
   return (
     <div className={styles.page}>
       <table className={styles.frame}>
@@ -65,21 +68,23 @@ export function Layout({ children }: { children: ReactNode }) {
           </tr>
           <tr>
             <td className={styles.side}>
-              <nav aria-label="Site">
+              <nav aria-label={t('sites.westfieldhigh.nav.label')}>
                 <ul>
-                  {NAV.map(([label, href]) => (
+                  {NAV.map(([key, href]) => (
                     <li key={href}>
-                      <SiteLink href={href}>{label}</SiteLink>
+                      <SiteLink href={href}>
+                        {t(`sites.westfieldhigh.nav.${key}`)}
+                      </SiteLink>
                     </li>
                   ))}
                 </ul>
               </nav>
               <p className={styles.sideNote}>
-                Quick Links
+                {t('sites.westfieldhigh.quickLinks')}
                 <br />
-                <span>Parent Portal (coming soon)</span>
+                <span>{t('sites.westfieldhigh.parentPortal')}</span>
                 <br />
-                <span>Athletics (coming soon)</span>
+                <span>{t('sites.westfieldhigh.athletics')}</span>
               </p>
             </td>
             <td className={styles.content}>

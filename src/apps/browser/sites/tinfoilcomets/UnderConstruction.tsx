@@ -1,4 +1,6 @@
 // The animated "UNDER CONSTRUCTION" sign: hazard stripes, blinking letters and a little digger.
+import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
+import { useSiteText } from '../useSiteText';
 import styles from './TinfoilComets.module.css';
 
 function Digger() {
@@ -48,12 +50,13 @@ function Digger() {
 }
 
 export function UnderConstruction() {
+  const { TINFOIL_SITE_TEXT: T } = useSiteText(TINFOIL_HOST);
   return (
     <div className={styles.construction}>
       <Digger />
       <div className={styles.sign}>
-        <span className={styles.signText}>UNDER CONSTRUCTION</span>
-        <small>pardon our dust!!! more stuff coming soon</small>
+        <span className={styles.signText}>{T.construction}</span>
+        <small>{T.constructionNote}</small>
       </div>
       <Digger />
     </div>

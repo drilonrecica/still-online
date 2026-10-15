@@ -1,8 +1,42 @@
 // spaceport.example: "Spaceport: a place for friends in orbit". Site text, theme presets and the
 // player's starting profile. Friend profiles live in src/content/profiles/.
 import type { PlayerProfile, ProfileTheme } from '../profiles/types';
+import type { SiteMeta } from './types';
 
 export const SPACEPORT_HOST = 'spaceport.example';
+
+/** Friend pages (`/<contactId>`) are added from the profiles with `PROFILE_PAGE`. */
+export const SITE_META: SiteMeta = {
+  title: 'Spaceport: a place for friends in orbit',
+  description:
+    'Spaceport is the place for friends: profiles, Top 8, comments, moods and a song on your page. Join for free!',
+  keywords: [
+    'spaceport',
+    'friends',
+    'profile',
+    'social',
+    'top 8',
+    'comments',
+    'music',
+  ],
+  pages: {
+    '/': {
+      title: 'Spaceport - a place for friends in orbit',
+      keywords: ['sign up', 'log in', 'cool new people'],
+    },
+    '/me': {
+      title: 'Spaceport - My Profile',
+      keywords: ['my profile', 'edit', 'me'],
+    },
+    '/*': { title: 'Spaceport - Lost in orbit' },
+  },
+};
+
+/** A friend's profile page; `{name}` is the friend's name. */
+export const PROFILE_PAGE = {
+  title: '{name} on Spaceport',
+  keywords: ['profile', 'top 8', 'comments'],
+};
 
 export const SPACEPORT_TEXT = {
   logo: 'Spaceport',

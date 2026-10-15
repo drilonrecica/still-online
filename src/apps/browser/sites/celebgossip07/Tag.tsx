@@ -2,6 +2,7 @@
 import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
 import { useSiteText } from '../useSiteText';
 import type { SitePageProps } from '@/content/sites/types';
+import { useT } from '@/i18n/useT';
 import { useWorldStore } from '@/os/world';
 import { upToDay } from '../daily';
 import styles from './CelebGossip.module.css';
@@ -13,12 +14,13 @@ import { TagCloud } from './TagCloud';
 export default function Tag({ query }: SitePageProps) {
   const { GOSSIP_POSTS, GOSSIP_TEXT: T } = useSiteText(GOSSIP_HOST);
   const day = useWorldStore((s) => s.day);
+  const t = useT();
   const posts = upToDay(GOSSIP_POSTS, day);
   const tag = query.get('t')?.trim().toLowerCase() ?? '';
   if (!tag) {
     return (
       <Layout>
-        <h2 className={styles.heading}>ALL TAGZ</h2>
+        <h2 className={styles.heading}>{t('sites.celebgossip07.allTags')}</h2>
         <TagCloud posts={posts} />
       </Layout>
     );
@@ -26,7 +28,9 @@ export default function Tag({ query }: SitePageProps) {
   const tagged = postsWithTag(posts, tag);
   return (
     <Layout>
-      <h2 className={styles.heading}>posts tagged &ldquo;{tag}&rdquo;</h2>
+      <h2 className={styles.heading}>
+        {t('sites.celebgossip07.tagged', { tag })}
+      </h2>
       {tagged.length === 0 && <p className={styles.empty}>{T.noTagPosts}</p>}
       {tagged.map((post) => (
         <PostCard key={post.id} post={post} day={day} />

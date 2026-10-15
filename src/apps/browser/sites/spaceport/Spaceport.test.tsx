@@ -10,7 +10,7 @@ import { useWorldStore } from '@/os/world';
 import '@/apps/registry';
 import Browser from '../../Browser';
 import { DEFAULT_FAVORITES, WEB_DEFAULTS, useWebStore } from '../../store';
-import { resolve } from '..';
+import { pageTitle, resolve } from '..';
 
 const LOAD = 1400;
 
@@ -53,16 +53,18 @@ afterEach(() => {
 
 describe('spaceport.example', () => {
   it('registers a page per friend, /me and a catch-all', () => {
-    for (const id of ['jess', 'pia', 'kayla', 'marco', 'theo', 'dex'])
-      expect(resolve(`${SPACEPORT_HOST}/${id}`)?.page.title).toMatch(
-        /on Spaceport$/,
-      );
-    expect(resolve(`${SPACEPORT_HOST}/me`)?.page.title).toBe(
-      'Spaceport - My Profile',
-    );
-    expect(resolve(`${SPACEPORT_HOST}/nobody`)?.page.title).toBe(
-      'Spaceport - Lost in orbit',
-    );
+    const title = (path: string, locale: 'en' | 'de' = 'en') => {
+      const page = resolve(`${SPACEPORT_HOST}${path}`);
+      return page && pageTitle(page, locale);
+    };
+    for (const id of ['jess', 'pia', 'kayla', 'marco', 'theo', 'dex']) {
+      expect(title(`/${id}`)).toMatch(/on Spaceport$/);
+      expect(title(`/${id}`, 'de')).toMatch(/auf Spaceport$/);
+    }
+    expect(title('/me')).toBe('Spaceport - My Profile');
+    expect(title('/me', 'de')).toBe('Spaceport - Mein Profil');
+    expect(title('/nobody')).toBe('Spaceport - Lost in orbit');
+    expect(title('/nobody', 'de')).toBe('Spaceport - Verloren im All');
   });
 
   it('landing lists the six friends and logs you in as the player', async () => {

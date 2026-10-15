@@ -1,3 +1,17 @@
 // German Spaceport profiles, same contact ids and order as `src/content/profiles`.
-// TODO(P2): German profiles; re-exports English for now.
-export { PROFILES } from '../../profiles';
+import type { ProfileContent } from '../../profiles/types';
+import { dexProfile } from './dex';
+import { jessProfile } from './jess';
+import { kaylaProfile } from './kayla';
+import { marcoProfile } from './marco';
+import { piaProfile } from './pia';
+import { theoProfile } from './theo';
+
+export const PROFILES: readonly ProfileContent[] = [
+  jessProfile,
+  piaProfile,
+  kaylaProfile,
+  marcoProfile,
+  theoProfile,
+  dexProfile,
+];

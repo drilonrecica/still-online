@@ -1,6 +1,7 @@
 // Eight original SVG hamsters bouncing out of sync (each has its own speed and delay).
 // Reduced motion: the CSS turns the bounce off and they just stand there, proudly.
 import type { CSSProperties } from 'react';
+import { useT } from '@/i18n/useT';
 import styles from './TinfoilComets.module.css';
 
 const FURS = [
@@ -59,11 +60,12 @@ function Hamster({ fur }: { fur: string }) {
 }
 
 export function Hamsters() {
+  const t = useT();
   return (
     <div
       className={styles.hamsters}
       role="img"
-      aria-label="Eight dancing hamsters"
+      aria-label={t('sites.tinfoilcomets.hamsters')}
     >
       {FURS.map((fur, i) => (
         <span

@@ -9,6 +9,7 @@ import thumbsDown from '@/assets/emoticons/thumbs-down.svg';
 import thumbsUp from '@/assets/emoticons/thumbs-up.svg';
 import tongue from '@/assets/emoticons/tongue.svg';
 import wink from '@/assets/emoticons/wink.svg';
+import { useT } from '@/i18n/useT';
 import styles from './Spaceport.module.css';
 
 const ICONS: Record<string, string> = {
@@ -40,9 +41,10 @@ export function MoodIcon({ code }: { code: string }) {
 }
 
 export function Mood({ text, emoticon }: { text: string; emoticon: string }) {
+  const t = useT();
   return (
     <div className={styles.mood}>
-      <b>Mood:</b> {text} <MoodIcon code={emoticon} />
+      <b>{t('sites.spaceport.mood')}</b> {text} <MoodIcon code={emoticon} />
     </div>
   );
 }

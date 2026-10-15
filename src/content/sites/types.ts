@@ -1,6 +1,7 @@
 // Fictional web: the site registry contract (P4-01) and site content shapes (P4-03…P4-05).
 // See docs/architecture-v0.2.md → "Web".
 import type { ComponentType, LazyExoticComponent } from 'react';
+import type { Locale } from '@/i18n/types';
 import type { PhotoSpec } from '@/os/fs/types';
 import type { PlayerProfile } from '../profiles/types';
 import type { FavoriteRecord } from '../types';
@@ -14,9 +15,23 @@ export interface SitePageProps {
   navigate: (url: string) => void;
 }
 
-export interface SitePage {
+/** A page's text in one language: the window title and extra Searchly keywords. */
+export interface PageMeta {
   title: string;
   keywords?: readonly string[];
+}
+
+/** What a site calls itself in one language; Searchly indexes the current language's meta. */
+export interface SiteMeta {
+  title: string;
+  /** Searchly snippet. */
+  description: string;
+  keywords: readonly string[];
+  /** Path → page text, for every path in `SiteDefinition.pages` (including `/*`). */
+  pages: Readonly<Record<string, PageMeta>>;
+}
+
+export interface SitePage {
   /** `lazy(() => import('./Home'))`; the module default-exports the page. */
   component: LazyExoticComponent<ComponentType<SitePageProps>>;
 }
@@ -24,10 +39,8 @@ export interface SitePage {
 export interface SiteDefinition {
   /** Lowercase, always ending in `.example` (`searchly.example`). */
   host: string;
-  title: string;
-  /** Searchly snippet. */
-  description: string;
-  keywords: readonly string[];
+  /** Title, snippet, keywords and page titles in `locale` (from the site's content module). */
+  meta: (locale: Locale) => SiteMeta;
   /**
    * Path → page; `/` = home. A key `/*` catches any other single-segment path
    * (Spaceport `/<contactId>`); the page reads `path` to decide what to show.
@@ -39,6 +52,8 @@ export interface SiteDefinition {
 export interface ResolvedPage {
   site: SiteDefinition;
   page: SitePage;
+  /** The key the page matched in `site.pages` (`/me`, or `/*` for the catch-all). */
+  key: string;
   /** Normalised `http://host/path?query`. */
   url: string;
   path: string;

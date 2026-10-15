@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import { describe, expect, it } from 'vitest';
-import type { SiteDefinition } from '@/content/sites/types';
+import type { SiteDefinition, SiteMeta } from '@/content/sites/types';
+import { LOCALES } from '@/i18n/types';
 import { SITES } from '..';
 import {
   PAGE_SIZE,
@@ -12,36 +13,45 @@ import {
 } from './search';
 
 const component = lazy(() => Promise.resolve({ default: () => null }));
+
+/** A site with the same meta in every language. */
+function fake(host: string, meta: SiteMeta): SiteDefinition {
+  return {
+    host,
+    meta: () => meta,
+    pages: Object.fromEntries(
+      Object.keys(meta.pages).map((path) => [path, { component }]),
+    ),
+  };
+}
+
 const FAKES: SiteDefinition[] = [
-  {
-    host: 'comets.example',
+  fake('comets.example', {
     title: 'Comets Fan Page',
     description: 'hamsters dance for the band',
     keywords: ['band', 'hamster'],
     pages: {
-      '/': { title: 'Comets Home', component },
-      '/songs': { title: 'Songs', keywords: ['music'], component },
-      '/*': { title: 'Wildcard', component },
+      '/': { title: 'Comets Home' },
+      '/songs': { title: 'Songs', keywords: ['music'] },
+      '/*': { title: 'Wildcard' },
     },
-  },
-  {
-    host: 'school.example',
+  }),
+  fake('school.example', {
     title: 'Westfield High',
     description: 'the band plays Friday',
     keywords: ['school'],
-    pages: { '/': { title: 'Westfield High Band', component } },
-  },
+    pages: { '/': { title: 'Westfield High Band' } },
+  }),
 ];
 
 describe('searchly: Unicode and German', () => {
   const GERMAN: SiteDefinition[] = [
-    {
-      host: 'stadt.example',
+    fake('stadt.example', {
       title: 'Stadtwerke',
       description: 'Abfuhrtermine für Müll und Papier',
       keywords: ['müll', 'abfall'],
-      pages: { '/': { title: 'Größe der Tonnen', component } },
-    },
+      pages: { '/': { title: 'Größe der Tonnen' } },
+    }),
   ];
 
   it('keeps letters outside a–z as part of a word', () => {
@@ -115,8 +125,8 @@ describe('searchly engine', () => {
   });
 });
 
-describe('searchly over the registered sites', () => {
-  const index = buildIndex(SITES);
+describe.each(LOCALES)('searchly over the registered sites (%s)', (locale) => {
+  const index = buildIndex(SITES, locale);
 
   it('registers searchly.example', () => {
     expect(SITES.some((s) => s.host === 'searchly.example')).toBe(true);
@@ -124,10 +134,11 @@ describe('searchly over the registered sites', () => {
 
   it('finds every registered page by each word of its title', () => {
     for (const site of SITES) {
-      for (const [path, page] of Object.entries(site.pages)) {
+      const meta = site.meta(locale);
+      for (const path of Object.keys(site.pages)) {
         if (path.includes('*')) continue;
         const url = `http://${site.host}${path}`;
-        for (const word of tokenize(page.title)) {
+        for (const word of tokenize(meta.pages[path]?.title ?? '', locale)) {
           const urls = search(word, index).map((r) => r.url);
           expect(urls, `"${word}" should find ${url}`).toContain(url);
         }
@@ -138,5 +149,39 @@ describe('searchly over the registered sites', () => {
   it('is deterministic and paginates in tens', () => {
     expect(search('web', index)).toEqual(search('web', index));
     expect(PAGE_SIZE).toBe(10);
+  });
+});
+
+describe('searchly in German', () => {
+  const index = buildIndex(SITES, 'de');
+  const top = (q: string) => search(q, index)[0]?.url;
+
+  it('finds German pages by German words', () => {
+    expect(top('Klatsch')).toBe('http://celebgossip07.example/');
+    expect(top('Gästebuch')).toBe('http://tinfoilcomets.example/guestbook');
+    expect(top('Mensa')).toBe('http://westfield-high.example/cafeteria');
+    expect(top('Lehrerkollegium')).toBe('http://westfield-high.example/staff');
+    expect(top('Kayla auf Spaceport')).toBe('http://spaceport.example/kayla');
+    expect(top('Surftipps')).toBe('http://about.example/tips');
+  });
+
+  it('folds umlauts in German queries', () => {
+    expect(top('gastebuch')).toBe('http://tinfoilcomets.example/guestbook');
+  });
+
+  it('shows German titles and snippets, and English ones in English', () => {
+    const de = search('virusguard', index)[0];
+    expect(de?.title).toBe('VirusGuard 2007 - Ist Ihr Computer infiziert?');
+    expect(de?.snippet).toMatch(/49,95 €/);
+    const en = search('virusguard', buildIndex(SITES, 'en'))[0];
+    expect(en?.title).toBe('VirusGuard 2007 - Is Your Computer Infected?');
+  });
+
+  it("doesn't match English-only words in German", () => {
+    expect(search('guestbook', index)).toEqual([]);
+    expect(search('cafeteria', index)).toEqual([]);
+    expect(search('guestbook', buildIndex(SITES, 'en'))[0]?.url).toBe(
+      'http://tinfoilcomets.example/guestbook',
+    );
   });
 });

@@ -1,8 +1,12 @@
 // One blog post: title, "posted today", the paparazzi pic, the body, tags and the comments link.
+import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
 import type { BlogPost } from '@/content/sites/types';
+import { useT } from '@/i18n/useT';
 import { PhotoCanvas } from '@/os/fs/FsIcon';
 import { SiteLink } from '../../SiteLink';
 import { postedLabel } from '../daily';
+import { useSiteText } from '../useSiteText';
+import { rich } from '../rich';
 import styles from './CelebGossip.module.css';
 import { postHref, tagHref } from './logic';
 
@@ -16,6 +20,8 @@ export function PostCard({
   /** On the post page the title isn't a link and the comments show below. */
   full?: boolean;
 }) {
+  const { GOSSIP_TEXT: T } = useSiteText(GOSSIP_HOST);
+  const t = useT();
   return (
     <article className={styles.post} aria-label={post.title}>
       <h2 className={styles.postTitle}>
@@ -25,7 +31,12 @@ export function PostCard({
           <SiteLink href={postHref(post.id)}>{post.title}</SiteLink>
         )}
       </h2>
-      <p className={styles.meta}>posted by Roxi {postedLabel(post.day, day)}</p>
+      <p className={styles.meta}>
+        {t('sites.celebgossip07.postedBy', {
+          owner: T.owner,
+          when: postedLabel(post.day, day),
+        })}
+      </p>
       {post.photo && (
         <figure className={styles.photo}>
           <PhotoCanvas
@@ -41,7 +52,7 @@ export function PostCard({
         <p key={i}>{para}</p>
       ))}
       <p className={styles.tags}>
-        tagz:{' '}
+        {t('sites.celebgossip07.tags')}{' '}
         {post.tags.map((tag, i) => (
           <span key={tag}>
             {i > 0 && ', '}
@@ -53,25 +64,30 @@ export function PostCard({
             {' '}
             &middot;{' '}
             <SiteLink href={postHref(post.id)}>
-              {post.comments.length} comments
+              {t('sites.celebgossip07.comments', { n: post.comments.length })}
             </SiteLink>
           </>
         )}
       </p>
       {full && (
-        <section aria-label="Comments" className={styles.comments}>
-          <h3>{post.comments.length} comments</h3>
+        <section
+          aria-label={t('sites.celebgossip07.commentsLabel')}
+          className={styles.comments}
+        >
+          <h3>
+            {t('sites.celebgossip07.comments', { n: post.comments.length })}
+          </h3>
           <ol>
             {post.comments.map((c, i) => (
               <li key={i}>
-                <b>{c.user}</b> said:
+                {rich(t('sites.celebgossip07.said', { user: '{user}' }), {
+                  user: <b>{c.user}</b>,
+                })}
                 <p>{c.text}</p>
               </li>
             ))}
           </ol>
-          <p className={styles.closed}>
-            comments r closed bc of spam (thx a lot hater_patrol)
-          </p>
+          <p className={styles.closed}>{T.commentsClosed}</p>
         </section>
       )}
     </article>

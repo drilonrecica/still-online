@@ -2,6 +2,7 @@
 // "about me", the tag cloud and today's HOT or NOT poll.
 import type { ReactNode } from 'react';
 import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
+import { useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import { useWorldStore } from '@/os/world';
 import { SiteLink } from '../../SiteLink';
@@ -11,14 +12,15 @@ import { HotOrNot } from './HotOrNot';
 import { TagCloud } from './TagCloud';
 
 const NAV = [
-  ['HOME', '/'],
-  ["WHO'S WHO", '/celebs'],
-  ['ALL TAGZ', '/tag'],
+  ['home', '/'],
+  ['whosWho', '/celebs'],
+  ['allTags', '/tag'],
 ] as const;
 
 export function Layout({ children }: { children: ReactNode }) {
   const { GOSSIP_POSTS, GOSSIP_TEXT: T } = useSiteText(GOSSIP_HOST);
   const day = useWorldStore((s) => s.day);
+  const t = useT();
   return (
     <div className={styles.page}>
       <header className={styles.banner}>
@@ -28,10 +30,13 @@ export function Layout({ children }: { children: ReactNode }) {
         </h1>
         <p className={styles.tagline}>{T.tagline}</p>
       </header>
-      <nav className={styles.nav} aria-label="Site">
-        {NAV.map(([label, href]) => (
+      <nav
+        className={styles.nav}
+        aria-label={t('sites.celebgossip07.nav.label')}
+      >
+        {NAV.map(([key, href]) => (
           <SiteLink key={href} href={href}>
-            {label}
+            {t(`sites.celebgossip07.nav.${key}`)}
           </SiteLink>
         ))}
       </nav>
@@ -39,10 +44,13 @@ export function Layout({ children }: { children: ReactNode }) {
         <main className={styles.main}>{children}</main>
         <aside className={styles.sidebar}>
           <section className={styles.box}>
-            <h2>about ME</h2>
+            <h2>{t('sites.celebgossip07.aboutMe')}</h2>
             <p>{T.about}</p>
           </section>
-          <section className={styles.box} aria-label="Tag cloud">
+          <section
+            className={styles.box}
+            aria-label={t('sites.celebgossip07.tagCloud')}
+          >
             <h2>{T.tagsHeading}</h2>
             <TagCloud posts={upToDay(GOSSIP_POSTS, day)} />
           </section>

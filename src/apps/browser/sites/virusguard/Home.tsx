@@ -2,6 +2,7 @@
 // and fine print saying it's all a joke.
 import { useState } from 'react';
 import { VIRUSGUARD_HOST } from '@/content/sites/virusguard';
+import { useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import styles from './VirusGuard.module.css';
 
@@ -32,6 +33,7 @@ export default function Home() {
     VIRUSGUARD_TEXT: T,
     VIRUSGUARD_THREATS,
   } = useSiteText(VIRUSGUARD_HOST);
+  const t = useT();
   const [message, setMessage] = useState<string | null>(null);
   return (
     <div className={styles.page}>
@@ -59,17 +61,17 @@ export default function Home() {
         <table className={styles.threats}>
           <thead>
             <tr>
-              <th scope="col">Threat</th>
-              <th scope="col">Found in</th>
-              <th scope="col">Risk</th>
+              <th scope="col">{t('sites.virusguard.threat')}</th>
+              <th scope="col">{t('sites.virusguard.foundIn')}</th>
+              <th scope="col">{t('sites.virusguard.risk')}</th>
             </tr>
           </thead>
           <tbody>
-            {VIRUSGUARD_THREATS.map((t) => (
-              <tr key={t.name}>
-                <td>{t.name}</td>
-                <td>{t.location}</td>
-                <td className={styles.risk}>{t.risk}</td>
+            {VIRUSGUARD_THREATS.map((threat) => (
+              <tr key={threat.name}>
+                <td>{threat.name}</td>
+                <td>{threat.location}</td>
+                <td className={styles.risk}>{threat.risk}</td>
               </tr>
             ))}
           </tbody>
@@ -107,9 +109,9 @@ export default function Home() {
 
       <section className={styles.testimonials}>
         <h2>{T.testimonialsTitle}</h2>
-        {VIRUSGUARD_TESTIMONIALS.map((t) => (
-          <blockquote key={t.who}>
-            &ldquo;{t.quote}&rdquo; <cite>- {t.who}</cite>
+        {VIRUSGUARD_TESTIMONIALS.map((q) => (
+          <blockquote key={q.who}>
+            &ldquo;{q.quote}&rdquo; <cite>- {q.who}</cite>
           </blockquote>
         ))}
       </section>

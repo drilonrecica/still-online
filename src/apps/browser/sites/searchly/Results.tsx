@@ -1,9 +1,12 @@
 // searchly.example `/search?q=&p=`: ranked results, pagination, typo suggestion.
 import { useMemo } from 'react';
+import { SEARCHLY_HOST } from '@/content/sites/searchly';
 import type { SitePageProps } from '@/content/sites/types';
-import { useLocale } from '@/i18n/useT';
+import { useLocale, useT } from '@/i18n/useT';
 import { SITES } from '..';
 import { SiteLink } from '../../SiteLink';
+import { rich } from '../rich';
+import { useSiteText } from '../useSiteText';
 import { Logo } from './Logo';
 import { SearchBox } from './SearchBox';
 import styles from './Searchly.module.css';
@@ -13,6 +16,8 @@ export default function Results({ query, navigate }: SitePageProps) {
   const q = (query.get('q') ?? '').trim();
   const requested = Number.parseInt(query.get('p') ?? '1', 10);
   const locale = useLocale();
+  const t = useT();
+  const { SEARCHLY_TEXT: T } = useSiteText(SEARCHLY_HOST);
   const index = useMemo(() => buildIndex(SITES, locale), [locale]);
   const { results, suggestion } = useMemo(
     () => ({ results: search(q, index), suggestion: didYouMean(q, index) }),
@@ -35,13 +40,20 @@ export default function Results({ query, navigate }: SitePageProps) {
       </div>
       <div className={styles.summary}>
         {q === ''
-          ? 'Type something to search.'
-          : `Results ${results.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1} - ${(page - 1) * PAGE_SIZE + shown.length} of ${results.length} for `}
-        {q !== '' && <b>{q}</b>}
+          ? t('sites.searchly.typeSomething')
+          : rich(
+              t('sites.searchly.resultsFor', {
+                from: results.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1,
+                to: (page - 1) * PAGE_SIZE + shown.length,
+                total: results.length,
+                query: '{query}',
+              }),
+              { query: <b>{q}</b> },
+            )}
       </div>
       {suggestion && (
         <p className={styles.suggest}>
-          Did you mean:{' '}
+          {t('sites.searchly.didYouMean')}{' '}
           <SiteLink href={searchUrl(suggestion)}>
             <b>{suggestion}</b>
           </SiteLink>
@@ -49,15 +61,11 @@ export default function Results({ query, navigate }: SitePageProps) {
       )}
       {q !== '' && results.length === 0 && (
         <div className={styles.none}>
-          <p>
-            Oh no! Searchly couldn&apos;t find any pages matching <b>{q}</b>.
-          </p>
+          <p>{rich(T.noResults, { query: <b>{q}</b> })}</p>
           <ul>
-            <li>Check your spelling (even spacebar mishaps count).</li>
-            <li>Try different words, or fewer of them.</li>
-            <li>
-              Try more general words, like &quot;fan&quot; or &quot;tips&quot;.
-            </li>
+            {T.noResultsTips.map((tip) => (
+              <li key={tip}>{tip}</li>
+            ))}
           </ul>
         </div>
       )}
@@ -73,9 +81,14 @@ export default function Results({ query, navigate }: SitePageProps) {
         ))}
       </ol>
       {results.length > PAGE_SIZE && (
-        <nav className={styles.pager} aria-label="Result pages">
+        <nav
+          className={styles.pager}
+          aria-label={t('sites.searchly.resultPages')}
+        >
           {page > 1 && (
-            <SiteLink href={searchUrl(q, page - 1)}>&laquo; Previous</SiteLink>
+            <SiteLink href={searchUrl(q, page - 1)}>
+              {t('sites.searchly.previous')}
+            </SiteLink>
           )}{' '}
           <span className={styles.pagerLogo}>
             Searchl
@@ -88,7 +101,7 @@ export default function Results({ query, navigate }: SitePageProps) {
                 <SiteLink
                   key={i}
                   href={searchUrl(q, i + 1)}
-                  aria-label={`Page ${i + 1}`}
+                  aria-label={t('sites.searchly.page', { n: i + 1 })}
                 >
                   y
                 </SiteLink>
@@ -96,7 +109,9 @@ export default function Results({ query, navigate }: SitePageProps) {
             )}
           </span>{' '}
           {page < pageCount && (
-            <SiteLink href={searchUrl(q, page + 1)}>Next &raquo;</SiteLink>
+            <SiteLink href={searchUrl(q, page + 1)}>
+              {t('sites.searchly.next')}
+            </SiteLink>
           )}
         </nav>
       )}

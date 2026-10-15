@@ -21,7 +21,7 @@ import {
 import { MenuBar, type Menu, type MenuEntry } from './MenuBar';
 import { NavigatorContext, type BrowserNavigator } from './navigator';
 import { LoadProgress } from './LoadProgress';
-import { resolve } from './sites';
+import { pageTitle as sitePageTitle, resolve } from './sites';
 import { renderFavorites, useWebStore } from './store';
 import { useNavigation } from './useNavigation';
 
@@ -50,7 +50,9 @@ export default function Browser({ windowId, props }: AppComponentProps) {
     [shown],
   );
   const pageTitle = shown
-    ? (page?.page.title ?? t('browser.cannotFindServer'))
+    ? page
+      ? sitePageTitle(page, locale)
+      : t('browser.cannotFindServer')
     : null;
 
   // The address bar follows navigation; the window remembers the page for a restore.

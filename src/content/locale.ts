@@ -12,7 +12,9 @@ import { contactOverlays } from './de/contacts';
 import * as deFiles from './de/files';
 import * as deMail from './de/mail';
 import * as deProfiles from './de/profiles';
+import * as deAbout from './de/sites/about';
 import * as deGossip from './de/sites/celebgossip07';
+import * as deSearchly from './de/sites/searchly';
 import * as deSpaceport from './de/sites/spaceport';
 import * as deTinfoil from './de/sites/tinfoilcomets';
 import * as deVirusguard from './de/sites/virusguard';
@@ -24,7 +26,9 @@ import { autoReplies } from './mail/autoReplies';
 import type { AutoReply, MailContent } from './mail/types';
 import { PROFILES } from './profiles';
 import type { ProfileContent } from './profiles/types';
+import * as enAbout from './sites/about';
 import * as enGossip from './sites/celebgossip07';
+import * as enSearchly from './sites/searchly';
 import * as enSpaceport from './sites/spaceport';
 import * as enTinfoil from './sites/tinfoilcomets';
 import * as enVirusguard from './sites/virusguard';
@@ -41,8 +45,10 @@ import type {
   TuneMoleResult,
 } from './types';
 
-/** Text modules of the content-backed sites, by host. */
+/** Text modules of every site (each exports its `SITE_META`), by host. */
 const EN_SITES = {
+  [enAbout.ABOUT_HOST]: enAbout,
+  [enSearchly.SEARCHLY_HOST]: enSearchly,
   [enGossip.GOSSIP_HOST]: enGossip,
   [enSpaceport.SPACEPORT_HOST]: enSpaceport,
   [enTinfoil.TINFOIL_HOST]: enTinfoil,
@@ -251,6 +257,8 @@ const DE: LocaleContent = {
   autoReplies: deMail.autoReplies,
   profiles: deProfiles.PROFILES,
   sites: {
+    [enAbout.ABOUT_HOST]: deAbout,
+    [enSearchly.SEARCHLY_HOST]: deSearchly,
     [enGossip.GOSSIP_HOST]: deGossip,
     [enSpaceport.SPACEPORT_HOST]: deSpaceport,
     [enTinfoil.TINFOIL_HOST]: deTinfoil,

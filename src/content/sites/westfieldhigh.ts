@@ -1,9 +1,43 @@
 // westfield-high.example: the school's official site, built from a template the district bought in
 // 2001 and never touched again. News posts are day-gated (`day <= currentDay`); Mr Dalton's cell
 // project notices follow Theo's arc (jello, presentations on day 5's first period, grades on day 5).
-import type { NewsPost } from './types';
+import type { NewsPost, SiteMeta } from './types';
 
 export const WESTFIELD_HOST = 'westfield-high.example';
+
+export const SITE_META: SiteMeta = {
+  title: 'Westfield High School - Home of the Wildcats',
+  description:
+    'Official web site of Westfield High School: news and announcements, staff directory and the cafeteria menu. Go Wildcats!',
+  keywords: [
+    'westfield',
+    'high',
+    'school',
+    'wildcats',
+    'news',
+    'teachers',
+    'dalton',
+    'biology',
+  ],
+  pages: {
+    '/': {
+      title: 'Westfield High School - Home',
+      keywords: ['welcome', 'announcements', 'principal'],
+    },
+    '/news': {
+      title: 'Westfield High School - News and Announcements',
+      keywords: ['bake sale', 'cell project', 'science fair', 'mp3'],
+    },
+    '/staff': {
+      title: 'Westfield High School - Staff Directory',
+      keywords: ['teachers', 'dalton', 'room 12', 'email'],
+    },
+    '/cafeteria': {
+      title: 'Westfield High School - Cafeteria Menu',
+      keywords: ['lunch', 'menu', 'food', 'cafeteria'],
+    },
+  },
+};
 
 export const WESTFIELD_TEXT = {
   name: 'Westfield High School',

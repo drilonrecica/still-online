@@ -1,9 +1,43 @@
 // celebgossip07.example: "Celeb Gossip 07 ★ OMG!!" by Roxi. Every celebrity, band, show, movie and
 // commenter here is invented. Two posts a day for days 1–5 (day-gated); the Tinfoil Comets show
 // (between days 4 and 5) and Kayla's twin-hoodie feud echo the friends' storylines.
-import type { BlogPost, Poll } from './types';
+import type { BlogPost, Poll, SiteMeta } from './types';
 
 export const GOSSIP_HOST = 'celebgossip07.example';
+
+export const SITE_META: SiteMeta = {
+  title: 'Celeb Gossip 07 ★ OMG!!',
+  description:
+    'The hottest celeb gossip, updated like 2x a day!!! Starla Vance, 4Ever Boulevard, Bianca Goldcrest, Rex Hammerton, Tinfoil Comets and MORE. Vote HOT or NOT!!!',
+  keywords: [
+    'celeb',
+    'celebrity',
+    'gossip',
+    'blog',
+    'rumors',
+    'hot or not',
+    'starla',
+    'tinfoil comets',
+  ],
+  pages: {
+    '/': {
+      title: 'Celeb Gossip 07 ★ OMG!!',
+      keywords: ['latest', 'posts', 'poll'],
+    },
+    '/post': {
+      title: 'Celeb Gossip 07 - Post + Comments',
+      keywords: ['post', 'comments'],
+    },
+    '/tag': {
+      title: 'Celeb Gossip 07 - Tags',
+      keywords: ['tags', 'tag cloud'],
+    },
+    '/celebs': {
+      title: "Celeb Gossip 07 - Who's Who",
+      keywords: ['celebs', 'stars', 'who', 'famous'],
+    },
+  },
+};
 
 export const GOSSIP_TEXT = {
   title: 'Celeb Gossip 07',
@@ -20,6 +54,9 @@ export const GOSSIP_TEXT = {
   pollHeading: 'HOT or NOT?!',
   noPostYet: 'that post doesnt exist (yet??). Roxi is on it!!!',
   noTagPosts: 'no posts with that tag yet. check back 2morrow!!!',
+  commentsClosed: 'comments r closed bc of spam (thx a lot hater_patrol)',
+  pollThanks: 'thx 4 voting!!! new poll 2morrow',
+  pollNag: 'pick 1 first!!!',
 };
 
 export interface Celeb {

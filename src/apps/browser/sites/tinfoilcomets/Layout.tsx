@@ -2,6 +2,7 @@
 // Every page view counts as one visit (pages remount per load), so the counter ticks as you browse.
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
+import { useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import { SiteLink } from '../../SiteLink';
 import { useWebStore } from '../../store';
@@ -11,10 +12,10 @@ import styles from './TinfoilComets.module.css';
 import { Webring } from './Webring';
 
 const NAV = [
-  ['HOME', '/'],
-  ['The Band', '/band'],
-  ['Pics', '/pics'],
-  ['Guestbook', '/guestbook'],
+  ['home', '/'],
+  ['band', '/band'],
+  ['pics', '/pics'],
+  ['guestbook', '/guestbook'],
 ] as const;
 
 function useVisit(host: string): number {
@@ -34,16 +35,22 @@ function useVisit(host: string): number {
 export function Layout({ children }: { children: ReactNode }) {
   const { TINFOIL_SITE_TEXT: T } = useSiteText(TINFOIL_HOST);
   const hits = useVisit(TINFOIL_HOST);
+  const t = useT();
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>
         <span>{T.title}</span>
       </h1>
-      <nav className={styles.nav} aria-label="Site">
-        {NAV.map(([label, href], i) => (
+      <nav
+        className={styles.nav}
+        aria-label={t('sites.tinfoilcomets.nav.label')}
+      >
+        {NAV.map(([key, href], i) => (
           <span key={href}>
             {i > 0 && <span aria-hidden> ~*~ </span>}
-            <SiteLink href={href}>{label}</SiteLink>
+            <SiteLink href={href}>
+              {t(`sites.tinfoilcomets.nav.${key}`)}
+            </SiteLink>
           </span>
         ))}
       </nav>

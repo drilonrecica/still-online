@@ -1,5 +1,6 @@
 // tinfoilcomets.example `/`: marquee news, hamsters, under construction, guestbook + MIDI buttons.
 import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
+import { useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import { useWorldStore } from '@/os/world';
 import { SiteLink } from '../../SiteLink';
@@ -12,12 +13,16 @@ import { UnderConstruction } from './UnderConstruction';
 export default function Home() {
   const { TINFOIL_NEWS, TINFOIL_SITE_TEXT: T } = useSiteText(TINFOIL_HOST);
   const day = useWorldStore((s) => s.day);
+  const t = useT();
   const news = TINFOIL_NEWS.filter((n) => n.day <= day)
     .reverse()
     .map((n) => n.text);
   return (
     <Layout>
-      <div className={styles.marquee} aria-label="News">
+      <div
+        className={styles.marquee}
+        aria-label={t('sites.tinfoilcomets.news')}
+      >
         <span>{news.join('   ★   ')}</span>
       </div>
       <Hamsters />
@@ -27,18 +32,25 @@ export default function Home() {
         <tbody>
           <tr>
             <td>
-              <b>~*~ WHATS ON MY SITE ~*~</b>
+              <b>{t('sites.tinfoilcomets.whatsOn')}</b>
               <ul>
                 <li>
-                  <SiteLink href="/band">The Band</SiteLink> (members, albums,
-                  TOUR DATES!!!)
+                  <SiteLink href="/band">
+                    {t('sites.tinfoilcomets.nav.band')}
+                  </SiteLink>{' '}
+                  {t('sites.tinfoilcomets.whatsOnBand')}
                 </li>
                 <li>
-                  <SiteLink href="/pics">Pics</SiteLink> (concert pics!!!)
+                  <SiteLink href="/pics">
+                    {t('sites.tinfoilcomets.nav.pics')}
+                  </SiteLink>{' '}
+                  {t('sites.tinfoilcomets.whatsOnPics')}
                 </li>
                 <li>
-                  <SiteLink href="/guestbook">Guestbook</SiteLink> (sign it or
-                  else)
+                  <SiteLink href="/guestbook">
+                    {t('sites.tinfoilcomets.nav.guestbook')}
+                  </SiteLink>{' '}
+                  {t('sites.tinfoilcomets.whatsOnGuestbook')}
                 </li>
               </ul>
             </td>
@@ -47,7 +59,7 @@ export default function Home() {
       </table>
       <p className={styles.center}>
         <SiteLink href="/guestbook" className={styles.bigButton}>
-          Sign my GUESTBOOK!!
+          {t('sites.tinfoilcomets.signButton')}
         </SiteLink>
       </p>
       <MidiButton />

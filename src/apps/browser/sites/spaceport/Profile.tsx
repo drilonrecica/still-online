@@ -2,7 +2,7 @@
 // Any other single-segment path lands here too and shows "Lost in orbit!".
 import { usePlayerName } from '@/i18n/settingsText';
 import { getProfiles } from '@/content/locale';
-import { useLocale } from '@/i18n/useT';
+import { useLocale, useT } from '@/i18n/useT';
 import { SPACEPORT_HOST } from '@/content/sites/spaceport';
 import { useSiteText } from '../useSiteText';
 import type { SitePageProps } from '@/content/sites/types';
@@ -23,6 +23,7 @@ import styles from './Spaceport.module.css';
 export default function Profile({ path }: SitePageProps) {
   const { SPACEPORT_TEXT: T } = useSiteText(SPACEPORT_HOST);
   const locale = useLocale();
+  const t = useT();
   const PROFILES = getProfiles(locale);
   const day = useWorldStore((s) => s.day);
   const playerName = usePlayerName();
@@ -35,7 +36,7 @@ export default function Profile({ path }: SitePageProps) {
         <div className={styles.notFound}>
           <h2>{T.notFoundTitle}</h2>
           <p>{T.notFoundText}</p>
-          <SiteLink href="/">&laquo; Back to the launch pad</SiteLink>
+          <SiteLink href="/">{t('sites.spaceport.backToLaunchPad')}</SiteLink>
         </div>
       </Layout>
     );

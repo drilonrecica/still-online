@@ -1,6 +1,28 @@
 // virusguard.example: the scareware joke behind the "subscription has expired!" balloon (P1-04).
 // It's an obvious parody: it scans nothing, sells nothing, and says so in the fine print.
+import type { SiteMeta } from './types';
+
 export const VIRUSGUARD_HOST = 'virusguard.example';
+
+export const SITE_META: SiteMeta = {
+  title: 'VirusGuard 2007 - Is Your Computer Infected?',
+  description:
+    'WARNING!!! Your computer may be 87% infected!!! Buy VirusGuard 2007 for only $49.95. (A joke website.)',
+  keywords: [
+    'virus',
+    'antivirus',
+    'virusguard',
+    'scan',
+    'security',
+    'infected',
+  ],
+  pages: {
+    '/': {
+      title: 'VirusGuard 2007 - Is Your Computer Infected?',
+      keywords: ['buy', 'scan', 'threats'],
+    },
+  },
+};
 
 export const VIRUSGUARD_TEXT = {
   brand: 'VirusGuard 2007',
@@ -25,7 +47,8 @@ export const VIRUSGUARD_TEXT = {
 export interface Threat {
   name: string;
   location: string;
-  risk: 'HIGH' | 'VERY HIGH' | 'EXTREME' | 'meh';
+  /** Shouted in English (HIGH, VERY HIGH, EXTREME, meh); German shouts in German. */
+  risk: string;
 }
 
 export const VIRUSGUARD_THREATS: readonly Threat[] = [

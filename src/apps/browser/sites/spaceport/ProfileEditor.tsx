@@ -4,7 +4,7 @@ import { useId, useState } from 'react';
 import type { PlayerProfile } from '@/content/profiles/types';
 import { PLAYLIST } from '@/content/playlist';
 import { PROFILE_LIMITS, SPACEPORT_HOST } from '@/content/sites/spaceport';
-import { useLocale } from '@/i18n/useT';
+import { useLocale, useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import { cleanProfile, moveTop8 } from './logic';
 import { friendName } from './people';
@@ -23,6 +23,7 @@ export function ProfileEditor({
 }) {
   const { MOOD_EMOTICONS, THEME_PRESETS } = useSiteText(SPACEPORT_HOST);
   const locale = useLocale();
+  const t = useT();
   const [p, setP] = useState(initial);
   const id = useId();
   const set = (patch: Partial<PlayerProfile>) =>
@@ -32,15 +33,17 @@ export function ProfileEditor({
   return (
     <form
       className={styles.editor}
-      aria-label="Edit Profile"
+      aria-label={t('sites.spaceport.editProfile')}
       onSubmit={(e) => {
         e.preventDefault();
         onSave(cleanProfile(p));
       }}
     >
-      <h2 className={styles.boxTitle}>Edit Profile</h2>
+      <h2 className={styles.boxTitle}>{t('sites.spaceport.editProfile')}</h2>
       <div className={styles.editorGrid}>
-        <label htmlFor={`${id}-headline`}>Headline:</label>
+        <label htmlFor={`${id}-headline`}>
+          {t('sites.spaceport.editor.headline')}
+        </label>
         <input
           id={`${id}-headline`}
           value={p.headline}
@@ -48,7 +51,7 @@ export function ProfileEditor({
           onChange={(e) => set({ headline: e.target.value })}
         />
 
-        <label htmlFor={`${id}-mood`}>Mood:</label>
+        <label htmlFor={`${id}-mood`}>{t('sites.spaceport.editor.mood')}</label>
         <span className={styles.row}>
           <input
             id={`${id}-mood`}
@@ -57,7 +60,7 @@ export function ProfileEditor({
             onChange={(e) => set({ mood: { ...p.mood, text: e.target.value } })}
           />
           <select
-            aria-label="Mood emoticon"
+            aria-label={t('sites.spaceport.editor.moodEmoticon')}
             value={p.mood.emoticon}
             onChange={(e) =>
               set({ mood: { ...p.mood, emoticon: e.target.value } })
@@ -71,7 +74,9 @@ export function ProfileEditor({
           </select>
         </span>
 
-        <label htmlFor={`${id}-about`}>About me:</label>
+        <label htmlFor={`${id}-about`}>
+          {t('sites.spaceport.editor.aboutMe')}
+        </label>
         <textarea
           id={`${id}-about`}
           rows={5}
@@ -80,21 +85,23 @@ export function ProfileEditor({
           onChange={(e) => set({ aboutMe: e.target.value })}
         />
 
-        <label htmlFor={`${id}-song`}>Profile song:</label>
+        <label htmlFor={`${id}-song`}>{t('sites.spaceport.editor.song')}</label>
         <select
           id={`${id}-song`}
           value={p.songTrackId ?? ''}
           onChange={(e) => set({ songTrackId: e.target.value || null })}
         >
-          <option value="">(no song)</option>
-          {PLAYLIST.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.artist} - {t.title}
+          <option value="">{t('sites.spaceport.editor.noSong')}</option>
+          {PLAYLIST.map((track) => (
+            <option key={track.id} value={track.id}>
+              {track.artist} - {track.title}
             </option>
           ))}
         </select>
 
-        <label htmlFor={`${id}-theme`}>Theme:</label>
+        <label htmlFor={`${id}-theme`}>
+          {t('sites.spaceport.editor.theme')}
+        </label>
         <select
           id={`${id}-theme`}
           value={p.themePreset}
@@ -106,20 +113,22 @@ export function ProfileEditor({
             })
           }
         >
-          {THEME_PRESETS.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.label}
+          {THEME_PRESETS.map((preset) => (
+            <option key={preset.id} value={preset.id}>
+              {preset.label}
             </option>
           ))}
-          <option value="custom">Custom colors...</option>
+          <option value="custom">
+            {t('sites.spaceport.editor.customColors')}
+          </option>
         </select>
 
         {p.themePreset === 'custom' && (
           <>
-            <span>Colors:</span>
+            <span>{t('sites.spaceport.editor.colors')}</span>
             <span className={styles.row}>
               <label>
-                Background{' '}
+                {t('sites.spaceport.editor.background')}{' '}
                 <input
                   type="color"
                   value={colors.background}
@@ -131,7 +140,7 @@ export function ProfileEditor({
                 />
               </label>
               <label>
-                Text{' '}
+                {t('sites.spaceport.editor.text')}{' '}
                 <input
                   type="color"
                   value={colors.text}
@@ -144,8 +153,11 @@ export function ProfileEditor({
           </>
         )}
 
-        <span>Top 8:</span>
-        <ol className={styles.orderList} aria-label="Top 8 order">
+        <span>{t('sites.spaceport.editor.top8')}</span>
+        <ol
+          className={styles.orderList}
+          aria-label={t('sites.spaceport.editor.top8Order')}
+        >
           {p.top8.map((friend, i) => (
             <li key={friend}>
               <span className={styles.orderName}>
@@ -153,7 +165,9 @@ export function ProfileEditor({
               </span>
               <button
                 type="button"
-                aria-label={`Move ${friend} up`}
+                aria-label={t('sites.spaceport.editor.moveUp', {
+                  name: friend,
+                })}
                 disabled={i === 0}
                 onClick={() => set({ top8: moveTop8(p.top8, i, -1) })}
               >
@@ -161,7 +175,9 @@ export function ProfileEditor({
               </button>
               <button
                 type="button"
-                aria-label={`Move ${friend} down`}
+                aria-label={t('sites.spaceport.editor.moveDown', {
+                  name: friend,
+                })}
                 disabled={i === p.top8.length - 1}
                 onClick={() => set({ top8: moveTop8(p.top8, i, 1) })}
               >
@@ -173,10 +189,10 @@ export function ProfileEditor({
       </div>
       <div className={styles.editorButtons}>
         <button type="submit" className={styles.bigButton}>
-          Save Changes
+          {t('sites.spaceport.editor.save')}
         </button>
         <button type="button" onClick={onCancel}>
-          Cancel
+          {t('sites.spaceport.editor.cancel')}
         </button>
       </div>
     </form>

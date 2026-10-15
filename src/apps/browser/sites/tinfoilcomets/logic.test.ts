@@ -100,10 +100,11 @@ describe('validateEntry', () => {
   it('needs a name and a message', () => {
     expect(
       validateEntry({ name: ' ', message: 'hi', homepage: '' }, 1),
-    ).toEqual({ ok: false, error: 'u forgot ur name!!!' });
-    expect(validateEntry({ name: 'A', message: '', homepage: '' }, 1).ok).toBe(
-      false,
-    );
+    ).toEqual({ ok: false, error: 'noName' });
+    expect(validateEntry({ name: 'A', message: '', homepage: '' }, 1)).toEqual({
+      ok: false,
+      error: 'noMessage',
+    });
   });
 });
 
@@ -113,6 +114,7 @@ describe('hit counter', () => {
     expect(counterDigits(counterValue(1))).toBe('004,203');
     expect(counterDigits(counterValue(2))).toBe('004,204');
     expect(counterValue(10)).toBe(COUNTER_START + 9);
+    expect(counterDigits(counterValue(2), 'de')).toBe('004.204');
     expect(counterDigits(1_234_567)).toBe('1,234,567');
   });
 });

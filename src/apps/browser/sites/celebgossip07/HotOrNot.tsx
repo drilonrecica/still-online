@@ -1,6 +1,7 @@
 // Today's HOT or NOT poll. The player's vote persists in `web.votes`; after voting it shows results.
 import { useId, useState, type FormEvent } from 'react';
 import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
+import { useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import { useWebStore } from '../../store';
 import styles from './CelebGossip.module.css';
@@ -11,6 +12,7 @@ export function HotOrNot({ day }: { day: number }) {
   const poll = currentPoll(GOSSIP_POLLS, day);
   const voted = useWebStore((s) => (poll ? s.votes[poll.id] : undefined));
   const vote = useWebStore((s) => s.vote);
+  const t = useT();
   const [choice, setChoice] = useState<number | null>(null);
   const [nag, setNag] = useState(false);
   const id = useId();
@@ -26,7 +28,10 @@ export function HotOrNot({ day }: { day: number }) {
   };
 
   return (
-    <section className={`${styles.box} ${styles.poll}`} aria-label="Poll">
+    <section
+      className={`${styles.box} ${styles.poll}`}
+      aria-label={t('sites.celebgossip07.poll')}
+    >
       <h2>{T.pollHeading}</h2>
       <p className={styles.question} id={`${id}-q`}>
         {poll.question}
@@ -50,22 +55,25 @@ export function HotOrNot({ day }: { day: number }) {
             </div>
           ))}
           <button type="submit" className={styles.button}>
-            VOTE!!!
+            {t('sites.celebgossip07.vote')}
           </button>
           {nag && (
             <p role="alert" className={styles.nag}>
-              pick 1 first!!!
+              {T.pollNag}
             </p>
           )}
         </form>
       ) : (
         <>
-          <ul className={styles.results} aria-label="Poll results">
+          <ul
+            className={styles.results}
+            aria-label={t('sites.celebgossip07.pollResults')}
+          >
             {pollTally(poll, voted).map((r, i) => (
               <li key={r.option}>
                 <span>
                   {r.option}
-                  {i === voted && ' ← u'}
+                  {i === voted && t('sites.celebgossip07.yourVote')}
                 </span>
                 <span className={styles.bar} aria-hidden>
                   <span style={{ width: `${r.percent}%` }} />
@@ -75,7 +83,7 @@ export function HotOrNot({ day }: { day: number }) {
             ))}
           </ul>
           <p role="status" className={styles.thanks}>
-            thx 4 voting!!! new poll 2morrow
+            {T.pollThanks}
           </p>
         </>
       )}

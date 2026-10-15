@@ -1,5 +1,5 @@
-// Searchly's engine: an index built from site metadata (page titles, keywords, descriptions),
-// weighted scoring, "did you mean" for one-letter typos and the Lucky pick.
+// Searchly's engine: an index built from site metadata in one language (page titles, keywords,
+// descriptions), weighted scoring, "did you mean" for one-letter typos and the Lucky pick.
 import type { SiteDefinition } from '@/content/sites/types';
 import type { Locale } from '@/i18n/types';
 
@@ -59,17 +59,20 @@ export function buildIndex(
   const pages: IndexedPage[] = [];
   const vocabulary = new Set<string>();
   for (const site of sites) {
-    for (const [path, page] of Object.entries(site.pages)) {
+    const meta = site.meta(locale);
+    for (const path of Object.keys(site.pages)) {
       if (path.includes('*')) continue;
+      const page = meta.pages[path];
+      const title = page?.title ?? meta.title;
       const url = `http://${site.host}${path}`;
       const titleTokens = new Set(
-        tokens(`${page.title} ${site.host.replace(/\.example$/, '')}`),
+        tokens(`${title} ${site.host.replace(/\.example$/, '')}`),
       );
       const keywordTokens = new Set(
-        tokens([...(page.keywords ?? []), ...site.keywords].join(' ')),
+        tokens([...(page?.keywords ?? []), ...meta.keywords].join(' ')),
       );
       const descriptionTokens = new Set(
-        tokens(`${site.title} ${site.description}`),
+        tokens(`${meta.title} ${meta.description}`),
       );
       for (const set of [titleTokens, keywordTokens, descriptionTokens]) {
         for (const word of set) vocabulary.add(word);
@@ -78,8 +81,8 @@ export function buildIndex(
         url,
         host: site.host,
         path,
-        title: page.title,
-        snippet: site.description,
+        title,
+        snippet: meta.description,
         titleTokens,
         keywordTokens,
         descriptionTokens,

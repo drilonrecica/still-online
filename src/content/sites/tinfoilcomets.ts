@@ -1,9 +1,34 @@
 // tinfoilcomets.example: "The OFFICIAL UNOFFICIAL Tinfoil Comets Fan Page!!!1" by xX_CometGirl_Xx.
 // Everything is fictional: the band, its songs and every signer. Day-gated entries show when
 // `day <= currentDay`. Friends sign on their story days (Jess 1 + 5, Pia 3, Marco 4).
-import type { GuestbookEntry } from './types';
+import type { GuestbookEntry, SiteMeta } from './types';
 
 export const TINFOIL_HOST = 'tinfoilcomets.example';
+
+export const SITE_META: SiteMeta = {
+  title: 'The OFFICIAL UNOFFICIAL Tinfoil Comets Fan Page!!!1',
+  description:
+    'The #1 Tinfoil Comets fan page by xX_CometGirl_Xx: band news, tour dates, concert pics and a guestbook. Sign it!!!',
+  keywords: ['tinfoil', 'comets', 'band', 'fan', 'music', 'concert', 'ziggy'],
+  pages: {
+    '/': {
+      title: 'Tinfoil Comets Fan Page - HOME',
+      keywords: ['hamsters', 'news', 'webring', 'midi'],
+    },
+    '/band': {
+      title: 'Tinfoil Comets Fan Page - The Band',
+      keywords: ['members', 'albums', 'tour', 'dates', 'robot'],
+    },
+    '/guestbook': {
+      title: 'Tinfoil Comets Fan Page - Guestbook',
+      keywords: ['guestbook', 'sign'],
+    },
+    '/pics': {
+      title: 'Tinfoil Comets Fan Page - Pics',
+      keywords: ['pics', 'photos', 'gallery'],
+    },
+  },
+};
 
 /** The hit counter shows this on the very first visit, then +1 per visit. */
 export const COUNTER_START = 4203;
@@ -54,6 +79,13 @@ export const TINFOIL_SITE_TEXT = {
   footer:
     'all pics + words (c) xX_CometGirl_Xx. DO NOT STEAL MY LAYOUT. i will know.',
   updated: 'last updated: like yesterday',
+  picsIntro:
+    'all taken by me w my disposable camera!!! (except the ones that r not)',
+  construction: 'UNDER CONSTRUCTION',
+  constructionNote: 'pardon our dust!!! more stuff coming soon',
+  signThanks: 'THANK U 4 SIGNING!!! ♥',
+  errorNoName: 'u forgot ur name!!!',
+  errorNoMessage: 'u have 2 write SOMETHING!!!',
 };
 
 /** The scrolling news marquee on the home page. */

@@ -2,6 +2,8 @@
 import { usePlayerName } from '@/i18n/settingsText';
 import { useId, useState, type FormEvent } from 'react';
 import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
+import { useT } from '@/i18n/useT';
+import { rich } from '../rich';
 import { useSiteText } from '../useSiteText';
 import type { PlayerGuestbookEntry } from '@/content/sites/types';
 import { useWorldStore } from '@/os/world';
@@ -28,7 +30,8 @@ function Homepage({ url }: { url: string }) {
 }
 
 export default function Guestbook() {
-  const { TINFOIL_GUESTBOOK } = useSiteText(TINFOIL_HOST);
+  const { TINFOIL_GUESTBOOK, TINFOIL_SITE_TEXT: T } = useSiteText(TINFOIL_HOST);
+  const t = useT();
   const day = useWorldStore((s) => s.day);
   const mine = useWebStore((s) => s.guestbook[TINFOIL_HOST] ?? NONE);
   const sign = useWebStore((s) => s.signGuestbook);
@@ -38,7 +41,7 @@ export default function Guestbook() {
     message: '',
     homepage: '',
   });
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<'noName' | 'noMessage' | null>(null);
   const [thanks, setThanks] = useState(false);
   const id = useId();
   const entries = guestbookEntries(TINFOIL_GUESTBOOK, mine, day);
@@ -66,44 +69,59 @@ export default function Guestbook() {
 
   return (
     <Layout>
-      <h2 className={styles.heading}>~*~ SIGN MY GUESTBOOK!!! ~*~</h2>
+      <h2 className={styles.heading}>{t('sites.tinfoilcomets.guestbook')}</h2>
       <form className={styles.form} onSubmit={submit}>
-        <label htmlFor={`${id}-name`}>Name:</label>
+        <label htmlFor={`${id}-name`}>{t('sites.tinfoilcomets.name')}</label>
         <input {...field('name')} maxLength={NAME_MAX} />
-        <label htmlFor={`${id}-homepage`}>Homepage:</label>
+        <label htmlFor={`${id}-homepage`}>
+          {t('sites.tinfoilcomets.homepage')}
+        </label>
         <input
           {...field('homepage')}
           maxLength={HOMEPAGE_MAX}
           placeholder="http://"
         />
-        <label htmlFor={`${id}-message`}>Message:</label>
+        <label htmlFor={`${id}-message`}>
+          {t('sites.tinfoilcomets.message')}
+        </label>
         <textarea {...field('message')} maxLength={MESSAGE_MAX} rows={4} />
         <span />
         <span>
           <button type="submit" className={styles.button}>
-            Sign it!!!
+            {t('sites.tinfoilcomets.sign')}
           </button>{' '}
           {error && (
             <span role="alert" className={styles.error}>
-              {error}
+              {error === 'noName' ? T.errorNoName : T.errorNoMessage}
             </span>
           )}
           {thanks && (
             <span role="status" className={styles.thanks}>
-              THANK U 4 SIGNING!!! &hearts;
+              {T.signThanks}
             </span>
           )}
         </span>
       </form>
 
       <p className={styles.center}>
-        <b>{entries.length}</b> ppl have signed!!!
+        {rich(t('sites.tinfoilcomets.signedCount', { n: '{n}' }), {
+          n: <b>{entries.length}</b>,
+        })}
       </p>
-      <ol className={styles.entries} aria-label="Guestbook entries">
+      <ol
+        className={styles.entries}
+        aria-label={t('sites.tinfoilcomets.entries')}
+      >
         {entries.map((e, i) => (
           <li key={i} className={e.mine ? styles.mine : undefined}>
             <div className={styles.entryHead}>
-              <b>{e.name}</b> signed {signedLabel(e.day, day)}
+              {rich(
+                t('sites.tinfoilcomets.signed', {
+                  name: '{name}',
+                  when: signedLabel(e.day, day),
+                }),
+                { name: <b>{e.name}</b> },
+              )}
               {e.homepage && (
                 <>
                   {' '}

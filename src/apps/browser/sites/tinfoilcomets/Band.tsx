@@ -1,5 +1,6 @@
 // tinfoilcomets.example `/band`: the four members, the albums and the tour dates.
 import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
+import { useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import { useWorldStore } from '@/os/world';
 import { Layout } from './Layout';
@@ -9,9 +10,10 @@ export default function Band() {
   const { TINFOIL_ALBUMS, TINFOIL_MEMBERS, TINFOIL_TOUR } =
     useSiteText(TINFOIL_HOST);
   const day = useWorldStore((s) => s.day);
+  const t = useT();
   return (
     <Layout>
-      <h2 className={styles.heading}>~*~ THE BAND ~*~</h2>
+      <h2 className={styles.heading}>{t('sites.tinfoilcomets.band')}</h2>
       <table className={styles.box}>
         <tbody>
           {TINFOIL_MEMBERS.map((m) => (
@@ -33,7 +35,7 @@ export default function Band() {
         </tbody>
       </table>
 
-      <h2 className={styles.heading}>~*~ ALBUMS ~*~</h2>
+      <h2 className={styles.heading}>{t('sites.tinfoilcomets.albums')}</h2>
       {TINFOIL_ALBUMS.map((a) => (
         <table key={a.title} className={styles.box}>
           <tbody>
@@ -44,8 +46,8 @@ export default function Band() {
                 </b>{' '}
                 &mdash; {a.note}
                 <ol>
-                  {a.tracks.map((t) => (
-                    <li key={t}>{t}</li>
+                  {a.tracks.map((track) => (
+                    <li key={track}>{track}</li>
                   ))}
                 </ol>
               </td>
@@ -54,18 +56,19 @@ export default function Band() {
         </table>
       ))}
 
-      <h2 className={styles.heading}>~*~ TOUR DATES ~*~</h2>
+      <h2 className={styles.heading}>{t('sites.tinfoilcomets.tour')}</h2>
       <table className={styles.box}>
         <tbody>
-          {TINFOIL_TOUR.map((t) => {
-            const past = t.after && day >= t.after.day ? t.after : null;
+          {TINFOIL_TOUR.map((show) => {
+            const past =
+              show.after && day >= show.after.day ? show.after : null;
             return (
-              <tr key={t.venue}>
+              <tr key={show.venue}>
                 <th scope="row" className={past ? undefined : styles.blink}>
-                  {past?.date ?? t.date}
+                  {past?.date ?? show.date}
                 </th>
                 <td>
-                  <b>{t.venue}</b> &mdash; {past?.note ?? t.note}
+                  <b>{show.venue}</b> &mdash; {past?.note ?? show.note}
                 </td>
               </tr>
             );

@@ -1,17 +1,12 @@
 // Shared frame for about.example pages: banner, sidebar of cool sites, footer.
 import type { ReactNode } from 'react';
+import { ABOUT_HOST } from '@/content/sites/about';
 import { SiteLink } from '../../SiteLink';
+import { useSiteText } from '../useSiteText';
 import styles from './About.module.css';
 
-const COOL_SITES = [
-  ['Searchly', 'http://searchly.example/'],
-  ['Tinfoil Comets', 'http://tinfoilcomets.example/'],
-  ['Spaceport', 'http://spaceport.example/'],
-  ['Westfield High', 'http://westfield-high.example/'],
-  ['Celeb Gossip 07', 'http://celebgossip07.example/'],
-] as const;
-
 export function Layout({ children }: { children: ReactNode }) {
+  const { ABOUT_TEXT: T, COOL_SITES } = useSiteText(ABOUT_HOST);
   return (
     <div className={styles.page}>
       <table className={styles.frame}>
@@ -22,23 +17,20 @@ export function Layout({ children }: { children: ReactNode }) {
         <tbody>
           <tr>
             <td colSpan={2} className={styles.banner}>
-              <h1>Web Explorer</h1>
-              <p>Your window on the World Wide Web</p>
+              <h1>{T.banner}</h1>
+              <p>{T.bannerTagline}</p>
             </td>
           </tr>
           <tr>
             <td colSpan={2} className={styles.ticker}>
-              <span>
-                *** NEW! Add your favorite pages to the Favorites menu *** Tip:
-                a 56K modem loads most pages in under a minute! ***
-              </span>
+              <span>{T.ticker}</span>
             </td>
           </tr>
           <tr>
             <td className={styles.side}>
-              <h2>Cool Sites</h2>
+              <h2>{T.coolSitesTitle}</h2>
               <ul>
-                {COOL_SITES.map(([label, url]) => (
+                {COOL_SITES.map(({ label, url }) => (
                   <li key={url}>
                     <SiteLink href={url}>{label}</SiteLink>
                   </li>
@@ -49,7 +41,7 @@ export function Layout({ children }: { children: ReactNode }) {
           </tr>
           <tr>
             <td colSpan={2} className={styles.footer}>
-              Best viewed at 800x600 · This page is stored on your computer
+              {T.footer}
             </td>
           </tr>
         </tbody>

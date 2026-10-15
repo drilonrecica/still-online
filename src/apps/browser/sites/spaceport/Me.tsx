@@ -3,7 +3,8 @@
 import { usePlayerName } from '@/i18n/settingsText';
 import { useState } from 'react';
 import { getProfiles } from '@/content/locale';
-import { useLocale } from '@/i18n/useT';
+import { useLocale, useT } from '@/i18n/useT';
+import { rich } from '../rich';
 import { SPACEPORT_HOST } from '@/content/sites/spaceport';
 import { useSiteText } from '../useSiteText';
 import { now } from '@/os/clock';
@@ -24,6 +25,7 @@ import styles from './Spaceport.module.css';
 export default function Me() {
   const { SPACEPORT_TEXT: T } = useSiteText(SPACEPORT_HOST);
   const locale = useLocale();
+  const t = useT();
   const PROFILES = getProfiles(locale);
   const day = useWorldStore((s) => s.day);
   const playerName = usePlayerName();
@@ -50,7 +52,9 @@ export default function Me() {
   return (
     <Layout>
       <p className={styles.loggedIn}>
-        Hello, <b>{playerName}</b>! You are logged in.
+        {rich(t('sites.spaceport.hello', { name: '{name}' }), {
+          name: <b>{playerName}</b>,
+        })}
       </p>
       <ProfileView
         name={playerName}
@@ -76,7 +80,7 @@ export default function Me() {
             className={styles.bigButton}
             onClick={() => setEditing(true)}
           >
-            Edit Profile
+            {t('sites.spaceport.editProfile')}
           </button>
         }
       />

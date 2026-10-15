@@ -46,9 +46,11 @@ describe('accessors', () => {
     expect(getMailContent('de').map((m) => m.id)).toEqual(
       MAIL_CONTENT.map((m) => m.id),
     );
-    expect(getProfiles('de')).toHaveLength(PROFILES.length);
-    expect(getSiteText(SPACEPORT_HOST, 'de').SPACEPORT_TEXT.emptyWall).toBe(
-      SPACEPORT_TEXT.emptyWall,
+    expect(getProfiles('de').map((p) => p.contactId)).toEqual(
+      PROFILES.map((p) => p.contactId),
+    );
+    expect(getSiteText(SPACEPORT_HOST, 'de').SPACEPORT_TEXT.emptyWall).toMatch(
+      /^Noch keine Kommentare/,
     );
     expect(getBalloons('de').SCHEDULED_BALLOONS.length).toBeGreaterThan(0);
     expect(getTips('de').TIPS.length).toBeGreaterThan(0);

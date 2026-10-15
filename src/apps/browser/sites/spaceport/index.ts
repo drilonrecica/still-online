@@ -1,53 +1,42 @@
 // spaceport.example: the social-network homage. A page per friend profile (so Searchly finds
 // them), the player's editable `/me`, and a `/*` catch-all for profiles lost in orbit.
 import { lazy } from 'react';
+import { getSiteText } from '@/content/locale';
 import { PROFILES } from '@/content/profiles';
 import { SPACEPORT_HOST } from '@/content/sites/spaceport';
 import type { SitePage, SiteDefinition } from '@/content/sites/types';
+import { interpolate } from '@/i18n/t';
 import { profileName } from './logic';
 
 const profile = lazy(() => import('./Profile'));
-
-const friendPages: Record<string, SitePage> = Object.fromEntries(
-  PROFILES.map((p) => [
-    `/${p.contactId}`,
-    {
-      title: `${profileName(p.contactId)} on Spaceport`,
-      keywords: [p.contactId, 'profile', 'top 8', 'comments'],
-      component: profile,
-    },
-  ]),
-);
+const friendPaths = PROFILES.map((p) => `/${p.contactId}`);
 
 export const SPACEPORT_SITE: SiteDefinition = {
   host: SPACEPORT_HOST,
-  title: 'Spaceport: a place for friends in orbit',
-  description:
-    'Spaceport is the place for friends: profiles, Top 8, comments, moods and a song on your page. Join for free!',
-  keywords: [
-    'spaceport',
-    'friends',
-    'profile',
-    'social',
-    'top 8',
-    'comments',
-    'music',
-  ],
+  meta: (locale) => {
+    const { SITE_META, PROFILE_PAGE } = getSiteText(SPACEPORT_HOST, locale);
+    const friendPages = Object.fromEntries(
+      PROFILES.map((p) => [
+        `/${p.contactId}`,
+        {
+          title: interpolate(PROFILE_PAGE.title, {
+            name: profileName(p.contactId),
+          }),
+          keywords: [p.contactId, ...PROFILE_PAGE.keywords],
+        },
+      ]),
+    );
+    return { ...SITE_META, pages: { ...SITE_META.pages, ...friendPages } };
+  },
   pages: {
-    '/': {
-      title: 'Spaceport - a place for friends in orbit',
-      keywords: ['sign up', 'log in', 'cool new people'],
-      component: lazy(() => import('./Home')),
-    },
-    '/me': {
-      title: 'Spaceport - My Profile',
-      keywords: ['my profile', 'edit', 'me'],
-      component: lazy(() => import('./Me')),
-    },
-    ...friendPages,
-    '/*': {
-      title: 'Spaceport - Lost in orbit',
-      component: profile,
-    },
+    '/': { component: lazy(() => import('./Home')) },
+    '/me': { component: lazy(() => import('./Me')) },
+    ...Object.fromEntries(
+      friendPaths.map((path): [string, SitePage] => [
+        path,
+        { component: profile },
+      ]),
+    ),
+    '/*': { component: profile },
   },
 };

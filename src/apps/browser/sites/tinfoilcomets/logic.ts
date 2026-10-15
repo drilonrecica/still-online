@@ -6,6 +6,7 @@ import type {
   PlayerGuestbookEntry,
 } from '@/content/sites/types';
 import { COUNTER_START } from '@/content/sites/tinfoilcomets';
+import type { Locale } from '@/i18n/types';
 
 export interface ShownEntry extends GuestbookEntry {
   mine: boolean;
@@ -46,9 +47,10 @@ export function signedLabel(entryDay: number, currentDay: number): string {
 }
 
 export type SignResult =
-  { ok: true; entry: PlayerGuestbookEntry } | { ok: false; error: string };
+  | { ok: true; entry: PlayerGuestbookEntry }
+  | { ok: false; error: 'noName' | 'noMessage' };
 
-/** Trims and checks a guestbook form; the error texts are CometGirl's. */
+/** Trims and checks a guestbook form; the page shows CometGirl's text for the error. */
 export function validateEntry(
   input: { name: string; message: string; homepage: string },
   day: number,
@@ -56,8 +58,8 @@ export function validateEntry(
   const name = input.name.trim().slice(0, NAME_MAX);
   const message = input.message.trim().slice(0, MESSAGE_MAX);
   const homepage = input.homepage.trim().slice(0, HOMEPAGE_MAX);
-  if (!name) return { ok: false, error: 'u forgot ur name!!!' };
-  if (!message) return { ok: false, error: 'u have 2 write SOMETHING!!!' };
+  if (!name) return { ok: false, error: 'noName' };
+  if (!message) return { ok: false, error: 'noMessage' };
   return {
     ok: true,
     entry: { name, message, day, ...(homepage ? { homepage } : {}) },
@@ -69,10 +71,13 @@ export function counterValue(hits: number): number {
   return COUNTER_START + Math.max(0, hits - 1);
 }
 
-/** `4203` → `004,203` (six digits, thousands comma; bigger numbers just grow). */
-export function counterDigits(value: number): string {
+/**
+ * `4203` → `004,203` (six digits, thousands separator; bigger numbers just grow). German
+ * separates thousands with a dot: `004.203`.
+ */
+export function counterDigits(value: number, locale: Locale = 'en'): string {
   const digits = String(Math.max(0, Math.floor(value))).padStart(6, '0');
-  return digits.replace(/\B(?=(\d{3})+$)/g, ',');
+  return digits.replace(/\B(?=(\d{3})+$)/g, locale === 'de' ? '.' : ',');
 }
 
 /** The ring is every host in alphabetical order; prev/next wrap around `self`. */
