@@ -18,6 +18,7 @@ describe('registry', () => {
     expect(listApps().map((a) => a.id)).toEqual([
       'explorer',
       'display',
+      'diskcleanup',
       'mycomputer',
       'messenger',
       'messenger-chat',
@@ -39,6 +40,7 @@ describe('registry', () => {
     expect(meta).toEqual({
       explorer: ['system', false],
       display: ['system', false],
+      diskcleanup: ['system', false],
       mycomputer: ['system', false],
       messenger: ['internet', true],
       'messenger-chat': [undefined, false],

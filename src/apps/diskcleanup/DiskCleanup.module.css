@@ -1,0 +1,109 @@
+/* Disk Cleanup: XP dialog styling on xp.css controls. */
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 10px 12px 8px;
+  background: var(--xp-face);
+  font-size: 11px;
+}
+
+.intro {
+  margin: 0;
+}
+
+.scanLabel {
+  margin: 0;
+  min-height: 14px;
+}
+
+.track {
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid #686868;
+  border-radius: 2px;
+  background: #fff;
+  padding: 1px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    #2fb62f 0 8px,
+    transparent 8px 10px
+  );
+  transition: width 0.25s linear;
+}
+
+.fill[data-static='true'] {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition: none;
+  }
+}
+
+.list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #7f9db9;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 2px;
+}
+
+.item label {
+  flex: 1;
+}
+
+.size {
+  white-space: nowrap;
+}
+
+.total {
+  margin: 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.buttons button {
+  min-width: 75px;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 15%);
+}
+
+.dialog {
+  max-width: 94%;
+  font-size: 11px;
+}
+
+.message {
+  margin: 8px 4px 12px;
+}
