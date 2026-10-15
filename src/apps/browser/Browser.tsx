@@ -84,13 +84,13 @@ export default function Browser({ windowId, props }: AppComponentProps) {
   const favoriteItems: MenuEntry[] = [
     {
       kind: 'item',
-      label: 'Add to Favorites...',
+      label: t('browser.menu.addFavorite'),
       onSelect: addCurrent,
       disabled: !page,
     },
     {
       kind: 'item',
-      label: 'Remove from Favorites',
+      label: t('browser.menu.removeFavorite'),
       onSelect: () => useWebStore.getState().removeFavorite(nav.url),
       disabled: !isFavorite,
     },
@@ -102,17 +102,17 @@ export default function Browser({ windowId, props }: AppComponentProps) {
     })),
   ];
   const menus: Menu[] = [
-    { label: 'File', items: [] },
-    { label: 'Edit', items: [] },
-    { label: 'View', items: [] },
-    { label: 'Favorites', items: favoriteItems },
-    { label: 'Tools', items: [] },
+    { label: t('browser.menu.file'), items: [] },
+    { label: t('browser.menu.edit'), items: [] },
+    { label: t('browser.menu.view'), items: [] },
+    { label: t('browser.menu.favorites'), items: favoriteItems },
+    { label: t('browser.menu.tools'), items: [] },
     {
-      label: 'Help',
+      label: t('browser.menu.help'),
       items: [
         {
           kind: 'item',
-          label: 'About Web Explorer',
+          label: t('browser.menu.aboutItem'),
           onSelect: () => setAbout(true),
         },
       ],
@@ -125,7 +125,11 @@ export default function Browser({ windowId, props }: AppComponentProps) {
 
   const status =
     hovered ??
-    (nav.loading ? `Opening page ${nav.loading.url}...` : shown ? 'Done' : '');
+    (nav.loading
+      ? t('browser.status.opening', { url: nav.loading.url })
+      : shown
+        ? t('browser.status.done')
+        : '');
 
   let content = null;
   if (shown && page) {
@@ -153,24 +157,24 @@ export default function Browser({ windowId, props }: AppComponentProps) {
       <div
         className={styles.toolbar}
         role="toolbar"
-        aria-label="Standard Buttons"
+        aria-label={t('browser.toolbar.label')}
       >
         <button
           type="button"
           className={styles.tool}
           onClick={nav.back}
           disabled={!nav.canBack}
-          aria-label="Back"
+          aria-label={t('browser.toolbar.back')}
         >
           <BackIcon />
-          <span>Back</span>
+          <span>{t('browser.toolbar.back')}</span>
         </button>
         <button
           type="button"
           className={styles.tool}
           onClick={nav.forward}
           disabled={!nav.canForward}
-          aria-label="Forward"
+          aria-label={t('browser.toolbar.forward')}
         >
           <ForwardIcon />
         </button>
@@ -179,7 +183,7 @@ export default function Browser({ windowId, props }: AppComponentProps) {
           className={styles.tool}
           onClick={nav.stop}
           disabled={!nav.loading}
-          aria-label="Stop"
+          aria-label={t('browser.toolbar.stop')}
         >
           <StopIcon />
         </button>
@@ -187,7 +191,7 @@ export default function Browser({ windowId, props }: AppComponentProps) {
           type="button"
           className={styles.tool}
           onClick={nav.refresh}
-          aria-label="Refresh"
+          aria-label={t('browser.toolbar.refresh')}
         >
           <RefreshIcon />
         </button>
@@ -195,7 +199,7 @@ export default function Browser({ windowId, props }: AppComponentProps) {
           type="button"
           className={styles.tool}
           onClick={nav.home}
-          aria-label="Home"
+          aria-label={t('browser.toolbar.home')}
         >
           <HomeIcon />
         </button>
@@ -205,10 +209,10 @@ export default function Browser({ windowId, props }: AppComponentProps) {
           className={styles.tool}
           onClick={() => setPaneOpen(!paneOpen)}
           aria-pressed={paneOpen}
-          aria-label="Favorites"
+          aria-label={t('browser.toolbar.favorites')}
         >
           <StarIcon />
-          <span>Favorites</span>
+          <span>{t('browser.toolbar.favorites')}</span>
         </button>
       </div>
 
@@ -219,7 +223,7 @@ export default function Browser({ windowId, props }: AppComponentProps) {
           nav.go(address);
         }}
       >
-        <label htmlFor={`${windowId}-address`}>Address</label>
+        <label htmlFor={`${windowId}-address`}>{t('browser.address')}</label>
         <span className={styles.addressField}>
           <PageIcon />
           <input
@@ -234,7 +238,7 @@ export default function Browser({ windowId, props }: AppComponentProps) {
         </span>
         <button type="submit" className={styles.go}>
           <GoIcon />
-          Go
+          {t('browser.go')}
         </button>
       </form>
 
@@ -272,7 +276,7 @@ export default function Browser({ windowId, props }: AppComponentProps) {
         </span>
         <span className={styles.zone}>
           <GlobeIcon />
-          Internet
+          {t('browser.status.zone')}
         </span>
       </div>
 
@@ -281,21 +285,21 @@ export default function Browser({ windowId, props }: AppComponentProps) {
           <div
             className={`window ${styles.dialog}`}
             role="dialog"
-            aria-label="About Web Explorer"
+            aria-label={t('browser.about.title')}
           >
             <div className="title-bar">
-              <div className="title-bar-text">About Web Explorer</div>
+              <div className="title-bar-text">{t('browser.about.title')}</div>
             </div>
             <div className="window-body">
               <p>
-                <b>Web Explorer</b> Version 6.0
+                <b>{APP_NAME}</b> {t('browser.about.version')}
                 <br />
-                still online, 2007
+                {t('browser.about.tagline')}
               </p>
-              <p>Surfs every page of the fictional .example web.</p>
+              <p>{t('browser.about.blurb')}</p>
               <div className={styles.dialogButtons}>
                 <button type="button" autoFocus onClick={() => setAbout(false)}>
-                  OK
+                  {t('common.ok')}
                 </button>
               </div>
             </div>

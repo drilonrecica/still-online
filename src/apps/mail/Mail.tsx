@@ -10,6 +10,7 @@ import type {
 import { toGameDate } from '@/os/clock';
 import { formatNumber, formatShortDate, formatTime } from '@/i18n/format';
 import { getLocale } from '@/i18n/t';
+import type { TFunction } from '@/i18n/types';
 import { usePlayerName } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { events } from '@/os/events';
@@ -41,8 +42,13 @@ interface Draft {
   attachments: MailAttachment[];
 }
 
-const quote = (m: MailMessage) =>
-  `\n\n----- Original Message -----\nFrom: ${m.from.name} <${m.from.address}>\nSubject: ${m.subject}\n\n${m.body}`;
+const quote = (t: TFunction, m: MailMessage) =>
+  t('mail.ui.quote', {
+    name: m.from.name,
+    address: m.from.address,
+    subject: m.subject,
+    body: m.body,
+  });
 
 function Body({ text }: { text: string }) {
   return (
@@ -103,13 +109,14 @@ function Compose({
   onSend: (d: Draft) => void;
   onCancel: () => void;
 }) {
+  const t = useT();
   const [draft, setDraft] = useState(initial);
   const contacts = getContacts(useLocale());
   const set = (patch: Partial<Draft>) => setDraft((d) => ({ ...d, ...patch }));
   return (
     <form
       className={styles.compose}
-      aria-label="Create Mail"
+      aria-label={t('mail.ui.compose')}
       onSubmit={(e) => {
         e.preventDefault();
         onSend(draft);
@@ -117,16 +124,16 @@ function Compose({
     >
       <div className={styles.composeBar}>
         <button type="submit" disabled={draft.to.trim() === ''}>
-          Send
+          {t('mail.ui.send')}
         </button>
         <button type="button" onClick={onCancel}>
-          Cancel
+          {t('mail.ui.cancel')}
         </button>
       </div>
       <label>
-        <span>To:</span>
+        <span>{t('mail.ui.headerTo')}</span>
         <input
-          aria-label="To"
+          aria-label={t('mail.ui.to')}
           list="mail-friends"
           value={draft.to}
           onChange={(e) => set({ to: e.target.value })}
@@ -140,15 +147,15 @@ function Compose({
         </datalist>
       </label>
       <label>
-        <span>Subject:</span>
+        <span>{t('mail.ui.headerSubject')}</span>
         <input
-          aria-label="Subject"
+          aria-label={t('mail.ui.subject')}
           value={draft.subject}
           onChange={(e) => set({ subject: e.target.value })}
         />
       </label>
       <textarea
-        aria-label="Message body"
+        aria-label={t('mail.ui.body')}
         value={draft.body}
         onChange={(e) => set({ body: e.target.value })}
       />
@@ -225,9 +232,13 @@ export default function Mail({ windowId }: AppComponentProps) {
 
   return (
     <div className={styles.root}>
-      <div className={styles.toolbar} role="toolbar" aria-label="Mail">
+      <div
+        className={styles.toolbar}
+        role="toolbar"
+        aria-label={t('mail.ui.toolbar')}
+      >
         <button type="button" onClick={() => compose()}>
-          Create Mail
+          {t('mail.ui.create')}
         </button>
         <button
           type="button"
@@ -236,14 +247,14 @@ export default function Mail({ windowId }: AppComponentProps) {
             selected &&
             compose({
               to: selected.from.address,
-              subject: /^re:/i.test(selected.subject)
+              subject: /^(re|aw):/i.test(selected.subject)
                 ? selected.subject
-                : `Re: ${selected.subject}`,
-              body: quote(selected),
+                : t('mail.ui.replySubject', { subject: selected.subject }),
+              body: quote(t, selected),
             })
           }
         >
-          Reply
+          {t('mail.ui.reply')}
         </button>
         <button
           type="button"
@@ -251,33 +262,33 @@ export default function Mail({ windowId }: AppComponentProps) {
           onClick={() =>
             selected &&
             compose({
-              subject: /^fw:/i.test(selected.subject)
+              subject: /^(fw|wg):/i.test(selected.subject)
                 ? selected.subject
-                : `Fw: ${selected.subject}`,
-              body: quote(selected),
+                : t('mail.ui.forwardSubject', { subject: selected.subject }),
+              body: quote(t, selected),
               attachments: selected.attachments,
             })
           }
         >
-          Forward
+          {t('mail.ui.forward')}
         </button>
         <button type="button" disabled={!selected} onClick={remove}>
-          Delete
+          {t('mail.ui.delete')}
         </button>
         <button type="button" onClick={() => void sendRecv()}>
-          Send/Recv
+          {t('mail.ui.sendRecv')}
         </button>
       </div>
       {!online && (
         <div className={styles.offline} role="status">
-          <span>Working offline. Connect to send and receive.</span>
+          <span>{t('mail.ui.offline')}</span>
           <button type="button" onClick={() => void requireOnline()}>
-            Connect
+            {t('mail.ui.connect')}
           </button>
         </div>
       )}
       <div className={styles.main}>
-        <ul className={styles.folders} aria-label="Folders">
+        <ul className={styles.folders} aria-label={t('mail.ui.folders')}>
           {FOLDER_ORDER.map((f) => {
             const n = f === 'inbox' ? unread : 0;
             return (
@@ -308,13 +319,15 @@ export default function Mail({ windowId }: AppComponentProps) {
             />
           ) : (
             <>
-              <table className={styles.list} aria-label="Messages">
+              <table className={styles.list} aria-label={t('mail.ui.messages')}>
                 <thead>
                   <tr>
-                    <th aria-label="Attachment" />
-                    <th>{folder === 'sent' ? 'To' : 'From'}</th>
-                    <th>Subject</th>
-                    <th>Received</th>
+                    <th aria-label={t('mail.ui.attachment')} />
+                    <th>
+                      {folder === 'sent' ? t('mail.ui.to') : t('mail.ui.from')}
+                    </th>
+                    <th>{t('mail.ui.subject')}</th>
+                    <th>{t('mail.ui.received')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -344,19 +357,19 @@ export default function Mail({ windowId }: AppComponentProps) {
               <div
                 className={styles.preview}
                 role="region"
-                aria-label="Preview"
+                aria-label={t('mail.ui.preview')}
                 tabIndex={0}
               >
                 {selected ? (
                   <>
                     <dl className={styles.headers}>
-                      <dt>From:</dt>
+                      <dt>{t('mail.ui.headerFrom')}</dt>
                       <dd>
                         {selected.from.name} &lt;{selected.from.address}&gt;
                       </dd>
-                      <dt>To:</dt>
+                      <dt>{t('mail.ui.headerTo')}</dt>
                       <dd>{selected.to.map((a) => a.name).join(', ')}</dd>
-                      <dt>Subject:</dt>
+                      <dt>{t('mail.ui.headerSubject')}</dt>
                       <dd>{selected.subject}</dd>
                     </dl>
                     {selected.attachments.length > 0 && (
@@ -379,8 +392,8 @@ export default function Mail({ windowId }: AppComponentProps) {
                 ) : (
                   <p className={styles.empty}>
                     {inFolder.length === 0
-                      ? 'There are no messages in this folder.'
-                      : 'Select a message to read it.'}
+                      ? t('mail.ui.emptyFolder')
+                      : t('mail.ui.selectMessage')}
                   </p>
                 )}
               </div>

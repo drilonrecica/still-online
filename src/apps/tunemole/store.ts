@@ -3,6 +3,7 @@
 // can run it with fake timers; `scaleMs` shortens both the tick and the real duration together.
 import { create } from 'zustand';
 import type { TuneMoleResult } from '@/content/types';
+import type { MessageKey } from '@/i18n/types';
 import { events } from '@/os/events';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
@@ -221,11 +222,11 @@ export function formatEta(totalSec: number): string {
   return `${p(Math.floor(s / 3600))}:${p(Math.floor((s % 3600) / 60))}:${p(s % 60)}`;
 }
 
-export const STATUS_LABEL: Record<DownloadStatus, string> = {
-  queued: 'Queued',
-  connecting: 'Connecting…',
-  busy: 'Busy',
-  downloading: 'Downloading',
-  stalled: 'Awaiting more sources…',
-  done: 'Complete',
+export const STATUS_KEY: Record<DownloadStatus, MessageKey> = {
+  queued: 'tunemole.status.queued',
+  connecting: 'tunemole.status.connecting',
+  busy: 'tunemole.status.busy',
+  downloading: 'tunemole.status.downloading',
+  stalled: 'tunemole.status.stalled',
+  done: 'tunemole.status.done',
 };

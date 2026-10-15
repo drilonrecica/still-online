@@ -1,5 +1,6 @@
 // IE6-style menu bar. Menus without items render disabled.
 import { useEffect, useState } from 'react';
+import { useT } from '@/i18n/useT';
 import styles from './Browser.module.css';
 
 export type MenuEntry =
@@ -12,6 +13,7 @@ export interface Menu {
 }
 
 export function MenuBar({ menus }: { menus: readonly Menu[] }) {
+  const t = useT();
   const [open, setOpen] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,7 +29,11 @@ export function MenuBar({ menus }: { menus: readonly Menu[] }) {
   }, [open]);
 
   return (
-    <div className={styles.menubar} role="menubar" aria-label="Web Explorer">
+    <div
+      className={styles.menubar}
+      role="menubar"
+      aria-label={t('apps.browser.title')}
+    >
       {menus.map((menu) => {
         const enabled = menu.items.length > 0;
         return (

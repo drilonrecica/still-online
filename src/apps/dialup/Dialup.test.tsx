@@ -6,7 +6,7 @@ import { NET_PHASE_MS } from '@/os/serviceTypes';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import '@/apps/registry';
-import Dialup, { PHASE_TEXT, userNameFor } from './Dialup';
+import Dialup, { userNameFor } from './Dialup';
 
 const net = () => useNetworkStore.getState();
 const dialogIds = () =>
@@ -70,7 +70,7 @@ describe('Connect to the Internet', () => {
     const { user } = renderDialog();
     await user.click(screen.getByRole('button', { name: 'Dial' }));
     const status = screen.getByTestId('dialup-status');
-    expect(status).toHaveTextContent(PHASE_TEXT.dialing ?? '');
+    expect(status).toHaveTextContent('Dialing…');
     expect(screen.getByRole('button', { name: 'Dial' })).toBeDisabled();
 
     await act(() => vi.advanceTimersByTimeAsync(NET_PHASE_MS.dialing));

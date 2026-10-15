@@ -1,6 +1,8 @@
 // Connect to the Internet: the dial-up dialog. A thin view over the network store; dialling,
 // the modem sound and closing on success live in `src/os/network.ts`.
 import { usePlayerName } from '@/i18n/settingsText';
+import type { MessageKey } from '@/i18n/types';
+import { useT } from '@/i18n/useT';
 import { useId, useState } from 'react';
 import { dial, useNetworkStore, type NetPhase } from '@/os/network';
 import { useSettingsStore } from '@/os/store/settings';
@@ -10,10 +12,10 @@ import styles from './Dialup.module.css';
 
 export const PHONE_NUMBER = '555-0137';
 
-export const PHASE_TEXT: Readonly<Partial<Record<NetPhase, string>>> = {
-  dialing: 'Dialing…',
-  verifying: 'Verifying user name and password…',
-  registering: 'Registering your computer on the network…',
+export const PHASE_KEY: Readonly<Partial<Record<NetPhase, MessageKey>>> = {
+  dialing: 'dialup.phase.dialing',
+  verifying: 'dialup.phase.verifying',
+  registering: 'dialup.phase.registering',
 };
 
 /** The dial-up login: the player's name, lowercased with no spaces. */
@@ -64,6 +66,7 @@ function ConnectionIcon({ active }: { active: boolean }) {
 }
 
 export default function Dialup({ windowId }: AppComponentProps) {
+  const t = useT();
   const status = useNetworkStore((s) => s.status);
   const phase = useNetworkStore((s) => s.phase);
   const kbps = useNetworkStore((s) => s.kbps);
@@ -76,9 +79,9 @@ export default function Dialup({ windowId }: AppComponentProps) {
 
   const dialing = status === 'dialing';
   const statusText = dialing
-    ? (PHASE_TEXT[phase] ?? 'Dialing…')
+    ? t(PHASE_KEY[phase] ?? 'dialup.phase.dialing')
     : status === 'online'
-      ? `Connected at ${kbps.toFixed(1)} Kbps.`
+      ? t('dialup.connected', { kbps: kbps.toFixed(1) })
       : '';
 
   function onCancel() {
@@ -95,7 +98,7 @@ export default function Dialup({ windowId }: AppComponentProps) {
       }}
     >
       <div className={styles.grid}>
-        <label htmlFor={`${id}-user`}>User name:</label>
+        <label htmlFor={`${id}-user`}>{t('dialup.userName')}</label>
         <input
           id={`${id}-user`}
           type="text"
@@ -103,7 +106,7 @@ export default function Dialup({ windowId }: AppComponentProps) {
           disabled={dialing}
           onChange={(e) => setUserName(e.target.value)}
         />
-        <label htmlFor={`${id}-password`}>Password:</label>
+        <label htmlFor={`${id}-password`}>{t('dialup.password')}</label>
         <input
           id={`${id}-password`}
           type="password"
@@ -120,9 +123,9 @@ export default function Dialup({ windowId }: AppComponentProps) {
             disabled={dialing}
             onChange={(e) => setSavePassword(e.target.checked)}
           />
-          <label htmlFor={`${id}-save`}>Save password</label>
+          <label htmlFor={`${id}-save`}>{t('dialup.savePassword')}</label>
         </div>
-        <label htmlFor={`${id}-number`}>Dial:</label>
+        <label htmlFor={`${id}-number`}>{t('dialup.dial')}</label>
         <input id={`${id}-number`} type="text" value={PHONE_NUMBER} readOnly />
       </div>
       <div className={styles.check}>
@@ -132,7 +135,7 @@ export default function Dialup({ windowId }: AppComponentProps) {
           checked={auto}
           onChange={(e) => setAuto(e.target.checked)}
         />
-        <label htmlFor={`${id}-auto`}>Connect automatically</label>
+        <label htmlFor={`${id}-auto`}>{t('dialup.connectAutomatically')}</label>
       </div>
       <div className={styles.status} data-testid="dialup-status">
         {status !== 'offline' && <ConnectionIcon active={dialing} />}
@@ -140,12 +143,12 @@ export default function Dialup({ windowId }: AppComponentProps) {
       </div>
       <div className={styles.buttons}>
         <button type="submit" disabled={status !== 'offline'}>
-          Dial
+          {t('dialup.buttonDial')}
         </button>
         <button type="button" onClick={onCancel}>
-          Cancel
+          {t('dialup.buttonCancel')}
         </button>
-        <button type="button">Properties</button>
+        <button type="button">{t('dialup.buttonProperties')}</button>
       </div>
     </form>
   );
