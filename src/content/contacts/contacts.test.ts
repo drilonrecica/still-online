@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { exampleContact } from '../example.fixture';
 import { lintContact, lintContactText, lintScriptGraph } from '../lint';
+import { getContacts } from '../locale';
 import { PLAYLIST } from '../playlist';
 import type { ContactContent, Script } from '../types';
 import { contacts } from './index';
@@ -83,8 +84,8 @@ describe('content lint: shipped contacts', () => {
     },
   );
 
-  it('marco never uses "!"', () => {
-    const marco = contacts.find((c) => c.contact.id === 'marco');
+  it.each(['en', 'de'] as const)('marco never uses "!" (%s)', (locale) => {
+    const marco = getContacts(locale).find((c) => c.contact.id === 'marco');
     const texts = [
       marco?.contact.personalMessage,
       ...Object.values(marco?.contact.days ?? {}).map(

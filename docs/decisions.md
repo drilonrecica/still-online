@@ -207,3 +207,7 @@
 - P2-03 (v0.3): Dex DE — "credit" → „im abspann stehen", "hint hint" → „wink mit dem zaunpfahl", the high five "signature" → „abgeklatscht … quasi ne unterschrift"
 - P2-03 (v0.3): Theo DE — "partner(s)" is never used for the player (Partner/Partnerin would gender them): „wir machen das zell-referat zusammen", „danke, dass wir das zusammen gemacht haben", pm „ne 2+ und ein gutes team :)"
 - P2-03 (v0.3): Theo DE — "extra credit" → „zusatznote", "10/10" → „glatte eins", "structural issues" → „statische mängel"; he writes „ist"/„nicht" (correct spelling) while the player's choices stay casual („is", „nich")
+- P2-04 (v0.3): Marco DE — calls the player „zwerg“ throughout; "my little cousin" → „der zwerg aus meiner familie“, "he might listen to a kid" → „auf n zwerg vielleicht“ (no gendered cousin noun); his lines, presence and away reply never use „!“ (test runs in `en` and `de`)
+- P2-04 (v0.3): Marco DE — "thanksgiving. bring snacks" → „an omas geburtstag. bring knabberzeug mit“ (glossary), the rec hall → „jugendzentrum“, college → „uni“/„literaturseminar“/„mitbewohner“, Derek's marker → „filzstift“ (no brand name), "its a banger" → „is der hammer“
+- P2-04 (v0.3): Pia DE — Stardust → „Sternenstaub“, Biscuit → „Keks“, pinky swear → „großes Ehrenwort“, pony jail → „ponyknast“, "the BOSS of this house" → „die CHEFIN von diesem haus“; display name „pia (L) ponys (L)“
+- P2-04 (v0.3): Pia DE — her "backrounds" typo becomes „hintergrüde“ (a dropped letter, same as English); the pickle wink line says „is n gürkchen“ to match the wink's German name
