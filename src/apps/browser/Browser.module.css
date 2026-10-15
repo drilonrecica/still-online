@@ -1,0 +1,391 @@
+/* Web Explorer: IE6-style chrome in original CSS on the XP face colour. */
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--xp-face, #ece9d8);
+  font-size: 11px;
+}
+
+/* Menu bar */
+.menubar {
+  display: flex;
+  border-bottom: 1px solid #fff;
+  box-shadow: 0 1px 0 #aca899;
+}
+
+.menu {
+  position: relative;
+}
+
+.menuButton {
+  min-width: 0;
+  min-height: 0;
+  padding: 2px 7px;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font: inherit;
+}
+
+.menuButton:not(:disabled):hover {
+  border-color: #316ac5;
+  background: #c1d2ee;
+}
+
+.menuButton[aria-expanded='true']:not(:disabled) {
+  background: #316ac5;
+  color: #fff;
+}
+
+.menuButton:disabled {
+  color: #000;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+  min-width: 180px;
+  padding: 2px;
+  border: 1px solid #aca899;
+  background: #fff;
+  box-shadow: 2px 2px 3px rgb(0 0 0 / 30%);
+}
+
+.item {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 3px 18px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font: inherit;
+  text-align: left;
+}
+
+.item:not(:disabled):hover,
+.item:focus-visible {
+  background: #316ac5;
+  color: #fff;
+}
+
+.separator {
+  margin: 3px 2px;
+  border: 0;
+  border-top: 1px solid #aca899;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 2px 4px;
+  border-bottom: 1px solid #fff;
+  box-shadow: 0 1px 0 #aca899;
+}
+
+.tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: 0;
+  padding: 2px 5px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  box-shadow: none;
+  font: inherit;
+}
+
+.tool:not(:disabled):hover {
+  border-color: #c3bfaf;
+  background: linear-gradient(#fff, #e6e3d6);
+}
+
+.tool:not(:disabled):active,
+.tool[aria-pressed='true'] {
+  border-color: #9d9a8c;
+  background: #e1ddce;
+}
+
+.tool:disabled svg {
+  filter: grayscale(1) opacity(0.5);
+}
+
+.toolSep {
+  align-self: stretch;
+  width: 1px;
+  margin: 2px 4px;
+  background: #c3bfaf;
+  box-shadow: 1px 0 0 #fff;
+}
+
+/* Address bar */
+.addressBar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 4px;
+  border-bottom: 1px solid #aca899;
+}
+
+.addressBar label {
+  color: #444;
+}
+
+.addressField {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+  padding: 0 0 0 3px;
+  border: 1px solid #7f9db9;
+  background: #fff;
+}
+
+.addressField input {
+  flex: 1;
+  min-width: 0;
+  height: 18px;
+  padding: 0 2px;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  font: inherit;
+}
+
+.addressField:focus-within {
+  outline: 1px dotted #000;
+  outline-offset: 1px;
+}
+
+.go {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+  min-height: 0;
+  padding: 1px 6px 1px 3px;
+}
+
+/* Page area */
+.body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.viewport {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  border: 1px solid #7f9db9;
+  border-width: 1px 0;
+  background: #fff;
+  color: #000;
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  width: 180px;
+  border-right: 1px solid #aca899;
+  background: #fff;
+}
+
+.paneHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 4px;
+  background: var(--xp-face, #ece9d8);
+  font-weight: bold;
+}
+
+.paneClose,
+.paneDelete {
+  min-width: 0;
+  min-height: 0;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  box-shadow: none;
+  line-height: 1;
+}
+
+.paneActions {
+  padding: 4px;
+  border-bottom: 1px solid #e3e1d5;
+}
+
+.paneList {
+  flex: 1;
+  margin: 0;
+  padding: 2px;
+  overflow: auto;
+  list-style: none;
+}
+
+.paneList li {
+  display: flex;
+  align-items: center;
+}
+
+.paneLink {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: 0;
+  padding: 2px;
+  border: 1px solid transparent;
+  background: transparent;
+  box-shadow: none;
+  color: #0033cc;
+  text-align: left;
+}
+
+.paneLink:hover span {
+  text-decoration: underline;
+}
+
+.paneEmpty {
+  padding: 4px;
+  color: #777;
+}
+
+/* Status bar */
+.statusBar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 20px;
+  padding: 0 2px;
+}
+
+.statusBar > span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 16px;
+  padding: 0 4px;
+  border: 1px solid;
+  border-color: #aca899 #fff #fff #aca899;
+}
+
+.statusText {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.statusProgress {
+  width: 110px;
+}
+
+.statusProgress progress {
+  width: 100%;
+  height: 10px;
+}
+
+.zone {
+  width: 110px;
+}
+
+/* "The page cannot be displayed" */
+.errorPage {
+  max-width: 560px;
+  padding: 14px 22px;
+  font-family: Tahoma, Verdana, sans-serif;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.errorPage h2 {
+  margin: 12px 0 4px;
+  font-size: 11px;
+}
+
+.errorPage ul {
+  margin: 0;
+  padding-left: 26px;
+}
+
+.errorPage li {
+  margin: 3px 0;
+}
+
+.errorPage hr {
+  border: 0;
+  border-top: 1px solid #c0c0c0;
+}
+
+.errorTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.errorBadge {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #8fc3ff, #1f5fa8);
+  color: #fff;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 18px;
+}
+
+.tryList button {
+  margin-left: 4px;
+}
+
+.errorUrl {
+  color: #555;
+  word-break: break-all;
+}
+
+.errorFooter {
+  margin-top: 18px;
+  color: #555;
+}
+
+/* About dialog */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 15%);
+}
+
+.dialog {
+  width: 280px;
+}
+
+.dialogButtons {
+  display: flex;
+  justify-content: flex-end;
+}

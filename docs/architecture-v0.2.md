@@ -130,6 +130,7 @@ The task that creates `OverlayLayer` also sets `.layer { z-index: 1 }` in `Windo
 ## Web (P4)
 
 - **Sites:** `src/apps/browser/sites/<host-slug>/` holds one `SiteDefinition` each, and `sites/index.ts` exports `SITES` and `resolve(url): ResolvedPage | null`. Normalising a URL adds `http://`, lowercases the host and defaults the path to `/`. A page is matched by its exact path, then by `/*` (one segment, e.g. Spaceport `/kayla`). Unknown hosts, or any page while offline, show "The page cannot be displayed". Every host ends in `.example`.
+- **Browser (P4-01):** `src/apps/browser/` — `Browser.tsx` (chrome), `useNavigation.ts` (per-window history from `history.ts`, page loads of `scaleMs(400–1300)` ms; offline is decided when a load finishes), `url.ts` (`normalizeUrl`, `resolveHref`, `parseUrl`), `store.ts` (`web`). Site pages link with `<SiteLink href>` (relative or absolute), which uses the window's `NavigatorContext`; hovering shows the address in the status bar. `about.example` is the built-in placeholder site. `os/browserRouter.ts` (installed in `App.tsx`) opens a new `browser` window for each `browser:open`.
 - **Content:** site text lives in `src/content/sites/` (`GuestbookEntry`, `BlogPost`, `NewsPost`, `Poll`, all gated by `day`), profiles in `src/content/profiles/<contactId>.ts` (`ProfileContent`), and mail in `src/content/mail/` (`MailContent`, `AutoReply`). Site pages may import content and `os/`, but never Messenger. Profile pictures re-draw the contact's pattern avatar from its seed.
 
 ## Games

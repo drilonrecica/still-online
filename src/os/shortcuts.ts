@@ -29,6 +29,7 @@ export const DESKTOP_SHORTCUTS: readonly Shortcut[] = [
   { appId: 'mycomputer', label: 'My Computer' },
   { appId: 'recyclebin', label: 'Recycle Bin' },
   { appId: 'messenger', label: 'Messenger' },
+  { appId: 'browser', label: 'Web Explorer' },
   { appId: 'amplifier', label: 'Amplifier' },
   { appId: 'notepad', label: 'Notepad' },
 ];

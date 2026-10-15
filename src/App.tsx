@@ -5,6 +5,7 @@ import { SEED_FILES } from '@/content/files';
 import { installAmplifierRouter } from '@/os/amplifierRouter';
 import { installBalloons } from '@/os/balloon/schedule';
 import { Boot } from '@/os/boot/Boot';
+import { installBrowserRouter } from '@/os/browserRouter';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
 import { installIdle } from '@/os/idle';
 import { useFsStore } from '@/os/fs/store';
@@ -67,6 +68,7 @@ export function App() {
   }, []);
   useEffect(() => installGestureUnlock(), []);
   useEffect(() => installAmplifierRouter(), []);
+  useEffect(() => installBrowserRouter(), []);
   useEffect(() => installIdle(), []);
   useEffect(() => (state === 'desktop' ? installKonami() : undefined), [state]);
 

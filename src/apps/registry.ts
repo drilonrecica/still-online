@@ -4,6 +4,8 @@ import { setAppResolver } from '@/os/store/windows';
 import type { AppDefinition, AppId } from '@/os/types';
 import amplifier16 from '@/assets/icons/amplifier-16.svg';
 import amplifier32 from '@/assets/icons/amplifier-32.svg';
+import browser16 from '@/assets/icons/browser-16.svg';
+import browser32 from '@/assets/icons/browser-32.svg';
 import dialup16 from '@/assets/icons/dialup-16.svg';
 import dialup32 from '@/assets/icons/dialup-32.svg';
 import diskCleanup16 from '@/assets/icons/diskcleanup-16.svg';
@@ -138,6 +140,21 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     showOnDesktop: false,
     showInStartMenu: false,
     category: 'internet',
+  },
+  browser: {
+    id: 'browser',
+    title: 'Web Explorer',
+    icon16: browser16,
+    icon32: browser32,
+    component: lazy(() => import('./browser/Browser')),
+    defaultSize: { w: 800, h: 600 },
+    minSize: { w: 400, h: 300 },
+    singleInstance: false,
+    chrome: 'xp',
+    showOnDesktop: true,
+    showInStartMenu: true,
+    category: 'internet',
+    pinned: true,
   },
   amplifier: {
     id: 'amplifier',
