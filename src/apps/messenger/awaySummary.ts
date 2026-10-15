@@ -1,5 +1,6 @@
 // "While you were away": which contacts messaged since Away began, as a toast line.
 import type { ContactId, ContactProgress } from '@/content/types';
+import { t } from '@/i18n/t';
 
 export interface AwaySummary {
   /** e.g. "3 messages from Jess, Marco". */
@@ -9,7 +10,7 @@ export interface AwaySummary {
   total: number;
 }
 
-/** Names listed before the rest fold into "and N more". */
+/** Names listed before the rest fold into "and N more" (rendered in the current locale). */
 const MAX_NAMES = 3;
 
 export function summarizeAway(
@@ -33,10 +34,11 @@ export function summarizeAway(
   const total = counts.reduce((n, c) => n + c.count, 0);
   const names = counts.slice(0, MAX_NAMES).map((c) => nameOf(c.id));
   const rest = counts.length - names.length;
+  const list = names.join(', ');
   const from =
-    rest > 0 ? `${names.join(', ')} and ${rest} more` : names.join(', ');
+    rest > 0 ? t('messenger.toasts.andMore', { names: list, n: rest }) : list;
   return {
-    text: `${total} message${total === 1 ? '' : 's'} from ${from}`,
+    text: t('messenger.toasts.awayCount', { n: total, from }),
     latestContactId: counts[0]!.id,
     total,
   };

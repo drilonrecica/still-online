@@ -1,5 +1,6 @@
 // Conversation transcript in the classic "<name> says:" + indented line format.
-import { useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef, type ReactNode } from 'react';
+import { useT } from '@/i18n/useT';
 import type { TranscriptEntry } from '@/content/types';
 import styles from './Chat.module.css';
 import { events } from '@/os/events';
@@ -11,6 +12,7 @@ import { PictureFile } from './PlayerPicture';
 
 /** Emoticon segments of `text` as images. */
 function Emoticons({ text }: { text: string }) {
+  const t = useT();
   const custom = useMessengerStore((s) => s.progress.player.customEmoticons);
   return (
     <>
@@ -33,7 +35,9 @@ function Emoticons({ text }: { text: string }) {
             className={styles.emoticon}
             src={s.emoticon.src}
             alt={s.code}
-            title={s.emoticon.name}
+            title={
+              s.emoticon.nameKey ? t(s.emoticon.nameKey) : s.emoticon.codes[0]
+            }
             width={19}
             height={19}
           />
@@ -65,6 +69,22 @@ export function RichText({ text }: { text: string }) {
   );
 }
 
+/** Renders a `{name}` template with `name` as a node (the name may carry emoticons or links). */
+function withName(template: string, name: ReactNode): ReactNode {
+  const [before = '', ...rest] = template.split('{name}');
+  return (
+    <>
+      {before}
+      {rest.map((part, i) => (
+        <Fragment key={i}>
+          {name}
+          {part}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
 export function Transcript({
   entries,
   contactName,
@@ -74,6 +94,7 @@ export function Transcript({
   contactName: string;
   playerName: string;
 }) {
+  const t = useT();
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -86,40 +107,47 @@ export function Transcript({
       ref={ref}
       className={styles.transcript}
       role="log"
-      aria-label="Conversation"
+      aria-label={t('messenger.chat.transcript')}
       tabIndex={0}
     >
       {entries.map((entry, i) => {
         if (entry.kind === 'nudge')
           return (
             <p key={i} className={styles.nudgeLine}>
-              {entry.from === 'contact' ? (
-                <>
-                  <RichText text={contactName} /> just sent you a nudge!
-                </>
-              ) : (
-                'You have just sent a nudge!'
-              )}
+              {entry.from === 'contact'
+                ? withName(
+                    t('messenger.transcript.nudgeFromContact', {
+                      name: '{name}',
+                    }),
+                    <RichText text={contactName} />,
+                  )
+                : t('messenger.transcript.nudgeFromYou')}
             </p>
           );
         if (entry.kind === 'wink')
           return (
             <p key={i} className={styles.nudgeLine}>
-              {entry.from === 'contact' ? (
-                <>
-                  <RichText text={contactName} /> sent you a wink:{' '}
-                  {WINKS[entry.wink].name}
-                </>
-              ) : (
-                `You sent a wink: ${WINKS[entry.wink].name}`
-              )}
+              {entry.from === 'contact'
+                ? withName(
+                    t('messenger.transcript.winkFromContact', {
+                      name: '{name}',
+                      wink: t(WINKS[entry.wink].nameKey),
+                    }),
+                    <RichText text={contactName} />,
+                  )
+                : t('messenger.transcript.winkFromYou', {
+                    wink: t(WINKS[entry.wink].nameKey),
+                  })}
             </p>
           );
         const name = entry.from === 'contact' ? contactName : playerName;
         return (
           <div key={i} className={styles.message} data-from={entry.from}>
             <div className={styles.says}>
-              <RichText text={name} /> says:
+              {withName(
+                t('messenger.transcript.says', { name: '{name}' }),
+                <RichText text={name} />,
+              )}
             </div>
             <div className={styles.line}>
               <RichText text={entry.text} />

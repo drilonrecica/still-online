@@ -1,5 +1,6 @@
 // The player's display picture: a My Pictures file, or the default pattern from the player name.
 import { usePlayerName } from '@/i18n/settingsText';
+import { useT } from '@/i18n/useT';
 import { useBlobUrl } from '@/os/blobStore';
 import { PhotoCanvas } from '@/os/fs/FsIcon';
 import { useFsStore } from '@/os/fs/store';
@@ -58,8 +59,15 @@ export function PictureFile({
 
 /** The player's current display picture, read from messenger progress. */
 export function PlayerPicture({ size }: { size: number }) {
+  const t = useT();
   const fileId = useMessengerStore(
     (s) => s.progress.player.displayPicture?.fileId ?? null,
   );
-  return <PictureFile fileId={fileId} size={size} label="Your picture" />;
+  return (
+    <PictureFile
+      fileId={fileId}
+      size={size}
+      label={t('messenger.chat.yourPicture')}
+    />
+  );
 }

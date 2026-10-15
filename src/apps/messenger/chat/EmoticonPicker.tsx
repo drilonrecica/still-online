@@ -1,6 +1,7 @@
 // The reply box's "😊 ▾" menu: built-in and custom emoticons to add to the reply, plus
 // "Create emoticon…" (a My Pictures file and a `[code]`) and per-emoticon delete.
 import { useEffect, useRef, useState } from 'react';
+import { useT } from '@/i18n/useT';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
 import { Dialog } from '../AwayDialogs';
@@ -12,6 +13,7 @@ import { EMOTICONS } from './emoticons';
 import { PictureFile } from './PlayerPicture';
 
 function CreateDialog({ onClose }: { onClose: () => void }) {
+  const t = useT();
   const nodes = useFsStore((s) => s.nodes);
   const add = useMessengerStore((s) => s.addCustomEmoticon);
   const images = useFsStore
@@ -24,22 +26,26 @@ function CreateDialog({ onClose }: { onClose: () => void }) {
 
   function submit() {
     const normalized = normalizeCustomCode(code);
-    if (picked === null) return setError('Pick a picture first.');
+    if (picked === null) return setError(t('messenger.emoticons.pickPicture'));
     if (normalized === null)
-      return setError(
-        'The shortcut must be 2 to 7 characters, with no spaces or brackets.',
-      );
+      return setError(t('messenger.emoticons.badShortcut'));
     if (!add(normalized, picked))
-      return setError(`The shortcut ${normalized} is already in use.`);
+      return setError(
+        t('messenger.emoticons.shortcutInUse', { code: normalized }),
+      );
     onClose();
   }
 
   return (
-    <Dialog title="Create emoticon" onSubmit={submit} onCancel={onClose}>
+    <Dialog
+      title={t('messenger.emoticons.createTitle')}
+      onSubmit={submit}
+      onCancel={onClose}
+    >
       <ul
         className={messengerStyles.pictureList}
         role="listbox"
-        aria-label="My Pictures"
+        aria-label={t('messenger.dialogs.myPictures')}
       >
         {images.map((n) => (
           <li key={n.id} role="none">
@@ -56,9 +62,9 @@ function CreateDialog({ onClose }: { onClose: () => void }) {
           </li>
         ))}
       </ul>
-      {images.length === 0 && <p>There are no pictures in My Pictures.</p>}
+      {images.length === 0 && <p>{t('messenger.emoticons.noPictures')}</p>}
       <label>
-        Shortcut (like [ponies]){' '}
+        {t('messenger.emoticons.shortcut')}{' '}
         <input
           value={code}
           maxLength={9}
@@ -81,6 +87,7 @@ export function EmoticonPicker({
   /** Called with the code to add to the reply. */
   onPick: (code: string) => void;
 }) {
+  const t = useT();
   const custom =
     useMessengerStore((s) => s.progress.player.customEmoticons) ?? [];
   const remove = useMessengerStore((s) => s.removeCustomEmoticon);
@@ -116,26 +123,30 @@ export function EmoticonPicker({
         disabled={disabled}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label="Emoticons"
+        aria-label={t('messenger.emoticons.menu')}
         onClick={() => setOpen(!open)}
       >
         😊 ▾
       </button>
       {open && (
-        <div className={styles.emoMenu} role="menu" aria-label="Emoticons">
+        <div
+          className={styles.emoMenu}
+          role="menu"
+          aria-label={t('messenger.emoticons.menu')}
+        >
           {EMOTICONS.map((e) => (
             <button
-              key={e.name}
+              key={e.codes[0]}
               type="button"
               role="menuitem"
               className={styles.emoItem}
               onClick={() => {
                 setOpen(false);
-                onPick(e.codes[0] ?? e.name);
+                onPick(e.codes[0] ?? '');
               }}
             >
               <img src={e.src} alt="" width={19} height={19} />
-              {e.name} {e.codes[0] ?? ''}
+              {e.nameKey ? t(e.nameKey) : e.codes[0]} {e.codes[0] ?? ''}
             </button>
           ))}
           {custom.map((e) => (
@@ -154,7 +165,7 @@ export function EmoticonPicker({
               </button>
               <button
                 type="button"
-                aria-label={`Delete ${e.code}`}
+                aria-label={t('messenger.emoticons.delete', { code: e.code })}
                 onClick={() => remove(e.code)}
               >
                 ×
@@ -170,7 +181,7 @@ export function EmoticonPicker({
               setCreating(true);
             }}
           >
-            Create emoticon…
+            {t('messenger.emoticons.create')}
           </button>
         </div>
       )}

@@ -1,10 +1,15 @@
 import { describe, expect, it } from 'vitest';
+import { translate } from '@/i18n/t';
 import { EMOTICONS, parseEmoticons, type Segment } from './emoticons';
 
 /** `text` segments as-is, emoticons as `[Name]`. */
 const show = (segments: Segment[]) =>
   segments
-    .map((s) => (s.kind === 'text' ? s.text : `[${s.emoticon.name}]`))
+    .map((s) =>
+      s.kind === 'text'
+        ? s.text
+        : `[${s.emoticon.nameKey ? translate('en', s.emoticon.nameKey) : s.emoticon.codes[0]}]`,
+    )
     .join('');
 
 describe('parseEmoticons', () => {

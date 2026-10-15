@@ -1,5 +1,6 @@
 // Emoticon parser: splits message text into plain text and emoticon segments. Original SVGs.
 import type { CustomEmoticon } from '@/content/types';
+import type { MessageKey } from '@/i18n/types';
 import cat from '@/assets/emoticons/cat.svg';
 import dog from '@/assets/emoticons/dog.svg';
 import grin from '@/assets/emoticons/grin.svg';
@@ -17,7 +18,8 @@ import tongue from '@/assets/emoticons/tongue.svg';
 import wink from '@/assets/emoticons/wink.svg';
 
 export interface Emoticon {
-  name: string;
+  /** Catalog key of the tooltip name; player-made emoticons have none and show their code. */
+  nameKey?: MessageKey;
   src: string;
   /** Typed codes, case-insensitive. */
   codes: readonly string[];
@@ -26,21 +28,37 @@ export interface Emoticon {
 }
 
 export const EMOTICONS: readonly Emoticon[] = [
-  { name: 'Smile', src: smile, codes: [':)'] },
-  { name: 'Sad', src: sad, codes: [':('] },
-  { name: 'Big smile', src: grin, codes: [':D'] },
-  { name: 'Wink', src: wink, codes: [';)'] },
-  { name: 'Tongue out', src: tongue, codes: [':P'] },
-  { name: 'Surprised', src: surprised, codes: [':O'] },
-  { name: 'Thumbs up', src: thumbsUp, codes: ['(Y)'] },
-  { name: 'Thumbs down', src: thumbsDown, codes: ['(N)'] },
-  { name: 'Heart', src: heart, codes: ['<3', '(L)'] },
-  { name: 'Dog', src: dog, codes: ['(dog)'] },
-  { name: 'Cat', src: cat, codes: ['(cat)'] },
-  { name: 'Music', src: music, codes: ['(music)', '(8)'] },
-  { name: 'Pizza', src: pizza, codes: ['(pizza)', '(pi)'] },
-  { name: 'Party', src: party, codes: ['(party)', '<:o)'] },
-  { name: 'Sun', src: sun, codes: ['(sun)', '(#)'] },
+  { nameKey: 'messenger.emoticons.smile', src: smile, codes: [':)'] },
+  { nameKey: 'messenger.emoticons.sad', src: sad, codes: [':('] },
+  { nameKey: 'messenger.emoticons.grin', src: grin, codes: [':D'] },
+  { nameKey: 'messenger.emoticons.wink', src: wink, codes: [';)'] },
+  { nameKey: 'messenger.emoticons.tongue', src: tongue, codes: [':P'] },
+  { nameKey: 'messenger.emoticons.surprised', src: surprised, codes: [':O'] },
+  { nameKey: 'messenger.emoticons.thumbsUp', src: thumbsUp, codes: ['(Y)'] },
+  {
+    nameKey: 'messenger.emoticons.thumbsDown',
+    src: thumbsDown,
+    codes: ['(N)'],
+  },
+  { nameKey: 'messenger.emoticons.heart', src: heart, codes: ['<3', '(L)'] },
+  { nameKey: 'messenger.emoticons.dog', src: dog, codes: ['(dog)'] },
+  { nameKey: 'messenger.emoticons.cat', src: cat, codes: ['(cat)'] },
+  {
+    nameKey: 'messenger.emoticons.music',
+    src: music,
+    codes: ['(music)', '(8)'],
+  },
+  {
+    nameKey: 'messenger.emoticons.pizza',
+    src: pizza,
+    codes: ['(pizza)', '(pi)'],
+  },
+  {
+    nameKey: 'messenger.emoticons.party',
+    src: party,
+    codes: ['(party)', '<:o)'],
+  },
+  { nameKey: 'messenger.emoticons.sun', src: sun, codes: ['(sun)', '(#)'] },
 ];
 
 export type Segment =
@@ -78,7 +96,6 @@ export function parseEmoticons(
       : matcher([
           ...EMOTICONS,
           ...custom.map((e) => ({
-            name: e.code,
             src: '',
             codes: [e.code],
             fileId: e.fileId,

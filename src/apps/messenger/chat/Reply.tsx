@@ -1,6 +1,6 @@
 // Player replies: scripted choice buttons fill the input; Send (or Enter) sends the picked one.
 import { usePlayerName } from '@/i18n/settingsText';
-import { useLocale } from '@/i18n/useT';
+import { useLocale, useT } from '@/i18n/useT';
 import { useMemo, useRef, useState } from 'react';
 import type { ContactId } from '@/content/types';
 import { getMessengerEngine } from '../runtime';
@@ -15,6 +15,7 @@ export function Reply({
   contactId: ContactId;
   disabled: boolean;
 }) {
+  const t = useT();
   const active = useMessengerStore(
     (s) => s.progress.contacts[contactId]?.active ?? null,
   );
@@ -52,7 +53,11 @@ export function Reply({
   return (
     <div className={styles.reply}>
       {choices && (
-        <div className={styles.choices} role="group" aria-label="Replies">
+        <div
+          className={styles.choices}
+          role="group"
+          aria-label={t('messenger.chat.replies')}
+        >
           {choices.map((c, i) => (
             <button
               key={i}
@@ -84,11 +89,11 @@ export function Reply({
         <input
           ref={input}
           className={styles.input}
-          aria-label="Message"
+          aria-label={t('messenger.chat.message')}
           readOnly
           disabled={disabled}
           value={choice ? [choice.text, flavor].filter(Boolean).join(' ') : ''}
-          placeholder={choices ? 'Pick a reply above, then press Send.' : ''}
+          placeholder={choices ? t('messenger.chat.pickReply') : ''}
           onKeyDown={(e) => {
             // Explicit: implicit form submission from a read-only field varies by browser.
             if (e.key !== 'Enter') return;
@@ -97,7 +102,7 @@ export function Reply({
           }}
         />
         <button type="submit" className={styles.send} disabled={!choice}>
-          Send
+          {t('messenger.chat.send')}
         </button>
       </form>
     </div>

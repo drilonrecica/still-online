@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/apps/registry';
 import { WINK_IDS, type Script } from '@/content/types';
 import * as sound from '@/os/sound';
+import { translate } from '@/i18n/t';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import Chat from '../chat/Chat';
@@ -94,7 +95,9 @@ describe('sending winks', () => {
     expect(within(menu).getAllByRole('menuitem')).toHaveLength(6);
     for (const id of WINK_IDS)
       expect(
-        within(menu).getByRole('menuitem', { name: WINKS[id].name }),
+        within(menu).getByRole('menuitem', {
+          name: translate('en', WINKS[id].nameKey),
+        }),
       ).toBeTruthy();
     expect(menu.querySelectorAll('svg[data-wink-art]')).toHaveLength(6);
     expect(button).toHaveAttribute('aria-expanded', 'true');

@@ -1,6 +1,6 @@
 // Message History (app `messenger-history`): per-contact transcript browser with dates, search and Clear History.
 import { usePlayerName } from '@/i18n/settingsText';
-import { useLocale } from '@/i18n/useT';
+import { useLocale, useT } from '@/i18n/useT';
 import { Fragment, useMemo, useState } from 'react';
 import type { AppComponentProps } from '@/os/types';
 import { renderTranscript } from '../engine';
@@ -40,6 +40,7 @@ function Highlight({ text, query }: { text: string; query: string }) {
 }
 
 export default function History({ props }: AppComponentProps) {
+  const t = useT();
   const playerName = usePlayerName();
   const locale = useLocale();
   const progress = useMessengerStore((s) => s.progress.contacts);
@@ -82,9 +83,13 @@ export default function History({ props }: AppComponentProps) {
 
   return (
     <div className={styles.root}>
-      <div className={styles.list} role="listbox" aria-label="Contacts">
+      <div
+        className={styles.list}
+        role="listbox"
+        aria-label={t('messenger.list.contacts')}
+      >
         {withHistory.length === 0 && (
-          <div className={styles.empty}>No message history.</div>
+          <div className={styles.empty}>{t('messenger.history.noHistory')}</div>
         )}
         {withHistory.map(({ contact, count }) => (
           <button
@@ -109,14 +114,14 @@ export default function History({ props }: AppComponentProps) {
             <div className={styles.bar}>
               <input
                 type="search"
-                aria-label="Search messages"
-                placeholder="Search"
+                aria-label={t('messenger.history.searchLabel')}
+                placeholder={t('messenger.history.search')}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
               {confirming ? (
                 <span className={styles.confirm} role="alertdialog">
-                  Delete this conversation history?
+                  {t('messenger.history.confirmClear')}
                   <button
                     type="button"
                     onClick={() => {
@@ -124,21 +129,27 @@ export default function History({ props }: AppComponentProps) {
                       setConfirming(false);
                     }}
                   >
-                    Yes
+                    {t('common.yes')}
                   </button>
                   <button type="button" onClick={() => setConfirming(false)}>
-                    No
+                    {t('common.no')}
                   </button>
                 </span>
               ) : (
                 <button type="button" onClick={() => setConfirming(true)}>
-                  Clear History
+                  {t('messenger.history.clear')}
                 </button>
               )}
             </div>
-            <div className={styles.log} role="log" aria-label="History">
+            <div
+              className={styles.log}
+              role="log"
+              aria-label={t('messenger.history.log')}
+            >
               {groups.length === 0 && (
-                <div className={styles.empty}>No messages found.</div>
+                <div className={styles.empty}>
+                  {t('messenger.history.noMessages')}
+                </div>
               )}
               {groups.map((g) => (
                 <section key={g.label}>
@@ -147,22 +158,31 @@ export default function History({ props }: AppComponentProps) {
                     e.kind === 'nudge' ? (
                       <p key={i} className={styles.nudge}>
                         {e.from === 'contact'
-                          ? `${selected.contact.displayName} just sent you a nudge!`
-                          : 'You have just sent a nudge!'}
+                          ? t('messenger.transcript.nudgeFromContact', {
+                              name: selected.contact.displayName,
+                            })
+                          : t('messenger.transcript.nudgeFromYou')}
                       </p>
                     ) : e.kind === 'wink' ? (
                       <p key={i} className={styles.nudge}>
                         {e.from === 'contact'
-                          ? `${selected.contact.displayName} sent you a wink: ${WINKS[e.wink].name}`
-                          : `You sent a wink: ${WINKS[e.wink].name}`}
+                          ? t('messenger.transcript.winkFromContact', {
+                              name: selected.contact.displayName,
+                              wink: t(WINKS[e.wink].nameKey),
+                            })
+                          : t('messenger.transcript.winkFromYou', {
+                              wink: t(WINKS[e.wink].nameKey),
+                            })}
                       </p>
                     ) : (
                       <div key={i} className={styles.message}>
                         <div className={styles.says}>
-                          {e.from === 'contact'
-                            ? selected.contact.displayName
-                            : playerName}{' '}
-                          says:
+                          {t('messenger.transcript.says', {
+                            name:
+                              e.from === 'contact'
+                                ? selected.contact.displayName
+                                : playerName,
+                          })}
                         </div>
                         <div className={styles.line}>
                           <Highlight text={e.text} query={query} />
@@ -175,9 +195,7 @@ export default function History({ props }: AppComponentProps) {
             </div>
           </>
         ) : (
-          <div className={styles.empty}>
-            Conversations will appear here once you have chatted with a contact.
-          </div>
+          <div className={styles.empty}>{t('messenger.history.empty')}</div>
         )}
       </div>
     </div>

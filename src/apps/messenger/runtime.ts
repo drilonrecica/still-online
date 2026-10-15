@@ -1,6 +1,6 @@
 // The app-wide conversation engine: one instance, created on first use, bound to the messenger store.
 import { getPlayerName } from '@/i18n/settingsText';
-import { getLocale } from '@/i18n/t';
+import { getLocale, t } from '@/i18n/t';
 import type { Locale } from '@/i18n/types';
 import { useLocale } from '@/i18n/useT';
 import { getContacts } from '@/content/locale';
@@ -91,7 +91,11 @@ function createEngine(): ConversationEngine {
     contactId;
   created.on('contactSignedIn', ({ contactId, toast: show }) => {
     if (show)
-      toast(contactId, 'online', `${nameOf(contactId)} has just signed in.`);
+      toast(
+        contactId,
+        'online',
+        t('messenger.toasts.signedIn', { name: nameOf(contactId) }),
+      );
   });
   created.on('message', ({ contactId, from, entry }) => {
     if (from !== 'contact') return;
@@ -104,7 +108,12 @@ function createEngine(): ConversationEngine {
       text.length > TOAST_PREVIEW_CHARS
         ? `${text.slice(0, TOAST_PREVIEW_CHARS)}…`
         : text;
-    toast(contactId, 'notify', `${nameOf(contactId)} says:`, preview);
+    toast(
+      contactId,
+      'notify',
+      t('messenger.toasts.says', { name: nameOf(contactId) }),
+      preview,
+    );
   });
   // Now playing follows state, not single events, so a track that started before
   // Messenger or the toggle was on still shows, and stopping/unticking restores the
@@ -209,7 +218,7 @@ function createEngine(): ConversationEngine {
     if (!summary) return;
     playSound('notify');
     useToastStore.getState().push({
-      title: 'While you were away',
+      title: t('messenger.toasts.awayTitle'),
       text: summary.text,
       icon: messengerIcon,
       onClick: () =>

@@ -19,7 +19,7 @@ import {
   getMessengerEngine,
   useLocalizedContents,
 } from './runtime';
-import { StatusIcon, STATUS_LABELS } from './StatusIcon';
+import { StatusIcon } from './StatusIcon';
 import { useMessengerStore } from './store';
 import messengerIcon from '@/assets/icons/messenger-32.svg';
 
@@ -43,6 +43,7 @@ export function handleFor(playerName: string): string {
 }
 
 function SignInView() {
+  const t = useT();
   const playerName = usePlayerName();
   const [handle, setHandle] = useState(() => handleFor(playerName));
   const [signingIn, setSigningIn] = useState(false);
@@ -81,9 +82,9 @@ function SignInView() {
       }}
     >
       <img className={styles.logo} src={messengerIcon} alt="" />
-      <h1 className={styles.signInTitle}>Sign in to Messenger</h1>
+      <h1 className={styles.signInTitle}>{t('messenger.signIn.title')}</h1>
       <label className={styles.field}>
-        E-mail address:
+        {t('messenger.signIn.email')}
         <input
           type="text"
           value={handle}
@@ -96,13 +97,13 @@ function SignInView() {
           <div
             className={styles.spinner}
             role="progressbar"
-            aria-label="Signing in"
+            aria-label={t('messenger.signIn.signingInLabel')}
           />
-          <span role="status">Signing in…</span>
+          <span role="status">{t('messenger.signIn.signingIn')}</span>
         </>
       ) : (
         <button type="submit" className={styles.signInButton}>
-          Sign in
+          {t('messenger.signIn.submit')}
         </button>
       )}
     </form>
@@ -110,6 +111,7 @@ function SignInView() {
 }
 
 function PersonalMessage() {
+  const t = useT();
   const saved = useMessengerStore((s) => s.progress.player.personalMessage);
   const setPersonalMessage = useMessengerStore(
     (s) => s.setPlayerPersonalMessage,
@@ -122,8 +124,8 @@ function PersonalMessage() {
   return (
     <input
       className={styles.personal}
-      aria-label="Personal message"
-      placeholder="<Type a personal message>"
+      aria-label={t('messenger.list.personalMessage')}
+      placeholder={t('messenger.list.personalPlaceholder')}
       maxLength={120}
       value={draft}
       onChange={(e) => setDraft(e.target.value)}
@@ -144,6 +146,7 @@ function PersonalMessage() {
 
 /** Orange speech bubble: this contact is waiting for your reply. Original artwork. */
 function AwaitingReplyIcon() {
+  const t = useT();
   return (
     <svg
       className={styles.awaitingReply}
@@ -151,7 +154,7 @@ function AwaitingReplyIcon() {
       height={14}
       viewBox="0 0 14 14"
       role="img"
-      aria-label="Waiting for your reply"
+      aria-label={t('messenger.list.waitingForReply')}
     >
       <path
         d="M2 1.5h10a1.5 1.5 0 0 1 1.5 1.5v5.5A1.5 1.5 0 0 1 12 10H6l-3 3v-3H2A1.5 1.5 0 0 1 .5 8.5V3A1.5 1.5 0 0 1 2 1.5z"
@@ -218,7 +221,7 @@ function ContactListView() {
           aria-expanded={fileMenu}
           onClick={() => setFileMenu(!fileMenu)}
         >
-          File
+          {t('messenger.list.fileMenu')}
         </button>
         {fileMenu && (
           <ul className={styles.menu} role="menu">
@@ -232,7 +235,7 @@ function ContactListView() {
                   setDialog('options');
                 }}
               >
-                Options…
+                {t('messenger.list.options')}
               </button>
             </li>
             <li role="none">
@@ -245,7 +248,7 @@ function ContactListView() {
                   useWindowsStore.getState().openApp('messenger-history');
                 }}
               >
-                View Message History…
+                {t('messenger.list.viewHistory')}
               </button>
             </li>
           </ul>
@@ -255,8 +258,8 @@ function ContactListView() {
         <button
           type="button"
           className={styles.pictureButton}
-          aria-label="Change my picture"
-          title="Change my picture"
+          aria-label={t('messenger.list.changePicture')}
+          title={t('messenger.list.changePicture')}
           onClick={() => setDialog('picture')}
         >
           <PlayerPicture size={48} />
@@ -267,12 +270,18 @@ function ContactListView() {
             <span className={styles.playerName}>{playerName}</span>
             {status === 'away' && (
               <span className={styles.awayNote}>
-                ({shownAwayMessage ? `Away: ${shownAwayMessage}` : 'Away'})
+                (
+                {shownAwayMessage
+                  ? t('messenger.list.awayWithMessage', {
+                      message: shownAwayMessage,
+                    })
+                  : t('messenger.list.away')}
+                )
               </span>
             )}
             <select
               className={styles.statusSelect}
-              aria-label="My status"
+              aria-label={t('messenger.list.myStatus')}
               value={status}
               onChange={(e) => {
                 const next = e.target.value as PlayerStatus;
@@ -282,7 +291,9 @@ function ContactListView() {
             >
               {PLAYER_STATUSES.map((s) => (
                 <option key={s} value={s}>
-                  {s === 'offline' ? 'Appear Offline' : STATUS_LABELS[s]}
+                  {s === 'offline'
+                    ? t('messenger.status.appearOffline')
+                    : t(`messenger.status.${s}`)}
                 </option>
               ))}
             </select>
@@ -294,11 +305,15 @@ function ContactListView() {
               checked={showNowPlaying}
               onChange={(e) => setShowNowPlaying(e.target.checked)}
             />
-            Show what I&apos;m listening to
+            {t('messenger.list.showNowPlaying')}
           </label>
         </div>
       </div>
-      <div className={styles.list} role="group" aria-label="Contacts">
+      <div
+        className={styles.list}
+        role="group"
+        aria-label={t('messenger.list.contacts')}
+      >
         {groups.map((group) => {
           const open = !collapsed.has(group.id);
           const name = t(`messenger.groups.${group.id}`);
@@ -334,9 +349,12 @@ function ContactListView() {
                       data-status={s}
                       data-contact-id={contact.id}
                       data-awaiting-reply={awaitingReply}
-                      title={`${contact.displayName} <${contact.handle}>${
-                        awaitingReply ? ' - waiting for your reply' : ''
-                      }`}
+                      title={t(
+                        awaitingReply
+                          ? 'messenger.list.contactTitleWaiting'
+                          : 'messenger.list.contactTitle',
+                        { name: contact.displayName, handle: contact.handle },
+                      )}
                       onDoubleClick={() => openChat(contact.id)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
@@ -364,15 +382,18 @@ function ContactListView() {
       </div>
       <div className={styles.footer}>
         <span>
-          {getMessengerContents().length} contacts
-          {waiting > 0 && ` · ${waiting} waiting`}
+          {t('messenger.list.contactCount', {
+            n: getMessengerContents().length,
+          })}
+          {waiting > 0 &&
+            ` · ${t('messenger.list.waitingCount', { n: formatNumber(waiting, locale) })}`}
         </span>
         <button
           type="button"
           className={styles.linkButton}
           onClick={() => getMessengerEngine().signOut()}
         >
-          Sign out
+          {t('messenger.list.signOut')}
         </button>
       </div>
       {dialog === 'away' && (

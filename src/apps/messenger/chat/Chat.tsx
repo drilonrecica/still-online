@@ -1,6 +1,6 @@
 // Chat window (app `messenger-chat`): one per contact via `props.contactId`.
 import { usePlayerName } from '@/i18n/settingsText';
-import { useLocale } from '@/i18n/useT';
+import { useLocale, useT } from '@/i18n/useT';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Contact } from '@/content/types';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
@@ -12,7 +12,7 @@ import {
   getMessengerEngine,
   useLocalizedContents,
 } from '../runtime';
-import { StatusIcon, STATUS_LABELS } from '../StatusIcon';
+import { StatusIcon } from '../StatusIcon';
 import { useMessengerStore } from '../store';
 import { Avatar } from './Avatar';
 import { PlayerPicture } from './PlayerPicture';
@@ -65,6 +65,7 @@ function ChatView({
   windowId: string;
   contact: Contact;
 }) {
+  const t = useT();
   const id = contact.id;
   const progress = useMessengerStore((s) => s.progress.contacts[id]);
   const signedIn = useMessengerStore((s) => s.signedIn);
@@ -112,28 +113,31 @@ function ChatView({
 
   function nudge() {
     if (!nudgeLimiter.tryNudge(id)) {
-      setNotice('You may not send a nudge so often. Please wait a moment.');
+      setNotice(t('messenger.chat.nudgeTooOften'));
       return;
     }
     getMessengerEngine().playerNudge(id);
   }
 
   const statusText = !signedIn
-    ? 'You are signed out of Messenger. Sign in to keep chatting.'
-    : (notice ?? (typing ? `${contact.displayName} is typing a message…` : ''));
+    ? t('messenger.chat.signedOut')
+    : (notice ??
+      (typing
+        ? t('messenger.chat.typing', { name: contact.displayName })
+        : ''));
 
   return (
     <div ref={root} className={styles.root}>
       <header className={styles.header}>
         <div className={styles.headerText}>
           <div className={styles.to}>
-            To: <StatusIcon status={status} />{' '}
+            {t('messenger.chat.to')} <StatusIcon status={status} />{' '}
             <strong>
               <RichText text={contact.displayName} />
             </strong>{' '}
             <span className={styles.handle}>&lt;{contact.handle}&gt;</span>{' '}
             <span className={styles.statusLabel}>
-              ({STATUS_LABELS[status]})
+              ({t(`messenger.status.${status}`)})
             </span>
           </div>
           {personalMessage && (
@@ -145,14 +149,14 @@ function ChatView({
         <div className={styles.picture}>
           <Avatar
             avatar={contact.avatar}
-            label={`${contact.displayName}'s picture`}
+            label={t('messenger.chat.pictureOf', { name: contact.displayName })}
           />
         </div>
       </header>
       <div
         className={styles.toolbar}
         role="toolbar"
-        aria-label="Conversation tools"
+        aria-label={t('messenger.chat.tools')}
       >
         <button
           type="button"
@@ -160,7 +164,7 @@ function ChatView({
           disabled={!signedIn}
           onClick={nudge}
         >
-          Nudge
+          {t('messenger.chat.nudge')}
         </button>
         <WinkMenu
           disabled={!signedIn}
@@ -176,7 +180,7 @@ function ChatView({
               .openApp('messenger-history', { contactId: id })
           }
         >
-          History
+          {t('messenger.chat.history')}
         </button>
       </div>
       <div className={styles.stage}>
@@ -203,15 +207,14 @@ function ChatView({
 }
 
 export default function Chat({ windowId, props }: AppComponentProps) {
+  const t = useT();
   const contactId = props.contactId;
   const content = useLocalizedContents().find(
     (c) => c.contact.id === contactId,
   );
   if (!content)
     return (
-      <div className={styles.missing}>
-        This contact is no longer in your contact list.
-      </div>
+      <div className={styles.missing}>{t('messenger.chat.missingContact')}</div>
     );
   return <ChatView windowId={windowId} contact={content.contact} />;
 }

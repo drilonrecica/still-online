@@ -1,6 +1,7 @@
 // The chat toolbar's "Winks ▾" button: a 3×2 grid of still previews; picking one sends it.
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import type { WinkId } from '@/content/types';
+import { useT } from '@/i18n/useT';
 import { WinkArt } from './art';
 import { WINK_ORDER, WINKS } from './catalog';
 import styles from './Winks.module.css';
@@ -22,6 +23,7 @@ export function WinkMenu({
   buttonClassName?: string;
   onSend: (wink: WinkId) => void;
 }) {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
@@ -67,13 +69,13 @@ export function WinkMenu({
         aria-expanded={open}
         onClick={() => setOpen(!open)}
       >
-        Winks ▾
+        {t('messenger.chat.winks')}
       </button>
       {open && (
         <div
           className={styles.menu}
           role="menu"
-          aria-label="Winks"
+          aria-label={t('messenger.chat.winksMenu')}
           onKeyDown={onKeyDown}
         >
           {WINK_ORDER.map((wink, i) => (
@@ -94,7 +96,7 @@ export function WinkMenu({
               <span className={styles.preview}>
                 <WinkArt wink={wink} still />
               </span>
-              {WINKS[wink].name}
+              {t(WINKS[wink].nameKey)}
             </button>
           ))}
         </div>
