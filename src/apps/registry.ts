@@ -22,6 +22,8 @@ import myComputer16 from '@/assets/icons/mycomputer-16.svg';
 import myComputer32 from '@/assets/icons/mycomputer-32.svg';
 import notepad16 from '@/assets/icons/notepad-16.svg';
 import notepad32 from '@/assets/icons/notepad-32.svg';
+import tunemole16 from '@/assets/icons/tunemole-16.svg';
+import tunemole32 from '@/assets/icons/tunemole-32.svg';
 import recycleBin16 from '@/assets/icons/recyclebin-16.svg';
 import recycleBin32 from '@/assets/icons/recyclebin-32.svg';
 
@@ -172,6 +174,20 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     showInStartMenu: true,
     category: 'internet',
     pinned: true,
+  },
+  tunemole: {
+    id: 'tunemole',
+    title: 'TuneMole',
+    icon16: tunemole16,
+    icon32: tunemole32,
+    component: lazy(() => import('./tunemole/TuneMole')),
+    defaultSize: { w: 640, h: 460 },
+    minSize: { w: 480, h: 320 },
+    singleInstance: true,
+    chrome: 'xp',
+    showOnDesktop: false,
+    showInStartMenu: true,
+    category: 'internet',
   },
   amplifier: {
     id: 'amplifier',
