@@ -128,28 +128,51 @@ export const useMailStore = create<MailStore>()(
               c.day <= day && !deliveredDays.includes(c.day) && !have.has(c.id),
           );
           if (!due.length) return 0;
-          const fresh = due.map((c): MailRecord => {
-            // A stable "arrived a while ago" offset, 2–90 minutes, so the list looks natural.
-            const minutes = randInt(mulberry32(seedFrom(c.id)), 2, 90);
-            const base = {
-              id: c.id,
-              folder: 'inbox' as const,
-              receivedAt: now - minutes * 60_000,
-              read: false,
-            };
-            // Authored mail renders by id; content that isn't shipped (tests) is kept as text.
-            return isContentId(c.id)
-              ? { ...base, kind: 'content' }
-              : {
-                  ...base,
-                  kind: 'text',
-                  from: c.from,
-                  to: [PLAYER],
-                  subject: c.subject,
-                  body: c.body,
-                  attachments: [...(c.attachments ?? [])],
-                };
-          });
+          // A day's mail always lands above everything already in the inbox, and a catch-up
+          // batch lands day by day: a new day can boot minutes after the last one, which a
+          // plain "now minus a few minutes" would sort below yesterday's mail.
+          let floor = Math.max(
+            -Infinity,
+            ...messages
+              .filter((m) => m.folder === 'inbox')
+              .map((m) => m.receivedAt + 60_000),
+          );
+          let floorDay = -1;
+          let dayTop = floor;
+          const fresh = [...due]
+            .sort((a, b) => a.day - b.day)
+            .map((c): MailRecord => {
+              if (c.day !== floorDay) {
+                floor = dayTop;
+                floorDay = c.day;
+              }
+              // A stable "arrived a while ago" offset, 2–90 minutes, so the list looks natural.
+              const minutes = randInt(mulberry32(seedFrom(c.id)), 2, 90);
+              // Raised to the floor, keeping the offsets' order (smaller offset = newer).
+              const receivedAt = Math.max(
+                now - minutes * 60_000,
+                floor + (90 - minutes) * 1_000,
+              );
+              dayTop = Math.max(dayTop, receivedAt + 60_000);
+              const base = {
+                id: c.id,
+                folder: 'inbox' as const,
+                receivedAt,
+                read: false,
+              };
+              // Authored mail renders by id; content that isn't shipped (tests) is kept as text.
+              return isContentId(c.id)
+                ? { ...base, kind: 'content' }
+                : {
+                    ...base,
+                    kind: 'text',
+                    from: c.from,
+                    to: [PLAYER],
+                    subject: c.subject,
+                    body: c.body,
+                    attachments: [...(c.attachments ?? [])],
+                  };
+            });
           const days = new Set(deliveredDays);
           due.forEach((c) => days.add(c.day));
           set({

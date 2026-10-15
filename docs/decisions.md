@@ -236,3 +236,4 @@
 - Gossip tags are language-neutral ids (the English words); each language labels them in `GOSSIP_TAG_LABELS`. `/tag?t=` URLs work in both languages, and v0.3 German tag URLs (`/tag?t=zoff`) are mapped back to their ids.
 - Notepad opens at 640×420 (was 480×360): about 78 columns, so the seeded files' hand-broken lines (up to ~77 chars) no longer soft-wrap a few words early. Word Wrap stays on by default; the text keeps its line breaks.
 - Game help and high-score prompts in Hühnerjagd and Sternen-Flipper say „Sie" (replaces the P3-G „du" exception).
+- Mail: a day's mail is delivered above everything already in the inbox, and a catch-up batch lands day by day (`deliver` raises `receivedAt` to a floor), so day-1 mail with a small random offset can't sort above day 2.

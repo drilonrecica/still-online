@@ -96,6 +96,26 @@ describe('mail store', () => {
     );
   });
 
+  it("sorts a new day's mail above earlier days, however soon the day starts", () => {
+    const { deliver } = useMailStore.getState();
+    const day1 = 10 * 3_600_000;
+    deliver(1, CONTENT, day1);
+    deliver(2, CONTENT, day1 + 3 * 60_000); // day 2 booted three minutes later
+    const at = (id: string) =>
+      useMailStore.getState().messages.find((m) => m.id === id)!.receivedAt;
+    expect(at('d2-a')).toBeGreaterThan(Math.max(at('d1-a'), at('d1-b')));
+  });
+
+  it('delivers a catch-up batch day by day', () => {
+    useMailStore.getState().deliver(2, CONTENT, 10 * 3_600_000);
+    const order = useMailStore
+      .getState()
+      .messages.slice()
+      .sort((a, b) => b.receivedAt - a.receivedAt)
+      .map((m) => m.id);
+    expect(order[0]).toBe('d2-a');
+  });
+
   it('delivers when the connection comes up', () => {
     const off = installMailDelivery();
     useWorldStore.setState({ day: 1 });
