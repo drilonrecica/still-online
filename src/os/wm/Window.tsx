@@ -2,6 +2,7 @@
 import { Suspense, type CSSProperties, type MouseEvent } from 'react';
 import { useWindowsStore } from '@/os/store/windows';
 import { WM_MIN_SIZE, type AppDefinition, type WindowState } from '@/os/types';
+import { requestClose } from './closeGuard';
 import { ResizeHandles } from './ResizeHandles';
 import { isFromControl, useWindowDrag } from './useWindowDrag';
 import styles from './Window.module.css';
@@ -108,7 +109,7 @@ export function Window({ win, app, active }: WindowProps) {
           <button
             type="button"
             aria-label="Close"
-            onClick={() => actions().closeWindow(win.id)}
+            onClick={() => requestClose(win.id)}
           />
         </div>
       </div>

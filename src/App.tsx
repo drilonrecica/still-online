@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { migrateLegacyNotepad } from '@/apps/notepad/migrate';
 import { getApp } from '@/apps/registry';
 import { SEED_FILES } from '@/content/files';
 import { installAmplifierRouter } from '@/os/amplifierRouter';
@@ -60,7 +61,10 @@ export function App() {
   }, [theme]);
 
   // Seed the family computer's files; ids the player purged or already has are skipped.
-  useEffect(() => useFsStore.getState().seed(SEED_FILES), []);
+  useEffect(() => {
+    useFsStore.getState().seed(SEED_FILES);
+    migrateLegacyNotepad();
+  }, []);
   useEffect(() => installGestureUnlock(), []);
   useEffect(() => installAmplifierRouter(), []);
   useEffect(() => installIdle(), []);

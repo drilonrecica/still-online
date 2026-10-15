@@ -1,6 +1,6 @@
 // XP Explorer-style folder window content: address bar, task pane, icon/details list.
 // Shared by the Explorer app and the Recycle Bin.
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import folderIcon16 from '@/assets/icons/folder-16.svg';
 import { FsIcon } from './FsIcon';
@@ -15,6 +15,12 @@ export interface FolderViewProps {
   onNavigate: (folderId: string) => void;
   /** Open a non-folder node. Omit to make files inert (the Recycle Bin). */
   onOpenFile?: (node: FsNode) => void;
+  /** Picker mode (file dialogs): Up stops at this folder and the task pane is hidden. */
+  rootId?: string;
+  /** Picker mode: the selected node changes (null when nothing is selected). */
+  onSelect?: (node: FsNode | null) => void;
+  /** Picker mode: only matching nodes are listed (folders always are). */
+  filter?: (node: FsNode) => boolean;
 }
 
 type ViewMode = 'icons' | 'details';
@@ -42,6 +48,9 @@ function FolderViewInner({
   folderId,
   onNavigate,
   onOpenFile,
+  rootId,
+  onSelect,
+  filter,
 }: FolderViewProps) {
   const nodes = useFsStore((s) => s.nodes);
   const remove = useFsStore((s) => s.remove);
@@ -61,17 +70,26 @@ function FolderViewInner({
   const items = useMemo(
     () =>
       Object.values(nodes)
-        .filter((n) => n.parentId === folderId)
+        .filter(
+          (n) =>
+            n.parentId === folderId &&
+            (!filter || n.type === 'folder' || filter(n)),
+        )
         .sort(compareNodes),
-    [nodes, folderId],
+    [nodes, folderId, filter],
   );
   const selected = items.find((n) => n.id === selectedId) ?? null;
   const path = pathOf(nodes, folderId);
-  const parentId = folder?.parentId ?? null;
+  const parentId = folderId === rootId ? null : (folder?.parentId ?? null);
+  const picker = rootId !== undefined;
   const binItemSelected = isBinRoot && selected !== null;
 
   const canRename = !!selected && !selected.system && !inBin;
   const canDelete = !!selected && !selected.system && (!inBin || isBinRoot);
+
+  useEffect(() => {
+    onSelect?.(selected);
+  }, [selected, onSelect]);
 
   function open(node: FsNode) {
     if (node.type === 'folder') onNavigate(node.id);
@@ -213,33 +231,39 @@ function FolderViewInner({
       </div>
 
       <div className={styles.body}>
-        <nav className={styles.tasks} aria-label="File and Folder Tasks">
-          <h2>File and Folder Tasks</h2>
-          {isBinRoot && (
-            <>
-              <button
-                type="button"
-                disabled={!binItemSelected}
-                onClick={restoreSelected}
-              >
-                Restore
-              </button>
-              <button
-                type="button"
-                disabled={items.length === 0}
-                onClick={emptyBin}
-              >
-                Empty Recycle Bin
-              </button>
-            </>
-          )}
-          <button type="button" disabled={!canRename} onClick={startRename}>
-            Rename
-          </button>
-          <button type="button" disabled={!canDelete} onClick={deleteSelected}>
-            Delete
-          </button>
-        </nav>
+        {!picker && (
+          <nav className={styles.tasks} aria-label="File and Folder Tasks">
+            <h2>File and Folder Tasks</h2>
+            {isBinRoot && (
+              <>
+                <button
+                  type="button"
+                  disabled={!binItemSelected}
+                  onClick={restoreSelected}
+                >
+                  Restore
+                </button>
+                <button
+                  type="button"
+                  disabled={items.length === 0}
+                  onClick={emptyBin}
+                >
+                  Empty Recycle Bin
+                </button>
+              </>
+            )}
+            <button type="button" disabled={!canRename} onClick={startRename}>
+              Rename
+            </button>
+            <button
+              type="button"
+              disabled={!canDelete}
+              onClick={deleteSelected}
+            >
+              Delete
+            </button>
+          </nav>
+        )}
 
         <div
           ref={listRef}

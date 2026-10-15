@@ -1,0 +1,130 @@
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: #fff;
+}
+
+.menubar {
+  display: flex;
+  background: var(--xp-face, #ece9d8);
+  border-bottom: 1px solid #aca899;
+  font-size: 11px;
+}
+
+.menu {
+  position: relative;
+}
+
+.menuButton {
+  padding: 2px 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  font: inherit;
+}
+
+.menuButton[aria-expanded='true'] {
+  background: #316ac5;
+  color: #fff;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 5;
+  min-width: 150px;
+  padding: 2px;
+  border: 1px solid #aca899;
+  background: #fff;
+  box-shadow: 2px 2px 3px rgb(0 0 0 / 30%);
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 3px 14px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+}
+
+.item:hover {
+  background: #316ac5;
+  color: #fff;
+}
+
+.editor {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  resize: none;
+  border: none;
+  outline: none;
+  font-family: 'Lucida Console', 'Courier New', monospace;
+  font-size: 13px;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 15%);
+}
+
+.dialog {
+  max-width: 94%;
+  font-size: 11px;
+}
+
+.fileDialog {
+  width: 440px;
+}
+
+.dialogBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.picker {
+  height: 170px;
+  border: 1px solid #aca899;
+}
+
+.fields label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.fields input,
+.fields select {
+  flex: 1;
+}
+
+.error {
+  margin: 0;
+  color: #b00;
+  white-space: pre-line;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.message {
+  margin: 4px 0 10px;
+}

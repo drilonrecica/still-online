@@ -282,6 +282,10 @@ export function createWindowsStore(deps: WindowsStoreDeps) {
         update(id, () => ({ title }));
       },
 
+      setWindowProps(id, props) {
+        update(id, () => ({ props }));
+      },
+
       moveWindow(id, x, y) {
         const work = deps.getWorkArea();
         update(id, (win) => clampPosition(x, y, win.w, work));

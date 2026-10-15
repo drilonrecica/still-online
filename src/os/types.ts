@@ -164,6 +164,8 @@ export interface WindowsStore {
   toggleMaximize: (id: string) => void;
   /** Apps set a more specific title, e.g. "Lena - Conversation". */
   setWindowTitle: (id: string, title: string) => void;
+  /** Apps keep `props` in step with what the window shows, so a restore reopens the same thing. */
+  setWindowProps: (id: string, props: WindowProps) => void;
   moveWindow: (id: string, x: number, y: number) => void;
   resizeWindow: (
     id: string,

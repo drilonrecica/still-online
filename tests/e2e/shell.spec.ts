@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 const NOTEPAD_TITLE = 'Untitled - Notepad';
+const SAVED_TITLE = 'shell.txt - Notepad';
 
 test('shell: boot, login, Notepad, window management, persistence, power cycle', async ({
   page,
@@ -24,9 +25,19 @@ test('shell: boot, login, Notepad, window management, persistence, power cycle',
   await notepad.getByLabel('Notepad document').fill(text);
   await expect(notepad.getByLabel('Notepad document')).toHaveValue(text);
 
+  // Save As into My Documents: the window is retitled after the file.
+  await notepad.getByRole('menuitem', { name: 'File' }).click();
+  await notepad.getByRole('menuitem', { name: 'Save As…' }).click();
+  const saveAs = notepad.getByRole('dialog', { name: 'Save As' });
+  await saveAs.getByLabel('File name').fill('shell');
+  await saveAs.getByRole('button', { name: 'Save' }).click();
+  await expect(notepad).toHaveCount(0);
+  const saved = page.getByRole('region', { name: SAVED_TITLE });
+  await expect(saved).toBeVisible();
+
   // Drag by the title bar.
-  const titleBar = notepad.locator('.title-bar');
-  const before = await notepad.boundingBox();
+  const titleBar = saved.locator('.title-bar');
+  const before = await saved.boundingBox();
   const bar = await titleBar.boundingBox();
   expect(before && bar).toBeTruthy();
   const startX = bar!.x + bar!.width / 2;
@@ -36,17 +47,17 @@ test('shell: boot, login, Notepad, window management, persistence, power cycle',
   await page.mouse.move(startX + 80, startY + 60, { steps: 8 });
   await page.mouse.up();
   await expect
-    .poll(async () => (await notepad.boundingBox())?.x)
+    .poll(async () => (await saved.boundingBox())?.x)
     .toBeGreaterThan(before!.x + 40);
 
   // Minimize via the taskbar button, then restore it.
   const taskbarButton = page
     .getByRole('toolbar', { name: 'Taskbar' })
-    .getByRole('button', { name: NOTEPAD_TITLE });
+    .getByRole('button', { name: SAVED_TITLE });
   await taskbarButton.click();
-  await expect(notepad).toBeHidden();
+  await expect(saved).toBeHidden();
   await taskbarButton.click();
-  await expect(notepad).toBeVisible();
+  await expect(saved).toBeVisible();
 
   // Reload: log back in; name and Notepad text persist.
   await page.reload();
@@ -58,7 +69,7 @@ test('shell: boot, login, Notepad, window management, persistence, power cycle',
   // The saved window is restored with its text; the Start menu shows the saved name.
   await expect(
     page
-      .getByRole('region', { name: NOTEPAD_TITLE })
+      .getByRole('region', { name: SAVED_TITLE })
       .getByLabel('Notepad document'),
   ).toHaveValue(text);
   await page.getByRole('button', { name: 'start' }).click();

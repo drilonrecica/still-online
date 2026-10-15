@@ -83,13 +83,8 @@ describe('registry', () => {
 });
 
 describe('notepad persistence', () => {
-  it('writes text to still-online:v1:notepad and rehydrates it', async () => {
-    render(<WindowLayer getApp={getApp} />);
-    act(() => {
-      useWindowsStore.getState().openApp('notepad');
-    });
-    const area = await screen.findByLabelText('Notepad document');
-    await userEvent.type(area, 'hello 2007');
+  it('keeps the legacy document under still-online:v1:notepad and rehydrates it', async () => {
+    act(() => useNotepadStore.getState().setText('hello 2007'));
 
     const saved = JSON.parse(
       localStorage.getItem('still-online:v1:notepad') ?? '{}',
@@ -103,6 +98,7 @@ describe('notepad persistence', () => {
     localStorage.setItem('still-online:v1:notepad', raw);
     await act(() => useNotepadStore.persist.rehydrate());
     expect(useNotepadStore.getState().text).toBe('hello 2007');
+    act(() => useNotepadStore.setState({ text: '' }));
   });
 });
 
