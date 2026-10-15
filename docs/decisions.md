@@ -67,3 +67,8 @@
 - P0-04: `path('root')` is `My Computer` (root is otherwise left out) — so an address bar never shows an empty path
 - P0-04: a photo's date stamp comes from its seed (`'06`/`'07`), not `now()` — it's part of the picture, which must stay deterministic
 - P0-04: `seed()` validates seeds like persisted data and drops seeds whose parent is missing or purged — a purged seed folder never comes back through its children
+- P1-01: `WallpaperDef.render` is optional; `classic` has none and stays the CSS hill in `global.css` — the spec keeps it canvas-free, and an absent painter is clearer than a no-op
+- P1-01: `wallpaperUrl` caches by id + bucketed size (LRU, 32 entries) rather than one size per id — so Display Properties previews don't evict the full-size desktop image
+- P1-01: `wallpaperPosition` applies to builtins too (rendered at the bucketed viewport size, so stretch looks right by default); centred/tiled images sit on `#3a6ea5` — matches XP's plain desktop colour
+- P1-01: wallpapers render at CSS pixels, not device pixels — keeps each JPEG data URL around 100–300 KB and render time ~50 ms at 1080p
+- P1-01: the wallpaper screenshot grid is an `@review` test in `tests/e2e/wallpapers.spec.ts` (writes `docs/review/P1/wallpapers.png`) so P1-G can rerun it

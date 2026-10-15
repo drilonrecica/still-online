@@ -79,6 +79,8 @@ Every persisted store uses `persistOptions` with a `sanitize` that drops invalid
 
 `WallpaperChoice = { kind: 'builtin'; id } | { kind: 'custom'; blobKey } | { kind: 'color'; color }`. A builtin id that doesn't exist (or is locked) renders as `classic`.
 
+**Wallpapers** (`src/os/wallpapers/`, P1-01): `WALLPAPERS` in `registry.ts` (`classic` + 9 homages + `ponies`/`retro`, hidden until their `unlock`); `listWallpapers(unlocks)` for pickers, `resolveWallpaperId` for the fallback. Painters (`landscapes.ts`, `nature.ts`, `abstract.ts`, `hidden.ts`) draw with `mulberry32(seedFrom(id))`. `wallpaperUrl(id, w, h)` renders to an offscreen canvas and caches a JPEG data URL per id and 256 px-bucketed size; it returns null for `classic` and in jsdom. `useDesktopBackground()` styles `.desktop-root` (builtin → data URL, custom → `useBlobUrl`, color → solid; no image → the CSS hill) and re-renders on a debounced resize.
+
 ## File system (`src/os/fs/`, P0-04)
 
 - **Nodes:** `FsNode` is a flat map keyed by id, with `parentId` links. Ids: system folders use their well-known id (`root`, `docs`, `pics`, `music`, `recycle`, see `FS_FOLDERS`), seeds `seed:<slug>`, player files `f:<random>`. A file's content depends on its `type`: `text`, `photo` or `blobKey`, `trackId`, or `url`.

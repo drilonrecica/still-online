@@ -14,6 +14,7 @@ import { OffScreen } from '@/os/startmenu/OffScreen';
 import { StartMenu } from '@/os/startmenu/StartMenu';
 import { Taskbar } from '@/os/taskbar/Taskbar';
 import { ToastLayer } from '@/os/toast/ToastLayer';
+import { useDesktopBackground } from '@/os/wallpapers/useDesktopBackground';
 import { WindowLayer } from '@/os/wm/WindowLayer';
 import { useWorldStore } from '@/os/world';
 
@@ -39,6 +40,7 @@ function Desktop() {
 export function App() {
   const state = useSessionStore((s) => s.state);
   const shutdownComplete = useSessionStore((s) => s.shutdownComplete);
+  const background = useDesktopBackground();
 
   useEffect(() => installGestureUnlock(), []);
   useEffect(() => installAmplifierRouter(), []);
@@ -77,7 +79,7 @@ export function App() {
   }, [state, shutdownComplete]);
 
   return (
-    <div className="desktop-root">
+    <div className="desktop-root" style={background}>
       <h1 hidden>still-online</h1>
       {state === 'booting' && <Boot />}
       {state === 'login' && <Login />}

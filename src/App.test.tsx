@@ -2,6 +2,7 @@ import { act, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { App } from '@/App';
 import { useSessionStore } from '@/os/store/session';
+import { useSettingsStore } from '@/os/store/settings';
 import { useWorldStore, WORLD_DEFAULTS } from '@/os/world';
 
 beforeEach(() => {
@@ -32,5 +33,25 @@ describe('App', () => {
       day: 2,
       shutdownPending: false,
     });
+  });
+
+  it('paints the chosen wallpaper on the desktop root', () => {
+    const { container } = render(<App />);
+    const root = container.querySelector<HTMLElement>('.desktop-root');
+    // A builtin has no canvas in jsdom, so the CSS hill stays.
+    expect(root?.style.backgroundImage).toBe('');
+    act(() =>
+      useSettingsStore
+        .getState()
+        .setWallpaper({ kind: 'color', color: '#008080' }),
+    );
+    expect(root?.style.backgroundColor).toBe('rgb(0, 128, 128)');
+    expect(root?.style.backgroundImage).toBe('none');
+    act(() =>
+      useSettingsStore
+        .getState()
+        .setWallpaper({ kind: 'builtin', id: 'classic' }),
+    );
+    expect(root?.style.backgroundImage).toBe('');
   });
 });

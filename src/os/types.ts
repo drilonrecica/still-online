@@ -191,12 +191,16 @@ export interface SettingsStore {
   firstBootDone: boolean;
   /** The "best on a desktop computer" notice was dismissed. */
   smallScreenNoticeDismissed: boolean;
+  wallpaper: WallpaperChoice;
+  wallpaperPosition: WallpaperPosition;
   setPlayerName: (name: string) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
   setVolume: (volume: number) => void;
   markFirstBootDone: () => void;
   dismissSmallScreenNotice: () => void;
+  setWallpaper: (wallpaper: WallpaperChoice) => void;
+  setWallpaperPosition: (position: WallpaperPosition) => void;
 }
 
 // v0.2 settings fields. Each implementing task moves its fields into `SettingsStore` (with a
