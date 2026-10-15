@@ -69,7 +69,7 @@
 
 .list {
   flex: 1;
-  min-height: 70px;
+  min-height: 40px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -91,6 +91,7 @@
 
 .row {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: 8px;
 }

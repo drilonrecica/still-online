@@ -97,3 +97,34 @@ test('P1: with "Connect automatically" off, Cancel aborts sign-in and Dial conne
     messenger.getByRole('group', { name: 'Contacts' }),
   ).toBeVisible();
 });
+
+test('P1: Display Properties changes the colour scheme; Disk Cleanup frees 0 KB', async ({
+  page,
+}) => {
+  await logIn(page);
+
+  await page.mouse.click(900, 300, { button: 'right' });
+  await page.getByRole('menuitem', { name: 'Properties' }).click();
+  const display = page.getByRole('region', { name: 'Display Properties' });
+  await display.getByRole('tab', { name: 'Appearance' }).click();
+  await display.getByLabel('Color scheme:').selectOption({ label: 'Silver' });
+  await display.getByRole('button', { name: 'OK' }).click();
+  await expect(display).toHaveCount(0);
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'silver');
+
+  await page.getByRole('button', { name: 'start' }).click();
+  await page.getByRole('menuitem', { name: /All Programs/ }).click();
+  await page.getByRole('menuitem', { name: /System Tools/ }).click();
+  await page.getByRole('menuitem', { name: 'Disk Cleanup' }).click();
+  const cleanup = page.getByRole('region', { name: 'Disk Cleanup' });
+  await expect(cleanup.getByText('Files to delete:')).toBeVisible();
+  await cleanup.getByRole('button', { name: 'OK' }).click();
+  await page
+    .getByRole('dialog', { name: 'Disk Cleanup' })
+    .getByRole('button', { name: 'Yes' })
+    .click();
+  const done = page.getByRole('dialog', { name: 'Disk Cleanup' });
+  await expect(done.getByText(/freed 0 KB/)).toBeVisible();
+  await done.getByRole('button', { name: 'OK' }).click();
+  await expect(cleanup).toHaveCount(0);
+});
