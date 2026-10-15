@@ -8,6 +8,8 @@ export type BalloonAction =
   /** Opens the dial-up connection flow. */
   | { kind: 'connect' }
   | { kind: 'browse'; url: string }
+  /** Lets Fluff the sheep out onto the desktop. */
+  | { kind: 'pet' }
   | { kind: 'balloon'; title: string; text: string; icon?: BalloonIcon };
 
 export interface ScheduledBalloon {
@@ -53,6 +55,14 @@ export const SCHEDULED_BALLOONS: readonly ScheduledBalloon[] = [
     text: 'Your computer might be at risk.',
     icon: 'shield',
     action: { kind: 'browse', url: 'http://virusguard.example' },
+  },
+  {
+    id: () => 'meet-fluff',
+    afterMinutes: 1,
+    minDay: 2,
+    title: 'Someone new moved in',
+    text: 'Click the sheep in the tray to meet Fluff!',
+    action: { kind: 'pet' },
   },
 ];
 

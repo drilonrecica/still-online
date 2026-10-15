@@ -1,0 +1,116 @@
+/* Fluff sits in the pointer-events: none `pet` slot; only the sheep itself takes clicks. */
+.pet {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 32px;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.sheep {
+  display: block;
+  width: 40px;
+  height: 32px;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  box-shadow: none;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+/* Beat xp.css's button hover/press/focus chrome: Fluff is just a sheep. */
+.pet .sheep:hover,
+.pet .sheep:active,
+.pet .sheep:focus {
+  background: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.pet[data-mode='drag'] .sheep {
+  cursor: grabbing;
+}
+
+.pet .sheep:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: 1px;
+}
+
+.flip {
+  display: block;
+  width: 40px;
+  height: 32px;
+}
+
+.flip svg {
+  display: block;
+}
+
+/* A little speech balloon over Fluff's head. */
+.bubble {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1px 6px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  background: #ffffe1;
+  color: #000;
+  font:
+    11px Tahoma,
+    Verdana,
+    'Segoe UI',
+    sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.zzz {
+  position: absolute;
+  bottom: 22px;
+  right: -6px;
+  color: #fff;
+  font:
+    bold 10px Tahoma,
+    Verdana,
+    sans-serif;
+  text-shadow:
+    0 0 2px #1d3d8f,
+    1px 1px 0 #1d3d8f;
+  animation: drift 2.4s ease-in-out infinite;
+}
+
+.zzz span {
+  position: relative;
+  top: -6px;
+  left: 1px;
+  font-size: 13px;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zzz {
+    animation: none;
+  }
+}

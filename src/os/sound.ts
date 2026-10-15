@@ -27,6 +27,7 @@ export const SOUND_NAMES = [
   'gunfire',
   'boing',
   'sweep',
+  'baa',
 ] as const;
 export type SoundName = (typeof SOUND_NAMES)[number];
 
@@ -469,6 +470,27 @@ export const SOUND_DEFS: Record<SoundName, SoundDef> = {
       bell(100, 0.1, 0.3, { ratio: 4.2, index: 1.5, gain: 0.04, pan: -0.4 }),
       bell(103, 0.25, 0.3, { ratio: 4.2, index: 1.5, gain: 0.035, pan: 0.2 }),
       bell(98, 0.42, 0.36, { ratio: 4.2, index: 1.5, gain: 0.03, pan: 0.5 }),
+    ],
+  },
+  // Fluff's bleat: a nasal buzz that stutters (the "aa-a-a") and sags in pitch (~0.65s).
+  baa: {
+    reverb: 0.15,
+    voices: [
+      noise(1300, 0, 0.05, { q: 2, gain: 0.08 }),
+      ...Array.from({ length: 14 }, (_, i) =>
+        tone(
+          i < 2 ? 60 + i * 1.5 : 63 - i * 0.12 + (i % 2) * 0.35,
+          i * 0.045,
+          0.06,
+          {
+            wave: 'sawtooth',
+            detune: 12,
+            cutoff: 1500 - i * 40,
+            attack: 0.008,
+            gain: i < 12 ? 0.13 : 0.07,
+          },
+        ),
+      ),
     ],
   },
 };

@@ -123,6 +123,22 @@ describe('installBalloons', () => {
     );
   });
 
+  it('introduces Fluff once, from day 2; clicking it lets Fluff out', () => {
+    install(1);
+    vi.advanceTimersByTime(20 * MIN);
+    expect(drain()).not.toContain('Someone new moved in');
+    cleanup();
+    useSettingsStore.setState({ seenTips: [], petEnabled: false });
+
+    install(2);
+    vi.advanceTimersByTime(1 * MIN);
+    expect(current()?.text).toBe('Click the sheep in the tray to meet Fluff!');
+    expect(useSettingsStore.getState().seenTips).toContain('meet-fluff');
+    current()?.onClick?.();
+    expect(useSettingsStore.getState().petEnabled).toBe(true);
+    useSettingsStore.setState({ petEnabled: false });
+  });
+
   it('a new day repeats the daily balloons', () => {
     install(1);
     vi.advanceTimersByTime(8 * MIN);

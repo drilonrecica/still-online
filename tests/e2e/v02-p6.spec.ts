@@ -94,3 +94,23 @@ test('P6: Desktop Wrecker wrecks over open windows, repairs and exits', async ({
   await expect(surface).toHaveCount(0);
   await expect(notepad).toBeVisible();
 });
+
+test('P6: Fluff comes out from the tray, lands, bleats and goes home', async ({
+  page,
+}) => {
+  await logIn(page);
+  await openFromStart(page, 'Notepad');
+  const tray = page.getByRole('button', { name: 'Desktop sheep' });
+  await tray.click();
+  await expect(tray).toHaveAttribute('aria-pressed', 'true');
+  const fluff = page.locator('[data-pet]');
+  await expect(fluff).toBeVisible();
+  await expect(fluff).not.toHaveAttribute('data-mode', 'fall');
+  // Fluff walks, so click where the sheep is right now instead of waiting for it to hold still.
+  const box = (await fluff.boundingBox())!;
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  await expect(fluff).toHaveAttribute('data-mode', 'baa');
+  await expect(page.getByText('Baa!')).toBeVisible();
+  await tray.click();
+  await expect(fluff).toHaveCount(0);
+});

@@ -1,4 +1,4 @@
-// Taskbar: Start button, one button per open window, and the tray (network, Messenger, mute, clock).
+// Taskbar: Start button, one button per open window, and the tray (network, Messenger, Fluff, mute, clock).
 import { useEffect, useState } from 'react';
 import { getApp } from '@/apps/registry';
 import {
@@ -13,6 +13,7 @@ import { useSettingsStore } from '@/os/store/settings';
 import { useWorldStore } from '@/os/world';
 import { useMessengerStore } from '@/apps/messenger/store';
 import { StatusIcon } from '@/apps/messenger/StatusIcon';
+import { PetTray } from '@/os/pet/PetTray';
 import { NetworkTray } from './NetworkTray';
 import styles from './Taskbar.module.css';
 
@@ -131,6 +132,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
         >
           <StatusIcon status={messengerSignedIn ? 'online' : 'offline'} />
         </button>
+        <PetTray className={styles.mute} />
         <button
           type="button"
           className={styles.mute}

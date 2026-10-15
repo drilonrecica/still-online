@@ -2,11 +2,13 @@
 // See docs/architecture-v0.2.md → "Overlay layer". Later tasks fill their slot.
 import type { ReactNode } from 'react';
 import { BalloonLayer } from '@/os/balloon/BalloonLayer';
+import { Pet } from '@/os/pet/Pet';
 import { Screensaver } from '@/os/screensaver/Screensaver';
 import { OVERLAY_SLOTS, Z_INDEX, type OverlaySlot } from './slots';
 import styles from './OverlayLayer.module.css';
 
 const CONTENT: Partial<Record<OverlaySlot, () => ReactNode>> = {
+  pet: () => <Pet />,
   balloons: () => <BalloonLayer />,
   screensaver: () => <Screensaver />,
 };

@@ -104,6 +104,7 @@ type PersistedSettings = Pick<
   | 'connectAutomatically'
   | 'awayMinutes'
   | 'awayMessage'
+  | 'petEnabled'
 >;
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -122,6 +123,7 @@ export const useSettingsStore = create<SettingsStore>()(
       connectAutomatically: SETTINGS_V02_DEFAULTS.connectAutomatically,
       awayMinutes: SETTINGS_V02_DEFAULTS.awayMinutes,
       awayMessage: SETTINGS_V02_DEFAULTS.awayMessage,
+      petEnabled: SETTINGS_V02_DEFAULTS.petEnabled,
       setPlayerName: (playerName) => set({ playerName }),
       setMuted: (muted) => set({ muted }),
       toggleMuted: () => set((s) => ({ muted: !s.muted })),
@@ -155,6 +157,7 @@ export const useSettingsStore = create<SettingsStore>()(
         })),
       setAwayMessage: (message) =>
         set({ awayMessage: message.trim().slice(0, MAX_AWAY_MESSAGE) }),
+      setPetEnabled: (petEnabled) => set({ petEnabled }),
     }),
     persistOptions<SettingsStore, PersistedSettings>({
       name: 'settings',
@@ -172,6 +175,7 @@ export const useSettingsStore = create<SettingsStore>()(
         connectAutomatically,
         awayMinutes,
         awayMessage,
+        petEnabled,
       }) => ({
         playerName,
         muted,
@@ -186,6 +190,7 @@ export const useSettingsStore = create<SettingsStore>()(
         connectAutomatically,
         awayMinutes,
         awayMessage,
+        petEnabled,
       }),
       sanitize: (persisted, current) => {
         if (!isRecord(persisted)) return current;
@@ -234,6 +239,10 @@ export const useSettingsStore = create<SettingsStore>()(
             typeof p.awayMessage === 'string'
               ? p.awayMessage.slice(0, MAX_AWAY_MESSAGE)
               : current.awayMessage,
+          petEnabled:
+            typeof p.petEnabled === 'boolean'
+              ? p.petEnabled
+              : current.petEnabled,
         };
       },
     }),

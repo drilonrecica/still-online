@@ -13,6 +13,7 @@ import { events } from '@/os/events';
 import { requireOnline } from '@/os/network';
 import type { BalloonInput } from '@/os/serviceTypes';
 import { scaleMs } from '@/os/speed';
+import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import { currentDay } from '@/os/world';
 import { useBalloonStore } from './store';
@@ -40,6 +41,9 @@ function runAction(action: BalloonAction): void {
       return;
     case 'browse':
       events.emit('browser:open', { url: action.url });
+      return;
+    case 'pet':
+      useSettingsStore.getState().setPetEnabled(true);
       return;
     case 'balloon':
       useBalloonStore.getState().push({

@@ -207,6 +207,8 @@ export interface SettingsStore {
   awayMinutes: number;
   /** The away message auto-away and the manual prompt start from. */
   awayMessage: string;
+  /** Fluff the sheep walks the desktop. */
+  petEnabled: boolean;
   setPlayerName: (name: string) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
@@ -222,6 +224,7 @@ export interface SettingsStore {
   setConnectAutomatically: (on: boolean) => void;
   setAwayMinutes: (minutes: number) => void;
   setAwayMessage: (message: string) => void;
+  setPetEnabled: (on: boolean) => void;
 }
 
 // v0.2 settings fields. Each implementing task moves its fields into `SettingsStore` (with a

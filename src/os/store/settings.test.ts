@@ -152,3 +152,25 @@ describe('connectAutomatically', () => {
     expect(useSettingsStore.getState().connectAutomatically).toBe(true);
   });
 });
+
+describe('petEnabled', () => {
+  it('defaults off, persists and restores', async () => {
+    expect(useSettingsStore.getState().petEnabled).toBe(false);
+    useSettingsStore.getState().setPetEnabled(true);
+    const saved = localStorage.getItem(storageKey('settings')) ?? '';
+    expect(JSON.parse(saved).state.petEnabled).toBe(true);
+    useSettingsStore.setState(initial, true);
+    localStorage.setItem(storageKey('settings'), saved);
+    await useSettingsStore.persist.rehydrate();
+    expect(useSettingsStore.getState().petEnabled).toBe(true);
+  });
+
+  it('keeps the default when the stored value is corrupt', async () => {
+    localStorage.setItem(
+      storageKey('settings'),
+      JSON.stringify({ version: 1, state: { petEnabled: 1 } }),
+    );
+    await useSettingsStore.persist.rehydrate();
+    expect(useSettingsStore.getState().petEnabled).toBe(false);
+  });
+});
