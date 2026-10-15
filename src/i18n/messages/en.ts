@@ -1176,6 +1176,7 @@ export const en = {
       editProfile: 'Edit Profile',
       backToLaunchPad: '« Back to the launch pad',
       picture: "{name}'s picture",
+      headlineQuoted: '“{headline}”',
       mood: 'Mood:',
       lastLogin: 'Last Login: {date}',
       interests: "{name}'s Interests",

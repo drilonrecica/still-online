@@ -94,7 +94,9 @@ export function ProfileView(p: ProfileViewProps) {
               label={t('sites.spaceport.picture', { name: p.name })}
             />
             <div>
-              <p className={styles.headline}>&ldquo;{p.headline}&rdquo;</p>
+              <p className={styles.headline}>
+                {t('sites.spaceport.headlineQuoted', { headline: p.headline })}
+              </p>
               <Mood text={p.mood.text} emoticon={p.mood.emoticon} />
               <p className={styles.lastLogin}>
                 {t('sites.spaceport.lastLogin', { date: p.lastLogin })}

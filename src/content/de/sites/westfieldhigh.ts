@@ -1,5 +1,5 @@
 // German westfield-high.example, same exports as `src/content/sites/westfieldhigh`: the
-// Westfield-Gymnasium's official site in stiff school-office German („Sie"). Herr Dalton's notices
+// Westfield-Gymnasium's official site in stiff school-office German („Sie“). Herr Dalton's notices
 // follow Theo's arc (Wackelpudding, Referate in der ersten Stunde, Noten an Tag 5).
 import type { NewsPost, SiteMeta } from '../../sites/types';
 import type { MenuDay, StaffMember } from '../../sites/westfieldhigh';

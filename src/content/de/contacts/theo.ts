@@ -16,7 +16,7 @@ export const theo: ContactOverlay = {
         lines: ['ähm hi', 'bist du {name}? aus bio?'],
         choices: [
           { text: 'ja! hi theo', label: 'Ja, hi!' },
-          { text: 'wer ist da?' },
+          { text: 'wer bist du?' },
         ],
       },
       who: {
@@ -120,7 +120,7 @@ export const theo: ContactOverlay = {
         lines: [
           'oh. ähm',
           'ok',
-          'sorry. ich kann nicht gut aussuchen',
+          'sorry. ich kann mich so schlecht entscheiden',
           'pflanze? ich glaub pflanze',
         ],
         choices: [{ text: 'dann pflanze (Y)' }, { text: 'gute wahl theo' }],
@@ -189,8 +189,8 @@ export const theo: ContactOverlay = {
             label: 'Kühlbox!',
           },
           {
-            text: 'is aber ne coole idee. vielleicht für ne zusatznote?',
-            label: 'Zusatznote?',
+            text: 'is aber ne coole idee. vielleicht für pluspunkte?',
+            label: 'Pluspunkte?',
           },
         ],
       },

@@ -1,4 +1,4 @@
-// Jess's German Spaceport profile: neon chaos, CAPS, „!!!", hdgdl. Same Top 8, days and theme.
+// Jess's German Spaceport profile: neon chaos, CAPS, „!!!“, hdgdl. Same Top 8, days and theme.
 import { jessProfile as en } from '../../profiles/jess';
 import type { ProfileContent } from '../../profiles/types';
 
@@ -52,13 +52,13 @@ export const jessProfile: ProfileContent = {
       day: 1,
       from: 'kayla',
       contactId: 'kayla',
-      text: 'du hast GEWONNEN?? jess das is sooo ein glück!!! (L)',
+      text: 'du hast GEWONNEN?? jess hast du ein GLÜCK!!! (L)',
     },
     {
       day: 1,
       from: 'dex',
       contactId: 'dex',
-      text: 'nice. die roboter-cd is gut',
+      text: 'fett. die roboter-cd is gut',
     },
     {
       day: 2,
@@ -82,7 +82,7 @@ export const jessProfile: ProfileContent = {
       day: 3,
       from: 'theo',
       contactId: 'theo',
-      text: 'ähm hi jess. viel glück beim konzert. sorry falls das komisch is',
+      text: 'ähm hi jess. viel glück beim konzert. sorry, falls das komisch ist…',
     },
     {
       day: 4,

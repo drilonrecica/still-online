@@ -1,4 +1,4 @@
-// Theo's German Spaceport profile: shy, „ähm", „sorry", „…", draws frogs. Mama comments formally.
+// Theo's German Spaceport profile: shy, „ähm“, „sorry“, „…“, draws frogs. Mama comments formally.
 import { theoProfile as en } from '../../profiles/theo';
 import type { ProfileContent } from '../../profiles/types';
 
@@ -77,7 +77,7 @@ export const theoProfile: ProfileContent = {
       day: 5,
       from: 'marco',
       contactId: 'marco',
-      text: 'zwei plus. in meinem buch ist das eine eins. mein buch ist allerdings nicht besonders gut',
+      text: 'zwei plus. nach meiner rechnung ist das eine eins. ich bin allerdings nicht besonders gut in mathe',
     },
     {
       day: 5,

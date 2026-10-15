@@ -1,5 +1,5 @@
 // German virusguard.example, same exports as `src/content/sites/virusguard`. Scareware spoke stiff,
-// formal German („Sie") with euro prices; 87 stays 87.
+// formal German („Sie“) with euro prices; 87 stays 87.
 import type { SiteMeta } from '../../sites/types';
 import type { Threat } from '../../sites/virusguard';
 

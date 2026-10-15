@@ -1,5 +1,5 @@
 // German spaceport.example, same exports as `src/content/sites/spaceport`: „ein Ort für Freunde im
-// Orbit", says „du". Theme ids and colours come from English; only their names are German.
+// Orbit", says „du“. Theme ids and colours come from English; only their names are German.
 import type { PlayerProfile } from '../../profiles/types';
 import {
   THEME_PRESETS as EN_THEME_PRESETS,

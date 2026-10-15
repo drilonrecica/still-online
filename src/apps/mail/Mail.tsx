@@ -348,7 +348,11 @@ export default function Mail({ windowId }: AppComponentProps) {
                           ? (m.to[0]?.name ?? '')
                           : m.from.name}
                       </td>
-                      <td>{m.subject}</td>
+                      <td>
+                        <span className={styles.subject} title={m.subject}>
+                          {m.subject}
+                        </span>
+                      </td>
                       <td>{formatReceived(m.receivedAt)}</td>
                     </tr>
                   ))}

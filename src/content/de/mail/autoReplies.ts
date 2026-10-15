@@ -32,9 +32,9 @@ export const autoReplies: readonly AutoReply[] = [
   {
     contactId: 'theo',
     subject: 'AW: (kein Betreff)',
-    body: 'Hi. Danke für die Mail. Ich wusste nicht genau, was ich zurückschreiben soll, also: hi. - Theo',
+    body: 'hi. danke für die mail. ich wusste nicht genau, was ich zurückschreiben soll, also: hi. - Theo',
     again:
-      'Ähm, wir können auch einfach im Messenger schreiben, oder? Nicht, dass mich die Mails stören… sorry.',
+      'ähm, wir können auch einfach im messenger schreiben, oder? nicht, dass mich die mails stören… sorry.',
   },
   {
     contactId: 'dex',

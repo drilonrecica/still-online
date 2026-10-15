@@ -1,5 +1,5 @@
 // German tinfoilcomets.example, same exports as `src/content/sites/tinfoilcomets`: xX_CometGirl_Xx's
-// fan page in German fan-girl voice („ihr", CAPS, „!!!", ~*~). Band, members and song titles stay
+// fan page in German fan-girl voice („ihr“, CAPS, „!!!“, ~*~). Band, members and song titles stay
 // as they are (fictional English band); friends sign on their story days in their German voices.
 import type {
   Album,
@@ -210,7 +210,7 @@ export const TINFOIL_PICS: readonly ConcertPic[] = [
   {
     day: 5,
     seed: 7107,
-    caption: 'freitag!!! von nem fan eingeschickt. danke fürs teilen',
+    caption: 'freitag!!! von nem fan eingeschickt. danke fürs einschicken',
   },
   {
     day: 5,

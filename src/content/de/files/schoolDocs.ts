@@ -83,7 +83,7 @@ const MOM_RULES = `REGELN FÜR DEN NEUEN COMPUTER
 2. Kein Chatten mit Fremden. Wenn dich jemand im Messenger hinzufügt,
    den du nicht kennst, sagst du nein und sagst mir Bescheid.
 3. Niemals unsere Adresse, unsere Telefonnummer oder den Namen deiner
-   Schule verraten. Auch nicht an „nette" Leute. GERADE nicht an nette Leute.
+   Schule verraten. Auch nicht an „nette“ Leute. GERADE nicht an nette Leute.
 4. Pia darf unter der Woche nach dem Abendessen an den Computer.
    Keine Diskussion.
 5. KEIN Essen und keine Getränke am Schreibtisch. Ich meine dich und deine
@@ -109,7 +109,7 @@ ich krieg ihn nach dem abendessen. das sind die REGELN`;
 
 const READ_ME_FIRST = `=================================================
      PIXELPOINT COMPUTERS - BITTE ZUERST LESEN!
-     „Ihr Punkt für Pixel"
+     „Ihr Punkt für Pixel“
 =================================================
 
 Herzlichen Glückwunsch zu Ihrem neuen PixelPoint HomeStar 3000!
@@ -125,7 +125,7 @@ Ihr System:
 ERSTE SCHRITTE
 1. Stecken Sie das Telefonkabel hinten in den Computer UND in die
    Telefondose.
-2. Doppelklicken Sie auf „Mit Internet verbinden" und lauschen Sie den
+2. Doppelklicken Sie auf „Mit Internet verbinden“ und lauschen Sie den
    freundlichen Verbindungsgeräuschen.
 3. Jemand nimmt unten den Hörer ab? Dann wird die Verbindung getrennt.
    Das ist normal!

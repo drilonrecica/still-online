@@ -1,4 +1,4 @@
-// Pia's German Spaceport profile: bossy, Ponys (never „Ponies"), Sternenstaub is the queen, Keks the
+// Pia's German Spaceport profile: bossy, Ponys (never „Ponies“), Sternenstaub is the queen, Keks the
 // dog is a suspect. Same days and theme colours; the stickers are German.
 import { piaProfile as en } from '../../profiles/pia';
 import type { ProfileContent } from '../../profiles/types';
@@ -80,7 +80,7 @@ export const piaProfile: ProfileContent = {
       day: 4,
       from: 'dex',
       contactId: 'dex',
-      text: 'im wäschekorb gefunden? klassiker',
+      text: 'im wäschekorb gefunden? kenn ich',
     },
     {
       day: 4,

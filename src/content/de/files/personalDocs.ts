@@ -28,9 +28,9 @@ meine hausaufgaben.
 (der modem-teil is entweder genial oder das schlimmste was je geschrieben wurde)`;
 
 const LYRICS = `SONGS FÜR VELVET LANTERN
-(marco hat gesagt ich darf texte für die band schreiben wenn sie „nicht furchtbar" sind)
+(marco hat gesagt ich darf texte für die band schreiben wenn sie „nicht furchtbar“ sind)
 
---- song 1: „laternenherz" ---
+--- song 1: „laternenherz“ ---
 mein herz ist eine laterne
 aus samt, ganz weich und schwer
 ich wollte sie dir schenken
@@ -47,7 +47,7 @@ oh oh licht
 velvet lantern
 vergiss mich nicht (vergiss mich nicht)
 
---- song 2: „bushaltestellen-blues" ---
+--- song 2: „bushaltestellen-blues“ ---
 ich wart an der bushaltestelle
 es regnet und regnet sehr
 der bus ist mal wieder zu spät
@@ -58,16 +58,16 @@ meine socken sind nass
 das is die traurigste bushaltestelle
 und das sag ich ohne spaß
 
---- song 3: „rocksong ohne titel" ---
+--- song 3: „rocksong ohne titel“ ---
 yeah
 YEAH
 (hier gitarrensolo, marco weiß was zu tun is)
 yeah
 
 --- notizen ---
-- marco hat gesagt song 1 „hat potenzial". DAS IS EIN JA
+- marco hat gesagt song 1 „hat potenzial“. DAS IS EIN JA
 - was reimt sich auf laterne. kaserne? laterne kaserne. nein
-- vielleicht n song übers konzert im jugendzentrum?? „juz rock"`;
+- vielleicht n song übers konzert im jugendzentrum?? „juz rock“`;
 
 const TOP_8 = `MEINE SPACEPORT TOP 8 (KEINEM ZEIGEN)
 
@@ -92,7 +92,7 @@ const TOP_8 = `MEINE SPACEPORT TOP 8 (KEINEM ZEIGEN)
 8. ???
 
 --- version 3 ---
-1. Kayla (sie hat gesagt wenn sie nich #1 is sind wir „geschiedene leute")
+1. Kayla (sie hat gesagt wenn sie nich #1 is sind wir „geschiedene leute“)
 2. Jess (jess sagt es is ihr egal) (es is ihr nich egal)
 3. Theo
 4. ~~Brianna~~ (Kayla guckt zu)
@@ -121,7 +121,7 @@ mit JESS!!! (sie hat 2 karten!!!)
 einpacken:
 [x] karte (jess hat sie. JESS ANRUFEN OB SIE SIE WIRKLICH HAT)
 [x] ohrstöpsel (mama sagt sonst darf ich nich)
-[ ] glitzerschild „COMETS BITTE SPIELT SPACE GIRL" (braucht mehr glitzer)
+[ ] glitzerschild „COMETS BITTE SPIELT SPACE GIRL“ (braucht mehr glitzer)
 [ ] ersatzglitzer
 [ ] einwegkamera (27 bilder. gut einteilen)
 [ ] 20 € fürs t-shirt + 3 € für was zu trinken

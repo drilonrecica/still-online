@@ -40,7 +40,7 @@ export const jess: ContactOverlay = {
       contest: {
         lines: [
           'WOHER WEISST DU DAS',
-          'du bist hellseherisch. voll gruselig. ich liebs',
+          'kannste hellsehen oder was. voll gruselig. ich liebs',
           '2 KARTEN für die Tinfoil Comets!!!',
         ],
         choices: [
@@ -194,7 +194,7 @@ export const jess: ContactOverlay = {
       marry: {
         lines: [
           'LOL ziggy is so 28 das is ALT',
-          'aber er macht das ding wo er den drumstick dreht also... lohnt sich',
+          'aber er macht das ding wo er den drumstick wirbelt also... lohnt sich',
           'ich schreibs in rosa. GROSS in rosa',
           '',
         ],
@@ -397,7 +397,7 @@ export const jess: ContactOverlay = {
         ],
         choices: [
           { text: 'zieh es trotzdem an' },
-          { text: 'zieh n langarmshirt drunter', label: 'Drüberziehen' },
+          { text: 'zieh n langarmshirt drunter', label: 'Langarm drunter' },
         ],
       },
       sparkly: {
@@ -437,7 +437,7 @@ export const jess: ContactOverlay = {
         lines: [
           '{name}',
           'ich kann nich schlafen',
-          'ich WEISS es is noch nich mal spät. ich kann TROTZDEM schon nich schlafen',
+          'ich WEISS es is noch nich mal spät. ich kann JETZT SCHON nich schlafen',
           'zeit für die checkliste. bereit??',
         ],
         choices: [
@@ -537,7 +537,7 @@ export const jess: ContactOverlay = {
       },
       best: {
         lines: [
-          'ziggy hat den drumstick gedreht',
+          'ziggy hat den drumstick-wirbel gemacht',
           'UND DANN HAT ER IHN GEWORFEN',
           'UND ICH HAB IHN GEFANGEN',
           'ok er is mir erst an die stirn geknallt. aber DANN hab ich ihn gefangen',
@@ -623,7 +623,7 @@ export const jess: ContactOverlay = {
       },
       what: {
         lines: [
-          'das is GOLDEN. und das macht ZOOM',
+          'das is aus GOLD. und es macht ZISCH',
           '100 punkte!!! halt nächstes ma die augen offen',
           'PENG PENG PENG',
         ],

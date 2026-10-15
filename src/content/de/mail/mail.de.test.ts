@@ -61,7 +61,7 @@ describe('German mail', () => {
     });
   });
 
-  it('forwards with „WG:" and has no placeholders', () => {
+  it('forwards with „WG:“ and has no placeholders', () => {
     for (const m of MAIL_CONTENT) {
       expect(m.subject, m.id).not.toMatch(/\b(?:FWD|RE):/i);
       expect(texts(m).join(' '), m.id).not.toMatch(/\{\w+\}/);
@@ -81,7 +81,7 @@ describe('German auto-replies', () => {
     );
   });
 
-  it('answers with „AW:" and German text', () => {
+  it('answers with „AW:“ and German text', () => {
     autoReplies.forEach((r, i) => {
       expect(r.subject).toMatch(/^AW: /);
       expect(r.body).not.toBe(EN_REPLIES[i]!.body);
@@ -89,7 +89,7 @@ describe('German auto-replies', () => {
     });
   });
 
-  it('Marco never uses „!"', () => {
+  it('Marco never uses „!“', () => {
     const marco = autoReplies.find((r) => r.contactId === 'marco')!;
     expect(`${marco.subject} ${marco.body} ${marco.again}`).not.toContain('!');
   });

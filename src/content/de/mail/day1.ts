@@ -29,7 +29,7 @@ export const day1Mail: readonly MailContent[] = [
       '',
       'Viel Spaß am Computer!',
       'Ihr PixelPoint-Team',
-      '„Ihr Punkt für Pixel"',
+      '„Ihr Punkt für Pixel“',
     ].join('\n'),
   },
   {
@@ -71,7 +71,7 @@ export const day1Mail: readonly MailContent[] = [
       'zur Erinnerung: Eure Zellmodelle und die schriftlichen Ausarbeitungen sind Ende der Woche fällig. Jedes Organell muss beschriftet sein. Die Zweiergruppen wurden im Unterricht eingeteilt. Wer noch nicht mit der anderen Hälfte seiner Gruppe gesprochen hat: Heute ist ein guter Tag, damit anzufangen.',
       '',
       'Erlaubte Materialien: Knete, Pappe, Schaumstoff, Wackelpudding (siehe unten) und alles andere, was nicht lebt.',
-      'Nicht erlaubte Materialien: alles, was lebt. Dazu gehört auch Schimmel. Ich schaue in Richtung letztes Jahr.',
+      'Nicht erlaubte Materialien: alles, was lebt. Dazu gehört auch Schimmel. Ich sage nur: letztes Jahr.',
       '',
       'Wer ein essbares Modell baut, deckt es bitte ab. Ich werde euer Modell nicht essen. Bitte hört auf, es mir anzubieten.',
       '',

@@ -238,7 +238,7 @@ export const kayla: ContactOverlay = {
       sarcastic: {
         lines: [
           'ICH WUSSTE ES',
-          'ok ich schreib zurück „thx, süßer abwesend-spruch“',
+          'ok ich schreib zurück „thx, dein spruch is auch süß“',
           'warte is das zu viel',
         ],
         choices: [

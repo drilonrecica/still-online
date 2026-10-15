@@ -71,7 +71,7 @@ export const dexProfile: ProfileContent = {
     {
       day: 4,
       from: 'lil_shredder',
-      text: 'WOAH. du hast ihn gestanden. ich habs gesehen!!! meine mama sagt hallo',
+      text: 'BOAH. du hast ihn gestanden. ich habs gesehen!!! meine mama sagt hallo',
     },
     {
       day: 4,
@@ -92,7 +92,7 @@ export const dexProfile: ProfileContent = {
     },
   ],
   commentsOnPlayer: [
-    { day: 2, text: 'oh. jo. du hast ne seite. nice' },
+    { day: 2, text: 'oh. jo. du hast ne seite. fett' },
     { day: 4, text: 'hab ihn gestanden. keine kamera. klassiker' },
     { day: 5, text: 'guck dir 0:22 an. mehr sag ich nich' },
   ],

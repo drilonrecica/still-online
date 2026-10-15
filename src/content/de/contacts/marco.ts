@@ -1,4 +1,4 @@
-// German text for marco (docs/localization-de.md → "Marco: dry, lowercase, never „!""). Same ids,
+// German text for marco (docs/localization-de.md → "Marco: dry, lowercase, never „!“"). Same ids,
 // same line and choice counts as `src/content/contacts/marco*.ts`; '' = a line without text.
 import type { ContactOverlay } from '../../types';
 
@@ -214,7 +214,7 @@ export const marco: ContactOverlay = {
         lines: [
           'wow',
           'verraten von der eigenen familie',
-          'ok gut. ich hab gesagt, du nimmst unseren. jetzt schulde ich derek ne pizza',
+          'ok gut. ich hab gewettet, dass du unseren nimmst. jetzt schulde ich derek ne pizza',
         ],
         choices: [
           { text: 'sorry :P' },

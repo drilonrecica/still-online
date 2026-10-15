@@ -22,7 +22,7 @@ mir
 
 p.s. die wackelpudding-zelle is die beste idee die jemals wer hatte`;
 
-const RAP_LYRICS = `MC MEGABYTE - „WÄHL DICH EIN" (feat. niemand)
+const RAP_LYRICS = `MC MEGABYTE - „WÄHL DICH EIN“ (feat. niemand)
 
 yo
 ich hab nen neuen computer, der is schnell wie ein jet
@@ -31,7 +31,7 @@ mein modem macht piep piep, krrsch, ding
 wenn ich online bin, bin ich der king
 
 mama sagt eine stunde, ich sag: auf keinen fall
-sie sagt „du hast mich gehört", also sag ich: ok, egal
+sie sagt „du hast mich gehört“, also sag ich: ok, egal
 ich mach hausaufgaben, ich räum mein zimmer auf
 dann bin ich wieder online und die menge rastet aus
 
@@ -57,7 +57,7 @@ werde. am wochenende flieg ich ins weltall.
 
 liebes tagebuch,
 jess und ich haben einen geheimclub gegründet. er heißt Der Geheimclub.
-das passwort ist „pudding". sag keinem das passwort.
+das passwort ist „pudding“. sag keinem das passwort.
 
 liebes tagebuch,
 heute bin ich in der schlange in der mensa vor ALLEN gestolpert und
@@ -87,8 +87,8 @@ Sturm aus TRÄNEN. Alle Ponys haben geweint und keiner wusste warum!!!!
 
 KAPITEL 2: DER VERRAT
 Prinzessin Sternenstaub ging zu ihrer besten Freundin Butterblume.
-„Butterblume", sagte sie, „warum weinst du?"
-„Weil", sagte Butterblume, „DU den letzten Zauberapfel gegessen hast."
+„Butterblume“, sagte sie, „warum weinst du?“
+„Weil“, sagte Butterblume, „DU den letzten Zauberapfel gegessen hast.“
 Prinzessin Sternenstaub hat nach Luft geschnappt. „Das würde ich NIE
 machen", sagte sie.
 (sie hat es gemacht) (aber sie wusste nicht dass es der letzte war)
@@ -104,7 +104,7 @@ KAPITEL 4: DAS ENDE
 Prinzessin Sternenstaub hat sich entschuldigt und einen neuen
 Zauberapfelbaum gepflanzt. Alle haben aufgehört zu weinen. Der Regenbogen
 hat sich von selbst repariert.
-Butterblume sagte „Ich verzeihe dir" und sie waren wieder beste
+Butterblume sagte „Ich verzeihe dir“ und sie waren wieder beste
 Freundinnen FÜR IMMER UND EWIG.
 
 ENDE

@@ -166,7 +166,7 @@ describe('German Spaceport profiles', () => {
     },
   );
 
-  it('keeps Marco\'s lowercase and never „!"', () => {
+  it("keeps Marco's lowercase and never „!“", () => {
     const marco = PROFILES.find((p) => p.contactId === 'marco')!;
     for (const text of [
       marco.headline,

@@ -1,4 +1,4 @@
-// Tacki's tips in German. Tacki says „Sie" to the player, like the original assistants did.
+// Tacki's tips in German. Tacki says „Sie“ to the player, like the original assistants did.
 import type { Tip } from '../assistant';
 
 export type { Tip, TipAction, TipEvent, TipOption } from '../assistant';
@@ -61,7 +61,7 @@ export const TIPS: readonly Tip[] = [
 /** What Tacki says after 3 idle minutes, in rotation. Each joke can be silenced for good. */
 export const IDLE_JOKES: readonly Tip[] = [
   'Warum ging der Computer zum Arzt? Er hatte einen Virus. Außerdem war er ein Computer.',
-  'Mein Lieblingsordner ist „Eigene Dateien". Der hat die besten Dateien.',
+  'Mein Lieblingsordner ist „Eigene Dateien“. Der hat die besten Dateien.',
   'Ich habe das Modem um einen Witz gebeten. Es hat 30 Sekunden lang geschrien. Unhöflich, aber treffend.',
   'Wie nennt man einen schlafenden Computer? Eine Schlummertaste mit Monitor.',
   'Es gibt 10 Arten von Menschen: die, die Binärcode verstehen, und die, die ihr Brötchen auf der Tastatur vergessen haben.',

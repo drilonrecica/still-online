@@ -227,7 +227,9 @@ describe('Spaceport in German', () => {
     const { windowId } = open('http://spaceport.example/jess');
     await finishLoad();
     const profile = await screen.findByTestId('profile');
-    expect(profile).toHaveTextContent('~*~ ERSTE REIHE ODER GAR NICHT!!!1 ~*~');
+    expect(profile).toHaveTextContent(
+      '„~*~ ERSTE REIHE ODER GAR NICHT!!!1 ~*~“',
+    );
     expect(profile).toHaveTextContent('Stimmung: AUFGEDREHT');
     expect(
       within(profile).getByRole('region', { name: 'Interessen von Jess' }),

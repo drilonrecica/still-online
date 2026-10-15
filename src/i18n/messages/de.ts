@@ -1185,6 +1185,7 @@ export const de: Messages = {
       editProfile: 'Profil bearbeiten',
       backToLaunchPad: '« Zurück zur Startrampe',
       picture: 'Bild von {name}',
+      headlineQuoted: '„{headline}“',
       mood: 'Stimmung:',
       lastLogin: 'Zuletzt online: {date}',
       interests: 'Interessen von {name}',

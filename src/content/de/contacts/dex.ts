@@ -71,7 +71,7 @@ export const dex: ContactOverlay = {
       },
       helmet: {
         lines: [
-          'ja. meine mama würds irgendwie rausfinden. tut sie immer',
+          'ja. meine mama würds irgendwie rausfinden. die merkt sowas immer',
           'ok geh wieder raus. später',
         ],
       },
@@ -80,7 +80,7 @@ export const dex: ContactOverlay = {
         personalMessages: { 1: 'bring {name} sa. skaten bei' },
       },
       wrists: {
-        lines: ['lol fair', 'ok geh wieder raus. später'],
+        lines: ['lol verständlich', 'ok geh wieder raus. später'],
       },
     },
     dinner: {
@@ -257,7 +257,7 @@ export const dex: ContactOverlay = {
           'in der garage stell ich keine fragen',
         ],
         choices: [
-          { text: 'lol fair. und wie wars beim filmen?' },
+          { text: 'lol ok. und wie wars beim filmen?' },
           { text: 'deine familie is komisch dex' },
         ],
       },
@@ -464,7 +464,7 @@ export const dex: ContactOverlay = {
           'ok',
           '0-10: himmel. 10-20: boden. 20-22: orange',
           '22: das geräusch',
-          '23-27: mein bruder brüllt „nimmt das auf“',
+          '23-27: mein bruder brüllt „nimmt das auf?“',
         ],
         choices: [
           { text: 'das is ein meisterwerk' },

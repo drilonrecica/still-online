@@ -16,7 +16,7 @@ export const day2Mail: readonly MailContent[] = [
       '',
       '~*~*~ LIES DAS BIS ZUM ENDE ~*~*~',
       '',
-      'das is KEIN fake!!! es war mal ein mädchen namens jacqueline, die hat diese mail bekommen und sie GELÖSCHT. am nächsten tag hat sich ihr schwarm in mathe neben sie gesetzt und gefragt „kann ich mir nen bleistift leihen". sie hat ja gesagt. er hat ihn NIE ZURÜCKGEGEBEN. sie hat ihn nie wiedergekriegt. nich den bleistift. nich ihr herz. GAR NICHTS.',
+      'das is KEIN fake!!! es war mal ein mädchen namens jacqueline, die hat diese mail bekommen und sie GELÖSCHT. am nächsten tag hat sich ihr schwarm in mathe neben sie gesetzt und gefragt „kann ich mir nen bleistift leihen“. sie hat ja gesagt. er hat ihn NIE ZURÜCKGEGEBEN. sie hat ihn nie wiedergekriegt. nich den bleistift. nich ihr herz. GAR NICHTS.',
       '',
       'dann hat ein mädchen namens vanessa diese mail bekommen und sie an 10 leute geschickt. am nächsten tag hat ihr schwarm sie zur schulparty eingeladen UND sie hat 5 € in ihrer jackentasche gefunden!!!!',
       '',

@@ -220,3 +220,8 @@
 - P2-06: Celeb Gossip's HOT or NOT becomes „TOP oder FLOP" in German (what German magazines said in 2007); the poll ids and day gating are unchanged, so saved votes still apply.
 - P2-06: the tinfoil hit counter uses the German thousands dot in German (`004.203`); guestbook validation returns `noName`/`noMessage` and the page shows CometGirl's text in the current language.
 - P2-06: German Westfield-Gymnasium swaps US school items for German ones (Elternbeirat, Kuchenbasar with Marmorkuchen instead of brownies, Projektwoche, Mensa menu with Fischstäbchen/Kroketten, euros); Frau Fennimore teaches Deutsch (the native-language subject), emails unchanged.
+- P2-G: German closing quotes are typographic `“` everywhere in `src/content/de` (about 55 `„…"` pairs had an ASCII `"` closer); fixed mechanically, nothing else changed in those lines.
+- P2-G: „drumstick-wirbel" is the one term for Ziggy's drumstick trick in chat, mail and sites (the chat said „drehen", mail/sites „wirbel").
+- P2-G: spam mails say „Sie" without exception (the ringtone spam used „du"); system balloons say „Sie" and use the UI term „persönliche Nachricht", not the chat word „Spruch".
+- P2-G: Theo spells correctly in every German text, including his comments on other friends' Spaceport walls and his auto-replies (lowercase stays); „klassiker" is Marco's word only, „nice" became Dex's „fett".
+- P2-G: the 5-day review playthrough answers every waiting conversation with its first choice each day, because a friend's next day script waits until the current one is answered (game design, not a bug).

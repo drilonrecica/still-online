@@ -63,7 +63,7 @@ export const kaylaProfile: ProfileContent = {
       day: 3,
       from: 'theo',
       contactId: 'theo',
-      text: 'ähm. tut mir leid wegen der übernachtungsparty. ich wurde auch nich eingeladen. nich dass das dasselbe is',
+      text: 'ähm. tut mir leid wegen der übernachtungsparty. ich wurde auch nicht eingeladen. nicht dass das dasselbe ist…',
     },
     {
       day: 3,
@@ -114,7 +114,7 @@ export const kaylaProfile: ProfileContent = {
     },
     {
       day: 5,
-      text: 'friedensvertrag-freundinnen. das is jetzt ein ding. du bist trotzdem platz 1 ~*~',
+      text: 'friedensvertrag-freundinnen. so heißt das jetzt. offiziell. du bist trotzdem platz 1 ~*~',
     },
   ],
 };

@@ -84,6 +84,14 @@
   white-space: nowrap;
 }
 
+/* Long subjects (chain letters) end in an ellipsis so the Received column stays in view. */
+.subject {
+  display: block;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .list tbody tr {
   cursor: default;
 }

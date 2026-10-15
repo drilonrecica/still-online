@@ -1,6 +1,6 @@
 // German celebgossip07.example, same exports as `src/content/sites/celebgossip07`. Roxi blogs like
-// a German gossip magazine run from a teenager's bedroom: „Exklusiv!", „Schock!", „Wahnsinn!",
-// „du"/„ihr", lots of „!!!". Every celeb, band, show and commenter is invented, as in English.
+// a German gossip magazine run from a teenager's bedroom: „Exklusiv!“, „Schock!“, „Wahnsinn!“,
+// „du“/„ihr“, lots of „!!!“. Every celeb, band, show and commenter is invented, as in English.
 import type { Celeb } from '../../sites/celebgossip07';
 import type { BlogPost, Poll, SiteMeta } from '../../sites/types';
 

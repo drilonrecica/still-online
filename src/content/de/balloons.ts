@@ -1,4 +1,4 @@
-// German tray balloons, same exports as `src/content/balloons`. The system speaks „Sie".
+// German tray balloons, same exports as `src/content/balloons`. The system speaks „Sie“.
 import type { Contact } from '../types';
 import type { ScheduledBalloon } from '../balloons';
 import type { BalloonIcon } from '@/os/serviceTypes';
@@ -76,8 +76,8 @@ export function newDayBalloonText(
   day: number,
 ): string {
   const n = day >= 6 ? 0 : friendsChangedOn(contacts, day);
-  if (n === 0) return 'Deine Freunde führen was im Schilde.';
+  if (n === 0) return 'Ihre Freunde führen etwas im Schilde.';
   return n === 1
-    ? 'Ein Freund hat seinen Spruch geändert.'
-    : `${n} Freunde haben ihren Spruch geändert.`;
+    ? 'Ein Freund hat seine persönliche Nachricht geändert.'
+    : `${n} Freunde haben ihre persönliche Nachricht geändert.`;
 }

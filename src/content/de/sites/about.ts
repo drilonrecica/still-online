@@ -1,5 +1,5 @@
 // German about.example (Web Explorer's welcome site), same exports as `src/content/sites/about`.
-// Web Explorer is system software, so it says „Sie" like German XP did.
+// Web Explorer is system software, so it says „Sie“ like German XP did.
 import type { SiteMeta } from '../../sites/types';
 
 export const ABOUT_HOST = 'about.example';

@@ -1,4 +1,4 @@
-// German searchly.example, same exports as `src/content/sites/searchly`. A company, so „Sie".
+// German searchly.example, same exports as `src/content/sites/searchly`. A company, so „Sie“.
 import type { SiteMeta } from '../../sites/types';
 
 export const SEARCHLY_HOST = 'searchly.example';
