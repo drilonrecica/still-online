@@ -51,6 +51,37 @@ describe('content lint: shipped contacts', () => {
     },
   );
 
+  // Friends whose days 2–5 are written (§P2-02); later tasks add theirs.
+  const storyFriends = ['jess', 'kayla'];
+  it.each(
+    contacts
+      .filter((c) => storyFriends.includes(c.contact.id))
+      .map((c) => [c.contact.id, c] as const),
+  )(
+    '%s has a day script (≥ 4 nodes, a real branch) and a new personal message on days 2–5',
+    (_id, { contact, scripts }) => {
+      const messages = [contact.personalMessage];
+      for (const day of [2, 3, 4, 5]) {
+        const script = scripts.find(
+          (s) => s.trigger.type === 'onDay' && s.trigger.day === day,
+        );
+        expect(script, `day ${day} script`).toBeDefined();
+        const nodes = Object.values(script?.nodes ?? {});
+        expect(nodes.length).toBeGreaterThanOrEqual(4);
+        expect(
+          nodes.some(
+            (n) =>
+              'choices' in n && new Set(n.choices.map((c) => c.next)).size > 1,
+          ),
+        ).toBe(true);
+        const pm = contact.days?.[day]?.personalMessage;
+        expect(pm, `day ${day} personal message`).toBeTruthy();
+        messages.push(pm ?? '');
+      }
+      expect(new Set(messages).size).toBe(messages.length);
+    },
+  );
+
   it('at least one contact reacts to now playing', () => {
     const reacts = contacts.filter((c) =>
       c.scripts.some((s) => s.trigger.type === 'onNowPlaying'),

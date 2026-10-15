@@ -93,3 +93,6 @@
 - P2-01: The lint requires `onDay` days and `Contact.days` keys to be ≥ 2 — `presenceDay` defaults to 1, so a day-1 entry would never apply (day 1 is `initialStatus`/`personalMessage`); `onDay` can't `repeat` ("fires once").
 - P2-01: Day presence with no `status` keeps the usual sign-in status; presence personal messages don't resolve `{name}` (like `Contact.personalMessage`), so the lint rejects placeholders there.
 - P2-01: Presence is applied silently on contact sign-in (no `personalMessageChange` event); the `contactSignedIn` event carries the new status, and P2-05 counts changes from content.
+- P2-02: Day 2–5 content lives in `src/content/contacts/<id>-days.ts` (exports `<id>Days` presence and `<id>DayScripts`), spread into the contact module; each is ~400 lines like the existing contact modules, kept whole so one arc reads in one file.
+- P2-02: Jess invites the player on day 1, so the day-5 "you had to be there" recap says the crowd split them up: the player was there, Jess got pushed to the front row and caught the drumstick while the player missed the end. Fits every day-1 branch.
+- P2-02: Kayla's twist: Brianna's invite was an email Kayla deleted unread ("a policy"), and the "copy everything" away message was about Brianna's little sister. Day scripts don't assume any day-1 branch, since a missed day fires back to back.

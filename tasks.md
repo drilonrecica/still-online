@@ -269,11 +269,11 @@ Tests sit next to the code as `*.test.ts(x)`. Use path alias `@/` → `src/`.
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P2-01 | **Day-aware Messenger** — `onDay` trigger, per-day contact presence, `unlock` lines; engine, lint, playthrough and docs updated. | P1-G | in progress | opus | agent | — | fast | — | onDay fires once per script when the day is reached; presence applies once per day; unlock emits `world:unlock`; content-format doc updated. | §P2-01 |
-| P2-02 | **Days 2–5: Jess and Kayla** — day scripts and presence that continue their storylines to a day-5 resolution. | P2-01 | blocked | opus | agent | — | — | — | Lint + playthrough pass; ≥ 1 script per day 2–5 per contact; presence changes daily; voice consistent. | §P2-02 |
-| P2-03 | **Days 2–5: Dex and Theo** — same as P2-02 for Dex and Theo. | P2-01 | blocked | opus | agent | — | — | — | Same as P2-02. | §P2-02 |
-| P2-04 | **Days 2–5: Marco and Pia** — same as P2-02; Pia's day-5 script unlocks the "Pony Paradise" wallpaper. | P2-01 | blocked | opus | agent | — | — | — | Same as P2-02, plus the unlock line works. | §P2-02 |
-| P2-05 | **New-day moments** — "Day N" on the boot screen and in the tray clock tooltip, plus a "new day" balloon summarising what changed. | P2-01, P1-04 | blocked | sonnet | agent | — | fast | — | Boot shows the day; the balloon lists friends whose presence changed; tested. | §P2-05 |
+| P2-01 | **Day-aware Messenger** — `onDay` trigger, per-day contact presence, `unlock` lines; engine, lint, playthrough and docs updated. | P1-G | done | opus | agent | — | fast | — | onDay fires once per script when the day is reached; presence applies once per day; unlock emits `world:unlock`; content-format doc updated. | §P2-01 |
+| P2-02 | **Days 2–5: Jess and Kayla** — day scripts and presence that continue their storylines to a day-5 resolution. | P2-01 | in progress | opus | agent | — | — | — | Lint + playthrough pass; ≥ 1 script per day 2–5 per contact; presence changes daily; voice consistent. | §P2-02 |
+| P2-03 | **Days 2–5: Dex and Theo** — same as P2-02 for Dex and Theo. | P2-01 | ready | opus | agent | — | — | — | Same as P2-02. | §P2-02 |
+| P2-04 | **Days 2–5: Marco and Pia** — same as P2-02; Pia's day-5 script unlocks the "Pony Paradise" wallpaper. | P2-01 | ready | opus | agent | — | — | — | Same as P2-02, plus the unlock line works. | §P2-02 |
+| P2-05 | **New-day moments** — "Day N" on the boot screen and in the tray clock tooltip, plus a "new day" balloon summarising what changed. | P2-01, P1-04 | ready | sonnet | agent | — | fast | — | Boot shows the day; the balloon lists friends whose presence changed; tested. | §P2-05 |
 | P2-G | **P2 gate (self-review)** — follow "Task specs → Gate procedure", plus the content rubric; play days 1–5 with the fast clock. | P2-01…P2-05 | blocked | sonnet | agent | — | e2e | — | e2e flow advancing days passes; screenshots of boot day label, contact list per day; `docs/review/P2.md`. | §Gate |
 
 ## P3 — Messenger depth

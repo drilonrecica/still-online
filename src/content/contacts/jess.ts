@@ -1,5 +1,6 @@
 // Jess: the hyperactive best friend. ALL CAPS, many exclamation marks, nudges constantly.
 import type { ContactContent } from '../types';
+import { jessDayScripts, jessDays } from './jess-days';
 
 export const jess: ContactContent = {
   contact: {
@@ -11,6 +12,7 @@ export const jess: ContactContent = {
     initialStatus: 'online',
     personalMessage: 'OMG 3 more days!!!1 (L)',
     signInAfterMs: 8_000,
+    days: jessDays,
   },
   scripts: [
     {
@@ -459,5 +461,6 @@ export const jess: ContactContent = {
         },
       },
     },
+    ...jessDayScripts,
   ],
 };
