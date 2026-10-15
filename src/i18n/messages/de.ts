@@ -16,9 +16,21 @@ export const de: Messages = {
     awayMessage: 'bin gleich wieder da',
     screensaverText: 'still online...',
   },
+  language: {
+    pickerLabel: 'Language / Sprache',
+    trayLabel: 'Eingabesprache: {language}',
+    trayMenu: 'Eingabesprache',
+    regional: {
+      tab: 'Sprachen',
+      language: 'Sprache:',
+      example: 'Beispiel',
+      preview: 'Zeit: {time} · Datum: {date} · Zahl: {number}',
+    },
+  },
   apps: {
     explorer: { title: 'Explorer' },
     display: { title: 'Eigenschaften von Anzeige', label: 'Anzeige' },
+    regional: { title: 'Regions- und Sprachoptionen' },
     diskcleanup: { title: 'Datenträgerbereinigung' },
     mycomputer: { title: 'Arbeitsplatz' },
     messenger: { title: 'Messenger' },

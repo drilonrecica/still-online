@@ -16,10 +16,23 @@ export const en = {
     awayMessage: 'brb',
     screensaverText: 'still online...',
   },
+  /** Language pickers: login screen, Regional and Language Options, tray badge. */
+  language: {
+    pickerLabel: 'Language / Sprache',
+    trayLabel: 'Input language: {language}',
+    trayMenu: 'Input language',
+    regional: {
+      tab: 'Languages',
+      language: 'Language:',
+      example: 'Example',
+      preview: 'Time: {time} · Date: {date} · Number: {number}',
+    },
+  },
   /** Registry titles (window titles, taskbar) and short labels (Start menu). */
   apps: {
     explorer: { title: 'Explorer' },
     display: { title: 'Display Properties', label: 'Display' },
+    regional: { title: 'Regional and Language Options' },
     diskcleanup: { title: 'Disk Cleanup' },
     mycomputer: { title: 'My Computer' },
     messenger: { title: 'Messenger' },

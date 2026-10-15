@@ -1,0 +1,54 @@
+/* Regional and Language Options: same dialog layout as Display Properties. */
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px 8px 6px;
+  background: var(--xp-face);
+  font-size: 11px;
+}
+
+.tabs {
+  display: flex;
+}
+
+.tabs button {
+  min-width: 0;
+  padding: 3px 10px;
+}
+
+.panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #808080;
+  background: #fff;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grow {
+  flex: 1;
+}
+
+.example {
+  margin: 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+.buttons button {
+  min-width: 75px;
+}

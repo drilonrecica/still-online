@@ -42,3 +42,23 @@ describe('Login', () => {
     expect(useSessionStore.getState().state).toBe('desktop');
   });
 });
+
+describe('Login language picker', () => {
+  it('switches and persists the language before logon, on every visit', () => {
+    useSettingsStore.setState({ firstBootDone: true, language: 'en' });
+    render(<Login />);
+    const picker = screen.getByLabelText('Language / Sprache');
+    expect(picker).toHaveValue('en');
+    fireEvent.change(picker, { target: { value: 'de' } });
+    expect(useSettingsStore.getState().language).toBe('de');
+    expect(screen.getByLabelText('Language / Sprache')).toHaveValue('de');
+    expect(useSessionStore.getState().state).toBe('login');
+  });
+
+  it('shows the German picker label when the language is German', () => {
+    useSettingsStore.setState({ firstBootDone: true, language: 'de' });
+    render(<Login />);
+    expect(screen.getByRole('option', { name: 'Deutsch' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'English' })).toBeInTheDocument();
+  });
+});

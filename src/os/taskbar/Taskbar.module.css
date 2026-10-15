@@ -213,3 +213,20 @@
   color: #fff;
   outline: none;
 }
+
+.langBadge {
+  min-width: 22px;
+  height: 18px;
+  padding: 0 3px;
+  border: 1px solid #e8ecf2;
+  font:
+    bold 10px Tahoma,
+    sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.netMenu button[aria-checked='true']::before {
+  content: '✓';
+  margin-left: -12px;
+  margin-right: 4px;
+}

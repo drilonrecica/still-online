@@ -53,6 +53,7 @@ export type AppId =
   | 'display'
   | 'dialup'
   | 'diskcleanup'
+  | 'regional'
   | 'messenger-history'
   | 'browser'
   | 'mail'

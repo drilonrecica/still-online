@@ -15,6 +15,7 @@ import { useWorldStore } from '@/os/world';
 import { useMessengerStore } from '@/apps/messenger/store';
 import { StatusIcon } from '@/apps/messenger/StatusIcon';
 import { PetTray } from '@/os/pet/PetTray';
+import { LanguageTray } from './LanguageTray';
 import { NetworkTray } from './NetworkTray';
 import { renderWindowTitle } from '@/os/wm/title';
 import styles from './Taskbar.module.css';
@@ -122,6 +123,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
         })}
       </div>
       <div className={styles.tray}>
+        <LanguageTray />
         <NetworkTray />
         <button
           type="button"

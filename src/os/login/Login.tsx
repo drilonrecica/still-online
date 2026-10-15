@@ -1,5 +1,7 @@
 // Blue welcome screen with a single account tile. First visit asks for a name.
+import { LanguageSelect } from '@/i18n/LanguageSelect';
 import { usePlayerName } from '@/i18n/settingsText';
+import { useLocale, useT } from '@/i18n/useT';
 import { Wordmark } from '@/os/brand/Wordmark';
 import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
@@ -18,6 +20,9 @@ export function Login() {
   const [edited, setDraft] = useState<string | null>(null);
   const draft = edited ?? savedName;
   const submitted = useRef(false);
+  const t = useT();
+  const locale = useLocale();
+  const setLanguage = useSettingsStore((s) => s.setLanguage);
 
   function submit(e?: FormEvent) {
     e?.preventDefault();
@@ -60,7 +65,11 @@ export function Login() {
         )}
       </form>
       <div className={styles.footer}>
-        After you log on, you can start chatting.
+        <span>After you log on, you can start chatting.</span>
+        <label className={styles.language}>
+          {t('language.pickerLabel')}
+          <LanguageSelect value={locale} onChange={setLanguage} />
+        </label>
       </div>
     </div>
   );
