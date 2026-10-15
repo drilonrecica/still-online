@@ -5,6 +5,7 @@ import { events } from '@/os/events';
 import { useNowPlayingStore } from '@/os/nowPlaying';
 import { attentionKey, useAttentionStore } from '@/os/store/attention';
 import { playSound, type SoundName } from '@/os/sound';
+import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
 import { useToastStore } from '@/os/toast/store';
 import { useWorldStore } from '@/os/world';
@@ -137,8 +138,15 @@ function createEngine(): ConversationEngine {
     if (useMessengerStore.getState().signedIn) created.signOut();
   });
 
+  // Logging off or shutting down ends the session. Without this the engine stays signed in
+  // across a power cycle in the same tab, so the next day's presence and scripts never fire.
+  const stopSession = useSessionStore.subscribe((s, prev) => {
+    if (prev.state === 'desktop' && s.state !== 'desktop') created.signOut();
+  });
+
   stopListening = () => {
     stopNetwork();
+    stopSession();
     stopTrack();
     stopToggle();
     for (const stop of stopAttention) stop();

@@ -2,6 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Script } from '@/content/types';
 import { events } from '@/os/events';
+import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import { useWorldStore, WORLD_DEFAULTS } from '@/os/world';
@@ -62,6 +63,18 @@ describe('messenger runtime: world wiring', () => {
     expect(
       pia()?.transcript.map((e) => e.kind === 'message' && e.text),
     ).toEqual(['d2']);
+  });
+
+  it('logging off signs out, so the next day starts a fresh sign-in', () => {
+    useSessionStore.setState({ state: 'desktop' });
+    signIn();
+    expect(useMessengerStore.getState().signedIn).toBe(true);
+    useSessionStore.getState().logOff();
+    expect(useMessengerStore.getState().signedIn).toBe(false);
+    useWorldStore.setState({ day: 2 });
+    signIn();
+    expect(pia()?.personalMessage).toBe('missing: 1 pony');
+    useSessionStore.setState({ state: 'booting' });
   });
 
   it('an unlock line calls world.unlock, which emits world:unlock', () => {
