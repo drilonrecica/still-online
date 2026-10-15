@@ -222,7 +222,7 @@ test('P3 gate: three German days with a mid-game switch to English and back @rev
   await page.goto('./?speed=fast');
   await page.getByTestId('boot-screen').click();
   await expect(page.getByTestId('login-screen')).toBeVisible();
-  await expect(page.getByLabel('Language / Sprache')).toHaveValue('de');
+  await expect(page.getByRole('radio', { name: 'Deutsch' })).toBeChecked();
   await page.getByLabel(cat().login.yourName).fill('Ada');
   await page.mouse.move(10, 10);
   await shot('day1-login', 'de');
@@ -320,10 +320,10 @@ test('P3 gate: three German days with a mid-game switch to English and back @rev
   // ── Day 3: boots in English, back to German in the login picker ──
   await turnOff(3);
   await shot('day3-boot', 'en');
-  await expect(page.getByLabel('Language / Sprache')).toHaveValue('en');
+  await expect(page.getByRole('radio', { name: 'English' })).toBeChecked();
   await page.mouse.move(10, 10);
   await shot('day3-login', 'en');
-  await page.getByLabel('Language / Sprache').selectOption('de');
+  await page.getByRole('radio', { name: 'Deutsch' }).click();
   lang = 'de';
   await expect(logOn()).toBeVisible();
   await page.mouse.move(10, 10);

@@ -1,6 +1,6 @@
 // Blue welcome screen with a single account tile. Asks for a name until one is saved: there is
 // no default name, so the tile can't log on while the name is blank.
-import { LanguageSelect } from '@/i18n/LanguageSelect';
+import { LanguagePicker } from '@/i18n/LanguagePicker';
 import { usePlayerName } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { Wordmark } from '@/os/brand/Wordmark';
@@ -69,13 +69,19 @@ export function Login() {
             />
           </label>
         )}
+        <div className={styles.language}>
+          <span aria-hidden="true">{t('language.pickerLabel')}</span>
+          <LanguagePicker
+            label={t('language.pickerLabel')}
+            value={locale}
+            onChange={setLanguage}
+            className={styles.languages}
+            optionClassName={styles.languageOption}
+          />
+        </div>
       </form>
       <div className={styles.footer}>
         <span>{t('login.hint')}</span>
-        <label className={styles.language}>
-          {t('language.pickerLabel')}
-          <LanguageSelect value={locale} onChange={setLanguage} />
-        </label>
       </div>
     </div>
   );

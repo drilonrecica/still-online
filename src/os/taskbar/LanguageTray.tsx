@@ -1,5 +1,6 @@
-// Tray input-language badge (EN / DE). Click opens a two-item menu with a check on the current one.
+// Tray input-language badge (flag + EN / DE). Click opens a two-item menu with a check on the current one.
 import { useEffect, useRef, useState } from 'react';
+import { LanguageFlag } from '@/i18n/LanguageFlag';
 import { LOCALES, LOCALE_NAMES } from '@/i18n/types';
 import { useLocale, useT } from '@/i18n/useT';
 import { useSettingsStore } from '@/os/store/settings';
@@ -40,6 +41,7 @@ export function LanguageTray() {
         data-testid="tray-language"
         onClick={() => setOpen((v) => !v)}
       >
+        <LanguageFlag locale={locale} size={10} />
         {locale.toUpperCase()}
       </button>
       {open && (
@@ -78,6 +80,7 @@ export function LanguageTray() {
                 badgeRef.current?.focus();
               }}
             >
+              <LanguageFlag locale={l} size={12} />
               {LOCALE_NAMES[l]}
             </button>
           ))}

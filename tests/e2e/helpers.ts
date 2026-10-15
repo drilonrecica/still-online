@@ -55,7 +55,9 @@ export async function quietIdle(page: Page) {
  * visible (after `page.goto` and the boot click); the choice persists across reloads.
  */
 export async function setLanguage(page: Page, language: Locale) {
-  await page.getByLabel('Language / Sprache').selectOption(language);
+  await page
+    .getByRole('radio', { name: language === 'de' ? 'Deutsch' : 'English' })
+    .click();
 }
 
 /** Fresh visit with the fast clock: skip boot, enter the name, log on, wait for the desktop. */

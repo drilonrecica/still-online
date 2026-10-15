@@ -34,6 +34,7 @@ test('P0: language picker, Regional and Language Options and tray menu stay in s
   await badge.click();
   await page.getByRole('menuitemradio', { name: 'English' }).click();
   await expect(badge).toHaveText('EN');
+  await expect(badge.locator('img[data-flag="en"]')).toBeVisible();
   await expect(
     page.getByRole('region', { name: 'Regional and Language Options' }),
   ).toBeVisible();
@@ -47,5 +48,5 @@ test('P0: German choice survives a reload and a fresh log-on', async ({
   await page.getByRole('menuitemradio', { name: 'Deutsch' }).click();
   await page.reload();
   await page.getByTestId('boot-screen').click();
-  await expect(page.getByLabel('Language / Sprache')).toHaveValue('de');
+  await expect(page.getByRole('radio', { name: 'Deutsch' })).toBeChecked();
 });

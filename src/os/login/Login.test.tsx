@@ -61,18 +61,34 @@ describe('Login language picker', () => {
   it('switches and persists the language before logon, on every visit', () => {
     useSettingsStore.setState({ firstBootDone: true, language: 'en' });
     render(<Login />);
-    const picker = screen.getByLabelText('Language / Sprache');
-    expect(picker).toHaveValue('en');
-    fireEvent.change(picker, { target: { value: 'de' } });
+    const group = screen.getByRole('radiogroup', {
+      name: 'Language / Sprache',
+    });
+    expect(group).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: 'English' })).toBeChecked();
+    fireEvent.click(screen.getByRole('radio', { name: 'Deutsch' }));
     expect(useSettingsStore.getState().language).toBe('de');
-    expect(screen.getByLabelText('Language / Sprache')).toHaveValue('de');
+    expect(screen.getByRole('radio', { name: 'Deutsch' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'English' })).not.toBeChecked();
     expect(useSessionStore.getState().state).toBe('login');
   });
 
-  it('shows the German picker label when the language is German', () => {
+  it('shows a flag next to each language', () => {
     useSettingsStore.setState({ firstBootDone: true, language: 'de' });
+    const { container } = render(<Login />);
+    expect(
+      [...container.querySelectorAll('[role="radio"] img')].map((img) =>
+        img.getAttribute('data-flag'),
+      ),
+    ).toEqual(['en', 'de']);
+  });
+
+  it('arrow keys move the choice', () => {
+    useSettingsStore.setState({ firstBootDone: true, language: 'en' });
     render(<Login />);
-    expect(screen.getByRole('option', { name: 'Deutsch' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'English' })).toBeInTheDocument();
+    fireEvent.keyDown(screen.getByRole('radio', { name: 'English' }), {
+      key: 'ArrowRight',
+    });
+    expect(useSettingsStore.getState().language).toBe('de');
   });
 });

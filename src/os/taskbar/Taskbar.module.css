@@ -215,6 +215,9 @@
 }
 
 .langBadge {
+  display: flex;
+  align-items: center;
+  gap: 3px;
   min-width: 22px;
   height: 18px;
   padding: 0 3px;
@@ -223,6 +226,12 @@
     bold 10px Tahoma,
     sans-serif;
   letter-spacing: 0.5px;
+}
+
+.netMenu button img {
+  margin-right: 6px;
+  vertical-align: -2px;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 25%);
 }
 
 .netMenu button[aria-checked='true']::before {

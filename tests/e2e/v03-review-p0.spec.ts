@@ -56,6 +56,7 @@ test('P0 gate: language picker, Regional and Language Options, tray menu @review
   await page.screenshot({ path: `${DIR}/tray-menu-de.png` });
   await page.getByRole('menuitemradio', { name: 'English' }).click();
   await expect(badge).toHaveText('EN');
+  await expect(badge.locator('img[data-flag="en"]')).toBeVisible();
   await badge.click();
   await expect(
     page.getByRole('menu', { name: 'Input language' }),

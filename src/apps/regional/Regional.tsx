@@ -2,6 +2,7 @@
 // Edits a draft; Apply/OK call `setLanguage`, Cancel closes without changing anything.
 import { useEffect, useId, useState } from 'react';
 import { formatNumber, formatShortDate, formatTime } from '@/i18n/format';
+import { LanguageFlag } from '@/i18n/LanguageFlag';
 import { LanguageSelect } from '@/i18n/LanguageSelect';
 import { translate } from '@/i18n/t';
 import { useLocale, useT } from '@/i18n/useT';
@@ -36,6 +37,7 @@ export default function Regional({ windowId }: AppComponentProps) {
       <div role="tabpanel" className={styles.panel}>
         <div className={styles.row}>
           <label htmlFor={selectId}>{t('language.regional.language')}</label>
+          <LanguageFlag locale={draft} />
           <LanguageSelect
             id={selectId}
             className={styles.grow}

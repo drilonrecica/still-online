@@ -12,7 +12,7 @@ test('P3: German game, English mid-game, back to German on the next day', async 
   await quietIdle(page);
   await page.goto('./?speed=fast');
   await page.getByTestId('boot-screen').click();
-  await expect(page.getByLabel('Language / Sprache')).toHaveValue('de');
+  await expect(page.getByRole('radio', { name: 'Deutsch' })).toBeChecked();
   await page.getByLabel('Ihr Name').fill('Ada');
   await page.getByRole('button', { name: 'Als Ada anmelden' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
@@ -59,13 +59,13 @@ test('P3: German game, English mid-game, back to German on the next day', async 
     .dispatchEvent('click');
   await page.getByTestId('off-screen').click();
   await expect(page.getByTestId('boot-day')).toHaveText('Day 2');
-  await expect(page.getByLabel('Language / Sprache')).toHaveValue('en');
+  await expect(page.getByRole('radio', { name: 'English' })).toBeChecked();
   await expect(
     page.getByRole('button', { name: 'Log on as Ada' }),
   ).toBeVisible();
 
   // Back to German in the login picker, before logging on.
-  await page.getByLabel('Language / Sprache').selectOption('de');
+  await page.getByRole('radio', { name: 'Deutsch' }).click();
   await page.getByRole('button', { name: 'Als Ada anmelden' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
   await expect(page.getByTestId('tray-language')).toHaveText('DE');

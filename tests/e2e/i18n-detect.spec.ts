@@ -12,7 +12,7 @@ test.describe('German browser', () => {
   test('first visit shows the German login screen', async ({ page }) => {
     await loginScreen(page);
     await expect(page.locator('html')).toHaveAttribute('lang', 'de');
-    await expect(page.getByLabel('Language / Sprache')).toHaveValue('de');
+    await expect(page.getByRole('radio', { name: 'Deutsch' })).toBeChecked();
     await expect(page.getByLabel('Ihr Name')).toBeVisible();
     await expect(page.getByLabel('Your name')).toHaveCount(0);
     await page.getByLabel('Ihr Name').fill('Ada');
@@ -28,7 +28,7 @@ test.describe('English browser', () => {
   test('first visit shows the English login screen', async ({ page }) => {
     await loginScreen(page);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await expect(page.getByLabel('Language / Sprache')).toHaveValue('en');
+    await expect(page.getByRole('radio', { name: 'English' })).toBeChecked();
     await expect(page.getByLabel('Your name')).toBeVisible();
     await expect(page.getByLabel('Ihr Name')).toHaveCount(0);
   });

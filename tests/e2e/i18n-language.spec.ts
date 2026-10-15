@@ -7,14 +7,13 @@ test('language picker on the login screen persists across a reload', async ({
   await page.getByTestId('boot-screen').click();
   await expect(page.getByTestId('login-screen')).toBeVisible();
 
-  const picker = page.getByLabel('Language / Sprache');
-  await expect(picker).toHaveValue('en');
-  await picker.selectOption('de');
+  await expect(page.getByRole('radio', { name: 'English' })).toBeChecked();
+  await page.getByRole('radio', { name: 'Deutsch' }).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'de');
 
   await page.reload();
   await page.getByTestId('boot-screen').click();
-  await expect(page.getByLabel('Language / Sprache')).toHaveValue('de');
+  await expect(page.getByRole('radio', { name: 'Deutsch' })).toBeChecked();
   await expect(page.locator('html')).toHaveAttribute('lang', 'de');
 });
 
@@ -29,11 +28,12 @@ test('tray badge and Regional app switch the language live', async ({
 
   const badge = page.getByTestId('tray-language');
   await expect(badge).toHaveText('EN');
+  await expect(badge.locator('img[data-flag="en"]')).toBeVisible();
   await badge.click();
   await page.getByRole('menuitemradio', { name: 'Deutsch' }).click();
   await expect(badge).toHaveText('DE');
   await expect(badge).toHaveAccessibleName('Eingabesprache: Deutsch');
   await page.reload();
   await page.getByTestId('boot-screen').click();
-  await expect(page.getByLabel('Language / Sprache')).toHaveValue('de');
+  await expect(page.getByRole('radio', { name: 'Deutsch' })).toBeChecked();
 });
