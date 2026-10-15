@@ -44,7 +44,9 @@ function playPath(content: ContactContent, script: Script, picks: number[]) {
         ]
       : [];
   const solo: ContactContent = { ...content, scripts: [...target, script] };
-  const t = setup([solo]);
+  // A day script needs the world on its day before sign-in.
+  const day = trigger.type === 'onDay' ? trigger.day : 1;
+  const t = setup([solo], { getDay: () => day });
   t.engine.signIn();
   vi.advanceTimersByTime(content.contact.signInAfterMs + 1);
 

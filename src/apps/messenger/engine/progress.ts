@@ -42,6 +42,7 @@ export const defaultContactProgress = (contact: Contact): ContactProgress => ({
   scripts: {},
   transcript: [],
   unread: 0,
+  presenceDay: 1,
 });
 
 export const defaultScriptProgress = (): ScriptProgress => ({
@@ -141,6 +142,8 @@ function contactProgress(v: unknown): ContactProgress | null {
     scripts: scripts(v.scripts),
     transcript: transcript(v.transcript),
     unread: isCount(v.unread) ? v.unread : 0,
+    presenceDay:
+      isCount(v.presenceDay) && v.presenceDay >= 1 ? v.presenceDay : 1,
   };
 }
 

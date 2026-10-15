@@ -7,6 +7,7 @@ import { attentionKey, useAttentionStore } from '@/os/store/attention';
 import { playSound, type SoundName } from '@/os/sound';
 import { useSettingsStore } from '@/os/store/settings';
 import { useToastStore } from '@/os/toast/store';
+import { useWorldStore } from '@/os/world';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { requestShake } from './chat/nudge';
 import { createConversationEngine, type ConversationEngine } from './engine';
@@ -34,6 +35,8 @@ function createEngine(): ConversationEngine {
     store: useMessengerStore,
     getPlayerName: () => useSettingsStore.getState().playerName,
     isChatFocused,
+    getDay: () => useWorldStore.getState().day,
+    onUnlock: (id) => useWorldStore.getState().unlock(id),
   });
   // Incoming nudge: sound, bring the conversation up, shake it.
   created.on('nudge', ({ contactId, from }) => {

@@ -52,6 +52,20 @@ describe('sanitizeProgress', () => {
     },
   );
 
+  it.each([
+    [3, 3],
+    [undefined, 1],
+    [0, 1],
+    [-2, 1],
+    [2.5, 1],
+    ['4', 1],
+  ])('presenceDay %j sanitizes to %j', (presenceDay, expected) => {
+    const p = sanitizeProgress({
+      contacts: { mika: { ...valid(), presenceDay } },
+    });
+    expect(p.contacts.mika?.presenceDay).toBe(expected);
+  });
+
   it('drops broken contacts and invalid list items', () => {
     const p = sanitizeProgress({
       player: { status: 'sleepy' },

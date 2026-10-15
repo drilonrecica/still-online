@@ -89,3 +89,7 @@
 - P1-06: `notes.txt` is not seeded: P1-07's migration creates it only when it's missing, so a seeded empty file would block moving old Notepad text into it. My Documents ships the other 8 files.
 - P1-06: Seed files carry fixed 2006–2007 timestamps (the family computer's history), not the real time; the diary keeps a 2004 creation date as if copied from the old PC.
 - P1-06: `App` calls `fs.seed(SEED_FILES)` once on mount (before boot), so the files exist from the first Explorer open; e2e selectors for `bio_project.txt` now match the exact name.
+- P2-01: `onDay` scripts are queued at Messenger sign-in (before the contact signs in), so on their first day they start after that contact's `onSignIn` scripts; a missed day fires on the next sign-in, in content order.
+- P2-01: The lint requires `onDay` days and `Contact.days` keys to be ≥ 2 — `presenceDay` defaults to 1, so a day-1 entry would never apply (day 1 is `initialStatus`/`personalMessage`); `onDay` can't `repeat` ("fires once").
+- P2-01: Day presence with no `status` keeps the usual sign-in status; presence personal messages don't resolve `{name}` (like `Contact.personalMessage`), so the lint rejects placeholders there.
+- P2-01: Presence is applied silently on contact sign-in (no `personalMessageChange` event); the `contactSignedIn` event carries the new status, and P2-05 counts changes from content.

@@ -21,6 +21,10 @@ export interface ConversationEngineOptions {
   getPlayerName?: () => string;
   /** True while the contact's chat window is focused; such messages don't count as unread. */
   isChatFocused?: (contactId: ContactId) => boolean;
+  /** The world day, for `onDay` triggers and `Contact.days` presence. Default 1. */
+  getDay?: () => number;
+  /** A delivered line grants a world unlock (the runtime calls `world.unlock`). */
+  onUnlock?: (id: string) => void;
 }
 
 export type EngineContext = ReturnType<typeof createEngineContext>;
@@ -30,6 +34,8 @@ export function createEngineContext(options: ConversationEngineOptions) {
   const scheduler = options.scheduler ?? realScheduler;
   const playerName = options.getPlayerName ?? (() => 'Player');
   const isFocused = options.isChatFocused ?? (() => false);
+  const getDay = options.getDay ?? (() => 1);
+  const onUnlock = options.onUnlock ?? (() => {});
   const bus = createEventBus<EngineEventMap>();
   const byId = new Map(contents.map((c) => [c.contact.id, c]));
   /** One pending line step per contact (lines play strictly in sequence). */
@@ -101,6 +107,8 @@ export function createEngineContext(options: ConversationEngineOptions) {
     scheduler,
     playerName,
     isFocused,
+    getDay,
+    onUnlock,
     bus,
     data,
     contentOf,

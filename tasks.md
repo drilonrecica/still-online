@@ -263,13 +263,13 @@ Tests sit next to the code as `*.test.ts(x)`. Use path alias `@/` → `src/`.
 | P1-06 | **Fake system content** — seed My Documents, My Pictures, My Music and the Recycle Bin with original 2007 content. | P0-G | done | opus | agent | — | fast | — | ≥ 8 docs, 6 photos, 2 music links, 4 embarrassing bin files; passes content lint; PG-13. | §P1-06 |
 | P1-07 | **Notepad files** — open, save and save as fs txt files; the old single document migrates to `My Documents/notes.txt`. | P0-05 | done | sonnet | agent | — | fast | — | Explorer opens txt in Notepad; Save writes back; title `<name> - Notepad`; migration tested. | §P1-07 |
 | P1-08 | **Disk Cleanup** — an endless, funny "scan" with joke categories that frees 0 KB. | P0-G | done | sonnet | agent | — | fast | — | Scan animates, lists categories with sizes, "OK" frees 0 KB with a dry message; reduced motion respected. | §P1-08 |
-| P1-G | **P1 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: every wallpaper (grid), Display Properties tabs, each screensaver, a balloon, the dial-up dialog, Disk Cleanup. | P1-01…P1-08 | in progress | sonnet | agent | — | e2e | — | verify + e2e pass; screenshots in `docs/review/P1/`; `docs/review/P1.md` written. | §Gate |
+| P1-G | **P1 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: every wallpaper (grid), Display Properties tabs, each screensaver, a balloon, the dial-up dialog, Disk Cleanup. | P1-01…P1-08 | done | sonnet | agent | — | e2e | — | verify + e2e pass; screenshots in `docs/review/P1/`; `docs/review/P1.md` written. | §Gate |
 
 ## P2 — Living world
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P2-01 | **Day-aware Messenger** — `onDay` trigger, per-day contact presence, `unlock` lines; engine, lint, playthrough and docs updated. | P1-G | blocked | opus | agent | — | fast | — | onDay fires once per script when the day is reached; presence applies once per day; unlock emits `world:unlock`; content-format doc updated. | §P2-01 |
+| P2-01 | **Day-aware Messenger** — `onDay` trigger, per-day contact presence, `unlock` lines; engine, lint, playthrough and docs updated. | P1-G | in progress | opus | agent | — | fast | — | onDay fires once per script when the day is reached; presence applies once per day; unlock emits `world:unlock`; content-format doc updated. | §P2-01 |
 | P2-02 | **Days 2–5: Jess and Kayla** — day scripts and presence that continue their storylines to a day-5 resolution. | P2-01 | blocked | opus | agent | — | — | — | Lint + playthrough pass; ≥ 1 script per day 2–5 per contact; presence changes daily; voice consistent. | §P2-02 |
 | P2-03 | **Days 2–5: Dex and Theo** — same as P2-02 for Dex and Theo. | P2-01 | blocked | opus | agent | — | — | — | Same as P2-02. | §P2-02 |
 | P2-04 | **Days 2–5: Marco and Pia** — same as P2-02; Pia's day-5 script unlocks the "Pony Paradise" wallpaper. | P2-01 | blocked | opus | agent | — | — | — | Same as P2-02, plus the unlock line works. | §P2-02 |

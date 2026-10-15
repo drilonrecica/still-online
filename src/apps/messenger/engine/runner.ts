@@ -1,7 +1,9 @@
 // Script playback: triggers, the per-contact queue, line delivery and contact sign-in.
 import type {
   ActiveScript,
+  Contact,
   ContactId,
+  DayPresence,
   ContactLine,
   Script,
   ScriptNode,
@@ -21,6 +23,15 @@ interface Running {
 
 export type Runner = ReturnType<typeof createRunner>;
 
+/** The highest `days` entry with `key <= day`, or none. */
+export function presenceFor(contact: Contact, day: number): DayPresence {
+  let best = 0;
+  for (const key of Object.keys(contact.days ?? {}).map(Number)) {
+    if (key <= day && key > best) best = key;
+  }
+  return contact.days?.[best] ?? {};
+}
+
 export function createRunner(ctx: EngineContext) {
   const {
     bus,
@@ -35,6 +46,8 @@ export function createRunner(ctx: EngineContext) {
     isFocused,
     scheduler,
     after,
+    getDay,
+    onUnlock,
   } = ctx;
 
   const running = (id: ContactId): Running | null => {
@@ -228,6 +241,7 @@ export function createRunner(ctx: EngineContext) {
     if (personalMessage !== undefined) {
       bus.emit('personalMessageChange', { contactId: id, personalMessage });
     }
+    if (line.unlock !== undefined) onUnlock(line.unlock);
     playNext(id);
   };
 
@@ -237,11 +251,21 @@ export function createRunner(ctx: EngineContext) {
     const content = contentOf(id);
     if (!content) return;
     const p = progressOf(id);
+    const day = getDay();
+    const presence =
+      p.presenceDay < day ? presenceFor(content.contact, day) : {};
     const status =
-      p.everSignedIn && p.status !== 'offline'
+      presence.status ??
+      (p.everSignedIn && p.status !== 'offline'
         ? p.status
-        : content.contact.initialStatus;
-    patchContact(id, (c) => ({ ...c, everSignedIn: true, status }));
+        : content.contact.initialStatus);
+    patchContact(id, (c) => ({
+      ...c,
+      everSignedIn: true,
+      status,
+      personalMessage: presence.personalMessage ?? c.personalMessage,
+      presenceDay: Math.max(c.presenceDay, day),
+    }));
     setFlag('online', id, true);
     bus.emit('contactSignedIn', {
       contactId: id,

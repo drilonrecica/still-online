@@ -201,4 +201,47 @@ describe('content lint: catches mistakes', () => {
       'mika: script "now" needs minutes > 0',
     ]);
   });
+
+  it('day triggers, day presence and unknown unlocks', () => {
+    const base = script({
+      a: { lines: [{ delayMs: 0, unlock: 'ponies' }], end: true },
+    });
+    const day = (id: string, d: number, repeat?: boolean): Script => ({
+      ...base,
+      id,
+      trigger: { type: 'onDay', day: d },
+      repeat,
+    });
+    const gift = script({
+      a: { lines: [{ delayMs: 0, unlock: 'free-money' }], end: true },
+    });
+    expect(
+      lintContact({
+        ...exampleContact,
+        contact: {
+          ...exampleContact.contact,
+          days: {
+            1: { status: 'busy' },
+            2: { personalMessage: 'day 2 :)' },
+            3: { personalMessage: 'hi {name}' },
+          },
+        },
+        scripts: [
+          base,
+          day('ok', 2),
+          day('first', 1),
+          day('half', 2.5),
+          day('again', 3, true),
+          { ...gift, id: 'gift' },
+        ],
+      }),
+    ).toEqual([
+      'mika: days key "1" must be a whole day >= 2',
+      'mika.days.3.personalMessage: unknown placeholder {name}',
+      'mika: script "first" day must be a whole day >= 2',
+      'mika: script "half" day must be a whole day >= 2',
+      'mika: script "again" onDay can\'t repeat',
+      'mika: script "gift" node "a" unlocks unknown "free-money"',
+    ]);
+  });
 });

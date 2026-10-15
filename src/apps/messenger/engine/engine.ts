@@ -30,7 +30,7 @@ export function createConversationEngine(
 ): ConversationEngine {
   const ctx = createEngineContext(options);
   const { contents, store, scheduler, bus, data, contentOf } = ctx;
-  const { patchContact, progressOf, visit, after, clearTimers } = ctx;
+  const { patchContact, progressOf, visit, after, clearTimers, getDay } = ctx;
   const {
     running,
     fire,
@@ -45,8 +45,14 @@ export function createConversationEngine(
     signIn() {
       if (data().signedIn) return;
       store.setState({ signedIn: true, online: {}, typing: {} });
+      const day = getDay();
       for (const { contact, scripts } of contents) {
         patchContact(contact.id, (c) => reconcileContact(c, scripts));
+        // Queued before the contact signs in; `fire` skips scripts that already ran.
+        for (const script of scripts) {
+          const t = script.trigger;
+          if (t.type === 'onDay' && t.day <= day) fire(contact.id, script, {});
+        }
         if (contact.signInAfterMs <= 0) contactSignIn(contact.id);
         else after(contact.signInAfterMs, () => contactSignIn(contact.id));
         for (const script of scripts) {

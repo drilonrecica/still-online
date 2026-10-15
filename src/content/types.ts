@@ -37,6 +37,17 @@ export interface Contact {
   personalMessage: string;
   /** Delay after the player signs in to Messenger. 0 = already online when the list appears. */
   signInAfterMs: number;
+  /**
+   * Presence per world day (keys ≥ 2; day 1 is `initialStatus`/`personalMessage`). On the
+   * contact's first sign-in of a new day, the highest entry with `key <= day` is applied once;
+   * script changes later that day win. From day 6 on, the day-5 entry stays.
+   */
+  days?: Partial<Record<number, DayPresence>>;
+}
+
+export interface DayPresence {
+  status?: ContactStatus;
+  personalMessage?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -52,7 +63,13 @@ export type NodeId = string;
  */
 export const TEXT_PLACEHOLDERS = ['{name}', '{artist}', '{title}'] as const;
 
-/** One step by the contact. Applied in this order: text, nudge, statusChange, personalMessageChange. */
+/** World unlock ids content may grant (`world.unlock`); the lint rejects others. */
+export const CONTENT_UNLOCKS = ['ponies'] as const;
+
+/**
+ * One step by the contact. Applied in this order: text, nudge, statusChange,
+ * personalMessageChange, unlock.
+ */
 export interface ContactLine {
   /** Message text. Omit for a pure action (nudge / status / personal message). */
   text?: string;
@@ -61,6 +78,8 @@ export interface ContactLine {
   nudge?: true;
   statusChange?: ContactStatus;
   personalMessageChange?: string;
+  /** World unlock id granted when the line is delivered (one of `CONTENT_UNLOCKS`). */
+  unlock?: string;
 }
 
 export interface Choice {
@@ -96,7 +115,12 @@ export type Trigger =
    * Re-armed from each Messenger sign-in when the target already ran, since end times
    * aren't persisted.
    */
-  | { type: 'afterScript'; scriptId: ScriptId; minutes: number };
+  | { type: 'afterScript'; scriptId: ScriptId; minutes: number }
+  /**
+   * On Messenger sign-in once the world day is `day` or later (a missed day still fires).
+   * Runs once ever; queued until the contact signs in, after their `onSignIn` scripts.
+   */
+  | { type: 'onDay'; day: number };
 
 export type TriggerType = Trigger['type'];
 
@@ -174,6 +198,8 @@ export interface ContactProgress {
   transcript: TranscriptEntry[];
   /** Messages received while the chat window was closed or unfocused. */
   unread: number;
+  /** The world day whose `Contact.days` presence was last applied (default 1). */
+  presenceDay: number;
 }
 
 export interface PlayerProgress {

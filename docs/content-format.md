@@ -14,6 +14,7 @@ Messenger content is authored as typed TS modules. The types are in `src/content
 | `initialStatus`   | The status the contact signs in with. `offline` means "appear offline" (see below).                        |
 | `personalMessage` | Shown in grey italics under the name.                                                                      |
 | `signInAfterMs`   | Delay after the player signs in to Messenger. `0` = already online when the list appears.                  |
+| `days?`           | Presence per world day: `{ [day]: { status?, personalMessage? } }`, keys ≥ 2. See "Days" below.            |
 
 **Sign-in.** Every contact is offline when the player signs in to Messenger. At `signInAfterMs` the contact signs in with `initialStatus` and gets a "has just signed in" toast. With `0` the contact is already in the list, so there's no toast. A contact that signs in with `offline` is _signed in but appearing offline_: they stay in the Offline group with no toast, but their triggers are armed. When a script later changes their status to something other than `offline`, that counts as signing in for the toast.
 
@@ -26,11 +27,11 @@ A **node** has `lines` (contact lines, played in order, may be empty) and exactl
 - `choices`: 2–3 `{ text, label?, next }`. `text` is what the player sends. `label` is an optional shorter button caption. `next` is a node id in the same script.
 - `end: true`: the script ends once the lines are delivered.
 
-A **contact line** is `{ text?, delayMs, nudge?, statusChange?, personalMessageChange? }`:
+A **contact line** is `{ text?, delayMs, nudge?, statusChange?, personalMessageChange?, unlock? }`:
 
 1. Wait `delayMs`. It starts when the previous line is delivered, or when the node is entered.
 2. If the line has `text`: show the typing indicator for `min(text.length × 40ms, 2500ms)`, then deliver the message.
-3. Then apply the line's actions in this order: `nudge` (shake + sound + "… just sent you a nudge!"), `statusChange`, `personalMessageChange`.
+3. Then apply the line's actions in this order: `nudge` (shake + sound + "… just sent you a nudge!"), `statusChange`, `personalMessageChange`, `unlock` (grants a world unlock, e.g. `'ponies'` shows the hidden "Pony Paradise" wallpaper; ids are listed in `CONTENT_UNLOCKS`).
 
 A line without `text` is a pure action and has no typing indicator. `statusChange: 'offline'` signs the contact out. Their triggers stay armed and fire once they sign back in.
 
@@ -51,6 +52,7 @@ They are resolved when the line is delivered. The transcript stores the resolved
 | `{ type: 'afterMinutes', minutes }`          | `minutes` after the player signed in to Messenger, counted per page session (a reload restarts it).                                                                                                                      |
 | `{ type: 'onNowPlaying', trackId? }`         | On `amplifier:trackChanged`: for that `trackId` only, or for any track if it's omitted.                                                                                                                                  |
 | `{ type: 'onPlayerNudge' }`                  | When the player nudges this contact.                                                                                                                                                                                     |
+| `{ type: 'onDay', day }`                     | On Messenger sign-in once the world day is `day` or later (a missed day still fires). Queued until the contact signs in, so it starts after their `onSignIn` scripts. Runs once ever; `repeat` isn't allowed.            |
 | `{ type: 'afterScript', scriptId, minutes }` | `minutes` after another script **of the same contact** ends: a follow-up conversation. Chains are fine (a follow-up of a follow-up). End times aren't persisted, so after a reload the wait counts from the new sign-in. |
 
 Rules:
@@ -59,13 +61,20 @@ Rules:
 - **One script per contact at a time.** A trigger that fires while another script of the same contact is active is added to that contact's `queue` (FIFO), and starts when the active script ends. A script waiting for a player choice stays active. Scripts of different contacts run in parallel.
 - **Runs.** By default a script runs at most once ever. With `repeat: true` it can run again after it ends. An `onNowPlaying` script still runs at most once per `trackId`. A trigger for a script that is already active or queued is ignored.
 
+## Days
+
+The world day (`src/os/world.ts`) starts at 1 and moves forward by one on a new real date or after a shutdown. Story content covers days 1–5; from day 6 on friends keep their day-5 presence.
+
+- **Day scripts** use the `onDay` trigger. Each day's conversation is its own script. Say "today", "yesterday" or "Day 3", never a weekday.
+- **Presence.** Day 1 is the contact's `initialStatus` and `personalMessage`. On the contact's first sign-in of a later day, the engine applies the highest `days` entry with `key <= day` (an unset `status` keeps the usual sign-in status) and stores the day in `presenceDay`. It happens once per day, so a `statusChange` or `personalMessageChange` from a script later that day stays. Presence messages don't resolve placeholders.
+
 ## Progress (persisted)
 
 `MessengerProgress = { player, contacts }`. Only data is stored, never content, which is always read from the modules.
 
 - `player`: `status`, `personalMessage`, `showNowPlaying` (the "Show what I'm listening to" toggle).
 - `contacts[id]`:
-  - `everSignedIn`, the current `status` and `personalMessage` (as changed by scripts), and `unread`.
+  - `everSignedIn`, the current `status` and `personalMessage` (as changed by scripts and day presence), `unread`, and `presenceDay` (the last day whose presence was applied, default 1).
   - `active`: `{ scriptId, nodeId, lineIndex, awaitingChoice, context }`. `lineIndex` is the next undelivered line. `context` holds the trigger's values for placeholders.
   - `queue`: `QueuedTrigger[]`.
   - `scripts[scriptId]`: `{ runs, visited, trackIds }`.
@@ -75,7 +84,7 @@ Rules:
 
 ## Engine (M2-02)
 
-`createConversationEngine({ contents, store, scheduler?, getPlayerName?, isChatFocused? })` in `src/apps/messenger/engine/` is plain TS. Time comes from the injected `Scheduler` (`setTimeout`/`clearTimeout`/`now`); the default uses the browser timers, so Vitest fake timers work.
+`createConversationEngine({ contents, store, scheduler?, getPlayerName?, isChatFocused?, getDay?, onUnlock? })` in `src/apps/messenger/engine/` is plain TS. Time comes from the injected `Scheduler` (`setTimeout`/`clearTimeout`/`now`); the default uses the browser timers, so Vitest fake timers work.
 
 - **Calls:** `signIn()`, `signOut()`, `choose(contactId, index)`, `getChoices(contactId)`, `playerNudge(contactId)`, `nowPlaying({ trackId, artist, title })`, `on/off(event, fn)`, `dispose()`. The engine doesn't listen to the OS event bus: the Messenger UI forwards `amplifier:trackChanged` to `nowPlaying` (M2-07). It doesn't rate-limit nudges either; the chat window does (M2-04).
 - **Events:** `contactSignedIn { status, toast }`, `contactSignedOut`, `typingStart`, `typingStop`, `message { from, text }`, `nudge { from }`, `statusChange`, `personalMessageChange`, `choices`, `scriptStarted`, `scriptEnded`, `signedOut`.
@@ -83,6 +92,7 @@ Rules:
 - **Returning contacts** sign in with their last status. If that status is `offline` (signed out by a script), they use `initialStatus` instead.
 - **Scripts keep playing** after a `statusChange: 'offline'`, so a later line can sign the contact back in.
 - **Unread** counts contact messages that arrive while `isChatFocused(id)` is false.
+- **World:** `getDay()` (default `() => 1`) is read on sign-in for `onDay` and presence; `onUnlock(id)` is called when an `unlock` line is delivered. The runtime (`src/apps/messenger/runtime.ts`) wires them to `useWorldStore` (`day`, `unlock(id)`, which emits `world:unlock` once per id).
 
 ## Example
 
@@ -156,4 +166,4 @@ export const mika: ContactContent = {
 
 ## Content lint
 
-`src/content/lint.ts` checks what the types can't: `start`/`next` ids exist, every node is reachable, every node can reach an `end`, script ids are unique, `afterScript` follows an existing other script of the same contact with `minutes > 0`, there are no real-looking emails or URLs, no real product names or post-2007 terms, and `{artist}`/`{title}` appear only in `onNowPlaying` scripts. `src/content/contacts/contacts.test.ts` runs it on every shipped contact.
+`src/content/lint.ts` checks what the types can't: `start`/`next` ids exist, every node is reachable, every node can reach an `end`, script ids are unique, `afterScript` follows an existing other script of the same contact with `minutes > 0`, there are no real-looking emails or URLs, no real product names or post-2007 terms, `{artist}`/`{title}` appear only in `onNowPlaying` scripts, `onDay` days and `days` keys are whole days ≥ 2, `onDay` scripts don't `repeat`, `days` personal messages have no placeholders, and every `unlock` is in `CONTENT_UNLOCKS`. `src/content/contacts/contacts.test.ts` runs it on every shipped contact.

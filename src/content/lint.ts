@@ -1,6 +1,7 @@
 // Content lint: checks authored contacts and scripts for mistakes the type system can't catch.
 // Each check returns human-readable problems; an empty list means the content is fine.
 import {
+  CONTENT_UNLOCKS,
   TEXT_PLACEHOLDERS,
   type ContactContent,
   type Script,
@@ -153,6 +154,52 @@ export function lintContactText(content: ContactContent): string[] {
   return problems;
 }
 
+const isDay = (n: number) => Number.isInteger(n) && n >= 2;
+
+/**
+ * Day checks: `onDay` days and `days` keys are whole days ≥ 2, `onDay` isn't `repeat`, and
+ * presence messages have no placeholders (they aren't resolved, like `personalMessage`).
+ */
+function lintDays(content: ContactContent): string[] {
+  const id = content.contact.id;
+  const problems: string[] = [];
+  for (const [key, presence] of Object.entries(content.contact.days ?? {})) {
+    if (!isDay(Number(key)))
+      problems.push(`${id}: days key "${key}" must be a whole day >= 2`);
+    const pm = presence?.personalMessage;
+    if (pm !== undefined)
+      problems.push(
+        ...lintText(pm, `${id}.days.${key}.personalMessage`, {
+          placeholders: [],
+        }).filter((p) => p.includes('placeholder')),
+      );
+  }
+  for (const s of content.scripts) {
+    const t = s.trigger;
+    if (t.type !== 'onDay') continue;
+    if (!isDay(t.day))
+      problems.push(`${id}: script "${s.id}" day must be a whole day >= 2`);
+    if (s.repeat) problems.push(`${id}: script "${s.id}" onDay can't repeat`);
+  }
+  return problems;
+}
+
+/** Every `unlock` on a line is a known id. */
+function lintUnlocks(content: ContactContent): string[] {
+  const known: readonly string[] = CONTENT_UNLOCKS;
+  return content.scripts.flatMap((s) =>
+    Object.entries(s.nodes).flatMap(([nodeId, node]) =>
+      node.lines.flatMap((line) =>
+        line.unlock === undefined || known.includes(line.unlock)
+          ? []
+          : [
+              `${content.contact.id}: script "${s.id}" node "${nodeId}" unlocks unknown "${line.unlock}"`,
+            ],
+      ),
+    ),
+  );
+}
+
 /** All checks for one contact, including unique script ids. */
 export function lintContact(content: ContactContent): string[] {
   const ids = content.scripts.map((s) => s.id);
@@ -169,6 +216,8 @@ export function lintContact(content: ContactContent): string[] {
   return [
     ...dupes.map((s) => `${content.contact.id}: duplicate script id "${s}"`),
     ...followUps,
+    ...lintDays(content),
+    ...lintUnlocks(content),
     ...content.scripts.flatMap((s) =>
       lintScriptGraph(s).map((p) => `${content.contact.id}: ${p}`),
     ),
