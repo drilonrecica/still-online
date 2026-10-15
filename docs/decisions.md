@@ -216,7 +216,7 @@
 - P2-05 (v0.3): mail swaps — Dex "called me maam" → „hat zweimal „Sie" zu mir gesagt", the chain-letter girls → jacqueline/vanessa, winter formal → Schulparty, science fair → Projektwoche, ringtones per SMS „im Spar-Abo", threat names keep the pattern („Trojaner.Pferd.Ein.Echtes.Pferd"); Herr Dalton's grade mail gives „2+" and the Golgi-Apparat-as-post-office callback
 - P2-06: `SiteDefinition` holds `meta(locale)` (from each content module's `SITE_META`) instead of English `title`/`description`/`keywords`; `resolve()` returns the matched page `key` and `pageTitle(resolved, locale)` names it — one source for window titles and Searchly, typed per locale.
 - P2-06: split rule for site text: anything in a site's own voice (prose, CometGirl's errors, Roxi's "comments closed") lives in the content modules; generic chrome (buttons, labels, nav, table headers, aria) lives in the catalog under `sites.<site>`. about.example and Searchly got content modules (`src/content/sites/about.ts`, `searchly.ts`).
-- P2-06: German gossip tags are German (`mode`, `konzerte`, `zoff`); celeb tags (names) stay identical. A `/tag?t=fashion` URL opened in English shows "no posts" after a switch to German — acceptable for a fan blog.
+- P2-06: German gossip tags are German (`mode`, `konzerte`, `zoff`); celeb tags (names) stay identical. ~~A `/tag?t=fashion` URL opened in English shows "no posts" after a switch to German — acceptable for a fan blog.~~ Superseded in v0.3.1, see below.
 - P2-06: Celeb Gossip's HOT or NOT becomes „TOP oder FLOP" in German (what German magazines said in 2007); the poll ids and day gating are unchanged, so saved votes still apply.
 - P2-06: the tinfoil hit counter uses the German thousands dot in German (`004.203`); guestbook validation returns `noName`/`noMessage` and the page shows CometGirl's text in the current language.
 - P2-06: German Westfield-Gymnasium swaps US school items for German ones (Elternbeirat, Kuchenbasar with Marmorkuchen instead of brownies, Projektwoche, Mensa menu with Fischstäbchen/Kroketten, euros); Frau Fennimore teaches Deutsch (the native-language subject), emails unchanged.
@@ -228,3 +228,9 @@
 - P3-G: Messenger's system lines for incoming nudges and winks say „Sie" („… hat Ihnen einen Nudge geschickt!"), like the outgoing ones; they are system UI, not a friend talking.
 - P3-G: game help text (Hühnerjagd, Sternen-Flipper high-score prompts) keeps „du", the way German arcade games of the time talked to the player; Minen and all other system UI stay „Sie".
 - P3-G: unit tests that open a lazy-loaded app through `WindowLayer` import the app module in `beforeAll`, so a cold transform can't outlast `findBy*`'s 1 s default.
+
+## v0.3.1
+
+- Login: there is no default player name. Log On waits for a non-blank name; a saved `'Player'`/`'Spieler'` (the old default) migrates to `null`, so that player is asked once. A player who really types "Player" keeps it until the next reload, then is asked again (accepted edge case).
+- Login: the language choice is a radio group of flag buttons in the centre of the screen (UK flag for English, German flag for Deutsch). The tray badge and Regional and Language Options show the flag next to the name.
+- Gossip tags are language-neutral ids (the English words); each language labels them in `GOSSIP_TAG_LABELS`. `/tag?t=` URLs work in both languages, and v0.3 German tag URLs (`/tag?t=zoff`) are mapped back to their ids.

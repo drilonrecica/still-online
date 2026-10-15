@@ -64,6 +64,20 @@ export const GOSSIP_TEXT = {
   pollNag: 'erst eins auswählen!!!',
 };
 
+/** How each tag id reads in German; ids missing here (names, ziggy, omg) read as themselves. */
+export const GOSSIP_TAG_LABELS: Readonly<Record<string, string>> = {
+  fashion: 'mode',
+  spotted: 'gesichtet',
+  concerts: 'konzerte',
+  hair: 'haare',
+  'reality tv': 'reality-tv',
+  animals: 'tiere',
+  movies: 'filme',
+  ouch: 'autsch',
+  feud: 'zoff',
+  rumors: 'gerüchte',
+};
+
 export const CELEBS: readonly Celeb[] = [
   {
     tag: 'starla vance',
@@ -145,7 +159,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
     day: 1,
     title: 'GESICHTET: Starla Vance kauft VIERZIG Haargummis?!',
     body: 'OMG!!! eine quelle (mein cousin, der im einkaufszentrum jobbt) sagt, Starla Vance war gestern bei Haar-Himmel und hat 40 haargummis gekauft. VIERZIG!!!\n\nis das ein comeback??? sind haargummis wieder in??? muss ich meine aus der badezimmerschublade kramen??? Starlas leute sagen, sie „mag die halt einfach“. klar, Starla. KLAR.',
-    tags: ['starla vance', 'mode', 'gesichtet'],
+    tags: ['starla vance', 'fashion', 'spotted'],
     photo: {
       scene: 'party',
       seed: 9101,
@@ -168,7 +182,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
     day: 1,
     title: 'Tinfoil Comets: Riverside Arena in 11 Minuten AUSVERKAUFT!!!',
     body: 'das konzert der Tinfoil Comets in der Riverside Arena is AUSVERKAUFT. die karten waren nach 11 minuten weg. ein radiosender hat die letzten 2 verlost und die gewinnerin hat wohl so laut geschrien, dass dem moderator die kopfhörer runtergefallen sind.\n\ndrummer Ziggy Voltz verspricht „den größten drumstick-wirbel meiner karriere“. Buzz sagt, er bastelt sich extra nen neuen alu-hut. „einen glänzenderen.“ wir bleiben dran!!!',
-    tags: ['tinfoil comets', 'konzerte', 'ziggy'],
+    tags: ['tinfoil comets', 'concerts', 'ziggy'],
     comments: [
       {
         user: 'comet_fan_4ever',
@@ -188,7 +202,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
     title:
       'SCHOCK! Kyle von 4Ever Boulevard schneidet seine Strähnchen AB. Fans: „uns gehts nicht gut“',
     body: 'ein trauriger tag für alle strähnchen-fans. Kyle von 4Ever Boulevard (der stille) kam mit ganz normalen braunen haaren zur autogrammstunde. EINFACH BRAUN.\n\nfans haben in ihre passenden westen geweint. Kyle meinte „es war zeit“. zeit für WAS, Kyle. die band sagt, die neue single kommt trotzdem raus, aber mal ehrlich, wie soll man in so ner zeit an musik denken',
-    tags: ['4ever boulevard', 'haare', 'omg'],
+    tags: ['4ever boulevard', 'hair', 'omg'],
     photo: {
       scene: 'party',
       seed: 9102,
@@ -209,7 +223,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
     title:
       'Bianca Goldcrest melkt auf der Silver Spoon Ranch eine Kuh. Die Kuh: „unbeeindruckt“',
     body: 'in der neuen folge Silver Spoon Ranch musste hotel-erbin Bianca Goldcrest eine kuh namens Berta melken. in weißen stiefeln. ihr könnt euch denken, wie das ausging.\n\nBianca: „das is SO nich ranch“. Berta: kein kommentar. Duchess, der chihuahua, hat von nem winzigen heuballen aus zugeguckt, mit nem winzigen cowboyhut. ehrlich, Duchess is der wahre star der sendung',
-    tags: ['bianca goldcrest', 'reality-tv', 'tiere'],
+    tags: ['bianca goldcrest', 'reality tv', 'animals'],
     comments: [
       {
         user: 'pia (L) ponys (L)',
@@ -228,7 +242,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
     title:
       'Rex Hammerton „macht seine Stunts selbst“ (er ist über einen Bordstein gestolpert)',
     body: 'actionheld Rex Hammerton war am set von Exploding Point 3: Detonation Day, als er auf dem weg zu seinem wohnwagen über nen bordstein gestolpert is. nen BORDSTEIN!!! der mann springt beruflich aus hubschraubern (im film).\n\nsein sprecher sagt, das war „eine geplante stuntprobe“. Rex is danach zum buffet gehumpelt und hat gesagt „das gibt nen krater“. es gab keinen krater. es gab ne kleine schramme',
-    tags: ['rex hammerton', 'filme', 'autsch'],
+    tags: ['rex hammerton', 'movies', 'ouch'],
     photo: {
       scene: 'trip',
       seed: 9103,
@@ -251,7 +265,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
     day: 3,
     title: 'ZOFF-ALARM: Starla Vance + Dakota Sky im GLEICHEN KLEID',
     body: 'jetzt is es passiert. bei den Teen Wave Awards kamen pop-prinzessin Starla Vance und Maple-Bay-star Dakota Sky im EXAKT gleichen glitzernden lila kleid. gleiches kleid. gleiche schuhe. gleicher entsetzter blick.\n\nsie standen an entgegengesetzten enden vom roten teppich und haben sich KEIN EINZIGES MAL angeguckt. eine quelle sagt, Dakota „wusste es“ und hat es „mit absicht“ angezogen. Starlas leute sagen „kein kommentar“, und das heißt JA KOMMENTAR. leute, das is DER zoff des jahres',
-    tags: ['starla vance', 'dakota sky', 'zoff', 'mode'],
+    tags: ['starla vance', 'dakota sky', 'feud', 'fashion'],
     photo: {
       scene: 'party',
       seed: 9104,
@@ -276,7 +290,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
     title:
       'Tinfoil Comets HEUTE ABEND: Ist der Hut von Buzz für eine MILLION Euro versichert?',
     body: 'heute is es soweit!!! die Tinfoil Comets spielen in der ausverkauften Riverside Arena und die gerüchteküche KOCHT. quellen sagen, gitarrist Buzz Kowalczyk hat seinen neuen alu-hut für eine million euro versichert. der hut is aus alufolie. der hat so 2 € gekostet.\n\naußerdem hat Ziggy die ganze woche „seinen wurf geübt“ und die fans in der ersten reihe basteln schilder. wenn du hingehst: ohrstöpsel mitnehmen. und vielleicht nen helm',
-    tags: ['tinfoil comets', 'konzerte', 'gerüchte'],
+    tags: ['tinfoil comets', 'concerts', 'rumors'],
     comments: [
       {
         user: 'comet_fan_4ever',
@@ -297,7 +311,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
     day: 4,
     title: 'WAHNSINN: Starla + Dakota sind... beste Freundinnen???',
     body: 'stopp, alles anhalten. erinnert ihr euch an den kleider-zoff??? Starla Vance und Dakota Sky wurden ZUSAMMEN beim eisessen gesichtet. lachend. mit geteilten streuseln. mit PASSENDEN bettelarmbändern.\n\nes stellt sich raus, die sind befreundet seit ner cornflakes-werbung, die sie mit 9 gedreht haben (Dakota war die meerjungfrau, Starla der singende löffel). die kleider-sache war „ein totaler zufall“ und sie finden es „jetzt voll lustig“. ich weiß nich mehr, was ich glauben soll. ich hatte schon nen ganzen beitrag fertig',
-    tags: ['starla vance', 'dakota sky', 'zoff', 'gesichtet'],
+    tags: ['starla vance', 'dakota sky', 'feud', 'spotted'],
     comments: [
       {
         user: '~*Kayla*~ <3',
@@ -316,7 +330,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
     title:
       'EXKLUSIV: Ziggys Drumstick trifft Fan in der ersten Reihe MITTEN INS GESICHT. Fan: „noch nie so glücklich“',
     body: 'das konzert der Tinfoil Comets in der Riverside Arena war laut allen EPISCH. Nova hat den letzten ton von Space Girl 24 sekunden gehalten (neuer rekord). Buzz hat den hut die ganze zeit aufbehalten. Mo hat sich EINMAL umgedreht.\n\naber DER moment, über den alle reden: Ziggy hat den größten drumstick-wirbel aller zeiten gemacht und den stick dann in die erste reihe geworfen, wo er nem fan direkt an die stirn geknallt is. zeugen sagen, sie hat ihn beim abprallen gefangen, hochgehalten und 2 volle minuten geschrien. legende. ziggy, falls du das liest: nächstes mal tiefer zielen',
-    tags: ['tinfoil comets', 'konzerte', 'ziggy', 'omg'],
+    tags: ['tinfoil comets', 'concerts', 'ziggy', 'omg'],
     photo: {
       scene: 'concert',
       seed: 9105,
@@ -346,7 +360,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
     day: 5,
     title: 'Bianca Goldcrests Chihuahua Duchess bringt ein PARFÜM raus',
     body: 'news, nach denen keiner gefragt hat: Duchess, der chihuahua von der Silver Spoon Ranch, hat jetzt ein eigenes parfüm. es heißt Eau de Duchess und kommt in ner flasche, die aussieht wie ein winziger hundeknochen.\n\nBianca sagt, es riecht „wie ein wellness-tag“. leute, die dran gerochen haben, sagen, es riecht „wie ein hund nach nem wellness-tag“. kostet 80 €. Duchess war für einen kommentar nicht zu erreichen (sie hat in ner handtasche geschlafen)',
-    tags: ['bianca goldcrest', 'tiere', 'omg'],
+    tags: ['bianca goldcrest', 'animals', 'omg'],
     photo: {
       scene: 'pet',
       seed: 9106,

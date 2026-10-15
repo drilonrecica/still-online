@@ -47,6 +47,17 @@ describe('full German modules', () => {
     },
   );
 
+  it('gossip posts use the same tag ids in every language, with a German label for each', () => {
+    const tags = (posts: readonly { tags: readonly string[] }[]) =>
+      posts.map((p) => p.tags);
+    const enSite = en.sites['celebgossip07.example'];
+    const deSite = de.sites['celebgossip07.example'];
+    expect(tags(deSite.GOSSIP_POSTS)).toEqual(tags(enSite.GOSSIP_POSTS));
+    const ids = new Set(enSite.GOSSIP_POSTS.flatMap((p) => p.tags));
+    for (const id of Object.keys(deSite.GOSSIP_TAG_LABELS))
+      expect(ids).toContain(id);
+  });
+
   it('balloons and tips have the same exports as English', () => {
     expect(moduleParityProblems(en.balloons, de.balloons, 'balloons')).toEqual(
       [],

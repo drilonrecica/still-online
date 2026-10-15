@@ -7,16 +7,20 @@ import { useWorldStore } from '@/os/world';
 import { upToDay } from '../daily';
 import styles from './CelebGossip.module.css';
 import { Layout } from './Layout';
-import { postsWithTag } from './logic';
+import { postsWithTag, tagFromQuery, tagLabel } from './logic';
 import { PostCard } from './PostCard';
 import { TagCloud } from './TagCloud';
 
 export default function Tag({ query }: SitePageProps) {
-  const { GOSSIP_POSTS, GOSSIP_TEXT: T } = useSiteText(GOSSIP_HOST);
+  const {
+    GOSSIP_POSTS,
+    GOSSIP_TAG_LABELS,
+    GOSSIP_TEXT: T,
+  } = useSiteText(GOSSIP_HOST);
   const day = useWorldStore((s) => s.day);
   const t = useT();
   const posts = upToDay(GOSSIP_POSTS, day);
-  const tag = query.get('t')?.trim().toLowerCase() ?? '';
+  const tag = tagFromQuery(query.get('t') ?? '');
   if (!tag) {
     return (
       <Layout>
@@ -29,7 +33,9 @@ export default function Tag({ query }: SitePageProps) {
   return (
     <Layout>
       <h2 className={styles.heading}>
-        {t('sites.celebgossip07.tagged', { tag })}
+        {t('sites.celebgossip07.tagged', {
+          tag: tagLabel(tag, GOSSIP_TAG_LABELS),
+        })}
       </h2>
       {tagged.length === 0 && <p className={styles.empty}>{T.noTagPosts}</p>}
       {tagged.map((post) => (

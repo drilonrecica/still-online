@@ -8,7 +8,7 @@ import { postedLabel } from '../daily';
 import { useSiteText } from '../useSiteText';
 import { rich } from '../rich';
 import styles from './CelebGossip.module.css';
-import { postHref, tagHref } from './logic';
+import { postHref, tagHref, tagLabel } from './logic';
 
 export function PostCard({
   post,
@@ -20,7 +20,7 @@ export function PostCard({
   /** On the post page the title isn't a link and the comments show below. */
   full?: boolean;
 }) {
-  const { GOSSIP_TEXT: T } = useSiteText(GOSSIP_HOST);
+  const { GOSSIP_TEXT: T, GOSSIP_TAG_LABELS } = useSiteText(GOSSIP_HOST);
   const t = useT();
   return (
     <article className={styles.post} aria-label={post.title}>
@@ -56,7 +56,9 @@ export function PostCard({
         {post.tags.map((tag, i) => (
           <span key={tag}>
             {i > 0 && ', '}
-            <SiteLink href={tagHref(tag)}>{tag}</SiteLink>
+            <SiteLink href={tagHref(tag)}>
+              {tagLabel(tag, GOSSIP_TAG_LABELS)}
+            </SiteLink>
           </span>
         ))}
         {!full && (

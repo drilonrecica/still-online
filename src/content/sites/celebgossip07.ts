@@ -59,6 +59,23 @@ export const GOSSIP_TEXT = {
   pollNag: 'pick 1 first!!!',
 };
 
+/**
+ * Post `tags` are ids, the same in every language (they go into `/tag?t=` URLs). Each language
+ * labels the topic tags here; a tag missing here (names, ziggy, omg) reads as its id.
+ */
+export const GOSSIP_TAG_LABELS: Readonly<Record<string, string>> = {
+  fashion: 'fashion',
+  spotted: 'spotted',
+  concerts: 'concerts',
+  hair: 'hair',
+  'reality tv': 'reality tv',
+  animals: 'animals',
+  movies: 'movies',
+  ouch: 'ouch',
+  feud: 'feud',
+  rumors: 'rumors',
+};
+
 export interface Celeb {
   /** The tag used on posts about them. */
   tag: string;

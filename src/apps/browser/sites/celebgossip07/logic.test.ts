@@ -7,6 +7,7 @@ import {
   postHref,
   postsWithTag,
   tagCloud,
+  tagFromQuery,
   tagHref,
 } from './logic';
 
@@ -27,16 +28,24 @@ describe('tagCloud', () => {
       post('c', ['starla', 'feud']),
     ];
     expect(tagCloud(posts)).toEqual([
-      { tag: 'feud', count: 1, size: 1 },
-      { tag: 'omg', count: 1, size: 1 },
-      { tag: 'starla', count: 3, size: 5 },
+      { tag: 'feud', label: 'feud', count: 1, size: 1 },
+      { tag: 'omg', label: 'omg', count: 1, size: 1 },
+      { tag: 'starla', label: 'starla', count: 3, size: 5 },
+    ]);
+  });
+
+  it('shows labels, sorted by label, and keeps ids for the links', () => {
+    const posts = [post('a', ['feud', 'omg'])];
+    expect(tagCloud(posts, { feud: 'zoff' })).toEqual([
+      { tag: 'omg', label: 'omg', count: 1, size: 1 },
+      { tag: 'feud', label: 'zoff', count: 1, size: 1 },
     ]);
   });
 
   it('handles no posts and all-equal counts', () => {
     expect(tagCloud([])).toEqual([]);
     expect(tagCloud([post('a', ['x'])])).toEqual([
-      { tag: 'x', count: 1, size: 1 },
+      { tag: 'x', label: 'x', count: 1, size: 1 },
     ]);
   });
 });
@@ -51,6 +60,13 @@ describe('links and lookups', () => {
     const posts = [post('a', ['omg']), post('b', ['feud'])];
     expect(postsWithTag(posts, ' OMG ').map((p) => p.id)).toEqual(['a']);
     expect(postsWithTag(posts, 'nope')).toEqual([]);
+  });
+
+  it('maps v0.3 German tag URLs to ids', () => {
+    const posts = [post('a', ['feud']), post('b', ['reality tv'])];
+    expect(postsWithTag(posts, 'Zoff').map((p) => p.id)).toEqual(['a']);
+    expect(postsWithTag(posts, 'reality-tv').map((p) => p.id)).toEqual(['b']);
+    expect(tagFromQuery(' Gerüchte ')).toBe('rumors');
   });
 });
 
