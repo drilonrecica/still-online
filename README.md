@@ -2,7 +2,7 @@
 
 A browser-based nostalgia simulator recreating Windows XP and the social internet of 2007 through MSN, Netlog, MySpace, Winamp, and a living fictional desktop.
 
-> **v0.1 — playable MVP.** Play it now: **<https://drilonrecica.github.io/still-online/>**
+> **v0.2 — the living internet.** Play it now: **<https://drilonrecica.github.io/still-online/>**
 
 ![The still-online desktop](docs/screenshots/desktop.png)
 
@@ -14,21 +14,57 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 
 ## What's in it
 
-- **Windows XP–style desktop**: boot and login screens, start menu, taskbar, draggable and resizable windows, desktop icons and an original wallpaper
-- **Messenger**: an MSN-style client with six fictional friends, statuses, personal messages, emoticons, nudges, sign-in toasts and a "now playing" line. Conversations continue over time, and friends waiting for your reply are marked and flash in the taskbar
-- **Amplifier**: a Winamp-style music player with an original skin, playlist, seek and volume, shuffle/repeat and a visualizer
-- **Notepad** and the usual desktop furniture
+### Desktop
 
-| Messenger | Amplifier |
+- **Windows XP–style shell**: boot and login screens, Start menu with an All Programs flyout, taskbar and tray (mute, network, clock), draggable/resizable windows, desktop icons, synthesized system sounds
+- **A world that moves on**: the in-game day advances after a shutdown or a new real date, and each day brings new chats, mail, guestbook entries and profile comments (days 1–5 are scripted; later days keep the day-5 state)
+- **Display Properties**: eleven procedurally drawn wallpapers (nine homages and two easter eggs), Blue / Olive / Silver appearance, and screensavers (Pipes, Flying Panes, Marquee, My Pictures Slideshow)
+- **Explorer**: My Documents, My Pictures and My Music on a persistent virtual file system, plus a Recycle Bin you can restore from
+- **Balloon tips**, a dial-up connection dialog with a synthesized modem handshake, and a **Disk Cleanup** that scans forever and frees nothing
+- **Notepad** that opens and saves files in My Documents
+
+### Messenger
+
+- Six fictional friends with statuses, personal messages, emoticons (including your own, made from your pictures), nudges, winks, sign-in toasts and a "now playing" line
+- Conversations continue over days; friends react to the music you play and to your game scores
+- Away messages with a "while you were away" summary, a per-contact **Message History** and display pictures from My Pictures
+
+### Internet
+
+- **Web Explorer** with history, favorites and a fully fictional, local web: **Searchly** (search over every page), **Spaceport** profiles for each friend and you (Top 8, comment wall, profile song), a cursed 2003 fan page, a gossip blog, a school site and more
+- **Mail** with a new batch of messages per day: chain letters, spam, family and friends, with replies to what you send
+- **TuneMole**, a fake peer-to-peer client with slow, jittery downloads that lands tracks in My Music and the Amplifier
+
+### Creative
+
+- **Paint**: classic tools, undo, open/save to My Pictures, set as wallpaper or display picture
+- **Snapshot Booth**: webcam photos with filters, or a cartoon avatar if you have no camera. The webcam stays local: nothing is recorded or uploaded, and photos are saved only in this browser
+- **Amplifier**: five CC BY tracks, three skins, windowshade mode, a ten-band equalizer, an editable playlist and a visualizer
+
+### Games and extras
+
+- **Mines**, **Hen Hunt** (a shooting gallery), **Star Pinball** and **Desktop Wrecker** (smash the desktop, then Repair it), each with high scores
+- **Fluff** the desktop sheep and **Stapley**, an original stapler assistant with contextual tips
+
+| Desktop | Messenger |
 | --- | --- |
-| ![Messenger contact list](docs/screenshots/messenger.png) | ![Amplifier with its playlist](docs/screenshots/amplifier.png) |
+| ![The desktop](docs/screenshots/desktop.png) | ![Messenger contact list](docs/screenshots/messenger.png) |
+| **Amplifier** | **Web Explorer** |
+| ![Amplifier with its playlist](docs/screenshots/amplifier.png) | ![Web Explorer on Searchly](docs/screenshots/browser.png) |
+| **Spaceport** | **Paint** |
+| ![A Spaceport profile](docs/screenshots/spaceport.png) | ![Paint with a drawing](docs/screenshots/paint.png) |
+| **Mines** | **Hen Hunt** |
+| ![Mines mid-game](docs/screenshots/mines.png) | ![Hen Hunt mid-round](docs/screenshots/henhunt.png) |
 
 ## Planned
 
-These are not built yet:
+Not built yet:
 
-- **Netlog / MySpace–style profiles**: customizable profile pages, friend lists, comments and profile songs
-- **A living world**: fictional characters and events that change over time, so each visit feels a little different
+- Content beyond day 5: stories for later days currently repeat the day-5 state
+- More friends, sites and games
+- Mobile and touch layouts (small screens only get a notice)
+
+Ideas are welcome in the [issues](https://github.com/drilonrecica/still-online/issues).
 
 ## Run locally
 

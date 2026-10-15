@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { closeNudgeChats, logIn } from './helpers';
+import { closeNudgeChats, go, logIn, openFromStart } from './helpers';
 
 // Regenerates the README images: npx playwright test --grep @screenshots
 const DIR = 'docs/screenshots';
@@ -37,7 +37,7 @@ function toneWav(seconds: number): Buffer {
 }
 
 test('README screenshots @screenshots', async ({ page }) => {
-  test.setTimeout(90_000);
+  test.setTimeout(180_000);
 
   const wav = toneWav(60);
   await page.route('**/music/*.mp3', (route) =>
@@ -53,6 +53,11 @@ test('README screenshots @screenshots', async ({ page }) => {
   await logIn(page);
   await page.mouse.move(900, 700);
   await page.screenshot({ path: `${DIR}/desktop.png` });
+
+  // Stapley's greeting would sit over every later shot.
+  const stapley = page.locator('[data-assistant-balloon]');
+  await expect(stapley).toContainText("I'm Stapley", { timeout: 10_000 });
+  await stapley.getByRole('button', { name: 'No thanks' }).click();
 
   await page.getByRole('option', { name: 'Messenger' }).dblclick();
   await page.getByRole('button', { name: 'Sign in' }).click();
@@ -79,4 +84,62 @@ test('README screenshots @screenshots', async ({ page }) => {
   await expect(amp.getByTestId('playlist')).toBeVisible();
   await page.mouse.move(900, 700);
   await page.screenshot({ path: `${DIR}/amplifier.png` });
+
+  await amp.getByRole('button', { name: 'Close' }).click();
+
+  // Web Explorer on the Searchly homepage, then a Spaceport profile.
+  // Messenger's sign-in already dialed up, so the browser opens online.
+  await page.getByRole('option', { name: 'Web Explorer' }).dblclick();
+  const browser = page.getByRole('region', { name: /Web Explorer$/ });
+  await expect(
+    browser.getByRole('button', { name: 'Searchly Search' }),
+  ).toBeVisible();
+  await page.mouse.move(900, 700);
+  await page.waitForTimeout(500);
+  await page.screenshot({ path: `${DIR}/browser.png` });
+  await go(browser, 'spaceport.example/jess');
+  await page.mouse.move(900, 700);
+  await page.waitForTimeout(500);
+  await page.screenshot({ path: `${DIR}/spaceport.png` });
+  await browser.getByRole('button', { name: 'Close' }).click();
+
+  // Paint with a small drawing.
+  await openFromStart(page, 'Paint');
+  const paint = page.getByRole('region', { name: /Paint$/ });
+  const canvas = paint.getByRole('img', { name: 'Picture' });
+  const box = (await canvas.boundingBox())!;
+  await paint.getByRole('button', { name: 'Color #ff0000' }).click();
+  await paint.getByRole('button', { name: 'Rectangle', exact: true }).click();
+  await paint.getByRole('button', { name: 'Fill only' }).click();
+  await page.mouse.move(box.x + 40, box.y + 60);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 160, box.y + 140, { steps: 4 });
+  await page.mouse.up();
+  await paint.getByRole('button', { name: 'Ellipse', exact: true }).click();
+  await paint.getByRole('button', { name: 'Color #0000ff' }).click();
+  await page.mouse.move(box.x + 120, box.y + 100);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 260, box.y + 190, { steps: 4 });
+  await page.mouse.up();
+  await page.mouse.move(900, 700);
+  await page.screenshot({ path: `${DIR}/paint.png` });
+  await paint.getByRole('button', { name: 'Close' }).click();
+  await page.getByRole('button', { name: 'No', exact: true }).click();
+
+  // Mines after the first click opens a patch of the board.
+  await openFromStart(page, 'Mines');
+  const mines = page.getByRole('region', { name: /Mines$/ });
+  const field = mines.getByRole('group', { name: 'Mine field' });
+  await field.locator('[data-index="40"]').click();
+  await page.mouse.move(900, 700);
+  await page.screenshot({ path: `${DIR}/mines.png` });
+  await mines.getByRole('button', { name: 'Close' }).click();
+
+  // Hen Hunt mid-round.
+  await openFromStart(page, 'Hen Hunt');
+  const hen = page.getByRole('region', { name: /Hen Hunt$/ });
+  await hen.getByRole('button', { name: 'Play' }).click();
+  await expect(hen.getByRole('img', { name: /Hen Hunt field/ })).toBeVisible();
+  await page.waitForTimeout(2500);
+  await page.screenshot({ path: `${DIR}/henhunt.png` });
 });

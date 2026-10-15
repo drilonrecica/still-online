@@ -331,8 +331,8 @@ Tests sit next to the code as `*.test.ts(x)`. Use path alias `@/` → `src/`.
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
 | P7-01 | **Accessibility pass** — axe checks for every new app, plus keyboard paths through the main ones. | P6-G | done | sonnet | agent | — | e2e | — | No serious/critical axe violations in the new apps; keyboard paths documented. | §P7-01 |
-| P7-02 | **Performance pass** — lazy loading, the initial bundle budget, and canvases that pause when hidden. | P6-G | in progress | sonnet | agent | — | e2e | — | Initial JS ≤ 250 KB gzip; every app chunk lazy; hidden/minimized canvases stop animating (tested). | §P7-02 |
-| P7-03 | **README, screenshots, release notes** — update the README and screenshots, and write `docs/release-notes-v0.2.0.md`. | P7-01, P7-02 | blocked | sonnet | agent | — | — | — | README lists v0.2 features truthfully; a screenshot grid; release notes drafted; CREDITS complete. | §P7-03 |
+| P7-02 | **Performance pass** — lazy loading, the initial bundle budget, and canvases that pause when hidden. | P6-G | done | sonnet | agent | — | e2e | — | Initial JS ≤ 250 KB gzip; every app chunk lazy; hidden/minimized canvases stop animating (tested). | §P7-02 |
+| P7-03 | **README, screenshots, release notes** — update the README and screenshots, and write `docs/release-notes-v0.2.0.md`. | P7-01, P7-02 | in progress | sonnet | agent | — | — | — | README lists v0.2 features truthfully; a screenshot grid; release notes drafted; CREDITS complete. | §P7-03 |
 | P7-G | **Release-ready gate (self-review)** — follow "Task specs → Gate procedure"; full playthrough over 3 days. **Do not tag, push or release.** | P7-01…P7-03 | blocked | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P7.md`; nothing pushed or tagged. | §Gate |
 
 ---
