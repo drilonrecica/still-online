@@ -1,6 +1,7 @@
 // Notepad: one buffer per window, files live in the fs store (the fs is the source of truth on save).
 import { useEffect, useRef, useState } from 'react';
 import { now } from '@/os/clock';
+import { events } from '@/os/events';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
 import { useWindowsStore } from '@/os/store/windows';
@@ -57,6 +58,14 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
   const file = fileId ? nodes[fileId] : undefined;
   const dirty = text !== saved;
   const title = `${dirty ? '*' : ''}${file?.name ?? 'Untitled'} - Notepad`;
+
+  // Stapley's "writing a letter" tip: once each time typing makes the text start with "Dear".
+  const wasLetter = useRef(/^\s*dear\b/i.test(text));
+  useEffect(() => {
+    const isLetter = /^\s*dear\b/i.test(text);
+    if (isLetter && !wasLetter.current) events.emit('notepad:letter', {});
+    wasLetter.current = isLetter;
+  }, [text]);
 
   useEffect(
     () => setWindowTitle(windowId, title),

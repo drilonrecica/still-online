@@ -151,3 +151,9 @@
 - P6-05: Fluff walks off the end of a window's title bar and falls, but turns around at the screen edges (the taskbar spans the whole screen, so it only ever turns there) — the spec's "turning at edges" and "fall when the surface ends" read together. Title-bar edges are cut where a window in front covers them, so Fluff never stands on a hidden edge; a window that covers Fluff's spot makes it fall. Drag is clamped so the whole sheep stays on screen (feet ≥ 32 px from the top).
 - P6-05: The `meet-fluff` tip is a scheduled balloon (day ≥ 2, 1 min after the desktop appears, once ever) with a new `pet` balloon action that turns Fluff on; Stapley (P6-06) can show the same text as its own tip. The tray toggle is labelled "Desktop sheep" so it doesn't share the sheep's own accessible name ("Fluff the sheep"). The sheep and tray art are inline SVG (like the other tray icons), so there are no new files in `src/assets/`.
 - P6-05: Fluff's 20 Hz tick and its timers (sleep after 30 s, mode durations) run in real time, not `scaleMs`, like the other games' animation; the tick is skipped while the tab is hidden. Added the `baa` synth sound (~0.65 s). `SoundName` in `src/os/types.ts` is a stale v0.1 union; the real one is `SOUND_NAMES` in `sound.ts`, which is where `baa` went.
+
+## P6-06 — Stapley
+
+- **Re-enable path:** a registered `stapley` app (chrome `none`, no UI) that sets `assistantEnabled` and closes its window in an effect; simpler than a Start-menu special case and it keeps Accessories generated from the registry.
+- **"Don't show again":** every tip is shown once already (`seenTips`), so `never` matters for idle jokes: it records the joke's id and the cycle skips it. Tips raised while one is showing queue; jokes are dropped.
+- **Letter reply:** options may carry a `reply` that replaces the balloon text (with OK); used for "lol no".

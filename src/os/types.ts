@@ -61,7 +61,8 @@ export type AppId =
   | 'mines'
   | 'henhunt'
   | 'pinball'
-  | 'wrecker';
+  | 'wrecker'
+  | 'stapley';
 
 /** Start menu → All Programs submenus, in display order. */
 export const APP_CATEGORIES = [
@@ -209,6 +210,8 @@ export interface SettingsStore {
   awayMessage: string;
   /** Fluff the sheep walks the desktop. */
   petEnabled: boolean;
+  /** Stapley the stapler offers tips. */
+  assistantEnabled: boolean;
   setPlayerName: (name: string) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
@@ -225,6 +228,7 @@ export interface SettingsStore {
   setAwayMinutes: (minutes: number) => void;
   setAwayMessage: (message: string) => void;
   setPetEnabled: (on: boolean) => void;
+  setAssistantEnabled: (on: boolean) => void;
 }
 
 // v0.2 settings fields. Each implementing task moves its fields into `SettingsStore` (with a

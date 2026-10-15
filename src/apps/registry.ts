@@ -32,6 +32,8 @@ import paint16 from '@/assets/icons/paint-16.svg';
 import paint32 from '@/assets/icons/paint-32.svg';
 import photobooth16 from '@/assets/icons/photobooth-16.svg';
 import photobooth32 from '@/assets/icons/photobooth-32.svg';
+import stapley16 from '@/assets/icons/stapley-16.svg';
+import stapley32 from '@/assets/icons/stapley-32.svg';
 import tunemole16 from '@/assets/icons/tunemole-16.svg';
 import tunemole32 from '@/assets/icons/tunemole-32.svg';
 import recycleBin16 from '@/assets/icons/recyclebin-16.svg';
@@ -320,6 +322,21 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     showOnDesktop: false,
     showInStartMenu: true,
     category: 'games',
+  },
+  // No window of its own: opening it switches Stapley back on and closes at once (P6-06).
+  stapley: {
+    id: 'stapley',
+    title: 'Stapley',
+    icon16: stapley16,
+    icon32: stapley32,
+    component: lazy(() => import('./stapley/Stapley')),
+    defaultSize: { w: 1, h: 1 },
+    singleInstance: true,
+    chrome: 'none',
+    fixedSize: true,
+    showOnDesktop: false,
+    showInStartMenu: true,
+    category: 'accessories',
   },
   recyclebin: {
     id: 'recyclebin',

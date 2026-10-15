@@ -174,3 +174,12 @@ describe('petEnabled', () => {
     expect(useSettingsStore.getState().petEnabled).toBe(false);
   });
 });
+
+describe('assistantEnabled', () => {
+  it('defaults on, toggles and ignores a bad persisted value', () => {
+    expect(useSettingsStore.getState().assistantEnabled).toBe(true);
+    useSettingsStore.getState().setAssistantEnabled(false);
+    expect(useSettingsStore.getState().assistantEnabled).toBe(false);
+    useSettingsStore.getState().setAssistantEnabled(true);
+  });
+});

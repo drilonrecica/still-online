@@ -29,6 +29,8 @@ export interface OsEventMap {
   'os:active': Record<string, never>;
   /** Make an fs image the player's Messenger display picture (Paint). Messenger handles it. */
   'messenger:setDisplayPicture': { fileId: string };
+  /** The text in a Notepad window just started with "Dear" (once per window). */
+  'notepad:letter': Record<string, never>;
   /** fs nodes created, changed, moved or removed. */
   'fs:changed': { ids: string[] };
 }

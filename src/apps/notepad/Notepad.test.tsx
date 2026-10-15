@@ -1,4 +1,4 @@
-import { act, render, screen, within } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { getApp } from '@/apps/registry';
@@ -61,7 +61,7 @@ describe('Notepad with files', () => {
     expect(await screen.findByLabelText('Notepad document')).toHaveValue(
       'roses are red',
     );
-    expect(win(id)?.title).toBe('poem.txt - Notepad');
+    await waitFor(() => expect(win(id)?.title).toBe('poem.txt - Notepad'));
   });
 
   it('Untitled without a file; typing marks the title with *', async () => {

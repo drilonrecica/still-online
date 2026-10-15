@@ -35,6 +35,7 @@ describe('registry', () => {
       'henhunt',
       'pinball',
       'wrecker',
+      'stapley',
       'recyclebin',
     ]);
     for (const app of listApps()) {
@@ -67,6 +68,7 @@ describe('registry', () => {
       henhunt: ['games', false],
       pinball: ['games', false],
       wrecker: ['games', false],
+      stapley: ['accessories', false],
       recyclebin: ['system', false],
     });
   });

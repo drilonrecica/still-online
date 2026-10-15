@@ -5,6 +5,7 @@ import { installDisplayPictureRoute } from '@/apps/messenger/displayPictureRoute
 import { getApp } from '@/apps/registry';
 import { SEED_FILES } from '@/content/files';
 import { installAmplifierRouter } from '@/os/amplifierRouter';
+import { installAssistant } from '@/os/assistant/controller';
 import { installBalloons } from '@/os/balloon/schedule';
 import { Boot } from '@/os/boot/Boot';
 import { installBrowserRouter } from '@/os/browserRouter';
@@ -37,6 +38,7 @@ function Desktop() {
   // Only on the desktop: no screensaver during boot, login or off.
   useEffect(() => installScreensaver(), []);
   useEffect(() => installBalloons(), []);
+  useEffect(() => installAssistant(), []);
   return (
     <>
       <DesktopIcons />

@@ -1,4 +1,10 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { systemFolders } from '@/os/fs/nodes';
 import { useFsStore } from '@/os/fs/store';
@@ -22,12 +28,18 @@ describe('explorer app', () => {
   it('titles the window after the folder and navigates by double-click', async () => {
     openExplorer('docs');
     expect(await screen.findByLabelText('Address')).toHaveValue('My Documents');
-    expect(useWindowsStore.getState().windows[0]?.title).toBe('My Documents');
+    // The title is set in an effect, which may land just after the address renders.
+    await waitFor(() =>
+      expect(useWindowsStore.getState().windows[0]?.title).toBe('My Documents'),
+    );
     fireEvent.doubleClick(screen.getByText('My Pictures'));
     expect(screen.getByLabelText('Address')).toHaveValue(
       'My Documents\\My Pictures',
     );
-    expect(useWindowsStore.getState().windows[0]?.title).toBe('My Pictures');
+    // The title is set in an effect, which may land just after the address renders.
+    await waitFor(() =>
+      expect(useWindowsStore.getState().windows[0]?.title).toBe('My Pictures'),
+    );
   });
 
   it('is one window per folder', () => {
