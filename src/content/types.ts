@@ -1,6 +1,8 @@
 // Messenger content format: authored contacts + scripts, and the persisted progress shape.
 // See docs/content-format.md for the semantics the engine (M2-02) implements.
 import type { AppId, GameId } from '../os/types';
+import type { FsNode, PhotoSpec } from '../os/fs/types';
+import type { MailAddress, MailAttachment, MailFolder } from './mail/types';
 
 // ---------------------------------------------------------------------------
 // Contacts
@@ -321,4 +323,168 @@ export interface AssistantTip {
   trigger: { app?: AppId; event?: AssistantEvent; minDay?: number };
   text: string;
   options?: readonly { label: string; action: AssistantAction }[];
+}
+
+// ---------------------------------------------------------------------------
+// v0.3 i18n: per-locale overlays and language-neutral persisted shapes (docs/i18n.md).
+// New types only; P0-04/P0-05/P0-06 move the stores and the engine onto them.
+// ---------------------------------------------------------------------------
+
+/** Language-neutral contact group ids; labels come from the catalog. */
+export const CONTACT_GROUP_IDS = ['friends', 'school', 'family'] as const;
+
+export type ContactGroupId = (typeof CONTACT_GROUP_IDS)[number];
+
+/** Contact list sections: the three groups plus Offline. */
+export type ContactListGroupId = ContactGroupId | 'offline';
+
+/**
+ * The translated text of one script node. `lines` has exactly one entry per English line, in
+ * order (`''` for a line without `text`); `choices` exactly one per English choice.
+ */
+export interface NodeOverlay {
+  lines: readonly string[];
+  choices?: readonly { text: string; label?: string }[];
+  /** `personalMessageChange` text, keyed by the index of the English line that carries it. */
+  personalMessages?: Readonly<Partial<Record<number, string>>>;
+}
+
+/**
+ * A contact's text in another locale (`src/content/de/contacts/<id>.ts`). Only text: delays,
+ * triggers, actions and the node graph always come from the English module. Anything missing
+ * falls back to English (`getContacts(locale)` merges).
+ */
+export interface ContactOverlay {
+  /** Only when the English name contains English words. */
+  displayName?: string;
+  personalMessage?: string;
+  awayReply?: string;
+  /** Per-day presence messages, same day keys as `Contact.days`. */
+  days?: Readonly<Partial<Record<number, { personalMessage?: string }>>>;
+  scripts: Readonly<
+    Record<ScriptId, Readonly<Partial<Record<NodeId, NodeOverlay>>>>
+  >;
+}
+
+/**
+ * Raw placeholder values stored with a transcript reference, formatted at render: `{game}` via
+ * the catalog, `{score}` via `formatNumber`, `{artist}`/`{title}` from the playlist track.
+ * `{name}` is always the player's current name.
+ */
+export interface LineParams {
+  game?: GameId;
+  score?: number;
+  trackId?: string;
+}
+
+/** A transcript entry that stores where its text comes from instead of the text. */
+export type TranscriptRefEntry =
+  /** A contact's script line. */
+  | {
+      kind: 'line';
+      from: 'contact';
+      scriptId: ScriptId;
+      nodeId: NodeId;
+      lineIndex: number;
+      params?: LineParams;
+      at: number;
+      whileAway?: true;
+    }
+  /** The reply the player picked; `flavor` = emoticon codes the player added (kept as typed). */
+  | {
+      kind: 'choice';
+      from: 'player';
+      scriptId: ScriptId;
+      nodeId: NodeId;
+      choiceIndex: number;
+      params?: LineParams;
+      flavor?: string;
+      at: number;
+    }
+  /** The contact's `awayReply`. */
+  | { kind: 'awayReply'; from: 'contact'; at: number; whileAway?: true }
+  /** Free text the player typed: stored verbatim. */
+  | { kind: 'typed'; from: 'player'; text: string; at: number };
+
+/**
+ * A transcript entry after P0-05: references, nudges/winks, and v0.2 `message` entries, which
+ * are kept and rendered verbatim.
+ */
+export type NeutralTranscriptEntry = TranscriptRefEntry | TranscriptEntry;
+
+/** Where a contact's current personal message comes from; rendered in the current locale. */
+export type PersonalMessageRef =
+  /** `Contact.personalMessage`. */
+  | 'initial'
+  /** `Contact.days[day].personalMessage`. */
+  | { kind: 'day'; day: number }
+  /** A script line's `personalMessageChange`. */
+  | {
+      kind: 'line';
+      scriptId: ScriptId;
+      nodeId: NodeId;
+      lineIndex: number;
+      params?: LineParams;
+    }
+  /** A v0.2 save's already-rendered message: shown verbatim. */
+  | { kind: 'literal'; text: string };
+
+interface MailRecordBase {
+  /** Content id for `content`; `m:<random>` otherwise. */
+  id: string;
+  folder: MailFolder;
+  read: boolean;
+  /** Epoch ms (real time). */
+  receivedAt: number;
+}
+
+/**
+ * A mail as the `mail` store persists it. Only `text` records hold prose; the others render from
+ * content or the catalog in the current locale. The player's address is derived at render.
+ */
+export type MailRecord =
+  /** Authored mail: `getMailContent(locale)` by `id`. */
+  | (MailRecordBase & { kind: 'content' })
+  /** "Undeliverable" for an address that isn't a friend; params are what the player typed. */
+  | (MailRecordBase & {
+      kind: 'bounce';
+      params: { to: string; subject: string };
+    })
+  /** A friend's canned reply; `again` = the reply to every later mail ("RE: <subject>"). */
+  | (MailRecordBase & {
+      kind: 'autoReply';
+      contactId: ContactId;
+      again: boolean;
+      params: { subject: string };
+    })
+  /** Player-written mail, and v0.2 mail no migration rule recognizes: stored verbatim. */
+  | (MailRecordBase & {
+      kind: 'text';
+      from: MailAddress;
+      to: MailAddress[];
+      subject: string;
+      body: string;
+      attachments: MailAttachment[];
+    });
+
+/**
+ * A `seed:` fs node as persisted. Untouched seeds carry no text: `name`, `text` and the photo
+ * `caption` come from `getSeedFiles(locale)`. Renaming or editing sets `dirty` and freezes the
+ * then-rendered text into the node, which from then on is the player's.
+ */
+export type SeedNodeRecord =
+  | (Omit<FsNode, 'name' | 'text' | 'photo'> & {
+      dirty?: false;
+      photo?: Omit<PhotoSpec, 'caption'>;
+    })
+  | (FsNode & { dirty: true });
+
+/** A system folder as persisted: no name; it renders from the catalog by id. */
+export type SystemFolderRecord = Omit<FsNode, 'name'> & { system: true };
+
+/** A Web Explorer favorite as persisted: no `title` = a default favorite named by the site. */
+export interface FavoriteRecord {
+  url: string;
+  /** Player-added favorites keep the title they were added with. */
+  title?: string;
 }
