@@ -4,6 +4,8 @@
   position: absolute;
   inset: 0 0 var(--xp-taskbar-height) 0;
   overflow: hidden;
+  /* Window z values stay inside this layer, below the overlays (Z_INDEX.windows). */
+  z-index: 1;
   /* Clicks between windows reach the desktop. */
   pointer-events: none;
 }

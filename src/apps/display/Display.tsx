@@ -2,7 +2,7 @@
 // inside the dialog; Apply/OK write it to the settings store.
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { deleteBlob, putBlob, useBlobUrl } from '@/os/blobStore';
-import { useScreensaverPreview } from '@/os/screensaver/store';
+import { useScreensaverStore } from '@/os/screensaver/store';
 import { MAX_SCREENSAVER_TEXT, useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import type {
@@ -199,7 +199,7 @@ export default function Display({ windowId }: AppComponentProps) {
   const settings = useSettingsStore();
   const unlocks = useWorldStore((s) => s.unlocks);
   const closeWindow = useWindowsStore((s) => s.closeWindow);
-  const startPreview = useScreensaverPreview((s) => s.startPreview);
+  const startPreview = useScreensaverStore((s) => s.startPreview);
 
   const applied: Draft = {
     theme: settings.theme,

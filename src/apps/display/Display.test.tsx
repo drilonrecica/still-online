@@ -8,7 +8,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { getBlob } from '@/os/blobStore';
-import { useScreensaverPreview } from '@/os/screensaver/store';
+import { useScreensaverStore } from '@/os/screensaver/store';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import { SETTINGS_V02_DEFAULTS } from '@/os/types';
@@ -36,7 +36,7 @@ beforeEach(() => {
     wallpaperPosition: SETTINGS_V02_DEFAULTS.wallpaperPosition,
   });
   useWorldStore.setState({ ...WORLD_DEFAULTS });
-  useScreensaverPreview.getState().stopPreview();
+  useScreensaverStore.getState().stop();
   act(() => useWindowsStore.getState().closeAll());
 });
 
@@ -169,9 +169,10 @@ describe('Display Properties', () => {
     await user.clear(text);
     await user.type(text, 'hello');
     await user.click(screen.getByRole('button', { name: 'Preview' }));
-    expect(useScreensaverPreview.getState().preview).toEqual({
+    expect(useScreensaverStore.getState().running).toEqual({
       id: 'marquee',
       text: 'hello',
+      reason: 'preview',
     });
     expect(s().screensaver.id).toBe('panes');
     await user.click(screen.getByRole('button', { name: 'Apply' }));

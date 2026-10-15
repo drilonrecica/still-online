@@ -1,0 +1,10 @@
+/* Slots never take clicks themselves; overlay content opts in with `pointer-events: auto`. */
+.slot {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.slot:empty {
+  display: none;
+}

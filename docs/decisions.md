@@ -72,3 +72,9 @@
 - P1-01: `wallpaperPosition` applies to builtins too (rendered at the bucketed viewport size, so stretch looks right by default); centred/tiled images sit on `#3a6ea5` — matches XP's plain desktop colour
 - P1-01: wallpapers render at CSS pixels, not device pixels — keeps each JPEG data URL around 100–300 KB and render time ~50 ms at 1080p
 - P1-01: the wallpaper screenshot grid is an `@review` test in `tests/e2e/wallpapers.spec.ts` (writes `docs/review/P1/wallpapers.png`) so P1-G can rerun it
+- P1-03: `useScreensaverPreview` became `useScreensaverStore` (`running` + `reason: 'idle' | 'preview'`) — one runtime store drives both idle start and Preview.
+- P1-03: The screensaver is armed from `Desktop`'s mount (`installScreensaver`), so boot/login/off never show it; unmounting stops a running saver.
+- P1-03: Inputs in the first 400 ms of a saver are ignored, and the first pointer move only sets the 4 px origin — otherwise the Preview click/Enter or pointer jitter would stop it at once.
+- P1-03: The stopping key is `preventDefault`ed (and the overlay holds focus) but not stopped — `idle.ts` must still see it to re-arm; the stopping click is eaten by a one-shot capture listener instead.
+- P1-03: Saver animation runs in real time, not `scaleMs` — it's visual only; the idle wait before it does use `scaleMs`.
+- P1-03: My Pictures Slideshow falls back to five built-in procedural sample photos when My Pictures has no images (P1-06 fills the folder).

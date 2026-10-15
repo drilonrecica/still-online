@@ -121,6 +121,8 @@ Every persisted store uses `persistOptions` with a `sanitize` that drops invalid
 | (boot/login)  | 20000 | existing                                                                                          | —                           |
 | `screensaver` | 25000 | screensaver (P1-03); swallows the first input                                                     | idle / Preview              |
 
+**Screensaver (P1-03):** `src/os/screensaver/` — `store.ts` (`running`, runtime only), `controller.ts` (`installScreensaver()` from `Desktop`: `onIdle(settings.screensaver.minutes)` → `startIdle`), `dismiss.ts` (pure stop rules: 400 ms grace, move > 4 px, click, key, wheel; `swallowNextClick`), `Screensaver.tsx` (canvas + `requestAnimationFrame`, paused while hidden; reduced motion = still text) and `savers/` (one `SaverFactory` each; `pipesGrowth.ts` is the pure, seeded pipe simulation). The `@review` test in `tests/e2e/screensaver.spec.ts` writes `docs/review/P1/screensavers.png`.
+
 The task that creates `OverlayLayer` also sets `.layer { z-index: 1 }` in `Window.module.css` and the Start menu to `Z_INDEX.startMenu`. Without that, window `z` would keep growing past the overlays. The dial-up dialog is a normal window (`dialup` app), not an overlay. Canvas overlays pause `requestAnimationFrame` while hidden (P7-02 `useAnimationFrame`).
 
 ## Web (P4)

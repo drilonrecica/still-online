@@ -9,6 +9,8 @@ import { Login } from '@/os/login/Login';
 // Side-effect import: track what's playing from boot, before any app that reads it loads.
 import '@/os/nowPlaying';
 import { SmallScreenNotice } from '@/os/notice/SmallScreenNotice';
+import { OverlayLayer } from '@/os/overlay/OverlayLayer';
+import { installScreensaver } from '@/os/screensaver/controller';
 import { installGestureUnlock, playSound } from '@/os/sound';
 import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
@@ -25,10 +27,13 @@ const SHUTDOWN_MS = 1500;
 
 function Desktop() {
   const [startOpen, setStartOpen] = useState(false);
+  // Only on the desktop: no screensaver during boot, login or off.
+  useEffect(() => installScreensaver(), []);
   return (
     <>
       <DesktopIcons />
       <WindowLayer getApp={getApp} />
+      <OverlayLayer />
       <StartMenu open={startOpen} onClose={() => setStartOpen(false)} />
       <ToastLayer />
       <Taskbar
