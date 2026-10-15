@@ -77,7 +77,9 @@ describe('wallpaper registry', () => {
     ]);
     expect(PAINTED).toHaveLength(11);
     expect(getWallpaper(CLASSIC_WALLPAPER_ID)?.painted).toBeUndefined();
-    expect(new Set(WALLPAPERS.map((w) => w.name)).size).toBe(WALLPAPERS.length);
+    expect(new Set(WALLPAPERS.map((w) => w.nameKey)).size).toBe(
+      WALLPAPERS.length,
+    );
   });
 
   it('hides each easter egg behind its unlock', () => {

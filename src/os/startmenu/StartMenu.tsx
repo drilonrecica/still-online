@@ -21,14 +21,6 @@ import {
 import avatar from './avatar.svg';
 import styles from './StartMenu.module.css';
 
-const CATEGORY_LABELS: Record<AppCategory, string> = {
-  accessories: 'Accessories',
-  games: 'Games',
-  internet: 'Internet',
-  entertainment: 'Entertainment',
-  system: 'System Tools',
-};
-
 const HOVER_OPEN_MS = 300;
 
 export interface StartMenuProps {
@@ -214,7 +206,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
       ref={rootRef}
       className={styles.menu}
       role="menu"
-      aria-label="Start menu"
+      aria-label={t('startMenu.label')}
       onKeyDown={onKeyDown}
     >
       <div className={styles.header}>
@@ -239,7 +231,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
                 setCategory(null);
               }}
             >
-              <span>All Programs</span>
+              <span>{t('startMenu.allPrograms')}</span>
               <span className={styles.arrow} aria-hidden="true">
                 ▶
               </span>
@@ -254,7 +246,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
         <ul
           className={styles.flyout}
           role="menu"
-          aria-label="All Programs"
+          aria-label={t('startMenu.allPrograms')}
           data-level="flyout"
         >
           {categories.map((c) => (
@@ -287,7 +279,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
                   height={16}
                   draggable={false}
                 />
-                <span>{CATEGORY_LABELS[c.id]}</span>
+                <span>{t(`startMenu.categories.${c.id}`)}</span>
                 <span className={styles.arrow} aria-hidden="true">
                   ▶
                 </span>
@@ -296,7 +288,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
                 <ul
                   className={styles.submenu}
                   role="menu"
-                  aria-label={CATEGORY_LABELS[c.id]}
+                  aria-label={t(`startMenu.categories.${c.id}`)}
                   data-level="sub"
                 >
                   {c.apps.map((app) => appEntry(app, 16))}
@@ -316,7 +308,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
             logOff();
           }}
         >
-          Log Off
+          {t('startMenu.logOff')}
         </button>
         <button
           type="button"
@@ -327,7 +319,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
             shutDown();
           }}
         >
-          Turn Off Computer
+          {t('startMenu.turnOff')}
         </button>
       </div>
     </div>

@@ -1,29 +1,29 @@
-// Every desktop wallpaper. Original procedural art "in the spirit of" famous ones; see tasks.md §P1-01.
+// Every desktop wallpaper. Original procedural art "in the spirit of" famous ones; see tasks.md §P1-01; names are catalog keys.
 import type { WallpaperDef } from './types';
 
 export const CLASSIC_WALLPAPER_ID = 'classic';
 
 export const WALLPAPERS: readonly WallpaperDef[] = [
-  { id: CLASSIC_WALLPAPER_ID, name: 'Rolling Hill' },
-  { id: 'hill', name: 'Green Hill Sky', painted: true },
-  { id: 'ripple', name: 'Blue Ripple', painted: true },
-  { id: 'autumn', name: 'Autumn Lane', painted: true },
-  { id: 'dunes', name: 'Red Moon Dunes', painted: true },
-  { id: 'stones', name: 'Stone Circle', painted: true },
-  { id: 'tulips', name: 'Tulip Field', painted: true },
-  { id: 'orbit', name: 'Home Orbit', painted: true },
-  { id: 'bloom', name: 'Violet Bloom', painted: true },
-  { id: 'peaks', name: 'Crystal Peaks', painted: true },
+  { id: CLASSIC_WALLPAPER_ID, nameKey: 'wallpapers.classic' },
+  { id: 'hill', nameKey: 'wallpapers.hill', painted: true },
+  { id: 'ripple', nameKey: 'wallpapers.ripple', painted: true },
+  { id: 'autumn', nameKey: 'wallpapers.autumn', painted: true },
+  { id: 'dunes', nameKey: 'wallpapers.dunes', painted: true },
+  { id: 'stones', nameKey: 'wallpapers.stones', painted: true },
+  { id: 'tulips', nameKey: 'wallpapers.tulips', painted: true },
+  { id: 'orbit', nameKey: 'wallpapers.orbit', painted: true },
+  { id: 'bloom', nameKey: 'wallpapers.bloom', painted: true },
+  { id: 'peaks', nameKey: 'wallpapers.peaks', painted: true },
   {
     id: 'ponies',
-    name: 'Pony Paradise',
+    nameKey: 'wallpapers.ponies',
     hidden: true,
     unlock: 'ponies',
     painted: true,
   },
   {
     id: 'retro',
-    name: 'Retro Grid',
+    nameKey: 'wallpapers.retro',
     hidden: true,
     unlock: 'konami',
     painted: true,

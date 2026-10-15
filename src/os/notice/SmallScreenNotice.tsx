@@ -1,6 +1,7 @@
 // XP-style dialog shown over the boot screen on narrow or touch-first devices. Dismissal persists.
 import { APP_NAME } from '@/os/brand/brand';
 import { useEffect, useRef, useState } from 'react';
+import { useT } from '@/i18n/useT';
 import { useSettingsStore } from '@/os/store/settings';
 import styles from './SmallScreenNotice.module.css';
 
@@ -33,6 +34,7 @@ export function SmallScreenNotice() {
   const dismissed = useSettingsStore((s) => s.smallScreenNoticeDismissed);
   const dismiss = useSettingsStore((s) => s.dismissSmallScreenNotice);
   const small = useSmallScreen();
+  const t = useT();
   const button = useRef<HTMLButtonElement>(null);
   const visible = small && !dismissed;
 
@@ -61,11 +63,11 @@ export function SmallScreenNotice() {
         </div>
         <div className={`window-body ${styles.body}`}>
           <p id="small-screen-text" className={styles.text}>
-            {APP_NAME} is best experienced on a desktop computer.
+            {t('notice.smallScreen', { app: APP_NAME })}
           </p>
           <div className={styles.actions}>
             <button ref={button} type="button" onClick={dismiss}>
-              Continue anyway
+              {t('notice.continue')}
             </button>
           </div>
         </div>

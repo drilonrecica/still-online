@@ -1,5 +1,5 @@
 // The still online wordmark: mark, name, optional edition tag and tagline.
-import { APP_EDITION, APP_TAGLINE } from './brand';
+import { useT } from '@/i18n/useT';
 import { Mark } from './Mark';
 import styles from './Wordmark.module.css';
 
@@ -16,6 +16,7 @@ export function Wordmark({
   edition = false,
   tagline = false,
 }: WordmarkProps) {
+  const t = useT();
   return (
     <div className={styles.wordmark} data-size={size} data-testid="wordmark">
       <div className={styles.lockup}>
@@ -24,10 +25,12 @@ export function Wordmark({
           <span className={styles.name}>
             still <span className={styles.online}>online</span>
           </span>
-          {edition && <span className={styles.edition}>{APP_EDITION}</span>}
+          {edition && (
+            <span className={styles.edition}>{t('brand.edition')}</span>
+          )}
         </div>
       </div>
-      {tagline && <p className={styles.tagline}>{APP_TAGLINE}</p>}
+      {tagline && <p className={styles.tagline}>{t('brand.tagline')}</p>}
     </div>
   );
 }

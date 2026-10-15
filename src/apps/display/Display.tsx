@@ -2,6 +2,7 @@
 // inside the dialog; Apply/OK write it to the settings store.
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { screensaverText } from '@/i18n/settingsText';
+import { translate } from '@/i18n/t';
 import { useLocale } from '@/i18n/useT';
 import { deleteBlob, putBlob, useBlobUrl } from '@/os/blobStore';
 import { useScreensaverStore } from '@/os/screensaver/store';
@@ -276,7 +277,10 @@ export default function Display({ windowId }: AppComponentProps) {
   const wallpapers = listWallpapers(unlocks);
   const wallpaperItems = [
     { id: NONE, name: '(None)' },
-    ...wallpapers.map((w) => ({ id: w.id, name: w.name })),
+    ...wallpapers.map((w) => ({
+      id: w.id,
+      name: translate(locale, w.nameKey),
+    })),
     ...(draft.wallpaper.kind === 'custom'
       ? [{ id: CUSTOM, name: 'Custom image' }]
       : []),

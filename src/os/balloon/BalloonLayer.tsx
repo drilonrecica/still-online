@@ -1,4 +1,5 @@
 // The XP balloon: a yellow tooltip with a tail pointing down at the tray, above the clock.
+import { useT } from '@/i18n/useT';
 import type { BalloonIcon } from '@/os/serviceTypes';
 import { useBalloonStore } from './store';
 import styles from './Balloon.module.css';
@@ -37,6 +38,7 @@ function BalloonGlyph({ icon }: { icon: BalloonIcon }) {
 export function BalloonLayer() {
   const balloon = useBalloonStore((s) => s.current);
   const dismiss = useBalloonStore((s) => s.dismiss);
+  const t = useT();
   if (!balloon) return null;
 
   return (
@@ -59,7 +61,7 @@ export function BalloonLayer() {
       <button
         type="button"
         className={styles.close}
-        aria-label="Close balloon"
+        aria-label={t('balloon.close')}
         onClick={dismiss}
       >
         ×

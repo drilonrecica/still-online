@@ -1,16 +1,18 @@
 // The tray's sheep head: lets Fluff out onto the desktop, or sends Fluff home.
+import { useT } from '@/i18n/useT';
 import { useSettingsStore } from '@/os/store/settings';
 
 export function PetTray({ className }: { className?: string }) {
   const enabled = useSettingsStore((s) => s.petEnabled);
   const setPetEnabled = useSettingsStore((s) => s.setPetEnabled);
+  const t = useT();
   return (
     <button
       type="button"
       className={className}
-      aria-label="Desktop sheep"
+      aria-label={t('pet.tray')}
       aria-pressed={enabled}
-      title={enabled ? 'Send Fluff home' : 'Meet Fluff'}
+      title={enabled ? t('pet.sendHome') : t('pet.meet')}
       data-pet-tray
       onClick={() => setPetEnabled(!enabled)}
     >

@@ -5,7 +5,7 @@ import type { KeyboardEvent, MouseEvent, PointerEvent } from 'react';
 import type { Tip } from '@/content/assistant';
 import { getTips } from '@/content/locale';
 import type { Locale } from '@/i18n/types';
-import { useLocale } from '@/i18n/useT';
+import { useLocale, useT } from '@/i18n/useT';
 import { useSettingsStore } from '@/os/store/settings';
 import { TASKBAR_HEIGHT } from '@/os/types';
 import { StapleySprite } from './StapleySprite';
@@ -38,6 +38,7 @@ function Stapley() {
   const choose = useAssistantStore((s) => s.choose);
   const dismiss = useAssistantStore((s) => s.dismiss);
   const locale = useLocale();
+  const t = useT();
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [menu, setMenu] = useState(false);
   const drag = useRef<Drag | null>(null);
@@ -118,7 +119,7 @@ function Stapley() {
             {reply ? (
               <li>
                 <button type="button" className={styles.link} onClick={dismiss}>
-                  OK
+                  {t('common.ok')}
                 </button>
               </li>
             ) : (
@@ -140,12 +141,16 @@ function Stapley() {
             className={`${styles.link} ${styles.hide}`}
             onClick={hide}
           >
-            Hide Stapley
+            {t('assistant.hide')}
           </button>
         </div>
       )}
       {menu && (
-        <ul className={styles.menu} role="menu" aria-label="Stapley">
+        <ul
+          className={styles.menu}
+          role="menu"
+          aria-label={t('assistant.name')}
+        >
           <li role="none">
             <button
               type="button"
@@ -154,7 +159,7 @@ function Stapley() {
               onPointerDown={(e) => e.stopPropagation()}
               onClick={hide}
             >
-              Hide Stapley
+              {t('assistant.hide')}
             </button>
           </li>
         </ul>
@@ -162,8 +167,8 @@ function Stapley() {
       <button
         type="button"
         className={styles.stapley}
-        aria-label="Stapley the stapler"
-        title="Stapley"
+        aria-label={t('assistant.label')}
+        title={t('assistant.name')}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}

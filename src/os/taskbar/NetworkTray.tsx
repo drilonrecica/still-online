@@ -1,6 +1,8 @@
 // Tray network icon: two little monitors. Grey offline, blinking while dialling, blue online.
 // Offline → connect; dialling → show the dialog; online → a Disconnect / Status menu.
 import { useEffect, useRef, useState } from 'react';
+import { getLocale } from '@/i18n/t';
+import { useT } from '@/i18n/useT';
 import { useBalloonStore } from '@/os/balloon/store';
 import { requireOnline, useNetworkStore } from '@/os/network';
 import { useWindowsStore } from '@/os/store/windows';
@@ -13,11 +15,11 @@ export function formatDuration(ms: number): string {
   return `${pad(Math.floor(minutes / 60))}:${pad(minutes % 60)}`;
 }
 
-const LABELS = {
-  offline: 'Not connected',
-  dialing: 'Dialing…',
-  online: 'Connected',
-} as const;
+/** `33.6` (en) / `33,6` (de): one decimal, the locale's separator. */
+function formatSpeed(kbps: number): string {
+  const text = kbps.toFixed(1);
+  return getLocale() === 'de' ? text.replace('.', ',') : text;
+}
 
 function Monitors() {
   return (
@@ -44,6 +46,7 @@ function Monitors() {
 }
 
 export function NetworkTray() {
+  const t = useT();
   const status = useNetworkStore((s) => s.status);
   const [menuOpen, setMenuOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -72,10 +75,13 @@ export function NetworkTray() {
     setMenuOpen(false);
     const { kbps, connectedAt } = useNetworkStore.getState();
     useBalloonStore.getState().push({
-      title: 'Dial-up Connection',
-      text: `Connected at ${kbps.toFixed(1)} Kbps · Duration ${formatDuration(
-        connectedAt === null ? 0 : Date.now() - connectedAt,
-      )}`,
+      title: t('taskbar.network.menu'),
+      text: t('taskbar.network.connected', {
+        speed: formatSpeed(kbps),
+        duration: formatDuration(
+          connectedAt === null ? 0 : Date.now() - connectedAt,
+        ),
+      }),
       icon: 'network',
     });
   }
@@ -85,10 +91,14 @@ export function NetworkTray() {
       <button
         type="button"
         className={styles.mute}
-        aria-label={`Network: ${LABELS[status]}`}
+        aria-label={t('taskbar.network.label', {
+          status: t(`taskbar.network.status.${status}`),
+        })}
         aria-haspopup={status === 'online' ? 'menu' : undefined}
         aria-expanded={status === 'online' ? menuOpen : undefined}
-        title={`Dial-up Connection: ${LABELS[status]}`}
+        title={t('taskbar.network.title', {
+          status: t(`taskbar.network.status.${status}`),
+        })}
         data-status={status}
         data-testid="tray-network"
         onClick={onIconClick}
@@ -99,7 +109,7 @@ export function NetworkTray() {
         <div
           className={styles.netMenu}
           role="menu"
-          aria-label="Dial-up Connection"
+          aria-label={t('taskbar.network.menu')}
           onKeyDown={(e) => {
             if (e.key === 'Escape') setMenuOpen(false);
             if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
@@ -124,10 +134,10 @@ export function NetworkTray() {
               useNetworkStore.getState().disconnect();
             }}
           >
-            Disconnect
+            {t('taskbar.network.disconnect')}
           </button>
           <button type="button" role="menuitem" onClick={showStatus}>
-            Status
+            {t('taskbar.network.statusItem')}
           </button>
         </div>
       )}

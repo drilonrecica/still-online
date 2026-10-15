@@ -1,5 +1,6 @@
 import { formatDateTime } from '@/i18n/format';
 import { getLocale } from '@/i18n/t';
+import { useT } from '@/i18n/useT';
 // XP Explorer-style folder window content: address bar, task pane, icon/details list.
 // Shared by the Explorer app and the Recycle Bin.
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -27,14 +28,6 @@ export interface FolderViewProps {
 
 type ViewMode = 'icons' | 'details';
 
-const TYPE_LABELS: Record<FsNode['type'], string> = {
-  folder: 'File Folder',
-  txt: 'Text Document',
-  image: 'JPEG Image',
-  audio: 'MP3 Audio',
-  link: 'Internet Shortcut',
-};
-
 function formatDate(ms: number): string {
   return formatDateTime(new Date(ms), getLocale());
 }
@@ -52,6 +45,7 @@ function FolderViewInner({
   onSelect,
   filter,
 }: FolderViewProps) {
+  const t = useT();
   const nodes = useFsStore((s) => s.nodes);
   const remove = useFsStore((s) => s.remove);
   const restore = useFsStore((s) => s.restore);
@@ -100,11 +94,7 @@ function FolderViewInner({
     if (!selected || !canDelete) return;
     const index = items.findIndex((n) => n.id === selected.id);
     if (inBin) {
-      if (
-        !window.confirm(
-          `Are you sure you want to delete '${selected.name}'? It will be gone for good.`,
-        )
-      ) {
+      if (!window.confirm(t('fs.view.confirmPurge', { name: selected.name }))) {
         return;
       }
       purge(selected.id);
@@ -117,11 +107,7 @@ function FolderViewInner({
 
   function emptyBin() {
     if (items.length === 0) return;
-    if (
-      !window.confirm(
-        `Are you sure you want to delete all ${items.length} item${items.length === 1 ? '' : 's'} in the Recycle Bin?`,
-      )
-    ) {
+    if (!window.confirm(t('fs.view.confirmEmptyBin', { n: items.length }))) {
       return;
     }
     emptyRecycleBin();
@@ -190,7 +176,7 @@ function FolderViewInner({
   }
 
   if (!folder) {
-    return <p className={styles.empty}>This folder is no longer available.</p>;
+    return <p className={styles.empty}>{t('fs.view.unavailable')}</p>;
   }
 
   return (
@@ -201,39 +187,43 @@ function FolderViewInner({
           disabled={!parentId}
           onClick={() => parentId && onNavigate(parentId)}
         >
-          Up
+          {t('fs.view.up')}
         </button>
         <label className={styles.address}>
-          <span>Address</span>
+          <span>{t('fs.view.address')}</span>
           <input
             readOnly
             value={path}
-            aria-label="Address"
+            aria-label={t('fs.view.address')}
             style={{ backgroundImage: `url(${folderIcon16})` }}
           />
         </label>
-        <div className={styles.modes} role="group" aria-label="View">
+        <div
+          className={styles.modes}
+          role="group"
+          aria-label={t('fs.view.view')}
+        >
           <button
             type="button"
             aria-pressed={mode === 'icons'}
             onClick={() => setMode('icons')}
           >
-            Icons
+            {t('fs.view.icons')}
           </button>
           <button
             type="button"
             aria-pressed={mode === 'details'}
             onClick={() => setMode('details')}
           >
-            Details
+            {t('fs.view.details')}
           </button>
         </div>
       </div>
 
       <div className={styles.body}>
         {!picker && (
-          <nav className={styles.tasks} aria-label="File and Folder Tasks">
-            <h2>File and Folder Tasks</h2>
+          <nav className={styles.tasks} aria-label={t('fs.view.tasks')}>
+            <h2>{t('fs.view.tasks')}</h2>
             {isBinRoot && (
               <>
                 <button
@@ -241,26 +231,26 @@ function FolderViewInner({
                   disabled={!binItemSelected}
                   onClick={restoreSelected}
                 >
-                  Restore
+                  {t('fs.view.restore')}
                 </button>
                 <button
                   type="button"
                   disabled={items.length === 0}
                   onClick={emptyBin}
                 >
-                  Empty Recycle Bin
+                  {t('fs.view.emptyBin')}
                 </button>
               </>
             )}
             <button type="button" disabled={!canRename} onClick={startRename}>
-              Rename
+              {t('fs.view.rename')}
             </button>
             <button
               type="button"
               disabled={!canDelete}
               onClick={deleteSelected}
             >
-              Delete
+              {t('fs.view.delete')}
             </button>
           </nav>
         )}
@@ -277,16 +267,14 @@ function FolderViewInner({
         >
           {mode === 'details' && (
             <div className={styles.header} aria-hidden>
-              <span>Name</span>
-              <span>Type</span>
-              <span>Modified</span>
+              <span>{t('fs.view.colName')}</span>
+              <span>{t('fs.view.colType')}</span>
+              <span>{t('fs.view.colModified')}</span>
             </div>
           )}
           {items.length === 0 && (
             <p className={styles.empty}>
-              {isBinRoot
-                ? 'The Recycle Bin is empty.'
-                : 'This folder is empty.'}
+              {isBinRoot ? t('fs.view.binEmpty') : t('fs.view.folderEmpty')}
             </p>
           )}
           {items.map((node) => (
@@ -323,7 +311,9 @@ function FolderViewInner({
               )}
               {mode === 'details' && (
                 <>
-                  <span className={styles.meta}>{TYPE_LABELS[node.type]}</span>
+                  <span className={styles.meta}>
+                    {t(`fs.types.${node.type}`)}
+                  </span>
                   <span className={styles.meta}>
                     {formatDate(node.modifiedAt)}
                   </span>
@@ -334,7 +324,7 @@ function FolderViewInner({
         </div>
       </div>
       <div className={styles.status} aria-live="polite">
-        {items.length} object{items.length === 1 ? '' : 's'}
+        {t('fs.view.objects', { n: items.length })}
         {selected ? ` · ${selected.name}` : ''}
       </div>
     </div>
@@ -350,6 +340,7 @@ function RenameInput({
   onCommit: (name: string) => void;
   onCancel: () => void;
 }) {
+  const t = useT();
   const [value, setValue] = useState(initial);
   const done = useRef(false);
   const finish = (commit: boolean) => {
@@ -361,7 +352,7 @@ function RenameInput({
   return (
     <input
       className={styles.rename}
-      aria-label="Rename"
+      aria-label={t('fs.view.rename')}
       value={value}
       autoFocus
       onFocus={(e) => {

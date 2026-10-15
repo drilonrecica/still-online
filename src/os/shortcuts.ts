@@ -21,12 +21,16 @@ const SYSTEM_ICONS: readonly AppId[] = ['mycomputer', 'recyclebin', 'explorer'];
 
 /** Start menu right column, in order. */
 export const START_PLACES: readonly Shortcut[] = [
-  { appId: 'explorer', props: { folder: 'docs' }, label: 'My Documents' },
-  { appId: 'explorer', props: { folder: 'pics' }, label: 'My Pictures' },
-  { appId: 'explorer', props: { folder: 'music' }, label: 'My Music' },
-  { appId: 'mycomputer', label: 'My Computer' },
-  { appId: 'display', label: 'Control Panel' },
-  { appId: 'recyclebin', label: 'Recycle Bin' },
+  { appId: 'explorer', props: { folder: 'docs' }, labelKey: 'fs.folders.docs' },
+  { appId: 'explorer', props: { folder: 'pics' }, labelKey: 'fs.folders.pics' },
+  {
+    appId: 'explorer',
+    props: { folder: 'music' },
+    labelKey: 'fs.folders.music',
+  },
+  { appId: 'mycomputer', labelKey: 'apps.mycomputer.title' },
+  { appId: 'display', labelKey: 'startMenu.controlPanel' },
+  { appId: 'recyclebin', labelKey: 'apps.recyclebin.title' },
 ];
 
 /**
@@ -34,26 +38,30 @@ export const START_PLACES: readonly Shortcut[] = [
  * cluttered, like a 2007 family PC: everything that was ever installed got an icon.
  */
 export const DESKTOP_SHORTCUTS: readonly Shortcut[] = [
-  { appId: 'explorer', props: { folder: 'docs' }, label: 'My Documents' },
-  { appId: 'mycomputer', label: 'My Computer' },
-  { appId: 'recyclebin', label: 'Recycle Bin' },
-  { appId: 'browser', label: 'Web Explorer' },
-  { appId: 'messenger', label: 'Messenger' },
-  { appId: 'mail', label: 'Mail' },
-  { appId: 'dialup', label: 'Connect to the Internet' },
-  { appId: 'amplifier', label: 'Amplifier' },
-  { appId: 'tunemole', label: 'TuneMole' },
-  { appId: 'explorer', props: { folder: 'music' }, label: 'My Music' },
-  { appId: 'mines', label: 'Mines' },
-  { appId: 'henhunt', label: 'Hen Hunt' },
-  { appId: 'pinball', label: 'Star Pinball' },
-  { appId: 'wrecker', label: 'Desktop Wrecker' },
-  { appId: 'paint', label: 'Paint' },
-  { appId: 'photobooth', label: 'Snapshot Booth' },
-  { appId: 'explorer', props: { folder: 'pics' }, label: 'My Pictures' },
-  { appId: 'notepad', label: 'Notepad' },
-  { appId: 'messenger-history', label: 'Message History' },
-  { appId: 'diskcleanup', label: 'Disk Cleanup' },
+  { appId: 'explorer', props: { folder: 'docs' }, labelKey: 'fs.folders.docs' },
+  { appId: 'mycomputer', labelKey: 'apps.mycomputer.title' },
+  { appId: 'recyclebin', labelKey: 'apps.recyclebin.title' },
+  { appId: 'browser', labelKey: 'apps.browser.title' },
+  { appId: 'messenger', labelKey: 'apps.messenger.title' },
+  { appId: 'mail', labelKey: 'apps.mail.title' },
+  { appId: 'dialup', labelKey: 'apps.dialup.title' },
+  { appId: 'amplifier', labelKey: 'apps.amplifier.title' },
+  { appId: 'tunemole', labelKey: 'apps.tunemole.title' },
+  {
+    appId: 'explorer',
+    props: { folder: 'music' },
+    labelKey: 'fs.folders.music',
+  },
+  { appId: 'mines', labelKey: 'apps.mines.title' },
+  { appId: 'henhunt', labelKey: 'apps.henhunt.title' },
+  { appId: 'pinball', labelKey: 'apps.pinball.title' },
+  { appId: 'wrecker', labelKey: 'apps.wrecker.title' },
+  { appId: 'paint', labelKey: 'apps.paint.label' },
+  { appId: 'photobooth', labelKey: 'apps.photobooth.title' },
+  { appId: 'explorer', props: { folder: 'pics' }, labelKey: 'fs.folders.pics' },
+  { appId: 'notepad', labelKey: 'apps.notepad.label' },
+  { appId: 'messenger-history', labelKey: 'apps.messenger-history.title' },
+  { appId: 'diskcleanup', labelKey: 'apps.diskcleanup.title' },
 ];
 
 /** Resolves shortcuts against the registry; shortcuts to unregistered apps are dropped. */
@@ -69,7 +77,7 @@ export function resolveShortcuts(
       key: `${s.appId}:${i}`,
       appId: s.appId,
       props: s.props ?? {},
-      label: s.label,
+      label: t(s.labelKey),
       icon16: s.icon16 ?? app.icon16,
       icon32: s.icon32 ?? app.icon32,
       shortcut: !SYSTEM_ICONS.includes(s.appId),
@@ -80,5 +88,5 @@ export function resolveShortcuts(
 
 /** Wraps an app as a shortcut, for the `apps` override props. */
 export function appShortcut(app: AppDefinition): Shortcut {
-  return { appId: app.id, label: t(app.labelKey ?? app.titleKey) };
+  return { appId: app.id, labelKey: app.labelKey ?? app.titleKey };
 }

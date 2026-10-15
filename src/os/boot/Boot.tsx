@@ -1,5 +1,6 @@
 // Black boot screen with the still online wordmark and XP-style progress bar. Click or any key skips.
 import { useEffect } from 'react';
+import { useT } from '@/i18n/useT';
 import { APP_NAME } from '@/os/brand/brand';
 import { Wordmark } from '@/os/brand/Wordmark';
 import { useSessionStore } from '@/os/store/session';
@@ -16,6 +17,7 @@ export function Boot() {
   const returning = useSettingsStore((s) => s.firstBootDone);
   const day = useWorldStore((s) => s.day);
   const reducedMotion = useReducedMotion();
+  const t = useT();
   const duration = returning ? BOOT_RETURN_MS : BOOT_MS;
 
   useEffect(() => {
@@ -36,12 +38,12 @@ export function Boot() {
     >
       <Wordmark size="lg" edition tagline />
       <div className={styles.day} data-testid="boot-day">
-        Day {day}
+        {t('boot.day', { day })}
       </div>
       <div
         className={styles.track}
         role="progressbar"
-        aria-label={`Starting ${APP_NAME}`}
+        aria-label={t('boot.starting', { app: APP_NAME })}
         data-testid="boot-progress"
         data-static={reducedMotion ? 'true' : 'false'}
       >

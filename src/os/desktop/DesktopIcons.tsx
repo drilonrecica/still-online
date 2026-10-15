@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import recycleBinFull32 from '@/assets/icons/recyclebin-full-32.svg';
+import { useT } from '@/i18n/useT';
 import { FS_FOLDERS } from '@/os/fs/types';
 import { useFsStore } from '@/os/fs/store';
 import {
@@ -21,6 +22,8 @@ export interface DesktopIconsProps {
 }
 
 export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
+  // Shortcut labels are resolved here; the hook re-renders the grid on a language switch.
+  const t = useT();
   const icons = apps
     ? resolveShortcuts(apps.map(appShortcut), (id) =>
         apps.find((app) => app.id === id),
@@ -71,7 +74,7 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
       className={styles.desktop}
       data-testid="desktop"
       role="listbox"
-      aria-label="Desktop"
+      aria-label={t('desktop.label')}
       tabIndex={0}
       onKeyDown={onKeyDown}
       onClick={() => setSelected(null)}
@@ -137,14 +140,14 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
               openApp('display');
             }}
           >
-            Properties
+            {t('desktop.menu.properties')}
           </li>
           <li
             role="menuitem"
             className={styles.menuItem}
             onClick={() => setMenu(null)}
           >
-            Arrange Icons By ▸ Name
+            {t('desktop.menu.arrangeIcons')}
           </li>
           <li
             role="menuitem"
@@ -154,7 +157,7 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
               setSelected(null);
             }}
           >
-            Refresh
+            {t('desktop.menu.refresh')}
           </li>
         </ul>
       )}

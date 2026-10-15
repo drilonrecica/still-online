@@ -1,7 +1,7 @@
 // Taskbar: Start button, one button per open window, and the tray (network, Messenger, Fluff, mute, clock).
 import { useEffect, useState } from 'react';
 import { getApp } from '@/apps/registry';
-import { useLocale } from '@/i18n/useT';
+import { useLocale, useT } from '@/i18n/useT';
 import {
   formatLongDate,
   formatTrayTime,
@@ -45,11 +45,15 @@ function useGameNow(): Date {
 function TrayClock() {
   const date = useGameNow();
   const day = useWorldStore((s) => s.day);
+  const t = useT();
   return (
     <span
       className={styles.clock}
       data-testid="tray-clock"
-      title={`${formatLongDate(date)} · Day ${day}`}
+      title={t('taskbar.clockTitle', {
+        date: formatLongDate(date),
+        day,
+      })}
     >
       {formatTrayTime(date)}
     </span>
@@ -59,6 +63,7 @@ function TrayClock() {
 export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
   const windows = useWindowsStore((s) => s.windows);
   const locale = useLocale();
+  const t = useT();
   const activeId = useWindowsStore(selectActiveWindowId);
   const muted = useSettingsStore((s) => s.muted);
   const toggleMuted = useSettingsStore((s) => s.toggleMuted);
@@ -72,7 +77,11 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
   }
 
   return (
-    <div className={styles.taskbar} role="toolbar" aria-label="Taskbar">
+    <div
+      className={styles.taskbar}
+      role="toolbar"
+      aria-label={t('taskbar.label')}
+    >
       <button
         type="button"
         className={styles.start}
@@ -81,7 +90,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
         data-start-button
         onClick={onStartClick}
       >
-        <span className={styles.startText}>start</span>
+        <span className={styles.startText}>{t('taskbar.start')}</span>
       </button>
       <div className={styles.windows}>
         {windows.map((win) => {
@@ -102,7 +111,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
               aria-pressed={active}
               data-active={active}
               data-attention={flashing}
-              aria-description={flashing ? 'wants your attention' : undefined}
+              aria-description={flashing ? t('taskbar.attention') : undefined}
               title={renderWindowTitle(win, app, locale)}
               onClick={() => onWindowButton(win.id)}
             >
@@ -128,11 +137,11 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
         <button
           type="button"
           className={styles.mute}
-          aria-label="Messenger"
+          aria-label={t('taskbar.messenger')}
           title={
             messengerSignedIn
-              ? 'Messenger (signed in)'
-              : 'Messenger (not signed in)'
+              ? t('taskbar.messengerSignedIn')
+              : t('taskbar.messengerSignedOut')
           }
           data-signed-in={messengerSignedIn}
           onClick={() => useWindowsStore.getState().openApp('messenger')}
@@ -144,8 +153,8 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
           type="button"
           className={styles.mute}
           aria-pressed={muted}
-          aria-label={muted ? 'Unmute sound' : 'Mute sound'}
-          title={muted ? 'Sound is muted' : 'Sound is on'}
+          aria-label={muted ? t('taskbar.unmute') : t('taskbar.mute')}
+          title={muted ? t('taskbar.muted') : t('taskbar.soundOn')}
           onClick={toggleMuted}
         >
           <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">

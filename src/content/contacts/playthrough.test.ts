@@ -1,6 +1,7 @@
 // M2 gate: plays every path of every shipped script through the real engine with fake timers.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { setup } from '@/apps/messenger/engine/test-helpers';
+import { translate } from '@/i18n/t';
 import { WALLPAPERS } from '@/os/wallpapers/registry';
 import { PLAYLIST } from '../playlist';
 import type { ContactContent, Script } from '../types';
@@ -126,9 +127,8 @@ describe("P2-04: Pia's day-5 present", () => {
       expect(unlocks, picks.join(',')).toEqual(['ponies']);
       expect(t.said(id).join('\n')).toContain('look at the backrounds');
     }
-    expect(WALLPAPERS.find((w) => w.unlock === 'ponies')?.name).toBe(
-      'Pony Paradise',
-    );
+    const ponies = WALLPAPERS.find((w) => w.unlock === 'ponies');
+    expect(ponies && translate('en', ponies.nameKey)).toBe('Pony Paradise');
   });
 });
 

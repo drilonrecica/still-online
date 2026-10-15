@@ -197,4 +197,31 @@ describe('StartMenu', () => {
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
+
+  it('shows German strings with language de', () => {
+    useSettingsStore.setState({ language: 'de' });
+    render(<Shell />);
+    fireEvent.click(screen.getByRole('button', { name: 'Start' }));
+    expect(screen.getByRole('menu', { name: 'Startmenü' })).toBeTruthy();
+    expect(
+      screen.getByRole('menuitem', { name: 'Alle Programme' }),
+    ).toBeTruthy();
+    expect(
+      screen.getByRole('menuitem', { name: 'Systemsteuerung' }),
+    ).toBeTruthy();
+    expect(screen.getByRole('menuitem', { name: 'Arbeitsplatz' })).toBeTruthy();
+    expect(screen.getByRole('menuitem', { name: 'Abmelden' })).toBeTruthy();
+    expect(screen.getByRole('menuitem', { name: 'Ausschalten' })).toBeTruthy();
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Alle Programme' }));
+    expect(screen.getByRole('menuitem', { name: 'Zubehör' })).toBeTruthy();
+    expect(screen.getByRole('menuitem', { name: 'Spiele' })).toBeTruthy();
+  });
+
+  it('shows the German off screen text', () => {
+    useSettingsStore.setState({ language: 'de' });
+    render(<OffScreen />);
+    expect(
+      screen.getByText('Sie können den Computer jetzt ausschalten.'),
+    ).toBeTruthy();
+  });
 });

@@ -1,6 +1,8 @@
 // The screensaver overlay: a full-screen canvas running the chosen saver until the first input,
 // which it swallows. Reduced motion gets a still black screen with a slow fade instead.
 import { useEffect, useRef } from 'react';
+import { useT } from '@/i18n/useT';
+import { APP_NAME } from '@/os/brand/brand';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
 import { mulberry32 } from '@/os/random';
@@ -103,6 +105,7 @@ function useDismiss(ref: React.RefObject<HTMLDivElement | null>) {
 
 function RunningSaver({ run }: { run: ScreensaverRun }) {
   const reduced = useReducedMotion();
+  const t = useT();
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useDismiss(rootRef);
@@ -113,13 +116,13 @@ function RunningSaver({ run }: { run: ScreensaverRun }) {
       className={styles.saver}
       role="dialog"
       aria-modal="true"
-      aria-label="Screen saver"
+      aria-label={t('screensaver.label')}
       tabIndex={-1}
       data-saver={run.id}
       data-reduced={reduced || undefined}
     >
       {reduced ? (
-        <p className={styles.still}>still online</p>
+        <p className={styles.still}>{APP_NAME}</p>
       ) : (
         <canvas ref={canvasRef} className={styles.canvas} aria-hidden />
       )}

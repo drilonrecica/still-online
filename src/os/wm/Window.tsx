@@ -1,6 +1,6 @@
 // One window: the XP frame (chrome 'xp') or a bare positioned box (chrome 'none').
 import { Suspense, type CSSProperties, type MouseEvent } from 'react';
-import { useLocale } from '@/i18n/useT';
+import { useLocale, useT } from '@/i18n/useT';
 import { useWindowsStore } from '@/os/store/windows';
 import { WM_MIN_SIZE, type AppDefinition, type WindowState } from '@/os/types';
 import { requestClose } from './closeGuard';
@@ -37,6 +37,7 @@ export function Window({ win, app, active }: WindowProps) {
   const actions = () => useWindowsStore.getState();
   const AppComponent = app.component;
   const title = renderWindowTitle(win, app, useLocale());
+  const t = useT();
 
   const focus = () => actions().focusWindow(win.id);
   const content = (
@@ -98,18 +99,18 @@ export function Window({ win, app, active }: WindowProps) {
         <div className="title-bar-controls">
           <button
             type="button"
-            aria-label="Minimize"
+            aria-label={t('wm.minimize')}
             onClick={() => actions().minimizeWindow(win.id)}
           />
           <button
             type="button"
-            aria-label={win.maximized ? 'Restore' : 'Maximize'}
+            aria-label={win.maximized ? t('wm.restore') : t('wm.maximize')}
             disabled={app.fixedSize}
             onClick={() => actions().toggleMaximize(win.id)}
           />
           <button
             type="button"
-            aria-label="Close"
+            aria-label={t('wm.close')}
             onClick={() => requestClose(win.id)}
           />
         </div>

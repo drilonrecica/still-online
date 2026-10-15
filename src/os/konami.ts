@@ -1,4 +1,5 @@
 // The Konami code, on the desktop with no window focused: unlocks the `konami` wallpaper.
+import { t } from '@/i18n/t';
 import { playSound } from '@/os/sound';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { useToastStore } from '@/os/toast/store';
@@ -43,8 +44,8 @@ export function installKonami(target: Window = window): () => void {
     if (world.hasUnlock(KONAMI_UNLOCK)) return;
     world.unlock(KONAMI_UNLOCK);
     useToastStore.getState().push({
-      title: 'Cheat activated!',
-      text: 'A new wallpaper is available.',
+      title: t('toast.cheatTitle'),
+      text: t('toast.cheatText'),
     });
     playSound('notify');
   };

@@ -43,18 +43,18 @@ export function Login() {
         <Wordmark edition />
       </div>
       <form className={styles.body} onSubmit={submit}>
-        <div className={styles.prompt}>To begin, click your user name</div>
+        <div className={styles.prompt}>{t('login.prompt')}</div>
         <button
           type="submit"
           className={styles.tile}
-          aria-label={`Log on as ${name}`}
+          aria-label={t('login.logOnAs', { name })}
         >
           <img src={avatar} alt="" width={48} height={48} />
           <span className={styles.name}>{name}</span>
         </button>
         {firstVisit && (
           <label className={styles.field}>
-            Your name
+            {t('login.yourName')}
             <input
               autoFocus
               value={draft}
@@ -65,7 +65,7 @@ export function Login() {
         )}
       </form>
       <div className={styles.footer}>
-        <span>After you log on, you can start chatting.</span>
+        <span>{t('login.hint')}</span>
         <label className={styles.language}>
           {t('language.pickerLabel')}
           <LanguageSelect value={locale} onChange={setLanguage} />

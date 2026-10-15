@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { lazy } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import type { MessageKey } from '@/i18n/types';
 import type { AppDefinition, AppId } from '@/os/types';
@@ -112,14 +113,18 @@ describe('DesktopIcons', () => {
     render(
       <DesktopIcons
         shortcuts={[
-          { appId: 'notepad', label: 'Scratch', props: { note: 'x' } },
+          {
+            appId: 'notepad',
+            labelKey: 'apps.notepad.label',
+            props: { note: 'x' },
+          },
           // Every real AppId is registered now; a stale id from old saved data stands in.
-          { appId: 'retired-app' as AppId, label: 'Missing' },
+          { appId: 'retired-app' as AppId, labelKey: 'apps.mail.title' },
         ]}
       />,
     );
     expect(screen.getAllByRole('option')).toHaveLength(1);
-    fireEvent.doubleClick(screen.getByText('Scratch'));
+    fireEvent.doubleClick(screen.getByText('Notepad'));
     expect(useWindowsStore.getState().windows[0]?.props).toEqual({ note: 'x' });
   });
 
@@ -178,5 +183,23 @@ describe('desktop context menu', () => {
       'display',
     ]);
     expect(screen.queryByRole('menu')).toBeNull();
+  });
+
+  it('renders German labels and context menu with language de', () => {
+    useSettingsStore.setState({ language: 'de' });
+    render(<DesktopIcons />);
+    expect(screen.getByRole('listbox', { name: 'Desktop' })).toBeTruthy();
+    const labels = screen.getAllByRole('option').map((o) => o.textContent);
+    expect(labels).toContain('Eigene Dateien');
+    expect(labels).toContain('Arbeitsplatz');
+    expect(labels).toContain('Papierkorb');
+    expect(labels).toContain('Hühnerjagd');
+    fireEvent.contextMenu(screen.getByTestId('desktop'));
+    expect(
+      screen.getByRole('menuitem', { name: 'Eigenschaften' }),
+    ).toBeTruthy();
+    expect(
+      screen.getByRole('menuitem', { name: 'Aktualisieren' }),
+    ).toBeTruthy();
   });
 });

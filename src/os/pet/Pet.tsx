@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import { getApp } from '@/apps/registry';
+import { useT } from '@/i18n/useT';
 import { mulberry32, seedFrom } from '@/os/random';
 import { playSound } from '@/os/sound';
 import { useSettingsStore } from '@/os/store/settings';
@@ -52,6 +53,7 @@ function readWorld(): PetWorld {
 
 function Fluff() {
   const reduced = useReducedMotion();
+  const t = useT();
   const rng = useMemo(() => mulberry32(seedFrom('fluff')), []);
   const [pet, setPet] = useState<PetState>(() =>
     reduced ? rest(null, readWorld(), 0) : spawn(readWorld(), rng),
@@ -108,7 +110,7 @@ function Fluff() {
     >
       {pet.mode === 'baa' && (
         <span className={styles.bubble} aria-hidden="true">
-          Baa!
+          {t('pet.baa')}
         </span>
       )}
       {pet.mode === 'sleep' && (
@@ -119,8 +121,8 @@ function Fluff() {
       <button
         type="button"
         className={styles.sheep}
-        aria-label="Fluff the sheep"
-        title="Fluff"
+        aria-label={t('pet.label')}
+        title={t('pet.name')}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}

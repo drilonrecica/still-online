@@ -56,7 +56,7 @@ describe('explorer app', () => {
       ),
     );
     act(() => useSettingsStore.setState({ language: 'de' }));
-    expect(screen.getByLabelText('Address')).toHaveValue(
+    expect(screen.getByLabelText('Adresse')).toHaveValue(
       'Eigene Dateien\\Eigene Bilder',
     );
     await waitFor(() =>

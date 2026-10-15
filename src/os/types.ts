@@ -156,7 +156,7 @@ export interface AppDefinition {
 export interface Shortcut {
   appId: AppId;
   props?: WindowProps;
-  label: string;
+  labelKey: MessageKey;
   icon16?: string;
   icon32?: string;
 }

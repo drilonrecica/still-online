@@ -1,3 +1,4 @@
+import type { MessageKey } from '@/i18n/types';
 import type { Rand } from '@/os/random';
 
 /** Paints a whole wallpaper at `w`×`h`. Must only write to `ctx` (never read it back) and draw
@@ -11,8 +12,8 @@ export type Painter = (
 
 export interface WallpaperDef {
   id: string;
-  /** Shown in Display Properties. */
-  name: string;
+  /** Catalog key of the name shown in Display Properties. */
+  nameKey: MessageKey;
   /** Not listed until `unlock` is in the world store's unlocks. */
   hidden?: boolean;
   unlock?: string;

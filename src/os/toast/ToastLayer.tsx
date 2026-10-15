@@ -1,10 +1,12 @@
 // Renders the toast stack bottom-right, above the tray.
 import { useEffect } from 'react';
+import { useT } from '@/i18n/useT';
 import { TOAST_MS, useToastStore, type Toast } from './store';
 import styles from './Toast.module.css';
 
 function ToastItem({ toast }: { toast: Toast }) {
   const dismiss = useToastStore((s) => s.dismiss);
+  const t = useT();
 
   useEffect(() => {
     const timer = setTimeout(() => dismiss(toast.id), TOAST_MS);
@@ -39,7 +41,7 @@ function ToastItem({ toast }: { toast: Toast }) {
       <button
         type="button"
         className={styles.close}
-        aria-label="Close notification"
+        aria-label={t('toast.close')}
         onClick={() => dismiss(toast.id)}
       >
         ×
