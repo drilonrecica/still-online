@@ -1,5 +1,7 @@
 // English catalog: the source of truth for every key (see docs/i18n.md → "Catalogs").
 // One top-level key per area; values are strings with `{param}` tokens or `(p) => string`.
+import { DEFAULTS } from './defaults';
+
 export const en = {
   common: {
     ok: 'OK',
@@ -11,10 +13,7 @@ export const en = {
     browse: 'Browse…',
   },
   /** Localized defaults for settings stored as `null` (docs/i18n.md → "settings"). */
-  defaults: {
-    awayMessage: 'brb',
-    screensaverText: 'still online...',
-  },
+  defaults: DEFAULTS.en,
   /** Language pickers: login screen, Regional and Language Options, tray badge. */
   language: {
     pickerLabel: 'Language / Sprache',

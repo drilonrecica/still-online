@@ -13,7 +13,10 @@ const shipped = Object.entries(modules).filter(
   ([path]) =>
     !/\.(test|fixture)\.ts$/.test(path) &&
     !/(^|\/)types\.ts$/.test(path) &&
-    !/(^|\/)lint\.ts$/.test(path),
+    !/(^|\/)lint\.ts$/.test(path) &&
+    // Re-exports the modules linted here, plus the UI catalog (which names real products in
+    // the About disclaimer on purpose).
+    path !== './de/bundle.ts',
 );
 const localeOf = (path: string) => (path.startsWith('./de/') ? 'de' : 'en');
 

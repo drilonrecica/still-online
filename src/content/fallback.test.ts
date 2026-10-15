@@ -1,12 +1,8 @@
 // No English fallback is reachable with `language: 'de'`: every accessor returns German modules.
 import { describe, expect, it } from 'vitest';
+import { CONTACT_OVERLAYS } from './de/bundle';
 import { contacts } from './contacts';
-import {
-  CONTACT_OVERLAYS,
-  contentFor,
-  getContacts,
-  overlayFallbacks,
-} from './locale';
+import { contentFor, getContacts, overlayFallbacks } from './locale';
 import { TIPS, IDLE_JOKES } from './assistant';
 import { SCHEDULED_BALLOONS, WELCOME_BALLOON } from './balloons';
 import { SEED_FILES } from './files';

@@ -1,10 +1,15 @@
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
 import { afterEach, beforeEach } from 'vitest';
+import { loadLocale } from '@/i18n/load';
 import { useSettingsStore } from '@/os/store/settings';
 
 // Vitest globals are off, so Testing Library can't register its own auto-cleanup.
 afterEach(cleanup);
+
+// German is a lazy chunk in the app; tests load it once up front so `contentFor('de')`,
+// `translate('de', …)` and `setLanguage('de')` work synchronously, as they do after a load.
+await loadLocale('de');
 
 // Unit tests assert English. A German test sets `language: 'de'` itself.
 beforeEach(() => {

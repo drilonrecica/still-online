@@ -46,6 +46,8 @@ test('P0: German choice survives a reload and a fresh log-on', async ({
   await logIn(page);
   await page.getByTestId('tray-language').click();
   await page.getByRole('menuitemradio', { name: 'Deutsch' }).click();
+  // The first switch fetches the German chunk; the choice is saved once it has applied.
+  await expect(page.getByTestId('tray-language')).toHaveText('DE');
   await page.reload();
   await page.getByTestId('boot-screen').click();
   await expect(page.getByRole('radio', { name: 'Deutsch' })).toBeChecked();

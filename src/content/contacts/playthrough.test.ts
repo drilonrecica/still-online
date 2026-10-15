@@ -1,10 +1,11 @@
 // M2 gate: plays every path of every shipped script through the real engine with fake timers.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { CONTACT_OVERLAYS } from '../de/bundle';
 import { setup } from '@/apps/messenger/engine/test-helpers';
 import { translate } from '@/i18n/t';
 import { WALLPAPERS } from '@/os/wallpapers/registry';
 import type { Locale } from '@/i18n/types';
-import { CONTACT_OVERLAYS, getContacts, overlayFallbacks } from '../locale';
+import { getContacts, overlayFallbacks } from '../locale';
 import { PLAYLIST } from '../playlist';
 import type { ContactContent, Script } from '../types';
 import { contacts } from './index';

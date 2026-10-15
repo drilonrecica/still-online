@@ -256,7 +256,10 @@ export interface SettingsStore {
   setAwayMessage: (message: string) => void;
   setPetEnabled: (on: boolean) => void;
   setAssistantEnabled: (on: boolean) => void;
-  /** `null` goes back to detection. */
+  /**
+   * `null` goes back to detection. A loaded language switches at once; one that isn't loaded
+   * yet (German, the first time) switches when its chunk has arrived.
+   */
   setLanguage: (language: Locale | null) => void;
 }
 

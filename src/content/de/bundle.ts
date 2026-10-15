@@ -1,0 +1,56 @@
+// Everything German in one lazily loaded chunk: the UI catalog and all content. Only
+// `loadLocale('de')` (src/i18n/load.ts) imports this, dynamically; tests may import it directly.
+import { de } from '@/i18n/messages/de';
+import { contacts as enContacts } from '../contacts';
+import type { LocaleContent } from '../locale';
+import { mergeOverlay } from '../overlay';
+import { ABOUT_HOST } from '../sites/about';
+import { GOSSIP_HOST } from '../sites/celebgossip07';
+import { SEARCHLY_HOST } from '../sites/searchly';
+import { SPACEPORT_HOST } from '../sites/spaceport';
+import { TINFOIL_HOST } from '../sites/tinfoilcomets';
+import { VIRUSGUARD_HOST } from '../sites/virusguard';
+import { WESTFIELD_HOST } from '../sites/westfieldhigh';
+import type { ContactOverlay } from '../types';
+import * as assistant from './assistant';
+import * as balloons from './balloons';
+import { contactOverlays } from './contacts';
+import * as files from './files';
+import * as mail from './mail';
+import * as profiles from './profiles';
+import * as about from './sites/about';
+import * as gossip from './sites/celebgossip07';
+import * as searchly from './sites/searchly';
+import * as spaceport from './sites/spaceport';
+import * as tinfoil from './sites/tinfoilcomets';
+import * as virusguard from './sites/virusguard';
+import * as westfield from './sites/westfieldhigh';
+import * as tuneMole from './tunemole';
+
+export const catalog = de;
+
+/** The German overlays by contact id; `getContacts('de')` merges them over English. */
+export const CONTACT_OVERLAYS: Readonly<Record<string, ContactOverlay>> =
+  contactOverlays;
+
+export const content: LocaleContent = {
+  contacts: enContacts.map((c) =>
+    mergeOverlay(c, CONTACT_OVERLAYS[c.contact.id]),
+  ),
+  seedFiles: files.SEED_FILES,
+  mail: mail.MAIL_CONTENT,
+  autoReplies: mail.autoReplies,
+  profiles: profiles.PROFILES,
+  sites: {
+    [ABOUT_HOST]: about,
+    [SEARCHLY_HOST]: searchly,
+    [GOSSIP_HOST]: gossip,
+    [SPACEPORT_HOST]: spaceport,
+    [TINFOIL_HOST]: tinfoil,
+    [VIRUSGUARD_HOST]: virusguard,
+    [WESTFIELD_HOST]: westfield,
+  },
+  balloons,
+  tips: assistant,
+  tuneMole: tuneMole.TUNEMOLE_RESULTS,
+};

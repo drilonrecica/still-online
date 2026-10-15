@@ -2,7 +2,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { detectBrowserLocale } from '@/i18n/detect';
-import { MESSAGES } from '@/i18n/messages';
+import { DEFAULTS, type DefaultField } from '@/i18n/messages/defaults';
+import { loadLocale, isLocaleLoaded } from '@/i18n/load';
 import { LOCALES, isLocale, type Locale } from '@/i18n/types';
 import { isRecord, persistOptions } from '@/os/persist';
 import {
@@ -34,11 +35,9 @@ export function sanitizeAwayMinutes(v: unknown): number | null {
     : null;
 }
 
-type DefaultField = keyof (typeof MESSAGES)['en']['defaults'];
-
 /** True when `value` is some locale's default for `field` (so it is stored as `null`). */
 function isLocalizedDefault(field: DefaultField, value: string): boolean {
-  return LOCALES.some((l) => MESSAGES[l].defaults[field] === value);
+  return LOCALES.some((l) => DEFAULTS[l][field] === value);
 }
 
 /** `null` for a value equal to `locale`'s default, so it follows later language switches. */
@@ -47,7 +46,7 @@ function storedText(
   value: string,
   locale: Locale,
 ): string | null {
-  return MESSAGES[locale].defaults[field] === value ? null : value;
+  return DEFAULTS[locale][field] === value ? null : value;
 }
 
 /**
@@ -162,6 +161,9 @@ type PersistedSettings = Pick<
   | 'language'
 >;
 
+/** Bumped by every `setLanguage`, so a slow load can't override a newer choice. */
+let languageTicket = 0;
+
 export const useSettingsStore = create<SettingsStore>()(
   persist(
     (set, get) => {
@@ -237,8 +239,25 @@ export const useSettingsStore = create<SettingsStore>()(
           }),
         setPetEnabled: (petEnabled) => set({ petEnabled }),
         setAssistantEnabled: (assistantEnabled) => set({ assistantEnabled }),
-        setLanguage: (language) =>
-          set({ language: isLocale(language) ? language : null }),
+        setLanguage: (language) => {
+          const next = isLocale(language) ? language : null;
+          const ticket = ++languageTicket;
+          const target = next ?? detectBrowserLocale();
+          // A loaded language switches at once (same tick); otherwise its catalog and content
+          // load first, and only the newest request wins.
+          if (isLocaleLoaded(target)) {
+            set({ language: next });
+            return;
+          }
+          loadLocale(target).then(
+            () => {
+              if (ticket === languageTicket) set({ language: next });
+            },
+            (error: unknown) => {
+              console.warn(`could not load language "${target}"`, error);
+            },
+          );
+        },
       };
     },
     persistOptions<SettingsStore, PersistedSettings>({

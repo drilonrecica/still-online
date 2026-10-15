@@ -1,8 +1,9 @@
 // Structural parity: German content mirrors English (docs/i18n.md → "Structural parity").
 import { describe, expect, it } from 'vitest';
+import { CONTACT_OVERLAYS } from './de/bundle';
 import { contacts } from './contacts';
 import { exampleContact } from './example.fixture';
-import { CONTACT_OVERLAYS, contentFor } from './locale';
+import { contentFor } from './locale';
 import { contactParityProblems, moduleParityProblems } from './parity';
 import type { ContactOverlay } from './types';
 

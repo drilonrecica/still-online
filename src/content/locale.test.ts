@@ -1,11 +1,11 @@
 // Per-locale accessors and the contact overlay merge.
 import { describe, expect, it } from 'vitest';
+import { CONTACT_OVERLAYS } from './de/bundle';
 import { contacts } from './contacts';
 import { exampleContact } from './example.fixture';
 import { SEED_FILES } from './files';
 import { MAIL_CONTENT } from './mail';
 import {
-  CONTACT_OVERLAYS,
   getBalloons,
   getContacts,
   getMailContent,

@@ -1,5 +1,6 @@
 // German catalog. `Messages` makes TypeScript demand every key of `en.ts`.
 import type { Messages } from '../types';
+import { DEFAULTS } from './defaults';
 
 export const de: Messages = {
   common: {
@@ -11,10 +12,7 @@ export const de: Messages = {
     close: 'Schließen',
     browse: 'Durchsuchen…',
   },
-  defaults: {
-    awayMessage: 'bin gleich wieder da',
-    screensaverText: 'still online...',
-  },
+  defaults: DEFAULTS.de,
   language: {
     pickerLabel: 'Language / Sprache',
     trayLabel: 'Eingabesprache: {language}',
