@@ -36,6 +36,8 @@ import tunemole16 from '@/assets/icons/tunemole-16.svg';
 import tunemole32 from '@/assets/icons/tunemole-32.svg';
 import recycleBin16 from '@/assets/icons/recyclebin-16.svg';
 import recycleBin32 from '@/assets/icons/recyclebin-32.svg';
+import wrecker16 from '@/assets/icons/wrecker-16.svg';
+import wrecker32 from '@/assets/icons/wrecker-32.svg';
 
 export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
   explorer: {
@@ -299,6 +301,21 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     defaultSize: { w: 460, h: 640 },
     singleInstance: true,
     chrome: 'xp',
+    fixedSize: true,
+    showOnDesktop: false,
+    showInStartMenu: true,
+    category: 'games',
+  },
+  // A full-screen overlay portalled to document.body; the window itself stays an empty box.
+  wrecker: {
+    id: 'wrecker',
+    title: 'Desktop Wrecker',
+    icon16: wrecker16,
+    icon32: wrecker32,
+    component: lazy(() => import('./wrecker/Wrecker')),
+    defaultSize: { w: 240, h: 140 },
+    singleInstance: true,
+    chrome: 'none',
     fixedSize: true,
     showOnDesktop: false,
     showInStartMenu: true,

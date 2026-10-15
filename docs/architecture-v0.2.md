@@ -141,6 +141,8 @@ The task that creates `OverlayLayer` also sets `.layer { z-index: 1 }` in `Windo
 
 `GameId = 'mines' | 'henhunt' | 'pinball'`. Simulations are pure TS with `mulberry32` and fixed timesteps, rendered separately. A finished game calls `recordScore` (the `games` store) and emits `game:score`. Messenger reacts through `onGameScore` triggers (P6-07).
 
+**Desktop Wrecker (P6-04):** `src/apps/wrecker/` — `engine.ts` (tool state machine idle ⇄ using → repairing; turns pointer input and time into marks, particles and sounds), `damage.ts` (seeded mark generators), `particles.ts`, `draw.ts` + `cursors.ts` (canvas drawing), `useWreckerLoop.ts` (rAF: paints new marks once onto a persistent damage canvas, redraws particles/cursor on an effects canvas) and `Wrecker.tsx` (the `document.body` portal, palette, Esc). It never scores, so it isn't a `GameId`.
+
 ## Testing
 
 - **Seeded art:** draw with `mulberry32(seed)` or `mulberry32(seedFrom('name'))`. Test drawing with a recording fake 2D context; jsdom's `getContext` returns null (`src/test/setup.ts`).

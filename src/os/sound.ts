@@ -21,6 +21,12 @@ export const SOUND_NAMES = [
   'flipper',
   'launch',
   'drain',
+  'hammer',
+  'chainsaw',
+  'flame',
+  'gunfire',
+  'boing',
+  'sweep',
 ] as const;
 export type SoundName = (typeof SOUND_NAMES)[number];
 
@@ -390,6 +396,79 @@ export const SOUND_DEFS: Record<SoundName, SoundDef> = {
     voices: [
       tone(67, 0, 0.9, { wave: 'triangle', glideTo: 43, gain: 0.14 }),
       tone(55, 0.1, 0.8, { wave: 'sine', glideTo: 31, gain: 0.12 }),
+    ],
+  },
+  // Desktop Wrecker hammer: a heavy thud with glass cracking on top (~0.4s).
+  hammer: {
+    reverb: 0.2,
+    voices: [
+      tone(33, 0, 0.36, { glideTo: 24, gain: 0.6 }),
+      noise(320, 0, 0.22, { q: 0.8, gain: 0.5 }),
+      noise(5200, 0.01, 0.14, { q: 2.5, gain: 0.28 }),
+      bell(96, 0.02, 0.3, { ratio: 5.3, index: 2, gain: 0.04 }),
+    ],
+  },
+  // One buzz of the chainsaw; re-triggered while held, so it overlaps into a drone (~0.2s).
+  chainsaw: {
+    voices: [
+      tone(45, 0, 0.2, {
+        wave: 'sawtooth',
+        detune: 30,
+        cutoff: 1800,
+        glideTo: 46,
+        attack: 0.01,
+        release: 0.04,
+        gain: 0.1,
+      }),
+      tone(57, 0, 0.2, {
+        wave: 'square',
+        cutoff: 1200,
+        attack: 0.01,
+        release: 0.04,
+        gain: 0.04,
+      }),
+      noise(1500, 0, 0.2, { q: 1, attack: 0.01, release: 0.04, gain: 0.1 }),
+    ],
+  },
+  // Flamethrower: a breathy roar with crackles; re-triggered while held (~0.2s).
+  flame: {
+    voices: [
+      noise(700, 0, 0.2, { q: 0.6, attack: 0.03, gain: 0.28 }),
+      ...[0.02, 0.07, 0.13].map((at, i) =>
+        noise(2600 + i * 900, at, 0.03, {
+          q: 5,
+          gain: 0.3,
+          pan: (i - 1) * 0.4,
+        }),
+      ),
+    ],
+  },
+  // A single machine-gun shot; fired every 75 ms for the rat-a-tat (~0.12s).
+  gunfire: {
+    voices: [
+      noise(1800, 0, 0.06, { q: 0.8, gain: 0.45 }),
+      noise(600, 0, 0.11, { q: 0.9, gain: 0.35 }),
+      tone(40, 0, 0.09, { glideTo: 30, gain: 0.35 }),
+    ],
+  },
+  // A cartoon "boing": a spring wobbling down in pitch (~0.6s).
+  boing: {
+    reverb: 0.1,
+    voices: [
+      tone(50, 0, 0.12, { wave: 'triangle', glideTo: 74, gain: 0.2 }),
+      tone(74, 0.12, 0.12, { wave: 'triangle', glideTo: 58, gain: 0.18 }),
+      tone(58, 0.24, 0.14, { wave: 'triangle', glideTo: 70, gain: 0.15 }),
+      tone(70, 0.38, 0.22, { wave: 'triangle', glideTo: 62, gain: 0.1 }),
+    ],
+  },
+  // Repair: a long swoosh with glass tinkling away (~0.8s).
+  sweep: {
+    reverb: 0.3,
+    voices: [
+      noise(2500, 0, 0.75, { q: 0.5, attack: 0.25, gain: 0.25 }),
+      bell(100, 0.1, 0.3, { ratio: 4.2, index: 1.5, gain: 0.04, pan: -0.4 }),
+      bell(103, 0.25, 0.3, { ratio: 4.2, index: 1.5, gain: 0.035, pan: 0.2 }),
+      bell(98, 0.42, 0.36, { ratio: 4.2, index: 1.5, gain: 0.03, pan: 0.5 }),
     ],
   },
 };

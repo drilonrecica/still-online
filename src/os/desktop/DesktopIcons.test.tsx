@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { lazy } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { useWindowsStore } from '@/os/store/windows';
-import type { AppDefinition } from '@/os/types';
+import type { AppDefinition, AppId } from '@/os/types';
 import { DesktopIcons } from './DesktopIcons';
 import '@/apps/registry';
 
@@ -111,7 +111,8 @@ describe('DesktopIcons', () => {
       <DesktopIcons
         shortcuts={[
           { appId: 'notepad', label: 'Scratch', props: { note: 'x' } },
-          { appId: 'wrecker', label: 'Missing' },
+          // Every real AppId is registered now; a stale id from old saved data stands in.
+          { appId: 'retired-app' as AppId, label: 'Missing' },
         ]}
       />,
     );
