@@ -234,3 +234,4 @@
 - Login: there is no default player name. Log On waits for a non-blank name; a saved `'Player'`/`'Spieler'` (the old default) migrates to `null`, so that player is asked once. A player who really types "Player" keeps it until the next reload, then is asked again (accepted edge case).
 - Login: the language choice is a radio group of flag buttons in the centre of the screen (UK flag for English, German flag for Deutsch). The tray badge and Regional and Language Options show the flag next to the name.
 - Gossip tags are language-neutral ids (the English words); each language labels them in `GOSSIP_TAG_LABELS`. `/tag?t=` URLs work in both languages, and v0.3 German tag URLs (`/tag?t=zoff`) are mapped back to their ids.
+- Notepad opens at 640×420 (was 480×360): about 78 columns, so the seeded files' hand-broken lines (up to ~77 chars) no longer soft-wrap a few words early. Word Wrap stays on by default; the text keeps its line breaks.

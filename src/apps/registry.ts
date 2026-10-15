@@ -244,7 +244,8 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     icon16: notepad16,
     icon32: notepad32,
     component: lazy(() => import('./notepad/Notepad')),
-    defaultSize: { w: 480, h: 360 },
+    // ~78 columns: the seeded text files are written to about 75 characters a line.
+    defaultSize: { w: 640, h: 420 },
     singleInstance: false,
     chrome: 'xp',
     showOnDesktop: true,
