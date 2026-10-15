@@ -1,6 +1,6 @@
 // Regional and Language Options: one "Languages" tab with a dropdown and a live example.
 // Edits a draft; Apply/OK call `setLanguage`, Cancel closes without changing anything.
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { formatNumber, formatShortDate, formatTime } from '@/i18n/format';
 import { LanguageSelect } from '@/i18n/LanguageSelect';
 import { translate } from '@/i18n/t';
@@ -18,6 +18,9 @@ export default function Regional({ windowId }: AppComponentProps) {
   const closeWindow = useWindowsStore((s) => s.closeWindow);
   const [draft, setDraft] = useState(locale);
   const selectId = useId();
+
+  // The language can also change from the tray menu while this dialog is open.
+  useEffect(() => setDraft(locale), [locale]);
 
   const dirty = draft !== locale;
   const date = now();

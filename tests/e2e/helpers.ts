@@ -133,7 +133,7 @@ export async function openFromStart(page: Page, name: string) {
     !(await programs.getByRole('menuitem', { name, exact: true }).isVisible())
   ) {
     // The app lives in a flyout: try each folder until the item shows up.
-    for (const folder of [/Internet/, /Accessories/, /Games/]) {
+    for (const folder of [/Internet/, /Accessories/, /Games/, /System Tools/]) {
       await programs.getByRole('menuitem', { name: folder }).hover();
       if (
         await item.waitFor({ timeout: 1500 }).then(

@@ -63,4 +63,11 @@ describe('Regional and Language Options', () => {
       screen.getByRole('button', { name: 'Abbrechen' }),
     ).toBeInTheDocument();
   });
+
+  it('follows a language change made elsewhere (tray menu)', async () => {
+    setup();
+    act(() => useSettingsStore.getState().setLanguage('de'));
+    expect(screen.getByLabelText('Sprache:')).toHaveValue('de');
+    expect(screen.getByRole('button', { name: 'Übernehmen' })).toBeDisabled();
+  });
 });
