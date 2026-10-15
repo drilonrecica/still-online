@@ -59,8 +59,9 @@ function playPath(
   if (trigger.type === 'afterMinutes' || trigger.type === 'afterScript') {
     vi.advanceTimersByTime(trigger.minutes * 60_000);
   } else if (trigger.type === 'onNowPlaying') {
+    // A track-specific script only fires for its own track.
     t.engine.nowPlaying({
-      trackId: 'demo',
+      trackId: trigger.trackId ?? 'demo',
       artist: 'The Dial-Up Kids',
       title: 'Away Message',
     });

@@ -1,6 +1,7 @@
 // Theo: the shy classmate from bio. Short, hesitant lines, apologises a lot.
 import type { ContactContent } from '../types';
 import { theoDayScripts, theoDays } from './theo-days';
+import { theoNowPlaying2 } from './now-playing';
 
 export const theo: ContactContent = {
   contact: {
@@ -387,5 +388,6 @@ export const theo: ContactContent = {
       },
     },
     ...theoDayScripts,
+    theoNowPlaying2,
   ],
 };

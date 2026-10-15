@@ -1,6 +1,7 @@
 // Kayla: the ~*drama*~ friend. Everything is a crisis and the personal message changes constantly.
 import type { ContactContent } from '../types';
 import { kaylaDayScripts, kaylaDays } from './kayla-days';
+import { kaylaNowPlaying2 } from './now-playing';
 
 export const kayla: ContactContent = {
   contact: {
@@ -419,5 +420,6 @@ export const kayla: ContactContent = {
       },
     },
     ...kaylaDayScripts,
+    kaylaNowPlaying2,
   ],
 };

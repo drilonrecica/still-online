@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { exampleContact } from '../example.fixture';
 import { lintContact, lintContactText, lintScriptGraph } from '../lint';
+import { PLAYLIST } from '../playlist';
 import type { ContactContent, Script } from '../types';
 import { contacts } from './index';
 
@@ -97,6 +98,27 @@ describe('content lint: shipped contacts', () => {
     ];
     expect(texts.filter((t) => t?.includes('!'))).toEqual([]);
   });
+
+  // §P5-06: a second now-playing reaction per friend.
+  it.each(contacts.map((c) => [c.contact.id, c] as const))(
+    '%s has a nowPlaying2 script (≥ 3 nodes, a branch, a real trackId)',
+    (_id, { scripts }) => {
+      const script = scripts.find((s) => s.id === 'nowPlaying2');
+      expect(script?.trigger.type).toBe('onNowPlaying');
+      expect(script?.repeat ?? false).toBe(false);
+      const nodes = Object.values(script?.nodes ?? {});
+      expect(nodes.length).toBeGreaterThanOrEqual(3);
+      expect(
+        nodes.some(
+          (n) =>
+            'choices' in n && new Set(n.choices.map((c) => c.next)).size > 1,
+        ),
+      ).toBe(true);
+      const trigger = script?.trigger;
+      if (trigger?.type === 'onNowPlaying' && trigger.trackId !== undefined)
+        expect(PLAYLIST.map((t) => t.id)).toContain(trigger.trackId);
+    },
+  );
 
   it('at least one contact reacts to now playing', () => {
     const reacts = contacts.filter((c) =>
