@@ -15,6 +15,7 @@ import { createAmplifierStore } from '@/apps/amplifier/store';
 import { useNetworkStore } from '@/os/network';
 import { MODEM_KBPS, NET_PHASE_MS } from '@/os/serviceTypes';
 import '@/apps/registry';
+import { shownTexts } from './testing';
 
 const DIAL_MS =
   NET_PHASE_MS.dialing + NET_PHASE_MS.verifying + NET_PHASE_MS.registering;
@@ -203,7 +204,11 @@ describe('contact list', () => {
           ...progress,
           contacts: {
             ...progress.contacts,
-            ann: { ...ann, status: 'busy', personalMessage: 'studying!!' },
+            ann: {
+              ...ann,
+              status: 'busy',
+              personalMessage: { kind: 'literal', text: 'studying!!' },
+            },
           },
         },
       });
@@ -350,9 +355,11 @@ describe('tray icon', () => {
 describe('buildContactList', () => {
   it('omits empty groups and sorts by display name', () => {
     const list = buildContactList(
-      [contents[1]!.contact, contents[0]!.contact],
+      [contents[1]!, contents[0]!],
       {},
       { ann: true, bob: true },
+      'en',
+      'Player',
     );
     expect(list.map((g) => g.id)).toEqual(['friends']);
     expect(list[0]!.entries.map((e) => e.contact.id)).toEqual(['ann', 'bob']);
@@ -448,9 +455,7 @@ describe('now playing', () => {
     act(() => events.emit('amplifier:trackChanged', track));
     act(() => events.emit('amplifier:trackChanged', track));
     await act(() => vi.advanceTimersByTimeAsync(10_000));
-    const transcript =
-      useMessengerStore.getState().progress.contacts.ann?.transcript ?? [];
-    expect(transcript.filter((m) => m.kind === 'message')).toHaveLength(1);
+    expect(shownTexts('ann')).toHaveLength(1);
   });
 
   it('updates the personal message when the real Amplifier plays a track', async () => {

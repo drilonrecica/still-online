@@ -142,7 +142,7 @@ describe('resume after reload', () => {
             ...{
               everSignedIn: true,
               status: 'away',
-              personalMessage: 'pm',
+              personalMessage: { kind: 'literal', text: 'pm' },
               active: {
                 scriptId: 'gone',
                 nodeId: 'x',

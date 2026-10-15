@@ -4,6 +4,8 @@ import type {
   ContactId,
   ContactStatus,
   MessengerProgress,
+  NeutralTranscriptEntry,
+  PersonalMessageRef,
   ScriptId,
   WinkId,
 } from '@/content/types';
@@ -38,7 +40,7 @@ export interface EngineStore {
   setState: (partial: Partial<MessengerData>) => void;
 }
 
-/** A choice with placeholders already resolved. */
+/** A choice with placeholders resolved in the current locale. */
 export type ResolvedChoice = Pick<Choice, 'text' | 'next'> & { label: string };
 
 export interface EngineEventMap {
@@ -51,11 +53,19 @@ export interface EngineEventMap {
   contactSignedOut: { contactId: ContactId };
   typingStart: { contactId: ContactId };
   typingStop: { contactId: ContactId };
-  message: { contactId: ContactId; from: 'contact' | 'player'; text: string };
+  /** A message entry was added to the transcript; render it with `renderEntry`. */
+  message: {
+    contactId: ContactId;
+    from: 'contact' | 'player';
+    entry: NeutralTranscriptEntry;
+  };
   nudge: { contactId: ContactId; from: 'contact' | 'player' };
   wink: { contactId: ContactId; from: 'contact' | 'player'; wink: WinkId };
   statusChange: { contactId: ContactId; status: ContactStatus };
-  personalMessageChange: { contactId: ContactId; personalMessage: string };
+  personalMessageChange: {
+    contactId: ContactId;
+    personalMessage: PersonalMessageRef;
+  };
   /** The player can reply now (also re-emitted when a waiting script resumes). */
   choices: { contactId: ContactId; choices: ResolvedChoice[] };
   scriptStarted: { contactId: ContactId; scriptId: ScriptId };

@@ -1,7 +1,10 @@
 // The app-wide conversation engine: one instance, created on first use, bound to the messenger store.
-import { getAwayMessage, getPlayerName } from '@/i18n/settingsText';
+import { getPlayerName } from '@/i18n/settingsText';
+import { getLocale } from '@/i18n/t';
+import type { Locale } from '@/i18n/types';
+import { useLocale } from '@/i18n/useT';
 import { contacts } from '@/content/contacts';
-import type { ContactContent } from '@/content/types';
+import type { ContactContent, ContactId } from '@/content/types';
 import { events } from '@/os/events';
 import { useNowPlayingStore } from '@/os/nowPlaying';
 import { attentionKey, useAttentionStore } from '@/os/store/attention';
@@ -15,7 +18,11 @@ import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { requestShake } from './chat/nudge';
 import { requestWink } from './winks/play';
 import { summarizeAway } from './awaySummary';
-import { createConversationEngine, type ConversationEngine } from './engine';
+import {
+  createConversationEngine,
+  renderEntry,
+  type ConversationEngine,
+} from './engine';
 import { useMessengerStore } from './store';
 import messengerIcon from '@/assets/icons/messenger-32.svg';
 
@@ -25,6 +32,8 @@ export const TOAST_PREVIEW_CHARS = 40;
 let engine: ConversationEngine | null = null;
 let stopListening: (() => void) | null = null;
 let contents: readonly ContactContent[] = contacts;
+/** Test-only per-locale text (P0-06 replaces this with `getContacts(locale)`). */
+let localized: Partial<Record<Locale, readonly ContactContent[]>> = {};
 
 /** The chat window for `contactId` is the active window. */
 function isChatFocused(contactId: string): boolean {
@@ -39,6 +48,8 @@ function createEngine(): ConversationEngine {
     contents,
     store: useMessengerStore,
     getPlayerName: () => getPlayerName(),
+    getLocale,
+    getText: getMessengerContent,
     isChatFocused,
     getDay: () => useWorldStore.getState().day,
     onUnlock: (id) => useWorldStore.getState().unlock(id),
@@ -75,14 +86,19 @@ function createEngine(): ConversationEngine {
     });
   };
   const nameOf = (contactId: string) =>
-    contents.find((c) => c.contact.id === contactId)?.contact.displayName ??
+    getMessengerContent(contactId, getLocale())?.contact.displayName ??
     contactId;
   created.on('contactSignedIn', ({ contactId, toast: show }) => {
     if (show)
       toast(contactId, 'online', `${nameOf(contactId)} has just signed in.`);
   });
-  created.on('message', ({ contactId, from, text }) => {
+  created.on('message', ({ contactId, from, entry }) => {
     if (from !== 'contact') return;
+    const locale = getLocale();
+    const content = getMessengerContent(contactId, locale);
+    const rendered = renderEntry(entry, content, locale, getPlayerName());
+    if (rendered?.kind !== 'message') return;
+    const { text } = rendered;
     const preview =
       text.length > TOAST_PREVIEW_CHARS
         ? `${text.slice(0, TOAST_PREVIEW_CHARS)}…`
@@ -167,7 +183,7 @@ function createEngine(): ConversationEngine {
     stopIdle = onIdle(minutes, () => {
       const { signedIn, progress, goAway } = useMessengerStore.getState();
       if (!signedIn || progress.player.status !== 'online') return;
-      goAway(getAwayMessage(), true);
+      goAway(useSettingsStore.getState().awayMessage, true);
     });
   };
   armIdle(useSettingsStore.getState().awayMinutes);
@@ -233,11 +249,38 @@ export function getMessengerContents(): readonly ContactContent[] {
   return contents;
 }
 
+/**
+ * The contacts with their text in `locale`: what views render transcripts and presence from.
+ * Same ids, scripts and nodes as `getMessengerContents()`; only text differs.
+ */
+export function getLocalizedContents(
+  locale: Locale,
+): readonly ContactContent[] {
+  return localized[locale] ?? contents;
+}
+
+/** One contact's content in `locale`. */
+export function getMessengerContent(
+  contactId: ContactId,
+  locale: Locale,
+): ContactContent | undefined {
+  return getLocalizedContents(locale).find((c) => c.contact.id === contactId);
+}
+
+/** `getLocalizedContents` for components; re-renders on a language switch. */
+export function useLocalizedContents(): readonly ContactContent[] {
+  return getLocalizedContents(useLocale());
+}
+
 /** Tests swap in their own content (and drop the engine so the next use rebuilds it). */
-export function setMessengerContentsForTests(next: readonly ContactContent[]) {
+export function setMessengerContentsForTests(
+  next: readonly ContactContent[],
+  perLocale: Partial<Record<Locale, readonly ContactContent[]>> = {},
+) {
   stopListening?.();
   stopListening = null;
   engine?.dispose();
   engine = null;
   contents = next;
+  localized = perLocale;
 }

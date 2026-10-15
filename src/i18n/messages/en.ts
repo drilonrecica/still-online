@@ -61,6 +61,12 @@ export const en = {
   paint: {
     title: '{file} - Paint',
   },
+  /** How friends name the games in chat (`{game}`). */
+  games: {
+    mines: 'Mines',
+    henhunt: 'Hen Hunt',
+    pinball: 'Star Pinball',
+  },
   messenger: {
     chatTitle: '{name} - Conversation',
     groups: {

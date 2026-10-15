@@ -42,7 +42,7 @@ A line without `text` is a pure action and has no typing indicator. `statusChang
 - `{artist}` and `{title}` resolve only in `onNowPlaying` scripts, from the track that fired the trigger.
 - `{score}` and `{game}` resolve only in `onGameScore` scripts: the score with thousands separators (Mines reports seconds) and the game's name ("Mines", "Hen Hunt", "Star Pinball").
 
-They are resolved when the line is delivered. The transcript stores the resolved text.
+They are resolved at render time (P0-05). The transcript stores a reference to the line plus the raw values (`game` id, `score` number, `trackId`), so `{game}`/`{score}` format per locale and `{name}` is always the player's current name. `{artist}`/`{title}` come from the playlist track with that id.
 
 **Emoticons.** The chat window (M2-04) draws these codes as pictures, case-insensitive, in messages, display names and personal messages: `:) :( :D ;) :P :O (Y) (N) <3 (L)`. Other text stays as typed.
 
@@ -77,20 +77,20 @@ The world day (`src/os/world.ts`) starts at 1 and moves forward by one on a new 
 
 - `player`: `status`, `personalMessage`, `showNowPlaying` (the "Show what I'm listening to" toggle).
 - `contacts[id]`:
-  - `everSignedIn`, the current `status` and `personalMessage` (as changed by scripts and day presence), `unread`, and `presenceDay` (the last day whose presence was applied, default 1).
+  - `everSignedIn`, the current `status` and `personalMessage` (as changed by scripts and day presence; a `PersonalMessageRef`, see docs/i18n.md), `unread`, and `presenceDay` (the last day whose presence was applied, default 1).
   - `active`: `{ scriptId, nodeId, lineIndex, awaitingChoice, context }`. `lineIndex` is the next undelivered line. `context` holds the trigger's values for placeholders.
   - `queue`: `QueuedTrigger[]`.
   - `scripts[scriptId]`: `{ runs, visited, trackIds }`.
-  - `transcript`: delivered messages, nudges and winks, `{ kind, from, text?, wink?, at }`, where `at` is epoch ms.
+  - `transcript`: delivered entries as references (`line`, `choice`, `awayReply`, `typed`), nudges and winks, plus v0.2 `message` entries with text; `at` is epoch ms. `renderEntry` turns them into text (docs/i18n.md → "messenger").
 
 **Resume after reload.** Delivered lines are in the transcript, and `lineIndex` points past them. So the engine continues with the next line and never repeats a message. If `awaitingChoice` is true, the choices are shown again. Timers restart: the pending line's `delayMs` and typing time run again from the moment the player signs in, and `afterMinutes` (and `afterScript`, when its target already ran) counts from the new sign-in.
 
 ## Engine (M2-02)
 
-`createConversationEngine({ contents, store, scheduler?, getPlayerName?, isChatFocused?, getDay?, onUnlock? })` in `src/apps/messenger/engine/` is plain TS. Time comes from the injected `Scheduler` (`setTimeout`/`clearTimeout`/`now`); the default uses the browser timers, so Vitest fake timers work.
+`createConversationEngine({ contents, store, scheduler?, getPlayerName?, getLocale?, getText?, isChatFocused?, getDay?, onUnlock? })` in `src/apps/messenger/engine/` is plain TS. Time comes from the injected `Scheduler` (`setTimeout`/`clearTimeout`/`now`); the default uses the browser timers, so Vitest fake timers work.
 
 - **Calls:** `signIn()`, `signOut()`, `choose(contactId, index)`, `getChoices(contactId)`, `playerNudge(contactId)`, `playerWink(contactId, wink)`, `nowPlaying({ trackId, artist, title })`, `on/off(event, fn)`, `dispose()`. The engine doesn't listen to the OS event bus: the Messenger UI forwards `amplifier:trackChanged` to `nowPlaying` (M2-07). It doesn't rate-limit nudges either; the chat window does (M2-04).
-- **Events:** `contactSignedIn { status, toast }`, `contactSignedOut`, `typingStart`, `typingStop`, `message { from, text }`, `nudge { from }`, `wink { from, wink }`, `statusChange`, `personalMessageChange`, `choices`, `scriptStarted`, `scriptEnded`, `signedOut`.
+- **Events:** `contactSignedIn { status, toast }`, `contactSignedOut`, `typingStart`, `typingStop`, `message { from, entry }` (render with `renderEntry`), `nudge { from }`, `wink { from, wink }`, `statusChange`, `personalMessageChange`, `choices`, `scriptStarted`, `scriptEnded`, `signedOut`.
 - **Store** (`src/apps/messenger/store.ts`): `progress` is persisted. The runtime fields `signedIn`, `online[id]` and `typing[id]` are not, so everyone is offline again after a reload.
 - **Returning contacts** sign in with their last status. If that status is `offline` (signed out by a script), they use `initialStatus` instead.
 - **Scripts keep playing** after a `statusChange: 'offline'`, so a later line can sign the contact back in.

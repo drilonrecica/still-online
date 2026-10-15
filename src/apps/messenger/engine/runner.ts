@@ -5,14 +5,21 @@ import type {
   ContactId,
   DayPresence,
   ContactLine,
+  NeutralTranscriptEntry,
+  PersonalMessageRef,
   Script,
   ScriptNode,
-  TranscriptEntry,
   TriggerContext,
 } from '@/content/types';
 import type { EngineContext } from './context';
 import { defaultScriptProgress } from './progress';
-import { resolveText, typingMs } from './text';
+import {
+  fillPlaceholders,
+  lineParams,
+  scriptChoice,
+  scriptLine,
+} from './render';
+import { typingMs } from './text';
 import type { ResolvedChoice } from './types';
 
 interface Running {
@@ -26,13 +33,18 @@ export const AWAY_REPLY_DELAY_MS = 1500;
 
 export type Runner = ReturnType<typeof createRunner>;
 
-/** The highest `days` entry with `key <= day`, or none. */
-export function presenceFor(contact: Contact, day: number): DayPresence {
+/** The key of the highest `days` entry with `key <= day`; 0 if there is none. */
+export function presenceDayFor(contact: Contact, day: number): number {
   let best = 0;
   for (const key of Object.keys(contact.days ?? {}).map(Number)) {
-    if (key <= day && key > best) best = key;
+    if (key <= day && key > best && contact.days?.[key]) best = key;
   }
-  return contact.days?.[best] ?? {};
+  return best;
+}
+
+/** The highest `days` entry with `key <= day`, or none. */
+export function presenceFor(contact: Contact, day: number): DayPresence {
+  return contact.days?.[presenceDayFor(contact, day)] ?? {};
 }
 
 export function createRunner(ctx: EngineContext) {
@@ -40,6 +52,7 @@ export function createRunner(ctx: EngineContext) {
     bus,
     data,
     contentOf,
+    textOf,
     progressOf,
     patchContact,
     setFlag,
@@ -47,6 +60,7 @@ export function createRunner(ctx: EngineContext) {
     visit,
     lineStep,
     playerName,
+    locale,
     isFocused,
     scheduler,
     after,
@@ -156,13 +170,19 @@ export function createRunner(ctx: EngineContext) {
   const choicesOf = (id: ContactId): ResolvedChoice[] | null => {
     const r = running(id);
     if (!r?.active.awaitingChoice || !('choices' in r.node)) return null;
+    const { scriptId, nodeId, context } = r.active;
+    const params = lineParams(context);
     const resolve = (t: string) =>
-      resolveText(t, playerName(), r.active.context);
-    return r.node.choices.map((c) => ({
-      text: resolve(c.text),
-      label: resolve(c.label ?? c.text),
-      next: c.next,
-    }));
+      fillPlaceholders(t, params, locale(), playerName());
+    const text = textOf(id);
+    return r.node.choices.map((c, i) => {
+      const shown = scriptChoice(text, scriptId, nodeId, i) ?? c;
+      return {
+        text: resolve(shown.text),
+        label: resolve(shown.label ?? shown.text),
+        next: c.next,
+      };
+    });
   };
 
   /** Plays the next undelivered line of the active node, or waits for a choice / ends. */
@@ -182,15 +202,19 @@ export function createRunner(ctx: EngineContext) {
       if (line.text === undefined) return deliver(id, line);
       setFlag('typing', id, true);
       bus.emit('typingStart', { contactId: id });
-      lineStep(
-        id,
-        typingMs(resolveText(line.text, playerName(), r.active.context)),
-        () => {
-          setFlag('typing', id, false);
-          bus.emit('typingStop', { contactId: id });
-          deliver(id, line);
-        },
+      const { scriptId, nodeId, lineIndex } = r.active;
+      const shown = scriptLine(textOf(id), scriptId, nodeId, lineIndex)?.text;
+      const text = fillPlaceholders(
+        shown ?? line.text,
+        lineParams(r.active.context),
+        locale(),
+        playerName(),
       );
+      lineStep(id, typingMs(text), () => {
+        setFlag('typing', id, false);
+        bus.emit('typingStop', { contactId: id });
+        deliver(id, line);
+      });
     });
   };
 
@@ -199,23 +223,25 @@ export function createRunner(ctx: EngineContext) {
     const r = running(id);
     if (!r) return;
     const at = scheduler.now();
-    const resolve = (t: string) =>
-      resolveText(t, playerName(), r.active.context);
-    const text = line.text === undefined ? undefined : resolve(line.text);
-    const personalMessage =
+    const { scriptId, nodeId, lineIndex, context } = r.active;
+    const params = lineParams(context);
+    const ref = { scriptId, nodeId, lineIndex, ...(params ? { params } : {}) };
+    const personalMessage: PersonalMessageRef | undefined =
       line.personalMessageChange === undefined
         ? undefined
-        : resolve(line.personalMessageChange);
+        : { kind: 'line', ...ref };
     const away = data().progress.player.status === 'away';
-    const entries: TranscriptEntry[] = [];
-    if (text !== undefined)
-      entries.push({
-        kind: 'message',
-        from: 'contact',
-        text,
-        at,
-        ...(away ? { whileAway: true as const } : {}),
-      });
+    const message: NeutralTranscriptEntry | undefined =
+      line.text === undefined
+        ? undefined
+        : {
+            kind: 'line',
+            from: 'contact',
+            ...ref,
+            at,
+            ...(away ? { whileAway: true as const } : {}),
+          };
+    const entries: NeutralTranscriptEntry[] = message ? [message] : [];
     if (line.nudge) entries.push({ kind: 'nudge', from: 'contact', at });
     if (line.wink)
       entries.push({ kind: 'wink', from: 'contact', wink: line.wink, at });
@@ -226,7 +252,7 @@ export function createRunner(ctx: EngineContext) {
     patchContact(id, (c) => ({
       ...c,
       transcript: [...c.transcript, ...entries],
-      unread: c.unread + (text !== undefined && !isFocused(id) ? 1 : 0),
+      unread: c.unread + (message && !isFocused(id) ? 1 : 0),
       status: status ?? c.status,
       everSignedIn:
         c.everSignedIn || (status !== undefined && status !== 'offline'),
@@ -234,8 +260,8 @@ export function createRunner(ctx: EngineContext) {
       active: c.active && { ...c.active, lineIndex: c.active.lineIndex + 1 },
     }));
 
-    if (text !== undefined)
-      bus.emit('message', { contactId: id, from: 'contact', text });
+    if (message)
+      bus.emit('message', { contactId: id, from: 'contact', entry: message });
     if (line.nudge) bus.emit('nudge', { contactId: id, from: 'contact' });
     if (line.wink)
       bus.emit('wink', { contactId: id, from: 'contact', wink: line.wink });
@@ -257,7 +283,7 @@ export function createRunner(ctx: EngineContext) {
       bus.emit('personalMessageChange', { contactId: id, personalMessage });
     }
     if (line.unlock !== undefined) onUnlock(line.unlock);
-    if (text !== undefined && away) awayReply(id);
+    if (message && away) awayReply(id);
     playNext(id);
   };
 
@@ -269,23 +295,20 @@ export function createRunner(ctx: EngineContext) {
     patchContact(id, (c) => ({ ...c, awayReplyDay: day }));
     after(AWAY_REPLY_DELAY_MS, () => {
       if (!isOnline(id)) return;
+      const entry: NeutralTranscriptEntry = {
+        kind: 'awayReply',
+        from: 'contact',
+        at: scheduler.now(),
+        ...(data().progress.player.status === 'away'
+          ? { whileAway: true as const }
+          : {}),
+      };
       patchContact(id, (c) => ({
         ...c,
-        transcript: [
-          ...c.transcript,
-          {
-            kind: 'message',
-            from: 'contact',
-            text: reply,
-            at: scheduler.now(),
-            ...(data().progress.player.status === 'away'
-              ? { whileAway: true as const }
-              : {}),
-          },
-        ],
+        transcript: [...c.transcript, entry],
         unread: c.unread + (isFocused(id) ? 0 : 1),
       }));
-      bus.emit('message', { contactId: id, from: 'contact', text: reply });
+      bus.emit('message', { contactId: id, from: 'contact', entry });
     });
   };
 
@@ -296,8 +319,9 @@ export function createRunner(ctx: EngineContext) {
     if (!content) return;
     const p = progressOf(id);
     const day = getDay();
-    const presence =
-      p.presenceDay < day ? presenceFor(content.contact, day) : {};
+    const presenceDay =
+      p.presenceDay < day ? presenceDayFor(content.contact, day) : 0;
+    const presence = presenceFor(content.contact, presenceDay);
     const status =
       presence.status ??
       (p.everSignedIn && p.status !== 'offline'
@@ -307,7 +331,10 @@ export function createRunner(ctx: EngineContext) {
       ...c,
       everSignedIn: true,
       status,
-      personalMessage: presence.personalMessage ?? c.personalMessage,
+      personalMessage:
+        presence.personalMessage === undefined
+          ? c.personalMessage
+          : { kind: 'day', day: presenceDay },
       presenceDay: Math.max(c.presenceDay, day),
     }));
     setFlag('online', id, true);

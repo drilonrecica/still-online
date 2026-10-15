@@ -119,7 +119,7 @@ describe('presence per day', () => {
   it('day 1 keeps the contact defaults', () => {
     const t = world([contactContent('a', [], { days })]);
     t.session();
-    expect(t.progress('a')).toMatchObject({
+    expect(t.presence('a')).toMatchObject({
       status: 'online',
       personalMessage: "a's pm",
       presenceDay: 1,
@@ -132,7 +132,8 @@ describe('presence per day', () => {
     t.setDay(2);
     t.session();
     expect(t.log).toContain('signedIn a busy');
-    expect(t.progress('a')).toMatchObject({
+    expect(t.progress('a').personalMessage).toEqual({ kind: 'day', day: 2 });
+    expect(t.presence('a')).toMatchObject({
       status: 'busy',
       personalMessage: 'day 2 pm',
       presenceDay: 2,
@@ -142,13 +143,13 @@ describe('presence per day', () => {
   it('a script change later that day persists across sign-ins', () => {
     const t = world([contactContent('a', [statusChange], { days })], 2);
     t.session();
-    expect(t.progress('a')).toMatchObject({
+    expect(t.presence('a')).toMatchObject({
       status: 'away',
       personalMessage: 'gone',
       presenceDay: 2,
     });
     t.session();
-    expect(t.progress('a')).toMatchObject({
+    expect(t.presence('a')).toMatchObject({
       status: 'away',
       personalMessage: 'gone',
     });
@@ -157,14 +158,14 @@ describe('presence per day', () => {
   it('uses the highest entry at or below the day; status falls back when unset', () => {
     const t = world([contactContent('a', [], { days })], 3);
     t.session();
-    expect(t.progress('a')).toMatchObject({
+    expect(t.presence('a')).toMatchObject({
       status: 'busy',
       personalMessage: 'day 2 pm',
       presenceDay: 3,
     });
     t.setDay(6);
     t.session();
-    expect(t.progress('a')).toMatchObject({
+    expect(t.presence('a')).toMatchObject({
       status: 'busy',
       personalMessage: 'day 4 pm',
       presenceDay: 6,
@@ -174,7 +175,7 @@ describe('presence per day', () => {
   it('records the day even for a contact without days', () => {
     const t = world([contactContent('a', [])], 3);
     t.session();
-    expect(t.progress('a')).toMatchObject({
+    expect(t.presence('a')).toMatchObject({
       status: 'online',
       personalMessage: "a's pm",
       presenceDay: 3,

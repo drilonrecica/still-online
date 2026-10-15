@@ -13,6 +13,7 @@ import { contactContent, line } from '../engine/test-helpers';
 import { getMessengerEngine, setMessengerContentsForTests } from '../runtime';
 import { useMessengerStore } from '../store';
 import Chat from './Chat';
+import { shownTexts } from '../testing';
 
 const opening: Script = {
   id: 'opening',
@@ -149,7 +150,11 @@ describe('custom emoticons', () => {
     await user.click(screen.getByRole('button', { name: 'Send' }));
     const entries =
       useMessengerStore.getState().progress.contacts.lena?.transcript ?? [];
-    expect(entries.at(-1)).toMatchObject({ text: 'hey lena [ponies]' });
+    expect(entries.at(-1)).toMatchObject({
+      kind: 'choice',
+      flavor: '[ponies]',
+    });
+    expect(shownTexts('lena').at(-1)).toBe('hey lena [ponies]');
     expect(screen.getByRole('img', { name: '[ponies]' })).toBeTruthy();
   });
 });

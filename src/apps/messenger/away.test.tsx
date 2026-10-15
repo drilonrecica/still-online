@@ -14,6 +14,7 @@ import { AWAY_REPLY_DELAY_MS } from './engine/runner';
 import { contactContent, line } from './engine/test-helpers';
 import { getMessengerEngine, setMessengerContentsForTests } from './runtime';
 import { useMessengerStore } from './store';
+import { shownTexts } from './testing';
 
 const MIN = 60_000;
 
@@ -127,7 +128,7 @@ describe('while you were away', () => {
     await advance(21 * MIN);
     const lena = useMessengerStore.getState().progress.contacts.lena!;
     const flagged = lena.transcript.filter(
-      (e) => e.kind === 'message' && e.whileAway === true,
+      (e) => 'whileAway' in e && e.whileAway === true,
     );
     expect(flagged.length).toBeGreaterThan(0);
 
@@ -170,13 +171,10 @@ describe('while you were away', () => {
     await signIn();
     act(() => useMessengerStore.getState().goAway('brb', false));
     await advance(MIN + AWAY_REPLY_DELAY_MS + 2000);
-    const texts = () =>
-      useMessengerStore
-        .getState()
-        .progress.contacts.lena!.transcript.map((e) =>
-          e.kind === 'message' ? e.text : '',
-        );
-    expect(texts()).toEqual(['one', 'two', 'away? ok']);
+    expect(shownTexts('lena')).toEqual(['one', 'two', 'away? ok']);
+    expect(
+      useMessengerStore.getState().progress.contacts.lena!.transcript.at(-1),
+    ).toMatchObject({ kind: 'awayReply', whileAway: true });
     expect(
       useMessengerStore.getState().progress.contacts.lena!.awayReplyDay,
     ).toBe(1);
@@ -207,7 +205,7 @@ describe('summarizeAway', () => {
   const base = {
     everSignedIn: true,
     status: 'online' as const,
-    personalMessage: '',
+    personalMessage: 'initial' as const,
     active: null,
     queue: [],
     scripts: {},

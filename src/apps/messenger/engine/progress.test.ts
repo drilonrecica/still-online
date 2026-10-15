@@ -22,9 +22,37 @@ const valid = (): ContactProgress => ({
   },
   queue: [{ scriptId: 'nudged', context: {} }],
   scripts: { opening: { runs: 0, visited: ['hi'], trackIds: [] } },
+  personalMessage: {
+    kind: 'line',
+    scriptId: 'opening',
+    nodeId: 'hi',
+    lineIndex: 0,
+    params: { trackId: 't1' },
+  },
   transcript: [
-    { kind: 'message', from: 'contact', text: 'hi', at: 1 },
-    { kind: 'nudge', from: 'player', at: 2 },
+    {
+      kind: 'line',
+      from: 'contact',
+      scriptId: 'opening',
+      nodeId: 'hi',
+      lineIndex: 0,
+      params: { game: 'mines', score: 12 },
+      at: 1,
+      whileAway: true,
+    },
+    {
+      kind: 'choice',
+      from: 'player',
+      scriptId: 'opening',
+      nodeId: 'hi',
+      choiceIndex: 1,
+      flavor: ':)',
+      at: 2,
+    },
+    { kind: 'awayReply', from: 'contact', at: 3 },
+    { kind: 'typed', from: 'player', text: 'hey', at: 4 },
+    { kind: 'message', from: 'contact', text: 'v0.2 text', at: 5 },
+    { kind: 'nudge', from: 'player', at: 6 },
   ],
   unread: 3,
 });
@@ -39,7 +67,7 @@ describe('sanitizeProgress', () => {
         personalMessage: '♫ Band - Song',
         showNowPlaying: true,
         personalMessageBeforeNowPlaying: 'hi',
-        awayMessage: 'brb',
+        awayMessage: 'at practice',
         autoAway: true,
         awaySince: 1000,
       },
@@ -96,6 +124,94 @@ describe('sanitizeProgress', () => {
       transcript: [{ kind: 'nudge', from: 'contact', at: 5 }],
       unread: 0,
     });
+  });
+});
+
+describe('sanitizeProgress: v0.2 saves', () => {
+  it('keeps text entries verbatim and turns a text personal message into a literal', () => {
+    const legacy = {
+      ...valid(),
+      personalMessage: 'lake trip minus Alex :(',
+      transcript: [
+        { kind: 'message', from: 'contact', text: 'hi Alex', at: 1 },
+        { kind: 'message', from: 'player', text: 'yo', at: 2 },
+        {
+          kind: 'message',
+          from: 'contact',
+          text: 'u there?',
+          at: 3,
+          whileAway: true,
+        },
+      ],
+    };
+    const p = sanitizeProgress({ contacts: { mika: legacy } });
+    expect(p.contacts.mika?.personalMessage).toEqual({
+      kind: 'literal',
+      text: 'lake trip minus Alex :(',
+    });
+    expect(p.contacts.mika?.transcript).toEqual(legacy.transcript);
+  });
+
+  it("turns the old English default away message 'brb' into the localized default", () => {
+    const player = (awayMessage: unknown) =>
+      sanitizeProgress({ player: { status: 'away', awayMessage } }).player
+        .awayMessage;
+    expect(player('brb')).toBeNull();
+    expect(player(undefined)).toBeNull();
+    expect(player('at lunch')).toBe('at lunch');
+    expect(player('')).toBe('');
+  });
+
+  it('drops malformed references', () => {
+    const p = sanitizeProgress({
+      contacts: {
+        mika: {
+          ...valid(),
+          transcript: [
+            { kind: 'line', from: 'contact', scriptId: 'a', at: 1 },
+            {
+              kind: 'line',
+              from: 'player',
+              scriptId: 'a',
+              nodeId: 'n',
+              lineIndex: 0,
+              at: 1,
+            },
+            {
+              kind: 'choice',
+              from: 'player',
+              scriptId: 'a',
+              nodeId: 'n',
+              choiceIndex: -1,
+              at: 1,
+            },
+            { kind: 'typed', from: 'contact', text: 'x', at: 1 },
+            {
+              kind: 'line',
+              from: 'contact',
+              scriptId: 'a',
+              nodeId: 'n',
+              lineIndex: 0,
+              params: { game: 'tetris', score: 'lots', trackId: 'x' },
+              at: 2,
+            },
+          ],
+        },
+        broken: { ...valid(), personalMessage: { kind: 'day' } },
+      },
+    });
+    expect(Object.keys(p.contacts)).toEqual(['mika']);
+    expect(p.contacts.mika?.transcript).toEqual([
+      {
+        kind: 'line',
+        from: 'contact',
+        scriptId: 'a',
+        nodeId: 'n',
+        lineIndex: 0,
+        params: { trackId: 'x' },
+        at: 2,
+      },
+    ]);
   });
 });
 
@@ -168,7 +284,7 @@ describe('messenger store', () => {
       personalMessage: 'brb',
       showNowPlaying: true,
       personalMessageBeforeNowPlaying: null,
-      awayMessage: '',
+      awayMessage: null,
       autoAway: false,
       awaySince: expect.any(Number),
     });

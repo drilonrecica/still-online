@@ -3,6 +3,8 @@ import type {
   Contact,
   ContactContent,
   ContactLine,
+  NeutralTranscriptEntry,
+  PersonalMessageRef,
   Script,
 } from '@/content/types';
 import { createMessengerStore } from '../store';
@@ -10,6 +12,7 @@ import {
   createConversationEngine,
   type ConversationEngineOptions,
 } from './engine';
+import { renderEntry, renderPersonalMessage } from './render';
 import type { EngineEventMap } from './types';
 
 export const line = (
@@ -56,24 +59,31 @@ type Formatters = {
   [K in keyof EngineEventMap]: (p: EngineEventMap[K]) => string;
 };
 
-const FORMAT: Formatters = {
+/** Renders stored references in English for the log and `said`. */
+type Render = {
+  entry: (id: string, e: NeutralTranscriptEntry) => string;
+  pm: (id: string, ref: PersonalMessageRef) => string;
+};
+
+const formatters = (render: Render): Formatters => ({
   contactSignedIn: (p) =>
     `signedIn ${p.contactId} ${p.status}${p.toast ? ' toast' : ''}`,
   contactSignedOut: (p) => `signedOut ${p.contactId}`,
   typingStart: (p) => `typing ${p.contactId}`,
   typingStop: (p) => `typingStop ${p.contactId}`,
   message: (p) =>
-    `${p.from === 'player' ? '>' : '<'} ${p.contactId}: ${p.text}`,
+    `${p.from === 'player' ? '>' : '<'} ${p.contactId}: ${render.entry(p.contactId, p.entry)}`,
   nudge: (p) => `nudge ${p.from} ${p.contactId}`,
   wink: (p) => `wink ${p.from} ${p.contactId} ${p.wink}`,
   statusChange: (p) => `status ${p.contactId} ${p.status}`,
-  personalMessageChange: (p) => `pm ${p.contactId} ${p.personalMessage}`,
+  personalMessageChange: (p) =>
+    `pm ${p.contactId} ${render.pm(p.contactId, p.personalMessage)}`,
   choices: (p) =>
     `choices ${p.contactId} ${p.choices.map((c) => c.label).join('|')}`,
   scriptStarted: (p) => `start ${p.contactId}/${p.scriptId}`,
   scriptEnded: (p) => `end ${p.contactId}/${p.scriptId}`,
   signedOut: () => 'player signedOut',
-};
+});
 
 /** A fresh store (hydrated from localStorage) + engine whose events are recorded in `log`. */
 export function setup(
@@ -87,10 +97,20 @@ export function setup(
     getPlayerName: () => 'Ann',
     ...options,
   });
+  const name = options.getPlayerName ?? (() => 'Ann');
+  const contentOf = (id: string) => contents.find((c) => c.contact.id === id);
+  const render: Render = {
+    entry: (id, e) => {
+      const r = renderEntry(e, contentOf(id), 'en', name());
+      return r?.kind === 'message' ? r.text : `<unresolved ${e.kind}>`;
+    },
+    pm: (id, ref) => renderPersonalMessage(ref, contentOf(id), 'en', name()),
+  };
+  const format = formatters(render);
   const log: string[] = [];
-  for (const type of Object.keys(FORMAT) as (keyof EngineEventMap)[]) {
+  for (const type of Object.keys(format) as (keyof EngineEventMap)[]) {
     engine.on(type, (payload) =>
-      log.push((FORMAT[type] as (p: typeof payload) => string)(payload)),
+      log.push((format[type] as (p: typeof payload) => string)(payload)),
     );
   }
   const progress = (id: string) => {
@@ -98,16 +118,23 @@ export function setup(
     if (!p) throw new Error(`no progress for ${id}`);
     return p;
   };
-  /** Contact message texts in the transcript. */
+  /** The transcript rendered in English. */
   const said = (id: string) =>
     progress(id).transcript.map((e) =>
-      e.kind === 'message'
-        ? `${e.from === 'player' ? '>' : '<'} ${e.text}`
-        : e.kind === 'wink'
-          ? `wink ${e.from} ${e.wink}`
-          : `nudge ${e.from}`,
+      e.kind === 'wink'
+        ? `wink ${e.from} ${e.wink}`
+        : e.kind === 'nudge'
+          ? `nudge ${e.from}`
+          : `${e.from === 'player' ? '>' : '<'} ${render.entry(id, e)}`,
     );
+  /** The contact's personal message rendered in English. */
+  const pm = (id: string) => render.pm(id, progress(id).personalMessage);
+  /** Progress with the personal message rendered. */
+  const presence = (id: string) => ({
+    ...progress(id),
+    personalMessage: pm(id),
+  });
   /** Returns and clears the log. */
   const take = () => log.splice(0, log.length);
-  return { store, engine, log, take, progress, said };
+  return { store, engine, log, take, progress, said, pm, presence };
 }

@@ -9,6 +9,7 @@ import { useWorldStore, WORLD_DEFAULTS } from '@/os/world';
 import { contactContent, line, say } from './engine/test-helpers';
 import { getMessengerEngine, setMessengerContentsForTests } from './runtime';
 import { useMessengerStore } from './store';
+import { shownPersonalMessage, shownTexts } from './testing';
 
 const gift: Script = {
   id: 'gift',
@@ -59,10 +60,8 @@ describe('messenger runtime: world wiring', () => {
     getMessengerEngine().signOut();
     useWorldStore.setState({ day: 2 });
     signIn();
-    expect(pia()?.personalMessage).toBe('missing: 1 pony');
-    expect(
-      pia()?.transcript.map((e) => e.kind === 'message' && e.text),
-    ).toEqual(['d2']);
+    expect(shownPersonalMessage('pia')).toBe('missing: 1 pony');
+    expect(shownTexts('pia')).toEqual(['d2']);
   });
 
   it('logging off signs out, so the next day starts a fresh sign-in', () => {
@@ -73,7 +72,7 @@ describe('messenger runtime: world wiring', () => {
     expect(useMessengerStore.getState().signedIn).toBe(false);
     useWorldStore.setState({ day: 2 });
     signIn();
-    expect(pia()?.personalMessage).toBe('missing: 1 pony');
+    expect(shownPersonalMessage('pia')).toBe('missing: 1 pony');
     useSessionStore.setState({ state: 'booting' });
   });
 
@@ -86,9 +85,10 @@ describe('messenger runtime: world wiring', () => {
     signIn();
     events.emit('game:score', { game: 'pinball', score: 9000 });
     vi.advanceTimersByTime(10_000);
-    expect(
-      pia()?.transcript.map((e) => e.kind === 'message' && e.text),
-    ).toEqual(['9,000??']);
+    expect(shownTexts('pia')).toEqual(['9,000??']);
+    expect(pia()?.transcript[0]).toMatchObject({
+      params: { game: 'pinball', score: 9000 },
+    });
   });
 
   it('an unlock line calls world.unlock, which emits world:unlock', () => {

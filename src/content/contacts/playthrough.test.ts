@@ -2,6 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { setup } from '@/apps/messenger/engine/test-helpers';
 import { WALLPAPERS } from '@/os/wallpapers/registry';
+import { PLAYLIST } from '../playlist';
 import type { ContactContent, Script } from '../types';
 import { contacts } from './index';
 
@@ -59,11 +60,14 @@ function playPath(
   if (trigger.type === 'afterMinutes' || trigger.type === 'afterScript') {
     vi.advanceTimersByTime(trigger.minutes * 60_000);
   } else if (trigger.type === 'onNowPlaying') {
-    // A track-specific script only fires for its own track.
+    // A track-specific script only fires for its own track. `{artist}`/`{title}` render from
+    // the playlist, so the track is a real one.
+    const track =
+      PLAYLIST.find((p) => p.id === trigger.trackId) ?? PLAYLIST[0]!;
     t.engine.nowPlaying({
-      trackId: trigger.trackId ?? 'demo',
-      artist: 'The Dial-Up Kids',
-      title: 'Away Message',
+      trackId: track.id,
+      artist: track.artist,
+      title: track.title,
     });
   } else if (trigger.type === 'onGameScore') {
     t.engine.gameScore(trigger.game, Math.max(trigger.minScore ?? 0, 420));

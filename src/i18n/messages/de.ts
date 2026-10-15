@@ -59,6 +59,11 @@ export const de: Messages = {
   paint: {
     title: '{file} - Paint',
   },
+  games: {
+    mines: 'Minen',
+    henhunt: 'Hühnerjagd',
+    pinball: 'Sternen-Flipper',
+  },
   messenger: {
     chatTitle: '{name} - Unterhaltung',
     groups: {

@@ -179,3 +179,8 @@
 - P0-04: the German mail reply prefix is `AW:` and the bounce sender „E-Mail-Zustellsystem" — what German mail clients of 2007 showed
 - P0-04: `MESSAGES` moved to `src/i18n/messages/index.ts` (re-exported from `t.ts`) — the settings store needs the catalogs for its defaults, and `t.ts` imports the settings store
 - P0-04: `tsconfig.app.json` gets `resolveJsonModule` — the v0.2 save fixture is plain JSON so the e2e migration spec (P3) can reuse it
+- P0-05: `renderEntry` takes the entry's contact content (`ContactContent` for the locale), not the whole contact list — script ids are only unique per contact, and every caller already knows the contact
+- P0-05: `renderEntry` returns the view shape (`TranscriptEntry`: `message` with text, nudge, wink) or `null` for a reference the content no longer has; views drop `null` instead of showing a placeholder
+- P0-05: `{artist}`/`{title}` render from the `PLAYLIST` track by `trackId` (the spec's "from the track id"); the engine tests and the M2 playthrough now use real playlist tracks instead of made-up ones
+- P0-05: the engine renders choices and typing time in the current locale through a `getText(contactId, locale)` option (runtime: `getMessengerContent`), so reply buttons switch language with everything else
+- P0-05: picking the Away prompt's untouched localized default stores `player.awayMessage = null`, so it follows the language like the settings default

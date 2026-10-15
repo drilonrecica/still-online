@@ -1,10 +1,16 @@
 // Conversation engine: plays contact scripts (docs/content-format.md) against the messenger store.
 // Pure TS: time comes from the injected scheduler, output goes to the store and engine events.
 import type { createEventBus } from '@/os/events';
-import type { ContactId, TriggerContext, WinkId } from '@/content/types';
+import type {
+  ContactId,
+  NeutralTranscriptEntry,
+  TriggerContext,
+  WinkId,
+} from '@/content/types';
 import type { GameId } from '@/os/types';
 import { createEngineContext, type ConversationEngineOptions } from './context';
 import { reconcileContact } from './progress';
+import { lineParams } from './render';
 import { createRunner } from './runner';
 import type { EngineEventMap, NowPlayingTrack, ResolvedChoice } from './types';
 
@@ -16,7 +22,8 @@ export interface ConversationEngine {
   /** Stops every timer. Undelivered lines stay pending and replay on the next sign-in. */
   signOut: () => void;
   /**
-   * Player picks reply `index`; `flavor` (emoticon codes the player added) is appended to its text.
+   * Player picks reply `index`; `flavor` (emoticon codes the player added) is stored with it and
+   * appended to its text at render.
    * Returns false if that contact isn't waiting for a choice.
    */
   choose: (contactId: ContactId, index: number, flavor?: string) => boolean;
@@ -87,29 +94,29 @@ export function createConversationEngine(
       if (!data().signedIn || !r || !picked || !r.script.nodes[picked.next])
         return false;
       const extra = flavor?.trim();
-      const choice = extra
-        ? { ...picked, text: `${picked.text} ${extra}` }
-        : picked;
+      const params = lineParams(r.active.context);
+      const entry: NeutralTranscriptEntry = {
+        kind: 'choice',
+        from: 'player',
+        scriptId: r.active.scriptId,
+        nodeId: r.active.nodeId,
+        choiceIndex: index,
+        ...(params ? { params } : {}),
+        ...(extra ? { flavor: extra } : {}),
+        at: scheduler.now(),
+      };
       patchContact(id, (c) => ({
         ...c,
-        transcript: [
-          ...c.transcript,
-          {
-            kind: 'message',
-            from: 'player',
-            text: choice.text,
-            at: scheduler.now(),
-          },
-        ],
+        transcript: [...c.transcript, entry],
         active: {
           ...r.active,
-          nodeId: choice.next,
+          nodeId: picked.next,
           lineIndex: 0,
           awaitingChoice: false,
         },
-        scripts: visit(c, r.script.id, choice.next),
+        scripts: visit(c, r.script.id, picked.next),
       }));
-      bus.emit('message', { contactId: id, from: 'player', text: choice.text });
+      bus.emit('message', { contactId: id, from: 'player', entry });
       playNext(id);
       return true;
     },

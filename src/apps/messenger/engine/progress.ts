@@ -7,12 +7,14 @@ import {
   type Contact,
   type ContactProgress,
   type ContactStatus,
+  type LineParams,
   type MessengerProgress,
+  type NeutralTranscriptEntry,
+  type PersonalMessageRef,
   type PlayerProgress,
   type QueuedTrigger,
   type Script,
   type ScriptProgress,
-  type TranscriptEntry,
   type TriggerContext,
 } from '@/content/types';
 import { sanitizeCustomEmoticons } from '../customEmoticons';
@@ -29,7 +31,7 @@ export const defaultPlayerProgress = (): PlayerProgress => ({
   personalMessage: '',
   showNowPlaying: false,
   personalMessageBeforeNowPlaying: null,
-  awayMessage: '',
+  awayMessage: null,
   autoAway: false,
   awaySince: null,
 });
@@ -42,7 +44,7 @@ export const defaultProgress = (): MessengerProgress => ({
 export const defaultContactProgress = (contact: Contact): ContactProgress => ({
   everSignedIn: false,
   status: contact.initialStatus,
-  personalMessage: contact.personalMessage,
+  personalMessage: 'initial',
   active: null,
   queue: [],
   scripts: {},
@@ -120,46 +122,134 @@ function scripts(v: unknown): Record<string, ScriptProgress> {
   return out;
 }
 
-function transcript(v: unknown): TranscriptEntry[] {
-  if (!Array.isArray(v)) return [];
-  return v.flatMap((e: unknown): TranscriptEntry[] => {
-    if (!isRecord(e) || !isSender(e.from) || typeof e.at !== 'number')
-      return [];
-    if (e.kind === 'nudge') return [{ kind: 'nudge', from: e.from, at: e.at }];
-    if (e.kind === 'wink')
-      return isWinkId(e.wink)
-        ? [{ kind: 'wink', from: e.from, wink: e.wink, at: e.at }]
-        : [];
-    if (e.kind === 'message' && typeof e.text === 'string') {
-      return [
-        e.whileAway === true && e.from === 'contact'
-          ? {
-              kind: 'message',
-              from: e.from,
-              text: e.text,
-              at: e.at,
-              whileAway: true,
-            }
-          : { kind: 'message', from: e.from, text: e.text, at: e.at },
-      ];
+/** Raw placeholder values; `undefined` when none are usable. */
+function lineParams(v: unknown): LineParams | undefined {
+  if (!isRecord(v)) return undefined;
+  const out: LineParams = {};
+  if (isGameId(v.game)) out.game = v.game;
+  if (typeof v.score === 'number' && Number.isFinite(v.score))
+    out.score = v.score;
+  if (typeof v.trackId === 'string') out.trackId = v.trackId;
+  return Object.keys(out).length > 0 ? out : undefined;
+}
+
+/** `scriptId`/`nodeId`/index (+ params) of a stored reference, or null if malformed. */
+function scriptRef(
+  e: Record<string, unknown>,
+  index: 'lineIndex' | 'choiceIndex',
+) {
+  const i = e[index];
+  if (
+    typeof e.scriptId !== 'string' ||
+    typeof e.nodeId !== 'string' ||
+    !isCount(i)
+  )
+    return null;
+  const params = lineParams(e.params);
+  return {
+    scriptId: e.scriptId,
+    nodeId: e.nodeId,
+    index: i,
+    ...(params ? { params } : {}),
+  };
+}
+
+function transcriptEntry(e: unknown): NeutralTranscriptEntry | null {
+  if (!isRecord(e) || !isSender(e.from) || typeof e.at !== 'number')
+    return null;
+  const { from, at } = e;
+  const away =
+    e.whileAway === true && from === 'contact'
+      ? { whileAway: true as const }
+      : {};
+  switch (e.kind) {
+    case 'nudge':
+      return { kind: 'nudge', from, at };
+    case 'wink':
+      return isWinkId(e.wink) ? { kind: 'wink', from, wink: e.wink, at } : null;
+    // v0.2: already-rendered text, kept verbatim.
+    case 'message':
+      return typeof e.text === 'string'
+        ? { kind: 'message', from, text: e.text, at, ...away }
+        : null;
+    case 'typed':
+      return typeof e.text === 'string' && from === 'player'
+        ? { kind: 'typed', from, text: e.text, at }
+        : null;
+    case 'awayReply':
+      return from === 'contact'
+        ? { kind: 'awayReply', from, at, ...away }
+        : null;
+    case 'line': {
+      const ref = scriptRef(e, 'lineIndex');
+      if (!ref || from !== 'contact') return null;
+      const { index, ...rest } = ref;
+      return { kind: 'line', from, ...rest, lineIndex: index, at, ...away };
     }
-    return [];
+    case 'choice': {
+      const ref = scriptRef(e, 'choiceIndex');
+      if (!ref || from !== 'player') return null;
+      const { index, ...rest } = ref;
+      return {
+        kind: 'choice',
+        from,
+        ...rest,
+        choiceIndex: index,
+        ...(typeof e.flavor === 'string' && e.flavor !== ''
+          ? { flavor: e.flavor }
+          : {}),
+        at,
+      };
+    }
+    default:
+      return null;
+  }
+}
+
+function transcript(v: unknown): NeutralTranscriptEntry[] {
+  if (!Array.isArray(v)) return [];
+  return v.flatMap((e: unknown) => {
+    const sane = transcriptEntry(e);
+    return sane ? [sane] : [];
   });
 }
 
+/** A stored personal-message source; a v0.2 string becomes a literal. Null if unusable. */
+function personalMessageRef(v: unknown): PersonalMessageRef | null {
+  if (v === 'initial') return v;
+  if (typeof v === 'string') return { kind: 'literal', text: v };
+  if (!isRecord(v)) return null;
+  if (v.kind === 'literal' && typeof v.text === 'string')
+    return { kind: 'literal', text: v.text };
+  if (v.kind === 'day' && isCount(v.day)) return { kind: 'day', day: v.day };
+  if (v.kind === 'line') {
+    const ref = scriptRef(v, 'lineIndex');
+    if (!ref) return null;
+    const { index, ...rest } = ref;
+    return { kind: 'line', ...rest, lineIndex: index };
+  }
+  return null;
+}
+
+/** v0.2 stored the English default `'brb'`; that and anything unusable become `null` (default). */
+function awayMessage(v: unknown): string | null {
+  return typeof v === 'string' && v !== 'brb' ? v : null;
+}
+
 function contactProgress(v: unknown): ContactProgress | null {
+  if (!isRecord(v)) return null;
+  const personalMessage = personalMessageRef(v.personalMessage);
   if (
-    !isRecord(v) ||
     typeof v.everSignedIn !== 'boolean' ||
     !isStatus(v.status) ||
-    typeof v.personalMessage !== 'string'
+    !personalMessage
   ) {
     return null;
   }
   return {
     everSignedIn: v.everSignedIn,
     status: v.status,
-    personalMessage: v.personalMessage,
+    personalMessage,
     active: active(v.active),
     queue: queued(v.queue),
     scripts: scripts(v.scripts),
@@ -189,7 +279,7 @@ export function sanitizeProgress(v: unknown): MessengerProgress {
       typeof p.personalMessageBeforeNowPlaying === 'string'
         ? p.personalMessageBeforeNowPlaying
         : null,
-    awayMessage: typeof p.awayMessage === 'string' ? p.awayMessage : '',
+    awayMessage: awayMessage(p.awayMessage),
     autoAway: p.autoAway === true,
     awaySince: typeof p.awaySince === 'number' ? p.awaySince : null,
   };

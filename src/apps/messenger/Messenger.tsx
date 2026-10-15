@@ -6,6 +6,7 @@ import type { ContactStatus, PlayerStatus } from '@/content/types';
 import { requireOnline } from '@/os/network';
 import { playSound } from '@/os/sound';
 import { scaleMs } from '@/os/speed';
+import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import { AwayPrompt, OptionsDialog } from './AwayDialogs';
 import { buildContactList, type ListGroupId } from './contactList';
@@ -13,7 +14,11 @@ import styles from './Messenger.module.css';
 import { PlayerPicture } from './chat/PlayerPicture';
 import { RichText } from './chat/Transcript';
 import { PicturePicker } from './PicturePicker';
-import { getMessengerContents, getMessengerEngine } from './runtime';
+import {
+  getMessengerContents,
+  getMessengerEngine,
+  useLocalizedContents,
+} from './runtime';
 import { StatusIcon, STATUS_LABELS } from './StatusIcon';
 import { useMessengerStore } from './store';
 import messengerIcon from '@/assets/icons/messenger-32.svg';
@@ -166,6 +171,7 @@ function ContactListView() {
   const locale = useLocale();
   const status = useMessengerStore((s) => s.progress.player.status);
   const awayMessage = useMessengerStore((s) => s.progress.player.awayMessage);
+  const shownAwayMessage = awayMessage ?? t('defaults.awayMessage');
   const setStatus = useMessengerStore((s) => s.setPlayerStatus);
   const goAway = useMessengerStore((s) => s.goAway);
   const [dialog, setDialog] = useState<'away' | 'options' | 'picture' | null>(
@@ -182,14 +188,10 @@ function ContactListView() {
     new Set(),
   );
 
+  const localized = useLocalizedContents();
   const groups = useMemo(
-    () =>
-      buildContactList(
-        getMessengerContents().map((c) => c.contact),
-        progress,
-        online,
-      ),
-    [progress, online],
+    () => buildContactList(localized, progress, online, locale, playerName),
+    [localized, progress, online, locale, playerName],
   );
   const waiting = groups
     .flatMap((g) => g.entries)
@@ -265,7 +267,7 @@ function ContactListView() {
             <span className={styles.playerName}>{playerName}</span>
             {status === 'away' && (
               <span className={styles.awayNote}>
-                ({awayMessage ? `Away: ${awayMessage}` : 'Away'})
+                ({shownAwayMessage ? `Away: ${shownAwayMessage}` : 'Away'})
               </span>
             )}
             <select
@@ -377,7 +379,11 @@ function ContactListView() {
         <AwayPrompt
           onCancel={() => setDialog(null)}
           onConfirm={(message) => {
-            goAway(message, false);
+            // The untouched localized default stays a default, so it follows the language.
+            const useDefault =
+              useSettingsStore.getState().awayMessage === null &&
+              message === t('defaults.awayMessage');
+            goAway(useDefault ? null : message, false);
             setDialog(null);
           }}
         />

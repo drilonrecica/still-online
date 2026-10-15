@@ -90,7 +90,13 @@ describe('line ordering and timing', () => {
     ]);
     const p = t.progress('lena');
     expect(p.status).toBe('away');
-    expect(p.personalMessage).toBe('missing Ann');
+    expect(p.personalMessage).toEqual({
+      kind: 'line',
+      scriptId: 'opening',
+      nodeId: 'a',
+      lineIndex: 2,
+    });
+    expect(t.pm('lena')).toBe('missing Ann');
     expect(t.said('lena')).toEqual([
       '< hey Ann',
       `< ${'x'.repeat(100)}`,
@@ -138,7 +144,14 @@ describe('line ordering and timing', () => {
       job.fn();
     }
     expect(t.progress('lena').transcript).toEqual([
-      { kind: 'message', from: 'contact', text: 'hi', at: 80 },
+      {
+        kind: 'line',
+        from: 'contact',
+        scriptId: 's',
+        nodeId: 'only',
+        lineIndex: 0,
+        at: 80,
+      },
     ]);
   });
 });
@@ -326,7 +339,7 @@ describe('branching', () => {
       '> cant, grounded :(',
       '< nooo :( thats so unfair',
     ]);
-    expect(t.progress('mika').personalMessage).toBe('lake trip minus Ann :(');
+    expect(t.pm('mika')).toBe('lake trip minus Ann :(');
   });
 });
 
@@ -342,15 +355,15 @@ describe('engine without fake-timer helpers', () => {
   });
 
   it('can be created directly with defaults', () => {
-    const t = setup([]);
-    const engine = createConversationEngine({
-      contents: [
-        contactContent('a', [say('s', { type: 'onSignIn' }, ['hi {name}'])]),
-      ],
-      store: t.store,
-    });
+    const contents = [
+      contactContent('a', [say('s', { type: 'onSignIn' }, ['hi {name}'])]),
+    ];
+    const t = setup(contents);
+    t.engine.dispose();
+    const engine = createConversationEngine({ contents, store: t.store });
     engine.signIn();
     vi.advanceTimersByTime(1000);
-    expect(t.said('a')).toEqual(['< hi Player']);
+    // `{name}` is the player's name at render time, not at delivery.
+    expect(t.said('a')).toEqual(['< hi Ann']);
   });
 });

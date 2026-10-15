@@ -1,11 +1,17 @@
 // Chat window (app `messenger-chat`): one per contact via `props.contactId`.
 import { usePlayerName } from '@/i18n/settingsText';
-import { useEffect, useRef, useState } from 'react';
+import { useLocale } from '@/i18n/useT';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Contact } from '@/content/types';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import type { AppComponentProps } from '@/os/types';
 import { useReducedMotion } from '@/os/useReducedMotion';
-import { getMessengerContents, getMessengerEngine } from '../runtime';
+import { renderPersonalMessage, renderTranscript } from '../engine';
+import {
+  getMessengerContent,
+  getMessengerContents,
+  getMessengerEngine,
+} from '../runtime';
 import { StatusIcon, STATUS_LABELS } from '../StatusIcon';
 import { useMessengerStore } from '../store';
 import { Avatar } from './Avatar';
@@ -66,6 +72,8 @@ function ChatView({
   const typing = useMessengerStore((s) => s.typing[id] === true);
   const markRead = useMessengerStore((s) => s.markRead);
   const playerName = usePlayerName();
+  const locale = useLocale();
+  const text = getMessengerContent(id, locale);
   const focused = useWindowsStore((s) => selectActiveWindowId(s) === windowId);
   const [notice, setNotice] = useState<string | null>(null);
   const root = useShake(id);
@@ -73,7 +81,17 @@ function ChatView({
   const status = online
     ? (progress?.status ?? contact.initialStatus)
     : 'offline';
-  const personalMessage = progress?.personalMessage ?? contact.personalMessage;
+  const personalMessage = renderPersonalMessage(
+    progress?.personalMessage ?? 'initial',
+    text,
+    locale,
+    playerName,
+  );
+  const stored = progress?.transcript;
+  const entries = useMemo(
+    () => renderTranscript(stored ?? [], text, locale, playerName),
+    [stored, text, locale, playerName],
+  );
   const unread = progress?.unread ?? 0;
 
   useEffect(() => {
@@ -163,7 +181,7 @@ function ChatView({
       </div>
       <div className={styles.stage}>
         <Transcript
-          entries={progress?.transcript ?? []}
+          entries={entries}
           contactName={contact.displayName}
           playerName={playerName}
         />

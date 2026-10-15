@@ -90,19 +90,24 @@ describe('onNowPlaying', () => {
         say('np', { type: 'onNowPlaying' }, ['ooh {artist} - {title}'], true),
       ]),
     ]);
+    // `{artist}`/`{title}` render from the playlist track, so these are real track ids.
     t.engine.signIn();
-    t.engine.nowPlaying(track('t1'));
+    t.engine.nowPlaying(track('surf-shimmy'));
     vi.advanceTimersByTime(5000);
-    t.engine.nowPlaying(track('t1'));
-    t.engine.nowPlaying(track('t2'));
+    t.engine.nowPlaying(track('surf-shimmy'));
+    t.engine.nowPlaying(track('cool-rock'));
     vi.advanceTimersByTime(5000);
     expect(t.said('a')).toEqual([
-      '< ooh The Paper Kites - Song t1',
-      '< ooh The Paper Kites - Song t2',
+      '< ooh Kevin MacLeod - Surf Shimmy',
+      '< ooh Kevin MacLeod - Cool Rock',
     ]);
+    expect(t.progress('a').transcript[0]).toMatchObject({
+      kind: 'line',
+      params: { trackId: 'surf-shimmy' },
+    });
     expect(t.progress('a').scripts.np).toMatchObject({
       runs: 2,
-      trackIds: ['t1', 't2'],
+      trackIds: ['surf-shimmy', 'cool-rock'],
     });
   });
 

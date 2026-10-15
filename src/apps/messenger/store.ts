@@ -16,8 +16,11 @@ import type { MessengerData } from './engine/types';
 export interface MessengerStore extends MessengerData {
   /** Any status but Away. Away goes through `goAway`; this also ends an auto-away. */
   setPlayerStatus: (status: PlayerStatus) => void;
-  /** Sets Away with `message`; `auto` marks an idle-triggered Away (activity ends it). */
-  goAway: (message: string, auto: boolean) => void;
+  /**
+   * Sets Away with `message` (null = the localized default); `auto` marks an idle-triggered Away
+   * (activity ends it).
+   */
+  goAway: (message: string | null, auto: boolean) => void;
   /** The player's own message; it also ends any now-playing line shown. */
   setPlayerPersonalMessage: (personalMessage: string) => void;
   /** Shows `line` instead of the player's message, keeping theirs to restore. */

@@ -1,8 +1,10 @@
 // Message History (app `messenger-history`): per-contact transcript browser with dates, search and Clear History.
 import { usePlayerName } from '@/i18n/settingsText';
+import { useLocale } from '@/i18n/useT';
 import { Fragment, useMemo, useState } from 'react';
 import type { AppComponentProps } from '@/os/types';
-import { getMessengerContents } from '../runtime';
+import { renderTranscript } from '../engine';
+import { getMessengerContent, getMessengerContents } from '../runtime';
 import { useMessengerStore } from '../store';
 import { Avatar } from '../chat/Avatar';
 import { RichText } from '../chat/Transcript';
@@ -39,6 +41,7 @@ function Highlight({ text, query }: { text: string; query: string }) {
 
 export default function History({ props }: AppComponentProps) {
   const playerName = usePlayerName();
+  const locale = useLocale();
   const progress = useMessengerStore((s) => s.progress.contacts);
   const clearTranscript = useMessengerStore((s) => s.clearTranscript);
   const [picked, setPicked] = useState<string | null>(
@@ -59,10 +62,17 @@ export default function History({ props }: AppComponentProps) {
   const groups = useMemo(
     () =>
       groupByDay(
-        selectedId ? (progress[selectedId]?.transcript ?? []) : [],
+        selectedId
+          ? renderTranscript(
+              progress[selectedId]?.transcript ?? [],
+              getMessengerContent(selectedId, locale),
+              locale,
+              playerName,
+            )
+          : [],
         query,
       ),
-    [progress, selectedId, query],
+    [progress, selectedId, query, locale, playerName],
   );
 
   function select(id: string) {

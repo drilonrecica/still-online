@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defaultContactProgress, sanitizeProgress } from './progress';
 import { contactContent, say, setup } from './test-helpers';
-import { resolveText } from './text';
+import { fillPlaceholders, renderEntry } from './render';
 
 beforeEach(() => {
   localStorage.clear();
@@ -26,6 +26,27 @@ describe('onGameScore', () => {
     t.engine.gameScore('henhunt', 1240);
     vi.advanceTimersByTime(5000);
     expect(t.said('a')).toEqual(['< 1,240 in Hen Hunt??']);
+  });
+
+  it('stores {game}/{score} as raw params and formats them per locale', () => {
+    const content = contactContent('a', [
+      say('hens', { type: 'onGameScore', game: 'henhunt' }, [
+        '{score} in {game}??',
+      ]),
+    ]);
+    const t = setup([content]);
+    t.engine.signIn();
+    t.engine.gameScore('henhunt', 1240);
+    vi.advanceTimersByTime(5000);
+    const [entry] = t.progress('a').transcript;
+    expect(entry).toMatchObject({
+      kind: 'line',
+      params: { game: 'henhunt', score: 1240 },
+    });
+    expect(JSON.stringify(entry)).not.toContain('Hen Hunt');
+    expect(renderEntry(entry!, content, 'de', 'Ann')).toMatchObject({
+      text: '1.240 in Hühnerjagd??',
+    });
   });
 
   it('needs score >= minScore, and runs once ever unless repeat', () => {
@@ -101,13 +122,16 @@ describe('onGameScore', () => {
 
 describe('game placeholders', () => {
   it('leave {score}/{game} as written without a game context', () => {
-    expect(resolveText('{score} {game}', 'Ann', {})).toBe('{score} {game}');
+    expect(fillPlaceholders('{score} {game}', undefined, 'en', 'Ann')).toBe(
+      '{score} {game}',
+    );
+    const params = { game: 'pinball', score: 2_000_000 } as const;
     expect(
-      resolveText('{name}: {score} in {game}', 'Ann', {
-        game: 'pinball',
-        score: 2_000_000,
-      }),
+      fillPlaceholders('{name}: {score} in {game}', params, 'en', 'Ann'),
     ).toBe('Ann: 2,000,000 in Star Pinball');
+    expect(
+      fillPlaceholders('{name}: {score} in {game}', params, 'de', 'Ann'),
+    ).toBe('Ann: 2.000.000 in Sternen-Flipper');
   });
 
   it('persisted contexts keep a valid game and score and drop junk', () => {

@@ -54,7 +54,7 @@ beforeEach(() => {
           t[id] ?? {
             everSignedIn: false,
             status: 'online',
-            personalMessage: '',
+            personalMessage: 'initial',
             active: null,
             queue: [],
             scripts: {},

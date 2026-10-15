@@ -22,8 +22,7 @@ export function summarizeAway(
     let count = 0;
     let latest = 0;
     for (const e of c.transcript) {
-      if (e.kind !== 'message' || e.whileAway !== true || e.at < since)
-        continue;
+      if (!('whileAway' in e) || e.whileAway !== true || e.at < since) continue;
       count += 1;
       latest = Math.max(latest, e.at);
     }

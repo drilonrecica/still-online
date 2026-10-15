@@ -228,6 +228,10 @@ export interface ScriptProgress {
   trackIds: string[];
 }
 
+/**
+ * A transcript entry as views show it: `message` holds text. Persisted transcripts hold
+ * `NeutralTranscriptEntry` instead; there `message` only survives from v0.2 saves.
+ */
 export type TranscriptEntry =
   | {
       kind: 'message';
@@ -243,14 +247,17 @@ export type TranscriptEntry =
 export interface ContactProgress {
   /** True after the contact's first sign-in; never reset. */
   everSignedIn: boolean;
-  /** Current status and personal message, as changed by scripts. */
+  /** Current status and where the personal message comes from, as changed by scripts. */
   status: ContactStatus;
-  personalMessage: string;
+  personalMessage: PersonalMessageRef;
   active: ActiveScript | null;
   queue: QueuedTrigger[];
   scripts: Record<ScriptId, ScriptProgress>;
-  /** Delivered lines only (text already resolved), oldest first. `at` = epoch ms (real time). */
-  transcript: TranscriptEntry[];
+  /**
+   * Delivered entries as references (rendered at view time by `renderEntry`), oldest first.
+   * v0.2 `message` entries hold rendered text and stay verbatim. `at` = epoch ms (real time).
+   */
+  transcript: NeutralTranscriptEntry[];
   /** Messages received while the chat window was closed or unfocused. */
   unread: number;
   /** The world day whose `Contact.days` presence was last applied (default 1). */
@@ -266,8 +273,8 @@ export interface PlayerProgress {
   showNowPlaying: boolean;
   /** The player's own message while a now-playing line replaces it; null when none is shown. */
   personalMessageBeforeNowPlaying: string | null;
-  /** The message shown as "(Away: …)" while status is Away. */
-  awayMessage: string;
+  /** The message shown as "(Away: …)" while status is Away; null = the localized default. */
+  awayMessage: string | null;
   /** Away was set by idling, so activity puts the player back Online. */
   autoAway: boolean;
   /** Epoch ms the current Away began; null unless status is Away. */

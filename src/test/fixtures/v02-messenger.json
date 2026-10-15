@@ -1,0 +1,2304 @@
+{
+  "state": {
+    "progress": {
+      "player": {
+        "status": "online",
+        "personalMessage": "",
+        "showNowPlaying": false,
+        "personalMessageBeforeNowPlaying": null,
+        "awayMessage": "brb",
+        "autoAway": false,
+        "awaySince": null
+      },
+      "contacts": {
+        "jess": {
+          "everSignedIn": true,
+          "status": "online",
+          "personalMessage": "Alex is a HEN NINJA!!! >:D",
+          "active": null,
+          "queue": [],
+          "scripts": {
+            "opening": {
+              "runs": 1,
+              "visited": [
+                "hi",
+                "guess",
+                "invite",
+                "yes"
+              ],
+              "trackIds": []
+            },
+            "followup1": {
+              "runs": 1,
+              "visited": [
+                "back",
+                "official",
+                "sign",
+                "marry"
+              ],
+              "trackIds": []
+            },
+            "bored": {
+              "runs": 1,
+              "visited": [
+                "bored",
+                "joke"
+              ],
+              "trackIds": []
+            },
+            "followup2": {
+              "runs": 1,
+              "visited": [
+                "panic",
+                "desk",
+                "brother",
+                "found"
+              ],
+              "trackIds": []
+            },
+            "gameScore": {
+              "runs": 1,
+              "visited": [
+                "omg",
+                "golden"
+              ],
+              "trackIds": []
+            },
+            "nowPlaying": {
+              "runs": 1,
+              "visited": [
+                "loud"
+              ],
+              "trackIds": [
+                "cool-rock"
+              ]
+            },
+            "nudged": {
+              "runs": 1,
+              "visited": [
+                "war"
+              ],
+              "trackIds": []
+            }
+          },
+          "transcript": [
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex!!!!!",
+              "at": 1790866810360
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790866810360
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "omg omg omg",
+              "at": 1790866811300
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "guess what",
+              "at": 1790866812100
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "what?? tell me!! :)",
+              "at": 1790866815000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i WON the radio contest!!!",
+              "at": 1790866816840
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790866816840
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "2 TICKETS to the Tinfoil Comets!!! :D",
+              "at": 1790866818920
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "NO WAY :)",
+              "at": 1790866820000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "sooooo...",
+              "at": 1790866821160
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "wanna come with me?? :D its next friday",
+              "at": 1790866823620
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "YES obviously :)",
+              "at": 1790866825000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "AAAAAHHHHH",
+              "at": 1790866825900
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790866825900
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "best night of our lives (L)",
+              "at": 1790866827680
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "IM BACK",
+              "at": 1790866950960
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790866950960
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok VERY important question",
+              "at": 1790866952600
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "is ur mom ok w friday?? like OFFICIALLY officially??",
+              "at": 1790866955480
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "yep shes totally cool w it!! :)",
+              "at": 1790866960000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "YESSSSSSSS",
+              "at": 1790866960900
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790866960900
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok my mom is driving us there",
+              "at": 1790866962860
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "she PROMISED not to sing in the car",
+              "at": 1790866964960
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "(she will sing in the car)",
+              "at": 1790866967000
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "lol poor us :)",
+              "at": 1790866970000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok ANYWAY",
+              "at": 1790866971260
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "im making us a SIGN for the concert!!",
+              "at": 1790866973440
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "theres glitter EVERYWHERE. my cat is sparkly now",
+              "at": 1790866976260
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "what should it say?? :D",
+              "at": 1790866977880
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "ZIGGY MARRY ME :)",
+              "at": 1790866980000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "LOL ziggy is like 28 thats OLD",
+              "at": 1790866982100
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "but he does the drumstick spin thing so... worth it",
+              "at": 1790866985140
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "writing it in pink. BIG pink",
+              "at": 1790866986960
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex im sooooo bored",
+              "at": 1790867160801
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790867160801
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "entertain me!!!",
+              "at": 1790867162001
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "why did the cd player cry? it had too many skips :)",
+              "at": 1790867165000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "LOL that is the WORST joke ever",
+              "at": 1790867167440
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "im telling it to everyone tmrw",
+              "at": 1790867169340
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex",
+              "at": 1790867228621
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790867228621
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex Alex Alex",
+              "at": 1790867229581
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790867229581
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i cant find the tickets",
+              "at": 1790867231201
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "I CANT FIND THE TICKETS",
+              "at": 1790867232621
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "WHAT. where did u have them last?? :)",
+              "at": 1790867235000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ON MY DESK. next to my lip gloss",
+              "at": 1790867237080
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "and now theyre GONE",
+              "at": 1790867238440
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "my little brother was in my room earlier. SUSPICIOUS",
+              "at": 1790867241420
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "go interrogate him!! :)",
+              "at": 1790867245000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "oh im GOING. brb",
+              "at": 1790867246240
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "FOUND THEM",
+              "at": 1790867259140
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790867259140
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "he was using them as a BOOKMARK. in his dinosaur book",
+              "at": 1790867262160
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i said if he touches them again i tell everyone about his nightlight",
+              "at": 1790867265660
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "LOL savage :)",
+              "at": 1790867270000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok new rule",
+              "at": 1790867271340
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "my mom holds the tickets until friday",
+              "at": 1790867273520
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i cant be trusted w nice things :P",
+              "at": 1790867275680
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "luv u bye!!! (L)",
+              "at": 1790867277020
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "WAIT",
+              "at": 1790867402160
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790867402160
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "OMG 12?? my record is like 400 lol",
+              "at": 1790867404120
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i always shoot the scarecrow by accident. hes just STANDING there",
+              "at": 1790867407520
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "did u get the golden hen?!?!",
+              "at": 1790867409340
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "YES it was so fast :)",
+              "at": 1790867410000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "NO WAY!!! ive NEVER got it",
+              "at": 1790867411640
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ur like a hen ninja",
+              "at": 1790867413200
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "omg ur listening to Kevin MacLeod??",
+              "at": 1790867418200
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "TURN IT UP!!! :D",
+              "at": 1790867419340
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790867419340
+            },
+            {
+              "kind": "nudge",
+              "from": "player",
+              "at": 1790868000000
+            },
+            {
+              "kind": "wink",
+              "from": "player",
+              "wink": "hamster",
+              "at": 1790868000000
+            },
+            {
+              "kind": "nudge",
+              "from": "player",
+              "at": 1790868000000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "NUDGE WAR!!!",
+              "at": 1790868001080,
+              "whileAway": true
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790868001080
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "UR AWAY?? ugh fine. BRB 2",
+              "at": 1790868002580,
+              "whileAway": true
+            }
+          ],
+          "unread": 52,
+          "presenceDay": 1,
+          "awayReplyDay": 1
+        },
+        "pia": {
+          "everSignedIn": true,
+          "status": "offline",
+          "personalMessage": "pia is the BOSS of this house (L)",
+          "active": null,
+          "queue": [
+            {
+              "scriptId": "gameScore",
+              "context": {
+                "game": "pinball",
+                "score": 15300
+              }
+            },
+            {
+              "scriptId": "nowPlaying2",
+              "context": {
+                "trackId": "cool-rock",
+                "artist": "Kevin MacLeod",
+                "title": "Cool Rock"
+              }
+            }
+          ],
+          "scripts": {
+            "opening": {
+              "runs": 1,
+              "visited": [
+                "hi",
+                "why",
+                "quiz",
+                "right"
+              ],
+              "trackIds": []
+            },
+            "followup1": {
+              "runs": 1,
+              "visited": [
+                "how",
+                "helped",
+                "boss"
+              ],
+              "trackIds": []
+            },
+            "dinner": {
+              "runs": 1,
+              "visited": [
+                "dinner",
+                "coming"
+              ],
+              "trackIds": []
+            },
+            "followup2": {
+              "runs": 1,
+              "visited": [
+                "sneak",
+                "denied",
+                "biscuit"
+              ],
+              "trackIds": []
+            },
+            "timeUp": {
+              "runs": 1,
+              "visited": [
+                "bye"
+              ],
+              "trackIds": []
+            }
+          },
+          "transcript": [
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex its pia",
+              "at": 1790866838480
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "im on dads laptop!! he said i get 20 min",
+              "at": 1790866841280
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "cool. why are u messaging me",
+              "at": 1790866845000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ANYWAY mom says dinner is in 10 min",
+              "at": 1790866847600
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "also can u help me with my horse quiz",
+              "at": 1790866850080
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "sure whats the question",
+              "at": 1790866855000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "what is a baby horse called",
+              "at": 1790866857580
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "a foal",
+              "at": 1790866860000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "CORRECT!!! :D",
+              "at": 1790866861320
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ur not that dumb after all",
+              "at": 1790866863260
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex",
+              "at": 1790866987920
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex Alex Alex",
+              "at": 1790866989180
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790866989180
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "how do u change the grey writing under ur name",
+              "at": 1790866992220
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "click on it and type something",
+              "at": 1790866995000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "OMG it worked",
+              "at": 1790866997020
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "look look look",
+              "at": 1790866998680
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "mom is the boss of the house",
+              "at": 1790867000000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "mom is the boss of MOM",
+              "at": 1790867001880
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i am the boss of the HOUSE",
+              "at": 1790867003820
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "its different. u wouldnt understand",
+              "at": 1790867006320
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "DINNER",
+              "at": 1790867100241
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790867100241
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "mom says come down NOW",
+              "at": 1790867101821
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "coming!!",
+              "at": 1790867105000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "and bring ur plate from yesterday",
+              "at": 1790867107220
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "psst",
+              "at": 1790867249480
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "dad is on the phone with grandma so he forgot about the laptop :D",
+              "at": 1790867253280
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok SERIOUS question",
+              "at": 1790867254940
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "did u go in my room",
+              "at": 1790867256700
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790867256700
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "no?? why would i",
+              "at": 1790867260000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "bc my ponies are in a DIFFERENT ORDER",
+              "at": 1790867262480
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "someone was in there",
+              "at": 1790867264080
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "maybe it was biscuit",
+              "at": 1790867265000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "biscuit cant reach my shelf",
+              "at": 1790867267180
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "...",
+              "at": 1790867268500
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "unless he stands on the bean bag. he HAS been acting weird",
+              "at": 1790867272120
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok ur off the hook. for now",
+              "at": 1790867274100
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "dad says my 20 min are up :(",
+              "at": 1790867281121
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "byeeee",
+              "at": 1790867282161
+            }
+          ],
+          "unread": 30,
+          "presenceDay": 1
+        },
+        "kayla": {
+          "everSignedIn": true,
+          "status": "busy",
+          "personalMessage": "Cool Rock = my life <3",
+          "active": null,
+          "queue": [],
+          "scripts": {
+            "opening": {
+              "runs": 1,
+              "visited": [
+                "hi",
+                "what",
+                "side",
+                "plan",
+                "ignore"
+              ],
+              "trackIds": []
+            },
+            "followup1": {
+              "runs": 1,
+              "visited": [
+                "poll",
+                "jealous"
+              ],
+              "trackIds": []
+            },
+            "update": {
+              "runs": 1,
+              "visited": [
+                "update",
+                "calm"
+              ],
+              "trackIds": []
+            },
+            "followup2": {
+              "runs": 1,
+              "visited": [
+                "omg",
+                "literal",
+                "thanks"
+              ],
+              "trackIds": []
+            },
+            "gameScore": {
+              "runs": 1,
+              "visited": [
+                "stress",
+                "relax"
+              ],
+              "trackIds": []
+            },
+            "nowPlaying": {
+              "runs": 1,
+              "visited": [
+                "life"
+              ],
+              "trackIds": [
+                "cool-rock"
+              ]
+            }
+          },
+          "transcript": [
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex",
+              "at": 1790866879160
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "did u see what brianna put as her away message",
+              "at": 1790866882200
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "no what??",
+              "at": 1790866885000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "she wrote \"some ppl copy EVERYTHING i do\"",
+              "at": 1790866888140
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "EVERYONE knows thats about me",
+              "at": 1790866890200
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i had the striped hoodie FIRST",
+              "at": 1790866892500
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "omg thats so rude",
+              "at": 1790866895000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "THANK YOU",
+              "at": 1790866896160
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok im changing my pm. watch",
+              "at": 1790866898240
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "ooh dramatic",
+              "at": 1790866900000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "maybe. maybe not ;)",
+              "at": 1790866901760
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "should i say something to her at lunch tmrw?",
+              "at": 1790866904820
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "just ignore it",
+              "at": 1790866905000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "yes. ignoring is the ultimate revenge",
+              "at": 1790866907680
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex",
+              "at": 1790867031640
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i need ur opinion. its urgent",
+              "at": 1790867034000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "brianna checks my pm like every 5 min so it has to be PERFECT",
+              "at": 1790867037740
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "option 1: \"some ppl r just jealous\"",
+              "at": 1790867040240
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "option 2: \"~*happy and thriving*~ :)\"",
+              "at": 1790867042720
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "option 3: something sad so everyone asks whats wrong",
+              "at": 1790867046100
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "1 obviously",
+              "at": 1790867050000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "YES. subtle but deadly",
+              "at": 1790867051880
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "and now im going busy",
+              "at": 1790867054520
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "im not actually busy. its a strategy",
+              "at": 1790867057560
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "UPDATE",
+              "at": 1790867220241
+            },
+            {
+              "kind": "nudge",
+              "from": "contact",
+              "at": 1790867220241
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "brianna just changed HER pm too",
+              "at": 1790867222381
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "this means war",
+              "at": 1790867223741
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "kayla. breathe.",
+              "at": 1790867225000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "...ok. breathing",
+              "at": 1790867227140
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "omg. omg. Alex",
+              "at": 1790867300120
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "brianna just IMed me",
+              "at": 1790867302120
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "she said \"cute pm\"",
+              "at": 1790867304140
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "WHAT DOES THAT MEAN",
+              "at": 1790867305800
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "maybe she just thinks its cute?",
+              "at": 1790867310000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "cute like CUTE or cute like \"aww how sad\"",
+              "at": 1790867312940
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "there is a HUGE difference Alex",
+              "at": 1790867315180
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "cute like cute. relax",
+              "at": 1790867320000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "fine. i said \"thx :)\"",
+              "at": 1790867322340
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "...",
+              "at": 1790867324960
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "she said \"np :)\"",
+              "at": 1790867326800
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "omg r we friends now??",
+              "at": 1790867328680
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i dont know how to feel about this",
+              "at": 1790867331240
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "u were playing mines??",
+              "at": 1790867403880
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "mines is SO stressful i cant even",
+              "at": 1790867406000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "1,234 seconds of pure STRESS",
+              "at": 1790867408020
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "every time i click i feel like the whole computer is judging me",
+              "at": 1790867411620
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "its just numbers. its relaxing",
+              "at": 1790867415000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "RELAXING???",
+              "at": 1790867416140
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "who ARE u",
+              "at": 1790867417300
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "omg Cool Rock is literally my life right now",
+              "at": 1790867422260
+            }
+          ],
+          "unread": 41,
+          "presenceDay": 1
+        },
+        "marco": {
+          "everSignedIn": true,
+          "status": "busy",
+          "personalMessage": "still velvet lantern. studio session. dont call",
+          "active": null,
+          "queue": [],
+          "scripts": {
+            "opening": {
+              "runs": 1,
+              "visited": [
+                "hey",
+                "fast",
+                "toolbars",
+                "band",
+                "come"
+              ],
+              "trackIds": []
+            },
+            "followup1": {
+              "runs": 1,
+              "visited": [
+                "ask",
+                "flyer",
+                "glitter"
+              ],
+              "trackIds": []
+            },
+            "practice": {
+              "runs": 1,
+              "visited": [
+                "bye"
+              ],
+              "trackIds": []
+            },
+            "followup2": {
+              "runs": 1,
+              "visited": [
+                "vote",
+                "keep",
+                "studio"
+              ],
+              "trackIds": []
+            },
+            "gameScore": {
+              "runs": 1,
+              "visited": [
+                "hens",
+                "bad"
+              ],
+              "trackIds": []
+            },
+            "nowPlaying": {
+              "runs": 1,
+              "visited": [
+                "taste"
+              ],
+              "trackIds": [
+                "cool-rock"
+              ]
+            }
+          },
+          "transcript": [
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "hey kid",
+              "at": 1790866956280
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "heard u got a new computer. nice",
+              "at": 1790866958760
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "yeah its sooo fast",
+              "at": 1790866960000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "enjoy it while it lasts",
+              "at": 1790866962220
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "and dont fill it with toolbars lol",
+              "at": 1790866964480
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "what toolbars?",
+              "at": 1790866965000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "the ones that come with every free screensaver. trust me",
+              "at": 1790866969040
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "ok ok no screensavers",
+              "at": 1790866970000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "anyway. the band finally got a real gig",
+              "at": 1790866973060
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "velvet lantern @ the rec hall, saturday",
+              "at": 1790866975820
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "can i come??",
+              "at": 1790866980000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "if ur mom says ok. ill put u on the list",
+              "at": 1790866983200
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "dont tell anyone u know me tho",
+              "at": 1790866985500
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok question",
+              "at": 1790867112940
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ur fancy new computer. it has a paint program right",
+              "at": 1790867116280
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "yeah duh. why",
+              "at": 1790867120000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "we need a flyer for the next show",
+              "at": 1790867122720
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "our drummer made one. it looked like an invite to a 6 year olds birthday",
+              "at": 1790867127020
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "rainbow letters. clip art balloon. it was bad",
+              "at": 1790867130120
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "so. u in",
+              "at": 1790867131340
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "YES. glitter text and flames everywhere",
+              "at": 1790867135000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "no",
+              "at": 1790867135980
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "...",
+              "at": 1790867137600
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok flames maybe. small flames. tasteful flames",
+              "at": 1790867141040
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "if derek sees glitter he quits the band. again",
+              "at": 1790867144180
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "heading to practice. be good",
+              "at": 1790867341121
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "u there",
+              "at": 1790867390960
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "need a tiebreaker. band emergency",
+              "at": 1790867393480
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "derek wants to change our name",
+              "at": 1790867395980
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "to \"velvet lantern and the night shift\"",
+              "at": 1790867399040
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "its 2 against 2. ur the deciding vote. no pressure",
+              "at": 1790867402440
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "keep velvet lantern obviously",
+              "at": 1790867405000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "correct answer",
+              "at": 1790867406560
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "telling derek he got outvoted by my little cousin. hes gonna sulk all week",
+              "at": 1790867410860
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "tell him i said sorry lol",
+              "at": 1790867415000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok gotta go back in. the studio guy charges by the hour",
+              "at": 1790867418700
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "later kid",
+              "at": 1790867419960
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "heard u shot 12 points of hen today",
+              "at": 1790867426560
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "pia told me. she tells me everything",
+              "at": 1790867429200
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "our drummer plays that between sets. hes worse at it than at drums",
+              "at": 1790867433200
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "is that bad?",
+              "at": 1790867435000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "he once shot the scarecrow nine times",
+              "at": 1790867437680
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "on purpose. he said it was personal",
+              "at": 1790867440280
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Cool Rock? ok ur taste is improving",
+              "at": 1790867445680
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "still not velvet lantern but its a start",
+              "at": 1790867448580
+            }
+          ],
+          "unread": 36,
+          "presenceDay": 1
+        },
+        "theo": {
+          "everSignedIn": true,
+          "status": "online",
+          "personalMessage": "jello cell (Y) dont ask",
+          "active": null,
+          "queue": [],
+          "scripts": {
+            "opening": {
+              "runs": 1,
+              "visited": [
+                "hi",
+                "yes",
+                "project",
+                "library",
+                "thursday"
+              ],
+              "trackIds": []
+            },
+            "followup1": {
+              "runs": 1,
+              "visited": [
+                "q",
+                "plant",
+                "cute"
+              ],
+              "trackIds": []
+            },
+            "gameScore": {
+              "runs": 1,
+              "visited": [
+                "wow",
+                "safe"
+              ],
+              "trackIds": []
+            },
+            "followup2": {
+              "runs": 1,
+              "visited": [
+                "jello",
+                "genius",
+                "thanks"
+              ],
+              "trackIds": []
+            },
+            "poster": {
+              "runs": 1,
+              "visited": [
+                "poster",
+                "send"
+              ],
+              "trackIds": []
+            }
+          },
+          "transcript": [
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "um hi",
+              "at": 1790867025200
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "is this Alex? from bio?",
+              "at": 1790867028620
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "yeah! hi theo",
+              "at": 1790867030000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok good. i wasnt sure i had the right address",
+              "at": 1790867033800
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "whats up?",
+              "at": 1790867035000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "so um. we r partners for the cell project",
+              "at": 1790867039140
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "mr dalton paired us",
+              "at": 1790867041400
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "sorry",
+              "at": 1790867042800
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "cool! wanna meet at the library?",
+              "at": 1790867045000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok yeah. thursday after school?",
+              "at": 1790867048440
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "thursday works (Y)",
+              "at": 1790867050000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "cool. ill bring markers :)",
+              "at": 1790867052840
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "um. sorry. me again",
+              "at": 1790867179600
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "quick question about the project",
+              "at": 1790867182880
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "should we do a plant cell or an animal cell?",
+              "at": 1790867186840
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "plant cell!",
+              "at": 1790867190000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok cool",
+              "at": 1790867192080
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i can draw the chloroplasts. theyre like little green beans",
+              "at": 1790867196940
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "sorry. that was a weird thing to say",
+              "at": 1790867200380
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "lol no thats cute",
+              "at": 1790867205000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": ":)",
+              "at": 1790867207580
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok. ill start sketching",
+              "at": 1790867210000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "hi. sorry",
+              "at": 1790867404360
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "did u just beat mines in 1,234 seconds?",
+              "at": 1790867407120
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "thats really good",
+              "at": 1790867408800
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i always click a mine first. sorry, thats not ur problem",
+              "at": 1790867412440
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "the first click is always safe!",
+              "at": 1790867415000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "oh",
+              "at": 1790867415980
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "then i think i click a mine second",
+              "at": 1790867418540
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "sorry. thats worse",
+              "at": 1790867420160
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "hi. sorry",
+              "at": 1790867454860
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i told my mom about the project",
+              "at": 1790867458100
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "she said we could make a 3d cell out of jello",
+              "at": 1790867462400
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "is that dumb. its probably dumb",
+              "at": 1790867465640
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "JELLO CELL!! thats genius",
+              "at": 1790867470000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "really?",
+              "at": 1790867472280
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok. grapes can be the mitochondria",
+              "at": 1790867475840
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "and a plum for the nucleus",
+              "at": 1790867478680
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "sorry. i got excited",
+              "at": 1790867481480
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "dont be sorry this is awesome",
+              "at": 1790867485000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok",
+              "at": 1790867487580
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "um. thanks Alex",
+              "at": 1790867490180
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "im glad mr dalton paired us. sorry if thats weird",
+              "at": 1790867494640
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "um Alex?",
+              "at": 1790867520321
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i made a draft of the poster. its kind of bad",
+              "at": 1790867524621
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "send it!",
+              "at": 1790867525000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "its on my brothers computer. ill bring it tmrw",
+              "at": 1790867529040
+            }
+          ],
+          "unread": 37,
+          "presenceDay": 1
+        },
+        "dex": {
+          "everSignedIn": true,
+          "status": "away",
+          "personalMessage": "filming a skate vid. camera: Alex",
+          "active": null,
+          "queue": [],
+          "scripts": {
+            "opening": {
+              "runs": 1,
+              "visited": [
+                "hi",
+                "always",
+                "up",
+                "nice",
+                "teach",
+                "deal"
+              ],
+              "trackIds": []
+            },
+            "followup1": {
+              "runs": 1,
+              "visited": [
+                "back",
+                "fluke",
+                "sorry"
+              ],
+              "trackIds": []
+            },
+            "dinner": {
+              "runs": 1,
+              "visited": [
+                "gone"
+              ],
+              "trackIds": []
+            },
+            "gameScore": {
+              "runs": 1,
+              "visited": [
+                "nice",
+                "proof"
+              ],
+              "trackIds": []
+            },
+            "nowPlaying2": {
+              "runs": 1,
+              "visited": [
+                "rock",
+                "skate"
+              ],
+              "trackIds": [
+                "cool-rock"
+              ]
+            },
+            "followup2": {
+              "runs": 1,
+              "visited": [
+                "cam",
+                "proof",
+                "film"
+              ],
+              "trackIds": []
+            }
+          },
+          "transcript": [
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "oh hey Alex",
+              "at": 1790867090440
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i always look away i know. i forget to change it",
+              "at": 1790867093860
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "lol ur ALWAYS away",
+              "at": 1790867095000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "its a lifestyle",
+              "at": 1790867098100
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "me and the keyboard r on a break",
+              "at": 1790867100580
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "thats deep",
+              "at": 1790867105000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "just got back from the skatepark",
+              "at": 1790867108280
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "landed a kickflip. finally",
+              "at": 1790867110520
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "NO WAY nice!!",
+              "at": 1790867115000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "thx :D",
+              "at": 1790867116740
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "took like 300 tries",
+              "at": 1790867118500
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "wanna teach me?",
+              "at": 1790867120000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "sure. saturday at the park",
+              "at": 1790867123040
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "bring a helmet. seriously",
+              "at": 1790867125240
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "deal (Y)",
+              "at": 1790867130000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "cool. ok going back outside",
+              "at": 1790867132580
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok so",
+              "at": 1790867278780
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "tried the kickflip again. like an hour",
+              "at": 1790867282300
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "landed it 0 times",
+              "at": 1790867284480
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "lol so it WAS a fluke",
+              "at": 1790867285000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "it was NOT a fluke",
+              "at": 1790867288720
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "my board is just mad at me",
+              "at": 1790867291260
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i left it in the rain once. it remembers",
+              "at": 1790867294660
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "say sorry to ur board",
+              "at": 1790867295000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "already did. it said no",
+              "at": 1790867298420
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "gonna give it a new grip tape. as a gift",
+              "at": 1790867301520
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex u still there?",
+              "at": 1790867400761
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "nvm. dinner. brb (prob not)",
+              "at": 1790867403841
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "saw ur Star Pinball score",
+              "at": 1790867414641
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "15,300",
+              "at": 1790867418881
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "nice. i got 2 million once. maybe",
+              "at": 1790867425201
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "might have been a dream",
+              "at": 1790867430121
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "pics or it didnt happen",
+              "at": 1790867435000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "i filmed it",
+              "at": 1790867440440
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "lens cap was on",
+              "at": 1790867445040
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "yo",
+              "at": 1790867460120
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "cool rock",
+              "at": 1790867462480
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "who named that. like they looked at a rock and went yep. cool",
+              "at": 1790867466720
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "its a skate song tho right",
+              "at": 1790867470000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "100%",
+              "at": 1790867471960
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "if i ever make a skate video this is the song",
+              "at": 1790867475260
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "need someone w a camcorder tho. hint hint",
+              "at": 1790867478300
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "Alex",
+              "at": 1790867572680
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "big news",
+              "at": 1790867575000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "found my bros OLD camcorder in the garage. it works",
+              "at": 1790867579240
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "tapes say 1998 on them lol",
+              "at": 1790867581780
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "so now theres proof of the kickflip?",
+              "at": 1790867585000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "exactly. no more \"pics or it didnt happen\"",
+              "at": 1790867589180
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "but i need someone to hold it",
+              "at": 1790867591840
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "my bro said hes \"too old for this\"",
+              "at": 1790867595000
+            },
+            {
+              "kind": "message",
+              "from": "player",
+              "text": "ill film it! (Y)",
+              "at": 1790867595000
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "sick",
+              "at": 1790867597660
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "gotta find the charger first. could take days",
+              "at": 1790867601260
+            },
+            {
+              "kind": "message",
+              "from": "contact",
+              "text": "ok going back out. later",
+              "at": 1790867603720
+            }
+          ],
+          "unread": 43,
+          "presenceDay": 1
+        }
+      }
+    }
+  },
+  "version": 1
+}
