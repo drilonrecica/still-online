@@ -1,5 +1,6 @@
 // Tiny spectrum/oscilloscope display; click cycles bars → oscilloscope → off.
 import { useEffect, useRef, useState } from 'react';
+import { useT } from '@/i18n/useT';
 import { useAnimationFrame } from '@/os/useAnimationFrame';
 import { getAnalyser } from './analyser';
 import type { PlaybackStatus } from './store';
@@ -14,12 +15,6 @@ import {
   type VisualizerMode,
 } from './draw';
 import styles from './Amplifier.module.css';
-
-const MODE_LABEL: Record<VisualizerMode, string> = {
-  bars: 'Visualizer: bars',
-  scope: 'Visualizer: oscilloscope',
-  off: 'Visualizer: off',
-};
 
 interface VisualizerProps {
   audio: HTMLMediaElement;
@@ -36,6 +31,7 @@ export function Visualizer({
   reduced,
   minimized = false,
 }: VisualizerProps) {
+  const t = useT();
   const [mode, setMode] = useState<VisualizerMode>('bars');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef(createVisualizerState());
@@ -73,7 +69,7 @@ export function Visualizer({
     <button
       type="button"
       className={styles.visualizer}
-      aria-label={MODE_LABEL[mode]}
+      aria-label={t(`amplifier.visualizer.${mode}`)}
       data-mode={mode}
       onClick={() => setMode(nextMode)}
     >

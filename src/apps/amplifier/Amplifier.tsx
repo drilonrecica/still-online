@@ -1,4 +1,5 @@
 // Amplifier main window: original dark-metal player skin driven by the amplifier store.
+import { useT } from '@/i18n/useT';
 import { useWindowMinimized } from '@/os/useAnimationFrame';
 import {
   useEffect,
@@ -26,25 +27,11 @@ import styles from './Amplifier.module.css';
 const BASE_HEIGHT = 116;
 /** Windowshade strip height. */
 export const SHADE_HEIGHT = 14;
-const SKIN_LABEL: Record<AmplifierSkin, string> = {
-  metal: 'Brushed Metal',
-  neon: 'Neon Night',
-  bubblegum: 'Bubblegum',
-};
 const SEEK_STEP = 5;
 const VOLUME_STEP = 0.05;
-const STATUS_LABEL = {
-  playing: 'PLAY',
-  paused: 'PAUSE',
-  stopped: 'STOP',
-};
-const REPEAT_LABEL = {
-  off: 'Repeat: off',
-  all: 'Repeat: all',
-  one: 'Repeat: one',
-};
 
 export default function Amplifier({ windowId }: AppComponentProps) {
+  const t = useT();
   const drag = useWindowDrag(windowId);
   const minimized = useWindowMinimized(windowId);
   const reduced = useReducedMotion();
@@ -70,7 +57,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
   const track = s.playlist[s.index];
   const text = track
     ? nowPlayingText(track, s.index)
-    : 'Amplifier - nothing playing';
+    : t('amplifier.nothingPlaying');
   const shown = remaining
     ? -Math.max(0, s.duration - s.currentTime)
     : s.currentTime;
@@ -159,7 +146,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
       className={styles.root}
       tabIndex={0}
       role="group"
-      aria-label="Amplifier"
+      aria-label={t('amplifier.name')}
       data-skin={s.skin}
       data-shade={shaded}
       onKeyDown={onKeyDown}
@@ -184,19 +171,23 @@ export default function Amplifier({ windowId }: AppComponentProps) {
             <button
               type="button"
               className={styles.winBtn}
-              aria-label={s.status === 'playing' ? 'Pause' : 'Play'}
+              aria-label={
+                s.status === 'playing'
+                  ? t('amplifier.pause')
+                  : t('amplifier.play')
+              }
               onClick={s.togglePlay}
             >
               {s.status === 'playing' ? '⏸' : '▶'}
             </button>
           </>
         ) : (
-          <span className={styles.titleText}>AMPLIFIER</span>
+          <span className={styles.titleText}>{t('amplifier.titleText')}</span>
         )}
         <button
           type="button"
           className={styles.winBtn}
-          aria-label="Minimize"
+          aria-label={t('amplifier.minimize')}
           onClick={() => windows().minimizeWindow(windowId)}
         >
           _
@@ -204,7 +195,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
         <button
           type="button"
           className={styles.winBtn}
-          aria-label="Close"
+          aria-label={t('amplifier.close')}
           onClick={() => windows().closeWindow(windowId)}
         >
           ×
@@ -212,7 +203,11 @@ export default function Amplifier({ windowId }: AppComponentProps) {
       </div>
 
       {menuOpen && (
-        <div className={styles.menu} role="menu" aria-label="Amplifier menu">
+        <div
+          className={styles.menu}
+          role="menu"
+          aria-label={t('amplifier.menu')}
+        >
           <button
             type="button"
             role="menuitem"
@@ -220,7 +215,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
             aria-expanded={skinsOpen}
             onClick={() => setSkinsOpen((o) => !o)}
           >
-            Skins ▸
+            {t('amplifier.skins')}
           </button>
           {skinsOpen &&
             SKINS.map((k) => (
@@ -232,7 +227,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
                 onClick={() => chooseSkin(k)}
               >
                 {s.skin === k ? '● ' : '○ '}
-                {SKIN_LABEL[k]}
+                {t(`amplifier.skin.${k}`)}
               </button>
             ))}
         </div>
@@ -245,7 +240,11 @@ export default function Amplifier({ windowId }: AppComponentProps) {
               <button
                 type="button"
                 className={styles.time}
-                aria-label={remaining ? 'Time remaining' : 'Time elapsed'}
+                aria-label={
+                  remaining
+                    ? t('amplifier.timeRemaining')
+                    : t('amplifier.timeElapsed')
+                }
                 onClick={() => setRemaining((r) => !r)}
               >
                 {timeText}
@@ -257,7 +256,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
                 minimized={minimized}
               />
               <span className={styles.statusText} aria-hidden="true">
-                {STATUS_LABEL[s.status]}
+                {t(`amplifier.status.${s.status}`)}
               </span>
             </div>
             <div
@@ -274,7 +273,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
             <input
               type="range"
               className={styles.seek}
-              aria-label="Seek"
+              aria-label={t('amplifier.seek')}
               min={0}
               max={Math.max(1, Math.floor(s.duration))}
               step={1}
@@ -285,7 +284,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
             <input
               type="range"
               className={styles.volume}
-              aria-label="Volume"
+              aria-label={t('amplifier.volume')}
               min={0}
               max={100}
               value={Math.round(s.volume * 100)}
@@ -294,12 +293,16 @@ export default function Amplifier({ windowId }: AppComponentProps) {
           </div>
 
           <div className={styles.buttons}>
-            <button type="button" aria-label="Previous" onClick={s.prev}>
+            <button
+              type="button"
+              aria-label={t('amplifier.previous')}
+              onClick={s.prev}
+            >
               ⏮
             </button>
             <button
               type="button"
-              aria-label="Play"
+              aria-label={t('amplifier.play')}
               aria-pressed={s.status === 'playing'}
               onClick={s.play}
             >
@@ -307,62 +310,74 @@ export default function Amplifier({ windowId }: AppComponentProps) {
             </button>
             <button
               type="button"
-              aria-label="Pause"
+              aria-label={t('amplifier.pause')}
               aria-pressed={s.status === 'paused'}
               onClick={s.pause}
             >
               ⏸
             </button>
-            <button type="button" aria-label="Stop" onClick={s.stop}>
+            <button
+              type="button"
+              aria-label={t('amplifier.stop')}
+              onClick={s.stop}
+            >
               ⏹
             </button>
-            <button type="button" aria-label="Next" onClick={s.next}>
+            <button
+              type="button"
+              aria-label={t('amplifier.next')}
+              onClick={s.next}
+            >
               ⏭
             </button>
             <span className={styles.spacer} />
             <button
               type="button"
               className={styles.toggle}
-              aria-label="Shuffle"
+              aria-label={t('amplifier.shuffle')}
               aria-pressed={s.shuffle}
               onClick={s.toggleShuffle}
             >
-              SHUF
+              {t('amplifier.shortShuffle')}
             </button>
             <button
               type="button"
               className={styles.toggle}
-              aria-label={REPEAT_LABEL[s.repeat]}
+              aria-label={t(`amplifier.repeat.${s.repeat}`)}
               aria-pressed={s.repeat !== 'off'}
               onClick={s.cycleRepeat}
             >
-              {s.repeat === 'one' ? 'REP1' : 'REP'}
+              {s.repeat === 'one'
+                ? t('amplifier.shortRepeatOne')
+                : t('amplifier.shortRepeat')}
             </button>
             <button
               type="button"
               className={styles.toggle}
-              aria-label="Equalizer"
+              aria-label={t('amplifier.equalizer')}
               aria-pressed={showEq}
               onClick={toggleEqPanel}
             >
-              EQ
+              {t('amplifier.shortEq')}
             </button>
             <button
               type="button"
               className={styles.toggle}
-              aria-label="Playlist"
+              aria-label={t('amplifier.playlist')}
               aria-pressed={showPlaylist}
               onClick={togglePlaylist}
             >
-              PL
+              {t('amplifier.shortPlaylist')}
             </button>
             <button
               type="button"
               className={styles.toggle}
-              aria-label={`Skin: ${SKIN_LABEL[s.skin]}`}
+              aria-label={t('amplifier.skinLabel', {
+                skin: t(`amplifier.skin.${s.skin}`),
+              })}
               onClick={s.cycleSkin}
             >
-              SKN
+              {t('amplifier.shortSkin')}
             </button>
           </div>
 

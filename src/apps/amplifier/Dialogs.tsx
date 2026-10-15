@@ -1,6 +1,7 @@
 // Amplifier playlist dialogs: "From My Music…", "Shipped tracks…" and the "Burn CD…" joke.
 // Rendered as overlays inside the (small) Amplifier window.
 import { useEffect, useState } from 'react';
+import { useT } from '@/i18n/useT';
 import { FolderView } from '@/os/fs/FolderView';
 import { FS_FOLDERS, type FsNode } from '@/os/fs/types';
 import { PLAYLIST, type PlaylistTrack } from '@/content/playlist';
@@ -17,12 +18,17 @@ interface ShellProps {
 }
 
 function Shell({ title, onClose, children }: ShellProps) {
+  const t = useT();
   return (
     <div className={styles.dialogOverlay}>
       <div className={styles.dialog} role="dialog" aria-label={title}>
         <div className={styles.dialogTitle}>
           <span>{title}</span>
-          <button type="button" aria-label="Close dialog" onClick={onClose}>
+          <button
+            type="button"
+            aria-label={t('amplifier.dialog.close')}
+            onClick={onClose}
+          >
             ×
           </button>
         </div>
@@ -39,18 +45,19 @@ export function MyMusicDialog({
   onAdd: (track: PlaylistTrack) => void;
   onClose: () => void;
 }) {
+  const t = useT();
   const [folderId, setFolderId] = useState<string>(FS_FOLDERS.music);
   const [selected, setSelected] = useState<FsNode | null>(null);
 
   function add(node: FsNode | null) {
-    const track = PLAYLIST.find((t) => t.id === node?.trackId);
+    const track = PLAYLIST.find((p) => p.id === node?.trackId);
     if (!track) return;
     onAdd(track);
     onClose();
   }
 
   return (
-    <Shell title="Add from My Music" onClose={onClose}>
+    <Shell title={t('amplifier.dialog.myMusicTitle')} onClose={onClose}>
       <div className={styles.dialogPicker}>
         <FolderView
           folderId={folderId}
@@ -67,10 +74,10 @@ export function MyMusicDialog({
           disabled={!selected || !isAudio(selected)}
           onClick={() => add(selected)}
         >
-          Add
+          {t('amplifier.dialog.add')}
         </button>
         <button type="button" onClick={onClose}>
-          Cancel
+          {t('common.cancel')}
         </button>
       </div>
     </Shell>
@@ -86,23 +93,24 @@ export function ShippedDialog({
   onAdd: (track: PlaylistTrack) => void;
   onClose: () => void;
 }) {
+  const t = useT();
   return (
-    <Shell title="Shipped tracks" onClose={onClose}>
+    <Shell title={t('amplifier.dialog.shippedTitle')} onClose={onClose}>
       <ul className={styles.dialogList}>
-        {PLAYLIST.map((t) => {
-          const listed = have.some((h) => h.id === t.id);
+        {PLAYLIST.map((tr) => {
+          const listed = have.some((h) => h.id === tr.id);
           return (
-            <li key={t.id}>
+            <li key={tr.id}>
               <span>
-                {t.artist} - {t.title} ({formatTime(t.durationSec)})
+                {tr.artist} - {tr.title} ({formatTime(tr.durationSec)})
               </span>
               <button
                 type="button"
                 disabled={listed}
-                aria-label={`Add ${t.title}`}
-                onClick={() => onAdd(t)}
+                aria-label={t('amplifier.dialog.addTrack', { title: tr.title })}
+                onClick={() => onAdd(tr)}
               >
-                {listed ? '✓' : 'Add'}
+                {listed ? '✓' : t('amplifier.dialog.add')}
               </button>
             </li>
           );
@@ -110,7 +118,7 @@ export function ShippedDialog({
       </ul>
       <div className={styles.dialogButtons}>
         <button type="button" onClick={onClose}>
-          Close
+          {t('common.close')}
         </button>
       </div>
     </Shell>
@@ -129,11 +137,12 @@ export function BurnDialog({
   attempt: number;
   onClose: () => void;
 }) {
+  const t = useT();
   const failAt = attempt === 0 ? 37 : 89;
   const message =
     attempt === 0
-      ? 'Buffer underrun. The disc is now a coaster.'
-      : 'Please insert a blank disc.';
+      ? t('amplifier.dialog.underrun')
+      : t('amplifier.dialog.insertDisc');
   const [burning, setBurning] = useState(false);
   const [percent, setPercent] = useState(0);
   const failed = burning && percent >= failAt;
@@ -152,16 +161,16 @@ export function BurnDialog({
   }, [failed]);
 
   return (
-    <Shell title="Burn Audio CD" onClose={onClose}>
+    <Shell title={t('amplifier.dialog.burnTitle')} onClose={onClose}>
       <dl className={styles.burnInfo}>
-        <dt>Drive:</dt>
+        <dt>{t('amplifier.dialog.drive')}</dt>
         <dd>(E:) CD-RW</dd>
-        <dt>Speed:</dt>
-        <dd>52x</dd>
+        <dt>{t('amplifier.dialog.speed')}</dt>
+        <dd>{t('amplifier.dialog.speedValue')}</dd>
       </dl>
       <progress
         className={styles.burnProgress}
-        aria-label="Burn progress"
+        aria-label={t('amplifier.dialog.progress')}
         max={100}
         value={percent}
       />
@@ -174,7 +183,7 @@ export function BurnDialog({
       <div className={styles.dialogButtons}>
         {failed ? (
           <button type="button" onClick={onClose}>
-            OK
+            {t('common.ok')}
           </button>
         ) : (
           <>
@@ -183,10 +192,10 @@ export function BurnDialog({
               disabled={burning}
               onClick={() => setBurning(true)}
             >
-              Burn
+              {t('amplifier.dialog.burn')}
             </button>
             <button type="button" onClick={onClose}>
-              Cancel
+              {t('common.cancel')}
             </button>
           </>
         )}

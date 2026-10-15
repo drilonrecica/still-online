@@ -1,5 +1,6 @@
 // Amplifier playlist panel: numbered track list with durations, editing and a footer
 // with the ADD / MISC menus and the total time.
+import { useT } from '@/i18n/useT';
 import { useRef, useState, type KeyboardEvent } from 'react';
 import type { PlaylistTrack } from '@/content/playlist';
 import { BurnDialog, MyMusicDialog, ShippedDialog } from './Dialogs';
@@ -29,7 +30,8 @@ export default function Playlist({
   onMove,
   onAdd,
 }: Props) {
-  const total = tracks.reduce((sum, t) => sum + t.durationSec, 0);
+  const t = useT();
+  const total = tracks.reduce((sum, tr) => sum + tr.durationSec, 0);
   const [selected, setSelected] = useState(-1);
   const [menu, setMenu] = useState<Menu>(null);
   const [dialog, setDialog] = useState<Dialog>(null);
@@ -93,11 +95,11 @@ export default function Playlist({
         ref={listRef}
         className={styles.playlistList}
         role="listbox"
-        aria-label="Playlist"
+        aria-label={t('amplifier.playlist')}
       >
-        {tracks.map((t, i) => (
+        {tracks.map((tr, i) => (
           <li
-            key={t.id}
+            key={tr.id}
             role="option"
             aria-selected={i === currentIndex}
             tabIndex={0}
@@ -122,9 +124,9 @@ export default function Playlist({
             onDragEnd={() => setDragFrom(-1)}
           >
             <span className={styles.playlistTitle}>
-              {i + 1}. {t.artist} - {t.title}
+              {i + 1}. {tr.artist} - {tr.title}
             </span>
-            <span>{formatTime(t.durationSec)}</span>
+            <span>{formatTime(tr.durationSec)}</span>
           </li>
         ))}
       </ul>
@@ -136,7 +138,7 @@ export default function Playlist({
             aria-expanded={menu === 'add'}
             onClick={() => setMenu(menu === 'add' ? null : 'add')}
           >
-            ADD ▸
+            {t('amplifier.list.shortAdd')}
           </button>
           <button
             type="button"
@@ -144,13 +146,17 @@ export default function Playlist({
             aria-expanded={menu === 'misc'}
             onClick={() => setMenu(menu === 'misc' ? null : 'misc')}
           >
-            MISC ▸
+            {t('amplifier.list.shortMisc')}
           </button>
           {menu && (
             <div
               className={styles.playlistMenu}
               role="menu"
-              aria-label={menu === 'add' ? 'Add' : 'Misc'}
+              aria-label={
+                menu === 'add'
+                  ? t('amplifier.list.add')
+                  : t('amplifier.list.misc')
+              }
             >
               {menu === 'add' ? (
                 <>
@@ -159,14 +165,14 @@ export default function Playlist({
                     role="menuitem"
                     onClick={() => openDialog('music')}
                   >
-                    From My Music…
+                    {t('amplifier.list.fromMyMusic')}
                   </button>
                   <button
                     type="button"
                     role="menuitem"
                     onClick={() => openDialog('shipped')}
                   >
-                    Shipped tracks…
+                    {t('amplifier.list.shipped')}
                   </button>
                 </>
               ) : (
@@ -175,14 +181,17 @@ export default function Playlist({
                   role="menuitem"
                   onClick={() => openDialog('burn')}
                 >
-                  Burn CD…
+                  {t('amplifier.list.burn')}
                 </button>
               )}
             </div>
           )}
         </div>
         <span>
-          {tracks.length} tracks / {formatTime(total)}
+          {t('amplifier.list.summary', {
+            n: tracks.length,
+            time: formatTime(total),
+          })}
         </span>
       </div>
       {dialog === 'music' && (
