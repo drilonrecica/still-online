@@ -70,7 +70,7 @@ export const kaylaProfile: ProfileContent = {
     {
       day: 4,
       from: 'Brianna',
-      text: 'did u get my IM?? i hope u come saturday!! :)',
+      text: 'did u get my email?? i hope u come saturday!! :)',
     },
     {
       day: 4,

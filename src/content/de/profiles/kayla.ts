@@ -73,7 +73,7 @@ export const kaylaProfile: ProfileContent = {
     {
       day: 4,
       from: 'Brianna',
-      text: 'hast du meine nachricht bekommen?? ich hoff du kommst samstag!! :)',
+      text: 'hast du meine mail bekommen?? ich hoff du kommst samstag!! :)',
     },
     {
       day: 4,
