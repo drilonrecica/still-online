@@ -14,6 +14,9 @@ export const SOUND_NAMES = [
   'nudge',
   'click',
   'dialup',
+  'shot',
+  'reload',
+  'cluck',
 ] as const;
 export type SoundName = (typeof SOUND_NAMES)[number];
 
@@ -290,6 +293,58 @@ export const SOUND_DEFS: Record<SoundName, SoundDef> = {
   },
   // The modem handshake while dialling up (~6s). Dry, like a PC speaker.
   dialup: { voices: dialupVoices() },
+  // Hen Hunt shotgun: a wide noise blast over a low, falling thump (~0.5s).
+  shot: {
+    reverb: 0.25,
+    voices: [
+      noise(1400, 0, 0.18, { q: 0.5, gain: 0.55 }),
+      noise(500, 0, 0.42, { q: 0.7, gain: 0.5 }),
+      tone(36, 0, 0.32, { glideTo: 26, gain: 0.55 }),
+      tone(48, 0, 0.12, { wave: 'triangle', glideTo: 36, gain: 0.25 }),
+    ],
+  },
+  // Shells clattering in, then a two-step pump (~1s, the length of a reload).
+  reload: {
+    voices: [
+      ...[0, 0.11, 0.2, 0.32].map((at, i) =>
+        noise(3800 + i * 300, at, 0.05, {
+          q: 6,
+          gain: 0.35,
+          pan: i % 2 ? 0.3 : -0.3,
+        }),
+      ),
+      bell(86, 0.08, 0.2, { ratio: 3.7, index: 2, gain: 0.05 }),
+      bell(89, 0.26, 0.2, { ratio: 3.7, index: 2, gain: 0.05 }),
+      noise(1700, 0.72, 0.07, { q: 3, gain: 0.45 }),
+      noise(1100, 0.86, 0.1, { q: 3, gain: 0.5 }),
+    ],
+  },
+  // A hen's "buk-buk-buk-BAKAAK" for the last ten seconds (~0.9s).
+  cluck: {
+    reverb: 0.1,
+    voices: [
+      ...[0, 0.13, 0.26].map((at) =>
+        tone(64, at, 0.08, {
+          wave: 'square',
+          cutoff: 1600,
+          glideTo: 59,
+          gain: 0.1,
+        }),
+      ),
+      tone(68, 0.42, 0.18, {
+        wave: 'sawtooth',
+        cutoff: 2400,
+        glideTo: 76,
+        gain: 0.12,
+      }),
+      tone(76, 0.6, 0.3, {
+        wave: 'sawtooth',
+        cutoff: 2200,
+        glideTo: 66,
+        gain: 0.11,
+      }),
+    ],
+  },
 };
 
 /** Where a sound ends, in seconds from its start. */

@@ -1,0 +1,183 @@
+/* Hen Hunt: a full-window canvas with farmhouse-style panels on top. */
+.root {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: #000;
+  outline: none;
+  user-select: none;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.aiming {
+  cursor: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.title {
+  display: flex;
+  margin: 0;
+  color: #ffd23a;
+  font:
+    900 76px/1 'Arial Black',
+    Impact,
+    Tahoma,
+    sans-serif;
+  letter-spacing: 2px;
+  -webkit-text-stroke: 3px #5a1206;
+  paint-order: stroke fill;
+  text-shadow:
+    4px 5px 0 #5a1206,
+    6px 8px 6px rgb(0 0 0 / 40%);
+}
+
+.title span {
+  display: inline-block;
+}
+
+.tagline {
+  margin: 0;
+  padding: 3px 12px;
+  border-radius: 10px;
+  background: rgb(30 20 10 / 55%);
+  color: #fff6d8;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.menuButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.big {
+  min-width: 200px;
+  padding: 8px 16px;
+  border: 2px solid #5a1206;
+  border-radius: 8px;
+  background: linear-gradient(#fff3c4, #e9b93a);
+  box-shadow: 0 3px 0 #5a1206;
+  color: #4a1a06;
+  font:
+    bold 18px Tahoma,
+    Verdana,
+    sans-serif;
+  cursor: pointer;
+}
+
+.big:hover {
+  background: linear-gradient(#fffbe4, #f2c84f);
+}
+
+.big:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #5a1206;
+}
+
+.big:focus-visible,
+.panel button:focus-visible,
+.panel input:focus-visible {
+  outline: 2px dotted #000;
+  outline-offset: 2px;
+}
+
+.panel {
+  min-width: 320px;
+  max-width: 520px;
+  max-height: 100%;
+  overflow: auto;
+  padding: 14px 20px;
+  border: 3px solid #5a1206;
+  border-radius: 12px;
+  background: #fff8e1;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 45%);
+  color: #3a1a06;
+  font-size: 12px;
+}
+
+.panel h2 {
+  margin: 0 0 8px;
+  color: #a3330f;
+  font:
+    bold 24px Tahoma,
+    Verdana,
+    sans-serif;
+  text-align: center;
+}
+
+.help {
+  margin: 0 0 10px;
+  padding-left: 18px;
+  line-height: 1.5;
+}
+
+.scores {
+  width: 100%;
+  margin-bottom: 10px;
+  border-collapse: collapse;
+}
+
+.scores th,
+.scores td {
+  padding: 2px 8px;
+  text-align: left;
+}
+
+.scores thead th {
+  border-bottom: 1px solid #c9a46a;
+}
+
+.scores tbody tr:nth-child(odd) {
+  background: rgb(233 185 58 / 15%);
+}
+
+.final {
+  margin: 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+.nameForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+.nameForm label {
+  flex-basis: 100%;
+  font-weight: bold;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 8px;
+}

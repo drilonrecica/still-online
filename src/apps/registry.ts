@@ -14,6 +14,8 @@ import display16 from '@/assets/icons/display-16.svg';
 import display32 from '@/assets/icons/display-32.svg';
 import folder16 from '@/assets/icons/folder-16.svg';
 import folder32 from '@/assets/icons/folder-32.svg';
+import henhunt16 from '@/assets/icons/henhunt-16.svg';
+import henhunt32 from '@/assets/icons/henhunt-32.svg';
 import mines16 from '@/assets/icons/mines-16.svg';
 import mines32 from '@/assets/icons/mines-32.svg';
 import mail16 from '@/assets/icons/mail-16.svg';
@@ -265,6 +267,20 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     // Sized to the Beginner board; the app resizes the window when the level changes.
     defaultSize: { w: 170, h: 263 },
     minSize: { w: 170, h: 263 },
+    singleInstance: true,
+    chrome: 'xp',
+    fixedSize: true,
+    showOnDesktop: false,
+    showInStartMenu: true,
+    category: 'games',
+  },
+  henhunt: {
+    id: 'henhunt',
+    title: 'Hen Hunt',
+    icon16: henhunt16,
+    icon32: henhunt32,
+    component: lazy(() => import('./henhunt/HenHunt')),
+    defaultSize: { w: 800, h: 560 },
     singleInstance: true,
     chrome: 'xp',
     fixedSize: true,
