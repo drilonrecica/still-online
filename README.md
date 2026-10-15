@@ -4,7 +4,7 @@ _everyone you knew, still online._
 
 A browser-based nostalgia simulator recreating Windows XP and the social internet of 2007 through MSN, Netlog, MySpace, Winamp, and a living fictional desktop.
 
-> **v0.2 — the living internet.** Play it now: **<https://drilonrecica.github.io/still-online/>**
+> **v0.3 — now in German.** Play it now: **<https://drilonrecica.github.io/still-online/>**
 
 ![The still online desktop](docs/screenshots/desktop.png)
 
@@ -58,12 +58,25 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 | **Mines** | **Hen Hunt** |
 | ![Mines mid-game](docs/screenshots/mines.png) | ![Hen Hunt mid-round](docs/screenshots/henhunt.png) |
 
+## Deutsch
+
+still online is fully playable in **German** as well as English. It is not a word-for-word translation: the six friends, the mail, the websites and the files were rewritten for a German 2007 (SchülerVZ-era chat-speak, a Gymnasium instead of a US high school, euros and Fischstäbchen), with the same storylines and the same ids underneath.
+
+- **What's localized:** the whole desktop and every app, all chats, mail, Spaceport profiles, Searchly and the other sites, seeded files, balloons, assistant tips, TuneMole results, and date/time/number formatting.
+- **How to switch:** a German browser starts in Deutsch automatically. Otherwise use the **Language / Sprache** box on the login screen, the **DE/EN** badge in the tray, or **Regional and Language Options** (*Regions- und Sprachoptionen*) in the Start menu. Switching is live, with no reload; your saves, chats and files carry over.
+- **What stays as written:** things you typed or named yourself keep their language, like files on a real disk.
+
+![Der still online Desktop mit geöffnetem Startmenü](docs/screenshots/desktop-de.png)
+
+See [docs/i18n.md](docs/i18n.md) for how it works and [docs/localization-de.md](docs/localization-de.md) for the German style guide.
+
 ## Planned
 
 Not built yet:
 
 - Content beyond day 5: stories for later days currently repeat the day-5 state
 - More friends, sites and games
+- Further languages (the i18n system is built for them, see [docs/i18n.md](docs/i18n.md))
 - Mobile and touch layouts (small screens only get a notice)
 
 Ideas are welcome in the [issues](https://github.com/drilonrecica/still-online/issues).

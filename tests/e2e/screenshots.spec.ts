@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test';
-import { closeNudgeChats, go, logIn, openFromStart } from './helpers';
+import {
+  closeNudgeChats,
+  go,
+  logIn,
+  openFromStart,
+  quietIdle,
+} from './helpers';
 
 // Regenerates the README images: npx playwright test --grep @screenshots
 const DIR = 'docs/screenshots';
@@ -142,4 +148,26 @@ test('README screenshots @screenshots', async ({ page }) => {
   await expect(hen.getByRole('img', { name: /Hen Hunt field/ })).toBeVisible();
   await page.waitForTimeout(2500);
   await page.screenshot({ path: `${DIR}/henhunt.png` });
+});
+
+test.describe('German README screenshot', () => {
+  test.use({ locale: 'de-DE' });
+
+  test('desktop with the Start menu open @screenshots', async ({ page }) => {
+    await quietIdle(page);
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('./?speed=fast');
+    await page.getByTestId('boot-screen').click();
+    await page.getByLabel('Ihr Name').fill('Ada');
+    await page.getByRole('button', { name: 'Als Ada anmelden' }).click();
+    await expect(page.getByTestId('desktop')).toBeVisible();
+    // Tacki's greeting would sit over the desktop.
+    const assistant = page.locator('[data-assistant-balloon]');
+    await expect(assistant).toBeVisible({ timeout: 10_000 });
+    await assistant.getByRole('button').last().click();
+    await page.getByRole('button', { name: 'Start', exact: true }).click();
+    await expect(page.getByRole('menu', { name: 'Startmenü' })).toBeVisible();
+    await page.mouse.move(900, 400);
+    await page.screenshot({ path: `${DIR}/desktop-de.png` });
+  });
 });

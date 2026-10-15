@@ -167,6 +167,20 @@ export const mika: ContactContent = {
 };
 ```
 
+## German overlays (v0.3)
+
+English content in `src/content/**` is the structural source of truth. German lives in `src/content/de/**` with the **same ids** and is merged onto the English at render time (`src/content/locale.ts`). The overlay model is in [i18n.md](i18n.md) → "Content per locale"; the voices and style are in [localization-de.md](localization-de.md).
+
+Parity rules, enforced by `src/content/parity.test.ts`:
+
+- One English line is one German line, and the same number of `choices` per node. Lines without `text` (pure actions) stay text-less.
+- Every placeholder (`{name}`, `{artist}`, `{title}`, `{score}`, `{game}`) in the English line appears in the German one.
+- Scripts, nodes, files and mails keep their ids. Triggers, delays, nudges, winks, status changes and unlocks come from the English module; only text is overlaid.
+- Mail is written as full `MailContent` objects whose ids, days, addresses and attachment data match the English (a test pins this).
+- `src/content/fallback.test.ts` proves no English fallback is reachable in German.
+
+Run `npm run test -- src/content` after changing either language. The lint below runs on both.
+
 ## Content lint
 
 `src/content/lint.ts` checks what the types can't: `start`/`next` ids exist, every node is reachable, every node can reach an `end`, script ids are unique, `afterScript` follows an existing other script of the same contact with `minutes > 0`, there are no real-looking emails or URLs, no real product names or post-2007 terms, `{artist}`/`{title}` appear only in `onNowPlaying` scripts and `{score}`/`{game}` only in `onGameScore` scripts, `onGameScore` names a known game with `minScore >= 0`, `onDay` days and `days` keys are whole days ≥ 2, `onDay` scripts don't `repeat`, `days` personal messages have no placeholders, every `unlock` is in `CONTENT_UNLOCKS`, and every `wink` is in `WINK_IDS`. `src/content/contacts/contacts.test.ts` runs it on every shipped contact.

@@ -16,6 +16,8 @@ This doc extends [architecture.md](architecture.md) (session, windows, apps, eve
 
 Content files under `src/content/` use **relative imports**, because the e2e tsconfig compiles them and has no `@/` alias.
 
+> Since v0.3 all text is localized (English and German) and persisted state is language-neutral. See [i18n.md](i18n.md); where this document shows English strings, the catalogs are the source.
+
 ## Module map
 
 ```

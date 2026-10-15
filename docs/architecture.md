@@ -27,6 +27,8 @@ booting ──bootComplete──▶ login ──logOn──▶ desktop ──shu
 | settings | `settings.ts`      | yes       | `playerName`, `muted`, `volume` (0..1), `firstBootDone` (`SettingsStore`) |
 | sound    | `sound.ts` (store) | no        | `unlocked` (AudioContext resumed after a gesture) (`SoundStore`)          |
 
+All user-visible text goes through the catalogs and `t()`, and persisted state is language-neutral: see [docs/i18n.md](i18n.md).
+
 Apps keep their own stores in `src/apps/<id>/store.ts` (Notepad text, messenger progress, amplifier volume).
 
 ## Windows
