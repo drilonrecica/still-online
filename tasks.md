@@ -311,18 +311,18 @@ Tests sit next to the code as `*.test.ts(x)`. Use path alias `@/` → `src/`.
 | P5-04 | **Amplifier equalizer** — 10-band EQ in the audio graph, with presets, a toggle and an EQ panel. | P5-03 | done | opus | agent | — | fast | — | Filters inserted once in the media-element graph; presets apply; persisted; panel resizes the window like the playlist. | §P5-04 |
 | P5-05 | **Amplifier playlist editing + Burn CD** — remove/reorder/add from My Music, `amplifier:enqueue`, and a "Burn CD…" joke. | P5-03 | done | sonnet | agent | — | fast | — | Edits persist; enqueue from TuneMole/Explorer/Spaceport plays; Burn CD fails with a "buffer underrun". | §P5-05 |
 | P5-06 | **More now-playing reactions** — a second `onNowPlaying` script for every friend, track-specific where it's funny. | P4-G | done | opus | agent | — | — | — | Lint + playthrough pass; ≥ 1 new script per contact. | §P5-06 |
-| P5-G | **P5 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: Paint with a drawing, Booth fallback, each skin, EQ, windowshade. | P5-01…P5-06 | in progress | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P5.md`. | §Gate |
+| P5-G | **P5 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: Paint with a drawing, Booth fallback, each skin, EQ, windowshade. | P5-01…P5-06 | done | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P5.md`. | §Gate |
 
 ## P6 — Games and cult
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P6-01 | **Games store + Mines** — the persisted `games` store and the minesweeper-style Mines. | P5-G | blocked | sonnet | agent | — | fast | — | Board logic unit-tested (first click safe, flood reveal, chord, win/lose); best times persist; `game:score` emitted. | §P6-01 |
+| P6-01 | **Games store + Mines** — the persisted `games` store and the minesweeper-style Mines. | P5-G | in progress | sonnet | agent | — | fast | — | Board logic unit-tested (first click safe, flood reveal, chord, win/lose); best times persist; `game:score` emitted. | §P6-01 |
 | P6-02 | **Hen Hunt** — the Moorhuhn-style shooting gallery. | P6-01 | blocked | opus | agent | — | fast | — | 90 s rounds, shells and reload, depth scoring, bonuses, high scores; simulation unit-tested; renders in Chromium. | §P6-02 |
 | P6-03 | **Star Pinball** — a space pinball table with fixed-timestep physics. | P6-01 | blocked | opus | agent | — | fast | — | Physics unit-tested (ball-segment/circle collisions, flipper impulse, no tunnelling at max speed); 3 balls; scoring; playable in Chromium. | §P6-03 |
-| P6-04 | **Desktop Wrecker** — wreck the live desktop with 5 tools on a transparent overlay. | P5-G | blocked | opus | agent | — | fast | — | Every tool leaves its own marks + sound; Repair clears; Esc exits; cursor per tool; works over open windows. | §P6-04 |
-| P6-05 | **Fluff the sheep** — a desktop pet that walks on the taskbar and window title bars. | P5-G | blocked | opus | agent | — | fast | — | Walk/fall/sleep/drag behaviour driven by a tested state machine; follows window geometry; tray toggle persists. | §P6-05 |
-| P6-06 | **Stapley** — the original stapler assistant with contextual tips. | P5-G | blocked | sonnet | agent | — | fast | — | Tips fire on their triggers once; "don't show again" persists; Hide works; content lint passes. | §P6-06 |
+| P6-04 | **Desktop Wrecker** — wreck the live desktop with 5 tools on a transparent overlay. | P5-G | ready | opus | agent | — | fast | — | Every tool leaves its own marks + sound; Repair clears; Esc exits; cursor per tool; works over open windows. | §P6-04 |
+| P6-05 | **Fluff the sheep** — a desktop pet that walks on the taskbar and window title bars. | P5-G | ready | opus | agent | — | fast | — | Walk/fall/sleep/drag behaviour driven by a tested state machine; follows window geometry; tray toggle persists. | §P6-05 |
+| P6-06 | **Stapley** — the original stapler assistant with contextual tips. | P5-G | ready | sonnet | agent | — | fast | — | Tips fire on their triggers once; "don't show again" persists; Hide works; content lint passes. | §P6-06 |
 | P6-07 | **Game reactions** — `onGameScore` trigger and a reaction script per friend. | P6-01, P6-02, P6-03 | blocked | opus | agent | — | fast | — | Trigger tested; each friend reacts to at least one game; lint + playthrough pass. | §P6-07 |
 | P6-G | **P6 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: Mines won, Hen Hunt mid-round, Pinball, Wrecker damage, Fluff on a window, Stapley tip. | P6-01…P6-07 | blocked | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P6.md`. | §Gate |
 

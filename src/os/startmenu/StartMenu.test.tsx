@@ -131,6 +131,7 @@ describe('StartMenu', () => {
         .map((b) => b.textContent?.replace('▶', ''));
       expect(names).toEqual([
         'Accessories',
+        'Games',
         'Internet',
         'Entertainment',
         'System Tools',
