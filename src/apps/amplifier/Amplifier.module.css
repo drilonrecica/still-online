@@ -1,5 +1,6 @@
 /* Original dark brushed-metal skin; not a recreation of any bitmap skin. */
 .root {
+  position: relative;
   --amp-lcd: #4cff6a;
   --amp-lcd-bg: #07170b;
   display: flex;
@@ -301,4 +302,137 @@
   padding: 1px 3px;
   text-align: right;
   border-top: 1px solid #1f5a2c;
+}
+
+/* Windowshade: only the 14px titlebar strip remains. */
+.root[data-shade='true'] {
+  padding: 0;
+  gap: 0;
+  border-width: 0;
+}
+
+.root[data-shade='true'] .titlebar {
+  height: 14px;
+}
+
+.shadeTime {
+  flex: none;
+  font:
+    bold 10px 'Courier New',
+    monospace;
+  color: var(--amp-lcd);
+}
+
+.shadeMarquee {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font:
+    9px 'Courier New',
+    monospace;
+  color: var(--amp-lcd);
+}
+
+.menu {
+  position: absolute;
+  top: 15px;
+  right: 4px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  min-width: 110px;
+  background: var(--amp-lcd-bg);
+  border: 1px solid var(--amp-lcd);
+}
+
+.menu button {
+  min-height: 0;
+  padding: 2px 6px;
+  font-size: 10px;
+  text-align: left;
+  color: var(--amp-lcd);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.menu button:hover,
+.menu button:focus-visible {
+  color: var(--amp-lcd-bg);
+  background: var(--amp-lcd);
+}
+
+/* Skins override the brushed-metal variables and surfaces. */
+.root[data-skin='neon'] {
+  --amp-lcd: #00f0ff;
+  --amp-lcd-bg: #05000f;
+  color: #ff5cf0;
+  background: linear-gradient(#14001f, #05000a);
+  border-color: #ff2bd6;
+  box-shadow: inset 0 0 8px rgb(255 43 214 / 60%);
+}
+
+.root[data-skin='neon'] .titlebar {
+  background: linear-gradient(#3a0a4a, #14001f);
+  box-shadow: 0 0 6px rgb(255 43 214 / 70%);
+}
+
+.root[data-skin='neon'] .titleText,
+.root[data-skin='neon'] .display {
+  text-shadow: 0 0 5px currentcolor;
+}
+
+.root[data-skin='neon'] .display {
+  border-color: #ff2bd6;
+}
+
+.root[data-skin='neon'] .buttons button,
+.root[data-skin='neon'] .winBtn {
+  color: #ff5cf0;
+  background: #0b0014;
+  border: 1px solid #ff2bd6;
+  box-shadow: 0 0 4px rgb(255 43 214 / 70%);
+}
+
+.root[data-skin='bubblegum'] {
+  --amp-lcd: #5a2a63;
+  --amp-lcd-bg: #ffe4f1;
+  color: #5a2a63;
+  background: linear-gradient(#ffc2de, #bfe3ff);
+  border-color: #ff8fc2;
+  border-radius: 8px;
+}
+
+.root[data-skin='bubblegum'] .titlebar {
+  background: linear-gradient(#ff9ccc, #ff72b5);
+  border-radius: 8px 8px 0 0;
+}
+
+.root[data-skin='bubblegum'] .display {
+  border: 2px solid #ff8fc2;
+  border-radius: 6px;
+}
+
+.root[data-skin='bubblegum'] .buttons button,
+.root[data-skin='bubblegum'] .winBtn {
+  color: #5a2a63;
+  background: linear-gradient(#fff, #9fd4ff);
+  border: 1px solid #5aa8ee;
+  border-radius: 9px;
+}
+
+.root[data-skin='bubblegum'] .playlistRow[data-current='true'] {
+  color: #fff;
+  background: #ff72b5;
+}
+
+.root[data-skin='bubblegum'] .playlistFooter {
+  border-top-color: #ff8fc2;
+}
+
+.root[data-skin='neon'] .playlistRow[data-current='true'] {
+  color: #05000f;
+  background: #00f0ff;
 }

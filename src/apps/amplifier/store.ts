@@ -1,5 +1,5 @@
 // Amplifier playback store: one HTMLAudioElement behind a Zustand store.
-// Persisted under `still-online:v1:amplifier` (volume, shuffle, repeat).
+// Persisted under `still-online:v1:amplifier` (volume, shuffle, repeat, skin).
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { createStore, type StateCreator, type StoreApi } from 'zustand/vanilla';
@@ -10,6 +10,9 @@ import { PLAYLIST, type PlaylistTrack } from '@/content/playlist';
 
 export type RepeatMode = 'off' | 'all' | 'one';
 export type PlaybackStatus = 'stopped' | 'playing' | 'paused';
+export type AmplifierSkin = 'metal' | 'neon' | 'bubblegum';
+
+export const SKINS: readonly AmplifierSkin[] = ['metal', 'neon', 'bubblegum'];
 
 const REPEAT_MODES: readonly RepeatMode[] = ['off', 'all', 'one'];
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
@@ -26,6 +29,7 @@ export interface AmplifierStore {
   volume: number;
   shuffle: boolean;
   repeat: RepeatMode;
+  skin: AmplifierSkin;
 
   load: (playlist: readonly PlaylistTrack[]) => void;
   /** Starts the track at `index` from the beginning. */
@@ -41,12 +45,15 @@ export interface AmplifierStore {
   setVolume: (volume: number) => void;
   toggleShuffle: () => void;
   cycleRepeat: () => void;
+  setSkin: (skin: AmplifierSkin) => void;
+  cycleSkin: () => void;
 }
 
 interface PersistedAmplifier {
   volume: number;
   shuffle: boolean;
   repeat: RepeatMode;
+  skin: AmplifierSkin;
 }
 
 export interface AmplifierDeps {
@@ -164,6 +171,7 @@ function createCreator({
       volume: 0.7,
       shuffle: false,
       repeat: 'off',
+      skin: 'metal',
 
       load: (list) => {
         audio.pause();
@@ -266,6 +274,15 @@ function createCreator({
               (REPEAT_MODES.indexOf(s.repeat) + 1) % REPEAT_MODES.length
             ],
         })),
+
+      setSkin: (skin) => {
+        if (SKINS.includes(skin)) set({ skin });
+      },
+
+      cycleSkin: () =>
+        set((s) => ({
+          skin: SKINS[(SKINS.indexOf(s.skin) + 1) % SKINS.length],
+        })),
     };
   };
 }
@@ -275,10 +292,11 @@ function withPersist(deps: AmplifierDeps) {
     createCreator(deps),
     persistOptions<AmplifierStore, PersistedAmplifier>({
       name: 'amplifier',
-      partialize: ({ volume, shuffle, repeat }) => ({
+      partialize: ({ volume, shuffle, repeat, skin }) => ({
         volume,
         shuffle,
         repeat,
+        skin,
       }),
       sanitize: (persisted, current) => {
         if (!isRecord(persisted)) return current;
@@ -290,10 +308,14 @@ function withPersist(deps: AmplifierDeps) {
         const repeat = REPEAT_MODES.includes(persisted.repeat as RepeatMode)
           ? (persisted.repeat as RepeatMode)
           : current.repeat;
+        const skin = SKINS.includes(persisted.skin as AmplifierSkin)
+          ? (persisted.skin as AmplifierSkin)
+          : current.skin;
         return {
           ...current,
           volume,
           repeat,
+          skin,
           shuffle:
             typeof persisted.shuffle === 'boolean'
               ? persisted.shuffle

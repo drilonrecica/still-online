@@ -200,7 +200,8 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     icon32: amplifier32,
     component: lazy(() => import('./amplifier/Amplifier')),
     defaultSize: { w: 275, h: 116 },
-    minSize: { w: 275, h: 116 },
+    // Height 14 lets the windowshade strip shrink the window.
+    minSize: { w: 275, h: 14 },
     singleInstance: true,
     chrome: 'none',
     showOnDesktop: true,

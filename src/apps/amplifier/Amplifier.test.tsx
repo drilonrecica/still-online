@@ -168,3 +168,69 @@ describe('Amplifier', () => {
     });
   });
 });
+
+describe('Amplifier skins and windowshade', () => {
+  beforeEach(() => vi.mocked(useReducedMotion).mockReturnValue(false));
+
+  it('SKN cycles skins and the Skins menu picks one', async () => {
+    renderAmp();
+    act(() => useAmplifierStore.setState({ skin: 'metal' }));
+    const root = screen.getByRole('group', { name: 'Amplifier' });
+    expect(root.dataset.skin).toBe('metal');
+    await userEvent.click(screen.getByRole('button', { name: /^Skin:/ }));
+    expect(root.dataset.skin).toBe('neon');
+    await userEvent.click(screen.getByRole('button', { name: /^Skin:/ }));
+    expect(root.dataset.skin).toBe('bubblegum');
+    await userEvent.click(screen.getByRole('button', { name: /^Skin:/ }));
+    expect(root.dataset.skin).toBe('metal');
+
+    fireEvent.contextMenu(screen.getByTestId('titlebar'));
+    await userEvent.click(screen.getByRole('menuitem', { name: /Skins/ }));
+    await userEvent.click(
+      screen.getByRole('menuitemradio', { name: /Bubblegum/ }),
+    );
+    expect(root.dataset.skin).toBe('bubblegum');
+    expect(screen.queryByRole('menu')).toBeNull();
+  });
+
+  it('skin persists and rejects junk', () => {
+    act(() => useAmplifierStore.getState().setSkin('neon'));
+    expect(
+      JSON.parse(localStorage.getItem('still-online:v1:amplifier') ?? '{}')
+        .state.skin,
+    ).toBe('neon');
+    act(() =>
+      useAmplifierStore.getState().setSkin('bogus' as unknown as 'neon'),
+    );
+    expect(useAmplifierStore.getState().skin).toBe('neon');
+  });
+
+  it('double-clicking the titlebar toggles the windowshade and resizes', async () => {
+    const resize = vi.fn();
+    const { useWindowsStore } = await import('@/os/store/windows');
+    act(() =>
+      useWindowsStore.setState({
+        windows: [{ id: 'w1', x: 10, y: 20, w: 275, h: 116 }],
+        resizeWindow: resize,
+      } as never),
+    );
+    renderAmp();
+    fireEvent.doubleClick(screen.getByTestId('titlebar'));
+    expect(resize).toHaveBeenLastCalledWith('w1', {
+      x: 10,
+      y: 20,
+      w: 275,
+      h: 14,
+    });
+    expect(screen.queryByTestId('marquee')).toBeNull();
+    expect(screen.getByTestId('shade-marquee')).toBeTruthy();
+    fireEvent.doubleClick(screen.getByTestId('titlebar'));
+    expect(resize).toHaveBeenLastCalledWith('w1', {
+      x: 10,
+      y: 20,
+      w: 275,
+      h: 116,
+    });
+    expect(screen.getByTestId('marquee')).toBeTruthy();
+  });
+});
