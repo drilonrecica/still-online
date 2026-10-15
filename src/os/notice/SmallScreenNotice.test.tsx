@@ -27,7 +27,7 @@ describe('SmallScreenNotice', () => {
     render(<SmallScreenNotice />);
     expect(
       screen.getByText(
-        'still-online is best experienced on a desktop computer.',
+        'still online is best experienced on a desktop computer.',
       ),
     ).toBeInTheDocument();
   });

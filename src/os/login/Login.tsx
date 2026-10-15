@@ -1,4 +1,5 @@
 // Blue welcome screen with a single account tile. First visit asks for a name.
+import { Wordmark } from '@/os/brand/Wordmark';
 import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { useSessionStore } from '@/os/store/session';
@@ -32,7 +33,9 @@ export function Login() {
 
   return (
     <div className={styles.login} data-testid="login-screen">
-      <div className={styles.header}>still-online</div>
+      <div className={styles.header}>
+        <Wordmark edition />
+      </div>
       <form className={styles.body} onSubmit={submit}>
         <div className={styles.prompt}>To begin, click your user name</div>
         <button

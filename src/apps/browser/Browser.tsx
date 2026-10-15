@@ -283,7 +283,7 @@ export default function Browser({ windowId, props }: AppComponentProps) {
               <p>
                 <b>Web Explorer</b> Version 6.0
                 <br />
-                still-online, 2007
+                still online, 2007
               </p>
               <p>Surfs every page of the fictional .example web.</p>
               <div className={styles.dialogButtons}>

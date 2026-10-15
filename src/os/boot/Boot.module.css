@@ -13,13 +13,6 @@
   z-index: 20000;
 }
 
-.wordmark {
-  font-size: 40px;
-  font-weight: bold;
-  font-style: italic;
-  letter-spacing: 1px;
-}
-
 .track {
   position: relative;
   width: 200px;

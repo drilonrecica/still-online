@@ -36,7 +36,7 @@ export const THEME_PRESETS: readonly {
   name: string;
   wallpaper: string;
 }[] = [
-  { id: 'blue', name: 'still-online XP', wallpaper: 'classic' },
+  { id: 'blue', name: 'still online', wallpaper: 'classic' },
   { id: 'olive', name: 'Olive Afternoon', wallpaper: 'autumn' },
   { id: 'silver', name: 'Silver Night', wallpaper: 'orbit' },
 ];

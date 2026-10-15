@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="so-bubble" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fb6ff"/>
+      <stop offset="0.5" stop-color="#2f6fe0"/>
+      <stop offset="1" stop-color="#173f9f"/>
+    </linearGradient>
+  </defs>
+  <path d="M10 8 H50 Q58 8 58 16 V38 Q58 46 50 46 H26 L14 57 L17 46 H10 Q2 46 2 38 V16 Q2 8 10 8 Z"
+    fill="url(#so-bubble)" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M10 12 H50 Q54 12 54 16 V22 Q32 28 6 22 V16 Q6 12 10 12 Z" fill="#fff" opacity="0.35"/>
+  <circle cx="18" cy="29" r="3.5" fill="#fff"/>
+  <circle cx="30" cy="29" r="3.5" fill="#fff"/>
+  <circle cx="42" cy="29" r="3.5" fill="#fff"/>
+  <circle cx="53" cy="50" r="9" fill="#3aa600" stroke="#fff" stroke-width="3"/>
+</svg>

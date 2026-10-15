@@ -1,5 +1,7 @@
-// Black boot screen with wordmark and XP-style progress bar. Click or any key skips.
+// Black boot screen with the still online wordmark and XP-style progress bar. Click or any key skips.
 import { useEffect } from 'react';
+import { APP_NAME } from '@/os/brand/brand';
+import { Wordmark } from '@/os/brand/Wordmark';
 import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWorldStore } from '@/os/world';
@@ -32,14 +34,14 @@ export function Boot() {
       data-testid="boot-screen"
       onClick={bootComplete}
     >
-      <div className={styles.wordmark}>still-online</div>
+      <Wordmark size="lg" edition tagline />
       <div className={styles.day} data-testid="boot-day">
         Day {day}
       </div>
       <div
         className={styles.track}
         role="progressbar"
-        aria-label="Starting still-online"
+        aria-label={`Starting ${APP_NAME}`}
         data-testid="boot-progress"
         data-static={reducedMotion ? 'true' : 'false'}
       >

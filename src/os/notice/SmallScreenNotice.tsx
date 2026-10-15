@@ -1,4 +1,5 @@
 // XP-style dialog shown over the boot screen on narrow or touch-first devices. Dismissal persists.
+import { APP_NAME } from '@/os/brand/brand';
 import { useEffect, useRef, useState } from 'react';
 import { useSettingsStore } from '@/os/store/settings';
 import styles from './SmallScreenNotice.module.css';
@@ -55,12 +56,12 @@ export function SmallScreenNotice() {
       >
         <div className="title-bar">
           <div className="title-bar-text" id="small-screen-title">
-            still-online
+            {APP_NAME}
           </div>
         </div>
         <div className={`window-body ${styles.body}`}>
           <p id="small-screen-text" className={styles.text}>
-            still-online is best experienced on a desktop computer.
+            {APP_NAME} is best experienced on a desktop computer.
           </p>
           <div className={styles.actions}>
             <button ref={button} type="button" onClick={dismiss}>

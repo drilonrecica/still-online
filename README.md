@@ -1,14 +1,16 @@
-# still-online
+# still online
+
+_everyone you knew, still online._
 
 A browser-based nostalgia simulator recreating Windows XP and the social internet of 2007 through MSN, Netlog, MySpace, Winamp, and a living fictional desktop.
 
 > **v0.2 — the living internet.** Play it now: **<https://drilonrecica.github.io/still-online/>**
 
-![The still-online desktop](docs/screenshots/desktop.png)
+![The still online desktop](docs/screenshots/desktop.png)
 
 ## About
 
-Remember coming home from school, hearing the XP startup sound, and waiting for MSN to sign in so you could see who was online? **still-online** is an attempt to bring that moment back: a Windows XP–style desktop that runs entirely in your browser, frozen somewhere in 2007.
+Remember coming home from school, hearing the XP startup sound, and waiting for MSN to sign in so you could see who was online? **still online** is an attempt to bring that moment back: a Windows XP–style desktop that runs entirely in your browser, frozen somewhere in 2007.
 
 It isn't meant to be a static museum piece. The desktop is meant to feel *lived in*. A cast of fictional friends sends you messages, updates their profiles, changes their status lines and leaves comments while you're away. You're logging back into an internet that kept going without you.
 
@@ -86,7 +88,7 @@ Ideas, memories, bug reports and feedback are very welcome. [Open an issue](http
 
 ## Disclaimer
 
-still-online is a fan-made, non-commercial nostalgia project. It is **not** affiliated with, endorsed by, or sponsored by Microsoft, MySpace, Netlog, Winamp, or any of their owners. All product names, logos and trademarks belong to their respective owners and are mentioned only to describe the era the project recreates. All characters, conversations and content inside the simulation are fictional.
+still online is a fan-made, non-commercial nostalgia project. It is **not** affiliated with, endorsed by, or sponsored by Microsoft, MySpace, Netlog, Winamp, or any of their owners. All product names, logos and trademarks belong to their respective owners and are mentioned only to describe the era the project recreates. All characters, conversations and content inside the simulation are fictional.
 
 ## License
 

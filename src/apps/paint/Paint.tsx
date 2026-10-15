@@ -188,7 +188,7 @@ export default function Paint({ windowId, props }: AppComponentProps) {
           onSelect: () =>
             files.setDialog({
               kind: 'message',
-              text: 'Paint\nA still-online accessory. Pictures stay on this computer.',
+              text: 'Paint\nA still online accessory. Pictures stay on this computer.',
             }),
         },
       ],

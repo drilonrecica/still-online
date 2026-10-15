@@ -1,4 +1,4 @@
-# still-online v0.2.0
+# still online v0.2.0
 
 The living internet: v0.1's desktop and Messenger grow into a small, fully local 2007, with a web to browse, mail to read, things to make and games to play, and days that actually pass.
 
@@ -33,4 +33,4 @@ The living internet: v0.1's desktop and Messenger grow into a small, fully local
 
 Everything is original work or CC0 / CC BY 4.0. Music is by Kevin MacLeod (incompetech.com), CC BY 4.0. Wallpapers, screensavers, skins, photos and game art are drawn procedurally or by hand-written SVG in this repository. Full attributions are in [CREDITS.md](../CREDITS.md).
 
-still-online is a fan-made, non-commercial project and is not affiliated with Microsoft, MySpace, Netlog, Winamp or their owners.
+still online is a fan-made, non-commercial project and is not affiliated with Microsoft, MySpace, Netlog, Winamp or their owners.

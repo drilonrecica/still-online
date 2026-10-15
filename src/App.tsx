@@ -112,7 +112,7 @@ export function App() {
 
   return (
     <div className="desktop-root" style={background}>
-      <h1 hidden>still-online</h1>
+      <h1 hidden>still online</h1>
       {state === 'booting' && <Boot />}
       {state === 'login' && <Login />}
       {state === 'desktop' && <Desktop />}

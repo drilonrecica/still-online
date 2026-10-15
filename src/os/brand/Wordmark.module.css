@@ -1,0 +1,78 @@
+/* The still online wordmark. Sizes scale from --wm (the name's font size). */
+
+.wordmark {
+  --wm: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--wm) * 0.3);
+  color: inherit;
+  font-family: 'Franklin Gothic Medium', 'Trebuchet MS', Tahoma, sans-serif;
+}
+
+.wordmark[data-size='lg'] {
+  --wm: 46px;
+}
+
+.wordmark[data-size='sm'] {
+  --wm: 18px;
+  align-items: flex-start;
+}
+
+.lockup {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--wm) * 0.3);
+}
+
+.lockup svg {
+  flex: none;
+  filter: drop-shadow(0 0 4px rgb(255 255 255 / 25%));
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1;
+}
+
+.name {
+  font-size: var(--wm);
+  font-weight: bold;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 calc(var(--wm) * 0.25) rgb(255 255 255 / 35%);
+}
+
+.online {
+  font-weight: normal;
+}
+
+.edition {
+  margin-top: calc(var(--wm) * 0.1);
+  font-size: calc(var(--wm) * 0.36);
+  font-style: italic;
+  font-weight: bold;
+  color: #ff8c1a;
+  text-shadow: none;
+}
+
+.tagline {
+  margin: 0;
+  font-family: Tahoma, sans-serif;
+  font-size: max(11px, calc(var(--wm) * 0.3));
+  font-style: normal;
+  font-weight: normal;
+  color: #9a9a9a;
+}
+
+/* On light backgrounds (About box) the glow becomes a dark name. */
+.wordmark[data-size='sm'] .name {
+  color: #0a246a;
+  text-shadow: none;
+}
+
+.wordmark[data-size='sm'] .tagline {
+  color: #555;
+}

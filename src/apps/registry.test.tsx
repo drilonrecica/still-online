@@ -87,7 +87,7 @@ describe('registry', () => {
   });
 
   it.each([
-    ['mycomputer', /still-online/i],
+    ['mycomputer', /still online/i],
     ['notepad', null],
     ['recyclebin', /The Recycle Bin is empty\./],
   ] as const)('opens %s via openApp', async (appId, text) => {
@@ -149,7 +149,7 @@ describe('reset', () => {
       useWindowsStore.getState().openApp('mycomputer');
     });
     await userEvent.click(
-      await screen.findByRole('button', { name: /Reset still-online/ }),
+      await screen.findByRole('button', { name: /Reset still online/ }),
     );
 
     expect(window.confirm).toHaveBeenCalled();

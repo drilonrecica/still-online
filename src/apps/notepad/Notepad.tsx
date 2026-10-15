@@ -326,7 +326,7 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
             <div className="window-body">
               <p className={styles.message}>
                 Notepad
-                <br />A still-online accessory. Plain text, no strings attached.
+                <br />A still online accessory. Plain text, no strings attached.
               </p>
               <div className={styles.buttons}>
                 <button type="button" onClick={() => setDialog(null)}>
