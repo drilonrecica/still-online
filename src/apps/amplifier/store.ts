@@ -42,6 +42,12 @@ export interface AmplifierStore {
   eq: EqSettings;
 
   load: (playlist: readonly PlaylistTrack[]) => void;
+  /** Appends the track unless it's already listed; returns its index. */
+  addTrack: (track: PlaylistTrack) => number;
+  /** Drops the row from the playlist (never from disk). Removing the current track stops it. */
+  removeAt: (index: number) => void;
+  /** Moves a row, keeping the current track selected. */
+  moveTrack: (from: number, to: number) => void;
   /** Starts the track at `index` from the beginning. */
   playIndex: (index: number) => void;
   /** Resumes the current track, or starts the first one (random when shuffling). */
@@ -64,6 +70,8 @@ export interface AmplifierStore {
 }
 
 interface PersistedAmplifier {
+  /** The edited playlist, as shipped track ids. */
+  playlist: string[];
   volume: number;
   shuffle: boolean;
   repeat: RepeatMode;
@@ -86,6 +94,10 @@ function randomIndex(length: number, current: number): number {
   let i = Math.floor(Math.random() * (length - 1));
   if (current >= 0 && i >= current) i += 1;
   return Math.min(i, length - 1);
+}
+
+function dedupe(list: readonly PlaylistTrack[]): PlaylistTrack[] {
+  return list.filter((t, i) => list.findIndex((x) => x.id === t.id) === i);
 }
 
 function createCreator({
@@ -202,6 +214,57 @@ function createCreator({
           duration: 0,
         });
         if (hadTrack) emitStopped(hadTrack.id);
+      },
+
+      addTrack: (t) => {
+        const list = get().playlist;
+        const existing = list.findIndex((x) => x.id === t.id);
+        if (existing >= 0) return existing;
+        set({ playlist: [...list, t] });
+        return list.length;
+      },
+
+      removeAt: (index) => {
+        const { playlist: list, index: current } = get();
+        if (index < 0 || index >= list.length) return;
+        history = [];
+        const next = list.filter((_, i) => i !== index);
+        if (index === current) {
+          const id = list[index]?.id ?? null;
+          audio.pause();
+          audio.removeAttribute('src');
+          set({
+            playlist: next,
+            index: -1,
+            status: 'stopped',
+            currentTime: 0,
+            duration: 0,
+          });
+          emitStopped(id);
+          return;
+        }
+        set({
+          playlist: next,
+          index: index < current ? current - 1 : current,
+        });
+      },
+
+      moveTrack: (from, to) => {
+        const { playlist: list, index: current } = get();
+        const last = list.length - 1;
+        if (from < 0 || from > last || to < 0 || to > last || from === to) {
+          return;
+        }
+        history = [];
+        const next = [...list];
+        const [moved] = next.splice(from, 1);
+        if (!moved) return;
+        next.splice(to, 0, moved);
+        let index = current;
+        if (current === from) index = to;
+        else if (from < current && to >= current) index = current - 1;
+        else if (from > current && to <= current) index = current + 1;
+        set({ playlist: next, index });
       },
 
       playIndex: (index) => {
@@ -326,7 +389,8 @@ function withPersist(deps: AmplifierDeps) {
     createCreator(deps),
     persistOptions<AmplifierStore, PersistedAmplifier>({
       name: 'amplifier',
-      partialize: ({ volume, shuffle, repeat, skin, eq }) => ({
+      partialize: ({ playlist, volume, shuffle, repeat, skin, eq }) => ({
+        playlist: playlist.map((t) => t.id),
         volume,
         shuffle,
         repeat,
@@ -346,8 +410,18 @@ function withPersist(deps: AmplifierDeps) {
         const skin = SKINS.includes(persisted.skin as AmplifierSkin)
           ? (persisted.skin as AmplifierSkin)
           : current.skin;
+        // Unknown ids (a track that no longer ships) are dropped; a missing key keeps the default.
+        const playlist = Array.isArray(persisted.playlist)
+          ? dedupe(
+              persisted.playlist.flatMap((id) => {
+                const t = PLAYLIST.find((p) => p.id === id);
+                return t ? [t] : [];
+              }),
+            )
+          : current.playlist;
         return {
           ...current,
+          playlist,
           volume,
           repeat,
           skin,
@@ -389,13 +463,9 @@ bindVolume(useAmplifierStore, audio);
 // `amplifier:enqueue`: add the track to the playlist if it's missing, then play it on request.
 // Opening the window is `os/amplifierRouter.ts`' job.
 events.on('amplifier:enqueue', ({ trackId, play }) => {
-  const state = useAmplifierStore.getState();
-  let index = state.playlist.findIndex((t) => t.id === trackId);
-  if (index < 0) {
-    const track = PLAYLIST.find((t) => t.id === trackId);
-    if (!track) return;
-    useAmplifierStore.setState({ playlist: [...state.playlist, track] });
-    index = state.playlist.length;
-  }
-  if (play) useAmplifierStore.getState().playIndex(index);
+  const track = PLAYLIST.find((t) => t.id === trackId);
+  if (!track) return;
+  const store = useAmplifierStore.getState();
+  const index = store.addTrack(track);
+  if (play) store.playIndex(index);
 });

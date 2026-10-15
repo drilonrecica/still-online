@@ -286,6 +286,11 @@
   white-space: nowrap;
 }
 
+.playlistRow[data-selected='true'] {
+  outline: 1px dotted var(--amp-lcd);
+  outline-offset: -1px;
+}
+
 .playlistRow[data-current='true'] {
   color: #fff;
   background: #1f5a2c;
@@ -298,9 +303,11 @@
 }
 
 .playlistFooter {
+  display: flex;
   flex: none;
+  align-items: center;
+  justify-content: space-between;
   padding: 1px 3px;
-  text-align: right;
   border-top: 1px solid #1f5a2c;
 }
 
@@ -601,4 +608,157 @@ input[type='range'].eqSlider:focus-visible::-moz-range-thumb {
 .root[data-skin='neon'] .playlistRow[data-current='true'] {
   color: #05000f;
   background: #00f0ff;
+}
+
+/* Playlist menus and dialogs. */
+.playlistMenus {
+  position: relative;
+  display: flex;
+  gap: 4px;
+}
+
+.playlistMenus > button,
+.playlistMenu button,
+.dialogButtons button,
+.dialogList button {
+  min-width: 0;
+  min-height: 0;
+  padding: 0 4px;
+  font: inherit;
+  color: var(--amp-lcd);
+  background: transparent;
+  border: 1px solid var(--amp-lcd);
+  cursor: pointer;
+}
+
+.playlistMenu {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  min-width: 110px;
+  background: var(--amp-lcd-bg);
+  border: 1px solid var(--amp-lcd);
+}
+
+.playlistMenu button {
+  text-align: left;
+  border: 0;
+}
+
+.playlistMenus > button:hover,
+.playlistMenu button:hover,
+.dialogButtons button:hover:not(:disabled),
+.dialogList button:hover:not(:disabled) {
+  color: var(--amp-lcd-bg);
+  background: var(--amp-lcd);
+}
+
+.dialogButtons button:disabled,
+.dialogList button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.dialogOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 55%);
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  max-height: 90%;
+  color: var(--amp-lcd);
+  background: var(--amp-lcd-bg);
+  border: 1px solid var(--amp-lcd);
+}
+
+.dialogTitle {
+  display: flex;
+  justify-content: space-between;
+  padding: 1px 4px;
+  font-weight: bold;
+  color: var(--amp-lcd-bg);
+  background: var(--amp-lcd);
+}
+
+.dialogTitle button {
+  min-width: 0;
+  min-height: 0;
+  padding: 0 3px;
+  line-height: 1;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.dialogBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 0;
+  padding: 4px;
+}
+
+.dialogPicker {
+  height: 120px;
+  overflow: auto;
+  color: #000;
+  background: #fff;
+}
+
+.dialogButtons {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.dialogList {
+  max-height: 120px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.dialogList li {
+  display: flex;
+  gap: 4px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.burnInfo {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 8px;
+  margin: 0;
+}
+
+.burnInfo dd {
+  margin: 0;
+}
+
+.burnProgress {
+  width: 100%;
+  height: 12px;
+}
+
+.burnPercent {
+  text-align: right;
+}
+
+.burnError {
+  margin: 0;
+  color: #ff6b6b;
 }

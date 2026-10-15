@@ -166,6 +166,72 @@ describe('Amplifier', () => {
       await userEvent.keyboard('{Enter}');
       expect(playIndex).toHaveBeenLastCalledWith(0);
     });
+
+    it('Del removes the row and Ctrl+Down reorders', async () => {
+      const three = [...tracks, { ...track, id: 't2', title: 'Third' }];
+      renderAmp({ playlist: three, index: -1 });
+      await userEvent.click(screen.getByRole('button', { name: 'Playlist' }));
+      const ids = () => useAmplifierStore.getState().playlist.map((t) => t.id);
+      screen.getAllByRole('option')[0]?.focus();
+      await userEvent.keyboard('{Control>}{ArrowDown}{/Control}');
+      expect(ids()).toEqual(['t1', 't0', 't2']);
+      await userEvent.keyboard('{Delete}');
+      expect(ids()).toEqual(['t1', 't2']);
+    });
+
+    it('ADD ▸ Shipped tracks adds a track', async () => {
+      renderAmp({ playlist: [track], index: -1 });
+      await userEvent.click(screen.getByRole('button', { name: 'Playlist' }));
+      await userEvent.click(screen.getByRole('button', { name: 'ADD ▸' }));
+      await userEvent.click(
+        screen.getByRole('menuitem', { name: 'Shipped tracks…' }),
+      );
+      await userEvent.click(
+        screen.getByRole('button', { name: 'Add Surf Shimmy' }),
+      );
+      expect(useAmplifierStore.getState().playlist.map((t) => t.id)).toEqual([
+        't0',
+        'surf-shimmy',
+      ]);
+    });
+
+    describe('Burn CD', () => {
+      beforeEach(() => vi.useFakeTimers({ shouldAdvanceTime: true }));
+      afterEach(() => vi.useRealTimers());
+
+      async function burn() {
+        await userEvent.click(screen.getByRole('button', { name: 'MISC ▸' }));
+        await userEvent.click(
+          screen.getByRole('menuitem', { name: 'Burn CD…' }),
+        );
+        await userEvent.click(screen.getByRole('button', { name: 'Burn' }));
+        for (let i = 0; i < 40; i++) {
+          await act(() => vi.advanceTimersByTimeAsync(50));
+        }
+      }
+
+      it('fails with a buffer underrun, then at 89%', async () => {
+        renderAmp({ playlist: [track] });
+        await userEvent.click(screen.getByRole('button', { name: 'Playlist' }));
+        await burn();
+        expect(screen.getByRole('progressbar').getAttribute('value')).toBe(
+          '37',
+        );
+        expect(screen.getByRole('alert').textContent).toBe(
+          'Buffer underrun. The disc is now a coaster.',
+        );
+        await userEvent.click(screen.getByRole('button', { name: 'OK' }));
+        expect(screen.queryByRole('dialog')).toBeNull();
+
+        await burn();
+        expect(screen.getByRole('progressbar').getAttribute('value')).toBe(
+          '89',
+        );
+        expect(screen.getByRole('alert').textContent).toBe(
+          'Please insert a blank disc.',
+        );
+      });
+    });
   });
 });
 

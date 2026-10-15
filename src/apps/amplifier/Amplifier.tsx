@@ -378,6 +378,9 @@ export default function Amplifier({ windowId }: AppComponentProps) {
               tracks={s.playlist}
               currentIndex={s.index}
               onPlay={s.playIndex}
+              onRemove={s.removeAt}
+              onMove={s.moveTrack}
+              onAdd={s.addTrack}
             />
           )}
         </>

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { events } from '@/os/events';
 import { useSettingsStore } from '@/os/store/settings';
 import type { PlaylistTrack } from '@/content/playlist';
+import { PLAYLIST } from '@/content/playlist';
 import { createAmplifierStore } from './store';
 
 const track = (n: number): PlaylistTrack => ({
@@ -330,5 +331,92 @@ describe('amplifier store', () => {
     expect(get().status).toBe('stopped');
     expect(get().playlist).toHaveLength(1);
     expect(stopped).toHaveBeenCalledWith({ trackId: 't1' });
+  });
+
+  describe('playlist editing', () => {
+    it('removeAt drops a row and keeps the current track selected', () => {
+      const { get } = setup();
+      get().playIndex(2);
+      get().removeAt(0);
+      expect(get().playlist.map((t) => t.id)).toEqual(['t1', 't2']);
+      expect(get().index).toBe(1);
+      expect(get().status).toBe('playing');
+    });
+
+    it('removing the playing track stops it', () => {
+      const stopped = vi.fn();
+      events.on('amplifier:stopped', stopped);
+      const { audio, get } = setup();
+      get().playIndex(1);
+      get().removeAt(1);
+      expect(get().index).toBe(-1);
+      expect(get().status).toBe('stopped');
+      expect(audio.pause).toHaveBeenCalled();
+      expect(stopped).toHaveBeenCalledWith({ trackId: 't1' });
+    });
+
+    it('moveTrack reorders and follows the current track', () => {
+      const { get } = setup();
+      get().playIndex(0);
+      get().moveTrack(0, 2);
+      expect(get().playlist.map((t) => t.id)).toEqual(['t1', 't2', 't0']);
+      expect(get().index).toBe(2);
+      get().moveTrack(0, 1);
+      expect(get().playlist.map((t) => t.id)).toEqual(['t2', 't1', 't0']);
+      expect(get().index).toBe(2);
+      get().moveTrack(2, 0);
+      expect(get().index).toBe(0);
+      get().moveTrack(0, 9);
+      expect(get().playlist.map((t) => t.id)).toEqual(['t0', 't2', 't1']);
+    });
+
+    it('addTrack appends once and returns the index', () => {
+      const { get } = setup();
+      const extra = track(7);
+      expect(get().addTrack(extra)).toBe(3);
+      expect(get().addTrack(extra)).toBe(3);
+      expect(get().addTrack(LIST[0] as PlaylistTrack)).toBe(0);
+      expect(get().playlist).toHaveLength(4);
+    });
+
+    it('persists the edited playlist as track ids', () => {
+      const [a, b] = PLAYLIST as [PlaylistTrack, PlaylistTrack];
+      const first = createAmplifierStore({
+        audio: fakeAudio(),
+        playlist: [a, b],
+      });
+      first.getState().removeAt(0);
+      const raw = JSON.parse(
+        localStorage.getItem('still-online:v1:amplifier') as string,
+      );
+      expect(raw.state.playlist).toEqual([b.id]);
+
+      const second = createAmplifierStore({
+        audio: fakeAudio(),
+        playlist: [a, b],
+      });
+      expect(second.getState().playlist.map((t) => t.id)).toEqual([b.id]);
+    });
+
+    it('drops unknown and duplicate ids when hydrating', () => {
+      localStorage.setItem(
+        'still-online:v1:amplifier',
+        JSON.stringify({
+          version: 1,
+          state: {
+            playlist: [
+              (PLAYLIST[1] as PlaylistTrack).id,
+              'nope',
+              (PLAYLIST[1] as PlaylistTrack).id,
+              7,
+            ],
+          },
+        }),
+      );
+      const store = createAmplifierStore({ audio: fakeAudio() });
+      expect(store.getState().playlist.map((t) => t.id)).toEqual([
+        (PLAYLIST[1] as PlaylistTrack).id,
+      ]);
+    });
   });
 });
