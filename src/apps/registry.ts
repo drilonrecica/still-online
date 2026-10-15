@@ -14,6 +14,8 @@ import display16 from '@/assets/icons/display-16.svg';
 import display32 from '@/assets/icons/display-32.svg';
 import folder16 from '@/assets/icons/folder-16.svg';
 import folder32 from '@/assets/icons/folder-32.svg';
+import mail16 from '@/assets/icons/mail-16.svg';
+import mail32 from '@/assets/icons/mail-32.svg';
 import messenger16 from '@/assets/icons/messenger-16.svg';
 import messenger32 from '@/assets/icons/messenger-32.svg';
 import myComputer16 from '@/assets/icons/mycomputer-16.svg';
@@ -150,6 +152,21 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     defaultSize: { w: 800, h: 600 },
     minSize: { w: 400, h: 300 },
     singleInstance: false,
+    chrome: 'xp',
+    showOnDesktop: true,
+    showInStartMenu: true,
+    category: 'internet',
+    pinned: true,
+  },
+  mail: {
+    id: 'mail',
+    title: 'Mail',
+    icon16: mail16,
+    icon32: mail32,
+    component: lazy(() => import('./mail/Mail')),
+    defaultSize: { w: 720, h: 500 },
+    minSize: { w: 480, h: 320 },
+    singleInstance: true,
     chrome: 'xp',
     showOnDesktop: true,
     showInStartMenu: true,

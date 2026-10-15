@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { migrateLegacyNotepad } from '@/apps/notepad/migrate';
+import { installMailDelivery } from '@/apps/mail/store';
 import { getApp } from '@/apps/registry';
 import { SEED_FILES } from '@/content/files';
 import { installAmplifierRouter } from '@/os/amplifierRouter';
@@ -69,6 +70,7 @@ export function App() {
   useEffect(() => installGestureUnlock(), []);
   useEffect(() => installAmplifierRouter(), []);
   useEffect(() => installBrowserRouter(), []);
+  useEffect(() => installMailDelivery(), []);
   useEffect(() => installIdle(), []);
   useEffect(() => (state === 'desktop' ? installKonami() : undefined), [state]);
 

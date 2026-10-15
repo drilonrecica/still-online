@@ -129,6 +129,7 @@ describe('DesktopIcons', () => {
       'Recycle Bin',
       'Messenger',
       'Web Explorer',
+      'Mail',
       'Amplifier',
       'Notepad',
     ]);
