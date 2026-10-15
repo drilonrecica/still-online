@@ -33,6 +33,6 @@ Everything is original work or CC0 / CC BY 4.0, as before. The German text and t
 
 ## Auf Deutsch
 
-still online spricht jetzt Deutsch. Der ganze Desktop, alle Programme und sämtliche Inhalte gibt es komplett auf Deutsch, für ein deutsches 2007 geschrieben statt nur übersetzt: die sechs Freunde schreiben im Chat-Slang der Zeit, aus der Highschool wird ein Gymnasium, aus Dollar werden Euro. Ein deutscher Browser startet automatisch auf Deutsch; umschalten geht jederzeit im Anmeldebildschirm, über das Symbol im Infobereich oder unter „Regions- und Sprachoptionen" im Startmenü, ohne Neuladen und ohne dass Chats, Dateien oder Spielstände verloren gehen. Bestehende Spielstände aus v0.2 funktionieren weiter.
+still online spricht jetzt Deutsch. Der ganze Desktop, alle Programme und sämtliche Inhalte gibt es komplett auf Deutsch, für ein deutsches 2007 geschrieben statt nur übersetzt: die sechs Freunde schreiben im Chat-Slang der Zeit, aus der Highschool wird ein Gymnasium, aus Dollar werden Euro. Ein deutscher Browser startet automatisch auf Deutsch; umschalten geht jederzeit im Anmeldebildschirm, über das Symbol im Infobereich oder unter „Regions- und Sprachoptionen“ im Startmenü, ohne Neuladen und ohne dass Chats, Dateien oder Spielstände verloren gehen. Bestehende Spielstände aus v0.2 funktionieren weiter.
 
 still online is a fan-made, non-commercial project and is not affiliated with Microsoft, MySpace, Netlog, Winamp or their owners.

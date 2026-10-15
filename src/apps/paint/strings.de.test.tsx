@@ -1,7 +1,15 @@
 // P1-04: Paint in German.
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import { getApp } from '@/apps/registry';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
@@ -15,6 +23,9 @@ vi.mock('./codec', () => ({
   decodeImage: () => Promise.resolve(null),
   drawText: () => false,
 }));
+
+// The registry lazy-loads Paint; a cold transform can outlast findByRole's 1 s default.
+beforeAll(() => import('./Paint'));
 
 beforeEach(() => {
   localStorage.clear();

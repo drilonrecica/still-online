@@ -864,9 +864,9 @@ export const de: Messages = {
     },
     transcript: {
       says: '{name} sagt:',
-      nudgeFromContact: '{name} hat dir einen Nudge geschickt!',
+      nudgeFromContact: '{name} hat Ihnen einen Nudge geschickt!',
       nudgeFromYou: 'Sie haben gerade einen Nudge gesendet!',
-      winkFromContact: '{name} hat dir einen Wink geschickt: {wink}',
+      winkFromContact: '{name} hat Ihnen einen Wink geschickt: {wink}',
       winkFromYou: 'Sie haben einen Wink gesendet: {wink}',
     },
     winks: {

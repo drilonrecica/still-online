@@ -318,8 +318,8 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
 | P3-01 | **Bilingual e2e** — German happy paths, auto-detection, mid-game language switch re-rendering old chats/mail/files/titles, v0.2 save migration. | P2-G | done | sonnet | agent | — | e2e | — | New specs in `tests/e2e/i18n-*.spec.ts` pass in the default suite; switching shows no English leftovers on the checked screens. | §P3-01 |
-| P3-02 | **Docs + release notes** — README "Deutsch" section, German screenshot, `docs/release-notes-v0.3.0.md`, CREDITS, architecture docs updated. | P3-01 | in progress | sonnet | agent | — | — | — | Docs accurate; release notes list user-visible changes; screenshot committed. | §P3-02 |
-| P3-G | **Release-ready gate (self-review)** — follow "Task specs → Gate procedure"; play 3 days in German, switch to English mid-game, then back. **Do not tag, push or release.** | P3-01, P3-02 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v03-P3.md`; nothing pushed or tagged. | §Gate |
+| P3-02 | **Docs + release notes** — README "Deutsch" section, German screenshot, `docs/release-notes-v0.3.0.md`, CREDITS, architecture docs updated. | P3-01 | done | sonnet | agent | — | — | — | Docs accurate; release notes list user-visible changes; screenshot committed. | §P3-02 |
+| P3-G | **Release-ready gate (self-review)** — follow "Task specs → Gate procedure"; play 3 days in German, switch to English mid-game, then back. **Do not tag, push or release.** | P3-01, P3-02 | in progress | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v03-P3.md`; nothing pushed or tagged. | §Gate |
 
 ---
 

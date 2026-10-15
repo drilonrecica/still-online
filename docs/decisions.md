@@ -225,3 +225,6 @@
 - P2-G: spam mails say „Sie" without exception (the ringtone spam used „du"); system balloons say „Sie" and use the UI term „persönliche Nachricht", not the chat word „Spruch".
 - P2-G: Theo spells correctly in every German text, including his comments on other friends' Spaceport walls and his auto-replies (lowercase stays); „klassiker" is Marco's word only, „nice" became Dex's „fett".
 - P2-G: the 5-day review playthrough answers every waiting conversation with its first choice each day, because a friend's next day script waits until the current one is answered (game design, not a bug).
+- P3-G: Messenger's system lines for incoming nudges and winks say „Sie" („… hat Ihnen einen Nudge geschickt!"), like the outgoing ones; they are system UI, not a friend talking.
+- P3-G: game help text (Hühnerjagd, Sternen-Flipper high-score prompts) keeps „du", the way German arcade games of the time talked to the player; Minen and all other system UI stay „Sie".
+- P3-G: unit tests that open a lazy-loaded app through `WindowLayer` import the app module in `beforeAll`, so a cold transform can't outlast `findBy*`'s 1 s default.
