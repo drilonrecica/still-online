@@ -1,5 +1,6 @@
 // "Picture and Fax Viewer"-style pane: one image, prev/next within its folder, fit or actual size.
 import { useEffect, useRef, useState } from 'react';
+import { useT } from '@/i18n/useT';
 import { useBlobUrl } from '@/os/blobStore';
 import { PhotoCanvas } from '@/os/fs/FsIcon';
 import type { FsNode } from '@/os/fs/types';
@@ -27,8 +28,9 @@ function BlobImage({
   name: string;
   fit: boolean;
 }) {
+  const t = useT();
   const url = useBlobUrl(blobKey);
-  if (!url) return <p>Loading…</p>;
+  if (!url) return <p>{t('explorer.loading')}</p>;
   return <img src={url} alt={name} data-fit={fit} />;
 }
 
@@ -40,6 +42,7 @@ export function ImageViewer({
   onNext,
   onClose,
 }: ImageViewerProps) {
+  const t = useT();
   const [fit, setFit] = useState(true);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -60,23 +63,23 @@ export function ImageViewer({
     >
       <div className={styles.viewerBar}>
         <button type="button" onClick={onClose}>
-          Back to folder
+          {t('explorer.back')}
         </button>
         <button type="button" onClick={onPrev} disabled={count < 2}>
-          Previous
+          {t('explorer.previous')}
         </button>
         <button type="button" onClick={onNext} disabled={count < 2}>
-          Next
+          {t('explorer.next')}
         </button>
         <button
           type="button"
           aria-pressed={fit}
           onClick={() => setFit((f) => !f)}
         >
-          {fit ? 'Actual size' : 'Best fit'}
+          {fit ? t('explorer.actualSize') : t('explorer.bestFit')}
         </button>
         <span className={styles.viewerTitle}>
-          {image.name} ({position} of {count})
+          {t('explorer.position', { name: image.name, n: position, count })}
         </span>
       </div>
       <div className={styles.viewerStage} data-fit={fit}>
@@ -91,7 +94,7 @@ export function ImageViewer({
         ) : image.blobKey ? (
           <BlobImage blobKey={image.blobKey} name={image.name} fit={fit} />
         ) : (
-          <p>This picture can't be displayed.</p>
+          <p>{t('explorer.cannotDisplay')}</p>
         )}
       </div>
       {image.photo?.caption && (

@@ -1,5 +1,6 @@
 import { formatShortDate, formatTime } from '@/i18n/format';
 import { getLocale } from '@/i18n/t';
+import { useT } from '@/i18n/useT';
 // Notepad: one buffer per window, files live in the fs store (the fs is the source of truth on save).
 import { useEffect, useRef, useState } from 'react';
 import { now } from '@/os/clock';
@@ -36,6 +37,7 @@ export function formatTimeDate(date: Date): string {
 }
 
 export default function Notepad({ windowId, props }: AppComponentProps) {
+  const t = useT();
   const initialId = typeof props.fileId === 'string' ? props.fileId : null;
   const nodes = useFsStore((s) => s.nodes);
   const setWindowTitle = useWindowsStore((s) => s.setWindowTitle);
@@ -175,26 +177,26 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
 
   const menus: Record<MenuId, { label: string; items: MenuItem[] }> = {
     file: {
-      label: 'File',
+      label: t('notepad.menu.file'),
       items: [
-        { label: 'New', onSelect: () => guarded('new') },
-        { label: 'Open…', onSelect: () => guarded('open') },
-        { label: 'Save', onSelect: () => save() },
+        { label: t('notepad.menu.new'), onSelect: () => guarded('new') },
+        { label: t('notepad.menu.open'), onSelect: () => guarded('open') },
+        { label: t('notepad.menu.save'), onSelect: () => save() },
         {
-          label: 'Save As…',
+          label: t('notepad.menu.saveAs'),
           onSelect: () => {
             setMenu(null);
             setDialog({ kind: 'saveAs' });
           },
         },
-        { label: 'Exit', onSelect: () => guarded('exit') },
+        { label: t('notepad.menu.exit'), onSelect: () => guarded('exit') },
       ],
     },
     edit: {
-      label: 'Edit',
+      label: t('notepad.menu.edit'),
       items: [
         {
-          label: 'Select All',
+          label: t('notepad.menu.selectAll'),
           onSelect: () => {
             setMenu(null);
             areaRef.current?.focus();
@@ -202,7 +204,7 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
           },
         },
         {
-          label: 'Time/Date',
+          label: t('notepad.menu.timeDate'),
           onSelect: () => {
             setMenu(null);
             insertTimeDate();
@@ -211,10 +213,10 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
       ],
     },
     format: {
-      label: 'Format',
+      label: t('notepad.menu.format'),
       items: [
         {
-          label: 'Word Wrap',
+          label: t('notepad.menu.wordWrap'),
           checked: wrap,
           onSelect: () => {
             setMenu(null);
@@ -224,10 +226,10 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
       ],
     },
     help: {
-      label: 'Help',
+      label: t('notepad.menu.help'),
       items: [
         {
-          label: 'About Notepad',
+          label: t('notepad.menu.about'),
           onSelect: () => {
             setMenu(null);
             setDialog({ kind: 'about' });
@@ -241,7 +243,11 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
 
   return (
     <div className={styles.root} onClick={() => menu && setMenu(null)}>
-      <div className={styles.menubar} role="menubar" aria-label="Notepad">
+      <div
+        className={styles.menubar}
+        role="menubar"
+        aria-label={t('notepad.name')}
+      >
         {(Object.keys(menus) as MenuId[]).map((id) => (
           <div key={id} className={styles.menu}>
             <button
@@ -293,7 +299,7 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
       <textarea
         ref={areaRef}
         className={styles.editor}
-        aria-label="Notepad document"
+        aria-label={t('notepad.document')}
         spellCheck={false}
         wrap={wrap ? 'soft' : 'off'}
         value={text}
@@ -305,27 +311,29 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
           <div
             className={`window ${styles.dialog}`}
             role="dialog"
-            aria-label="Notepad"
+            aria-label={t('notepad.name')}
           >
             <div className="title-bar">
-              <div className="title-bar-text">Notepad</div>
+              <div className="title-bar-text">{t('notepad.name')}</div>
             </div>
             <div className="window-body">
               <p className={styles.message}>
-                The text in the {file?.name ?? 'Untitled'} file has changed.
+                {t('notepad.confirm.changed', {
+                  file: file?.name ?? t('notepad.untitled'),
+                })}
                 <br />
                 <br />
-                Do you want to save the changes?
+                {t('notepad.confirm.question')}
               </p>
               <div className={styles.buttons}>
                 <button type="button" onClick={() => save(dialog.action)}>
-                  Yes
+                  {t('common.yes')}
                 </button>
                 <button type="button" onClick={() => run(dialog.action)}>
-                  No
+                  {t('common.no')}
                 </button>
                 <button type="button" onClick={() => setDialog(null)}>
-                  Cancel
+                  {t('common.cancel')}
                 </button>
               </div>
             </div>
@@ -338,19 +346,20 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
           <div
             className={`window ${styles.dialog}`}
             role="dialog"
-            aria-label="About Notepad"
+            aria-label={t('notepad.menu.about')}
           >
             <div className="title-bar">
-              <div className="title-bar-text">About Notepad</div>
+              <div className="title-bar-text">{t('notepad.menu.about')}</div>
             </div>
             <div className="window-body">
               <p className={styles.message}>
-                Notepad
-                <br />A still online accessory. Plain text, no strings attached.
+                {t('notepad.name')}
+                <br />
+                {t('notepad.aboutText')}
               </p>
               <div className={styles.buttons}>
                 <button type="button" onClick={() => setDialog(null)}>
-                  OK
+                  {t('common.ok')}
                 </button>
               </div>
             </div>

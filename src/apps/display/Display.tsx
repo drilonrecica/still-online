@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { screensaverText } from '@/i18n/settingsText';
 import { translate } from '@/i18n/t';
-import { useLocale } from '@/i18n/useT';
+import type { MessageKey } from '@/i18n/types';
+import { useLocale, useT } from '@/i18n/useT';
 import { deleteBlob, putBlob, useBlobUrl } from '@/os/blobStore';
 import { useScreensaverStore } from '@/os/screensaver/store';
 import { MAX_SCREENSAVER_TEXT, useSettingsStore } from '@/os/store/settings';
@@ -27,41 +28,41 @@ import styles from './Display.module.css';
 
 type TabId = 'themes' | 'desktop' | 'screensaver' | 'appearance';
 
-const TABS: readonly { id: TabId; label: string }[] = [
-  { id: 'themes', label: 'Themes' },
-  { id: 'desktop', label: 'Desktop' },
-  { id: 'screensaver', label: 'Screen Saver' },
-  { id: 'appearance', label: 'Appearance' },
+const TABS: readonly { id: TabId; labelKey: MessageKey }[] = [
+  { id: 'themes', labelKey: 'display.tabs.themes' },
+  { id: 'desktop', labelKey: 'display.tabs.desktop' },
+  { id: 'screensaver', labelKey: 'display.tabs.screensaver' },
+  { id: 'appearance', labelKey: 'display.tabs.appearance' },
 ];
 
 export const THEME_PRESETS: readonly {
   id: ThemeId;
-  name: string;
+  nameKey: MessageKey;
   wallpaper: string;
 }[] = [
-  { id: 'blue', name: 'still online', wallpaper: 'classic' },
-  { id: 'olive', name: 'Olive Afternoon', wallpaper: 'autumn' },
-  { id: 'silver', name: 'Silver Night', wallpaper: 'orbit' },
+  { id: 'blue', nameKey: 'display.themes.blue', wallpaper: 'classic' },
+  { id: 'olive', nameKey: 'display.themes.olive', wallpaper: 'autumn' },
+  { id: 'silver', nameKey: 'display.themes.silver', wallpaper: 'orbit' },
 ];
 
-const SCHEMES: readonly { id: ThemeId; name: string }[] = [
-  { id: 'blue', name: 'Default (blue)' },
-  { id: 'olive', name: 'Olive Green' },
-  { id: 'silver', name: 'Silver' },
+const SCHEMES: readonly { id: ThemeId; nameKey: MessageKey }[] = [
+  { id: 'blue', nameKey: 'display.schemes.blue' },
+  { id: 'olive', nameKey: 'display.schemes.olive' },
+  { id: 'silver', nameKey: 'display.schemes.silver' },
 ];
 
-const SAVERS: readonly { id: ScreensaverId; name: string }[] = [
-  { id: 'none', name: '(None)' },
-  { id: 'pipes', name: 'Pipes' },
-  { id: 'panes', name: 'Flying Panes' },
-  { id: 'marquee', name: 'Marquee' },
-  { id: 'slideshow', name: 'My Pictures Slideshow' },
+const SAVERS: readonly { id: ScreensaverId; nameKey: MessageKey }[] = [
+  { id: 'none', nameKey: 'display.savers.none' },
+  { id: 'pipes', nameKey: 'display.savers.pipes' },
+  { id: 'panes', nameKey: 'display.savers.panes' },
+  { id: 'marquee', nameKey: 'display.savers.marquee' },
+  { id: 'slideshow', nameKey: 'display.savers.slideshow' },
 ];
 
-const POSITIONS: readonly { id: WallpaperPosition; name: string }[] = [
-  { id: 'center', name: 'Center' },
-  { id: 'tile', name: 'Tile' },
-  { id: 'stretch', name: 'Stretch' },
+const POSITIONS: readonly { id: WallpaperPosition; nameKey: MessageKey }[] = [
+  { id: 'center', nameKey: 'display.positions.center' },
+  { id: 'tile', nameKey: 'display.positions.tile' },
+  { id: 'stretch', nameKey: 'display.positions.stretch' },
 ];
 
 export const SWATCHES: readonly string[] = [
@@ -150,18 +151,19 @@ function Tabs({
   tab: TabId;
   onChange: (tab: TabId) => void;
 }) {
+  const t = useT();
   return (
-    <menu role="tablist" aria-label="Display Properties">
-      {TABS.map((t) => (
+    <menu role="tablist" aria-label={t('apps.display.title')}>
+      {TABS.map((item) => (
         <button
-          key={t.id}
+          key={item.id}
           type="button"
           role="tab"
-          aria-selected={tab === t.id}
-          aria-controls={`display-panel-${t.id}`}
-          onClick={() => onChange(t.id)}
+          aria-selected={tab === item.id}
+          aria-controls={`display-panel-${item.id}`}
+          onClick={() => onChange(item.id)}
         >
-          {t.label}
+          {t(item.labelKey)}
         </button>
       ))}
     </menu>
@@ -203,6 +205,7 @@ export default function Display({ windowId }: AppComponentProps) {
   const settings = useSettingsStore();
   const unlocks = useWorldStore((s) => s.unlocks);
   const closeWindow = useWindowsStore((s) => s.closeWindow);
+  const t = useT();
   const locale = useLocale();
   const startPreview = useScreensaverStore((s) => s.startPreview);
 
@@ -276,13 +279,13 @@ export default function Display({ windowId }: AppComponentProps) {
 
   const wallpapers = listWallpapers(unlocks);
   const wallpaperItems = [
-    { id: NONE, name: '(None)' },
+    { id: NONE, name: t('display.none') },
     ...wallpapers.map((w) => ({
       id: w.id,
       name: translate(locale, w.nameKey),
     })),
     ...(draft.wallpaper.kind === 'custom'
-      ? [{ id: CUSTOM, name: 'Custom image' }]
+      ? [{ id: CUSTOM, name: t('display.customImage') }]
       : []),
   ];
   const wallpaperValue =
@@ -307,11 +310,14 @@ export default function Display({ windowId }: AppComponentProps) {
 
   const themePreset =
     THEME_PRESETS.find(
-      (t) =>
-        t.id === draft.theme &&
+      (p) =>
+        p.id === draft.theme &&
         draft.wallpaper.kind === 'builtin' &&
-        draft.wallpaper.id === t.wallpaper,
+        draft.wallpaper.id === p.wallpaper,
     )?.id ?? null;
+  const named = <T extends string>(
+    items: readonly { id: T; nameKey: MessageKey }[],
+  ) => items.map((item) => ({ id: item.id, name: t(item.nameKey) }));
 
   const saver = draft.screensaver;
   const saverText = screensaverText(saver, locale);
@@ -329,13 +335,13 @@ export default function Display({ windowId }: AppComponentProps) {
         {tab === 'themes' && (
           <>
             <Monitor wallpaper={draft.wallpaper} position={draft.position} />
-            <span>Theme:</span>
+            <span>{t('display.theme')}</span>
             <Listbox
-              label="Theme"
-              items={THEME_PRESETS}
+              label={t('display.themeLabel')}
+              items={named(THEME_PRESETS)}
               value={themePreset}
               onSelect={(id) => {
-                const preset = THEME_PRESETS.find((t) => t.id === id);
+                const preset = THEME_PRESETS.find((p) => p.id === id);
                 if (!preset) return;
                 patch({
                   theme: preset.id,
@@ -349,28 +355,28 @@ export default function Display({ windowId }: AppComponentProps) {
         {tab === 'desktop' && (
           <>
             <Monitor wallpaper={draft.wallpaper} position={draft.position} />
-            <span>Background:</span>
+            <span>{t('display.background')}</span>
             <Listbox
-              label="Background"
+              label={t('display.backgroundLabel')}
               items={wallpaperItems}
               value={wallpaperValue}
               onSelect={selectWallpaper}
             />
             <div className={styles.row}>
               <button type="button" onClick={() => fileRef.current?.click()}>
-                Browse…
+                {t('common.browse')}
               </button>
               <input
                 ref={fileRef}
                 type="file"
                 accept="image/*"
                 hidden
-                aria-label="Browse for an image"
+                aria-label={t('display.browseLabel')}
                 data-testid="browse-input"
                 onChange={(e) => void onBrowse(e)}
               />
               <span className={styles.grow} />
-              <label htmlFor="display-position">Position:</label>
+              <label htmlFor="display-position">{t('display.position')}</label>
               <select
                 id="display-position"
                 value={draft.position}
@@ -380,13 +386,13 @@ export default function Display({ windowId }: AppComponentProps) {
               >
                 {POSITIONS.map((p) => (
                   <option key={p.id} value={p.id}>
-                    {p.name}
+                    {t(p.nameKey)}
                   </option>
                 ))}
               </select>
             </div>
             <div className={styles.row}>
-              <span>Color:</span>
+              <span>{t('display.color')}</span>
               <div className={styles.swatches}>
                 {SWATCHES.map((c) => (
                   <button
@@ -394,7 +400,7 @@ export default function Display({ windowId }: AppComponentProps) {
                     type="button"
                     className={styles.swatch}
                     style={{ background: c }}
-                    aria-label={`Color ${c}`}
+                    aria-label={t('display.colorSwatch', { hex: c })}
                     aria-pressed={
                       draft.wallpaper.kind === 'color' &&
                       draft.wallpaper.color === c
@@ -413,7 +419,7 @@ export default function Display({ windowId }: AppComponentProps) {
               <div className={styles.screen} style={{ background: '#000' }} />
             </div>
             <div className={styles.row}>
-              <label htmlFor="display-saver">Screen saver:</label>
+              <label htmlFor="display-saver">{t('display.screensaver')}</label>
               <select
                 id="display-saver"
                 className={styles.grow}
@@ -425,7 +431,7 @@ export default function Display({ windowId }: AppComponentProps) {
               >
                 {SAVERS.map((s) => (
                   <option key={s.id} value={s.id}>
-                    {s.name}
+                    {t(s.nameKey)}
                   </option>
                 ))}
               </select>
@@ -436,19 +442,21 @@ export default function Display({ windowId }: AppComponentProps) {
                 disabled={saver.id !== 'marquee'}
                 onClick={() => setEditingText((v) => !v)}
               >
-                Settings…
+                {t('display.settings')}
               </button>
               <button
                 type="button"
                 disabled={saver.id === 'none'}
                 onClick={() => startPreview(saver.id, saverText)}
               >
-                Preview
+                {t('display.preview')}
               </button>
             </div>
             {editingText && saver.id === 'marquee' && (
               <div className={styles.row}>
-                <label htmlFor="display-marquee-text">Text:</label>
+                <label htmlFor="display-marquee-text">
+                  {t('display.text')}
+                </label>
                 <input
                   id="display-marquee-text"
                   type="text"
@@ -460,7 +468,7 @@ export default function Display({ windowId }: AppComponentProps) {
               </div>
             )}
             <div className={styles.row}>
-              <label htmlFor="display-wait">Wait:</label>
+              <label htmlFor="display-wait">{t('display.wait')}</label>
               <input
                 id="display-wait"
                 type="number"
@@ -476,7 +484,7 @@ export default function Display({ windowId }: AppComponentProps) {
                 }}
                 style={{ width: 52 }}
               />
-              <span>minutes</span>
+              <span>{t('display.minutes')}</span>
             </div>
           </>
         )}
@@ -490,7 +498,7 @@ export default function Display({ windowId }: AppComponentProps) {
               <div className={styles.schemeTaskbar} />
             </div>
             <div className={styles.row}>
-              <label htmlFor="display-scheme">Color scheme:</label>
+              <label htmlFor="display-scheme">{t('display.scheme')}</label>
               <select
                 id="display-scheme"
                 className={styles.grow}
@@ -499,12 +507,12 @@ export default function Display({ windowId }: AppComponentProps) {
               >
                 {SCHEMES.map((s) => (
                   <option key={s.id} value={s.id}>
-                    {s.name}
+                    {t(s.nameKey)}
                   </option>
                 ))}
               </select>
             </div>
-            <p className={styles.hint}>Blue, Olive Green or Silver.</p>
+            <p className={styles.hint}>{t('display.schemeHint')}</p>
           </>
         )}
       </div>
@@ -517,13 +525,13 @@ export default function Display({ windowId }: AppComponentProps) {
             closeWindow(windowId);
           }}
         >
-          OK
+          {t('common.ok')}
         </button>
         <button type="button" onClick={() => closeWindow(windowId)}>
-          Cancel
+          {t('common.cancel')}
         </button>
         <button type="button" disabled={!dirty} onClick={apply}>
-          Apply
+          {t('common.apply')}
         </button>
       </div>
     </div>

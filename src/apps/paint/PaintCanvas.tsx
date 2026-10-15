@@ -1,5 +1,6 @@
 // The grey work area with the picture, the selection marquee and the text tool's box.
 import { useEffect, useRef } from 'react';
+import { useT } from '@/i18n/useT';
 import { TEXT_FONT, TEXT_LINE_HEIGHT } from './codec';
 import { rgbaToHex, type Rect } from './pixels';
 import type { ToolId, Zoom } from './tools';
@@ -22,6 +23,7 @@ const box = (r: Rect, zoom: Zoom) => ({
 });
 
 export function PaintCanvas({ doc, tools, tool, zoom }: PaintCanvasProps) {
+  const t = useT();
   const textRef = useRef<HTMLTextAreaElement>(null);
   const { text } = tools;
   const textKey = text ? `${text.at.x},${text.at.y}` : null;
@@ -36,7 +38,7 @@ export function PaintCanvas({ doc, tools, tool, zoom }: PaintCanvasProps) {
     <div
       className={styles.workspace}
       role="region"
-      aria-label="Canvas"
+      aria-label={t('paint.canvas')}
       tabIndex={0}
     >
       <div
@@ -49,7 +51,7 @@ export function PaintCanvas({ doc, tools, tool, zoom }: PaintCanvasProps) {
           className={styles.canvas}
           data-tool={tool}
           role="img"
-          aria-label="Picture"
+          aria-label={t('paint.picture')}
           style={{ width: doc.size.w * zoom, height: doc.size.h * zoom }}
           onContextMenu={(e) => e.preventDefault()}
           onPointerLeave={tools.clearCursor}
@@ -67,7 +69,7 @@ export function PaintCanvas({ doc, tools, tool, zoom }: PaintCanvasProps) {
             key={textKey}
             ref={textRef}
             className={styles.textBox}
-            aria-label="Text"
+            aria-label={t('paint.tools.text')}
             spellCheck={false}
             value={text.value}
             style={{

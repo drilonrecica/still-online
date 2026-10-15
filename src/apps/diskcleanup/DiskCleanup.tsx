@@ -1,5 +1,7 @@
 import { formatNumber } from '@/i18n/format';
-import { getLocale } from '@/i18n/t';
+import { getLocale, t } from '@/i18n/t';
+import type { MessageKey } from '@/i18n/types';
+import { useT } from '@/i18n/useT';
 // Disk Cleanup: a never-quick "scan", a list of joke categories, and a cleanup that frees 0 KB.
 import { useEffect, useId, useState } from 'react';
 import { useFsStore } from '@/os/fs/store';
@@ -16,20 +18,19 @@ const SCAN_STEPS = 24;
 const CLEAN_STEPS = 10;
 
 export const SCAN_LABELS = [
-  'Temporary Internet Files',
-  'Old crushes',
-  'Embarrassing poems',
-  'Unfinished homework',
-  'Pony fan fiction',
-  'Kayla drama archive',
-] as const;
+  'diskcleanup.scanLabels.internet',
+  'diskcleanup.scanLabels.crushes',
+  'diskcleanup.scanLabels.poems',
+  'diskcleanup.scanLabels.homework',
+  'diskcleanup.scanLabels.fanfic',
+  'diskcleanup.scanLabels.drama',
+] as const satisfies readonly MessageKey[];
 
-export const DONE_MESSAGE =
-  'Disk Cleanup freed 0 KB on (C:). Your computer is as messy as before.';
+export const DONE_MESSAGE = 'diskcleanup.done' satisfies MessageKey;
 
 interface Category {
   id: string;
-  label: string;
+  labelKey: MessageKey;
   kb: number;
   checked: boolean;
 }
@@ -38,24 +39,39 @@ const RECYCLE_KB_PER_ITEM = 1.2;
 
 export function buildCategories(recycleItems: number): Category[] {
   return [
-    { id: 'programs', label: 'Downloaded Program Files', kb: 0, checked: true },
+    {
+      id: 'programs',
+      labelKey: 'diskcleanup.categories.programs',
+      kb: 0,
+      checked: true,
+    },
     {
       id: 'internet',
-      label: 'Temporary Internet Files',
+      labelKey: 'diskcleanup.categories.internet',
       kb: 14382,
       checked: true,
     },
     {
       id: 'recycle',
-      label: 'Recycle Bin',
+      labelKey: 'diskcleanup.categories.recycle',
       kb: Math.round(recycleItems * RECYCLE_KB_PER_ITEM),
       checked: false,
     },
-    { id: 'crushes', label: 'Old crushes', kb: 2048, checked: false },
-    { id: 'feelings', label: 'Feelings', kb: 0, checked: false },
+    {
+      id: 'crushes',
+      labelKey: 'diskcleanup.categories.crushes',
+      kb: 2048,
+      checked: false,
+    },
+    {
+      id: 'feelings',
+      labelKey: 'diskcleanup.categories.feelings',
+      kb: 0,
+      checked: false,
+    },
     {
       id: 'compress',
-      label: 'Compress old files',
+      labelKey: 'diskcleanup.categories.compress',
       kb: 9999999,
       checked: false,
     },
@@ -63,7 +79,7 @@ export function buildCategories(recycleItems: number): Category[] {
 }
 
 export function formatKb(kb: number): string {
-  return `${formatNumber(kb, getLocale())} KB`;
+  return t('diskcleanup.kb', { n: formatNumber(kb, getLocale()) });
 }
 
 type Phase = 'scanning' | 'list' | 'confirm' | 'cleaning' | 'done';
@@ -109,6 +125,7 @@ function useCrawl(
 }
 
 export default function DiskCleanup({ windowId }: AppComponentProps) {
+  const t = useT();
   const reduced = useReducedMotion();
   const id = useId();
   const [phase, setPhase] = useState<Phase>('scanning');
@@ -145,19 +162,25 @@ export default function DiskCleanup({ windowId }: AppComponentProps) {
     const step = scanning ? scanStep : cleanStep;
     const steps = scanning ? SCAN_STEPS : CLEAN_STEPS;
     const label = scanning
-      ? `Scanning: ${SCAN_LABELS[Math.floor(step / 4) % SCAN_LABELS.length]}`
-      : 'Cleaning up…';
+      ? t('diskcleanup.scanning', {
+          item: t(SCAN_LABELS[Math.floor(step / 4) % SCAN_LABELS.length]!),
+        })
+      : t('diskcleanup.cleaning');
     return (
       <div className={styles.root}>
         <p className={styles.intro}>
           {scanning
-            ? 'Disk Cleanup is calculating how much space you will be able to free on (C:). This may take a few minutes to complete.'
-            : 'Disk Cleanup is cleaning up the selected files on (C:).'}
+            ? t('diskcleanup.introScanning')
+            : t('diskcleanup.introCleaning')}
         </p>
         <div
           className={styles.track}
           role="progressbar"
-          aria-label={scanning ? 'Calculating' : 'Cleaning up'}
+          aria-label={
+            scanning
+              ? t('diskcleanup.progressScanning')
+              : t('diskcleanup.progressCleaning')
+          }
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round((step / steps) * 100)}
@@ -173,7 +196,7 @@ export default function DiskCleanup({ windowId }: AppComponentProps) {
         </p>
         <div className={styles.buttons}>
           <button type="button" onClick={close}>
-            Cancel
+            {t('common.cancel')}
           </button>
         </div>
       </div>
@@ -183,10 +206,9 @@ export default function DiskCleanup({ windowId }: AppComponentProps) {
   return (
     <div className={styles.root}>
       <p className={styles.intro}>
-        You can use Disk Cleanup to free up to {formatKb(total)} of disk space
-        on (C:).
+        {t('diskcleanup.intro', { size: formatKb(total) })}
       </p>
-      <p className={styles.intro}>Files to delete:</p>
+      <p className={styles.intro}>{t('diskcleanup.filesToDelete')}</p>
       <ul className={styles.list}>
         {categories.map((c) => (
           <li key={c.id} className={styles.item}>
@@ -202,20 +224,20 @@ export default function DiskCleanup({ windowId }: AppComponentProps) {
                 )
               }
             />
-            <label htmlFor={`${id}-${c.id}`}>{c.label}</label>
+            <label htmlFor={`${id}-${c.id}`}>{t(c.labelKey)}</label>
             <span className={styles.size}>{formatKb(c.kb)}</span>
           </li>
         ))}
       </ul>
       <p className={styles.total}>
-        Total amount of disk space you gain: {formatKb(total)}
+        {t('diskcleanup.total', { size: formatKb(total) })}
       </p>
       <div className={styles.buttons}>
         <button type="button" onClick={() => setPhase('confirm')}>
-          OK
+          {t('common.ok')}
         </button>
         <button type="button" onClick={close}>
-          Cancel
+          {t('common.cancel')}
         </button>
       </div>
 
@@ -224,30 +246,32 @@ export default function DiskCleanup({ windowId }: AppComponentProps) {
           <div
             className={`window ${styles.dialog}`}
             role="dialog"
-            aria-label="Disk Cleanup"
+            aria-label={t('apps.diskcleanup.title')}
           >
             <div className="title-bar">
-              <div className="title-bar-text">Disk Cleanup</div>
+              <div className="title-bar-text">
+                {t('apps.diskcleanup.title')}
+              </div>
             </div>
             <div className="window-body">
               <p className={styles.message}>
                 {phase === 'confirm'
-                  ? 'Are you sure you want to perform these actions?'
-                  : DONE_MESSAGE}
+                  ? t('diskcleanup.confirm')
+                  : t(DONE_MESSAGE)}
               </p>
               <div className={styles.buttons}>
                 {phase === 'confirm' ? (
                   <>
                     <button type="button" onClick={() => setPhase('cleaning')}>
-                      Yes
+                      {t('common.yes')}
                     </button>
                     <button type="button" onClick={() => setPhase('list')}>
-                      No
+                      {t('common.no')}
                     </button>
                   </>
                 ) : (
                   <button type="button" onClick={close}>
-                    OK
+                    {t('common.ok')}
                   </button>
                 )}
               </div>

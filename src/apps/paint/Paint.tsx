@@ -1,5 +1,6 @@
 // Paint: the classic drawing app. Logic lives in plain TS on a PixelBuffer; this component wires it up.
 import { useState, type KeyboardEvent } from 'react';
+import { useT } from '@/i18n/useT';
 import type { AppComponentProps } from '@/os/types';
 import { ColorBox } from './ColorBox';
 import { AttributesDialog, ImageFileDialog, MessageBox } from './dialogs';
@@ -21,6 +22,7 @@ import { usePaintFiles } from './usePaintFiles';
 import styles from './Paint.module.css';
 
 export default function Paint({ windowId, props }: AppComponentProps) {
+  const t = useT();
   const doc = usePaintDocument();
   const [tool, setToolState] = useState<ToolId>('pencil');
   const [lastTool, setLastTool] = useState<ToolId>('pencil');
@@ -81,42 +83,45 @@ export default function Paint({ windowId, props }: AppComponentProps) {
   const menus: Menu[] = [
     {
       id: 'file',
-      label: 'File',
+      label: t('paint.menu.file'),
       items: [
         {
-          label: 'New',
-          shortcut: 'Ctrl+N',
+          label: t('paint.menu.new'),
+          shortcut: t('paint.shortcut.new'),
           onSelect: () => files.guarded('new'),
         },
         {
-          label: 'Open…',
-          shortcut: 'Ctrl+O',
+          label: t('paint.menu.open'),
+          shortcut: t('paint.shortcut.open'),
           onSelect: () => files.guarded('open'),
         },
         {
-          label: 'Save',
-          shortcut: 'Ctrl+S',
+          label: t('paint.menu.save'),
+          shortcut: t('paint.shortcut.save'),
           onSelect: () => void files.save(),
         },
         {
-          label: 'Save As…',
+          label: t('paint.menu.saveAs'),
           onSelect: () => {
             tools.settle();
             files.setDialog({ kind: 'file', mode: 'saveAs' });
           },
         },
         {
-          label: 'Set As Background (Tiled)',
+          label: t('paint.menu.bgTiled'),
           separator: true,
           onSelect: () => void files.background('tile'),
         },
         {
-          label: 'Set As Background (Centered)',
+          label: t('paint.menu.bgCentered'),
           onSelect: () => void files.background('center'),
         },
-        { label: 'Use as display picture', onSelect: files.displayPicture },
         {
-          label: 'Exit',
+          label: t('paint.menu.displayPicture'),
+          onSelect: files.displayPicture,
+        },
+        {
+          label: t('paint.menu.exit'),
           separator: true,
           onSelect: () => files.guarded('exit'),
         },
@@ -124,23 +129,23 @@ export default function Paint({ windowId, props }: AppComponentProps) {
     },
     {
       id: 'edit',
-      label: 'Edit',
+      label: t('paint.menu.edit'),
       items: [
         {
-          label: 'Undo',
-          shortcut: 'Ctrl+Z',
+          label: t('paint.menu.undo'),
+          shortcut: t('paint.shortcut.undo'),
           disabled: !doc.canUndo,
           onSelect: undo,
         },
         {
-          label: 'Redo',
-          shortcut: 'Ctrl+Y',
+          label: t('paint.menu.redo'),
+          shortcut: t('paint.shortcut.redo'),
           disabled: !doc.canRedo,
           onSelect: redo,
         },
         {
-          label: 'Select All',
-          shortcut: 'Ctrl+A',
+          label: t('paint.menu.selectAll'),
+          shortcut: t('paint.shortcut.selectAll'),
           separator: true,
           onSelect: () => {
             setToolState('select');
@@ -148,8 +153,8 @@ export default function Paint({ windowId, props }: AppComponentProps) {
           },
         },
         {
-          label: 'Clear Selection',
-          shortcut: 'Del',
+          label: t('paint.menu.clearSelection'),
+          shortcut: t('paint.menu.delKey'),
           disabled: !tools.selection,
           onSelect: tools.deleteSelection,
         },
@@ -157,38 +162,38 @@ export default function Paint({ windowId, props }: AppComponentProps) {
     },
     {
       id: 'view',
-      label: 'View',
+      label: t('paint.menu.view'),
       items: ZOOMS.map((z) => ({
-        label: z === 1 ? 'Normal Size' : `Zoom ${z}x`,
+        label: z === 1 ? t('paint.menu.normalSize') : t('paint.zoom', { n: z }),
         checked: zoom === z,
         onSelect: () => chooseZoom(z),
       })),
     },
     {
       id: 'image',
-      label: 'Image',
+      label: t('paint.menu.image'),
       items: [
         {
-          label: 'Attributes…',
-          shortcut: 'Ctrl+E',
+          label: t('paint.menu.attributes'),
+          shortcut: t('paint.shortcut.attributes'),
           onSelect: () => {
             tools.settle();
             files.setDialog({ kind: 'attributes' });
           },
         },
-        { label: 'Clear Image', onSelect: clearImage },
+        { label: t('paint.menu.clearImage'), onSelect: clearImage },
       ],
     },
     {
       id: 'help',
-      label: 'Help',
+      label: t('paint.menu.help'),
       items: [
         {
-          label: 'About Paint',
+          label: t('paint.menu.about'),
           onSelect: () =>
             files.setDialog({
               kind: 'message',
-              text: 'Paint\nA still online accessory. Pictures stay on this computer.',
+              text: t('paint.aboutText'),
             }),
         },
       ],
@@ -246,9 +251,7 @@ export default function Paint({ windowId, props }: AppComponentProps) {
       />
       <div className={styles.status} aria-live="off">
         <span>
-          {tool === 'text'
-            ? 'Click to place text, Enter to finish.'
-            : 'Left click draws with the primary colour, right click with the secondary.'}
+          {tool === 'text' ? t('paint.status.text') : t('paint.status.draw')}
         </span>
         <span className={styles.statusCell}>
           {tools.cursor ? `${tools.cursor.x},${tools.cursor.y}` : ''}
@@ -260,18 +263,25 @@ export default function Paint({ windowId, props }: AppComponentProps) {
 
       {d?.kind === 'confirm' && (
         <MessageBox
-          text={`Save changes to ${files.name}?`}
+          text={t('paint.confirmSave', {
+            file: files.name ?? t('paint.untitled'),
+          })}
           buttons={[
-            { label: 'Yes', onClick: () => void files.save(d.action) },
-            { label: 'No', onClick: () => files.run(d.action) },
-            { label: 'Cancel', onClick: () => files.setDialog(null) },
+            {
+              label: t('common.yes'),
+              onClick: () => void files.save(d.action),
+            },
+            { label: t('common.no'), onClick: () => files.run(d.action) },
+            { label: t('common.cancel'), onClick: () => files.setDialog(null) },
           ]}
         />
       )}
       {d?.kind === 'message' && (
         <MessageBox
           text={d.text}
-          buttons={[{ label: 'OK', onClick: () => files.setDialog(null) }]}
+          buttons={[
+            { label: t('common.ok'), onClick: () => files.setDialog(null) },
+          ]}
         />
       )}
       {d?.kind === 'attributes' && (

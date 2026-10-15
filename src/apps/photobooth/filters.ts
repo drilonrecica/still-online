@@ -20,17 +20,6 @@ export const FILTER_IDS = [
 ] as const;
 export type FilterId = (typeof FILTER_IDS)[number];
 
-export const FILTER_LABELS: Record<FilterId, string> = {
-  normal: 'Normal',
-  sepia: 'Sepia',
-  comic: 'Comic',
-  thermal: 'Thermal',
-  mirror: 'Mirror',
-  bulge: 'Bulge',
-  glow: 'Glow',
-  oldcam: 'Old Webcam',
-};
-
 export function createFrame(w: number, h: number): Frame {
   return { w, h, data: new Uint8ClampedArray(w * h * 4) };
 }

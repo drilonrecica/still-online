@@ -1,5 +1,6 @@
 // Paint's dialogs: a generic message box, Image → Attributes, and Open / Save As on My Pictures.
 import { useState, type ReactNode } from 'react';
+import { useT } from '@/i18n/useT';
 import { FolderView } from '@/os/fs/FolderView';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS, type FsNode } from '@/os/fs/types';
@@ -38,7 +39,7 @@ export interface MessageButton {
 }
 
 export function MessageBox({
-  title = 'Paint',
+  title,
   text,
   buttons,
 }: {
@@ -46,8 +47,9 @@ export function MessageBox({
   text: string;
   buttons: MessageButton[];
 }) {
+  const t = useT();
   return (
-    <Dialog title={title}>
+    <Dialog title={title ?? t('paint.name')}>
       <p className={styles.message}>{text}</p>
       <div className={styles.buttons}>
         {buttons.map((b, i) => (
@@ -76,10 +78,11 @@ export function AttributesDialog({
   onOk: (w: number, h: number) => void;
   onCancel: () => void;
 }) {
+  const t = useT();
   const [w, setW] = useState(String(width));
   const [h, setH] = useState(String(height));
   return (
-    <Dialog title="Attributes">
+    <Dialog title={t('paint.dialog.attributes')}>
       <form
         className={styles.fields}
         onSubmit={(e) => {
@@ -87,9 +90,11 @@ export function AttributesDialog({
           onOk(clampSide(Number(w)), clampSide(Number(h)));
         }}
       >
-        <p className={styles.message}>Size in pixels (1–{MAX_SIDE}).</p>
+        <p className={styles.message}>
+          {t('paint.dialog.sizeHint', { max: MAX_SIDE })}
+        </p>
         <label>
-          Width:
+          {t('paint.dialog.width')}
           <input
             type="number"
             min={1}
@@ -100,7 +105,7 @@ export function AttributesDialog({
           />
         </label>
         <label>
-          Height:
+          {t('paint.dialog.height')}
           <input
             type="number"
             min={1}
@@ -110,9 +115,9 @@ export function AttributesDialog({
           />
         </label>
         <div className={styles.buttons}>
-          <button type="submit">OK</button>
+          <button type="submit">{t('common.ok')}</button>
           <button type="button" onClick={onCancel}>
-            Cancel
+            {t('common.cancel')}
           </button>
         </div>
       </form>
@@ -140,6 +145,7 @@ export function ImageFileDialog({
   onSave,
   onCancel,
 }: ImageFileDialogProps) {
+  const t = useT();
   const nodes = useFsStore((s) => s.nodes);
   const [folderId, setFolderId] = useState(
     nodes[initialFolderId]?.type === 'folder'
@@ -148,7 +154,10 @@ export function ImageFileDialog({
   );
   const [name, setName] = useState(initialName);
   const [error, setError] = useState('');
-  const title = mode === 'open' ? 'Open' : 'Save As';
+  const title =
+    mode === 'open'
+      ? t('paint.dialog.openTitle')
+      : t('paint.dialog.saveAsTitle');
 
   function submit() {
     const trimmed = name.trim();
@@ -163,15 +172,13 @@ export function ImageFileDialog({
     if (mode === 'open') {
       const match = find(trimmed) ?? find(withPngExtension(trimmed));
       if (match) onOpen(match);
-      else setError(`${trimmed}\nFile not found.`);
+      else setError(t('paint.dialog.notFound', { file: trimmed }));
       return;
     }
     const match = find(withPngExtension(trimmed));
     if (
       match &&
-      !window.confirm(
-        `${match.name} already exists.\nDo you want to replace it?`,
-      )
+      !window.confirm(t('paint.dialog.replace', { file: match.name }))
     )
       return;
     onSave(folderId, withPngExtension(trimmed));
@@ -198,10 +205,10 @@ export function ImageFileDialog({
       </div>
       <div className={styles.fields}>
         <label>
-          File name:
+          {t('paint.dialog.fileName')}
           <input
             value={name}
-            aria-label="File name"
+            aria-label={t('paint.dialog.fileNameLabel')}
             onChange={(e) => {
               setName(e.target.value);
               setError('');
@@ -212,10 +219,17 @@ export function ImageFileDialog({
           />
         </label>
         <label>
-          {mode === 'open' ? 'Files of type:' : 'Save as type:'}
-          <select aria-label="Files of type" defaultValue="png">
+          {mode === 'open'
+            ? t('paint.dialog.filesOfType')
+            : t('paint.dialog.saveAsType')}
+          <select
+            aria-label={t('paint.dialog.filesOfTypeLabel')}
+            defaultValue="png"
+          >
             <option value="png">
-              {mode === 'open' ? 'All Picture Files' : 'PNG (*.png)'}
+              {mode === 'open'
+                ? t('paint.dialog.allPictures')
+                : t('paint.dialog.pngType')}
             </option>
           </select>
         </label>
@@ -227,7 +241,7 @@ export function ImageFileDialog({
       )}
       <div className={styles.buttons}>
         <button type="button" onClick={submit}>
-          {mode === 'open' ? 'Open' : 'Save'}
+          {mode === 'open' ? t('paint.dialog.open') : t('paint.dialog.save')}
         </button>
         <button type="button" onClick={onCancel}>
           Cancel

@@ -1,5 +1,6 @@
 // The drawing tools as pure stroke logic: pointer down/move/up → changes to a PixelBuffer.
 // Select, text, colour picker and magnifier are interactive and live in the component.
+import type { MessageKey } from '@/i18n/types';
 import { mulberry32 } from '@/os/random';
 import { AIRBRUSH_RADII, floodFill, spray } from './fill';
 import { cloneBuffer, type PixelBuffer, type Point, type Rgba } from './pixels';
@@ -21,20 +22,20 @@ export type ToolId =
   | 'roundrect';
 
 /** Toolbox order (two columns, read left to right). */
-export const TOOLS: readonly { id: ToolId; label: string }[] = [
-  { id: 'select', label: 'Select' },
-  { id: 'eraser', label: 'Eraser' },
-  { id: 'fill', label: 'Fill With Color' },
-  { id: 'picker', label: 'Pick Color' },
-  { id: 'magnifier', label: 'Magnifier' },
-  { id: 'pencil', label: 'Pencil' },
-  { id: 'brush', label: 'Brush' },
-  { id: 'airbrush', label: 'Airbrush' },
-  { id: 'text', label: 'Text' },
-  { id: 'line', label: 'Line' },
-  { id: 'rect', label: 'Rectangle' },
-  { id: 'ellipse', label: 'Ellipse' },
-  { id: 'roundrect', label: 'Rounded Rectangle' },
+export const TOOLS: readonly { id: ToolId; labelKey: MessageKey }[] = [
+  { id: 'select', labelKey: 'paint.tools.select' },
+  { id: 'eraser', labelKey: 'paint.tools.eraser' },
+  { id: 'fill', labelKey: 'paint.tools.fill' },
+  { id: 'picker', labelKey: 'paint.tools.picker' },
+  { id: 'magnifier', labelKey: 'paint.tools.magnifier' },
+  { id: 'pencil', labelKey: 'paint.tools.pencil' },
+  { id: 'brush', labelKey: 'paint.tools.brush' },
+  { id: 'airbrush', labelKey: 'paint.tools.airbrush' },
+  { id: 'text', labelKey: 'paint.tools.text' },
+  { id: 'line', labelKey: 'paint.tools.line' },
+  { id: 'rect', labelKey: 'paint.tools.rect' },
+  { id: 'ellipse', labelKey: 'paint.tools.ellipse' },
+  { id: 'roundrect', labelKey: 'paint.tools.roundrect' },
 ];
 
 export const BRUSH_SIZES = [2, 4, 7] as const;

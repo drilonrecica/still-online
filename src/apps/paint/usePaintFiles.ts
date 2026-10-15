@@ -1,12 +1,12 @@
 // Paint's File menu flows: New/Open/Save/Save As with "save changes?" guards, background, display picture.
 import { useEffect, useRef, useState } from 'react';
+import { useT } from '@/i18n/useT';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS, type FsNode } from '@/os/fs/types';
 import { useWindowsStore } from '@/os/store/windows';
 import { registerCloseGuard } from '@/os/wm/closeGuard';
 import { decodeImage } from './codec';
 import {
-  DEFAULT_NAME,
   saveAs,
   saveOver,
   sendToDisplayPicture,
@@ -31,6 +31,7 @@ export function usePaintFiles(
   initialFileId: string | null,
   settle: () => void,
 ) {
+  const t = useT();
   const [fileId, setFileId] = useState<string | null>(null);
   const [savedRev, setSavedRev] = useState(0);
   const [dialog, setDialog] = useState<PaintDialog>(null);
@@ -68,12 +69,12 @@ export function usePaintFiles(
     setDialog(null);
     try {
       const pixels = await decodeImage(node);
-      if (!pixels) return fail(`Paint cannot read this file.\n${node.name}`);
+      if (!pixels) return fail(t('paint.error.read', { file: node.name }));
       doc.replace(pixels, true);
       setSavedRev(doc.getRevision());
       track(node.id);
     } catch {
-      fail(`Paint cannot read this file.\n${node.name}`);
+      fail(t('paint.error.read', { file: node.name }));
     }
   }
 
@@ -102,7 +103,7 @@ export function usePaintFiles(
       sendToDisplayPicture(savedId);
       setDialog({
         kind: 'message',
-        text: 'Your Messenger display picture has been changed.',
+        text: t('paint.displayPictureChanged'),
       });
     } else {
       useWindowsStore.getState().closeWindow(windowId);
@@ -131,7 +132,7 @@ export function usePaintFiles(
       if (then) run(then, current.id);
       else setDialog(null);
     } catch {
-      fail(`Paint could not save ${current.name}.`);
+      fail(t('paint.error.save', { file: current.name }));
     }
   }
 
@@ -144,7 +145,7 @@ export function usePaintFiles(
       if (then) run(then, id);
       else setDialog(null);
     } catch {
-      fail(`Paint could not save ${fileName}.`);
+      fail(t('paint.error.save', { file: fileName }));
     }
   }
 
@@ -153,7 +154,7 @@ export function usePaintFiles(
     try {
       await setAsBackground(doc.buf, position);
     } catch {
-      fail('Paint could not set the desktop background.');
+      fail(t('paint.error.background'));
     }
   }
 
@@ -179,6 +180,6 @@ export function usePaintFiles(
     background,
     displayPicture,
     startFolder: file?.parentId ?? FS_FOLDERS.pics,
-    defaultSaveName: file?.name ?? DEFAULT_NAME,
+    defaultSaveName: file?.name ?? t('paint.defaultName'),
   };
 }

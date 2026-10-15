@@ -1,6 +1,7 @@
 // The small XP "Open" / "Save As" dialog: FolderView limited to My Documents and below, a file name
 // box and the one file type Notepad knows.
 import { useState } from 'react';
+import { useT } from '@/i18n/useT';
 import { FolderView } from '@/os/fs/FolderView';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS, type FsNode } from '@/os/fs/types';
@@ -31,6 +32,7 @@ export function FileDialog({
   onSave,
   onCancel,
 }: FileDialogProps) {
+  const t = useT();
   const nodes = useFsStore((s) => s.nodes);
   const [folderId, setFolderId] = useState(
     nodes[initialFolderId]?.type === 'folder'
@@ -39,7 +41,10 @@ export function FileDialog({
   );
   const [name, setName] = useState(initialName);
   const [error, setError] = useState('');
-  const title = mode === 'open' ? 'Open' : 'Save As';
+  const title =
+    mode === 'open'
+      ? t('notepad.dialog.openTitle')
+      : t('notepad.dialog.saveAsTitle');
 
   function submit() {
     const trimmed = name.trim();
@@ -52,14 +57,12 @@ export function FileDialog({
     );
     if (mode === 'open') {
       if (match) onOpen(match.id);
-      else setError(`${trimmed}\nFile not found.`);
+      else setError(t('notepad.dialog.notFound', { file: trimmed }));
       return;
     }
     if (
       match &&
-      !window.confirm(
-        `${match.name} already exists.\nDo you want to replace it?`,
-      )
+      !window.confirm(t('notepad.dialog.replace', { file: match.name }))
     ) {
       return;
     }
@@ -96,10 +99,10 @@ export function FileDialog({
           </div>
           <div className={styles.fields}>
             <label>
-              File name:
+              {t('notepad.dialog.fileName')}
               <input
                 value={name}
-                aria-label="File name"
+                aria-label={t('notepad.dialog.fileNameLabel')}
                 onChange={(e) => {
                   setName(e.target.value);
                   setError('');
@@ -110,9 +113,14 @@ export function FileDialog({
               />
             </label>
             <label>
-              {mode === 'open' ? 'Files of type:' : 'Save as type:'}
-              <select aria-label="Files of type" defaultValue="txt">
-                <option value="txt">Text Documents (*.txt)</option>
+              {mode === 'open'
+                ? t('notepad.dialog.filesOfType')
+                : t('notepad.dialog.saveAsType')}
+              <select
+                aria-label={t('notepad.dialog.filesOfTypeLabel')}
+                defaultValue="txt"
+              >
+                <option value="txt">{t('notepad.dialog.txtType')}</option>
               </select>
             </label>
           </div>
@@ -123,10 +131,12 @@ export function FileDialog({
           )}
           <div className={styles.buttons}>
             <button type="button" onClick={submit}>
-              {mode === 'open' ? 'Open' : 'Save'}
+              {mode === 'open'
+                ? t('notepad.dialog.open')
+                : t('notepad.dialog.save')}
             </button>
             <button type="button" onClick={onCancel}>
-              Cancel
+              {t('common.cancel')}
             </button>
           </div>
         </div>

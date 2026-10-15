@@ -1,9 +1,9 @@
 // The "cartoon me" fallback: a procedurally drawn face on a 2D canvas, so the filters apply to it
 // exactly like they do to a webcam frame.
 
-export const HAIR = ['Spiky', 'Bob', 'Curly', 'Bald'] as const;
-export const EYES = ['Round', 'Sleepy', 'Wink', 'Stars'] as const;
-export const MOUTHS = ['Smile', 'Grin', 'Oh', 'Smirk'] as const;
+export const HAIR = ['spiky', 'bob', 'curly', 'bald'] as const;
+export const EYES = ['round', 'sleepy', 'wink', 'stars'] as const;
+export const MOUTHS = ['smile', 'grin', 'oh', 'smirk'] as const;
 
 export interface CartoonLook {
   hair: number;

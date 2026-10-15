@@ -1,5 +1,8 @@
 // The toolbox: two columns of tools and, below them, the current tool's options.
 import type { ReactNode } from 'react';
+import type { MessageKey } from '@/i18n/types';
+import { useT } from '@/i18n/useT';
+import type { TFunction } from '@/i18n/types';
 import { AIRBRUSH_RADII } from './fill';
 import { TOOL_ICONS } from './icons';
 import type { ShapeMode } from './shapes';
@@ -32,13 +35,16 @@ interface Choice {
   pick: () => void;
 }
 
-const SHAPE_MODES: { mode: ShapeMode; label: string }[] = [
-  { mode: 'outline', label: 'Outline' },
-  { mode: 'both', label: 'Outline and fill' },
-  { mode: 'fill', label: 'Fill only' },
+const SHAPE_MODES: { mode: ShapeMode; labelKey: MessageKey }[] = [
+  { mode: 'outline', labelKey: 'paint.modes.outline' },
+  { mode: 'both', labelKey: 'paint.modes.both' },
+  { mode: 'fill', labelKey: 'paint.modes.fill' },
 ];
 
-function choicesFor({ tool, options, zoom, onOptions, onZoom }: ToolboxProps) {
+function choicesFor(
+  { tool, options, zoom, onOptions, onZoom }: ToolboxProps,
+  t: TFunction,
+) {
   const dot = (px: number, round: boolean) => (
     <span
       className={styles.dot}
@@ -49,7 +55,7 @@ function choicesFor({ tool, options, zoom, onOptions, onZoom }: ToolboxProps) {
     case 'brush':
       return BRUSH_SIZES.map((n) => ({
         key: `b${n}`,
-        label: `Brush size ${n}`,
+        label: t('paint.options.brush', { n }),
         active: options.brushSize === n,
         preview: dot(n, true),
         pick: () => onOptions({ brushSize: n }),
@@ -57,7 +63,7 @@ function choicesFor({ tool, options, zoom, onOptions, onZoom }: ToolboxProps) {
     case 'eraser':
       return ERASER_SIZES.map((n) => ({
         key: `e${n}`,
-        label: `Eraser size ${n}`,
+        label: t('paint.options.eraser', { n }),
         active: options.eraserSize === n,
         preview: dot(n, false),
         pick: () => onOptions({ eraserSize: n }),
@@ -65,7 +71,7 @@ function choicesFor({ tool, options, zoom, onOptions, onZoom }: ToolboxProps) {
     case 'airbrush':
       return AIRBRUSH_RADII.map((n) => ({
         key: `a${n}`,
-        label: `Airbrush size ${n}`,
+        label: t('paint.options.airbrush', { n }),
         active: options.airbrushRadius === n,
         preview: (
           <span
@@ -78,7 +84,7 @@ function choicesFor({ tool, options, zoom, onOptions, onZoom }: ToolboxProps) {
     case 'magnifier':
       return ZOOMS.map((z) => ({
         key: `z${z}`,
-        label: `Zoom ${z}x`,
+        label: t('paint.zoom', { n: z }),
         active: zoom === z,
         preview: <span>{z}x</span>,
         pick: () => onZoom(z),
@@ -86,7 +92,7 @@ function choicesFor({ tool, options, zoom, onOptions, onZoom }: ToolboxProps) {
     case 'line':
       return LINE_WIDTHS.map((n) => ({
         key: `l${n}`,
-        label: `Line width ${n}`,
+        label: t('paint.options.line', { n }),
         active: options.lineWidth === n,
         preview: <span className={styles.lineSample} style={{ height: n }} />,
         pick: () => onOptions({ lineWidth: n }),
@@ -94,9 +100,9 @@ function choicesFor({ tool, options, zoom, onOptions, onZoom }: ToolboxProps) {
     case 'rect':
     case 'ellipse':
     case 'roundrect':
-      return SHAPE_MODES.map(({ mode, label }) => ({
+      return SHAPE_MODES.map(({ mode, labelKey }) => ({
         key: mode,
-        label,
+        label: t(labelKey),
         active: options.shapeMode === mode,
         preview: <span className={styles.modeSample} data-mode={mode} />,
         pick: () => onOptions({ shapeMode: mode }),
@@ -107,25 +113,34 @@ function choicesFor({ tool, options, zoom, onOptions, onZoom }: ToolboxProps) {
 }
 
 export function Toolbox(props: ToolboxProps) {
-  const choices: Choice[] = choicesFor(props);
+  const t = useT();
+  const choices: Choice[] = choicesFor(props, t);
   return (
     <div className={styles.toolbox}>
-      <div className={styles.tools} role="toolbar" aria-label="Tools">
-        {TOOLS.map((t) => (
+      <div
+        className={styles.tools}
+        role="toolbar"
+        aria-label={t('paint.toolsLabel')}
+      >
+        {TOOLS.map((tool) => (
           <button
-            key={t.id}
+            key={tool.id}
             type="button"
             className={styles.tool}
-            aria-label={t.label}
-            aria-pressed={props.tool === t.id}
-            title={t.label}
-            onClick={() => props.onTool(t.id)}
+            aria-label={t(tool.labelKey)}
+            aria-pressed={props.tool === tool.id}
+            title={t(tool.labelKey)}
+            onClick={() => props.onTool(tool.id)}
           >
-            {TOOL_ICONS[t.id]}
+            {TOOL_ICONS[tool.id]}
           </button>
         ))}
       </div>
-      <div className={styles.options} role="group" aria-label="Tool options">
+      <div
+        className={styles.options}
+        role="group"
+        aria-label={t('paint.optionsLabel')}
+      >
         {choices.map((c) => (
           <button
             key={c.key}

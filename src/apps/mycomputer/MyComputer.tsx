@@ -1,3 +1,4 @@
+import { useT } from '@/i18n/useT';
 import { APP_NAME } from '@/os/brand/brand';
 import { Wordmark } from '@/os/brand/Wordmark';
 import { resetStillOnline } from './reset';
@@ -6,8 +7,9 @@ const CREDITS_URL =
   'https://github.com/drilonrecica/still-online/blob/master/CREDITS.md';
 
 export default function MyComputer() {
+  const t = useT();
   async function reset() {
-    if (!window.confirm(`Reset ${APP_NAME}? All saved data will be erased.`))
+    if (!window.confirm(t('mycomputer.confirmReset', { app: APP_NAME })))
       return;
     await resetStillOnline(window.localStorage);
     window.location.reload();
@@ -26,26 +28,19 @@ export default function MyComputer() {
       <h1 style={{ margin: '0 0 8px' }} aria-label={APP_NAME}>
         <Wordmark size="sm" tagline />
       </h1>
+      <p>{t('mycomputer.about')}</p>
       <p>
-        A browser-based nostalgia simulator recreating Windows XP and the social
-        internet of 2007: a lived-in desktop, frozen somewhere in that year.
-      </p>
-      <p>
-        {APP_NAME} is a fan-made, non-commercial nostalgia project. It is{' '}
-        <strong>not</strong> affiliated with, endorsed by, or sponsored by
-        Microsoft, MySpace, Netlog, Winamp, or any of their owners. All product
-        names, logos and trademarks belong to their respective owners and are
-        mentioned only to describe the era the project recreates. All
-        characters, conversations and content inside the simulation are
-        fictional.
+        {t('mycomputer.disclaimerBefore', { app: APP_NAME })}
+        <strong>{t('mycomputer.disclaimerNot')}</strong>
+        {t('mycomputer.disclaimerAfter')}
       </p>
       <p>
         <a href={CREDITS_URL} target="_blank" rel="noreferrer">
-          Credits
+          {t('mycomputer.credits')}
         </a>
       </p>
       <button type="button" onClick={() => void reset()}>
-        Reset {APP_NAME}…
+        {t('mycomputer.reset', { app: APP_NAME })}
       </button>
     </div>
   );

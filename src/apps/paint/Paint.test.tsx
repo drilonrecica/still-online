@@ -118,6 +118,8 @@ describe('Paint', () => {
         'button',
       ),
     ).toHaveLength(28);
+    // The first blit runs in a passive effect, which can land after the DOM commit.
+    await waitFor(() => expect(shown).not.toBeNull());
     expect(shown && [shown.w, shown.h]).toEqual([640, 480]);
     expect(painted(shown!, [255, 255, 255, 255])).toHaveLength(640 * 480);
     expect(titleOf(useWindowsStore.getState().windows[0]?.id)).toBe(

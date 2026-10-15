@@ -1,6 +1,7 @@
 import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { translate } from '@/i18n/t';
 import { useWindowsStore } from '@/os/store/windows';
 import '@/apps/registry';
 import DiskCleanup, {
@@ -47,12 +48,12 @@ describe('Disk Cleanup', () => {
     expect(screen.getByText(/calculating how much space/)).toBeTruthy();
     expect(screen.getByRole('progressbar')).toBeTruthy();
     expect(screen.getByRole('status')).toHaveTextContent(
-      `Scanning: ${SCAN_LABELS[0]}`,
+      `Scanning: ${translate('en', SCAN_LABELS[0])}`,
     );
     act(() => vi.advanceTimersByTime(SCAN_MS / 2));
     expect(screen.getByRole('progressbar')).toBeTruthy();
     expect(screen.getByRole('status').textContent).not.toBe(
-      `Scanning: ${SCAN_LABELS[0]}`,
+      `Scanning: ${translate('en', SCAN_LABELS[0])}`,
     );
   });
 
@@ -94,7 +95,7 @@ describe('Disk Cleanup', () => {
     await user.click(screen.getByRole('button', { name: 'Yes' }));
     expect(screen.getByRole('status')).toHaveTextContent('Cleaning up…');
     act(() => vi.advanceTimersByTime(10000));
-    expect(screen.getByText(DONE_MESSAGE)).toBeTruthy();
+    expect(screen.getByText(translate('en', DONE_MESSAGE))).toBeTruthy();
   });
 
   it('closes the window from the final OK', async () => {

@@ -1,5 +1,7 @@
 // Snapshot Booth: webcam photos (never uploaded) with filters and a countdown, plus a cartoon fallback.
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { MessageKey } from '@/i18n/types';
+import { useT } from '@/i18n/useT';
 import { useBlobUrl } from '@/os/blobStore';
 import { useFsStore } from '@/os/fs/store';
 import { playSound } from '@/os/sound';
@@ -14,12 +16,7 @@ import {
   MOUTHS,
   type CartoonLook,
 } from './cartoon';
-import {
-  applyFilter,
-  FILTER_IDS,
-  FILTER_LABELS,
-  type FilterId,
-} from './filters';
+import { applyFilter, FILTER_IDS, type FilterId } from './filters';
 import { canvasToPng, savePhoto, setAsDisplayPicture } from './photos';
 import styles from './Photobooth.module.css';
 
@@ -43,6 +40,7 @@ function context2d(canvas: HTMLCanvasElement | null) {
 }
 
 function Thumb({ id }: { id: string }) {
+  const t = useT();
   const node = useFsStore((s) => s.nodes[id]);
   const url = useBlobUrl(node?.blobKey ?? null);
   if (!node) return null;
@@ -50,22 +48,23 @@ function Thumb({ id }: { id: string }) {
     <li className={styles.thumb}>
       {url ? <img src={url} alt={node.name} /> : <span>{node.name}</span>}
       <button type="button" onClick={() => setAsDisplayPicture(id)}>
-        Set as display picture
+        {t('photobooth.setDisplayPicture')}
       </button>
     </li>
   );
 }
 
 export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
+  const t = useT();
   const minimized = useWindowMinimized(windowId);
   const [mode, setMode] = useState<Mode>('start');
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<MessageKey | null>(null);
   const [filter, setFilter] = useState<FilterId>('normal');
   const [look, setLook] = useState<CartoonLook>(DEFAULT_LOOK);
   const [count, setCount] = useState<number | null>(null);
   const [flash, setFlash] = useState(false);
   const [photos, setPhotos] = useState<string[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<MessageKey | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -95,7 +94,7 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
   }, []);
 
   const goCartoon = useCallback(
-    (why: string | null) => {
+    (why: MessageKey | null) => {
       stopCamera();
       setNotice(why);
       setMode('cartoon');
@@ -108,7 +107,7 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
     setNotice(null);
     const devices = navigator.mediaDevices;
     if (!devices?.getUserMedia) {
-      goCartoon("This browser can't reach a camera, so here's a cartoon you.");
+      goCartoon('photobooth.notice.noApi');
       return;
     }
     let stream: MediaStream;
@@ -122,8 +121,8 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
       const name = e instanceof DOMException ? e.name : '';
       goCartoon(
         name === 'NotAllowedError' || name === 'SecurityError'
-          ? 'Snapshot Booth was not allowed to use your camera. Nothing was recorded — here is a cartoon you instead.'
-          : 'No camera was found on this computer, so here is a cartoon you instead.',
+          ? 'photobooth.notice.denied'
+          : 'photobooth.notice.noCamera',
       );
       return;
     }
@@ -209,7 +208,7 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
       const id = await savePhoto(await canvasToPng(canvas));
       if (alive.current) setPhotos((p) => [id, ...p]);
     } catch {
-      if (alive.current) setError("The photo couldn't be saved.");
+      if (alive.current) setError('photobooth.error.save');
     }
   }
 
@@ -233,17 +232,14 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
     return (
       <div className={styles.root}>
         <div className={styles.consent}>
-          <h2>Snapshot Booth</h2>
-          <p>
-            Snapshot Booth needs your webcam. Your camera stays on this computer
-            — photos are saved only in this browser, nothing is uploaded.
-          </p>
+          <h2>{t('apps.photobooth.title')}</h2>
+          <p>{t('photobooth.consent')}</p>
           <div className={styles.row}>
             <button type="button" onClick={() => void startWebcam()}>
-              Use my webcam
+              {t('photobooth.useWebcam')}
             </button>
             <button type="button" onClick={() => goCartoon(null)}>
-              No camera — use a cartoon me
+              {t('photobooth.useCartoon')}
             </button>
           </div>
         </div>
@@ -255,7 +251,7 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
     <div className={styles.root}>
       {notice && (
         <p className={styles.notice} role="status">
-          {notice}
+          {t(notice)}
         </p>
       )}
       <div className={styles.stage}>
@@ -265,7 +261,11 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
           height={H}
           className={styles.canvas}
           role="img"
-          aria-label={mode === 'webcam' ? 'Camera preview' : 'Cartoon preview'}
+          aria-label={
+            mode === 'webcam'
+              ? t('photobooth.previewCamera')
+              : t('photobooth.previewCartoon')
+          }
         />
         <video ref={videoRef} className={styles.video} muted playsInline />
         {count !== null && (
@@ -276,7 +276,11 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
         {flash && <div className={styles.flash} data-testid="flash" />}
       </div>
 
-      <div className={styles.row} role="group" aria-label="Filters">
+      <div
+        className={styles.row}
+        role="group"
+        aria-label={t('photobooth.filters.label')}
+      >
         {FILTER_IDS.map((id) => (
           <button
             key={id}
@@ -284,14 +288,14 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
             aria-pressed={filter === id}
             onClick={() => setFilter(id)}
           >
-            {FILTER_LABELS[id]}
+            {t(`photobooth.filters.${id}`)}
           </button>
         ))}
       </div>
 
       <div className={styles.row}>
         <button type="button" onClick={takePhoto} disabled={count !== null}>
-          Take Photo
+          {t('photobooth.takePhoto')}
         </button>
         {mode === 'cartoon' ? (
           <>
@@ -301,7 +305,9 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
                 setLook({ ...look, hair: cycle(look.hair, HAIR.length) })
               }
             >
-              Hair: {HAIR[look.hair]}
+              {t('photobooth.hair.label', {
+                value: t(`photobooth.hair.${HAIR[look.hair]!}`),
+              })}
             </button>
             <button
               type="button"
@@ -309,7 +315,9 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
                 setLook({ ...look, eyes: cycle(look.eyes, EYES.length) })
               }
             >
-              Eyes: {EYES[look.eyes]}
+              {t('photobooth.eyes.label', {
+                value: t(`photobooth.eyes.${EYES[look.eyes]!}`),
+              })}
             </button>
             <button
               type="button"
@@ -317,24 +325,26 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
                 setLook({ ...look, mouth: cycle(look.mouth, MOUTHS.length) })
               }
             >
-              Mouth: {MOUTHS[look.mouth]}
+              {t('photobooth.mouth.label', {
+                value: t(`photobooth.mouth.${MOUTHS[look.mouth]!}`),
+              })}
             </button>
             <button type="button" onClick={() => choose('webcam')}>
-              Use my webcam
+              {t('photobooth.useWebcam')}
             </button>
           </>
         ) : (
           <button type="button" onClick={() => choose('cartoon')}>
-            Cartoon me
+            {t('photobooth.cartoonMe')}
           </button>
         )}
       </div>
       {error && (
         <p className={styles.notice} role="alert">
-          {error}
+          {t(error)}
         </p>
       )}
-      <ul className={styles.strip} aria-label="Photos">
+      <ul className={styles.strip} aria-label={t('photobooth.photos')}>
         {photos.map((id) => (
           <Thumb key={id} id={id} />
         ))}

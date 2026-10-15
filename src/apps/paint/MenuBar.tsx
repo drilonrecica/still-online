@@ -1,5 +1,6 @@
 // Paint's classic menu bar: click a title to open its menu, hover to switch while one is open.
 import { useState } from 'react';
+import { useT } from '@/i18n/useT';
 import styles from './Paint.module.css';
 
 export interface MenuItem {
@@ -20,12 +21,13 @@ export interface Menu {
 }
 
 export function MenuBar({ menus }: { menus: Menu[] }) {
+  const t = useT();
   const [open, setOpen] = useState<string | null>(null);
   return (
     <div
       className={styles.menubar}
       role="menubar"
-      aria-label="Paint"
+      aria-label={t('paint.name')}
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget)) setOpen(null);
       }}
