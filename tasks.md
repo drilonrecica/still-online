@@ -310,8 +310,8 @@ Tests sit next to the code as `*.test.ts(x)`. Use path alias `@/` → `src/`.
 | P5-03 | **Amplifier skins + windowshade** — 3 original skins and a mini windowshade mode. | P4-G | done | sonnet | agent | — | fast | — | Skin menu switches and persists; windowshade toggles on titlebar double-click and resizes the window. | §P5-03 |
 | P5-04 | **Amplifier equalizer** — 10-band EQ in the audio graph, with presets, a toggle and an EQ panel. | P5-03 | done | opus | agent | — | fast | — | Filters inserted once in the media-element graph; presets apply; persisted; panel resizes the window like the playlist. | §P5-04 |
 | P5-05 | **Amplifier playlist editing + Burn CD** — remove/reorder/add from My Music, `amplifier:enqueue`, and a "Burn CD…" joke. | P5-03 | done | sonnet | agent | — | fast | — | Edits persist; enqueue from TuneMole/Explorer/Spaceport plays; Burn CD fails with a "buffer underrun". | §P5-05 |
-| P5-06 | **More now-playing reactions** — a second `onNowPlaying` script for every friend, track-specific where it's funny. | P4-G | in progress | opus | agent | — | — | — | Lint + playthrough pass; ≥ 1 new script per contact. | §P5-06 |
-| P5-G | **P5 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: Paint with a drawing, Booth fallback, each skin, EQ, windowshade. | P5-01…P5-06 | blocked | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P5.md`. | §Gate |
+| P5-06 | **More now-playing reactions** — a second `onNowPlaying` script for every friend, track-specific where it's funny. | P4-G | done | opus | agent | — | — | — | Lint + playthrough pass; ≥ 1 new script per contact. | §P5-06 |
+| P5-G | **P5 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: Paint with a drawing, Booth fallback, each skin, EQ, windowshade. | P5-01…P5-06 | in progress | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/P5.md`. | §Gate |
 
 ## P6 — Games and cult
 

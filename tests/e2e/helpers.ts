@@ -119,9 +119,22 @@ export async function openFromStart(page: Page, name: string) {
   await page.getByRole('button', { name: 'start' }).click();
   await page.getByRole('menuitem', { name: /All Programs/ }).click();
   const programs = page.getByRole('menu', { name: 'All Programs' });
-  const direct = programs.getByRole('menuitem', { name, exact: true });
-  if (!(await direct.isVisible())) {
-    await programs.getByRole('menuitem', { name: /Internet/ }).hover();
+  const item = page.getByRole('menuitem', { name, exact: true }).last();
+  if (
+    !(await programs.getByRole('menuitem', { name, exact: true }).isVisible())
+  ) {
+    // The app lives in a flyout: try each folder until the item shows up.
+    for (const folder of [/Internet/, /Accessories/]) {
+      await programs.getByRole('menuitem', { name: folder }).hover();
+      if (
+        await item.waitFor({ timeout: 1500 }).then(
+          () => true,
+          () => false,
+        )
+      ) {
+        break;
+      }
+    }
   }
-  await page.getByRole('menuitem', { name, exact: true }).last().click();
+  await item.click();
 }
