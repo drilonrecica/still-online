@@ -1,6 +1,9 @@
 // Star Pinball's menu, help, high-score and game-over panels, laid over the table.
 import { useState, type ReactNode } from 'react';
+import { scoreName } from '@/i18n/scoreName';
+import { useLocale, useT } from '@/i18n/useT';
 import { MAX_SCORE_NAME, useGamesStore } from '@/os/store/games';
+import { rankName } from './display';
 import { formatScore } from './font';
 import { BALLS, BALL_SAVE_SECONDS, POINTS, RANKS } from './sim';
 import styles from './Pinball.module.css';
@@ -10,6 +13,13 @@ export interface GameResult {
   rank: number;
   /** Earned a top-10 place (asks for a name). */
   high: boolean;
+}
+
+/** Help text with `[Key]` markers rendered as key caps. */
+function withKeys(text: string): ReactNode[] {
+  return text
+    .split(/\[([^\]]+)\]/)
+    .map((part, i) => (i % 2 ? <kbd key={i}>{part}</kbd> : part));
 }
 
 function Panel({ label, children }: { label: string; children: ReactNode }) {
@@ -31,26 +41,28 @@ export function MenuScreen({
   onScores: () => void;
   onHelp: () => void;
 }) {
+  const t = useT();
   return (
     <div className={styles.overlay}>
       <div className={styles.menu}>
         <h1 className={styles.title}>
-          Star <span>Pinball</span>
+          {t('pinball.titleFirst')}
+          <span>{t('pinball.titleSecond')}</span>
         </h1>
-        <nav className={styles.menuButtons} aria-label="Star Pinball menu">
+        <nav className={styles.menuButtons} aria-label={t('pinball.menuLabel')}>
           <button
             type="button"
             className={styles.big}
             autoFocus
             onClick={onPlay}
           >
-            Play
+            {t('pinball.play')}
           </button>
           <button type="button" className={styles.big} onClick={onScores}>
-            High Scores
+            {t('pinball.highScores')}
           </button>
           <button type="button" className={styles.big} onClick={onHelp}>
-            Help
+            {t('pinball.help')}
           </button>
         </nav>
       </div>
@@ -59,40 +71,39 @@ export function MenuScreen({
 }
 
 export function HelpScreen({ onBack }: { onBack: () => void }) {
+  const t = useT();
+  const locale = useLocale();
   return (
-    <Panel label="How to play">
-      <h2>How to play</h2>
+    <Panel label={t('pinball.helpTitle')}>
+      <h2>{t('pinball.helpTitle')}</h2>
       <ul className={styles.help}>
+        <li>{withKeys(t('pinball.helpLaunch'))}</li>
+        <li>{withKeys(t('pinball.helpFlippers'))}</li>
+        <li>{withKeys(t('pinball.helpNudge'))}</li>
+        <li>{t('pinball.helpLanes')}</li>
         <li>
-          Hold <kbd>Space</kbd> or <kbd>↓</kbd> to pull the plunger, let go to
-          launch. Or press and hold on the launch lane.
+          {t('pinball.helpRanks', {
+            ranks: RANKS.map((_, i) => rankName(i, locale)).join(' → '),
+          })}
         </li>
         <li>
-          Flippers: <kbd>Z</kbd> or left <kbd>Shift</kbd>, and <kbd>/</kbd> or
-          right <kbd>Shift</kbd>. Clicking the left or right half of the table
-          works too.
+          {t('pinball.helpRamp', {
+            ramp: formatScore(POINTS.ramp, locale),
+            bumper: formatScore(POINTS.bumper, locale),
+          })}
         </li>
         <li>
-          <kbd>T</kbd> nudges the table. Three warnings, then the next nudge
-          tilts and the ball is lost.
-        </li>
-        <li>
-          Light all three top lanes for a 2× multiplier. The flippers shift the
-          lit lanes.
-        </li>
-        <li>Drop S-T-A-R to rank up: {RANKS.join(' → ')}.</li>
-        <li>
-          The Hyperspace ramp on the left scores {formatScore(POINTS.ramp)};
-          planets score {POINTS.bumper}.
-        </li>
-        <li>
-          {BALLS} balls. A ball lost in the first {BALL_SAVE_SECONDS} seconds
-          comes back once. <kbd>Esc</kbd> quits to the menu.
+          {withKeys(
+            t('pinball.helpBalls', {
+              balls: BALLS,
+              seconds: BALL_SAVE_SECONDS,
+            }),
+          )}
         </li>
       </ul>
       <div className={styles.buttons}>
         <button type="button" autoFocus onClick={onBack}>
-          Back
+          {t('pinball.back')}
         </button>
       </div>
     </Panel>
@@ -106,28 +117,30 @@ export function ScoresScreen({
   onBack: () => void;
   onPlay: () => void;
 }) {
+  const t = useT();
+  const locale = useLocale();
   const high = useGamesStore((s) => s.pinball.high);
   return (
-    <Panel label="High scores">
-      <h2>High Scores</h2>
+    <Panel label={t('pinball.highScores')}>
+      <h2>{t('pinball.highScores')}</h2>
       {high.length === 0 ? (
-        <p>No scores yet. The galaxy awaits!</p>
+        <p>{t('pinball.noScores')}</p>
       ) : (
         <table className={styles.scores}>
           <thead>
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Score</th>
-              <th scope="col">Date</th>
+              <th scope="col">{t('pinball.colRank')}</th>
+              <th scope="col">{t('pinball.colName')}</th>
+              <th scope="col">{t('pinball.colScore')}</th>
+              <th scope="col">{t('pinball.colDate')}</th>
             </tr>
           </thead>
           <tbody>
             {high.map((h, i) => (
               <tr key={i}>
                 <td>{i + 1}.</td>
-                <td>{h.name}</td>
-                <td>{formatScore(h.score)}</td>
+                <td>{scoreName(h.name, t)}</td>
+                <td>{formatScore(h.score, locale)}</td>
                 <td>{h.date}</td>
               </tr>
             ))}
@@ -136,10 +149,10 @@ export function ScoresScreen({
       )}
       <div className={styles.buttons}>
         <button type="button" autoFocus onClick={onPlay}>
-          Play
+          {t('pinball.play')}
         </button>
         <button type="button" onClick={onBack}>
-          Main Menu
+          {t('pinball.mainMenu')}
         </button>
       </div>
     </Panel>
@@ -161,14 +174,19 @@ export function OverScreen({
   onScores: () => void;
   onMenu: () => void;
 }) {
+  const t = useT();
+  const locale = useLocale();
   const [name, setName] = useState(defaultName);
   return (
-    <Panel label="Game over">
-      <h2>Game Over</h2>
+    <Panel label={t('pinball.gameOver')}>
+      <h2>{t('pinball.gameOver')}</h2>
       <p className={styles.final}>
-        Score: <strong>{formatScore(result.score)}</strong>
+        {t('pinball.finalScore')}{' '}
+        <strong>{formatScore(result.score, locale)}</strong>
       </p>
-      <p className={styles.center}>Final rank: {RANKS[result.rank]}</p>
+      <p className={styles.center}>
+        {t('pinball.finalRank', { rank: rankName(result.rank, locale) })}
+      </p>
       {result.high ? (
         <form
           className={styles.nameForm}
@@ -177,9 +195,7 @@ export function OverScreen({
             onSaveName(name);
           }}
         >
-          <label htmlFor="pinball-name">
-            A new high score! Enter your name:
-          </label>
+          <label htmlFor="pinball-name">{t('pinball.newHigh')}</label>
           <input
             id="pinball-name"
             autoFocus
@@ -187,18 +203,18 @@ export function OverScreen({
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <button type="submit">OK</button>
+          <button type="submit">{t('pinball.ok')}</button>
         </form>
       ) : (
         <div className={styles.buttons}>
           <button type="button" autoFocus onClick={onPlay}>
-            Play Again
+            {t('pinball.playAgain')}
           </button>
           <button type="button" onClick={onScores}>
-            High Scores
+            {t('pinball.highScores')}
           </button>
           <button type="button" onClick={onMenu}>
-            Main Menu
+            {t('pinball.mainMenu')}
           </button>
         </div>
       )}

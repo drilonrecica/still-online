@@ -172,7 +172,7 @@ describe('Star Pinball game', () => {
       );
     }
     expect(g.rank).toBe(1);
-    expect(RANKS[g.rank]).toBe('Ensign');
+    expect(RANKS[g.rank]).toBe('ensign');
     expect(g.score).toBe(4 * POINTS.target + POINTS.rankUp);
     place(g, 200, 200);
     run(g, TARGET_RESET + 0.1);
@@ -186,16 +186,16 @@ describe('Star Pinball game', () => {
 
   it('ranks Cadet → Ensign → Lieutenant → Captain → Admiral, then pays a bonus', () => {
     const g = createGame(1);
-    expect(RANKS[g.rank]).toBe('Cadet');
+    expect(RANKS[g.rank]).toBe('cadet');
     const seen = [];
     for (let i = 0; i < 4; i++) {
       rankUp(g);
       seen.push(RANKS[g.rank]);
     }
-    expect(seen).toEqual(['Ensign', 'Lieutenant', 'Captain', 'Admiral']);
+    expect(seen).toEqual(['ensign', 'lieutenant', 'captain', 'admiral']);
     expect(g.score).toBe(POINTS.rankUp * (1 + 2 + 3 + 4));
     rankUp(g);
-    expect(RANKS[g.rank]).toBe('Admiral');
+    expect(RANKS[g.rank]).toBe('admiral');
     expect(g.score).toBe(POINTS.rankUp * 10 + POINTS.admiralBank);
   });
 

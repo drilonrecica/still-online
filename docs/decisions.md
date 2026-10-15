@@ -184,3 +184,7 @@
 - P0-05: `{artist}`/`{title}` render from the `PLAYLIST` track by `trackId` (the spec's "from the track id"); the engine tests and the M2 playthrough now use real playlist tracks instead of made-up ones
 - P0-05: the engine renders choices and typing time in the current locale through a `getText(contactId, locale)` option (runtime: `getMessengerContent`), so reply buttons switch language with everything else
 - P0-05: picking the Away prompt's untouched localized default stores `player.awayMessage = null`, so it follows the language like the settings default
+- P1-07: Star Pinball keeps 5 ranks; German is Kadett, Fähnrich, Leutnant, Kapitän, Admiral („Kommodore“ from the spec list dropped) — the spec says keep the same count and English has no Commodore
+- P1-07: `Game.message` stores a message id + number (`say(g, 'warning', 2)`), rendered by `displayLines` in the current locale — a language switch mid-ball updates the display at once
+- P1-07: the dot-matrix display draws ß as SS and squeezes Ä/Ö/Ü into the 7 glyph rows (dots on row 0); lines wider than 21 characters scroll as a marquee (static start under reduced motion); the play status line closes its double spaces when it would overflow (fixes the English "BALL 1  LIEUTENANT  2X", 22 chars, that was cut off)
+- P1-07: the printed table title and the display's attract title follow the localized product name („STERNEN-FLIPPER“); HYPERSPACE, TILT, the S-T-A-R letters, „BALL n“ and the 2X lamp stay as in English, as German pinball machines print them

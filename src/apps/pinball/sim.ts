@@ -33,9 +33,11 @@ import {
   rankUp,
   resetTargets,
   say,
+  type MessageId,
 } from './scoring';
 
 export { POINTS, RANKS, STEP, TARGET_RESET, qualifies, rankUp };
+export type { MessageId, RankId } from './scoring';
 
 export const BALLS = 3;
 export const BALL_SAVE_SECONDS = 5;
@@ -95,7 +97,7 @@ export interface Game {
   /** Per-part light flashes in seconds, e.g. `bumper:1`, `rollover:0`. */
   flash: Record<string, number>;
   /** A dot-matrix message shown over the score. */
-  message: { text: string; ttl: number } | null;
+  message: { id: MessageId; n: number; ttl: number } | null;
   stillFor: number;
   events: GameEvent[];
 }
@@ -144,7 +146,7 @@ export function serveBall(g: Game): void {
   g.warnings = 0;
   g.tilted = false;
   g.inside.clear();
-  say(g, `BALL ${g.ballNo}`, 1.5);
+  say(g, 'ball', g.ballNo, 1.5);
 }
 
 export function drainEvents(g: Game): GameEvent[] {
@@ -200,10 +202,10 @@ export function nudge(g: Game): void {
     g.tilted = true;
     for (const f of g.flippers) f.pressed = false;
     g.events.push({ type: 'tilt' });
-    say(g, 'TILT', 99);
+    say(g, 'tilt', 0, 99);
   } else {
     g.events.push({ type: 'warning', count: g.warnings });
-    say(g, `WARNING ${g.warnings}`, 1.2);
+    say(g, 'warning', g.warnings, 1.2);
   }
 }
 
@@ -213,13 +215,13 @@ function drain(g: Game) {
     g.saveUsed = true;
     g.ball = { x: LANE_X, y: PLUNGER_REST - BALL_R, vx: 0, vy: 0 };
     g.events.push({ type: 'saved' });
-    say(g, 'BALL SAVED', 1.6);
+    say(g, 'saved', 0, 1.6);
     return;
   }
   g.ball = null;
   g.drainWait = DRAIN_PAUSE;
   g.events.push({ type: 'drain' });
-  if (!g.tilted) say(g, g.ballNo < BALLS ? 'BALL LOST' : 'GAME OVER', 1.6);
+  if (!g.tilted) say(g, g.ballNo < BALLS ? 'lost' : 'over');
 }
 
 function tickTimers(g: Game, dt: number) {

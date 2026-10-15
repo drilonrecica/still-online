@@ -7,7 +7,29 @@ import { TARGETS } from './table';
 /** Dropped targets stand up again this long after the bank is complete. */
 export const TARGET_RESET = 1.5;
 
-export const RANKS = ['Cadet', 'Ensign', 'Lieutenant', 'Captain', 'Admiral'];
+/** Rank ids, lowest first; names come from `pinball.rank.*`. */
+export const RANKS = [
+  'cadet',
+  'ensign',
+  'lieutenant',
+  'captain',
+  'admiral',
+] as const;
+
+export type RankId = (typeof RANKS)[number];
+
+/** What the dot-matrix display can say over the score: `pinball.display.<id>`. */
+export type MessageId =
+  | 'ball'
+  | 'tilt'
+  | 'warning'
+  | 'saved'
+  | 'lost'
+  | 'over'
+  | 'rankUp'
+  | 'admiralBonus'
+  | 'multiplier'
+  | 'ramp';
 
 export const POINTS = {
   bumper: 100,
@@ -23,8 +45,9 @@ export const POINTS = {
   ramp: 1000,
 };
 
-export function say(g: Game, text: string, ttl = 1.6) {
-  g.message = { text, ttl };
+/** Shows message `id` (with its number: ball, warning count, rank, multiplier) for `ttl` s. */
+export function say(g: Game, id: MessageId, n = 0, ttl = 1.6) {
+  g.message = { id, n, ttl };
 }
 
 export function award(g: Game, points: number) {
@@ -70,11 +93,11 @@ export function rankUp(g: Game): void {
   if (g.rank < RANKS.length - 1) {
     g.rank++;
     award(g, POINTS.rankUp * g.rank);
-    say(g, `RANK UP: ${RANKS[g.rank]!.toUpperCase()}`, 2.2);
+    say(g, 'rankUp', g.rank, 2.2);
     g.events.push({ type: 'rankUp', rank: g.rank });
   } else {
     award(g, POINTS.admiralBank);
-    say(g, 'ADMIRAL BONUS', 2.2);
+    say(g, 'admiralBonus', 0, 2.2);
   }
 }
 
@@ -99,12 +122,12 @@ export function onSensor(g: Game, id: string, ball: Ball) {
         g.multiplier = 2;
         g.events.push({ type: 'multiplier', value: 2 });
       }
-      say(g, `${g.multiplier}X MULTIPLIER`);
+      say(g, 'multiplier', g.multiplier);
     }
   } else if (kind === 'ramp' && ball.vy < 0) {
     award(g, POINTS.ramp);
     light(g, 'ramp', 0.6);
-    say(g, 'HYPERSPACE RAMP', 1.2);
+    say(g, 'ramp', 0, 1.2);
     g.events.push({ type: 'ramp' });
   }
 }

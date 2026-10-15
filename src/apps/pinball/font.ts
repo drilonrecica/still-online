@@ -2,6 +2,9 @@ import { formatNumber } from '@/i18n/format';
 import { getLocale } from '@/i18n/t';
 import type { Locale } from '@/i18n/types';
 // A 5×7 dot-matrix font for the score display: each glyph is 7 rows of 5 bits (MSB = left).
+// The umlauts squeeze the letter into rows 2–6 so the dots fit in the same 7 rows (the two
+// display lines sit flush, there is no row above a capital). ß has no capital: `displayText`
+// spells it SS, as German uppercase signs do.
 
 const GLYPHS: Record<string, readonly number[]> = {
   ' ': [0, 0, 0, 0, 0, 0, 0],
@@ -41,6 +44,9 @@ const GLYPHS: Record<string, readonly number[]> = {
   X: [0x11, 0x11, 0x0a, 0x04, 0x0a, 0x11, 0x11],
   Y: [0x11, 0x11, 0x11, 0x0a, 0x04, 0x04, 0x04],
   Z: [0x1f, 0x01, 0x02, 0x04, 0x08, 0x10, 0x1f],
+  Ä: [0x0a, 0x00, 0x0e, 0x11, 0x1f, 0x11, 0x11],
+  Ö: [0x0a, 0x00, 0x0e, 0x11, 0x11, 0x11, 0x0e],
+  Ü: [0x0a, 0x00, 0x11, 0x11, 0x11, 0x11, 0x0e],
   ',': [0, 0, 0, 0, 0, 0x04, 0x08],
   '.': [0, 0, 0, 0, 0, 0x0c, 0x0c],
   ':': [0, 0x0c, 0x0c, 0, 0x0c, 0x0c, 0],
@@ -52,13 +58,23 @@ const GLYPHS: Record<string, readonly number[]> = {
 export const GLYPH_W = 5;
 export const GLYPH_H = 7;
 
+/** The characters the display shows for `text`: uppercase, with ß spelled SS. */
+export function displayText(text: string): string {
+  return text.replaceAll('ß', 'SS').toUpperCase();
+}
+
+/** The characters of `text` the font can't draw (shown as blanks). */
+export function missingGlyphs(text: string): string[] {
+  return [...displayText(text)].filter((ch) => !(ch in GLYPHS));
+}
+
 /** The lit dots of `text` as [col, row] pairs, one dot column of space between glyphs. */
 export function textDots(text: string): {
   dots: [number, number][];
   width: number;
 } {
   const dots: [number, number][] = [];
-  const chars = [...text.toUpperCase()];
+  const chars = [...displayText(text)];
   chars.forEach((ch, i) => {
     const rows = GLYPHS[ch] ?? GLYPHS[' ']!;
     rows.forEach((bits, row) => {

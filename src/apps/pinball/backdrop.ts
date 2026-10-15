@@ -1,5 +1,7 @@
 // The static layer of Star Pinball, drawn once per resolution: deep space with a seeded
 // nebula and stars, the neon walls, slingshot bodies and the printed labels.
+import { translate } from '@/i18n/t';
+import type { Locale } from '@/i18n/types';
 import { mulberry32 } from '@/os/random';
 import type { Shape } from './geometry';
 import { TABLE_X, TABLE_Y, VIEW_H, VIEW_W } from './display';
@@ -66,34 +68,42 @@ function space(c: CanvasRenderingContext2D, seed: number) {
   c.globalAlpha = 1;
 }
 
-function labels(c: CanvasRenderingContext2D) {
+function labels(c: CanvasRenderingContext2D, locale: Locale) {
   c.textAlign = 'left';
   c.textBaseline = 'middle';
   c.font = `bold 9px ${FONT}`;
   c.fillStyle = 'rgb(200 230 255 / 70%)';
-  RANKS.forEach((name, i) =>
+  RANKS.forEach((id, i) =>
     c.fillText(
-      name.toUpperCase(),
+      translate(locale, `pinball.rank.${id}`).toUpperCase(),
       LADDER.x + 14,
       LADDER.y + (RANKS.length - 1 - i) * LADDER.row,
     ),
   );
   c.textAlign = 'center';
-  c.fillText('SHOOT AGAIN', SAVE_LIGHT.x, SAVE_LIGHT.y + 14);
+  c.fillText(
+    translate(locale, 'pinball.printed.shootAgain'),
+    SAVE_LIGHT.x,
+    SAVE_LIGHT.y + 14,
+  );
   c.save();
   c.translate((RAMP.x0 + RAMP.x1) / 2, (RAMP.gateY1 + RAMP.bottom) / 2 - 12);
   c.rotate(-Math.PI / 2);
-  c.fillText('HYPERSPACE', 0, 0);
+  c.fillText(translate(locale, 'pinball.printed.hyperspace'), 0, 0);
   c.restore();
   c.font = `italic 900 26px ${FONT}`;
   c.fillStyle = 'rgb(255 200 80 / 16%)';
-  c.fillText('STAR PINBALL', 206, 430);
+  c.fillText(translate(locale, 'pinball.printed.title'), 206, 430);
 }
 
-/** Renders the static layer at `res` device pixels per logical pixel; null without canvas 2D. */
+/**
+ * Renders the static layer at `res` device pixels per logical pixel, its labels in `locale`;
+ * null without canvas 2D.
+ */
 export function buildBackdrop(
   seed: number,
   res: number,
+  locale: Locale,
 ): HTMLCanvasElement | null {
   const canvas = document.createElement('canvas');
   canvas.width = Math.round(VIEW_W * res);
@@ -138,6 +148,6 @@ export function buildBackdrop(
     if (col.id.startsWith('gate:')) traceShape(c, col.shape);
   c.stroke();
   c.setLineDash([]);
-  labels(c);
+  labels(c, locale);
   return canvas;
 }

@@ -145,6 +145,39 @@ describe('Star Pinball', () => {
   });
 });
 
+describe('Star Pinball in German', () => {
+  beforeEach(() => useSettingsStore.setState({ language: 'de' }));
+
+  it('shows the menu, help and game-over panels in German', () => {
+    setup();
+    expect(
+      screen.getByRole('heading', { name: /Sternen-\s*Flipper/ }),
+    ).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Hilfe' }));
+    expect(
+      screen.getByText(/Kadett → Fähnrich → Leutnant → Kapitän → Admiral/),
+    ).toBeTruthy();
+    expect(screen.getAllByText('Leertaste')[0]!.tagName).toBe('KBD');
+    fireEvent.click(screen.getByRole('button', { name: 'Zurück' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Bestenliste' }));
+    expect(screen.getByText(/Die Galaxis wartet/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Spielen' }));
+    expect(
+      screen.getByRole('img', { name: /Sternen-Flipper-Tisch\. Leertaste/ }),
+    ).toBeTruthy();
+  });
+
+  it('switches the display language live', () => {
+    const g = createGame(1);
+    g.message = null;
+    g.score = 1234567;
+    g.rank = 1;
+    expect(displayLines(g, false)).toEqual(['1.234.567', 'BALL 1  FÄHNRICH']);
+    useSettingsStore.setState({ language: 'en' });
+    expect(displayLines(g, false)).toEqual(['1,234,567', 'BALL 1  ENSIGN']);
+  });
+});
+
 describe('score display', () => {
   it('shows the score and ball / rank, or a message over the score', () => {
     const g = createGame(1);
@@ -153,9 +186,12 @@ describe('score display', () => {
     expect(displayLines(g, false)).toEqual(['1,234,567', 'BALL 1  CADET']);
     g.multiplier = 2;
     g.rank = 2;
-    expect(displayLines(g, false)[1]).toBe('BALL 1  LIEUTENANT  2X');
-    g.message = { text: 'TILT', ttl: 1 };
+    // Too long with double spaces for the 21-character line, so it closes up.
+    expect(displayLines(g, false)[1]).toBe('BALL 1 LIEUTENANT 2X');
+    g.message = { id: 'tilt', n: 0, ttl: 1 };
     expect(displayLines(g, false)).toEqual(['TILT', '1,234,567']);
+    g.message = { id: 'rankUp', n: 3, ttl: 1 };
+    expect(displayLines(g, false)[0]).toBe('RANK UP: CAPTAIN');
     expect(displayLines(createGame(1, { attract: true }), true)).toEqual([
       'STAR PINBALL',
       'PRESS PLAY',

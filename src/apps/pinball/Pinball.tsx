@@ -1,6 +1,7 @@
 // Star Pinball: the table window. The game is simulated in `sim.ts` and drawn by `useLoop`;
 // this file wires keys, pointer flippers, sounds, scores and the menu screens.
 import { usePlayerName } from '@/i18n/settingsText';
+import { useT } from '@/i18n/useT';
 import {
   useCallback,
   useEffect,
@@ -81,6 +82,7 @@ export default function Pinball({ windowId }: Partial<AppComponentProps>) {
   const gameRef = useRef<Game>(createGame(newSeed(), { attract: true }));
   const pointers = useRef(new Map<number, Control>());
   const playerName = usePlayerName();
+  const t = useT();
 
   const onEvents = useCallback((list: GameEvent[]) => {
     for (const e of list) {
@@ -98,7 +100,12 @@ export default function Pinball({ windowId }: Partial<AppComponentProps>) {
   const playing = screen === 'play';
   const status = useGameStatus(() => {
     const g = gameRef.current;
-    return `Score ${g.score}, ball ${g.ballNo} of ${BALLS}, multiplier ${g.multiplier}x`;
+    return t('pinball.status', {
+      score: g.score,
+      ball: g.ballNo,
+      balls: BALLS,
+      mult: g.multiplier,
+    });
   }, playing);
   useLoop(canvasRef, gameRef, {
     running: playing || screen === 'over',
@@ -205,11 +212,7 @@ export default function Pinball({ windowId }: Partial<AppComponentProps>) {
         className={styles.canvas}
         role="img"
         aria-describedby={playing ? 'pinball-status' : undefined}
-        aria-label={
-          playing
-            ? 'Star Pinball table. Space or Down launches, Z and / (or the Shift keys, or clicking each half) work the flippers, T nudges, Esc for the menu.'
-            : 'Star Pinball table'
-        }
+        aria-label={t(playing ? 'pinball.tablePlaying' : 'pinball.table')}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}

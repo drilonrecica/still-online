@@ -703,6 +703,78 @@ export const en = {
       reload: 'Reload! (right-click or Space)',
     },
   },
+  pinball: {
+    /** The menu heading, split so the second word can glow (the first part ends with its own space or hyphen). */
+    titleFirst: 'Star ',
+    titleSecond: 'Pinball',
+    menuLabel: 'Star Pinball menu',
+    play: 'Play',
+    playAgain: 'Play Again',
+    highScores: 'High Scores',
+    help: 'Help',
+    back: 'Back',
+    mainMenu: 'Main Menu',
+    ok: 'OK',
+    table: 'Star Pinball table',
+    tablePlaying:
+      'Star Pinball table. Space or Down launches, Z and / (or the Shift keys, or clicking each half) work the flippers, T nudges, Esc for the menu.',
+    status: (p: { score: number; ball: number; balls: number; mult: number }) =>
+      `Score ${p.score}, ball ${p.ball} of ${p.balls}, multiplier ${p.mult}x`,
+    helpTitle: 'How to play',
+    /** `[Key]` marks a key cap. */
+    helpLaunch:
+      'Hold [Space] or [↓] to pull the plunger, let go to launch. Or press and hold on the launch lane.',
+    helpFlippers:
+      'Flippers: [Z] or left [Shift], and [/] or right [Shift]. Clicking the left or right half of the table works too.',
+    helpNudge:
+      '[T] nudges the table. Three warnings, then the next nudge tilts and the ball is lost.',
+    helpLanes:
+      'Light all three top lanes for a 2× multiplier. The flippers shift the lit lanes.',
+    helpRanks: 'Drop S-T-A-R to rank up: {ranks}.',
+    helpRamp:
+      'The Hyperspace ramp on the left scores {ramp}; planets score {bumper}.',
+    helpBalls:
+      '{balls} balls. A ball lost in the first {seconds} seconds comes back once. [Esc] quits to the menu.',
+    noScores: 'No scores yet. The galaxy awaits!',
+    colRank: '#',
+    colName: 'Name',
+    colScore: 'Score',
+    colDate: 'Date',
+    gameOver: 'Game Over',
+    finalScore: 'Score:',
+    finalRank: 'Final rank: {rank}',
+    newHigh: 'A new high score! Enter your name:',
+    rank: {
+      cadet: 'Cadet',
+      ensign: 'Ensign',
+      lieutenant: 'Lieutenant',
+      captain: 'Captain',
+      admiral: 'Admiral',
+    },
+    /** Printed on the table (canvas). */
+    printed: {
+      shootAgain: 'SHOOT AGAIN',
+      hyperspace: 'HYPERSPACE',
+      tilt: 'TILT',
+      title: 'STAR PINBALL',
+    },
+    /** The 21-character dot-matrix display (uppercased when drawn). */
+    display: {
+      title: 'STAR PINBALL',
+      pressPlay: 'PRESS PLAY',
+      last: 'LAST {score}',
+      ball: 'BALL {n}',
+      tilt: 'TILT',
+      warning: 'WARNING {n}',
+      saved: 'BALL SAVED',
+      lost: 'BALL LOST',
+      over: 'GAME OVER',
+      rankUp: 'RANK UP: {rank}',
+      admiralBonus: 'ADMIRAL BONUS',
+      multiplier: '{n}X MULTIPLIER',
+      ramp: 'HYPERSPACE RAMP',
+    },
+  },
   wrecker: {
     surface:
       'Desktop Wrecker. 1 to 5 pick a tool, Space uses it, R repairs, Escape exits.',

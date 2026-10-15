@@ -1,5 +1,7 @@
 // The dot-matrix score display above the table: what it says (pure) and how it's drawn.
-import { GLYPH_H, formatScore, textDots } from './font';
+import { getLocale, translate } from '@/i18n/t';
+import type { Locale } from '@/i18n/types';
+import { GLYPH_H, GLYPH_W, displayText, formatScore, textDots } from './font';
 import { BALLS, RANKS, type Game } from './sim';
 
 /** The logical view: the display on top, the table below it. */
@@ -11,27 +13,98 @@ export const TABLE_Y = 62;
 const COLS = 128;
 const ROWS = 16;
 
-/** The display's two lines of text. */
-export function displayLines(g: Game, attract: boolean): [string, string] {
+/** Characters that fit on one line (6 dot columns each, the last one without a gap). */
+export const DISPLAY_CHARS = Math.floor((COLS + 1) / (GLYPH_W + 1));
+/** Marquee speed in dot columns per second, and the blank run between two passes. */
+const SCROLL_SPEED = 24;
+const SCROLL_GAP = 12;
+
+/** A rank's name in `locale`. */
+export function rankName(rank: number, locale: Locale = getLocale()): string {
+  return translate(locale, `pinball.rank.${RANKS[rank] ?? RANKS[0]}`);
+}
+
+/** The display text of the message over the score. */
+export function messageText(
+  m: NonNullable<Game['message']>,
+  locale: Locale = getLocale(),
+): string {
+  switch (m.id) {
+    case 'ball':
+      return translate(locale, 'pinball.display.ball', { n: m.n });
+    case 'warning':
+      return translate(locale, 'pinball.display.warning', { n: m.n });
+    case 'multiplier':
+      return translate(locale, 'pinball.display.multiplier', { n: m.n });
+    case 'rankUp':
+      return translate(locale, 'pinball.display.rankUp', {
+        rank: rankName(m.n, locale),
+      });
+    default:
+      return translate(locale, `pinball.display.${m.id}`);
+  }
+}
+
+/** The line under the score while playing: ball, rank and multiplier. */
+export function statusLine(
+  ball: number,
+  rank: number,
+  multiplier: number,
+  locale: Locale = getLocale(),
+): string {
+  const parts = [
+    translate(locale, 'pinball.display.ball', { n: Math.min(ball, BALLS) }),
+    rankName(rank, locale),
+    ...(multiplier > 1 ? [`${multiplier}X`] : []),
+  ];
+  // Two spaces between the parts read best; one if that would overflow the line.
+  const wide = parts.join('  ');
+  return displayText(wide).length <= DISPLAY_CHARS ? wide : parts.join(' ');
+}
+
+/** The display's two lines in `locale`, as drawn (uppercase, ß spelled SS). */
+export function displayLines(
+  g: Game,
+  attract: boolean,
+  locale: Locale = getLocale(),
+): [string, string] {
+  const [a, b] = rawLines(g, attract, locale);
+  return [displayText(a), displayText(b)];
+}
+
+function rawLines(g: Game, attract: boolean, locale: Locale): [string, string] {
   if (attract)
     return [
-      'STAR PINBALL',
-      g.score > 0 ? `LAST ${formatScore(g.score)}` : 'PRESS PLAY',
+      translate(locale, 'pinball.display.title'),
+      g.score > 0
+        ? translate(locale, 'pinball.display.last', {
+            score: formatScore(g.score, locale),
+          })
+        : translate(locale, 'pinball.display.pressPlay'),
     ];
-  const score = formatScore(g.score);
-  if (g.message) return [g.message.text, score];
-  if (g.over) return ['GAME OVER', score];
-  const mult = g.multiplier > 1 ? `  ${g.multiplier}X` : '';
-  return [
-    score,
-    `BALL ${Math.min(g.ballNo, BALLS)}  ${RANKS[g.rank]!.toUpperCase()}${mult}`,
-  ];
+  const score = formatScore(g.score, locale);
+  if (g.message) return [messageText(g.message, locale), score];
+  if (g.over) return [translate(locale, 'pinball.display.over'), score];
+  return [score, statusLine(g.ballNo, g.rank, g.multiplier, locale)];
+}
+
+/**
+ * Left dot columns for a line `width` dots wide: centred when it fits, otherwise a marquee
+ * scrolling left (two copies, `SCROLL_GAP` apart). At `clock` 0 (reduced motion freezes the
+ * clock) the line's start is shown.
+ */
+export function lineOffsets(width: number, clock: number): number[] {
+  if (width <= COLS) return [Math.floor((COLS - width) / 2)];
+  const period = width + SCROLL_GAP;
+  const x = 0 - Math.floor((clock * SCROLL_SPEED) % period);
+  return [x, x + period];
 }
 
 /** Draws the display: a dark panel of dots with the two lines lit in amber. */
 export function drawDisplay(
   c: CanvasRenderingContext2D,
   lines: [string, string],
+  clock = 0,
 ) {
   const pitch = DMD.w / COLS;
   c.fillStyle = '#120804';
@@ -44,10 +117,11 @@ export function drawDisplay(
 
   const lit = new Set<number>();
   lines.forEach((text, i) => {
-    const { dots, width } = textDots(text.slice(0, 21));
-    const ox = Math.floor((COLS - width) / 2);
+    const { dots, width } = textDots(text);
     const oy = i === 0 ? 0 : GLYPH_H + 2;
-    for (const [x, y] of dots) lit.add((oy + y) * COLS + ox + x);
+    for (const ox of lineOffsets(width, clock))
+      for (const [x, y] of dots)
+        if (ox + x >= 0 && ox + x < COLS) lit.add((oy + y) * COLS + ox + x);
   });
   const r = pitch * 0.38;
   for (const on of [false, true]) {

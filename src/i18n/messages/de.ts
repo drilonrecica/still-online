@@ -707,6 +707,74 @@ export const de: Messages = {
       reload: 'Nachladen! (Rechtsklick oder Leertaste)',
     },
   },
+  pinball: {
+    titleFirst: 'Sternen-',
+    titleSecond: 'Flipper',
+    menuLabel: 'Sternen-Flipper-Menü',
+    play: 'Spielen',
+    playAgain: 'Nochmal spielen',
+    highScores: 'Bestenliste',
+    help: 'Hilfe',
+    back: 'Zurück',
+    mainMenu: 'Hauptmenü',
+    ok: 'OK',
+    table: 'Sternen-Flipper-Tisch',
+    tablePlaying:
+      'Sternen-Flipper-Tisch. Leertaste oder Pfeil nach unten schießt die Kugel ab, Z und / (oder die Umschalttasten, oder ein Klick auf eine Tischhälfte) bewegen die Flipper, T rüttelt, Esc öffnet das Menü.',
+    status: (p: { score: number; ball: number; balls: number; mult: number }) =>
+      `Punkte ${p.score}, Kugel ${p.ball} von ${p.balls}, Multiplikator ${p.mult}x`,
+    helpTitle: 'Spielanleitung',
+    helpLaunch:
+      'Halte [Leertaste] oder [↓] gedrückt, um den Abzug zu spannen, und lass los, um abzuschießen. Oder halte die Maus auf der Abschussbahn gedrückt.',
+    helpFlippers:
+      'Flipper: [Z] oder linke [Umschalt], und [/] oder rechte [Umschalt]. Ein Klick auf die linke oder rechte Tischhälfte geht auch.',
+    helpNudge:
+      '[T] rüttelt am Tisch. Nach drei Warnungen kippt der nächste Stoß den Tisch („Tilt“) und die Kugel ist weg.',
+    helpLanes:
+      'Lass alle drei oberen Bahnen leuchten, dann gibt’s den 2×-Multiplikator. Die Flipper verschieben die leuchtenden Bahnen.',
+    helpRanks: 'Räum S-T-A-R ab, um befördert zu werden: {ranks}.',
+    helpRamp:
+      'Die Hyperspace-Rampe links bringt {ramp} Punkte, Planeten bringen {bumper}.',
+    helpBalls:
+      '{balls} Kugeln. Verlierst du eine in den ersten {seconds} Sekunden, kommt sie einmal zurück. [Esc] beendet zum Menü.',
+    noScores: 'Noch keine Punkte. Die Galaxis wartet!',
+    colRank: 'Nr.',
+    colName: 'Name',
+    colScore: 'Punkte',
+    colDate: 'Datum',
+    gameOver: 'Spiel aus',
+    finalScore: 'Punkte:',
+    finalRank: 'Endrang: {rank}',
+    newHigh: 'Neuer Rekord! Gib deinen Namen ein:',
+    rank: {
+      cadet: 'Kadett',
+      ensign: 'Fähnrich',
+      lieutenant: 'Leutnant',
+      captain: 'Kapitän',
+      admiral: 'Admiral',
+    },
+    printed: {
+      shootAgain: 'NOCHMAL',
+      hyperspace: 'HYPERSPACE',
+      tilt: 'TILT',
+      title: 'STERNEN-FLIPPER',
+    },
+    display: {
+      title: 'STERNEN-FLIPPER',
+      pressPlay: 'START DRÜCKEN',
+      last: 'LETZTE {score}',
+      ball: 'BALL {n}',
+      tilt: 'TILT',
+      warning: 'WARNUNG {n}',
+      saved: 'BALL GERETTET',
+      lost: 'BALL VERLOREN',
+      over: 'SPIEL AUS',
+      rankUp: 'BEFÖRDERT: {rank}',
+      admiralBonus: 'ADMIRALSBONUS',
+      multiplier: '{n}X MULTIPLIKATOR',
+      ramp: 'HYPERSPACE-RAMPE',
+    },
+  },
   wrecker: {
     surface:
       'Desktop-Randale. 1 bis 5 wählen ein Werkzeug, die Leertaste setzt es ein, R repariert, Esc beendet.',

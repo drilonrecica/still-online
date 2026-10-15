@@ -1,5 +1,6 @@
 // Draws one frame of Star Pinball over the static backdrop: planets (bumpers), lights,
 // slingshots, S-T-A-R targets, flippers, plunger and the ball, then the dot-matrix display.
+import { t } from '@/i18n/t';
 import { FONT, LADDER, MULT_LIGHT, NEON, SAVE_LIGHT } from './backdrop';
 import {
   TABLE_X,
@@ -32,6 +33,7 @@ const PLANETS = [
   { body: ['#8ff0d0', '#1d6f8f'], ring: null },
   { body: ['#ff9a8a', '#8f1d3a'], ring: null },
 ] as const;
+/** The drop-target letters: the S-T-A-R bank, the same in every language. */
 const STAR = 'STAR';
 
 export interface FrameOptions {
@@ -257,8 +259,8 @@ export function drawFrame(
     c.font = `bold 48px ${FONT}`;
     c.textAlign = 'center';
     c.fillStyle = 'rgb(255 60 60 / 75%)';
-    c.fillText('TILT', 206, 330);
+    c.fillText(t('pinball.printed.tilt'), 206, 330);
   }
   c.restore();
-  drawDisplay(c, displayLines(g, o.attract));
+  drawDisplay(c, displayLines(g, o.attract), o.clock);
 }

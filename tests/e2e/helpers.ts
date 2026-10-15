@@ -15,7 +15,7 @@ export interface LogInOptions {
 }
 
 /** Merges idle-off settings into the persisted settings before any app script runs. */
-async function quietIdle(page: Page) {
+export async function quietIdle(page: Page) {
   await page.addInitScript(
     ({ key, screensaver }) => {
       try {

@@ -7,6 +7,8 @@ import {
   type MutableRefObject,
   type RefObject,
 } from 'react';
+import { getLocale } from '@/i18n/t';
+import type { Locale } from '@/i18n/types';
 import { buildBackdrop } from './backdrop';
 import { VIEW_H, VIEW_W } from './display';
 import { drawFrame } from './draw';
@@ -64,6 +66,7 @@ export function useLoop(
     const ctx = canvas.getContext('2d');
     let backdrop: HTMLCanvasElement | null = null;
     let backdropRes = 0;
+    let backdropLocale: Locale | null = null;
     let acc = 0;
     let clock = 0;
 
@@ -97,9 +100,16 @@ export function useLoop(
         canvas.height = Math.round(h * dpr);
       const { s, ox, oy } = viewTransform(w, h);
       const res = s * dpr;
-      if (!backdrop || Math.abs(res - backdropRes) > 0.05) {
-        backdrop = buildBackdrop(BACKDROP_SEED, res);
+      // Rebuilt on a resize, and on a language switch (its printed labels are localized).
+      const locale = getLocale();
+      if (
+        !backdrop ||
+        Math.abs(res - backdropRes) > 0.05 ||
+        locale !== backdropLocale
+      ) {
+        backdrop = buildBackdrop(BACKDROP_SEED, res, locale);
         backdropRes = res;
+        backdropLocale = locale;
         if (!backdrop) return;
       }
       ctx.setTransform(1, 0, 0, 1, 0, 0);
