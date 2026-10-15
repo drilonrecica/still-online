@@ -1,6 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { events } from '@/os/events';
-import { requireOnline, useNetworkStore } from './network';
+import { useSettingsStore } from '@/os/store/settings';
+import { useWindowsStore } from '@/os/store/windows';
+import '@/apps/registry';
+import { dial, requireOnline, useNetworkStore } from './network';
+
+const dialogs = () =>
+  useWindowsStore.getState().windows.filter((w) => w.appId === 'dialup');
 
 const net = () => useNetworkStore.getState();
 
@@ -19,6 +25,8 @@ beforeEach(() => {
     phase: 'idle',
     connectedAt: null,
   });
+  useWindowsStore.setState({ windows: [], topZ: 0 });
+  useSettingsStore.setState({ connectAutomatically: true });
   connected = [];
   disconnected = 0;
   offs = [
@@ -111,6 +119,52 @@ describe('requireOnline', () => {
     vi.advanceTimersByTime(1000);
     net().cancel();
     await expect(p).resolves.toBe(false);
+  });
+
+  it('opens the dial-up dialog and dials automatically', () => {
+    void requireOnline();
+    expect(dialogs()).toHaveLength(1);
+    expect(net().status).toBe('dialing');
+  });
+
+  it('only opens the dialog when "Connect automatically" is off', async () => {
+    useSettingsStore.setState({ connectAutomatically: false });
+    const p = requireOnline();
+    expect(dialogs()).toHaveLength(1);
+    expect(net().status).toBe('offline');
+    dial();
+    vi.advanceTimersByTime(5700);
+    await expect(p).resolves.toBe(true);
+  });
+
+  it('closes the dialog once connected', () => {
+    void requireOnline();
+    vi.advanceTimersByTime(5700);
+    expect(net().status).toBe('online');
+    expect(dialogs()).toHaveLength(0);
+  });
+
+  it('focuses an open dialog instead of opening another', () => {
+    useSettingsStore.setState({ connectAutomatically: false });
+    void requireOnline();
+    void requireOnline();
+    expect(dialogs()).toHaveLength(1);
+  });
+
+  it('resolves false when the dialog is closed without dialling', async () => {
+    useSettingsStore.setState({ connectAutomatically: false });
+    const p = requireOnline();
+    const [dialog] = dialogs();
+    useWindowsStore.getState().closeWindow(dialog?.id ?? '');
+    await expect(p).resolves.toBe(false);
+  });
+
+  it('keeps waiting when the dialog is closed while dialling', async () => {
+    const p = requireOnline();
+    const [dialog] = dialogs();
+    useWindowsStore.getState().closeWindow(dialog?.id ?? '');
+    vi.advanceTimersByTime(5700);
+    await expect(p).resolves.toBe(true);
   });
 
   it('is not persisted', () => {

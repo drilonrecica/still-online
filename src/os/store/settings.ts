@@ -91,6 +91,7 @@ type PersistedSettings = Pick<
   | 'theme'
   | 'screensaver'
   | 'seenTips'
+  | 'connectAutomatically'
 >;
 
 export const useSettingsStore = create<SettingsStore>()(
@@ -106,6 +107,7 @@ export const useSettingsStore = create<SettingsStore>()(
       theme: SETTINGS_V02_DEFAULTS.theme,
       screensaver: SETTINGS_V02_DEFAULTS.screensaver,
       seenTips: SETTINGS_V02_DEFAULTS.seenTips,
+      connectAutomatically: SETTINGS_V02_DEFAULTS.connectAutomatically,
       setPlayerName: (playerName) => set({ playerName }),
       setMuted: (muted) => set({ muted }),
       toggleMuted: () => set((s) => ({ muted: !s.muted })),
@@ -131,6 +133,8 @@ export const useSettingsStore = create<SettingsStore>()(
         set((s) =>
           s.seenTips.includes(id) ? s : { seenTips: [...s.seenTips, id] },
         ),
+      setConnectAutomatically: (connectAutomatically) =>
+        set({ connectAutomatically }),
     }),
     persistOptions<SettingsStore, PersistedSettings>({
       name: 'settings',
@@ -145,6 +149,7 @@ export const useSettingsStore = create<SettingsStore>()(
         theme,
         screensaver,
         seenTips,
+        connectAutomatically,
       }) => ({
         playerName,
         muted,
@@ -156,6 +161,7 @@ export const useSettingsStore = create<SettingsStore>()(
         theme,
         screensaver,
         seenTips,
+        connectAutomatically,
       }),
       sanitize: (persisted, current) => {
         if (!isRecord(persisted)) return current;
@@ -194,6 +200,10 @@ export const useSettingsStore = create<SettingsStore>()(
                 ),
               ]
             : current.seenTips,
+          connectAutomatically:
+            typeof p.connectAutomatically === 'boolean'
+              ? p.connectAutomatically
+              : current.connectAutomatically,
         };
       },
     }),

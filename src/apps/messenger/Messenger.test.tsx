@@ -12,7 +12,12 @@ import { useWindowsStore } from '@/os/store/windows';
 import { useNowPlayingStore } from '@/os/nowPlaying';
 import { useAttentionStore } from '@/os/store/attention';
 import { createAmplifierStore } from '@/apps/amplifier/store';
+import { useNetworkStore } from '@/os/network';
+import { MODEM_KBPS, NET_PHASE_MS } from '@/os/serviceTypes';
 import '@/apps/registry';
+
+const DIAL_MS =
+  NET_PHASE_MS.dialing + NET_PHASE_MS.verifying + NET_PHASE_MS.registering;
 
 const contents = [
   contactContent('ann', [], { displayName: 'Ann', signInAfterMs: 0 }),
@@ -41,6 +46,12 @@ beforeEach(() => {
   useSettingsStore.setState({ playerName: 'Drilon', muted: true });
   useMessengerStore.setState(useMessengerStore.getInitialState(), true);
   useAttentionStore.setState({ keys: {} });
+  useNetworkStore.setState({
+    status: 'online',
+    kbps: MODEM_KBPS,
+    phase: 'connected',
+    connectedAt: Date.now(),
+  });
   setMessengerContentsForTests(contents);
 });
 
@@ -88,6 +99,58 @@ describe('sign-in', () => {
     await user.click(screen.getByRole('button', { name: 'Sign out' }));
     expect(screen.getByRole('button', { name: 'Sign in' })).toBeTruthy();
     expect(useMessengerStore.getState().signedIn).toBe(false);
+  });
+});
+
+describe('sign-in while offline', () => {
+  beforeEach(() => {
+    useWindowsStore.setState({ windows: [], topZ: 0 });
+    useSettingsStore.setState({ connectAutomatically: true });
+    useNetworkStore.setState({
+      status: 'offline',
+      kbps: 0,
+      phase: 'idle',
+      connectedAt: null,
+    });
+  });
+
+  it('opens the dial-up dialog, dials automatically, then signs in', async () => {
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    render(<Messenger />);
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
+    expect(useWindowsStore.getState().windows.map((w) => w.appId)).toContain(
+      'dialup',
+    );
+    expect(useNetworkStore.getState().status).toBe('dialing');
+
+    await act(() => vi.advanceTimersByTimeAsync(DIAL_MS));
+    expect(useNetworkStore.getState().status).toBe('online');
+    // The dialog closes itself once connected.
+    expect(
+      useWindowsStore.getState().windows.map((w) => w.appId),
+    ).not.toContain('dialup');
+    expect(useMessengerStore.getState().signedIn).toBe(false);
+    await act(() => vi.advanceTimersByTimeAsync(SIGN_IN_MS));
+    expect(useMessengerStore.getState().signedIn).toBe(true);
+  });
+
+  it('returns to the sign-in form when dialling is cancelled', async () => {
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    render(<Messenger />);
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
+    await act(async () => useNetworkStore.getState().cancel());
+    expect(screen.getByRole('button', { name: 'Sign in' })).toBeTruthy();
+    await act(() => vi.advanceTimersByTimeAsync(DIAL_MS + SIGN_IN_MS));
+    expect(useMessengerStore.getState().signedIn).toBe(false);
+  });
+
+  it('signs out when the connection drops', async () => {
+    useNetworkStore.setState({ status: 'online', phase: 'connected' });
+    await signIn();
+    expect(useMessengerStore.getState().signedIn).toBe(true);
+    act(() => useNetworkStore.getState().disconnect());
+    expect(useMessengerStore.getState().signedIn).toBe(false);
+    expect(screen.getByRole('button', { name: 'Sign in' })).toBeTruthy();
   });
 });
 

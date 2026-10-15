@@ -5,6 +5,7 @@ const created = vi.hoisted(() => ({
   contexts: 0,
   resumed: 0,
   convolvers: 0,
+  glides: 0,
 }));
 
 const param = () => ({
@@ -13,7 +14,7 @@ const param = () => ({
   linearRampToValueAtTime() {},
   exponentialRampToValueAtTime() {},
 });
-const node = () => ({ connect() {} });
+const node = () => ({ connect() {}, disconnect() {} });
 
 class FakeAudioContext {
   currentTime = 0;
@@ -36,7 +37,12 @@ class FakeAudioContext {
     return {
       ...node(),
       type: 'sine',
-      frequency: param(),
+      frequency: {
+        ...param(),
+        linearRampToValueAtTime() {
+          created.glides++;
+        },
+      },
       detune: param(),
       start() {},
       stop() {},
@@ -69,9 +75,15 @@ const {
   SOUND_NAMES,
   playSound,
   resetSoundForTests,
+  scheduleSound,
   soundLength,
   unlockAudio,
 } = await import('./sound');
+
+const MAX_SECONDS: Partial<Record<(typeof SOUND_NAMES)[number], number>> = {
+  startup: 4,
+  dialup: 7,
+};
 const { useSettingsStore } = await import('@/os/store/settings');
 
 /** Oscillators/buffer sources a sound should start: detuned tones 2, bells 2 (FM), noise 1. */
@@ -88,6 +100,7 @@ describe('sound service', () => {
     created.contexts = 0;
     created.resumed = 0;
     created.convolvers = 0;
+    created.glides = 0;
     resetSoundForTests();
     useSettingsStore.setState({ muted: false, volume: 0.7 });
   });
@@ -96,7 +109,9 @@ describe('sound service', () => {
   it('defines every sound name, each short enough', () => {
     for (const name of SOUND_NAMES) {
       expect(SOUND_DEFS[name].voices.length).toBeGreaterThan(0);
-      expect(soundLength(name)).toBeLessThanOrEqual(name === 'startup' ? 4 : 2);
+      expect(soundLength(name), name).toBeLessThanOrEqual(
+        MAX_SECONDS[name] ?? 2,
+      );
     }
   });
 
@@ -147,6 +162,38 @@ describe('sound service', () => {
     } finally {
       for (const [k, v] of saved) proto[k] = v;
     }
+  });
+
+  it('defines the dial-up handshake as a ~6s sequence that ends in a click', () => {
+    const voices = SOUND_DEFS.dialup.voices;
+    expect(soundLength('dialup')).toBeGreaterThan(5.5);
+    const last = voices.reduce((a, b) => (b.at > a.at ? b : a));
+    expect(last).toMatchObject({ kind: 'noise' });
+    expect(last.dur).toBeLessThan(0.1);
+    // Dial tone first: 350 + 440 Hz together at t = 0.
+    const first = voices.filter((v) => v.at === 0);
+    expect(first).toHaveLength(2);
+    expect(voices.some((v) => v.kind === 'tone' && v.glideTo)).toBe(true);
+  });
+
+  it('renders the dial-up handshake on a context without a gesture (offline render)', () => {
+    const offline = new FakeAudioContext() as unknown as BaseAudioContext;
+    const master = scheduleSound(offline, 'dialup', 1);
+    expect(master).toBeTruthy();
+    expect(created.sources).toBe(expectedSources('dialup'));
+    const glides = SOUND_DEFS.dialup.voices.filter(
+      (v) => v.kind === 'tone' && v.glideTo !== undefined,
+    ).length;
+    expect(created.glides).toBe(glides);
+  });
+
+  it('returns a stopper that silences a playing sound', () => {
+    unlockAudio();
+    const stop = playSound('dialup');
+    expect(() => stop()).not.toThrow();
+    // Before a gesture there is nothing to stop.
+    resetSoundForTests();
+    expect(() => playSound('dialup')()).not.toThrow();
   });
 
   it('plays nothing when muted or volume is zero', () => {

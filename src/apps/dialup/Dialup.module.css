@@ -1,0 +1,66 @@
+/* Connect to the Internet: a compact XP dialog on xp.css form controls. */
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  padding: 10px 12px 8px;
+  background: var(--xp-face);
+  font-size: 11px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  align-items: center;
+  gap: 4px 8px;
+}
+
+.grid input[type='text'],
+.grid input[type='password'] {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+}
+
+.status {
+  flex: 1;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  flex: none;
+}
+
+.icon[data-active='true'] .dot {
+  animation: dialup-blink 0.6s steps(1, end) infinite;
+}
+
+@keyframes dialup-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon[data-active='true'] .dot {
+    animation: none;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.buttons button {
+  min-width: 75px;
+}

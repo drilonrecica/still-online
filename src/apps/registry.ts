@@ -4,6 +4,8 @@ import { setAppResolver } from '@/os/store/windows';
 import type { AppDefinition, AppId } from '@/os/types';
 import amplifier16 from '@/assets/icons/amplifier-16.svg';
 import amplifier32 from '@/assets/icons/amplifier-32.svg';
+import dialup16 from '@/assets/icons/dialup-16.svg';
+import dialup32 from '@/assets/icons/dialup-32.svg';
 import display16 from '@/assets/icons/display-16.svg';
 import display32 from '@/assets/icons/display-32.svg';
 import folder16 from '@/assets/icons/folder-16.svg';
@@ -91,6 +93,21 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     chrome: 'xp',
     showOnDesktop: false,
     showInStartMenu: false,
+  },
+  dialup: {
+    id: 'dialup',
+    title: 'Connect to the Internet',
+    icon16: dialup16,
+    icon32: dialup32,
+    component: lazy(() => import('./dialup/Dialup')),
+    defaultSize: { w: 360, h: 260 },
+    minSize: { w: 360, h: 260 },
+    singleInstance: true,
+    chrome: 'xp',
+    fixedSize: true,
+    showOnDesktop: false,
+    showInStartMenu: false,
+    category: 'internet',
   },
   amplifier: {
     id: 'amplifier',

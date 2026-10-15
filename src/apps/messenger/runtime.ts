@@ -1,6 +1,7 @@
 // The app-wide conversation engine: one instance, created on first use, bound to the messenger store.
 import { contacts } from '@/content/contacts';
 import type { ContactContent } from '@/content/types';
+import { events } from '@/os/events';
 import { useNowPlayingStore } from '@/os/nowPlaying';
 import { attentionKey, useAttentionStore } from '@/os/store/attention';
 import { playSound, type SoundName } from '@/os/sound';
@@ -128,7 +129,13 @@ function createEngine(): ConversationEngine {
     useWindowsStore.subscribe(syncAttention),
   ];
 
+  // No line, no Messenger: hanging up the modem signs out.
+  const stopNetwork = events.on('network:disconnected', () => {
+    if (useMessengerStore.getState().signedIn) created.signOut();
+  });
+
   stopListening = () => {
+    stopNetwork();
     stopTrack();
     stopToggle();
     for (const stop of stopAttention) stop();

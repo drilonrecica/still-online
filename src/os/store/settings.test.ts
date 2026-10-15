@@ -130,3 +130,25 @@ describe('theme and screensaver settings', () => {
     });
   });
 });
+
+describe('connectAutomatically', () => {
+  it('defaults on, toggles, persists and restores', async () => {
+    expect(useSettingsStore.getState().connectAutomatically).toBe(true);
+    useSettingsStore.getState().setConnectAutomatically(false);
+    const saved = localStorage.getItem(storageKey('settings')) ?? '';
+    expect(JSON.parse(saved).state.connectAutomatically).toBe(false);
+    useSettingsStore.setState(initial, true);
+    localStorage.setItem(storageKey('settings'), saved);
+    await useSettingsStore.persist.rehydrate();
+    expect(useSettingsStore.getState().connectAutomatically).toBe(false);
+  });
+
+  it('keeps the default when the stored value is corrupt', async () => {
+    localStorage.setItem(
+      storageKey('settings'),
+      JSON.stringify({ version: 1, state: { connectAutomatically: 'yes' } }),
+    );
+    await useSettingsStore.persist.rehydrate();
+    expect(useSettingsStore.getState().connectAutomatically).toBe(true);
+  });
+});

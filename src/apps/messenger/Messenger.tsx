@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ContactStatus, PlayerStatus } from '@/content/types';
+import { requireOnline } from '@/os/network';
 import { playSound } from '@/os/sound';
 import { scaleMs } from '@/os/speed';
 import { useSettingsStore } from '@/os/store/settings';
@@ -36,11 +37,25 @@ function SignInView() {
   const [handle, setHandle] = useState(() => handleFor(playerName));
   const [signingIn, setSigningIn] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const mounted = useRef(false);
 
-  useEffect(() => () => clearTimeout(timer.current), []);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      clearTimeout(timer.current);
+    };
+  }, []);
 
-  function signIn() {
+  async function signIn() {
     setSigningIn(true);
+    // Offline: the dial-up dialog opens (and dials automatically by default).
+    const online = await requireOnline();
+    if (!mounted.current) return;
+    if (!online) {
+      setSigningIn(false);
+      return;
+    }
     timer.current = setTimeout(() => {
       playSound('logon');
       getMessengerEngine().signIn();
@@ -52,7 +67,7 @@ function SignInView() {
       className={styles.signIn}
       onSubmit={(e) => {
         e.preventDefault();
-        if (!signingIn) signIn();
+        if (!signingIn) void signIn();
       }}
     >
       <img className={styles.logo} src={messengerIcon} alt="" />

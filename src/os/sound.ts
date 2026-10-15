@@ -13,6 +13,7 @@ export const SOUND_NAMES = [
   'online',
   'nudge',
   'click',
+  'dialup',
 ] as const;
 export type SoundName = (typeof SOUND_NAMES)[number];
 
@@ -27,6 +28,8 @@ interface VoiceBase {
   attack?: number;
   /** Stereo position, -1 (left) .. 1 (right). */
   pan?: number;
+  /** Hold the peak and fade only over the last `release` seconds (steady tones). */
+  release?: number;
 }
 
 /** A plain oscillator, optionally doubled with detune and softened by a low-pass. */
@@ -39,6 +42,8 @@ export interface ToneVoice extends VoiceBase {
   detune?: number;
   /** Low-pass cutoff in Hz. */
   cutoff?: number;
+  /** Target note of a linear pitch glide over `dur` (sweeps). */
+  glideTo?: number;
 }
 
 /** Two-operator FM: a bright attack that mellows, like a bell or electric piano. */
@@ -100,6 +105,101 @@ const pad = (notes: number[], at: number, dur: number, gain = 0.07) =>
       pan: (i / Math.max(1, notes.length - 1)) * 1.2 - 0.6,
     }),
   );
+
+/** A (fractional) MIDI note for a frequency in Hz; telephone tones are specified in Hz. */
+const hz = (f: number) => 69 + 12 * Math.log2(f / 440);
+
+/** A steady telephone-style sine at `f` Hz. */
+const line = (
+  f: number,
+  at: number,
+  dur: number,
+  gain = 0.07,
+  opts: Partial<Omit<ToneVoice, 'kind' | 'note' | 'at' | 'dur'>> = {},
+) => tone(hz(f), at, dur, { gain, attack: 0.01, release: 0.03, ...opts });
+
+/** DTMF pairs (row Hz, column Hz) for the digits dialled. */
+const DTMF: Record<string, readonly [number, number]> = {
+  '0': [941, 1336],
+  '1': [697, 1209],
+  '3': [697, 1477],
+  '5': [770, 1336],
+  '7': [852, 1209],
+};
+
+/**
+ * An original modem handshake (~6s), built in steps: dial tone, the number, a ring, the
+ * answer tone with its phase-reversal clicks, fast warbles, two carrier "bongs", hiss
+ * bursts of scrambled data and a final click into silence.
+ */
+function dialupVoices(): Voice[] {
+  const voices: Voice[] = [line(350, 0, 0.7, 0.06), line(440, 0, 0.7, 0.06)];
+  // 555-0137, about 90 ms per digit.
+  [...'5550137'].forEach((digit, i) => {
+    const pair = DTMF[digit];
+    if (!pair) return;
+    const at = 0.8 + i * 0.12;
+    voices.push(line(pair[0], at, 0.09, 0.07), line(pair[1], at, 0.09, 0.06));
+  });
+  // A single far-away ring.
+  voices.push(
+    line(440, 1.78, 0.55, 0.035, { cutoff: 1200 }),
+    line(480, 1.78, 0.55, 0.035, { cutoff: 1200 }),
+  );
+  // Answer tone: a slight upward sweep, broken by phase-reversal clicks.
+  for (const [at, dur] of [
+    [2.45, 0.22],
+    [2.69, 0.22],
+    [2.93, 0.2],
+  ] as const) {
+    voices.push(
+      line(2100, at, dur, 0.045, { glideTo: hz(2100 + dur * 60) }),
+      noise(2100, at + dur, 0.015, { q: 1, gain: 0.12 }),
+    );
+  }
+  // V.8-ish warbles: two tones flipping fast, with a quieter high partner.
+  for (let i = 0; i < 14; i++) {
+    const at = 3.18 + i * 0.04;
+    voices.push(
+      line(i % 2 ? 1180 : 980, at, 0.042, 0.05, { wave: 'triangle' }),
+      line(i % 2 ? 1850 : 1650, at, 0.042, 0.025, { pan: 0.2 }),
+    );
+  }
+  // Two "bong" carrier bursts.
+  for (const at of [3.82, 4.18]) {
+    voices.push(
+      tone(hz(1150), at, 0.3, {
+        wave: 'triangle',
+        glideTo: hz(1350),
+        cutoff: 2600,
+        attack: 0.06,
+        gain: 0.09,
+      }),
+      tone(hz(575), at, 0.3, { attack: 0.06, gain: 0.05, glideTo: hz(675) }),
+    );
+  }
+  // Scrambled data: band-passed hiss bursts with a whining tone on top.
+  [
+    [4.55, 0.32, 1900],
+    [4.9, 0.28, 2500],
+    [5.2, 0.34, 1500],
+    [5.56, 0.3, 2200],
+  ].forEach(([at = 0, dur = 0, band = 0], i) => {
+    voices.push(
+      noise(band, at, dur, {
+        q: 0.9,
+        gain: 0.22,
+        attack: 0.02,
+        release: 0.05,
+        pan: i % 2 ? 0.25 : -0.25,
+      }),
+      line(band * 1.1, at, dur, 0.02, { glideTo: hz(band * 0.9) }),
+    );
+  });
+  // Click into silence.
+  voices.push(noise(3200, 5.9, 0.03, { q: 1.4, gain: 0.25 }));
+  return voices;
+}
 
 export const SOUND_DEFS: Record<SoundName, SoundDef> = {
   // A slow, airy swell (D♭ major 9) with a rising bell figure over it (~3.9s).
@@ -188,6 +288,8 @@ export const SOUND_DEFS: Record<SoundName, SoundDef> = {
   click: {
     voices: [noise(3500, 0, 0.03, { q: 1.2, gain: 0.2 })],
   },
+  // The modem handshake while dialling up (~6s). Dry, like a PC speaker.
+  dialup: { voices: dialupVoices() },
 };
 
 /** Where a sound ends, in seconds from its start. */
@@ -280,6 +382,8 @@ function envelope(c: BaseAudioContext, v: Voice, t0: number): GainNode {
   const attack = Math.min(v.attack ?? 0.005, v.dur * 0.8);
   env.gain.setValueAtTime(0.0001, t0);
   env.gain.linearRampToValueAtTime(peak, t0 + attack);
+  if (v.release && v.release < v.dur - attack)
+    env.gain.setValueAtTime(peak, t0 + v.dur - v.release);
   env.gain.exponentialRampToValueAtTime(0.0001, t0 + v.dur);
   return env;
 }
@@ -318,6 +422,10 @@ function playVoice(c: BaseAudioContext, v: Voice, t0: number, out: AudioNode) {
       const osc = c.createOscillator();
       osc.type = v.wave ?? 'sine';
       osc.frequency.value = freqOf(v.note);
+      if (v.glideTo !== undefined) {
+        osc.frequency.setValueAtTime(freqOf(v.note), t0);
+        osc.frequency.linearRampToValueAtTime(freqOf(v.glideTo), t0 + v.dur);
+      }
       if (cents && osc.detune) osc.detune.value = cents;
       osc.connect(into);
       osc.start(t0);
@@ -363,23 +471,35 @@ function playVoice(c: BaseAudioContext, v: Voice, t0: number, out: AudioNode) {
   }
 }
 
-/** Plays a named sound. No-op when muted, volume is 0, or before a gesture. */
-export function playSound(name: SoundName): void {
+const noop = () => {};
+
+/**
+ * Plays a named sound. No-op when muted, volume is 0, or before a gesture. Returns a function
+ * that silences it early (e.g. the modem when dialling is cancelled).
+ */
+export function playSound(name: SoundName): () => void {
   const { muted, volume } = useSettingsStore.getState();
-  if (muted || volume <= 0 || !unlocked) return;
+  if (muted || volume <= 0 || !unlocked) return noop;
   const c = getAudioContext();
-  if (!c) return;
+  if (!c) return noop;
   if (c.state === 'suspended') void c.resume().catch(() => {});
 
-  scheduleSound(c, name, volume);
+  const master = scheduleSound(c, name, volume);
+  return () => {
+    try {
+      master.disconnect();
+    } catch {
+      // Already disconnected.
+    }
+  };
 }
 
-/** Schedules `name` on any context, starting now. Also used to render sounds offline. */
+/** Schedules `name` on any context, starting now; returns its master gain. Also renders offline. */
 export function scheduleSound(
   c: BaseAudioContext,
   name: SoundName,
   volume: number,
-): void {
+): GainNode {
   const def = SOUND_DEFS[name];
   const master = c.createGain();
   master.gain.value = volume;
@@ -394,6 +514,7 @@ export function scheduleSound(
 
   const start = c.currentTime;
   for (const voice of def.voices) playVoice(c, voice, start + voice.at, master);
+  return master;
 }
 
 /** Test helper: forget the context and gesture state. */

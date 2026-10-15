@@ -1,4 +1,4 @@
-// Taskbar: Start button, one button per open window, and the tray (mute toggle + clock).
+// Taskbar: Start button, one button per open window, and the tray (network, Messenger, mute, clock).
 import { useEffect, useState } from 'react';
 import { getApp } from '@/apps/registry';
 import {
@@ -12,6 +12,7 @@ import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { useSettingsStore } from '@/os/store/settings';
 import { useMessengerStore } from '@/apps/messenger/store';
 import { StatusIcon } from '@/apps/messenger/StatusIcon';
+import { NetworkTray } from './NetworkTray';
 import styles from './Taskbar.module.css';
 
 export interface TaskbarProps {
@@ -113,6 +114,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
         })}
       </div>
       <div className={styles.tray}>
+        <NetworkTray />
         <button
           type="button"
           className={styles.mute}

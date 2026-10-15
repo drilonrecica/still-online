@@ -199,6 +199,8 @@ export interface SettingsStore {
   screensaver: ScreensaverSettings;
   /** Balloon tip ids already shown once. */
   seenTips: string[];
+  /** The dial-up dialog dials as soon as something needs a connection. */
+  connectAutomatically: boolean;
   setPlayerName: (name: string) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
@@ -211,6 +213,7 @@ export interface SettingsStore {
   setScreensaver: (screensaver: ScreensaverSettings) => void;
   /** Records a show-once tip id; no-op if already recorded. */
   addSeenTip: (id: string) => void;
+  setConnectAutomatically: (on: boolean) => void;
 }
 
 // v0.2 settings fields. Each implementing task moves its fields into `SettingsStore` (with a

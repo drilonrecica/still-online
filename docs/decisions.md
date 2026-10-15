@@ -79,3 +79,10 @@
 - P1-03: Saver animation runs in real time, not `scaleMs` — it's visual only; the idle wait before it does use `scaleMs`.
 - P1-03: My Pictures Slideshow falls back to five built-in procedural sample photos when My Pictures has no images (P1-06 fills the folder).
 - P1-04: Balloon click actions are declarative (`openApp`/`browse`/`balloon`) in content/balloons.ts and resolved by schedule.ts; `diskcleanup` isn't registered yet, so that click logs a warning instead of throwing (P1-xx Disk Cleanup will make it work). VirusGuard opens via `browser:open`; the virusguard.example site is a TODO for the P4 site list.
+- P1-05: Auto-dial is decided in `requireOnline()` (it calls `dial()` after opening the dialog), not by a window prop the dialog reads on mount — windows are persisted, so a prop would re-dial after a reload, and StrictMode's double mount would play the modem twice.
+- P1-05: `requireOnline()` also resolves `false` when the dial-up dialog is closed while offline (Cancel when idle, or ✕) — otherwise Messenger's "Signing in…" would wait forever; closing it mid-dial keeps dialling.
+- P1-05: Closing the dialog with ✕ while dialling doesn't cancel (the tray icon keeps blinking); only Cancel does — a cancel-on-unmount would fire under StrictMode's dev double mount.
+- P1-05: The Messenger wiring from §P0-07 (Sign in awaits `requireOnline()`, `network:disconnected` signs out) had not landed; added here since P1-05's acceptance depends on it.
+- P1-05: Sound voices gained `release` (hold the peak, fade only at the end) besides the spec's `glideTo`; telephone tones are steady, and the default envelope decays over the whole voice.
+- P1-05: `playSound` now returns a stopper; `cancel()` uses it to cut the handshake short.
+- P1-05: The P1 e2e file is `tests/e2e/v02-p1.spec.ts` (lowercase, like `v02-p0.spec.ts`). It records balloon texts with a MutationObserver because balloons last only 90 ms under `?speed=fast`.
