@@ -51,8 +51,8 @@ describe('content lint: shipped contacts', () => {
     },
   );
 
-  // Friends whose days 2–5 are written (§P2-02); later tasks add theirs.
-  const storyFriends = ['jess', 'kayla', 'dex', 'theo'];
+  // Friends whose days 2–5 are written (§P2-02).
+  const storyFriends = ['jess', 'kayla', 'dex', 'theo', 'marco', 'pia'];
   it.each(
     contacts
       .filter((c) => storyFriends.includes(c.contact.id))
@@ -81,6 +81,22 @@ describe('content lint: shipped contacts', () => {
       expect(new Set(messages).size).toBe(messages.length);
     },
   );
+
+  it('marco never uses "!"', () => {
+    const marco = contacts.find((c) => c.contact.id === 'marco');
+    const texts = [
+      marco?.contact.personalMessage,
+      ...Object.values(marco?.contact.days ?? {}).map(
+        (d) => d?.personalMessage,
+      ),
+      ...(marco?.scripts ?? []).flatMap((s) =>
+        Object.values(s.nodes).flatMap((n) =>
+          n.lines.flatMap((l) => [l.text, l.personalMessageChange]),
+        ),
+      ),
+    ];
+    expect(texts.filter((t) => t?.includes('!'))).toEqual([]);
+  });
 
   it('at least one contact reacts to now playing', () => {
     const reacts = contacts.filter((c) =>

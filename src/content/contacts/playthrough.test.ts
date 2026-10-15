@@ -1,6 +1,7 @@
 // M2 gate: plays every path of every shipped script through the real engine with fake timers.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { setup } from '@/apps/messenger/engine/test-helpers';
+import { WALLPAPERS } from '@/os/wallpapers/registry';
 import type { ContactContent, Script } from '../types';
 import { contacts } from './index';
 
@@ -27,7 +28,12 @@ function paths(script: Script): number[][] {
   return out;
 }
 
-function playPath(content: ContactContent, script: Script, picks: number[]) {
+function playPath(
+  content: ContactContent,
+  script: Script,
+  picks: number[],
+  onUnlock?: (id: string) => void,
+) {
   const id = content.contact.id;
   localStorage.clear(); // each path is a fresh player: scripts run once per save
   const { trigger } = script;
@@ -46,7 +52,7 @@ function playPath(content: ContactContent, script: Script, picks: number[]) {
   const solo: ContactContent = { ...content, scripts: [...target, script] };
   // A day script needs the world on its day before sign-in.
   const day = trigger.type === 'onDay' ? trigger.day : 1;
-  const t = setup([solo], { getDay: () => day });
+  const t = setup([solo], { getDay: () => day, onUnlock });
   t.engine.signIn();
   vi.advanceTimersByTime(content.contact.signInAfterMs + 1);
 
@@ -100,4 +106,21 @@ describe('M2 gate: every script, every path, plays to its end', () => {
       });
     }
   }
+});
+
+describe("P2-04: Pia's day-5 present", () => {
+  it('unlocks Pony Paradise and points at the backgrounds on every path', () => {
+    const pia = contacts.find((c) => c.contact.id === 'pia');
+    const script = pia?.scripts.find((s) => s.id === 'day5');
+    if (!pia || !script) throw new Error('pia/day5 missing');
+    for (const picks of paths(script)) {
+      const unlocks: string[] = [];
+      const { t, id } = playPath(pia, script, picks, (u) => unlocks.push(u));
+      expect(unlocks, picks.join(',')).toEqual(['ponies']);
+      expect(t.said(id).join('\n')).toContain('look at the backrounds');
+    }
+    expect(WALLPAPERS.find((w) => w.unlock === 'ponies')?.name).toBe(
+      'Pony Paradise',
+    );
+  });
 });
