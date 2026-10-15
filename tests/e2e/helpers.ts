@@ -89,3 +89,39 @@ export async function openMessenger(page: Page): Promise<Locator> {
   await closeNudgeChats(page);
   return page.getByRole('region', { name: 'Messenger' });
 }
+
+/** Opens Web Explorer and dials in through the offline page's Connect button. */
+export async function openBrowserOnline(page: Page): Promise<Locator> {
+  await page.getByRole('option', { name: 'Web Explorer' }).dblclick();
+  const browser = page.getByRole('region', { name: /Web Explorer$/ });
+  await browser
+    .getByTestId('page-cannot-be-displayed')
+    .getByRole('button', { name: 'Connect' })
+    .click();
+  await expect(page.getByTestId('tray-network')).toHaveAttribute(
+    'data-status',
+    'online',
+  );
+  return browser;
+}
+
+export async function go(browser: Locator, url: string) {
+  const address = browser.getByLabel('Address');
+  await address.fill(url);
+  await address.press('Enter');
+  await expect(browser.getByRole('status')).toHaveText('Done', {
+    timeout: 10_000,
+  });
+}
+
+/** Opens an app from Start → All Programs by its menu name. */
+export async function openFromStart(page: Page, name: string) {
+  await page.getByRole('button', { name: 'start' }).click();
+  await page.getByRole('menuitem', { name: /All Programs/ }).click();
+  const programs = page.getByRole('menu', { name: 'All Programs' });
+  const direct = programs.getByRole('menuitem', { name, exact: true });
+  if (!(await direct.isVisible())) {
+    await programs.getByRole('menuitem', { name: /Internet/ }).hover();
+  }
+  await page.getByRole('menuitem', { name, exact: true }).last().click();
+}

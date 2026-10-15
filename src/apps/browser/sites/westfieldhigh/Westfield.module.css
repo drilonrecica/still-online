@@ -33,13 +33,17 @@
 }
 
 .header {
-  display: flex;
-  gap: 10px;
-  align-items: center;
   padding: 8px 12px;
   color: #ffffff;
   background: #7a1020;
   border-bottom: 4px solid #d8b84a;
+}
+
+/* Flex lives on a wrapper: `display: flex` on the <td> would drop its colSpan. */
+.headerRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .crest {

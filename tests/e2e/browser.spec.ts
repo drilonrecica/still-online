@@ -44,8 +44,11 @@ test('Web Explorer: offline page, Connect, navigate, Back/Forward, Favorites, br
     'data-status',
     'online',
   );
-  // Searchly isn't built yet, so the reload shows the page without the offline cause.
-  await expect(error).not.toContainText('not connected');
+  // The reload lands on the Searchly homepage.
+  await expect(error).toHaveCount(0);
+  await expect(
+    browser.getByRole('button', { name: 'Searchly Search' }),
+  ).toBeVisible();
 
   // Type an address; follow a site link; Back and Forward.
   const address = browser.getByLabel('Address');

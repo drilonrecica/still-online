@@ -229,7 +229,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
       },
       { user: '~*starla_stan*~', text: 'starla wore it first. DAKOTA COPIED' },
       { user: 'maplebay_mel', text: 'dakota wore it BETTER tho' },
-      { user: '~*Kayla*~ <3', text: '@maplebay_mel ur not helping' },
+      { user: '~*Kayla*~ <3', text: 'maplebay_mel ur not helping' },
     ],
   },
   {

@@ -51,12 +51,14 @@ export function Layout({ children }: { children: ReactNode }) {
         <tbody>
           <tr>
             <td colSpan={2} className={styles.header}>
-              <Crest />
-              <div>
-                <h1 className={styles.name}>{T.name}</h1>
-                <p className={styles.motto}>{T.motto}</p>
+              <div className={styles.headerRow}>
+                <Crest />
+                <div>
+                  <h1 className={styles.name}>{T.name}</h1>
+                  <p className={styles.motto}>{T.motto}</p>
+                </div>
+                <p className={styles.today}>{formatLongDate(now())}</p>
               </div>
-              <p className={styles.today}>{formatLongDate(now())}</p>
             </td>
           </tr>
           <tr>
