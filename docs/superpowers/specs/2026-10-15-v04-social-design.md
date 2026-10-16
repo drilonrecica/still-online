@@ -188,3 +188,12 @@ Everything lives in the existing `web` store. Every new field is optional and sa
 9. English content.
 10. German content.
 11. Browser tests, screenshot review, docs and v0.4.0 release notes.
+
+## Addendum: player gender (2026-10-16)
+
+The player now picks Girl or Boy on the login screen. That design is in `2026-10-16-player-gender-design.md` and ships as phase G, before the rest of v0.4. For this spec, it means:
+
+- Text addressed to or about the player uses `g(girl, boy)`.
+- The Friendspace profile and Pixlog skin defaults follow the gender.
+- GlitterCodez has 6 girly and 6 boyish layouts and features the player's side first; its stickers and cursors include boy items.
+- One browser flow and part of the release playthrough run as a boy.
