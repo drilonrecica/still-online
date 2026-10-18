@@ -20,12 +20,12 @@ booting ──bootComplete──▶ login ──logOn──▶ desktop ──shu
 
 ## Stores (`src/os/store/`)
 
-| Store    | File               | Persisted | Holds                                                                     |
-| -------- | ------------------ | --------- | ------------------------------------------------------------------------- |
-| session  | `session.ts`       | no        | `state` + transition actions (`SessionStore`)                             |
-| windows  | `windows.ts`       | yes       | `WindowState[]`, `topZ`, WM actions (`WindowsStore`)                      |
-| settings | `settings.ts`      | yes       | `playerName`, `muted`, `volume` (0..1), `firstBootDone` (`SettingsStore`) |
-| sound    | `sound.ts` (store) | no        | `unlocked` (AudioContext resumed after a gesture) (`SoundStore`)          |
+| Store    | File               | Persisted | Holds                                                                                              |
+| -------- | ------------------ | --------- | -------------------------------------------------------------------------------------------------- |
+| session  | `session.ts`       | no        | `state` + transition actions (`SessionStore`)                                                      |
+| windows  | `windows.ts`       | yes       | `WindowState[]`, `topZ`, WM actions (`WindowsStore`)                                               |
+| settings | `settings.ts`      | yes       | `playerName`, `gender`, `userPicture`, `muted`, `volume` (0..1), `firstBootDone` (`SettingsStore`) |
+| sound    | `sound.ts` (store) | no        | `unlocked` (AudioContext resumed after a gesture) (`SoundStore`)                                   |
 
 All user-visible text goes through the catalogs and `t()`, and persisted state is language-neutral: see [docs/i18n.md](i18n.md).
 

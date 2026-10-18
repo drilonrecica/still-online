@@ -1,7 +1,7 @@
 // Start menu: pinned programs + All Programs flyout | places, user header, Log Off / Turn Off footer.
 import { useT } from '@/i18n/useT';
-import { usePlayerName } from '@/i18n/settingsText';
-import { useEffect, useRef, useState } from 'react';
+import { usePlayerName, useUserPicture } from '@/i18n/settingsText';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import { listApps } from '@/apps/registry';
 import {
@@ -13,12 +13,13 @@ import { useSessionStore } from '@/os/store/session';
 import { useWindowsStore } from '@/os/store/windows';
 import {
   APP_CATEGORIES,
+  TASKBAR_HEIGHT,
   type AppCategory,
   type AppDefinition,
   type AppId,
   type WindowProps,
 } from '@/os/types';
-import avatar from './avatar.svg';
+import { userPictureSrc } from '@/os/user/sources';
 import styles from './StartMenu.module.css';
 
 const HOVER_OPEN_MS = 300;
@@ -34,6 +35,7 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const t = useT();
   const playerName = usePlayerName();
+  const picture = useUserPicture();
   const openApp = useWindowsStore((s) => s.openApp);
   const logOff = useSessionStore((s) => s.logOff);
   const shutDown = useSessionStore((s) => s.shutDown);
@@ -91,6 +93,20 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
   }, [open]);
 
   useEffect(() => () => window.clearTimeout(hoverTimer.current), []);
+
+  // A submenu opens down from its folder; like XP, shift it up when it would run past the
+  // taskbar (System Tools sits low and keeps growing).
+  useLayoutEffect(() => {
+    const sub =
+      rootRef.current?.querySelector<HTMLElement>('[data-level="sub"]');
+    if (!sub) return;
+    sub.style.top = '';
+    const rect = sub.getBoundingClientRect();
+    const overflow = rect.bottom - (window.innerHeight - TASKBAR_HEIGHT);
+    if (overflow <= 0) return;
+    const top = parseFloat(getComputedStyle(sub).top) || 0;
+    sub.style.top = `${top - Math.min(overflow, Math.max(0, rect.top))}px`;
+  }, [category]);
 
   useEffect(() => {
     const what = focusAfter.current;
@@ -210,7 +226,14 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
       onKeyDown={onKeyDown}
     >
       <div className={styles.header}>
-        <img src={avatar} alt="" width={40} height={40} draggable={false} />
+        <img
+          src={userPictureSrc(picture)}
+          alt=""
+          width={40}
+          height={40}
+          draggable={false}
+          data-picture={picture ?? 'none'}
+        />
         <span className={styles.name}>{playerName}</span>
       </div>
       <div className={styles.columns}>

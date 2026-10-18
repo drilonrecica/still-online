@@ -1,6 +1,7 @@
 // Shared OS contracts. See docs/architecture.md for how the pieces fit together.
 import type { ComponentType, LazyExoticComponent } from 'react';
 import type { Locale, MessageArgs, MessageKey, TextParams } from '@/i18n/types';
+import type { UserPictureId } from '@/os/user/pictures';
 
 // ---------------------------------------------------------------------------
 // Session state machine
@@ -54,6 +55,8 @@ export type AppId =
   | 'dialup'
   | 'diskcleanup'
   | 'regional'
+  // v0.4 phase G
+  | 'useraccounts'
   | 'messenger-history'
   | 'browser'
   | 'mail'
@@ -204,9 +207,19 @@ export const TITLEBAR_HEIGHT = 30;
 // Settings & sound
 // ---------------------------------------------------------------------------
 
+/** The player's gender, chosen at login (G-01). There is no third option. */
+export type Gender = 'girl' | 'boy';
+
 export interface SettingsStore {
   /** `null` = no name chosen yet (Login asks for one); read it with `getPlayerName()`. */
   playerName: string | null;
+  /**
+   * `null` = not chosen yet (a fresh or pre-v0.4 save; Login asks once). It resolves as
+   * `'girl'`; read it only through `getGender()`/`useGender()`.
+   */
+  gender: Gender | null;
+  /** `null` = the gender's default tile; read the effective one with `getUserPicture()`. */
+  userPicture: UserPictureId | null;
   muted: boolean;
   /** 0..1 */
   volume: number;
@@ -239,6 +252,9 @@ export interface SettingsStore {
   language: Locale | null;
   /** A name equal to the current locale's default is stored as `null`. */
   setPlayerName: (name: string) => void;
+  setGender: (gender: Gender) => void;
+  /** `null` goes back to the gender's default picture. */
+  setUserPicture: (picture: UserPictureId | null) => void;
   setMuted: (muted: boolean) => void;
   toggleMuted: () => void;
   setVolume: (volume: number) => void;

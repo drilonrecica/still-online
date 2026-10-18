@@ -1,12 +1,16 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
   getAwayMessage,
+  getGender,
   getPlayerName,
+  getUserPicture,
   screensaverText,
 } from '@/i18n/settingsText';
 import { storageKey } from '@/os/persist';
 import { SETTINGS_V02_DEFAULTS } from '@/os/types';
 import {
+  sanitizeGender,
+  sanitizeUserPicture,
   sanitizeWallpaper,
   sanitizeWallpaperPosition,
   useSettingsStore,
@@ -289,5 +293,83 @@ describe('localized defaults (playerName, awayMessage, screensaver text)', () =>
     });
     await restore({ playerName: 3, awayMessage: null });
     expect(s()).toMatchObject({ playerName: 'Ada', awayMessage: null });
+  });
+});
+
+describe('gender and user picture', () => {
+  const s = () => useSettingsStore.getState();
+  const restore = async (state: object) => {
+    localStorage.setItem(
+      storageKey('settings'),
+      JSON.stringify({ state, version: 1 }),
+    );
+    await useSettingsStore.persist.rehydrate();
+  };
+
+  it('sanitize: valid values pass, null is a value, anything else is invalid', () => {
+    expect(sanitizeGender('girl')).toBe('girl');
+    expect(sanitizeGender('boy')).toBe('boy');
+    expect(sanitizeGender(null)).toBeNull();
+    for (const bad of [undefined, 'other', 'Girl', 1, {}]) {
+      expect(sanitizeGender(bad)).toBeUndefined();
+    }
+    expect(sanitizeUserPicture('rocket')).toBe('rocket');
+    expect(sanitizeUserPicture(null)).toBeNull();
+    for (const bad of [undefined, 'avatar', '', 3]) {
+      expect(sanitizeUserPicture(bad)).toBeUndefined();
+    }
+  });
+
+  it('start unset: the gender resolves as girl, the picture is the neutral avatar', () => {
+    expect(s()).toMatchObject({ gender: null, userPicture: null });
+    expect(getGender()).toBe('girl');
+    expect(getUserPicture()).toBeNull();
+  });
+
+  it('the picture defaults by gender until one is chosen', () => {
+    s().setGender('boy');
+    expect([getGender(), getUserPicture()]).toEqual(['boy', 'skateboard']);
+    s().setGender('girl');
+    expect(getUserPicture()).toBe('butterfly');
+    s().setUserPicture('rocket');
+    s().setGender('boy');
+    expect(getUserPicture()).toBe('rocket');
+    s().setUserPicture(null);
+    expect(getUserPicture()).toBe('skateboard');
+  });
+
+  it('setters ignore invalid values', () => {
+    s().setGender('boy');
+    s().setUserPicture('kitten');
+    s().setGender('x' as never);
+    s().setUserPicture('nope' as never);
+    expect(s()).toMatchObject({ gender: 'boy', userPicture: 'kitten' });
+  });
+
+  it('persist and restore; an old save without the fields stays unset', async () => {
+    s().setGender('boy');
+    s().setUserPicture('controller');
+    const saved = JSON.parse(localStorage.getItem(storageKey('settings'))!);
+    expect(saved.state).toMatchObject({
+      gender: 'boy',
+      userPicture: 'controller',
+    });
+    useSettingsStore.setState(initial, true);
+    await restore(saved.state);
+    expect(s()).toMatchObject({ gender: 'boy', userPicture: 'controller' });
+
+    useSettingsStore.setState(initial, true);
+    await restore({ playerName: 'Ada', firstBootDone: true });
+    expect(s()).toMatchObject({
+      playerName: 'Ada',
+      gender: null,
+      userPicture: null,
+    });
+  });
+
+  it('corrupt fields keep the current value', async () => {
+    useSettingsStore.setState({ gender: 'girl', userPicture: 'flower' });
+    await restore({ gender: 'robot', userPicture: 42 });
+    expect(s()).toMatchObject({ gender: 'girl', userPicture: 'flower' });
   });
 });

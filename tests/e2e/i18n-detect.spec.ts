@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { pickGender } from './helpers';
 
 /** Requests for the lazy German chunk (`src/content/de/bundle.ts` → `assets/bundle-*.js`). */
 function watchGermanChunk(page: import('@playwright/test').Page) {
@@ -27,6 +28,7 @@ test.describe('German browser', () => {
     await expect(page.getByLabel('Ihr Name')).toBeVisible();
     await expect(page.getByLabel('Your name')).toHaveCount(0);
     await page.getByLabel('Ihr Name').fill('Ada');
+    await pickGender(page);
     await expect(
       page.getByRole('button', { name: 'Als Ada anmelden' }),
     ).toBeVisible();

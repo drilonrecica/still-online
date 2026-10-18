@@ -46,6 +46,19 @@ describe('StartMenu', () => {
     expect(screen.getByRole('menuitem', { name: 'Recycle Bin' })).toBeTruthy();
   });
 
+  it("shows the user picture: the gender's default, a chosen one, live", () => {
+    useSettingsStore.setState({ gender: 'boy', userPicture: null });
+    const { container } = render(<StartMenu open onClose={() => {}} />);
+    const picture = () => container.querySelector('img[data-picture]')!;
+    expect(picture()).toHaveAttribute('data-picture', 'skateboard');
+    act(() => useSettingsStore.getState().setGender('girl'));
+    expect(picture()).toHaveAttribute('data-picture', 'butterfly');
+    act(() => useSettingsStore.getState().setUserPicture('rocket'));
+    expect(picture()).toHaveAttribute('data-picture', 'rocket');
+    act(() => useSettingsStore.setState({ gender: null, userPicture: null }));
+    expect(picture()).toHaveAttribute('data-picture', 'none');
+  });
+
   it('launching an app opens it and closes the menu', () => {
     render(<Shell />);
     fireEvent.click(screen.getByRole('button', { name: 'start' }));
@@ -149,6 +162,38 @@ describe('StartMenu', () => {
         'notepad',
       ]);
       expect(onClose).toHaveBeenCalled();
+    });
+
+    it('a submenu that would run past the taskbar is shifted up', () => {
+      const rect = vi
+        .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+        .mockImplementation(function (this: HTMLElement) {
+          const sub = this.dataset.level === 'sub';
+          // Opens at y 600 with 140 px of items: 50 px below the taskbar's top edge.
+          return DOMRect.fromRect(
+            sub ? { x: 0, y: 600, width: 160, height: 140 } : {},
+          );
+        });
+      const height = window.innerHeight;
+      Object.defineProperty(window, 'innerHeight', {
+        configurable: true,
+        value: 720,
+      });
+      try {
+        open();
+        fireEvent.click(screen.getByRole('menuitem', { name: /System Tools/ }));
+        const sub = screen.getByRole('menu', { name: 'System Tools' });
+        expect(sub.style.top).toBe('-50px');
+        expect(
+          within(sub).getByRole('menuitem', { name: 'User Accounts' }),
+        ).toBeTruthy();
+      } finally {
+        rect.mockRestore();
+        Object.defineProperty(window, 'innerHeight', {
+          configurable: true,
+          value: height,
+        });
+      }
     });
 
     it('hover opens a submenu after 300 ms', () => {

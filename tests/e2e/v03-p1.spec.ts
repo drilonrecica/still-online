@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { quietIdle } from './helpers';
+import { pickGender, quietIdle } from './helpers';
 
 test.use({ locale: 'de-DE' });
 
@@ -12,6 +12,7 @@ test('P1: a German browser gets the whole OS shell and the apps in German', asyn
   await expect(page.getByTestId('login-screen')).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang', 'de');
   await page.getByLabel('Ihr Name').fill('Ada');
+  await pickGender(page);
   await page.getByRole('button', { name: 'Als Ada anmelden' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 

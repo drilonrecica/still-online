@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
-import { quietIdle } from './helpers';
+import { pickGender, quietIdle } from './helpers';
 
 const save = JSON.parse(
   readFileSync('src/test/fixtures/v02-save.json', 'utf8'),
@@ -36,9 +36,14 @@ for (const [locale, lang] of [
       // logon waits until the player types one.
       const logOn = page.getByRole('button', { name: /^(Log on as|Als) / });
       await expect(logOn).toHaveCount(0);
+      // It has no gender either (pre-v0.4), so Login asks for that too.
+      await expect(
+        page.getByRole('radiogroup', { name: /^(I am a|Ich bin):$/ }),
+      ).toBeVisible();
       await page
         .getByLabel(lang === 'de' ? 'Ihr Name' : 'Your name')
         .fill('Ada');
+      await pickGender(page);
       await logOn.click();
       await expect(page.getByTestId('desktop')).toBeVisible();
 

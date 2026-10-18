@@ -1,5 +1,6 @@
 // Blue welcome screen with a single account tile. Asks for a name until one is saved: there is
-// no default name, so the tile can't log on while the name is blank.
+// no default name, so the tile can't log on while the name is blank. Likewise asks Girl or Boy
+// until a gender is saved (fresh visits and pre-v0.4 saves).
 import { LanguagePicker } from '@/i18n/LanguagePicker';
 import { usePlayerName } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
@@ -8,7 +9,10 @@ import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
-import avatar from '@/os/startmenu/avatar.svg';
+import type { Gender } from '@/os/types';
+import { effectiveUserPicture } from '@/os/user/pictures';
+import { userPictureSrc } from '@/os/user/sources';
+import { GenderPicker } from './GenderPicker';
 import styles from './Login.module.css';
 
 export function Login() {
@@ -18,6 +22,16 @@ export function Login() {
   const askName = firstVisit || !savedName;
   const setPlayerName = useSettingsStore((s) => s.setPlayerName);
   const markFirstBootDone = useSettingsStore((s) => s.markFirstBootDone);
+  const savedGender = useSettingsStore((s) => s.gender);
+  const setGender = useSettingsStore((s) => s.setGender);
+  const askGender = askName || savedGender === null;
+  const [pickedGender, setPickedGender] = useState<Gender | null>(null);
+  const gender = pickedGender ?? savedGender;
+  // While choosing, the tile previews the picked gender's default (unless a picture is saved).
+  const picture = effectiveUserPicture(
+    useSettingsStore((s) => s.userPicture),
+    gender,
+  );
   // null = untouched: the field shows the saved name (empty when there is none).
   const [edited, setDraft] = useState<string | null>(null);
   const draft = edited ?? savedName;
@@ -29,8 +43,9 @@ export function Login() {
 
   function submit(e?: FormEvent) {
     e?.preventDefault();
-    if (submitted.current || !name) return;
+    if (submitted.current || !name || !gender) return;
     submitted.current = true;
+    if (askGender) setGender(gender);
     if (askName) {
       setPlayerName(name);
       markFirstBootDone();
@@ -48,12 +63,22 @@ export function Login() {
         <button
           type="submit"
           className={styles.tile}
-          disabled={!name}
+          disabled={!name || !gender}
           aria-label={
-            name ? t('login.logOnAs', { name }) : t('login.enterName')
+            !name
+              ? t('login.enterName')
+              : gender
+                ? t('login.logOnAs', { name })
+                : t('login.genderMissing')
           }
         >
-          <img src={avatar} alt="" width={48} height={48} />
+          <img
+            src={userPictureSrc(picture)}
+            alt=""
+            width={48}
+            height={48}
+            data-picture={picture ?? 'none'}
+          />
           <span className={name ? styles.name : styles.noName}>
             {name || t('login.enterName')}
           </span>
@@ -68,6 +93,18 @@ export function Login() {
               onChange={(e) => setDraft(e.target.value)}
             />
           </label>
+        )}
+        {askGender && (
+          <div className={styles.gender}>
+            <span aria-hidden="true">{t('login.genderLabel')}</span>
+            <GenderPicker
+              label={t('login.genderLabel')}
+              value={gender}
+              onChange={setPickedGender}
+              className={styles.languages}
+              optionClassName={styles.languageOption}
+            />
+          </div>
         )}
         <div className={styles.language}>
           <span aria-hidden="true">{t('language.pickerLabel')}</span>

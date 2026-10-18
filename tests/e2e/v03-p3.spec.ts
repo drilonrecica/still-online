@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { quietIdle } from './helpers';
+import { pickGender, quietIdle } from './helpers';
 
 test.use({ locale: 'de-DE' });
 
@@ -14,6 +14,7 @@ test('P3: German game, English mid-game, back to German on the next day', async 
   await page.getByTestId('boot-screen').click();
   await expect(page.getByRole('radio', { name: 'Deutsch' })).toBeChecked();
   await page.getByLabel('Ihr Name').fill('Ada');
+  await pickGender(page);
   await page.getByRole('button', { name: 'Als Ada anmelden' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 

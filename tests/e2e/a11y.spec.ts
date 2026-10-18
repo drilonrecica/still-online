@@ -71,9 +71,14 @@ test('a11y: keyboard path login → Start → Messenger → chat → close', asy
   page,
 }) => {
   await boot(page);
-  // Login: name field is focusable; Enter submits the form.
+  // Login: name field is focusable; Tab reaches the gender group, Space picks; Enter submits.
   await page.getByLabel('Your name').focus();
   await page.keyboard.type('Ada');
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('radio', { name: 'Girl' })).toBeFocused();
+  await page.keyboard.press('Space');
+  await expect(page.getByRole('radio', { name: 'Girl' })).toBeChecked();
+  await page.keyboard.press('Shift+Tab');
   await page.keyboard.press('Enter');
   await expect(page.getByTestId('desktop')).toBeVisible();
 

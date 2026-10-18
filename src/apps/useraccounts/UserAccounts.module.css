@@ -1,0 +1,120 @@
+/* User Accounts: same dialog layout as Regional and Language Options. */
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 8px 8px 6px;
+  background: var(--xp-face);
+  font-size: 11px;
+}
+
+.panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid #808080;
+  background: #fff;
+  overflow: auto;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #d4d0c8;
+}
+
+.account img {
+  border: 2px solid #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px #7f9db9;
+}
+
+.name {
+  font-size: 13px;
+  font-weight: bold;
+  color: #0a246a;
+}
+
+.kind {
+  color: #555;
+}
+
+.group {
+  margin: 0;
+  padding: 4px 8px 6px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grow {
+  flex: 1;
+}
+
+.genders {
+  display: flex;
+  gap: 8px;
+}
+
+.genderOption {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 96px;
+  padding: 3px 10px;
+}
+
+.genderOption img {
+  border-radius: 3px;
+  background: #3a6ea5;
+}
+
+.genderOption[aria-checked='true'] {
+  font-weight: bold;
+  box-shadow: inset 0 0 0 2px #f9a63a;
+}
+
+.pictures {
+  display: grid;
+  grid-template-columns: repeat(8, max-content);
+  gap: 4px;
+}
+
+.picture {
+  min-width: 0;
+  min-height: 0;
+  padding: 2px;
+  line-height: 0;
+}
+
+.picture[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 2px #316ac5;
+  background: #c1d2ee;
+}
+
+.useDefault {
+  margin-top: 6px;
+}
+
+.useDefault[aria-pressed='true'] {
+  font-weight: bold;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+.buttons button {
+  min-width: 75px;
+}

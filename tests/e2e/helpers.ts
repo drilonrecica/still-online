@@ -1,7 +1,7 @@
 // Shared e2e steps. See docs/architecture-v0.2.md → "Testing".
 import { expect, type Locator, type Page } from '@playwright/test';
 import type { Locale } from '../../src/i18n/types';
-import { SETTINGS_V02_DEFAULTS } from '../../src/os/types';
+import { SETTINGS_V02_DEFAULTS, type Gender } from '../../src/os/types';
 
 const SETTINGS_KEY = 'still-online:v1:settings';
 
@@ -12,6 +12,8 @@ export interface LogInOptions {
    * Specs that test idle behaviour pass `false`.
    */
   quiet?: boolean;
+  /** Default `'girl'`. */
+  gender?: Gender;
 }
 
 /** Merges idle-off settings into the persisted settings before any app script runs. */
@@ -60,17 +62,26 @@ export async function setLanguage(page: Page, language: Locale) {
     .click();
 }
 
-/** Fresh visit with the fast clock: skip boot, enter the name, log on, wait for the desktop. */
+/**
+ * Picks Girl or Boy in the login screen's gender group (any language). Call it on a first
+ * visit, or for a save that has no gender yet; Log On stays disabled until then.
+ */
+export async function pickGender(page: Page, gender: Gender = 'girl') {
+  await page.locator(`[role="radio"][data-gender="${gender}"]`).click();
+}
+
+/** Fresh visit with the fast clock: skip boot, enter the name and gender, log on, wait for the desktop. */
 export async function logIn(
   page: Page,
   name = 'Ada',
-  { quiet = true }: LogInOptions = {},
+  { quiet = true, gender = 'girl' }: LogInOptions = {},
 ) {
   if (quiet) await quietIdle(page);
   await page.goto('./?speed=fast');
   await page.getByTestId('boot-screen').click();
   await expect(page.getByTestId('login-screen')).toBeVisible();
   await page.getByLabel('Your name').fill(name);
+  await pickGender(page, gender);
   await page.getByRole('button', { name: `Log on as ${name}` }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 }

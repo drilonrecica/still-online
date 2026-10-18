@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { quietIdle, setLanguage } from './helpers';
+import { pickGender, quietIdle, setLanguage } from './helpers';
 
 const DIR = 'docs/review/P1/de';
 
@@ -64,6 +64,7 @@ test('P1-08 German layout pass @review', async ({ page }) => {
   await page.getByTestId('boot-screen').click();
   await setLanguage(page, 'de');
   await page.getByLabel('Ihr Name').fill('Ada');
+  await pickGender(page);
   await page.getByRole('button', { name: 'Als Ada anmelden' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 

@@ -6,8 +6,10 @@ import { DEFAULTS, type DefaultField } from '@/i18n/messages/defaults';
 import { loadLocale, isLocaleLoaded } from '@/i18n/load';
 import { LOCALES, isLocale, type Locale } from '@/i18n/types';
 import { isRecord, persistOptions } from '@/os/persist';
+import { isUserPictureId, type UserPictureId } from '@/os/user/pictures';
 import {
   SETTINGS_V02_DEFAULTS,
+  type Gender,
   type ScreensaverId,
   type ScreensaverSettings,
   type SettingsStore,
@@ -73,6 +75,20 @@ export function sanitizePlayerName(v: unknown): string | null | undefined {
   if (typeof v !== 'string') return undefined;
   const name = v.trim().slice(0, MAX_PLAYER_NAME);
   return name && !LEGACY_DEFAULT_NAMES.includes(name) ? name : null;
+}
+
+/** `'girl'`/`'boy'`, `null` (not chosen yet, so Login asks) or `undefined` (invalid). */
+export function sanitizeGender(v: unknown): Gender | null | undefined {
+  if (v === null) return null;
+  return v === 'girl' || v === 'boy' ? v : undefined;
+}
+
+/** A known picture id, `null` (the gender's default) or `undefined` (invalid). */
+export function sanitizeUserPicture(
+  v: unknown,
+): UserPictureId | null | undefined {
+  if (v === null) return null;
+  return isUserPictureId(v) ? v : undefined;
 }
 
 /** `value` unless it is `undefined` (invalid); `null` is a real value here. */
@@ -144,6 +160,8 @@ export function sanitizeScreensaver(
 type PersistedSettings = Pick<
   SettingsStore,
   | 'playerName'
+  | 'gender'
+  | 'userPicture'
   | 'muted'
   | 'volume'
   | 'firstBootDone'
@@ -170,6 +188,8 @@ export const useSettingsStore = create<SettingsStore>()(
       const locale = () => get().language ?? detectBrowserLocale();
       return {
         playerName: null,
+        gender: null,
+        userPicture: null,
         muted: false,
         volume: 0.7,
         firstBootDone: false,
@@ -189,6 +209,15 @@ export const useSettingsStore = create<SettingsStore>()(
           set({
             playerName: playerName.trim().slice(0, MAX_PLAYER_NAME) || null,
           }),
+        setGender: (gender) =>
+          set((s) => ({ gender: sanitizeGender(gender) ?? s.gender })),
+        setUserPicture: (picture) =>
+          set((s) => ({
+            userPicture: orFallback(
+              sanitizeUserPicture(picture),
+              s.userPicture,
+            ),
+          })),
         setMuted: (muted) => set({ muted }),
         toggleMuted: () => set((s) => ({ muted: !s.muted })),
         setVolume: (volume) => set({ volume: clamp01(volume) }),
@@ -264,6 +293,8 @@ export const useSettingsStore = create<SettingsStore>()(
       name: 'settings',
       partialize: ({
         playerName,
+        gender,
+        userPicture,
         muted,
         volume,
         firstBootDone,
@@ -281,6 +312,8 @@ export const useSettingsStore = create<SettingsStore>()(
         language,
       }) => ({
         playerName,
+        gender,
+        userPicture,
         muted,
         volume,
         firstBootDone,
@@ -305,6 +338,12 @@ export const useSettingsStore = create<SettingsStore>()(
           playerName: orFallback(
             sanitizePlayerName(p.playerName),
             current.playerName,
+          ),
+          // Missing in pre-v0.4 saves: stays `null`, so Login asks once.
+          gender: orFallback(sanitizeGender(p.gender), current.gender),
+          userPicture: orFallback(
+            sanitizeUserPicture(p.userPicture),
+            current.userPicture,
           ),
           muted: typeof p.muted === 'boolean' ? p.muted : current.muted,
           volume:

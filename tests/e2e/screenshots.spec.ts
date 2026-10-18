@@ -4,6 +4,7 @@ import {
   go,
   logIn,
   openFromStart,
+  pickGender,
   quietIdle,
 } from './helpers';
 
@@ -159,6 +160,7 @@ test.describe('German README screenshot', () => {
     await page.goto('./?speed=fast');
     await page.getByTestId('boot-screen').click();
     await page.getByLabel('Ihr Name').fill('Ada');
+    await pickGender(page);
     await page.getByRole('button', { name: 'Als Ada anmelden' }).click();
     await expect(page.getByTestId('desktop')).toBeVisible();
     // Tacki's greeting would sit over the desktop.

@@ -2,7 +2,7 @@ import { expect, type Page, test } from '@playwright/test';
 import { de } from '../../src/i18n/messages/de';
 import { en } from '../../src/i18n/messages/en';
 import type { Messages } from '../../src/i18n/types';
-import { quietIdle } from './helpers';
+import { pickGender, quietIdle } from './helpers';
 
 const DIR = 'docs/review/v03-P2';
 
@@ -116,6 +116,7 @@ for (const lang of ['en', 'de'] as const) {
       await page.getByTestId('boot-screen').click();
       await expect(page.getByTestId('login-screen')).toBeVisible();
       await page.getByLabel(cat.login.yourName).fill('Ada');
+      await pickGender(page);
       await logOn.click();
       await expect(page.getByTestId('desktop')).toBeVisible();
 

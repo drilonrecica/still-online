@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { pickGender } from './helpers';
 
 const DIR = 'docs/review/P1';
 
@@ -20,6 +21,7 @@ test('P1 gate: Display Properties, dial-up, balloon, Disk Cleanup @review', asyn
   await page.goto('./');
   await page.getByTestId('boot-screen').click();
   await page.getByLabel('Your name').fill('Ada');
+  await pickGender(page);
   await page.getByRole('button', { name: 'Log on as Ada' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 

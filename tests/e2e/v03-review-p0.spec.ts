@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { openFromStart, setLanguage } from './helpers';
+import { openFromStart, pickGender, setLanguage } from './helpers';
 
 const DIR = 'docs/review/v03-P0';
 
@@ -27,6 +27,7 @@ test('P0 gate: language picker, Regional and Language Options, tray menu @review
   await setLanguage(page, 'en');
 
   await page.getByLabel('Your name').fill('Ada');
+  await pickGender(page);
   await page.getByRole('button', { name: 'Log on as Ada' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 

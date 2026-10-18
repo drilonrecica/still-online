@@ -3,7 +3,7 @@ import { jess } from '../../src/content/de/contacts/jess';
 import { MAIL_CONTENT } from '../../src/content/de/mail';
 import { jessProfile } from '../../src/content/de/profiles/jess';
 import { de } from '../../src/i18n/messages/de';
-import { closeNudgeChats, quietIdle } from './helpers';
+import { closeNudgeChats, pickGender, quietIdle } from './helpers';
 
 test.use({ locale: 'de-DE' });
 
@@ -13,6 +13,7 @@ test('P2: German content in chat, mail and on the web', async ({ page }) => {
   await page.goto('./?speed=fast');
   await page.getByTestId('boot-screen').click();
   await page.getByLabel(de.login.yourName).fill('Ada');
+  await pickGender(page);
   await page.getByRole('button', { name: 'Als Ada anmelden' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 

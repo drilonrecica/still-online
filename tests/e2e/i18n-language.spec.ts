@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { pickGender } from './helpers';
 
 test('language picker on the login screen persists across a reload', async ({
   page,
@@ -23,6 +24,7 @@ test('tray badge and Regional app switch the language live', async ({
   await page.goto('./?speed=fast');
   await page.getByTestId('boot-screen').click();
   await page.getByLabel('Your name').fill('Ada');
+  await pickGender(page);
   await page.getByRole('button', { name: 'Log on as Ada' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 

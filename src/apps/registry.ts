@@ -34,6 +34,8 @@ import photobooth16 from '@/assets/icons/photobooth-16.svg';
 import photobooth32 from '@/assets/icons/photobooth-32.svg';
 import regional16 from '@/assets/icons/regional-16.svg';
 import regional32 from '@/assets/icons/regional-32.svg';
+import userAccounts16 from '@/assets/icons/useraccounts-16.svg';
+import userAccounts32 from '@/assets/icons/useraccounts-32.svg';
 import stapley16 from '@/assets/icons/stapley-16.svg';
 import stapley32 from '@/assets/icons/stapley-32.svg';
 import tunemole16 from '@/assets/icons/tunemole-16.svg';
@@ -99,6 +101,21 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     component: lazy(() => import('./regional/Regional')),
     defaultSize: { w: 380, h: 300 },
     minSize: { w: 380, h: 300 },
+    singleInstance: true,
+    chrome: 'xp',
+    fixedSize: true,
+    showOnDesktop: false,
+    showInStartMenu: true,
+    category: 'system',
+  },
+  useraccounts: {
+    id: 'useraccounts',
+    titleKey: 'apps.useraccounts.title',
+    icon16: userAccounts16,
+    icon32: userAccounts32,
+    component: lazy(() => import('./useraccounts/UserAccounts')),
+    defaultSize: { w: 420, h: 380 },
+    minSize: { w: 420, h: 380 },
     singleInstance: true,
     chrome: 'xp',
     fixedSize: true,

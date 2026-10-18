@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { pickGender } from './helpers';
 
 const NOTEPAD_TITLE = 'Untitled - Notepad';
 const SAVED_TITLE = 'shell.txt - Notepad';
@@ -12,6 +13,7 @@ test('shell: boot, login, Notepad, window management, persistence, power cycle',
   await page.getByTestId('boot-screen').click();
   await expect(page.getByTestId('login-screen')).toBeVisible();
   await page.getByLabel('Your name').fill('Ada');
+  await pickGender(page);
   await page.getByRole('button', { name: 'Log on as Ada' }).click();
 
   // Desktop → open Notepad from its icon.

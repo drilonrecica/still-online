@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { quietIdle } from './helpers';
+import { pickGender, quietIdle } from './helpers';
 
 const DIR = 'docs/review/v03-P1';
 
@@ -17,6 +17,7 @@ test('P1-07: Star Pinball in German (menu, help, dot-matrix display) @review', a
   await page.goto('./?speed=fast');
   await page.getByTestId('boot-screen').click();
   await page.getByLabel('Ihr Name').fill('Ada');
+  await pickGender(page);
   await page.getByRole('button', { name: 'Als Ada anmelden' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { pickGender } from './helpers';
 
 const DIR = 'docs/review/M1';
 
@@ -15,6 +16,7 @@ test('M1 gate screenshots @review', async ({ page }) => {
   await page.getByTestId('boot-screen').click();
   await expect(page.getByTestId('login-screen')).toBeVisible();
   await page.getByLabel('Your name').fill('Ada');
+  await pickGender(page);
   await page.screenshot({ path: `${DIR}/login.png` });
 
   await page.getByRole('button', { name: 'Log on as Ada' }).click();

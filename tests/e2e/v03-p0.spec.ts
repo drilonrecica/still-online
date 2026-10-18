@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logIn, openFromStart, setLanguage } from './helpers';
+import { logIn, openFromStart, pickGender, setLanguage } from './helpers';
 
 test('P0: language picker, Regional and Language Options and tray menu stay in sync', async ({
   page,
@@ -12,6 +12,7 @@ test('P0: language picker, Regional and Language Options and tray menu stay in s
   await setLanguage(page, 'en');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await page.getByLabel('Your name').fill('Ada');
+  await pickGender(page);
   await page.getByRole('button', { name: 'Log on as Ada' }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 

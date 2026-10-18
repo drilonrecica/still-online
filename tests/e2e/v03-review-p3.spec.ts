@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { de } from '../../src/i18n/messages/de';
 import { en } from '../../src/i18n/messages/en';
 import type { Locale, Messages } from '../../src/i18n/types';
-import { quietIdle } from './helpers';
+import { pickGender, quietIdle } from './helpers';
 
 const DIR = 'docs/review/v03-P3';
 const CATALOG: Record<Locale, Messages> = { en, de };
@@ -224,6 +224,7 @@ test('P3 gate: three German days with a mid-game switch to English and back @rev
   await expect(page.getByTestId('login-screen')).toBeVisible();
   await expect(page.getByRole('radio', { name: 'Deutsch' })).toBeChecked();
   await page.getByLabel(cat().login.yourName).fill('Ada');
+  await pickGender(page);
   await page.mouse.move(10, 10);
   await shot('day1-login', 'de');
   await logOn().click();
