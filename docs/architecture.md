@@ -80,6 +80,10 @@ events.off(type, listener);
 - A listener that throws is logged with `console.error`. The other listeners still run.
 - In React, subscribe in `useEffect` and return the unsubscribe function. Tests use `createEventBus()` or `events.clear()`.
 
+## Content per locale and gender
+
+Content is read through the accessors in `src/content/locale.ts`, which return it for the current language (`docs/i18n.md`) and resolved for the player's gender (`docs/gender.md`). Saves keep ids and references only, so a language or gender switch re-renders chats, mail, sites and untouched files in place.
+
 ## Persistence
 
 - Uses `localStorage` with keys `still-online:v1:<store>`, where `<store>` is a `PersistedStoreName`: `settings`, `windows`, `notepad`, `messenger`, `amplifier`.

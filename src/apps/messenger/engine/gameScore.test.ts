@@ -44,7 +44,7 @@ describe('onGameScore', () => {
       params: { game: 'henhunt', score: 1240 },
     });
     expect(JSON.stringify(entry)).not.toContain('Hen Hunt');
-    expect(renderEntry(entry!, content, 'de', 'Ann')).toMatchObject({
+    expect(renderEntry(entry!, content, 'de', 'Ann', 'girl')).toMatchObject({
       text: '1.240 in Hühnerjagd??',
     });
   });

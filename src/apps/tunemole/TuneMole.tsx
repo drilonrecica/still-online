@@ -6,6 +6,7 @@ import { searchTuneMole } from '@/content/tunemole';
 import type { TuneMoleResult } from '@/content/types';
 import type { MessageKey } from '@/i18n/types';
 import { formatNumber } from '@/i18n/format';
+import { useGender } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { events } from '@/os/events';
 import { useFsStore } from '@/os/fs/store';
@@ -69,10 +70,13 @@ function SearchTab({ online }: { online: boolean }) {
   const [text, setText] = useState('');
   const [query, setQuery] = useState<string | null>(null);
   const locale = useLocale();
+  const gender = useGender();
   const results = useMemo(
     () =>
-      query === null ? [] : searchTuneMole(query, getTuneMoleResults(locale)),
-    [query, locale],
+      query === null
+        ? []
+        : searchTuneMole(query, getTuneMoleResults(locale, gender)),
+    [query, locale, gender],
   );
 
   const download = async (r: TuneMoleResult) => {

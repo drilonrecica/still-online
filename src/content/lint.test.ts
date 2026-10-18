@@ -1,5 +1,42 @@
 import { describe, expect, it } from 'vitest';
+import { g, gendered } from './gender';
 import { lintContentStrings, lintText } from './lint';
+
+describe('gender variants', () => {
+  it('passes well-formed variants and lints both sides', () => {
+    expect(lintText(`ur my fave ${g('cousine', 'cousin')}`, 'p')).toEqual([]);
+    expect(lintText(g('hi', 'see example.com'), 'p')).toHaveLength(1);
+  });
+
+  it.each([
+    ['unbalanced', '\uE000girl\uE001boy'],
+    ['nested', `\uE000${g('a', 'b')}\uE001c\uE002`],
+    ['empty side', g('girl', '')],
+  ])('fails a malformed variant (%s)', (_, text) => {
+    expect(lintText(text, 'p').length).toBeGreaterThan(0);
+    expect(lintContentStrings({ x: [text] }, 'm').length).toBeGreaterThan(0);
+  });
+
+  it('checks gendered() values', () => {
+    const ok = gendered({ girl: { scene: 'a' }, boy: { scene: 'b' } });
+    expect(lintContentStrings({ ok }, 'm')).toEqual([]);
+    const half = { __gendered: true, girl: 'x' };
+    expect(lintContentStrings({ half }, 'm')).toEqual([
+      'm.half: gendered value needs a girl and a boy side',
+    ]);
+    const mixed = gendered<unknown>({ girl: 'x', boy: 1 });
+    expect(lintContentStrings({ mixed }, 'm')).toEqual([
+      'm.mixed: gendered sides differ in type',
+    ]);
+    const nested = gendered({
+      girl: gendered({ girl: 'a', boy: 'b' }),
+      boy: 'c',
+    });
+    expect(lintContentStrings({ nested }, 'm')).toContain(
+      'm.nested.girl: nested gendered value',
+    );
+  });
+});
 
 describe('lintText', () => {
   it('passes plain text and .example links and emails', () => {

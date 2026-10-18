@@ -1,4 +1,5 @@
 // Script playback: triggers, the per-contact queue, line delivery and contact sign-in.
+import { resolveGender } from '@/content/gender';
 import type {
   ActiveScript,
   Contact,
@@ -61,6 +62,7 @@ export function createRunner(ctx: EngineContext) {
     lineStep,
     playerName,
     locale,
+    gender,
     isFocused,
     scheduler,
     after,
@@ -173,7 +175,10 @@ export function createRunner(ctx: EngineContext) {
     const { scriptId, nodeId, context } = r.active;
     const params = lineParams(context);
     const resolve = (t: string) =>
-      fillPlaceholders(t, params, locale(), playerName());
+      resolveGender(
+        fillPlaceholders(t, params, locale(), playerName()),
+        gender(),
+      );
     const text = textOf(id);
     return r.node.choices.map((c, i) => {
       const shown = scriptChoice(text, scriptId, nodeId, i) ?? c;
@@ -204,11 +209,14 @@ export function createRunner(ctx: EngineContext) {
       bus.emit('typingStart', { contactId: id });
       const { scriptId, nodeId, lineIndex } = r.active;
       const shown = scriptLine(textOf(id), scriptId, nodeId, lineIndex)?.text;
-      const text = fillPlaceholders(
-        shown ?? line.text,
-        lineParams(r.active.context),
-        locale(),
-        playerName(),
+      const text = resolveGender(
+        fillPlaceholders(
+          shown ?? line.text,
+          lineParams(r.active.context),
+          locale(),
+          playerName(),
+        ),
+        gender(),
       );
       lineStep(id, typingMs(text), () => {
         setFlag('typing', id, false);

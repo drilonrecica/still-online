@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { CONTACT_OVERLAYS } from './de/bundle';
 import { contacts } from './contacts';
 import { exampleContact } from './example.fixture';
+import { resolveGender } from './gender';
 import { SEED_FILES } from './files';
 import { MAIL_CONTENT } from './mail';
 import {
@@ -16,45 +17,63 @@ import {
   getTuneMoleResults,
   mergeOverlay,
   overlayFallbacks,
+  rawContentFor,
 } from './locale';
 import { PROFILES } from './profiles';
 import { FRIENDSPACE_HOST, FRIENDSPACE_TEXT } from './sites/friendspace';
 import type { ContactLine } from './types';
 
 describe('accessors', () => {
-  it('returns the English modules for en', () => {
-    expect(getContacts('en')).toBe(contacts);
-    expect(getSeedFiles('en')).toBe(SEED_FILES);
-    expect(getMailContent('en')).toBe(MAIL_CONTENT);
-    expect(getProfiles('en')).toBe(PROFILES);
-    expect(getSiteText(FRIENDSPACE_HOST, 'en').FRIENDSPACE_TEXT).toBe(
+  it('returns the English modules for en, resolved for the gender', () => {
+    expect(rawContentFor('en').seedFiles).toBe(SEED_FILES);
+    expect(rawContentFor('en').mail).toBe(MAIL_CONTENT);
+    // Modules without variants come back as they are.
+    expect(getContacts('en', 'girl')).toBe(contacts);
+    expect(getProfiles('en', 'boy')).toBe(PROFILES);
+    for (const gender of ['girl', 'boy'] as const) {
+      expect(getSeedFiles('en', gender)).toEqual(
+        resolveGender(SEED_FILES, gender),
+      );
+      expect(getMailContent('en', gender)).toEqual(
+        resolveGender(MAIL_CONTENT, gender),
+      );
+    }
+    // Resolved once per locale and gender.
+    expect(getSeedFiles('en', 'boy')).toBe(getSeedFiles('en', 'boy'));
+    expect(getSeedFiles('en', null)).toBe(getSeedFiles('en', 'girl'));
+    expect(getSiteText(FRIENDSPACE_HOST, 'en', 'girl').FRIENDSPACE_TEXT).toBe(
       FRIENDSPACE_TEXT,
     );
   });
 
   it('works for de: same contacts in the same order, overlays merged over English', () => {
-    const de = getContacts('de');
+    const de = getContacts('de', 'girl');
     expect(de.map((c) => c.contact.id)).toEqual(
       contacts.map((c) => c.contact.id),
     );
     de.forEach((c, i) =>
       expect(c).toEqual(
-        mergeOverlay(contacts[i]!, CONTACT_OVERLAYS[c.contact.id]),
+        resolveGender(
+          mergeOverlay(contacts[i]!, CONTACT_OVERLAYS[c.contact.id]),
+          'girl',
+        ),
       ),
     );
-    expect(getSeedFiles('de')).toHaveLength(SEED_FILES.length);
-    expect(getMailContent('de').map((m) => m.id)).toEqual(
+    expect(getSeedFiles('de', 'girl')).toHaveLength(SEED_FILES.length);
+    expect(getMailContent('de', 'girl').map((m) => m.id)).toEqual(
       MAIL_CONTENT.map((m) => m.id),
     );
-    expect(getProfiles('de').map((p) => p.contactId)).toEqual(
+    expect(getProfiles('de', 'girl').map((p) => p.contactId)).toEqual(
       PROFILES.map((p) => p.contactId),
     );
     expect(
-      getSiteText(FRIENDSPACE_HOST, 'de').FRIENDSPACE_TEXT.emptyWall,
+      getSiteText(FRIENDSPACE_HOST, 'de', 'girl').FRIENDSPACE_TEXT.emptyWall,
     ).toMatch(/^Noch keine Kommentare/);
-    expect(getBalloons('de').SCHEDULED_BALLOONS.length).toBeGreaterThan(0);
-    expect(getTips('de').TIPS.length).toBeGreaterThan(0);
-    expect(getTuneMoleResults('de').length).toBeGreaterThan(0);
+    expect(getBalloons('de', 'girl').SCHEDULED_BALLOONS.length).toBeGreaterThan(
+      0,
+    );
+    expect(getTips('de', 'girl').TIPS.length).toBeGreaterThan(0);
+    expect(getTuneMoleResults('de', 'girl').length).toBeGreaterThan(0);
   });
 
   it('reports every English text as a fallback without an overlay', () => {

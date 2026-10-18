@@ -4,8 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, MouseEvent, PointerEvent } from 'react';
 import type { Tip } from '@/content/assistant';
 import { getTips } from '@/content/locale';
+import { useGender } from '@/i18n/settingsText';
 import type { Locale } from '@/i18n/types';
 import { useLocale, useT } from '@/i18n/useT';
+import type { Gender } from '@/os/types';
 import { useSettingsStore } from '@/os/store/settings';
 import { TASKBAR_HEIGHT } from '@/os/types';
 import { StapleySprite } from './StapleySprite';
@@ -18,9 +20,9 @@ const DRAG_SLOP = 4;
 const WIDTH = 72;
 const HEIGHT = 64;
 
-/** `tip` with its text in `locale`: same id, same options in the same order. */
-function localized(tip: Tip, locale: Locale): Tip {
-  const { TIPS, IDLE_JOKES } = getTips(locale);
+/** `tip` with its text in `locale` for `gender`: same id, same options in the same order. */
+function localized(tip: Tip, locale: Locale, gender: Gender): Tip {
+  const { TIPS, IDLE_JOKES } = getTips(locale, gender);
   return [...TIPS, ...IDLE_JOKES].find((t) => t.id === tip.id) ?? tip;
 }
 
@@ -38,6 +40,7 @@ function Stapley() {
   const choose = useAssistantStore((s) => s.choose);
   const dismiss = useAssistantStore((s) => s.dismiss);
   const locale = useLocale();
+  const gender = useGender();
   const t = useT();
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [menu, setMenu] = useState(false);
@@ -96,7 +99,7 @@ function Stapley() {
   }
 
   // The store keeps the tip that was offered; text renders in the current language.
-  const tip = current && localized(current.tip, locale);
+  const tip = current && localized(current.tip, locale, gender);
   const replyIndex = current?.reply
     ? (current.tip.options ?? []).findIndex((o) => o.reply === current.reply)
     : -1;

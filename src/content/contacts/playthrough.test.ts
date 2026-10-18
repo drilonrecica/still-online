@@ -5,7 +5,9 @@ import { setup } from '@/apps/messenger/engine/test-helpers';
 import { translate } from '@/i18n/t';
 import { WALLPAPERS } from '@/os/wallpapers/registry';
 import type { Locale } from '@/i18n/types';
-import { getContacts, overlayFallbacks } from '../locale';
+import type { Gender } from '@/os/types';
+import { GENDERS } from '../gender';
+import { overlayFallbacks, rawContentFor } from '../locale';
 import { PLAYLIST } from '../playlist';
 import type { ContactContent, Script } from '../types';
 import { contacts } from './index';
@@ -38,6 +40,7 @@ function playPath(
   script: Script,
   picks: number[],
   onUnlock?: (id: string) => void,
+  gender: Gender = 'girl',
 ) {
   const id = content.contact.id;
   localStorage.clear(); // each path is a fresh player: scripts run once per save
@@ -57,7 +60,11 @@ function playPath(
   const solo: ContactContent = { ...content, scripts: [...target, script] };
   // A day script needs the world on its day before sign-in.
   const day = trigger.type === 'onDay' ? trigger.day : 1;
-  const t = setup([solo], { getDay: () => day, onUnlock });
+  const t = setup([solo], {
+    getDay: () => day,
+    onUnlock,
+    getGender: () => gender,
+  });
   t.engine.signIn();
   vi.advanceTimersByTime(content.contact.signInAfterMs + 1);
 
@@ -101,21 +108,34 @@ function playPath(
 }
 
 const LOCALES: readonly Locale[] = ['en', 'de'];
+const COMBOS = LOCALES.flatMap((locale) =>
+  GENDERS.map((gender) => [locale, gender] as const),
+);
 
-describe.each(LOCALES)(
-  'M2 gate (%s): every script, every path, plays to its end',
-  (locale) => {
-    for (const content of getContacts(locale)) {
+// The engine plays the raw content (variants unresolved) and resolves live lines and choices for
+// the player's gender, as the app does.
+describe.each(COMBOS)(
+  'M2 gate (%s, %s): every script, every path, plays to its end',
+  (locale, gender) => {
+    for (const content of rawContentFor(locale).contacts) {
       for (const script of content.scripts) {
         const all = paths(script);
         it(`${content.contact.id}/${script.id}: ${all.length} path(s) end cleanly`, () => {
           expect(all.length).toBeGreaterThan(0);
           for (const picks of all) {
-            const { t, id } = playPath(content, script, picks);
+            const { t, id } = playPath(
+              content,
+              script,
+              picks,
+              undefined,
+              gender,
+            );
             expect(t.log, picks.join(',')).toContain(`end ${id}/${script.id}`);
             expect(t.progress(id).active).toBeNull();
             const said = t.said(id).join('\n');
             expect(said).not.toMatch(/\{[^}]*\}/);
+            expect(said).not.toMatch(/[\uE000-\uE002]/);
+            expect(t.log.join('\n')).not.toMatch(/[\uE000-\uE002]/);
             expect(said).toContain('<');
           }
         });
@@ -123,6 +143,29 @@ describe.each(LOCALES)(
     }
   },
 );
+
+describe('G-02: a chat line varies by gender', () => {
+  const marco = rawContentFor('de').contacts.find(
+    (c) => c.contact.id === 'marco',
+  );
+  const script = marco?.scripts.find((s) =>
+    Object.values(s.nodes).some((n) =>
+      n.lines.some((l) => l.text?.includes('siehste. deswegen')),
+    ),
+  );
+
+  it.each([
+    ['girl', 'meine lieblingscousine'],
+    ['boy', 'mein lieblingscousin'],
+  ] as const)('German Marco calls a %s „%s“', (gender, words) => {
+    if (!marco || !script) throw new Error('marco line missing');
+    const hit = paths(script).some((picks) => {
+      const { t, id } = playPath(marco, script, picks, undefined, gender);
+      return t.said(id).some((l) => l.includes(`deswegen bist du ${words}`));
+    });
+    expect(hit).toBe(true);
+  });
+});
 
 /** Friends whose German overlay is complete (all six since P2-04). */
 const TRANSLATED = ['jess', 'kayla', 'dex', 'theo', 'marco', 'pia'];

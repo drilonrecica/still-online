@@ -1,6 +1,6 @@
 // friendspace.example `/<contactId>`: a friend's profile, with the comment wall up to today's day.
 // Any other single-segment path lands here too and shows "Lost in orbit!".
-import { usePlayerName } from '@/i18n/settingsText';
+import { useGender, usePlayerName } from '@/i18n/settingsText';
 import { getProfiles } from '@/content/locale';
 import { useLocale, useT } from '@/i18n/useT';
 import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
@@ -24,7 +24,8 @@ export default function Profile({ path }: SitePageProps) {
   const { FRIENDSPACE_TEXT: T } = useSiteText(FRIENDSPACE_HOST);
   const locale = useLocale();
   const t = useT();
-  const PROFILES = getProfiles(locale);
+  const gender = useGender();
+  const PROFILES = getProfiles(locale, gender);
   const day = useWorldStore((s) => s.day);
   const playerName = usePlayerName();
   const id = path.slice(1).toLowerCase();

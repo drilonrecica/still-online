@@ -10,15 +10,15 @@ import { MAIL_CONTENT } from './mail';
 import { PROFILES } from './profiles';
 import { TUNEMOLE_RESULTS } from './tunemole';
 
-const de = contentFor('de');
-const en = contentFor('en');
+const de = contentFor('de', 'girl');
+const en = contentFor('en', 'girl');
 
 describe('German content has no English fallback', () => {
   it('every contact text is overlaid', () => {
     for (const c of contacts) {
       expect(overlayFallbacks(c, CONTACT_OVERLAYS[c.contact.id])).toEqual([]);
     }
-    expect(getContacts('de')).toHaveLength(contacts.length);
+    expect(getContacts('de', 'girl')).toHaveLength(contacts.length);
   });
 
   it('serves German modules, not the English ones', () => {

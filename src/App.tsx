@@ -3,6 +3,7 @@ import { migrateLegacyNotepad } from '@/apps/notepad/migrate';
 import { installMailDelivery } from '@/apps/mail/store';
 import { installDisplayPictureRoute } from '@/apps/messenger/displayPictureRoute';
 import { getApp } from '@/apps/registry';
+import { getGender } from '@/i18n/settingsText';
 import { getLocale } from '@/i18n/t';
 import { useLocale } from '@/i18n/useT';
 import { installAmplifierRouter } from '@/os/amplifierRouter';
@@ -75,7 +76,7 @@ export function App() {
 
   // Seed the family computer's files; ids the player purged or already has are skipped.
   useEffect(() => {
-    useFsStore.getState().seed(seedFilesFor(getLocale()));
+    useFsStore.getState().seed(seedFilesFor(getLocale(), getGender()));
     migrateLegacyNotepad();
   }, []);
   useEffect(() => installGestureUnlock(), []);

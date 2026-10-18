@@ -173,7 +173,12 @@ describe('v0.2 file system', () => {
 
 describe('v0.2 mail', () => {
   const rendered = (): MailMessage[] =>
-    renderMails(useMailStore.getState().messages, 'en', playerAddress());
+    renderMails(
+      useMailStore.getState().messages,
+      'en',
+      playerAddress(),
+      'girl',
+    );
 
   it('migrates by kind and renders exactly the old mail in English', () => {
     // The v0.2 player logs on again and types the name they had.
@@ -215,7 +220,8 @@ describe('v0.2 mail', () => {
     const bounce = useMailStore
       .getState()
       .messages.find((r) => r.kind === 'bounce' && r.params.subject === '');
-    const de = bounce && renderMail(bounce, 'de', playerAddress('Spieler'));
+    const de =
+      bounce && renderMail(bounce, 'de', playerAddress('Spieler'), 'girl');
     expect(de).toMatchObject({
       from: { name: 'E-Mail-Zustellsystem' },
       subject: 'Unzustellbar: (kein Betreff)',
@@ -224,9 +230,9 @@ describe('v0.2 mail', () => {
     const again = useMailStore
       .getState()
       .messages.find((r) => r.kind === 'autoReply' && r.again);
-    expect(again && renderMail(again, 'de', playerAddress())?.subject).toBe(
-      'AW: again',
-    );
+    expect(
+      again && renderMail(again, 'de', playerAddress(), 'girl')?.subject,
+    ).toBe('AW: again');
   });
 });
 

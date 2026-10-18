@@ -11,7 +11,7 @@ import type {
 } from '@/content/mail/types';
 import type { MailRecord } from '@/content/types';
 import { getContacts } from '@/content/locale';
-import { getPlayerName } from '@/i18n/settingsText';
+import { getGender, getPlayerName } from '@/i18n/settingsText';
 import type { Locale } from '@/i18n/types';
 import { events } from '@/os/events';
 import { isRecord, persistOptions } from '@/os/persist';
@@ -60,7 +60,7 @@ export function playerAddress(name: string = getPlayerName()): MailAddress {
 /** The friend whose Messenger handle is `address` (names in `locale`). */
 export function friendFor(address: string, locale: Locale = 'en') {
   const needle = address.trim().toLowerCase();
-  return getContacts(locale).find(
+  return getContacts(locale, getGender()).find(
     (c) => c.contact.handle.toLowerCase() === needle,
   );
 }
@@ -118,7 +118,7 @@ export const useMailStore = create<MailStore>()(
 
         deliver: (
           day = currentDay(),
-          content = mailContentFor('en'),
+          content = mailContentFor('en', 'girl'), // ids and days only
           now = Date.now(),
         ) => {
           const { deliveredDays, messages } = get();
@@ -228,7 +228,9 @@ export const useMailStore = create<MailStore>()(
           }
 
           const contactId = friend.contact.id;
-          if (!autoRepliesFor('en').some((r) => r.contactId === contactId))
+          if (
+            !autoRepliesFor('en', 'girl').some((r) => r.contactId === contactId)
+          )
             return;
           const timer = setTimeout(() => {
             pendingReplies.delete(timer);

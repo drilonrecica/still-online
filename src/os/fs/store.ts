@@ -1,8 +1,10 @@
 // Virtual file system store. Persisted under `still-online:v1:fs` in a language-neutral shape
-// (`records.ts`); in memory nodes are rendered in the current locale and re-render on a switch.
+// (`records.ts`); in memory nodes are rendered in the current locale and gender and re-render on a
+// switch of either.
 // See docs/architecture-v0.2.md → "File system" and docs/i18n.md → "fs".
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { getGender } from '@/i18n/settingsText';
 import { getLocale, t } from '@/i18n/t';
 import { deleteBlob } from '@/os/blobStore';
 import { events } from '@/os/events';
@@ -258,16 +260,18 @@ export const useFsStore = create<FsStore>()(
   ),
 );
 
-/** Seed ids exist in every locale; English decides which nodes are seeds with content. */
-const ENGLISH_SEEDS = seedLookup(seedFilesFor('en'));
+/** Seed ids exist in every locale and gender; English decides which nodes are seeds with content. */
+const ENGLISH_SEEDS = seedLookup(seedFilesFor('en', 'girl'));
 
-// Live switching: system folder names and untouched seeds re-render in the new language.
-let renderedIn = getLocale();
+// Live switching: system folder names and untouched seeds re-render in the new language, and
+// untouched seeds in the new gender. Dirty seeds keep the player's text.
+const renderKey = () => `${getLocale()}:${getGender()}`;
+let renderedFor = renderKey();
 useSettingsStore.subscribe(() => {
-  const locale = getLocale();
-  if (locale === renderedIn) return;
-  renderedIn = locale;
+  const key = renderKey();
+  if (key === renderedFor) return;
+  renderedFor = key;
   const { nodes } = useFsStore.getState();
-  const next = localizeNodes(nodes, locale, seedLookup(seedFilesFor(locale)));
+  const next = localizeNodes(nodes, getLocale(), getGender());
   if (next !== nodes) useFsStore.setState({ nodes: next });
 });

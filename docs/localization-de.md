@@ -15,7 +15,7 @@ A German 15-year-old in 2007 should feel at home. They sit at the family PC afte
 
 Shared basics for all friends: they write mostly **lowercase** (nouns too), use **„du"** with the player, and type the way people talk („hab", „is", „nich", „ma", „nen", „grad", „haste"). Emoticon codes stay exactly the same (`:) :( :D ;) :P :O (Y) (N) <3 (L)`).
 
-**The player has no gender.** German marks gender where English doesn't, so never use a gendered noun or adjective for the player: no „mein Lieblingscousin", „Held", „Konzertpartner", „du bist so süß, Kleine". Rephrase with neutral words instead: „mein Lieblingsmensch in der Familie" (not „Lieblingscousin"), „du bist die BESTE PERSON" or „du bist GENIAL" (not „mein Held"), „bester Konzertmensch" (not „Konzertpartner"). „Zwerg" is fine: it's grammatically masculine but used for any kid. No gender-star forms („Held*in") either; they're not 2007.
+**The player is a girl or a boy** (chosen at login, since v0.4 phase G). German marks gender where English doesn't, so use natural gendered forms through `g(girl, boy)` (`src/content/gender.ts`, see `docs/gender.md`): `` `deswegen bist du ${g('meine lieblingscousine', 'mein lieblingscousin')}` ``, `` `du bist ${g('die', 'der')} BESTE` ``, `g('Heldin', 'Held')`, `g('Konzertpartnerin', 'Konzertpartner')`. German may use a variant where the English line has none. **Never gender-star forms** („Held*in", „Partner:in"); they're not 2007. **Friends' own words don't change:** only what is said to or about the player varies; how Jess, Kayla, Dex, Theo, Marco and Pia talk about themselves stays the same for both. „Zwerg" stays Marco's nickname for the player either way: it's grammatically masculine but used for any kid.
 
 ### Jess: loud, ALL CAPS, nudges
 
@@ -71,14 +71,14 @@ The bio partner. He apologizes for existing („sorry", „tschuldige", „tschu
 
 The older cousin at Uni with the band. **All lowercase, never an exclamation mark**, short deadpan sentences, mostly correct spelling (he's a student, not a kid). Calls the player „zwerg". Understatement over excitement. „klassiker." is his "classic."
 
-| English                                          | German                                                          |
-| ------------------------------------------------ | --------------------------------------------------------------- |
-| `hey kid`                                        | `hey zwerg`                                                     |
-| `and dont fill it with toolbars lol`             | `und müll ihn nicht mit toolbars zu. lol`                       |
-| `velvet lantern @ the rec hall, saturday`        | `velvet lantern im jugendzentrum, samstag`                      |
-| `ok flames maybe. small flames. tasteful flames` | `ok vielleicht flammen. kleine flammen. geschmackvolle flammen` |
-| `see. this is why ur my favorite cousin`         | `siehste. deswegen bist du mein lieblingsmensch in der familie` |
-| `away. classic.` (away reply)                    | `abwesend. klassiker.`                                          |
+| English                                          | German                                                                             |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| `hey kid`                                        | `hey zwerg`                                                                        |
+| `and dont fill it with toolbars lol`             | `und müll ihn nicht mit toolbars zu. lol`                                          |
+| `velvet lantern @ the rec hall, saturday`        | `velvet lantern im jugendzentrum, samstag`                                         |
+| `ok flames maybe. small flames. tasteful flames` | `ok vielleicht flammen. kleine flammen. geschmackvolle flammen`                    |
+| `see. this is why ur my favorite cousin`         | `siehste. deswegen bist du ${g('meine lieblingscousine', 'mein lieblingscousin')}` |
+| `away. classic.` (away reply)                    | `abwesend. klassiker.`                                                             |
 
 ### Pia: the bossy little sister
 
@@ -289,7 +289,7 @@ Use these terms everywhere (chat, mail, files, profiles, sites) so callbacks con
 - **No English left** except loanwords German teens really used in 2007: cool, sorry, lol, okay/ok, chillen, Party, Fan, Flyer, Hoodie, Toolbar, Kickflip, Board, Skatepark, Drumstick, Drama-Queen, Camcorder, Handy, 4ever. "crush" is borderline → prefer „verknallt" / „Schwarm". "rn", "tmrw", "tbh", "jk" → „grad", „morgen", „ehrlich gesagt", „spaß".
 - **No ae/oe/ue/ss substitutes** for ä ö ü ß, except a deliberate chat voice (nobody in the cast has one by default).
 - **Quotes:** „…" everywhere, chat included (P2-01 decision). `…` or `...` both fine in chat; prose uses `…`.
-- **No gendered forms for the player** (see §2).
+- **No gender-star forms, and no neutral workarounds for the player** (see §2): use `g()` with the natural girl and boy forms.
 - **No weekday names for story days**, same as English: „heute", „gestern", „Tag 3". Days the English already names (the concert „nächsten Freitag") keep them.
 - **No US-only references:** dollars, Thanksgiving, letter grades, homeroom, prom, Halloween trick-or-treat, high-school football, yearbook. Swap them using §4 and §5.
 

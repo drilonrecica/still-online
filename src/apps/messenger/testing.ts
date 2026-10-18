@@ -1,6 +1,7 @@
-// Test-only: a contact's stored Messenger state rendered in English, as the views show it.
+// Test-only: a contact's stored Messenger state rendered in English for the current gender, as
+// the views show it.
 import type { ContactId, TranscriptEntry } from '@/content/types';
-import { getPlayerName } from '@/i18n/settingsText';
+import { getGender, getPlayerName } from '@/i18n/settingsText';
 import { renderPersonalMessage, renderTranscript } from './engine';
 import { getMessengerContent } from './runtime';
 import { useMessengerStore } from './store';
@@ -11,9 +12,10 @@ const progressOf = (id: ContactId) =>
 export function shownTranscript(id: ContactId): TranscriptEntry[] {
   return renderTranscript(
     progressOf(id)?.transcript ?? [],
-    getMessengerContent(id, 'en'),
+    getMessengerContent(id, 'en', getGender()),
     'en',
     getPlayerName(),
+    getGender(),
   );
 }
 
@@ -27,8 +29,9 @@ export function shownTexts(id: ContactId): string[] {
 export function shownPersonalMessage(id: ContactId): string {
   return renderPersonalMessage(
     progressOf(id)?.personalMessage ?? 'initial',
-    getMessengerContent(id, 'en'),
+    getMessengerContent(id, 'en', getGender()),
     'en',
     getPlayerName(),
+    getGender(),
   );
 }

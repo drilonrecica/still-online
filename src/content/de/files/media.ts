@@ -1,4 +1,5 @@
 // German My Pictures and My Music (`src/content/files/media.ts`): file names and photo captions.
+import { g } from '../../gender';
 import type { SeedText } from './types';
 
 export const PICTURES: Readonly<Record<string, SeedText>> = {
@@ -24,7 +25,10 @@ export const PICTURES: Readonly<Record<string, SeedText>> = {
   },
   'me-webcam-test': {
     name: 'ich_webcam_test.jpg',
-    caption: 'teste die neue webcam. sehen meine haare immer so aus',
+    caption: g(
+      'teste die neue webcam. sehen meine haare immer so aus',
+      'teste die neue webcam. stehen meine haare echt immer so ab',
+    ),
   },
 };
 

@@ -1,7 +1,9 @@
 // Shared engine internals: store access and timers. Used by runner.ts and engine.ts.
+import { getGender as currentGender } from '@/i18n/settingsText';
 import { getLocale as currentLocale } from '@/i18n/t';
 import type { Locale } from '@/i18n/types';
 import { createEventBus } from '@/os/events';
+import type { Gender } from '@/os/types';
 import type {
   ContactContent,
   ContactId,
@@ -23,13 +25,16 @@ export interface ConversationEngineOptions {
   getPlayerName?: () => string;
   /** The locale choices and typing times are rendered in. Default: the app's locale. */
   getLocale?: () => Locale;
+  /** The gender live lines and choices resolve for. Default: the player's gender. */
+  getGender?: () => Gender;
   /**
-   * A contact's content with its text in `locale` (same scripts and nodes as `contents`).
-   * Default: `contents`, whatever the locale.
+   * A contact's content with its text in `locale` for `gender` (same scripts and nodes as
+   * `contents`). Default: `contents`, whatever the locale.
    */
   getText?: (
     contactId: ContactId,
     locale: Locale,
+    gender: Gender,
   ) => ContactContent | undefined;
   /** True while the contact's chat window is focused; such messages don't count as unread. */
   isChatFocused?: (contactId: ContactId) => boolean;
@@ -46,6 +51,7 @@ export function createEngineContext(options: ConversationEngineOptions) {
   const scheduler = options.scheduler ?? realScheduler;
   const playerName = options.getPlayerName ?? (() => 'Player');
   const locale = options.getLocale ?? currentLocale;
+  const gender = options.getGender ?? currentGender;
   const isFocused = options.isChatFocused ?? (() => false);
   const getDay = options.getDay ?? (() => 1);
   const onUnlock = options.onUnlock ?? (() => {});
@@ -57,9 +63,9 @@ export function createEngineContext(options: ConversationEngineOptions) {
 
   const data = () => store.getState();
   const contentOf = (id: ContactId) => byId.get(id);
-  /** `id`'s content with text in the current locale. */
+  /** `id`'s content with text in the current locale and gender. */
   const textOf = (id: ContactId) =>
-    options.getText?.(id, locale()) ?? contentOf(id);
+    options.getText?.(id, locale(), gender()) ?? contentOf(id);
   const progressOf = (id: ContactId): ContactProgress => {
     const p = data().progress.contacts[id];
     if (p) return p;
@@ -123,6 +129,7 @@ export function createEngineContext(options: ConversationEngineOptions) {
     scheduler,
     playerName,
     locale,
+    gender,
     isFocused,
     getDay,
     onUnlock,

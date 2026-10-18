@@ -1,5 +1,6 @@
 // Day 1 mail: the new computer's welcome mail, mom's rules, Mr Dalton's project reminder, Pia's
 // brand-new address and the first prize spam.
+import { g } from '../gender';
 import type { MailContent } from './types';
 
 export const day1Mail: readonly MailContent[] = [
@@ -38,7 +39,7 @@ export const day1Mail: readonly MailContent[] = [
     from: { name: 'Mom', address: 'mom.at.home@livemail.example' },
     subject: 'COMPUTER RULES (please read!!)',
     body: [
-      'Hi sweetie,',
+      g('Hi sweetie,', 'Hi buddy,'),
       '',
       'Dad set up an email for me so now I can email you from downstairs. Isnt that fun!! Here are the computer rules. I am also putting them on the fridge.',
       '',

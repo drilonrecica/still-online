@@ -1,5 +1,5 @@
 import { formatNumber } from '@/i18n/format';
-import { usePlayerName } from '@/i18n/settingsText';
+import { useGender, usePlayerName } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ContactStatus, PlayerStatus } from '@/content/types';
@@ -192,9 +192,11 @@ function ContactListView() {
   );
 
   const localized = useLocalizedContents();
+  const gender = useGender();
   const groups = useMemo(
-    () => buildContactList(localized, progress, online, locale, playerName),
-    [localized, progress, online, locale, playerName],
+    () =>
+      buildContactList(localized, progress, online, locale, playerName, gender),
+    [localized, progress, online, locale, playerName, gender],
   );
   const waiting = groups
     .flatMap((g) => g.entries)

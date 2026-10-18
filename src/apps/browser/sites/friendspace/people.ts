@@ -3,6 +3,7 @@
 import { getContacts } from '@/content/locale';
 import type { ProfileComment, TopFriend } from '@/content/profiles/types';
 import type { ContactId } from '@/content/types';
+import { getGender } from '@/i18n/settingsText';
 import type { Locale } from '@/i18n/types';
 import { extraColors, fillName } from './logic';
 import type { PictureSpec, TopFriendView, WallComment } from './ProfileView';
@@ -10,13 +11,14 @@ import type { PictureSpec, TopFriendView, WallComment } from './ProfileView';
 /** The player's default pattern colours (the same as Messenger's default picture). */
 const PLAYER_COLORS = ['#dfe9f8', '#1d4f99'] as const;
 
-export const FRIEND_IDS: readonly ContactId[] = getContacts('en').map(
+export const FRIEND_IDS: readonly ContactId[] = getContacts('en', 'girl').map(
   (c) => c.contact.id,
 );
 
 /** A friend's contact, with names in `locale`. */
 export function friend(id: ContactId, locale: Locale = 'en') {
-  return getContacts(locale).find((c) => c.contact.id === id)?.contact;
+  return getContacts(locale, getGender()).find((c) => c.contact.id === id)
+    ?.contact;
 }
 
 export function friendPicture(id: ContactId): PictureSpec {

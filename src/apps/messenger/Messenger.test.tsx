@@ -360,6 +360,7 @@ describe('buildContactList', () => {
       { ann: true, bob: true },
       'en',
       'Player',
+      'girl',
     );
     expect(list.map((g) => g.id)).toEqual(['friends']);
     expect(list[0]!.entries.map((e) => e.contact.id)).toEqual(['ann', 'bob']);

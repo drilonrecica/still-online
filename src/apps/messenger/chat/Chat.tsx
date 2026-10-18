@@ -1,5 +1,5 @@
 // Chat window (app `messenger-chat`): one per contact via `props.contactId`.
-import { usePlayerName } from '@/i18n/settingsText';
+import { useGender, usePlayerName } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Contact } from '@/content/types';
@@ -74,7 +74,8 @@ function ChatView({
   const markRead = useMessengerStore((s) => s.markRead);
   const playerName = usePlayerName();
   const locale = useLocale();
-  const text = getMessengerContent(id, locale);
+  const gender = useGender();
+  const text = getMessengerContent(id, locale, gender);
   const focused = useWindowsStore((s) => selectActiveWindowId(s) === windowId);
   const [notice, setNotice] = useState<string | null>(null);
   const root = useShake(id);
@@ -87,11 +88,12 @@ function ChatView({
     text,
     locale,
     playerName,
+    gender,
   );
   const stored = progress?.transcript;
   const entries = useMemo(
-    () => renderTranscript(stored ?? [], text, locale, playerName),
-    [stored, text, locale, playerName],
+    () => renderTranscript(stored ?? [], text, locale, playerName, gender),
+    [stored, text, locale, playerName, gender],
   );
   const unread = progress?.unread ?? 0;
 

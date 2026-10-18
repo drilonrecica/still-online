@@ -2,7 +2,8 @@
 // names, text and captions are German.
 import { describe, expect, it } from 'vitest';
 import { lintContentStrings } from '@/content/lint';
-import { getSeedFiles } from '@/content/locale';
+import { resolveGender } from '@/content/gender';
+import { getSeedFiles, rawContentFor } from '@/content/locale';
 import { parseNode } from '@/os/fs/nodes';
 import { FS_FOLDERS, type FsNode } from '@/os/fs/types';
 import { SEED_FILES as EN } from '../../files';
@@ -18,7 +19,11 @@ const structure = (node: FsNode) => ({
 
 describe('German seeded files', () => {
   it('is what getSeedFiles returns for de', () => {
-    expect(getSeedFiles('de')).toBe(SEED_FILES);
+    expect(rawContentFor('de').seedFiles).toBe(SEED_FILES);
+    expect(getSeedFiles('de', 'girl')).toEqual(
+      resolveGender(SEED_FILES, 'girl'),
+    );
+    expect(getSeedFiles('de', 'boy')).toEqual(resolveGender(SEED_FILES, 'boy'));
   });
 
   it('has German text for every English seed and no strays', () => {

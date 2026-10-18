@@ -2,6 +2,7 @@
 // them), the player's editable `/me`, and a `/*` catch-all for profiles lost in orbit.
 import { lazy } from 'react';
 import { getSiteText } from '@/content/locale';
+import { getGender } from '@/i18n/settingsText';
 import { PROFILES } from '@/content/profiles';
 import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import type { SitePage, SiteDefinition } from '@/content/sites/types';
@@ -14,7 +15,11 @@ const friendPaths = PROFILES.map((p) => `/${p.contactId}`);
 export const FRIENDSPACE_SITE: SiteDefinition = {
   host: FRIENDSPACE_HOST,
   meta: (locale) => {
-    const { SITE_META, PROFILE_PAGE } = getSiteText(FRIENDSPACE_HOST, locale);
+    const { SITE_META, PROFILE_PAGE } = getSiteText(
+      FRIENDSPACE_HOST,
+      locale,
+      getGender(),
+    );
     const friendPages = Object.fromEntries(
       PROFILES.map((p) => [
         `/${p.contactId}`,

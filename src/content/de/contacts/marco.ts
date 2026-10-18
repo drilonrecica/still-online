@@ -1,5 +1,6 @@
 // German text for marco (docs/localization-de.md → "Marco: dry, lowercase, never „!“"). Same ids,
 // same line and choice counts as `src/content/contacts/marco*.ts`; '' = a line without text.
+import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
 
 export const marco: ContactOverlay = {
@@ -169,7 +170,7 @@ export const marco: ContactOverlay = {
       },
       serious: {
         lines: [
-          'siehste. deswegen bist du mein lieblingsmensch in der familie',
+          `siehste. deswegen bist du ${g('meine lieblingscousine', 'mein lieblingscousin')}`,
           'sags nicht den anderen',
           'schick ihn mir per mail, wenn du fertig bist. kein stress. bis freitag',
           '',

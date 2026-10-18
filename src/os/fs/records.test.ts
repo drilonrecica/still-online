@@ -47,7 +47,7 @@ const withSeeds = (...extra: FsNode[]) => {
 
 describe('localizeNodes', () => {
   it('renders system folders and untouched seeds in the locale', () => {
-    const de = localizeNodes(withSeeds(), 'de', DE);
+    const de = localizeNodes(withSeeds(), 'de', 'girl', DE);
     expect(de.docs?.name).toBe('Eigene Dateien');
     expect(de['seed:poem']).toMatchObject({
       name: 'gedicht.txt',
@@ -58,7 +58,7 @@ describe('localizeNodes', () => {
       seed: 3,
       caption: 'im Lager',
     });
-    const back = localizeNodes(de, 'en', EN);
+    const back = localizeNodes(de, 'en', 'girl', EN);
     expect(back).toEqual(withSeeds());
   });
 
@@ -66,10 +66,10 @@ describe('localizeNodes', () => {
     const mine: FsNode = { ...poem, id: 'f:1', name: 'mine.txt' };
     const nodes = withSeeds(mine);
     nodes['seed:poem'] = { ...poem, name: 'renamed.txt', dirty: true };
-    const de = localizeNodes(nodes, 'de', DE);
+    const de = localizeNodes(nodes, 'de', 'girl', DE);
     expect(de['seed:poem']?.name).toBe('renamed.txt');
     expect(de['f:1']).toBe(mine);
-    expect(localizeNodes(de, 'de', DE)).toBe(de);
+    expect(localizeNodes(de, 'de', 'girl', DE)).toBe(de);
   });
 });
 
@@ -95,9 +95,9 @@ describe('toRecord', () => {
 describe('sanitizeFsState', () => {
   it('round-trips the neutral shape in either language', () => {
     const records = { nodes: toRecords(withSeeds(), EN), purgedSeeds: [] };
-    const en = sanitizeFsState(records, T, 'en', EN, EN);
+    const en = sanitizeFsState(records, T, 'en', 'girl', EN, EN);
     expect(en.nodes).toEqual(withSeeds());
-    const de = sanitizeFsState(records, T, 'de', DE, EN);
+    const de = sanitizeFsState(records, T, 'de', 'girl', DE, EN);
     expect(de.nodes['seed:poem']).toMatchObject({
       name: 'gedicht.txt',
       text: 'Rosen',
@@ -112,7 +112,7 @@ describe('sanitizeFsState', () => {
         'seed:poem': { ...poem, text: 'my edit' },
       },
     };
-    const de = sanitizeFsState(v02, T, 'de', DE, EN);
+    const de = sanitizeFsState(v02, T, 'de', 'girl', DE, EN);
     expect(de.nodes['seed:camp']).toMatchObject({ name: 'zeltlager.jpg' });
     expect(de.nodes['seed:camp']).not.toHaveProperty('dirty');
     expect(de.nodes['seed:poem']).toMatchObject({
@@ -124,7 +124,14 @@ describe('sanitizeFsState', () => {
 
   it('drops a neutral seed record whose content is gone', () => {
     const records = { nodes: toRecords(withSeeds(), EN) };
-    const out = sanitizeFsState(records, T, 'en', seedLookup([camp]), EN);
+    const out = sanitizeFsState(
+      records,
+      T,
+      'en',
+      'girl',
+      seedLookup([camp]),
+      EN,
+    );
     expect(out.nodes['seed:poem']).toBeUndefined();
     expect(out.nodes['seed:camp']).toBeDefined();
   });

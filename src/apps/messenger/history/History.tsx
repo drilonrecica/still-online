@@ -1,5 +1,5 @@
 // Message History (app `messenger-history`): per-contact transcript browser with dates, search and Clear History.
-import { usePlayerName } from '@/i18n/settingsText';
+import { useGender, usePlayerName } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { Fragment, useMemo, useState } from 'react';
 import type { AppComponentProps } from '@/os/types';
@@ -43,6 +43,7 @@ export default function History({ props }: AppComponentProps) {
   const t = useT();
   const playerName = usePlayerName();
   const locale = useLocale();
+  const gender = useGender();
   const progress = useMessengerStore((s) => s.progress.contacts);
   const clearTranscript = useMessengerStore((s) => s.clearTranscript);
   const [picked, setPicked] = useState<string | null>(
@@ -51,7 +52,7 @@ export default function History({ props }: AppComponentProps) {
   const [query, setQuery] = useState('');
   const [confirming, setConfirming] = useState(false);
 
-  const withHistory = getLocalizedContents(locale)
+  const withHistory = getLocalizedContents(locale, gender)
     .map((c) => ({
       contact: c.contact,
       count: progress[c.contact.id]?.transcript.length ?? 0,
@@ -66,14 +67,15 @@ export default function History({ props }: AppComponentProps) {
         selectedId
           ? renderTranscript(
               progress[selectedId]?.transcript ?? [],
-              getMessengerContent(selectedId, locale),
+              getMessengerContent(selectedId, locale, gender),
               locale,
               playerName,
+              gender,
             )
           : [],
         query,
       ),
-    [progress, selectedId, query, locale, playerName],
+    [progress, selectedId, query, locale, playerName, gender],
   );
 
   function select(id: string) {

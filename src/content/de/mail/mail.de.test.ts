@@ -2,7 +2,12 @@
 import { describe, expect, it } from 'vitest';
 import { resolve } from '@/apps/browser/sites';
 import { lintContentStrings } from '@/content/lint';
-import { getAutoReplies, getMailContent } from '@/content/locale';
+import { resolveGender } from '@/content/gender';
+import {
+  getAutoReplies,
+  getMailContent,
+  rawContentFor,
+} from '@/content/locale';
 import { splitLinks } from '@/os/linkify';
 import { MAIL_CONTENT as EN } from '../../mail';
 import { autoReplies as EN_REPLIES } from '../../mail/autoReplies';
@@ -21,8 +26,11 @@ const links = (m: MailContent) =>
 
 describe('German mail', () => {
   it('is what the accessors return for de', () => {
-    expect(getMailContent('de')).toBe(MAIL_CONTENT);
-    expect(getAutoReplies('de')).toBe(autoReplies);
+    expect(rawContentFor('de').mail).toBe(MAIL_CONTENT);
+    expect(getMailContent('de', 'boy')).toEqual(
+      resolveGender(MAIL_CONTENT, 'boy'),
+    );
+    expect(getAutoReplies('de', 'girl')).toBe(autoReplies);
   });
 
   it('has the English ids, days and sender addresses, in order', () => {

@@ -84,8 +84,16 @@ describe('content lint: shipped contacts', () => {
     },
   );
 
-  it.each(['en', 'de'] as const)('marco never uses "!" (%s)', (locale) => {
-    const marco = getContacts(locale).find((c) => c.contact.id === 'marco');
+  // Checked on resolved content, so both sides of every gender variant count.
+  it.each([
+    ['en', 'girl'],
+    ['en', 'boy'],
+    ['de', 'girl'],
+    ['de', 'boy'],
+  ] as const)('marco never uses "!" (%s, %s)', (locale, gender) => {
+    const marco = getContacts(locale, gender).find(
+      (c) => c.contact.id === 'marco',
+    );
     const texts = [
       marco?.contact.personalMessage,
       ...Object.values(marco?.contact.days ?? {}).map(

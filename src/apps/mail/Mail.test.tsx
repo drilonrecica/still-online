@@ -23,7 +23,7 @@ import { renderMails } from './records';
 
 /** The mailbox as the player reads it, in English. */
 const shown = () =>
-  renderMails(useMailStore.getState().messages, 'en', playerAddress());
+  renderMails(useMailStore.getState().messages, 'en', playerAddress(), 'girl');
 
 const CONTENT: MailContent[] = [
   {

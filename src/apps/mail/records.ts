@@ -1,6 +1,6 @@
 // The `mail` store's language-neutral records (docs/i18n.md → "mail"): sanitize, v0.2 migration
 // and render-time text. Only player-written (`text`) mail stores prose; everything else renders
-// from content or the catalog in the current locale.
+// from content or the catalog in the current locale and gender.
 import { getAutoReplies, getContacts, getMailContent } from '@/content/locale';
 import type {
   AutoReply,
@@ -14,6 +14,7 @@ import type { MailRecord } from '@/content/types';
 import { translate } from '@/i18n/t';
 import type { Locale } from '@/i18n/types';
 import { isRecord } from '@/os/persist';
+import type { Gender } from '@/os/types';
 
 export const MAILER_DAEMON_ADDRESS = 'mailer-daemon@livemail.example';
 
@@ -25,19 +26,26 @@ export const PLAYER: MailAddress = { name: '', address: '' };
 
 const isPlayer = (a: MailAddress) => a.address === '';
 
-export const mailContentFor = (locale: Locale): readonly MailContent[] =>
-  getMailContent(locale);
-export const autoRepliesFor = (locale: Locale): readonly AutoReply[] =>
-  getAutoReplies(locale);
+export const mailContentFor = (
+  locale: Locale,
+  gender: Gender,
+): readonly MailContent[] => getMailContent(locale, gender);
+export const autoRepliesFor = (
+  locale: Locale,
+  gender: Gender,
+): readonly AutoReply[] => getAutoReplies(locale, gender);
 
-// Ids are the same in every locale.
-const CONTENT_IDS = new Set(getMailContent('en').map((c) => c.id));
+// Ids are the same in every locale and gender.
+const CONTENT_IDS = new Set(getMailContent('en', 'girl').map((c) => c.id));
 
 /** True when `id` is authored mail that renders by id. */
 export const isContentId = (id: string): boolean => CONTENT_IDS.has(id);
 
-export const friendById = (id: string, locale: Locale = 'en') =>
-  getContacts(locale).find((c) => c.contact.id === id)?.contact;
+export const friendById = (
+  id: string,
+  locale: Locale = 'en',
+  gender: Gender = 'girl',
+) => getContacts(locale, gender).find((c) => c.contact.id === id)?.contact;
 
 const FOLDERS: readonly MailFolder[] = ['inbox', 'sent', 'deleted'];
 const str = (v: unknown): v is string => typeof v === 'string';
@@ -146,13 +154,13 @@ export function migrateV02(
     };
   }
   const handle = m.from.address.toLowerCase();
-  // v0.2 saves are English.
-  const friend = getContacts('en').find(
+  // v0.2 saves are English, from before gender (the girl side).
+  const friend = getContacts('en', 'girl').find(
     (c) => c.contact.handle.toLowerCase() === handle,
   );
   const reply =
     friend &&
-    getAutoReplies('en').find((r) => r.contactId === friend.contact.id);
+    getAutoReplies('en', 'girl').find((r) => r.contactId === friend.contact.id);
   if (
     friend &&
     reply &&
@@ -229,13 +237,15 @@ export function sanitizeRecord(
 }
 
 /**
- * The mail as the player reads it, in `locale`. Null for authored mail whose content is gone.
- * `player` is the player's current address (`playerAddress()`).
+ * The mail as the player reads it, in `locale` for `gender`. Null for authored mail whose content
+ * is gone. `player` is the player's current address (`playerAddress()`). Attachments saved to
+ * the disk are frozen copies and don't change.
  */
 export function renderMail(
   r: MailRecord,
   locale: Locale,
   player: MailAddress,
+  gender: Gender,
 ): MailMessage | null {
   const base = {
     id: r.id,
@@ -246,7 +256,7 @@ export function renderMail(
   const subjectOr = (s: string) => s || translate(locale, 'mail.noSubject');
   switch (r.kind) {
     case 'content': {
-      const c = mailContentFor(locale).find((m) => m.id === r.id);
+      const c = mailContentFor(locale, gender).find((m) => m.id === r.id);
       if (!c) return null;
       return {
         ...base,
@@ -274,8 +284,8 @@ export function renderMail(
         attachments: [],
       };
     case 'autoReply': {
-      const friend = friendById(r.contactId, locale);
-      const reply = autoRepliesFor(locale).find(
+      const friend = friendById(r.contactId, locale, gender);
+      const reply = autoRepliesFor(locale, gender).find(
         (x) => x.contactId === r.contactId,
       );
       if (!friend || !reply) return null;
@@ -311,6 +321,7 @@ export function renderMails(
   records: readonly MailRecord[],
   locale: Locale,
   player: MailAddress,
+  gender: Gender,
 ): MailMessage[] {
-  return records.flatMap((r) => renderMail(r, locale, player) ?? []);
+  return records.flatMap((r) => renderMail(r, locale, player, gender) ?? []);
 }

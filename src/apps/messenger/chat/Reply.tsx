@@ -1,5 +1,5 @@
 // Player replies: scripted choice buttons fill the input; Send (or Enter) sends the picked one.
-import { usePlayerName } from '@/i18n/settingsText';
+import { useGender, usePlayerName } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { useMemo, useRef, useState } from 'react';
 import type { ContactId } from '@/content/types';
@@ -19,16 +19,17 @@ export function Reply({
   const active = useMessengerStore(
     (s) => s.progress.contacts[contactId]?.active ?? null,
   );
-  // The engine renders choices in the current locale and name; recompute when either changes.
+  // The engine renders choices in the current locale, name and gender; recompute on a change.
   const locale = useLocale();
   const playerName = usePlayerName();
+  const gender = useGender();
   const choices = useMemo(
     () =>
       !disabled && active?.awaitingChoice
         ? getMessengerEngine().getChoices(contactId)
         : null,
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- locale/playerName are read by the engine
-    [disabled, active, contactId, locale, playerName],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- locale/playerName/gender are read by the engine
+    [disabled, active, contactId, locale, playerName, gender],
   );
 
   // A pick only counts for the choice set it was made in.

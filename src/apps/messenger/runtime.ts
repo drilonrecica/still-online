@@ -1,9 +1,10 @@
 // The app-wide conversation engine: one instance, created on first use, bound to the messenger store.
-import { getPlayerName } from '@/i18n/settingsText';
+import { getGender, getPlayerName, useGender } from '@/i18n/settingsText';
 import { getLocale, t } from '@/i18n/t';
 import type { Locale } from '@/i18n/types';
 import { useLocale } from '@/i18n/useT';
-import { getContacts } from '@/content/locale';
+import { resolvedFor } from '@/content/gender';
+import { getContacts, rawContentFor } from '@/content/locale';
 import type { ContactContent, ContactId } from '@/content/types';
 import { events } from '@/os/events';
 import { useNowPlayingStore } from '@/os/nowPlaying';
@@ -11,6 +12,7 @@ import { attentionKey, useAttentionStore } from '@/os/store/attention';
 import { playSound, type SoundName } from '@/os/sound';
 import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
+import type { Gender } from '@/os/types';
 import { useToastStore } from '@/os/toast/store';
 import { onIdle } from '@/os/idle';
 import { useWorldStore } from '@/os/world';
@@ -32,8 +34,8 @@ export const TOAST_PREVIEW_CHARS = 40;
 let engine: ConversationEngine | null = null;
 let stopListening: (() => void) | null = null;
 /** What the engine plays: the English structure (ids, scripts, nodes) of the shipped contacts. */
-let contents: readonly ContactContent[] = getContacts('en');
-/** Per-locale text; `null` = the shipped content (`getContacts(locale)`). Tests swap both. */
+let contents: readonly ContactContent[] = rawContentFor('en').contacts;
+/** Per-locale text; `null` = the shipped content (`getContacts(locale, gender)`). Tests swap both. */
 let localized: Partial<Record<Locale, readonly ContactContent[]>> | null = null;
 
 /** The chat window for `contactId` is the active window. */
@@ -50,6 +52,7 @@ function createEngine(): ConversationEngine {
     store: useMessengerStore,
     getPlayerName: () => getPlayerName(),
     getLocale,
+    getGender,
     getText: getMessengerContent,
     isChatFocused,
     getDay: () => useWorldStore.getState().day,
@@ -87,8 +90,8 @@ function createEngine(): ConversationEngine {
     });
   };
   const nameOf = (contactId: string) =>
-    getMessengerContent(contactId, getLocale())?.contact.displayName ??
-    contactId;
+    getMessengerContent(contactId, getLocale(), getGender())?.contact
+      .displayName ?? contactId;
   created.on('contactSignedIn', ({ contactId, toast: show }) => {
     if (show)
       toast(
@@ -100,8 +103,15 @@ function createEngine(): ConversationEngine {
   created.on('message', ({ contactId, from, entry }) => {
     if (from !== 'contact') return;
     const locale = getLocale();
-    const content = getMessengerContent(contactId, locale);
-    const rendered = renderEntry(entry, content, locale, getPlayerName());
+    const gender = getGender();
+    const content = getMessengerContent(contactId, locale, gender);
+    const rendered = renderEntry(
+      entry,
+      content,
+      locale,
+      getPlayerName(),
+      gender,
+    );
     if (rendered?.kind !== 'message') return;
     const { text } = rendered;
     const preview =
@@ -260,27 +270,31 @@ export function getMessengerContents(): readonly ContactContent[] {
 }
 
 /**
- * The contacts with their text in `locale`: what views render transcripts and presence from.
- * Same ids, scripts and nodes as `getMessengerContents()`; only text differs.
+ * The contacts with their text in `locale` for `gender`: what views render transcripts and
+ * presence from. Same ids, scripts and nodes as `getMessengerContents()`; only text differs.
  */
 export function getLocalizedContents(
   locale: Locale,
+  gender: Gender,
 ): readonly ContactContent[] {
-  if (!localized) return getContacts(locale);
-  return localized[locale] ?? contents;
+  if (!localized) return getContacts(locale, gender);
+  return resolvedFor(localized[locale] ?? contents, gender);
 }
 
-/** One contact's content in `locale`. */
+/** One contact's content in `locale` for `gender`. */
 export function getMessengerContent(
   contactId: ContactId,
   locale: Locale,
+  gender: Gender,
 ): ContactContent | undefined {
-  return getLocalizedContents(locale).find((c) => c.contact.id === contactId);
+  return getLocalizedContents(locale, gender).find(
+    (c) => c.contact.id === contactId,
+  );
 }
 
-/** `getLocalizedContents` for components; re-renders on a language switch. */
+/** `getLocalizedContents` for components; re-renders on a language or gender switch. */
 export function useLocalizedContents(): readonly ContactContent[] {
-  return getLocalizedContents(useLocale());
+  return getLocalizedContents(useLocale(), useGender());
 }
 
 /** Tests swap in their own content (and drop the engine so the next use rebuilds it). */

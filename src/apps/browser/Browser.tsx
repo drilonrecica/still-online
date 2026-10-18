@@ -1,5 +1,6 @@
 // Web Explorer (app `browser`): IE6-style chrome around the fictional `.example` web.
 import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useGender } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { requireOnline } from '@/os/network';
 import { useWindowsStore } from '@/os/store/windows';
@@ -38,6 +39,8 @@ export default function Browser({ windowId, props }: AppComponentProps) {
   const favoriteRecords = useWebStore((s) => s.favorites);
   const t = useT();
   const locale = useLocale();
+  // Page titles come from site metadata, which resolves for the gender: re-render on a switch.
+  useGender();
   // Default favorites are named in the current language.
   const favorites = useMemo(
     () => renderFavorites(favoriteRecords, locale),

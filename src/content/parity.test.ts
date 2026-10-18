@@ -1,10 +1,16 @@
 // Structural parity: German content mirrors English (docs/i18n.md → "Structural parity").
 import { describe, expect, it } from 'vitest';
+import { LOCALES } from '@/i18n/types';
 import { CONTACT_OVERLAYS } from './de/bundle';
 import { contacts } from './contacts';
 import { exampleContact } from './example.fixture';
-import { contentFor } from './locale';
-import { contactParityProblems, moduleParityProblems } from './parity';
+import { g } from './gender';
+import { contentFor, rawContentFor } from './locale';
+import {
+  contactParityProblems,
+  genderParityProblems,
+  moduleParityProblems,
+} from './parity';
 import type { ContactOverlay } from './types';
 
 describe('contact overlays', () => {
@@ -23,8 +29,9 @@ describe('contact overlays', () => {
 });
 
 describe('full German modules', () => {
-  const en = contentFor('en');
-  const de = contentFor('de');
+  // Raw modules: gender variants are compared as authored, not resolved.
+  const en = rawContentFor('en');
+  const de = rawContentFor('de');
   const lists = [
     'seedFiles',
     'mail',
@@ -64,6 +71,25 @@ describe('full German modules', () => {
       [],
     );
     expect(moduleParityProblems(en.tips, de.tips, 'tips')).toEqual([]);
+  });
+});
+
+describe.each(LOCALES)('both genders (%s)', (locale) => {
+  it('resolve to the same structure: ids, counts, days and links', () => {
+    expect(
+      genderParityProblems(
+        JSON.parse(JSON.stringify(contentFor(locale, 'girl'))),
+        JSON.parse(JSON.stringify(contentFor(locale, 'boy'))),
+        locale,
+      ),
+    ).toEqual([]);
+  });
+
+  it('leave no markers after resolving', () => {
+    for (const gender of ['girl', 'boy'] as const)
+      expect(JSON.stringify(contentFor(locale, gender))).not.toMatch(
+        /[\uE000-\uE002]/,
+      );
   });
 });
 
@@ -152,6 +178,36 @@ describe('parity checks catch drift', () => {
     expect(
       check({ scripts: {}, days: { 2: { personalMessage: 'tag 2' } } }),
     ).toEqual(['mika: days.2 has no English personal message']);
+  });
+
+  it('compares placeholders per gender side, ignoring the variant markers', () => {
+    const lines = [`${g('hey {name}!!', 'yo {name}')}`, hi.lines[1]!];
+    expect(check(opening({ hi: { ...hi, lines } }))).toEqual([]);
+    const half = [g('hey {name}!!', 'yo'), hi.lines[1]!];
+    expect(check(opening({ hi: { ...hi, lines: half } }))).toEqual([
+      'mika: opening.hi.lines[0] placeholders "{name} | " differ from English "{name}"',
+    ]);
+  });
+
+  it('flags structure that differs between the genders', () => {
+    expect(
+      genderParityProblems(
+        { id: 'a', day: 1, list: [1], t: 'girl' },
+        { id: 'a', day: 1, list: [1], t: 'boy' },
+        'x',
+      ),
+    ).toEqual([]);
+    expect(
+      genderParityProblems(
+        { id: 'a', day: 1, list: [1, 2] },
+        { id: 'b', day: 2, list: [1] },
+        'x',
+      ),
+    ).toEqual([
+      'x.id: girl has a, boy has b',
+      'x.day: girl has 1, boy has 2',
+      'x.list: girl has 2 items, boy has 1',
+    ]);
   });
 
   it('flags module drift: length, id order, keys and hosts', () => {

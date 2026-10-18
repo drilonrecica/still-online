@@ -1,6 +1,6 @@
 // friendspace.example `/me`: the player's own profile, editable (persisted in `web.myProfile`).
 // Friends comment on it on days 2–5.
-import { usePlayerName } from '@/i18n/settingsText';
+import { useGender, usePlayerName } from '@/i18n/settingsText';
 import { useState } from 'react';
 import { getProfiles } from '@/content/locale';
 import { useLocale, useT } from '@/i18n/useT';
@@ -26,13 +26,14 @@ export default function Me() {
   const { FRIENDSPACE_TEXT: T } = useSiteText(FRIENDSPACE_HOST);
   const locale = useLocale();
   const t = useT();
-  const PROFILES = getProfiles(locale);
+  const gender = useGender();
+  const PROFILES = getProfiles(locale, gender);
   const day = useWorldStore((s) => s.day);
   const playerName = usePlayerName();
   const saved = useWebStore((s) => s.myProfile);
   const save = useWebStore((s) => s.saveProfile);
   const [editing, setEditing] = useState(false);
-  const profile = effectiveProfile(saved, FRIEND_IDS, locale);
+  const profile = effectiveProfile(saved, FRIEND_IDS, locale, gender);
 
   if (editing) {
     return (

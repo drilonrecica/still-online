@@ -27,17 +27,19 @@ describe('content follows the language', () => {
       screen.getAllByText(DE_FRIENDSPACE_TEXT.tagline).length,
     ).toBeGreaterThan(0);
     expect(screen.queryByText(FRIENDSPACE_TEXT.tagline)).toBeNull();
-    expect(getSiteText(FRIENDSPACE_HOST, 'en').FRIENDSPACE_TEXT.tagline).toBe(
-      FRIENDSPACE_TEXT.tagline,
-    );
+    expect(
+      getSiteText(FRIENDSPACE_HOST, 'en', 'girl').FRIENDSPACE_TEXT.tagline,
+    ).toBe(FRIENDSPACE_TEXT.tagline);
   });
 
   it('Messenger renders shipped contacts through the merged overlays', () => {
     const jess = (locale: 'en' | 'de') =>
-      getLocalizedContents(locale).find((c) => c.contact.id === 'jess')!;
+      getLocalizedContents(locale, 'girl').find(
+        (c) => c.contact.id === 'jess',
+      )!;
     expect(jess('de').contact.personalMessage).toBe('OMG noch 3 TAGE!!!1 (L)');
     expect(jess('en').contact.personalMessage).toBe('OMG 3 more days!!!1 (L)');
-    expect(getContacts('de').find((c) => c.contact.id === 'jess')).toBe(
+    expect(getContacts('de', 'girl').find((c) => c.contact.id === 'jess')).toBe(
       jess('de'),
     );
   });

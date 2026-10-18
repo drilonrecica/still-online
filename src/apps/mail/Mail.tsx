@@ -11,7 +11,7 @@ import { toGameDate } from '@/os/clock';
 import { formatNumber, formatShortDate, formatTime } from '@/i18n/format';
 import { getLocale } from '@/i18n/t';
 import type { TFunction } from '@/i18n/types';
-import { usePlayerName } from '@/i18n/settingsText';
+import { useGender, usePlayerName } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { events } from '@/os/events';
 import { useFsStore } from '@/os/fs/store';
@@ -111,7 +111,7 @@ function Compose({
 }) {
   const t = useT();
   const [draft, setDraft] = useState(initial);
-  const contacts = getContacts(useLocale());
+  const contacts = getContacts(useLocale(), useGender());
   const set = (patch: Partial<Draft>) => setDraft((d) => ({ ...d, ...patch }));
   return (
     <form
@@ -168,10 +168,12 @@ export default function Mail({ windowId }: AppComponentProps) {
   const locale = useLocale();
   const records = useMailStore((s) => s.messages);
   const playerName = usePlayerName();
-  // Rendered in the current language on every switch; only player-written mail is stored as text.
+  const gender = useGender();
+  // Rendered in the current language and gender on every switch; only player-written mail is
+  // stored as text.
   const messages = useMemo(
-    () => renderMails(records, locale, playerAddress(playerName)),
-    [records, locale, playerName],
+    () => renderMails(records, locale, playerAddress(playerName), gender),
+    [records, locale, playerName, gender],
   );
   const online = useNetworkStore((s) => s.status === 'online');
   const [folder, setFolder] = useState<MailFolder>('inbox');

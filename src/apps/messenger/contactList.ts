@@ -1,5 +1,6 @@
 // Pure view-model for the contact list: which contacts sit in which group, with counts.
 import type { Locale } from '@/i18n/types';
+import type { Gender } from '@/os/types';
 import {
   CONTACT_GROUP_IDS,
   type Contact,
@@ -32,13 +33,14 @@ export interface ListGroup {
   total: number;
 }
 
-/** `contents` carry the text for `locale`; personal messages render from them. */
+/** `contents` carry the text for `locale` and `gender`; personal messages render from them. */
 export function buildContactList(
   contents: readonly ContactContent[],
   progress: Readonly<Record<ContactId, ContactProgress>>,
   online: Readonly<Record<ContactId, boolean>>,
   locale: Locale,
   playerName: string,
+  gender: Gender,
 ): ListGroup[] {
   const contacts = contents.map((c) => c.contact);
   const contentOf = new Map(contents.map((c) => [c.contact.id, c]));
@@ -55,6 +57,7 @@ export function buildContactList(
         contentOf.get(contact.id),
         locale,
         playerName,
+        gender,
       ),
       awaitingReply: p?.active?.awaitingChoice === true,
     };

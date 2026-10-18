@@ -13,8 +13,8 @@ import { PROFILES } from '../profiles';
 const placeholders = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort();
 
 describe('German Celeb Gossip 07', () => {
-  const en = getSiteText(GOSSIP_HOST, 'en');
-  const de = getSiteText(GOSSIP_HOST, 'de');
+  const en = getSiteText(GOSSIP_HOST, 'en', 'girl');
+  const de = getSiteText(GOSSIP_HOST, 'de', 'girl');
 
   it('keeps post days, celeb tags and comment counts', () => {
     de.GOSSIP_POSTS.forEach((post, i) => {
@@ -44,8 +44,8 @@ describe('German Celeb Gossip 07', () => {
 });
 
 describe('German Tinfoil Comets fan page', () => {
-  const en = getSiteText(TINFOIL_HOST, 'en');
-  const de = getSiteText(TINFOIL_HOST, 'de');
+  const en = getSiteText(TINFOIL_HOST, 'en', 'girl');
+  const de = getSiteText(TINFOIL_HOST, 'de', 'girl');
 
   it('keeps days, seeds, signers and song titles', () => {
     expect(de.TINFOIL_NEWS.map((n) => n.day)).toEqual(
@@ -77,6 +77,7 @@ describe('German school site, Friendspace and VirusGuard', () => {
     const { WESTFIELD_STAFF, WESTFIELD_NEWS } = getSiteText(
       WESTFIELD_HOST,
       'de',
+      'girl',
     );
     expect(WESTFIELD_STAFF).toContainEqual({
       name: 'Herr Dalton',
@@ -84,7 +85,7 @@ describe('German school site, Friendspace and VirusGuard', () => {
       room: 'Raum 12',
       email: 'mr.dalton@westfield-high.example',
     });
-    const en = getSiteText(WESTFIELD_HOST, 'en');
+    const en = getSiteText(WESTFIELD_HOST, 'en', 'girl');
     expect(WESTFIELD_NEWS.map((n) => n.day)).toEqual(
       en.WESTFIELD_NEWS.map((n) => n.day),
     );
@@ -94,8 +95,8 @@ describe('German school site, Friendspace and VirusGuard', () => {
   });
 
   it('keeps Friendspace theme ids and colours, German names', () => {
-    const en = getSiteText(FRIENDSPACE_HOST, 'en');
-    const de = getSiteText(FRIENDSPACE_HOST, 'de');
+    const en = getSiteText(FRIENDSPACE_HOST, 'en', 'girl');
+    const de = getSiteText(FRIENDSPACE_HOST, 'de', 'girl');
     expect(de.THEME_PRESETS.map((t) => [t.id, t.theme])).toEqual(
       en.THEME_PRESETS.map((t) => [t.id, t.theme]),
     );
@@ -109,7 +110,7 @@ describe('German school site, Friendspace and VirusGuard', () => {
   });
 
   it('VirusGuard is still an obvious parody, in euros', () => {
-    const { VIRUSGUARD_TEXT } = getSiteText(VIRUSGUARD_HOST, 'de');
+    const { VIRUSGUARD_TEXT } = getSiteText(VIRUSGUARD_HOST, 'de', 'girl');
     expect(VIRUSGUARD_TEXT.alert).toContain('87% INFIZIERT');
     expect(VIRUSGUARD_TEXT.offer).toContain('49,95 €');
     expect(VIRUSGUARD_TEXT.fineprint).toMatch(/Scherz-Website/);
@@ -118,7 +119,7 @@ describe('German school site, Friendspace and VirusGuard', () => {
 
 describe('German Friendspace profiles', () => {
   it('are what getProfiles returns for de', () => {
-    expect(getProfiles('de')).toBe(PROFILES);
+    expect(getProfiles('de', 'girl')).toBe(PROFILES);
   });
 
   it.each(EN_PROFILES.map((p, i) => [p.contactId, p, PROFILES[i]!] as const))(

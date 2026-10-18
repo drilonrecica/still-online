@@ -3,6 +3,7 @@
 import { DAY_BALLOON_DELAY_MS, SCHEDULED_BALLOONS } from '@/content/balloons';
 import type { BalloonAction } from '@/content/balloons';
 import { getBalloons, getContacts } from '@/content/locale';
+import { getGender } from '@/i18n/settingsText';
 import { getLocale, t } from '@/i18n/t';
 import { events } from '@/os/events';
 import { requireOnline } from '@/os/network';
@@ -49,8 +50,8 @@ function runAction(action: BalloonAction): void {
   }
 }
 
-/** Balloon text in the language at the moment it shows. */
-const text = () => getBalloons(getLocale());
+/** Balloon text in the language and gender at the moment it shows. */
+const text = () => getBalloons(getLocale(), getGender());
 
 /** Returns a cleanup that cancels pending timers and clears the queue. */
 export function installBalloons(): () => void {
@@ -87,7 +88,7 @@ export function installBalloons(): () => void {
             id: `newday-${newDay}`,
             title: t('balloon.newDay'),
             text: text().newDayBalloonText(
-              getContacts(getLocale()).map((c) => c.contact),
+              getContacts(getLocale(), getGender()).map((c) => c.contact),
               newDay,
             ),
             onClick: () => runAction({ kind: 'openApp', app: 'messenger' }),

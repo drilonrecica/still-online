@@ -242,14 +242,14 @@ describe('render performance', () => {
             },
     );
     const started = performance.now();
-    const en = renderTranscript(entries, lena, 'en', 'Drilon');
+    const en = renderTranscript(entries, lena, 'en', 'Drilon', 'girl');
     expect(performance.now() - started).toBeLessThan(100);
     expect(en).toHaveLength(500);
     expect(en[1]).toMatchObject({ text: 'hey lena!! whats up :)' });
 
-    const again = renderTranscript(entries, lena, 'en', 'Drilon');
+    const again = renderTranscript(entries, lena, 'en', 'Drilon', 'girl');
     expect(again.every((e, i) => e === en[i])).toBe(true);
-    const de = renderTranscript(entries, lenaDe, 'de', 'Drilon');
+    const de = renderTranscript(entries, lenaDe, 'de', 'Drilon', 'girl');
     expect(de[1]).toMatchObject({ text: 'hey lena!! was geht :)' });
     expect(de[1]).not.toBe(en[1]);
   });

@@ -2,6 +2,7 @@
 // Each check returns human-readable problems; an empty list means the content is fine.
 import type { Locale } from '../i18n/types';
 import { isGameId } from '../os/types';
+import { genderMarkerProblems, isGendered } from './gender';
 import {
   CONTENT_UNLOCKS,
   isWinkId,
@@ -69,11 +70,19 @@ export function lintScriptGraph(script: Script): string[] {
   return problems;
 }
 
-/** Every string in the content, with a path for error messages. */
+/**
+ * Every string in the content, with a path for error messages. A `gendered()` value contributes
+ * both sides (`path.girl`, `path.boy`).
+ */
 function strings(value: unknown, path: string): [string, string][] {
   if (typeof value === 'string') return [[path, value]];
   if (Array.isArray(value))
     return value.flatMap((v, i) => strings(v, `${path}[${i}]`));
+  if (isGendered(value))
+    return [
+      ...strings(value.girl, `${path}.girl`),
+      ...strings(value.boy, `${path}.boy`),
+    ];
   if (value && typeof value === 'object') {
     return Object.entries(value).flatMap(([k, v]) =>
       strings(v, `${path}.${k}`),
@@ -108,16 +117,18 @@ export interface LintTextOptions {
 }
 
 /**
- * Text checks for any authored string: no real-looking emails/URLs (`.example` is fine),
- * no forbidden names or anachronisms (plus the German list for `locale: 'de'`), and only known
- * placeholders when `opts.placeholders` is given.
+ * Text checks for any authored string: well-formed gender variants (`g()`), no real-looking
+ * emails/URLs (`.example` is fine), no forbidden names or anachronisms (plus the German list for
+ * `locale: 'de'`), and only known placeholders when `opts.placeholders` is given.
  */
 export function lintText(
   text: string,
   path: string,
   opts: LintTextOptions = {},
 ): string[] {
-  const problems: string[] = [];
+  const problems: string[] = genderMarkerProblems(text).map(
+    (p) => `${path}: ${p}`,
+  );
   for (const email of text.match(EMAIL) ?? []) {
     if (!isExample(email))
       problems.push(`${path}: real-looking email "${email}"`);
@@ -143,15 +154,48 @@ export function lintText(
   return problems;
 }
 
+/**
+ * `gendered()` values: both sides present and of the same kind, and no `gendered()` inside a
+ * side (variants don't nest).
+ */
+function lintGendered(value: unknown, path: string, inside = false): string[] {
+  if (Array.isArray(value))
+    return value.flatMap((v, i) => lintGendered(v, `${path}[${i}]`, inside));
+  if (!value || typeof value !== 'object') return [];
+  if (isGendered(value)) {
+    const { girl, boy } = value;
+    const problems: string[] = [];
+    if (inside) problems.push(`${path}: nested gendered value`);
+    if (girl === undefined || boy === undefined)
+      problems.push(`${path}: gendered value needs a girl and a boy side`);
+    else if (
+      typeof girl !== typeof boy ||
+      Array.isArray(girl) !== Array.isArray(boy)
+    )
+      problems.push(`${path}: gendered sides differ in type`);
+    return [
+      ...problems,
+      ...lintGendered(girl, `${path}.girl`, true),
+      ...lintGendered(boy, `${path}.boy`, true),
+    ];
+  }
+  return Object.entries(value).flatMap(([k, v]) =>
+    lintGendered(v, `${path}.${k}`, inside),
+  );
+}
+
 /** Runs `lintText` over every string in any content object (no placeholder check). */
 export function lintContentStrings(
   value: unknown,
   path: string,
   locale: Locale = 'en',
 ): string[] {
-  return strings(value, path).flatMap(([p, text]) =>
-    lintText(text, p, { locale }),
-  );
+  return [
+    ...lintGendered(value, path),
+    ...strings(value, path).flatMap(([p, text]) =>
+      lintText(text, p, { locale }),
+    ),
+  ];
 }
 
 /** Text checks for a contact: shared text lint, plus placeholders only where they resolve. */

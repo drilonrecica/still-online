@@ -1,8 +1,10 @@
 // Content per locale (docs/i18n.md → "Content per locale"): every accessor returns the German
 // module for 'de' and English otherwise. English is bundled; German lives in `de/bundle.ts`,
 // loaded on demand by `loadLocale` (src/i18n/load.ts). Contacts merge a text overlay over the
-// English module; everything else is a full German module of the same type.
+// English module; everything else is a full German module of the same type. Accessors resolve
+// the gender variants (`g()`, docs/gender.md) for the player's gender; overlays merge before.
 import type { FsNode } from '@/os/fs/types';
+import type { Gender } from '@/os/types';
 import type { Locale } from '@/i18n/types';
 import * as enAssistant from './assistant';
 import * as enBalloons from './balloons';
@@ -22,6 +24,7 @@ import * as enVirusguard from './sites/virusguard';
 import * as enWestfield from './sites/westfieldhigh';
 import * as enTuneMole from './tunemole';
 import { loadedContent } from '@/i18n/load';
+import { resolvedFor } from './gender';
 import type { ContactContent, TuneMoleResult } from './types';
 
 export { mergeOverlay, overlayFallbacks } from './overlay';
@@ -71,26 +74,42 @@ const EN: LocaleContent = {
   tuneMole: enTuneMole.TUNEMOLE_RESULTS,
 };
 
-/** All content for `locale`: English, or a loaded language (English until it has loaded). */
-export const contentFor = (locale: Locale): LocaleContent =>
+/**
+ * All content for `locale` as authored, variants unresolved: English, or a loaded language
+ * (English until it has loaded). For parity and lint; the game reads `contentFor`.
+ */
+export const rawContentFor = (locale: Locale): LocaleContent =>
   (locale !== 'en' && loadedContent(locale)) || EN;
 
+/** All content for `locale`, resolved for `gender` (`null`, not chosen yet, reads as girl). */
+export const contentFor = (
+  locale: Locale,
+  gender: Gender | null,
+): LocaleContent => resolvedFor(rawContentFor(locale), gender ?? 'girl');
+
 /** Messenger contacts with their text in `locale`, in sign-in order. */
-export const getContacts = (locale: Locale) => contentFor(locale).contacts;
-export const getSeedFiles = (locale: Locale) => contentFor(locale).seedFiles;
-export const getMailContent = (locale: Locale) => contentFor(locale).mail;
-export const getAutoReplies = (locale: Locale) =>
-  contentFor(locale).autoReplies;
-export const getProfiles = (locale: Locale) => contentFor(locale).profiles;
-export const getBalloons = (locale: Locale) => contentFor(locale).balloons;
-export const getTips = (locale: Locale) => contentFor(locale).tips;
-export const getTuneMoleResults = (locale: Locale) =>
-  contentFor(locale).tuneMole;
+export const getContacts = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).contacts;
+export const getSeedFiles = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).seedFiles;
+export const getMailContent = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).mail;
+export const getAutoReplies = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).autoReplies;
+export const getProfiles = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).profiles;
+export const getBalloons = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).balloons;
+export const getTips = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).tips;
+export const getTuneMoleResults = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).tuneMole;
 
 /** One content-backed site's text module (`src/content/sites/<site>.ts`) in `locale`. */
 export function getSiteText<H extends SiteTextHost>(
   host: H,
   locale: Locale,
+  gender: Gender | null,
 ): SiteTexts[H] {
-  return contentFor(locale).sites[host];
+  return contentFor(locale, gender).sites[host];
 }

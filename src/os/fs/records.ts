@@ -1,9 +1,12 @@
 // The `fs` store's language-neutral persisted shape (docs/i18n.md → "fs"). In memory every node is
-// rendered in the current locale; on disk system folders have no `name` and untouched seeds no
-// `name`/`text`/`photo.caption`. These helpers convert between the two and migrate v0.2 saves.
+// rendered in the current locale and gender; on disk system folders have no `name` and untouched
+// seeds no `name`/`text`/`photo.caption`. These helpers convert between the two and migrate v0.2
+// saves.
+import { getGender } from '@/i18n/settingsText';
 import { getLocale } from '@/i18n/t';
 import type { Locale } from '@/i18n/types';
 import { isRecord } from '@/os/persist';
+import type { Gender } from '@/os/types';
 import {
   isSeedId,
   isSystemId,
@@ -46,13 +49,15 @@ function withSeedText(node: FsNode, seed: FsNode): FsNode {
 }
 
 /**
- * Renders system folder names and untouched seeds in `locale`. Returns `nodes` itself when
- * nothing changed, so a language switch without visible changes doesn't re-render.
+ * Renders system folder names in `locale` and untouched seeds in `locale` for `gender`. Returns
+ * `nodes` itself when nothing changed, so a switch without visible changes doesn't re-render.
+ * Dirty (renamed or edited) seeds keep their text.
  */
 export function localizeNodes(
   nodes: Nodes,
   locale: Locale,
-  seeds: SeedLookup,
+  gender: Gender,
+  seeds: SeedLookup = seedLookup(seedFilesFor(locale, gender)),
 ): Nodes {
   let out: Nodes | null = null;
   for (const node of Object.values(nodes)) {
@@ -99,9 +104,11 @@ export function toRecords(
 }
 
 /**
- * One untrusted non-system node. A neutral seed record takes its text from `seeds`. A v0.2 seed
- * (which still has its English text) is untouched if that text equals the English seed,
- * otherwise the player renamed or edited it: it becomes `dirty` and keeps its text.
+ * One untrusted non-system node. A neutral seed record takes its text from `seeds` (the current
+ * locale and gender). A v0.2 seed (which still has its English text) is untouched if that text
+ * equals the English seed, otherwise the player renamed or edited it: it becomes `dirty` and
+ * keeps its text. v0.2 had no gender and shipped what is now the girl side, so `englishSeeds`
+ * are English for a girl.
  */
 function restoreNode(
   raw: Record<string, unknown>,
@@ -138,8 +145,9 @@ export function sanitizeFsState(
   persisted: unknown,
   time: number,
   locale: Locale = getLocale(),
-  seeds: SeedLookup = seedLookup(seedFilesFor(locale)),
-  englishSeeds: SeedLookup = seedLookup(seedFilesFor('en')),
+  gender: Gender = getGender(),
+  seeds: SeedLookup = seedLookup(seedFilesFor(locale, gender)),
+  englishSeeds: SeedLookup = seedLookup(seedFilesFor('en', 'girl')),
 ): FsState {
   const nodes = systemFolders(time, locale);
   const p = isRecord(persisted) ? persisted : {};

@@ -195,7 +195,7 @@
 - P2-01: US swaps fixed in the glossary: jello → Wackelpudding (lime → Waldmeister), brownies → Muffins, Thanksgiving → „Omas Geburtstag", B+ → „2+", English essay → Deutsch-Aufsatz, rec hall → Jugendzentrum, college → Uni, $ → € — so the six friend tasks can't diverge
 - P2-01: Messenger personal message is „Spruch" in chat; Comet Chatter becomes „KOMETEN-KLATSCH"; mail prefixes are „WG:"/„AW:" — what German teens and mail clients said in 2007
 - P2-01: German quotes „…" everywhere including chat lines — one rule is simpler for six parallel writers than a voice exception
-- P2-01: the player is never addressed with gendered nouns/adjectives in German (no „Lieblingscousin", „Held") — the game never asks for a gender
+- P2-01: ~~the player is never addressed with gendered nouns/adjectives in German (no „Lieblingscousin", „Held") — the game never asks for a gender~~ Superseded in G-02: the player is a girl or a boy, and German uses natural gendered forms through `g()`.
 - P2-01: Herr Dalton addresses the class with „ihr" (Klasse 9), companies/spam/school site/Tacki with „Sie", friends and Spaceport with „du"
 - P2-02 (v0.3): Jess DE — "ur the best" becomes „du bist SPITZE" / „HDGDL" (German „die/der Beste" would gender the player); the hen-hunt reaction uses the game's own term „goldenes Huhn"; "hold on" → „moment" (German chat-speak, not „mom", which reads as English Mom)
 - P2-02 (v0.3): Jess DE — "wear actual tinfoil" → „zieh echtes tinfoil an. also alufolie", so the band-name pun still lands when the follow-up is „ARMBÄNDER aus alufolie"
@@ -245,3 +245,9 @@
 - G-01: the picture ids (`src/os/user/pictures.ts`) are plain data, and the SVG URLs are in `src/os/user/sources.ts`. `src/os/types.ts` imports the id type, and `tests/e2e/helpers.ts` type-checks `types.ts` in the Node tsconfig, which can't resolve `.svg` imports.
 - G-01: a Start menu submenu that would run past the taskbar is shifted up (as XP does). User Accounts made System Tools tall enough to leave the 720 px viewport.
 - G-01: e2e logins pick a gender through `pickGender(page, gender = 'girl')` (`[data-gender]`, the same in both languages); `logIn` takes `{ gender }`.
+- G-02: the P2-01 no-gender rule is superseded. Content varies through `g(girl, boy)` (one string, private-use markers) and `gendered({ girl, boy })`; German uses natural gendered forms, never gender-star forms (`docs/gender.md`, `docs/localization-de.md` §2).
+- G-02: `resolveGender` shares structure: parts without variants keep their identity, so `getContacts('en', gender)` is still the shipped module while it has no variant, and React memos don't churn. `contentFor` resolves the whole locale once per gender (`resolvedFor`, a WeakMap per raw object).
+- G-02: the Messenger engine keeps playing the raw English structure and resolves live lines and choices itself; `renderEntry` resolves too (a no-op on resolved content), so test contents passed to `setMessengerContentsForTests` may carry variants.
+- G-02: v0.2 saves are compared against English for a girl (`seedFilesFor('en', 'girl')`, the girl side of auto-replies): v0.2 shipped what is now the girl side.
+- G-02: parity takes placeholder tokens per gender side (`"{name} | "` when the sides differ), and the girl-vs-boy structure check treats strings at reference keys (`id`, `…Id`, `next`, `start`, hosts, urls, `scene`, `unlock`, `wink`) as values that must match.
+- G-02: samples kept as real content: Mom's day-1 greeting („Hi sweetie," / „Hi buddy,", „Hallo Schatz," / „Hallo mein Großer,"), the webcam self-portrait caption, and German Marco's „meine lieblingscousine / mein lieblingscousin" (English unchanged).

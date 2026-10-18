@@ -20,12 +20,12 @@ describe('loadLocale', () => {
     const { isLocaleLoaded, loadLocale, contentFor, translate } = await fresh();
     expect(isLocaleLoaded('en')).toBe(true);
     expect(isLocaleLoaded('de')).toBe(false);
-    expect(contentFor('de')).toBe(contentFor('en'));
+    expect(contentFor('de', 'girl')).toBe(contentFor('en', 'girl'));
     expect(translate('de', 'common.cancel')).toBe('Cancel');
 
     await loadLocale('de');
     expect(isLocaleLoaded('de')).toBe(true);
-    expect(contentFor('de')).not.toBe(contentFor('en'));
+    expect(contentFor('de', 'girl')).not.toBe(contentFor('en', 'girl'));
     expect(translate('de', 'common.cancel')).toBe('Abbrechen');
   });
 

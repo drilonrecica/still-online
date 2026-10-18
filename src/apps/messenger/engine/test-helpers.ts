@@ -59,7 +59,7 @@ type Formatters = {
   [K in keyof EngineEventMap]: (p: EngineEventMap[K]) => string;
 };
 
-/** Renders stored references in English for the log and `said`. */
+/** Renders stored references in English (for the engine's gender) for the log and `said`. */
 type Render = {
   entry: (id: string, e: NeutralTranscriptEntry) => string;
   pm: (id: string, ref: PersonalMessageRef) => string;
@@ -91,20 +91,24 @@ export function setup(
   options: Partial<ConversationEngineOptions> = {},
 ) {
   const store = createMessengerStore();
+  // Engine tests play the girl side unless they pass `getGender`.
+  const gender = options.getGender ?? (() => 'girl' as const);
   const engine = createConversationEngine({
     contents,
     store,
     getPlayerName: () => 'Ann',
+    getGender: gender,
     ...options,
   });
   const name = options.getPlayerName ?? (() => 'Ann');
   const contentOf = (id: string) => contents.find((c) => c.contact.id === id);
   const render: Render = {
     entry: (id, e) => {
-      const r = renderEntry(e, contentOf(id), 'en', name());
+      const r = renderEntry(e, contentOf(id), 'en', name(), gender());
       return r?.kind === 'message' ? r.text : `<unresolved ${e.kind}>`;
     },
-    pm: (id, ref) => renderPersonalMessage(ref, contentOf(id), 'en', name()),
+    pm: (id, ref) =>
+      renderPersonalMessage(ref, contentOf(id), 'en', name(), gender()),
   };
   const format = formatters(render);
   const log: string[] = [];

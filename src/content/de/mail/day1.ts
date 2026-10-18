@@ -1,5 +1,6 @@
 // German day 1 mail (`src/content/mail/day1.ts`): PixelPoint's welcome, Mama's rules, Herr Dalton's
 // reminder, Pia's brand-new address and the first prize spam.
+import { g } from '../../gender';
 import type { MailContent } from '../../mail/types';
 
 export const day1Mail: readonly MailContent[] = [
@@ -38,7 +39,7 @@ export const day1Mail: readonly MailContent[] = [
     from: { name: 'Mama', address: 'mom.at.home@livemail.example' },
     subject: 'COMPUTER-REGELN (bitte lesen!!)',
     body: [
-      'Hallo Schatz,',
+      g('Hallo Schatz,', 'Hallo mein Großer,'),
       '',
       'Papa hat mir eine E-Mail-Adresse eingerichtet, jetzt kann ich dir von unten aus mailen. Ist das nicht lustig!! Hier sind die Computer-Regeln. Ich hänge sie auch an den Kühlschrank.',
       '',

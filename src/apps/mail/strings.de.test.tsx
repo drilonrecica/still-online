@@ -97,6 +97,7 @@ describe('Mail in German', () => {
       ],
       'de',
       playerAddress(),
+      'girl',
     );
     expect(reply?.subject).toBe('AW: ');
     expect(reply?.body).toBe(

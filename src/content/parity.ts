@@ -1,13 +1,24 @@
 // Structural parity between English content and another locale (docs/i18n.md → "Structural
 // parity"). Localize inside a line, never add or remove one: old transcripts store
-// `(scriptId, nodeId, lineIndex)` and must re-render in either language.
+// `(scriptId, nodeId, lineIndex)` and must re-render in either language. Parity compares the raw
+// (unresolved) modules; gender variants are not placeholders, so tokens are taken per side.
+import { GENDERS, resolveGender } from './gender';
 import type { ContactContent, ContactOverlay } from './types';
 
 const PLACEHOLDER = /\{[^}]*\}/g;
 
-/** Placeholder tokens in `text`, sorted, so "{a} {b}" and "{b} {a}" match. */
-const tokens = (text: string | undefined) =>
-  (text?.match(PLACEHOLDER) ?? []).sort().join(' ');
+/**
+ * Placeholder tokens in `text`, sorted, so "{a} {b}" and "{b} {a}" match. Taken per gender side
+ * (`"girl | boy"` when the sides differ), so a `g()` variant counts once per side.
+ */
+const tokens = (text: string | undefined) => {
+  const [girl, boy] = GENDERS.map((gender) =>
+    (resolveGender(text ?? '', gender).match(PLACEHOLDER) ?? [])
+      .sort()
+      .join(' '),
+  );
+  return girl === boy ? girl : `${girl} | ${boy}`;
+};
 
 /** Problems with one contact overlay; an empty overlay has none. */
 export function contactParityProblems(
@@ -154,4 +165,49 @@ export function moduleParityProblems(
       problems.push(`${at} host changed`);
   }
   return problems;
+}
+
+/** String fields that are references, not text: ids, script links, hosts and urls. */
+const REFERENCE_KEY =
+  /\.(?:id|\w+Id|next|start|host|\w+_HOST|url|href|scene|unlock|wink)$/;
+
+const kind = (v: unknown) =>
+  Array.isArray(v) ? 'array' : v === null ? 'null' : typeof v;
+
+/**
+ * Problems between the two resolved genders of the same content: identical structure (types,
+ * array lengths, object keys) and identical non-text values (ids, days, links, hosts). Only text
+ * may differ.
+ */
+export function genderParityProblems(
+  girl: unknown,
+  boy: unknown,
+  path: string,
+): string[] {
+  if (kind(girl) !== kind(boy))
+    return [`${path}: girl is ${kind(girl)}, boy is ${kind(boy)}`];
+  if (typeof girl === 'function') return [];
+  if (typeof girl === 'string')
+    return girl === boy || !REFERENCE_KEY.test(path)
+      ? []
+      : [`${path}: girl has ${girl}, boy has ${String(boy)}`];
+  if (Array.isArray(girl) && Array.isArray(boy)) {
+    if (girl.length !== boy.length)
+      return [`${path}: girl has ${girl.length} items, boy has ${boy.length}`];
+    return girl.flatMap((v: unknown, i) =>
+      genderParityProblems(v, boy[i], `${path}[${i}]`),
+    );
+  }
+  if (girl && typeof girl === 'object' && boy && typeof boy === 'object') {
+    const a = girl as Record<string, unknown>;
+    const b = boy as Record<string, unknown>;
+    if (Object.keys(a).sort().join(',') !== Object.keys(b).sort().join(','))
+      return [`${path}: keys differ between girl and boy`];
+    return Object.keys(a).flatMap((k) =>
+      genderParityProblems(a[k], b[k], `${path}.${k}`),
+    );
+  }
+  return girl === boy
+    ? []
+    : [`${path}: girl has ${String(girl)}, boy has ${String(boy)}`];
 }

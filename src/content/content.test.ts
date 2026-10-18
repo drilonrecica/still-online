@@ -1,7 +1,10 @@
 // Runs the shared text lint over every authored content module as it appears, per locale:
 // modules under `de/` (and everything the German accessors return) also get the German rules.
+// Raw modules are linted as authored (gender variants must be well-formed); the accessors are
+// linted resolved, for a girl and for a boy.
 import { describe, expect, it } from 'vitest';
 import { LOCALES } from '@/i18n/types';
+import { GENDERS } from './gender';
 import { lintContact, lintContentStrings } from './lint';
 import { contentFor } from './locale';
 
@@ -35,19 +38,26 @@ describe('content lint: all content modules', () => {
   });
 });
 
-describe.each(LOCALES)('content lint: %s accessors', (locale) => {
-  const content = contentFor(locale);
+const COMBOS = LOCALES.flatMap((locale) =>
+  GENDERS.map((gender) => [locale, gender] as const),
+);
 
-  it.each(content.contacts.map((c) => [c.contact.id, c] as const))(
-    'contact %s passes all checks',
-    (_, c) => {
-      expect(lintContact(c, locale)).toEqual([]);
-    },
-  );
+describe.each(COMBOS)(
+  'content lint: %s accessors for a %s',
+  (locale, gender) => {
+    const content = contentFor(locale, gender);
 
-  it('every module passes the text lint', () => {
-    // JSON drops the functions (helpers like `newDayBalloonText`).
-    const data = JSON.parse(JSON.stringify(content)) as unknown;
-    expect(lintContentStrings(data, locale, locale)).toEqual([]);
-  });
-});
+    it.each(content.contacts.map((c) => [c.contact.id, c] as const))(
+      'contact %s passes all checks',
+      (_, c) => {
+        expect(lintContact(c, locale)).toEqual([]);
+      },
+    );
+
+    it('every module passes the text lint', () => {
+      // JSON drops the functions (helpers like `newDayBalloonText`).
+      const data = JSON.parse(JSON.stringify(content)) as unknown;
+      expect(lintContentStrings(data, locale, locale)).toEqual([]);
+    });
+  },
+);

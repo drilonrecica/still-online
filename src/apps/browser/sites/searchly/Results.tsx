@@ -2,6 +2,7 @@
 import { useMemo } from 'react';
 import { SEARCHLY_HOST } from '@/content/sites/searchly';
 import type { SitePageProps } from '@/content/sites/types';
+import { useGender } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { SITES } from '..';
 import { SiteLink } from '../../SiteLink';
@@ -18,7 +19,12 @@ export default function Results({ query, navigate }: SitePageProps) {
   const locale = useLocale();
   const t = useT();
   const { SEARCHLY_TEXT: T } = useSiteText(SEARCHLY_HOST);
-  const index = useMemo(() => buildIndex(SITES, locale), [locale]);
+  const gender = useGender();
+  const index = useMemo(
+    () => buildIndex(SITES, locale),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `meta` reads the gender, so a switch rebuilds the index
+    [locale, gender],
+  );
   const { results, suggestion } = useMemo(
     () => ({ results: search(q, index), suggestion: didYouMean(q, index) }),
     [q, index],

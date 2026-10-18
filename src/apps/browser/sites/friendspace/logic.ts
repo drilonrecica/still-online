@@ -9,6 +9,7 @@ import type {
 } from '@/content/profiles/types';
 import { PLAYLIST } from '@/content/playlist';
 import { getSiteText } from '@/content/locale';
+import type { Gender } from '@/os/types';
 import {
   PROFILE_LIMITS,
   FRIENDSPACE_HOST,
@@ -97,8 +98,13 @@ export function effectiveProfile(
   saved: PlayerProfile | null,
   known: readonly ContactId[],
   locale: Locale = 'en',
+  gender: Gender = 'girl',
 ): PlayerProfile {
-  const { DEFAULT_PLAYER_PROFILE } = getSiteText(FRIENDSPACE_HOST, locale);
+  const { DEFAULT_PLAYER_PROFILE } = getSiteText(
+    FRIENDSPACE_HOST,
+    locale,
+    gender,
+  );
   const base = saved ?? { ...DEFAULT_PLAYER_PROFILE, top8: [] };
   return { ...base, top8: normalizeTop8(base.top8, known) };
 }
