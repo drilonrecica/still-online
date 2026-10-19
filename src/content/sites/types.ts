@@ -3,7 +3,7 @@
 import type { ComponentType, LazyExoticComponent } from 'react';
 import type { Locale } from '@/i18n/types';
 import type { PhotoSpec } from '@/os/fs/types';
-import type { PlayerProfile } from '../friendspace/profiles/types';
+import type { SavedPlayerProfile } from '../friendspace/profiles/types';
 import type { PixlogSkinId } from '../pixlog/types';
 import type { ContactId, FavoriteRecord } from '../types';
 
@@ -217,8 +217,8 @@ export interface WebState {
   guestbook: Record<string, PlayerGuestbookEntry[]>;
   /** Poll id → chosen option index. */
   votes: Record<string, number>;
-  /** Friendspace `/me`; null until the player edits it (defaults derive from the player name). */
-  myProfile: PlayerProfile | null;
+  /** Friendspace `/me`; null until the player saves it. Holds only what the player typed. */
+  myProfile: SavedPlayerProfile | null;
   /** v0.4: the highest day the player opened Friendspace's `/bulletins`. */
   bulletinsSeen?: number;
   /** v0.4: friends' Top 8 reactions on `/me`, oldest first (text from `top8Reactions` at render). */

@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { DEFAULT_PLAYER_PROFILE } from '@/content/sites/friendspace';
+import { V04_PROFILE_DEFAULTS } from './legacyProfile';
 import {
   DEFAULT_FAVORITES,
   WEB_DEFAULTS,
@@ -132,6 +133,61 @@ describe('profile extras', () => {
     expect(
       sanitizeWeb({ myProfile: noTop8 }, WEB_DEFAULTS).myProfile?.top8,
     ).toEqual([]);
+  });
+});
+
+describe('profile default text (v0.4.1 migration)', () => {
+  // What v0.4 saved for each side (girl/boy × en/de) when only a layout was pasted.
+  const V04_SAVES = [0, 1, 2, 3].map((i) => ({
+    headline: V04_PROFILE_DEFAULTS.headline[i],
+    mood: V04_PROFILE_DEFAULTS.mood[i],
+    aboutMe: V04_PROFILE_DEFAULTS.aboutMe[i],
+    songTrackId: null,
+    themePreset: 'glitter',
+    customColors: null,
+    top8: [],
+    layoutCode: '[layout bg=starry]',
+  }));
+
+  it('v0.4 defaults are the shipped ones', () => {
+    // F-02 may change today's defaults; this table must keep what v0.4 actually saved.
+    expect(V04_SAVES[0]).toMatchObject({
+      headline: 'new 2 Friendspace!! ~*sparkle*~ <3',
+      mood: { text: 'giggly', emoticon: ':D' },
+    });
+    expect(V04_SAVES[3]).toMatchObject({
+      headline: 'neu auf Friendspace. skaten bis zum umfallen',
+      mood: { text: 'voll motiviert', emoticon: '(8)' },
+    });
+  });
+
+  it('drops a saved headline, mood or about me equal to any default (girl/boy × en/de)', () => {
+    for (const save of V04_SAVES) {
+      const out = sanitizeWeb({ myProfile: save }, WEB_DEFAULTS).myProfile;
+      for (const k of ['headline', 'mood', 'aboutMe'])
+        expect(out, save.headline).not.toHaveProperty(k);
+      expect(out).toMatchObject({ layoutCode: '[layout bg=starry]' });
+    }
+  });
+
+  it('keeps typed text and a changed mood emoticon', () => {
+    const out = sanitizeWeb(
+      {
+        myProfile: {
+          ...V04_SAVES[0],
+          headline: 'still online',
+          mood: { text: 'giggly', emoticon: ':)' },
+          aboutMe: 'hi its me',
+        },
+      },
+      WEB_DEFAULTS,
+    ).myProfile;
+    expect(out).toMatchObject({
+      headline: 'still online',
+      mood: { text: 'giggly', emoticon: ':)' },
+      aboutMe: 'hi its me',
+      themePreset: 'glitter',
+    });
   });
 });
 

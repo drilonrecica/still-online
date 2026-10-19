@@ -3,7 +3,7 @@
 // and docs/architecture-v0.4.md → "Saved state"; the v0.4 sanitizers live in ./webSanitize.
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { PlayerProfile } from '@/content/friendspace/profiles/types';
+import type { SavedPlayerProfile } from '@/content/friendspace/profiles/types';
 import type { PixlogSkinId } from '@/content/pixlog/types';
 import type {
   Favorite,
@@ -20,6 +20,11 @@ import { events } from '@/os/events';
 import { isRecord, persistOptions } from '@/os/persist';
 import type { Gender } from '@/os/types';
 import { LEGACY_DEFAULT_FAVORITE_NAMES } from './legacyHosts';
+import {
+  isV04DefaultAboutMe,
+  isV04DefaultHeadline,
+  isV04DefaultMood,
+} from './legacyProfile';
 import { savedTop8Contacts, top8Diff } from './top8Drama';
 import { normalizeUrl } from './url';
 import {
@@ -137,10 +142,10 @@ export interface WebStore extends WebState {
   /** Appends a player entry to `host`'s guestbook. */
   signGuestbook: (host: string, entry: PlayerGuestbookEntry) => void;
   /**
-   * Saves the player's Friendspace `/me` profile. Friends it drops from or adds to the Top 8 go
-   * out as one `web:top8Changed` (Messenger's Top 8 drama, P0-03).
+   * Saves the player's Friendspace `/me` profile (only what they typed, `savedProfile`). Friends
+   * it drops from or adds to the Top 8 go out as one `web:top8Changed` (Messenger's Top 8 drama, P0-03).
    */
-  saveProfile: (profile: PlayerProfile) => void;
+  saveProfile: (profile: SavedPlayerProfile) => void;
   /** Records the player's answer to poll `pollId`; the first vote sticks ("u already voted!!"). */
   vote: (pollId: string, option: number) => void;
   /** Friendspace `/bulletins` was opened on `day` (the unread dot clears until a later day). */
@@ -216,32 +221,39 @@ function sanitizeGuestbook(v: unknown): WebState['guestbook'] | null {
   return out;
 }
 
-export function sanitizeProfile(v: unknown): PlayerProfile | null {
+/**
+ * A saved `/me` profile. The default fields (headline, mood, about me, theme) are optional: absent
+ * resolves to the defaults at render, and a v0.4 save's default text is migrated to absent.
+ */
+export function sanitizeProfile(v: unknown): SavedPlayerProfile | null {
   if (!isRecord(v)) return null;
   const { headline, mood, aboutMe, songTrackId, themePreset, customColors } = v;
-  if (
-    !str(headline) ||
-    !isRecord(mood) ||
-    !str(mood.text) ||
-    !str(mood.emoticon) ||
-    !str(aboutMe) ||
-    !(songTrackId === null || str(songTrackId)) ||
-    !str(themePreset)
-  ) {
-    return null;
-  }
+  if (!(songTrackId === null || str(songTrackId))) return null;
   const colors =
     isRecord(customColors) &&
     str(customColors.background) &&
     str(customColors.text)
       ? { background: customColors.background, text: customColors.text }
       : null;
+  const moodValue =
+    isRecord(mood) && str(mood.text) && str(mood.emoticon)
+      ? { text: mood.text, emoticon: mood.emoticon }
+      : undefined;
   return {
-    headline,
-    mood: { text: mood.text, emoticon: mood.emoticon },
-    aboutMe,
+    ...defined(
+      'headline',
+      str(headline) && !isV04DefaultHeadline(headline) ? headline : undefined,
+    ),
+    ...defined(
+      'mood',
+      moodValue && !isV04DefaultMood(moodValue) ? moodValue : undefined,
+    ),
+    ...defined(
+      'aboutMe',
+      str(aboutMe) && !isV04DefaultAboutMe(aboutMe) ? aboutMe : undefined,
+    ),
     songTrackId,
-    themePreset,
+    ...defined('themePreset', str(themePreset) ? themePreset : undefined),
     customColors: colors,
     top8: sanitizeTop8(v.top8),
     ...defined('layoutCode', sanitizeLayoutCode(v.layoutCode)),

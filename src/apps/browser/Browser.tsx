@@ -1,5 +1,5 @@
 // Web Explorer (app `browser`): IE6-style chrome around the fictional `.example` web.
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useGender } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { requireOnline } from '@/os/network';
@@ -71,11 +71,15 @@ export default function Browser({ windowId, props }: AppComponentProps) {
     else windows.setWindowTitle(windowId, 'apps.browser.title');
   }, [pageTitle, windowId]);
 
+  const viewport = useRef<HTMLDivElement>(null);
   const navigator: BrowserNavigator = useMemo(
     () => ({
       navigate: nav.follow,
       hover: setHovered,
       resolveHref: nav.resolveLink,
+      scrollToTop: () => {
+        if (viewport.current) viewport.current.scrollTop = 0;
+      },
     }),
     [nav.follow, nav.resolveLink],
   );
@@ -259,6 +263,7 @@ export default function Browser({ windowId, props }: AppComponentProps) {
           />
         )}
         <div
+          ref={viewport}
           className={styles.viewport}
           data-testid="browser-viewport"
           aria-busy={Boolean(nav.loading)}

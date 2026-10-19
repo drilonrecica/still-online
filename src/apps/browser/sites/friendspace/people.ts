@@ -1,18 +1,17 @@
 // Turns profile content into what ProfileView shows: friends' names and pictures come from the
-// contact content (never from Messenger's state), the player's from their name.
+// contact content (never from Messenger's state), the player's picture from User Accounts.
 import { getBands, getContacts } from '@/content/locale';
 import type {
   ProfileComment,
   TopFriend,
 } from '@/content/friendspace/profiles/types';
 import type { ContactId } from '@/content/types';
-import { getGender } from '@/i18n/settingsText';
+import { getGender, getUserPicture } from '@/i18n/settingsText';
 import type { Locale } from '@/i18n/types';
+import type { UserPictureId } from '@/os/user/pictures';
 import { extraColors, fillName } from './logic';
-import type { PictureSpec, TopFriendView, WallComment } from './ProfileView';
-
-/** The player's default pattern colours (the same as Messenger's default picture). */
-const PLAYER_COLORS = ['#dfe9f8', '#1d4f99'] as const;
+import type { PatternPicture, PictureSpec } from './Picture';
+import type { TopFriendView, WallComment } from './ProfileView';
 
 export const FRIEND_IDS: readonly ContactId[] = getContacts('en', 'girl').map(
   (c) => c.contact.id,
@@ -24,15 +23,16 @@ export function friend(id: ContactId, locale: Locale = 'en') {
     ?.contact;
 }
 
-export function friendPicture(id: ContactId): PictureSpec {
+export function friendPicture(id: ContactId): PatternPicture {
   const avatar = friend(id)?.avatar;
   return avatar?.kind === 'pattern'
     ? { seed: avatar.seed, colors: avatar.colors }
     : { seed: id, colors: extraColors(id) };
 }
 
-export function playerPicture(playerName: string): PictureSpec {
-  return { seed: playerName, colors: PLAYER_COLORS };
+/** The player's picture: their effective User Accounts tile (`useUserPicture()`). */
+export function playerPicture(userPicture: UserPictureId | null): PictureSpec {
+  return { userPicture };
 }
 
 export function friendName(id: ContactId, locale: Locale = 'en'): string {
@@ -43,12 +43,13 @@ export function topFriendView(
   t: TopFriend,
   playerName: string,
   locale: Locale = 'en',
+  userPicture: UserPictureId | null = getUserPicture(),
 ): TopFriendView {
   if (t.kind === 'player')
     return {
       key: 'player',
       label: playerName,
-      picture: playerPicture(playerName),
+      picture: playerPicture(userPicture),
       href: '/me',
     };
   if (t.kind === 'contact')

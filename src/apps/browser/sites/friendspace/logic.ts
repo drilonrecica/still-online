@@ -4,6 +4,7 @@ import { getLocale } from '@/i18n/t';
 import type {
   PlayerProfile,
   ProfileComment,
+  SavedPlayerProfile,
   ProfileContent,
   ProfileTheme,
 } from '@/content/friendspace/profiles/types';
@@ -130,22 +131,50 @@ export function normalizeTop8(
   return [...kept, ...missing].slice(0, WEB_LIMITS.top8);
 }
 
-/** `web.myProfile`, or the starting profile when the player hasn't saved one yet. */
+/**
+ * `web.myProfile` as shown: absent fields (or no save at all) filled from the defaults for
+ * `locale` and `gender`, like untouched seed files.
+ */
 export function effectiveProfile(
-  saved: PlayerProfile | null,
+  saved: SavedPlayerProfile | null,
   known: readonly ContactId[],
   locale: Locale = 'en',
   gender: Gender = 'girl',
 ): PlayerProfile {
-  const { DEFAULT_PLAYER_PROFILE } = getSiteText(
+  const { DEFAULT_PLAYER_PROFILE: d } = getSiteText(
     FRIENDSPACE_HOST,
     locale,
     gender,
   );
-  const base = saved ?? { ...DEFAULT_PLAYER_PROFILE, top8: [] };
+  if (!saved) return { ...d, top8: normalizeTop8([], known) };
   return {
-    ...base,
-    top8: saved ? cleanTop8(base.top8, known) : normalizeTop8(base.top8, known),
+    ...saved,
+    headline: saved.headline ?? d.headline,
+    mood: saved.mood ?? d.mood,
+    aboutMe: saved.aboutMe ?? d.aboutMe,
+    themePreset: saved.themePreset ?? d.themePreset,
+    top8: cleanTop8(saved.top8, known),
+  };
+}
+
+/**
+ * What Save stores: `profile` without the fields equal to `defaults` (the current language's and
+ * gender's), so they keep following the language and gender.
+ */
+export function savedProfile(
+  profile: PlayerProfile,
+  defaults: Omit<PlayerProfile, 'top8'>,
+): SavedPlayerProfile {
+  const { headline, mood, aboutMe, themePreset, ...rest } = profile;
+  const sameMood =
+    mood.text === defaults.mood.text &&
+    mood.emoticon === defaults.mood.emoticon;
+  return {
+    ...rest,
+    ...(headline !== defaults.headline && { headline }),
+    ...(!sameMood && { mood }),
+    ...(aboutMe !== defaults.aboutMe && { aboutMe }),
+    ...(themePreset !== defaults.themePreset && { themePreset }),
   };
 }
 

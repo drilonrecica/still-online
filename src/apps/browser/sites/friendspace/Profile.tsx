@@ -1,6 +1,6 @@
 // friendspace.example `/<contactId>`: a friend's profile, with the comment wall up to today's day.
 // Any other single-segment path lands here too and shows "Lost in orbit!". The song autoplays.
-import { useGender, usePlayerName } from '@/i18n/settingsText';
+import { useGender, usePlayerName, useUserPicture } from '@/i18n/settingsText';
 import { getProfiles } from '@/content/locale';
 import { useLocale, useT } from '@/i18n/useT';
 import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
@@ -30,6 +30,7 @@ export default function Profile({ path }: SitePageProps) {
   const PROFILES = getProfiles(locale, gender);
   const day = useWorldStore((s) => s.day);
   const playerName = usePlayerName();
+  const userPicture = useUserPicture();
   const id = path.slice(1).toLowerCase();
   const profile = PROFILES.find((p) => p.contactId === id);
   useProfileAutoplay(profile?.songTrackId, path);
@@ -59,7 +60,9 @@ export default function Profile({ path }: SitePageProps) {
         aboutMe={fillName(profile.aboutMe, playerName)}
         wantToMeet={profile.wantToMeet}
         interests={profile.interests}
-        top8={profile.top8.map((t) => topFriendView(t, playerName, locale))}
+        top8={profile.top8.map((t) =>
+          topFriendView(t, playerName, locale, userPicture),
+        )}
         comments={visibleComments(profile.comments, day).map((c) =>
           wallComment(c, playerName, locale),
         )}

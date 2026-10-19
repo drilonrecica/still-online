@@ -24,6 +24,7 @@ import {
   playerTheme,
   playerWall,
   profileName,
+  savedProfile,
   shortDate,
   trackLabel,
   visibleBulletins,
@@ -155,6 +156,39 @@ describe('friendspace logic', () => {
     });
     // A saved profile wins over the gender's preset.
     expect(effectiveProfile(base, [], 'en', 'boy').themePreset).toBe('glitter');
+  });
+
+  it('saves only what the player typed; absent fields follow the language and gender', () => {
+    const girlEn = effectiveProfile(null, ['jess'], 'en', 'girl');
+    const defaults = { ...girlEn, top8: undefined };
+    // Untouched defaults (only a layout pasted) are left out of the save.
+    const pasted = savedProfile(
+      { ...girlEn, layoutCode: '[layout bg=starry]' },
+      defaults,
+    );
+    for (const k of ['headline', 'mood', 'aboutMe', 'themePreset'])
+      expect(pasted).not.toHaveProperty(k);
+    expect(pasted.layoutCode).toBe('[layout bg=starry]');
+    expect(effectiveProfile(pasted, ['jess'], 'de', 'boy')).toMatchObject({
+      headline: 'neu auf Friendspace. skaten bis zum umfallen',
+      mood: { text: 'voll motiviert', emoticon: '(8)' },
+      themePreset: 'midnight',
+      layoutCode: '[layout bg=starry]',
+    });
+    // Typed fields stay, whatever the language and gender.
+    const typed = savedProfile(
+      { ...girlEn, headline: 'mine', mood: { text: 'giggly', emoticon: ':)' } },
+      defaults,
+    );
+    expect(typed).toMatchObject({
+      headline: 'mine',
+      mood: { text: 'giggly', emoticon: ':)' },
+    });
+    expect(typed).not.toHaveProperty('aboutMe');
+    expect(effectiveProfile(typed, [], 'de', 'boy')).toMatchObject({
+      headline: 'mine',
+      mood: { text: 'giggly', emoticon: ':)' },
+    });
   });
 
   it('cleans edits before saving', () => {

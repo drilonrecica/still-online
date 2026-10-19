@@ -67,7 +67,18 @@ export interface ProfileContent {
   layout?: LayoutExtras;
 }
 
-/** The player's editable `/me` profile, persisted in the `web` store. */
+/** The fields whose default follows the language and gender (`DEFAULT_PLAYER_PROFILE`). */
+export type ProfileDefaultField =
+  'headline' | 'mood' | 'aboutMe' | 'themePreset';
+
+/**
+ * What `web.myProfile` stores: only what the player typed. An absent default field resolves to
+ * the current language's and gender's default at render (`effectiveProfile`).
+ */
+export type SavedPlayerProfile = Omit<PlayerProfile, ProfileDefaultField> &
+  Partial<Pick<PlayerProfile, ProfileDefaultField>>;
+
+/** The player's `/me` profile as shown and edited (absent saved fields filled from the defaults). */
 export interface PlayerProfile {
   headline: string;
   mood: { text: string; emoticon: string };

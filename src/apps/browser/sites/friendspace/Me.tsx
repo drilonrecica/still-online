@@ -1,6 +1,6 @@
 // friendspace.example `/me`: the player's own profile, editable (persisted in `web.myProfile`).
 // Friends comment on it on days 2–5.
-import { useGender, usePlayerName } from '@/i18n/settingsText';
+import { useGender, usePlayerName, useUserPicture } from '@/i18n/settingsText';
 import { useId, useState } from 'react';
 import { getProfiles, getTop8Reactions } from '@/content/locale';
 import { useLocale, useT } from '@/i18n/useT';
@@ -10,6 +10,7 @@ import { useSiteText } from '../useSiteText';
 import { now } from '@/os/clock';
 import { useWorldStore } from '@/os/world';
 import { useWebStore } from '../../store';
+import { useBrowserNavigator } from '../../navigator';
 import { SiteLink } from '../../SiteLink';
 import { Layout } from './Layout';
 import {
@@ -17,6 +18,7 @@ import {
   effectiveProfile,
   playerTheme,
   playerWall,
+  savedProfile,
   shortDate,
   mergeWall,
   top8WallComments,
@@ -36,13 +38,16 @@ import { ProfileView } from './ProfileView';
 import styles from './Friendspace.module.css';
 
 export default function Me() {
-  const { FRIENDSPACE_TEXT: T } = useSiteText(FRIENDSPACE_HOST);
+  const { FRIENDSPACE_TEXT: T, DEFAULT_PLAYER_PROFILE } =
+    useSiteText(FRIENDSPACE_HOST);
   const locale = useLocale();
   const t = useT();
   const gender = useGender();
   const PROFILES = getProfiles(locale, gender);
   const day = useWorldStore((s) => s.day);
   const playerName = usePlayerName();
+  const userPicture = useUserPicture();
+  const { scrollToTop } = useBrowserNavigator();
   const saved = useWebStore((s) => s.myProfile);
   const save = useWebStore((s) => s.saveProfile);
   const top8Wall = useWebStore((s) => s.top8Wall);
@@ -57,8 +62,14 @@ export default function Me() {
         <ProfileEditor
           initial={profile}
           onSave={(p) => {
-            save(withMoodHistory(profile, p, day));
+            save(
+              savedProfile(
+                withMoodHistory(profile, p, day),
+                DEFAULT_PLAYER_PROFILE,
+              ),
+            );
             setEditing(false);
+            scrollToTop();
           }}
           onCancel={() => setEditing(false)}
         />
@@ -78,11 +89,13 @@ export default function Me() {
         displayName={playerName}
         headline={profile.headline}
         mood={profile.mood}
-        picture={playerPicture(playerName)}
+        picture={playerPicture(userPicture)}
         lastLogin={shortDate(now())}
         songTrackId={profile.songTrackId}
         aboutMe={profile.aboutMe}
-        top8={profile.top8.map((e) => topFriendView(e, playerName, locale))}
+        top8={profile.top8.map((e) =>
+          topFriendView(e, playerName, locale, userPicture),
+        )}
         comments={mergeWall(
           playerWall(PROFILES, day),
           top8WallComments(top8Wall ?? [], getTop8Reactions(locale, gender)),
@@ -107,7 +120,12 @@ export default function Me() {
                 type="checkbox"
                 checked={profile.autoplay !== false}
                 onChange={(e) =>
-                  save(cleanProfile({ ...profile, autoplay: e.target.checked }))
+                  save(
+                    savedProfile(
+                      cleanProfile({ ...profile, autoplay: e.target.checked }),
+                      DEFAULT_PLAYER_PROFILE,
+                    ),
+                  )
                 }
               />
               <label htmlFor={`${autoplayId}-autoplay`}>

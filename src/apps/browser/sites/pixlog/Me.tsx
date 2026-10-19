@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { getPixlogProfiles, getSurveys } from '@/content/locale';
 import { PIXLOG_SKINS, type Survey } from '@/content/pixlog/types';
 import { PIXLOG_HOST } from '@/content/sites/pixlog';
-import { useGender, usePlayerName } from '@/i18n/settingsText';
+import { useGender, usePlayerName, useUserPicture } from '@/i18n/settingsText';
 import { interpolate } from '@/i18n/t';
 import { useLocale } from '@/i18n/useT';
 import { FsIcon } from '@/os/fs/FsIcon';
@@ -312,6 +312,7 @@ export default function Me() {
   const locale = useLocale();
   const gender = useGender();
   const playerName = usePlayerName();
+  const userPicture = useUserPicture();
   const day = useWorldStore((s) => s.day);
   const skin = pixlogSkinFor(
     useWebStore((s) => s.pixlog),
@@ -322,7 +323,7 @@ export default function Me() {
     <Layout skin={skin}>
       <div className={styles.head}>
         <Picture
-          {...playerPicture(playerName)}
+          {...playerPicture(userPicture)}
           label={T.me.pictureLabel}
           size={96}
         />

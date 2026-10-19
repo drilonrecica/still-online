@@ -8,12 +8,15 @@ export interface BrowserNavigator {
   hover: (url: string | null) => void;
   /** Absolute form of `href` against the current page. */
   resolveHref: (href: string) => string;
+  /** Scrolls the page area back to the top (e.g. `/me` after Save). */
+  scrollToTop: () => void;
 }
 
 const noop: BrowserNavigator = {
   navigate: () => {},
   hover: () => {},
   resolveHref: (href) => href,
+  scrollToTop: () => {},
 };
 
 export const NavigatorContext = createContext<BrowserNavigator>(noop);

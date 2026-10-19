@@ -11,7 +11,7 @@ import type {
 import { useT } from '@/i18n/useT';
 import { SiteLink } from '../../SiteLink';
 import { Mood } from './Mood';
-import { Picture } from './Picture';
+import { Picture, type PictureSpec } from './Picture';
 import { rich } from '../rich';
 import { SongStrip } from './SongStrip';
 import { dayLabel } from './logic';
@@ -23,11 +23,6 @@ import {
   useGlitterClass,
 } from './ProfileExtras';
 import styles from './Friendspace.module.css';
-
-export interface PictureSpec {
-  seed: string;
-  colors: readonly [string, string];
-}
 
 export interface TopFriendView {
   key: string;
@@ -123,8 +118,7 @@ export function ProfileView(p: ProfileViewProps) {
           <h2 className={styles.displayName}>{p.displayName}</h2>
           <div className={styles.idCard}>
             <Picture
-              seed={p.picture.seed}
-              colors={p.picture.colors}
+              {...p.picture}
               label={t('sites.friendspace.picture', { name: p.name })}
             />
             <div>
@@ -186,12 +180,7 @@ export function ProfileView(p: ProfileViewProps) {
               {p.top8.map((f) => {
                 const inner = (
                   <>
-                    <Picture
-                      seed={f.picture.seed}
-                      colors={f.picture.colors}
-                      label=""
-                      size={56}
-                    />
+                    <Picture {...f.picture} label="" size={56} />
                     <span>{f.label}</span>
                   </>
                 );
@@ -228,12 +217,7 @@ export function ProfileView(p: ProfileViewProps) {
                       ) : (
                         <b>{c.from}</b>
                       )}
-                      <Picture
-                        seed={c.picture.seed}
-                        colors={c.picture.colors}
-                        label=""
-                        size={48}
-                      />
+                      <Picture {...c.picture} label="" size={48} />
                     </div>
                     <div className={styles.commentBody}>
                       <span className={styles.commentDate}>
