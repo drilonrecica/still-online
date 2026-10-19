@@ -549,49 +549,51 @@ export const pia: ContactOverlay = {
         lines: ['10 minuten is keine runde', 'ne runde geht bis ich gewinne'],
       },
     },
-    // P4 replaces this with German (Top 8 drama, P0-03).
+    // Top 8 drama (P0-03).
     'top8-dropped': {
       noticed: {
         lines: [
           '{name}',
-          'I AM NOT IN UR TOP 8',
-          'i checked on dads laptop. TWICE',
-          'im telling mom',
+          'ICH BIN NICHT IN DEINER TOP 8',
+          'ich habs an papas laptop nachgeguckt. ZWEIMAL',
+          'ich sags mama!!',
         ],
         choices: [
-          { text: 'pia its just a website', label: 'Its just a website' },
-          { text: 'ok ok ill put u back', label: 'Ill put you back' },
+          { text: 'pia das is doch nur ne website', label: 'Nur ne Website' },
+          {
+            text: 'ok ok ich nehm dich wieder rein',
+            label: 'Ich nehm dich rein',
+          },
         ],
       },
       website: {
         lines: [
-          'MOOOOOOOM',
+          'MAMAAAAAA',
           g(
-            'mom says be nice to ur sister. HA',
-            'mom says be nice to ur brother. HA',
+            'mama sagt du sollst lieb zu deiner schwester sein. HA',
+            'mama sagt du sollst lieb zu deinem bruder sein. HA',
           ),
           '',
         ],
-        personalMessages: { 2: 'NOT in a top 8. mom knows' },
+        personalMessages: { 2: 'NICHT in einer top 8. mama weiß bescheid' },
       },
       back: {
-        lines: ['u have 5 min', 'i am counting. 1. 2. 3', ''],
-        personalMessages: { 2: 'waiting 4 my top 8 spot. 4. 5' },
+        lines: ['du hast 5 min', 'ich zähle. 1. 2. 3', ''],
+        personalMessages: { 2: 'warte auf meinen top-8-platz. 4. 5' },
       },
     },
-    // P4 replaces this with German.
     'top8-readded': {
       back: {
         lines: [
-          'ok i saw. im back in ur top 8',
-          'i told mom u fixed it',
+          'ok habs gesehen. ich bin wieder in deiner top 8',
+          'ich hab mama gesagt dass dus repariert hast',
           g(
-            'ur not the WORST sister. ur like the 3rd worst',
-            'ur not the WORST brother. ur like the 3rd worst',
+            'du bist nicht die SCHLIMMSTE schwester. eher so die 3.-schlimmste',
+            'du bist nicht der SCHLIMMSTE bruder. eher so der 3.-schlimmste',
           ),
           '',
         ],
-        personalMessages: { 3: 'back in the top 8. as i SHOULD be' },
+        personalMessages: { 3: 'wieder in der top 8. wie es sich GEHÖRT' },
       },
     },
   },

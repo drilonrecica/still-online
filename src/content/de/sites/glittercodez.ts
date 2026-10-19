@@ -1,6 +1,6 @@
 // German glittercodez.example, same exports and ids as `src/content/sites/glittercodez`. The site
-// talks like a 2007 teen layout site: klein, „ur“ → „dein“, viele „!!“. P4 replaces the sample
-// layouts with the real twelve in German.
+// talks like a 2007 teen layout site: klein, „ur“ → „dein“, viele „!!“. The twelve layouts keep
+// their ids, sides and extras; only names and blurbs are German.
 import {
   GLITTERCODEZ_HOST as EN_HOST,
   LAYOUTS as EN_LAYOUTS,
@@ -109,4 +109,59 @@ export const GLITTERCODEZ_TEXT = {
     '© 2007 GlitterCodez · optimiert für 1024x768 · alle Codes GRATIS für immer',
 };
 
-export const LAYOUTS: readonly LayoutDef[] = structuredClone(EN_LAYOUTS);
+const LAYOUT_TEXT: Record<string, Pick<LayoutDef, 'name' | 'blurb'>> = {
+  'emo-black-pink': {
+    name: 'Emo Schwarz/Pink',
+    blurb: 'schwarz und pink für alle die ALLES fühlen ~*~ hdl',
+  },
+  'pony-pastel': {
+    name: 'Pony Pastell',
+    blurb: 'omg mein liebling!!! sooo süß ich kann nich mehr ~*~ wieher!!',
+  },
+  'leopard-luxe': {
+    name: 'Leo Luxus',
+    blurb: 'edel wie die freundin von nem rockstar. gern geschehen ~*~',
+  },
+  'rainbow-glitter': {
+    name: 'Regenbogenglitzer',
+    blurb: 'ALLE farben!!! 10 von 10 würd wieder glitzern ~*~*~',
+  },
+  'hearts-4-ever': {
+    name: 'Herzen 4 Ever',
+    blurb: 'hdl hdl hdl!!! für deine BFF und deinen schwarm <3 <3 <3',
+  },
+  'starry-night': {
+    name: 'Sternennacht',
+    blurb: 'funkelnde sterne zum wegträumen ~*~ kopieren!!',
+  },
+  'skater-grunge': {
+    name: 'Skater Grunge',
+    blurb: 'dreckiger grip-tape-look. kein glitzer. niemals. für echte skater',
+  },
+  'gamer-green': {
+    name: 'Gamer Grün',
+    blurb: 'matrix-style. PWNAGE. dein profil kriegt +50 skill',
+  },
+  'checkerboard-punk': {
+    name: 'Schachbrett-Punk',
+    blurb: 'fettes layout alter. schwarz und weiß und LAUT',
+  },
+  flames: {
+    name: 'Flammen',
+    blurb: 'HEISS HEISS HEISS. dein profil brennt. im ernst lol',
+  },
+  camo: {
+    name: 'Tarnmuster',
+    blurb: 'tarnmodus. ninja-profil. du siehst mich nich mal',
+  },
+  'midnight-purple': {
+    name: 'Mitternachtslila',
+    blurb:
+      'dunkel und düster und voll episch. wie das level vom endgegner. echt jetzt',
+  },
+};
+
+export const LAYOUTS: readonly LayoutDef[] = EN_LAYOUTS.map((l) => ({
+  ...l,
+  ...LAYOUT_TEXT[l.id],
+}));

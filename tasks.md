@@ -436,15 +436,15 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 | P3-02 | **Pixlog content: Jess, Kayla, Pia** — albums (photos, captions, comments), blog posts, surveys, shouts, guestbooks, kudos days. | P2-G | done | opus | agent | — | fast | — | Per spec volume; voices + storylines hold; lint green; placeholders updated. | §P3-02 |
 | P3-03 | **Pixlog content: Marco, Theo, Dex** — as P3-02. | P2-G | done | opus | agent | — | fast | — | As P3-02. | §P3-02 |
 | P3-04 | **GlitterCodez layouts + mail** — 12 layouts with names/blurbs, glitter/sticker/cursor page text, site chrome text; mails `d2-pixlog-visitors`, `d4-friendspace-bulletin`. | P2-G | done | sonnet | agent | — | fast | — | 12 distinct good-looking layouts (screenshot each); mails delivered on their days; lint green; placeholders updated. | §P3-04 |
-| P3-G | **P3 gate (content self-review)** — Gate procedure + Content rubric; 5-day English playthrough of the new sites. | P3-01…P3-04 | in progress | opus | agent | — | e2e | — | verify + e2e pass; rubric per friend; day-by-day screenshots; `docs/review/v04-P3.md`. | §Gate |
+| P3-G | **P3 gate (content self-review)** — Gate procedure + Content rubric; 5-day English playthrough of the new sites. | P3-01…P3-04 | done | opus | agent | — | e2e | — | verify + e2e pass; rubric per friend; day-by-day screenshots; `docs/review/v04-P3.md`. | §Gate |
 
 ## P4 — German content
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P4-01 | **German: Friendspace + GlitterCodez + mail** — bulletins, bands, Top 8 reaction lines + contact overlays for the new scripts, layouts text, mails; glossary in `docs/localization-de.md`. | P3-G | blocked | opus | agent | — | fast | — | No placeholder left in these modules; overlays complete (overlay fallback test green); fallback assertions added; German voices per style guide. | §P4-01 |
-| P4-02 | **German: Pixlog Jess, Kayla, Pia** | P3-G | blocked | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
-| P4-03 | **German: Pixlog Marco, Theo, Dex** | P3-G | blocked | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
+| P4-01 | **German: Friendspace + GlitterCodez + mail** — bulletins, bands, Top 8 reaction lines + contact overlays for the new scripts, layouts text, mails; glossary in `docs/localization-de.md`. | P3-G | in progress | opus | agent | — | fast | — | No placeholder left in these modules; overlays complete (overlay fallback test green); fallback assertions added; German voices per style guide. | §P4-01 |
+| P4-02 | **German: Pixlog Jess, Kayla, Pia** | P3-G | ready | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
+| P4-03 | **German: Pixlog Marco, Theo, Dex** | P3-G | ready | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
 | P4-G | **P4 gate (German content self-review)** — Gate procedure + German content rubric; 5-day German playthrough of the new sites. | P4-01…P4-03 | blocked | opus | agent | — | e2e | — | verify + e2e pass; no placeholder comments left in `src/content/de`; `docs/review/v04-P4.md`. | §Gate |
 
 ## P5 — Release v0.4

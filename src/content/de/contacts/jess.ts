@@ -667,30 +667,29 @@ export const jess: ContactOverlay = {
         ],
       },
     },
-    // P4 replaces this with German (Top 8 drama, P0-03).
+    // Top 8 drama (P0-03).
     'top8-dropped': {
       noticed: {
         lines: [
           '{name}!!!!',
-          'WHY AM I NOT IN UR TOP 8???',
-          'i refreshed like 10 times. STILL NOT THERE',
-          'ok im over it',
-          '(im not over it) :(',
+          'WIESO BIN ICH NICH IN DEINER TOP 8???',
+          'ich hab so 10 mal aktualisiert. IMMER NOCH NICH DRIN',
+          'ok ich bin drüber weg',
+          '(ich bin nich drüber weg) :(',
           '',
         ],
-        personalMessages: { 5: 'not in a CERTAIN top 8 :(' },
+        personalMessages: { 5: 'nich in einer GEWISSEN top 8 :(' },
       },
     },
-    // P4 replaces this with German.
     'top8-readded': {
       back: {
         lines: [
-          'IM BACK IN UR TOP 8!!!!!',
-          'i forgive u. i forgave u like 2 min ago honestly',
-          g('BFFS AGAIN (L) (L)', 'BEST BUDS AGAIN (Y) (Y)'),
+          'ICH BIN WIEDER IN DEINER TOP 8!!!!!',
+          'ich verzeih dir. ehrlich gesagt hab ich dir schon vor 2 min verziehen',
+          g('WIEDER BFFS (L) (L) hdgdl', 'WIEDER BESTE KUMPELS (Y) (Y)'),
           '',
         ],
-        personalMessages: { 3: 'BACK IN THE TOP 8!!! :D' },
+        personalMessages: { 3: 'WIEDER IN DER TOP 8!!! :D' },
       },
     },
   },

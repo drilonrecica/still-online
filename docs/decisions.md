@@ -297,3 +297,7 @@
 - P2-02: stranger screen names are a `LocaleContent` field (`pixlogStrangers`, English list + German placeholder) so they get parity and lint like other content and P4 can give German screen names; `visitors` takes them as a third argument.
 - P2-02: a friend "visits" on a day they posted anything on Pixlog, including guestbook entries and photo comments they wrote; 1–3 strangers fill up to 8, and everyone is shuffled with the same seeded generator.
 - P2-02: the visitors box shows each visitor's latest visit over days `day…1` (≤ 8) and sits beside the feed on `/` until P2-03 builds `/me`, which reuses it.
+- P4-01: German bulletins, band pages, Top 8 wall lines/chats and GlitterCodez layout blurbs replace the placeholders; chain-letter "repost" is „weiterschicken" (the lint blocks „posten", and German chain letters said it) and "fw:" is „WG:" as in mail.
+- P4-01: GlitterCodez layout names are German where a 2007 German site would have translated them („Pony Pastell", „Tarnmuster"); "Skater Grunge" stays. The name only feeds the code's header comment, so pasted codes parse the same in both languages.
+- P4-01: Kayla's broadcast bulletin avoids a gendered „freundin" for its readers („wer das nich weiterschickt is nich mit mir befreundet"); Jess's wall re-add line gains a German-only `g('die', 'der') beste`.
+- P4-01: the two v0.4 mails (`d2-pixlog-visitors`, `d4-friendspace-bulletin`) were already written in German by P3-04, so P4-01 left them as they are.

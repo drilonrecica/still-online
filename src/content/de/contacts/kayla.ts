@@ -637,46 +637,49 @@ export const kayla: ContactOverlay = {
         ],
       },
     },
-    // P4 replaces this with German (Top 8 drama, P0-03).
+    // Top 8 drama (P0-03).
     'top8-dropped': {
       noticed: {
         lines: [
           'so.',
-          'i checked ur friendspace last nite',
-          'and im not in ur top 8 anymore??',
-          'like. wow. ok {name}',
+          'ich war gestern abend auf deinem friendspace',
+          'und ich bin nich mehr in deiner top 8??',
+          'also. wow. ok {name}',
         ],
         choices: [
-          { text: 'it was an accident i swear', label: 'It was an accident' },
+          { text: 'das war ein versehen ehrlich', label: 'War ein Versehen' },
           {
-            text: 'i was just changing stuff around',
-            label: 'Just changing stuff',
+            text: 'ich hab nur bisschen was umgestellt',
+            label: 'Nur umgestellt',
           },
         ],
       },
       accident: {
         lines: [
-          'an ACCIDENT',
-          'ur mouse just slipped and deleted me. sure.',
+          'ein VERSEHEN',
+          'deine maus is einfach ausgerutscht und hat mich gelöscht. klar.',
           '',
         ],
-        personalMessages: { 2: '~*replaceable apparently*~' },
+        personalMessages: { 2: '~*anscheinend ersetzbar*~' },
       },
       changing: {
-        lines: ['changing stuff around = taking ME out', 'noted.', ''],
-        personalMessages: { 2: '~*replaceable apparently*~' },
+        lines: [
+          'bisschen was umstellen = MICH rausschmeißen',
+          'gemerkt. *seufz*',
+          '',
+        ],
+        personalMessages: { 2: '~*anscheinend ersetzbar*~' },
       },
     },
-    // P4 replaces this with German.
     'top8-readded': {
       back: {
         lines: [
-          'omg im back in ur top 8!!!',
-          'ok ur forgiven. this time',
+          'omg ich bin wieder in deiner top 8!!!',
+          'ok dir is verziehen. dieses mal',
           '<3',
           '',
         ],
-        personalMessages: { 3: '~*back where i belong*~ <3' },
+        personalMessages: { 3: '~*wieder da wo ich hingehöre*~ <3' },
       },
     },
   },

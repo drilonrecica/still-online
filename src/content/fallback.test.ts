@@ -9,6 +9,8 @@ import { SEED_FILES } from './files';
 import { MAIL_CONTENT } from './mail';
 import { PROFILES } from './friendspace/profiles';
 import { TUNEMOLE_RESULTS } from './tunemole';
+import type { ContactLine } from './types';
+import type { Gender } from '../os/types';
 
 const de = contentFor('de', 'girl');
 const en = contentFor('en', 'girl');
@@ -55,3 +57,86 @@ describe('German content has no English fallback', () => {
     );
   });
 });
+
+const GENDERS: readonly Gender[] = ['girl', 'boy'];
+const TOP8_SCRIPTS = ['top8-dropped', 'top8-readded'];
+
+describe.each(GENDERS)(
+  'v0.4 Friendspace + GlitterCodez German (%s)',
+  (gender) => {
+    const deG = contentFor('de', gender);
+    const enG = contentFor('en', gender);
+
+    it('bulletins differ from English', () => {
+      expect(deG.bulletins.map((b) => [b.id, b.day, b.link])).toEqual(
+        enG.bulletins.map((b) => [b.id, b.day, b.link]),
+      );
+      deG.bulletins.forEach((b, i) => {
+        const e = enG.bulletins[i]!;
+        expect(b.subject, b.id).not.toBe(e.subject);
+        expect(b.body, b.id).not.toBe(e.body);
+      });
+    });
+
+    it('band pages differ from English', () => {
+      expect(deG.bands.map((b) => [b.id, b.name, b.trackIds])).toEqual(
+        enG.bands.map((b) => [b.id, b.name, b.trackIds]),
+      );
+      deG.bands.forEach((b, i) => {
+        const e = enG.bands[i]!;
+        expect(b.bio, b.id).not.toBe(e.bio);
+        expect(b.hometown, b.id).not.toBe(e.hometown);
+        b.shows.forEach((s, j) => expect(s.text).not.toBe(e.shows[j]!.text));
+        b.blog.forEach((p, j) => expect(p.body).not.toBe(e.blog[j]!.body));
+      });
+    });
+
+    it('Top 8 wall lines differ from English', () => {
+      deG.top8Reactions.forEach((r, i) => {
+        const e = enG.top8Reactions[i]!;
+        expect(r.contactId).toBe(e.contactId);
+        expect(r.dropped, r.contactId).not.toBe(e.dropped);
+        expect(r.readded, r.contactId).not.toBe(e.readded);
+      });
+    });
+
+    it('Top 8 drama chats differ from English', () => {
+      const enContacts = getContacts('en', gender);
+      for (const c of getContacts('de', gender)) {
+        const e = enContacts.find((x) => x.contact.id === c.contact.id)!;
+        for (const id of TOP8_SCRIPTS) {
+          const de = c.scripts.find((s) => s.id === id)!;
+          const en = e.scripts.find((s) => s.id === id)!;
+          for (const [nodeId, node] of Object.entries(de.nodes)) {
+            const enNode = en.nodes[nodeId]!;
+            const texts = (lines: readonly ContactLine[]) =>
+              lines.map((l) => l.text ?? '').join('\n');
+            const where = `${c.contact.id}/${id}/${nodeId}`;
+            expect(texts(node.lines), where).not.toBe(texts(enNode.lines));
+            node.lines.forEach((l, j) => {
+              const pm = enNode.lines[j]!.personalMessageChange;
+              if (pm !== undefined) {
+                expect(l.personalMessageChange, where).not.toBe(pm);
+              }
+            });
+            if ('choices' in node && 'choices' in enNode) {
+              node.choices.forEach((ch, j) => {
+                expect(ch.text, where).not.toBe(enNode.choices[j]!.text);
+                expect(ch.label, where).not.toBe(enNode.choices[j]!.label);
+              });
+            }
+          }
+        }
+      }
+    });
+
+    it('GlitterCodez layouts keep their codes and have German blurbs', () => {
+      expect(deG.layouts.map((l) => [l.id, l.side, l.extras])).toEqual(
+        enG.layouts.map((l) => [l.id, l.side, l.extras]),
+      );
+      deG.layouts.forEach((l, i) =>
+        expect(l.blurb, l.id).not.toBe(enG.layouts[i]!.blurb),
+      );
+    });
+  },
+);

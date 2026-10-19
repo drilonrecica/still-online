@@ -579,49 +579,48 @@ export const theo: ContactOverlay = {
         ],
       },
     },
-    // P4 replaces this with German (Top 8 drama, P0-03).
+    // Top 8 drama (P0-03).
     'top8-dropped': {
       noticed: {
         lines: [
-          'um hi {name}',
-          'i saw im not in ur top 8 anymore',
-          'sorry. i probably did something',
-          'was it the bio poster. i can redo the poster',
+          'ähm hi {name}',
+          'ich hab gesehen, dass ich nicht mehr in deiner top 8 bin',
+          'tschuldigung. ich hab bestimmt irgendwas gemacht',
+          'war es das bio-plakat? ich kann das plakat nochmal machen…',
         ],
         choices: [
           {
             text: g(
-              'its not ur fault theo!! u didnt do anything',
-              'its not ur fault man. u didnt do anything',
+              'das is nich deine schuld theo!! du hast gar nix gemacht',
+              'is nich deine schuld alter. du hast gar nix gemacht',
             ),
-            label: 'Its not your fault',
+            label: 'Nicht deine Schuld',
           },
-          { text: 'i just needed the space', label: 'Needed the space' },
+          { text: 'ich brauchte einfach den platz', label: 'Brauchte Platz' },
         ],
       },
       notFault: {
-        lines: ['oh. ok', 'sorry for asking. i mean. thanks', ''],
-        personalMessages: { 2: 'not in a top 8. its ok. sorry' },
+        lines: ['oh. okay', 'sorry, dass ich gefragt hab. ich mein… danke', ''],
+        personalMessages: { 2: 'nicht in einer top 8. is ok. sorry' },
       },
       space: {
         lines: [
-          'thats ok. 8 is not a lot of spaces',
-          'sorry for taking one',
+          'schon okay. 8 sind ja nicht viele plätze',
+          'tschuldige, dass ich einen weggenommen hab',
           '',
         ],
-        personalMessages: { 2: 'not in a top 8. its ok. sorry' },
+        personalMessages: { 2: 'nicht in einer top 8. is ok. sorry' },
       },
     },
-    // P4 replaces this with German.
     'top8-readded': {
       back: {
         lines: [
-          'um. im back in ur top 8',
-          'thanks. sorry. i mean thanks',
-          'i drew a frog to celebrate. its a small frog',
+          'ähm. ich bin wieder in deiner top 8',
+          'danke. sorry. ich mein danke',
+          'ich hab zur feier nen frosch gemalt. ist ein kleiner frosch…',
           '',
         ],
-        personalMessages: { 3: 'back in a top 8 :) sorry' },
+        personalMessages: { 3: 'wieder in einer top 8 :) sorry' },
       },
     },
   },

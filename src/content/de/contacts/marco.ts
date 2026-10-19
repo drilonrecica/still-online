@@ -560,29 +560,28 @@ export const marco: ContactOverlay = {
         lines: ['den schlägt jeder', 'ich sags ihm. das braucht er'],
       },
     },
-    // P4 replaces this with German (Top 8 drama, P0-03).
+    // Top 8 drama (P0-03).
     'top8-dropped': {
       noticed: {
         lines: [
-          'kid',
-          'aunt rita called. apparently im not in ur top 8 anymore',
-          'she is more upset than me',
-          'i am not upset. for the record',
+          'zwerg',
+          'tante rita hat angerufen. ich bin wohl nicht mehr in deiner top 8',
+          'sie ist mehr getroffen als ich',
+          'ich bin nicht getroffen. nur fürs protokoll',
           '',
         ],
-        personalMessages: { 4: 'removed from a top 8. coping' },
+        personalMessages: { 4: 'aus einer top 8 entfernt. komme klar' },
       },
     },
-    // P4 replaces this with German.
     'top8-readded': {
       back: {
         lines: [
-          'kid',
-          'back in the top 8. aunt rita told me before i saw it',
-          'ill try to stay humble',
+          'zwerg',
+          'wieder in der top 8. tante rita wusste es vor mir',
+          'ich versuche, bescheiden zu bleiben',
           '',
         ],
-        personalMessages: { 3: 'top 8 again. humbled' },
+        personalMessages: { 3: 'wieder top 8. demütig' },
       },
     },
   },
