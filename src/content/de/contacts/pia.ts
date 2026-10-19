@@ -2,6 +2,8 @@
 // line and choice counts as `src/content/contacts/pia*.ts`; '' = a line without text.
 import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
+import { piaWeek2Days, piaWeek2Scripts } from '../../contacts/pia-week2';
+import { placeholderDays, placeholderScripts } from './placeholder';
 
 export const pia: ContactOverlay = {
   displayName: 'pia (L) ponys (L)',
@@ -19,6 +21,8 @@ export const pia: ContactOverlay = {
         'ich hab wem ein GESCHENK gemacht (Y) rate ma wem',
       ),
     },
+    // Days 6–10: placeholders until W3.
+    ...placeholderDays(piaWeek2Days),
   },
   scripts: {
     opening: {
@@ -656,5 +660,7 @@ export const pia: ContactOverlay = {
         personalMessages: { 3: 'wieder in der top 8. wie es sich GEHÖRT' },
       },
     },
+    // Days 6–10 (W1-02): placeholders until W3.
+    ...placeholderScripts(piaWeek2Scripts),
   },
 };

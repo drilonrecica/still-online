@@ -97,7 +97,7 @@ describe('content lint: shipped contacts', () => {
 
   // Week two per finished friend (W1): every day after the written ones up to the last story
   // day. W1-03 raises `contentDays()` for contacts and folds this into the test above.
-  const weekTwoFriends = ['jess', 'kayla'];
+  const weekTwoFriends = ['jess', 'kayla', 'theo', 'pia'];
   const weekTwo = (): number[] => {
     const days: number[] = [];
     for (let d = Math.max(...contentDays()) + 1; d <= STORY_DAYS.last; d++)

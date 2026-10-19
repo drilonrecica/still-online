@@ -1,7 +1,9 @@
 // Pia, days 2–5: the Stardust crisis. The queen pony goes missing, Biscuit is the prime suspect,
 // she turns up in the laundry, and Pia says thank you with a present: the Pony Paradise wallpaper.
+// Days 6–10 are in `pia-week2.ts`; both are exported from here.
 import { g } from '../gender';
 import type { Contact, Script } from '../types';
+import { piaWeek2Days, piaWeek2Scripts } from './pia-week2';
 
 export const piaDays: Contact['days'] = {
   2: {
@@ -17,6 +19,7 @@ export const piaDays: Contact['days'] = {
       'i gave someone a PRESENT (Y) guess who',
     ),
   },
+  ...piaWeek2Days,
 };
 
 export const piaDayScripts: readonly Script[] = [
@@ -493,4 +496,5 @@ export const piaDayScripts: readonly Script[] = [
       },
     },
   },
+  ...piaWeek2Scripts,
 ];

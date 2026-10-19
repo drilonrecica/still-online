@@ -249,6 +249,8 @@ export const GENDER_AUDIT_ALLOW: readonly AllowEntry[] = [
   { where: 'en/contacts/pia/day4/yay/lines[1]', match: 'pony', reason: 'friend-self-talk' },
   { where: 'en/contacts/pia/day4/yay/lines[3]/personalMessageChange', match: '(L)', reason: 'friend-self-talk' },
   { where: 'en/contacts/pia/day5/what/lines[1]', match: 'ponies', reason: 'friend-self-talk' },
+  // Week two (W1-02): the fish lives next to her ponies.
+  { where: 'en/contacts/pia/day10/fish/lines[1]', match: 'ponies', reason: 'friend-self-talk' },
   { where: 'en/contacts/pia/nowPlaying2/floor/lines[2]', match: 'pony', reason: 'friend-self-talk' },
   { where: 'en/seedFiles/seed:top-8-drama/text', match: 'pony', reason: 'story-fact' },
   { where: 'en/seedFiles/seed:pony-fanfic-by-pia/name', match: 'pony', reason: 'story-fact' },

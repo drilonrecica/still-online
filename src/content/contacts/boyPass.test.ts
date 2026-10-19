@@ -274,6 +274,71 @@ describe('Jess and Kayla in week two (W1-01) for a boy', () => {
   });
 });
 
+describe('Theo and Pia in week two (W1-02) for a boy', () => {
+  it('Theo: a buddy for the back row, never a crush step', () => {
+    expect(node('en', 'boy', 'theo', 'day6', 'thanks').lines).toEqual([
+      'thanks man',
+      'sorry. "man" is weird. thanks',
+    ]);
+    expect(node('en', 'boy', 'theo', 'day7', 'ask').choices[1]).toBe(
+      'dude ur the only one who can draw',
+    );
+    const ask = node('en', 'boy', 'theo', 'day9', 'ask');
+    expect(ask.lines[2]).toBe(
+      'can i stand with u? i dont know anyone. marco is kind of scary',
+    );
+    expect(ask.choices).toEqual(['obviously dude', 'back row crew']);
+    expect(node('en', 'boy', 'theo', 'day10', 'stood').lines[1]).toBe(
+      'marco nodded at me. i think thats a lot for him',
+    );
+    for (const [script, n] of [
+      ['day9', 'ask'],
+      ['day9', 'yes'],
+      ['day9', 'deal'],
+      ['day10', 'stood'],
+    ] as const)
+      expect(said('en', 'boy', 'theo', script, n)).not.toMatch(
+        /together|near the back|:\)/,
+      );
+    // The girl gets the small step: near the back, together.
+    expect(node('en', 'girl', 'theo', 'day9', 'ask').lines[2]).toBe(
+      'maybe we could stand near the back. i mean. together. if u want. sorry',
+    );
+    expect(node('en', 'girl', 'theo', 'day9', 'ask').choices).toEqual([
+      'id like that :)',
+      'only if u stop saying sorry',
+    ]);
+    expect(node('en', 'girl', 'theo', 'day10', 'stood').lines[0]).toBe(
+      'thanks for standing with me. near the back',
+    );
+  });
+
+  it('Pia: the mouse with a plan, one clap, the wet hamster and "LIAR"', () => {
+    expect(node('en', 'boy', 'pia', 'day6', 'hamster').choices[0]).toBe(
+      'its a mouse with a plan',
+    );
+    expect(node('en', 'boy', 'pia', 'day6', 'yay').lines[0]).toBe(
+      'a mouse with a PLAN is the BEST kind',
+    );
+    expect(node('en', 'boy', 'pia', 'day7', 'show').labels[0]).toBe('One clap');
+    expect(node('en', 'boy', 'pia', 'day9', 'fish').choices[0]).toBe(
+      'dude a fish is just a wet hamster',
+    );
+    expect(node('en', 'boy', 'pia', 'day10', 'unfair').choices[0]).toBe(
+      'u didnt miss much',
+    );
+    expect(node('en', 'boy', 'pia', 'day10', 'next').lines[0]).toBe(
+      'LIAR. i saw the PICS',
+    );
+    expect(node('en', 'girl', 'pia', 'day6', 'hamster').choices[0]).toBe(
+      'omg a hamster!!',
+    );
+    expect(node('en', 'girl', 'pia', 'day10', 'next').lines[0]).toBe(
+      'next year. u PROMISE',
+    );
+  });
+});
+
 describe('Pia for a boy', () => {
   it('he is the annoyed big brother who still helps; her lines stay pony-mad', () => {
     expect(node('en', 'boy', 'pia', 'opening', 'quiz').choices).toEqual([

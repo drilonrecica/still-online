@@ -1,12 +1,15 @@
 // Theo, days 2–5: the jello cell. It sets (or doesn't), presentation nerves, a B+ and a shy thanks.
 // Day 3's outcome depends on that day's choices: scripts can't see earlier days' branches.
+// Days 6–10 are in `theo-week2.ts`; both are exported from here.
 import type { Contact, Script } from '../types';
+import { theoWeek2Days, theoWeek2Scripts } from './theo-week2';
 
 export const theoDays: Contact['days'] = {
   2: { status: 'online', personalMessage: '2 boxes of lime jello. sorry mom' },
   3: { status: 'online', personalMessage: 'the jello is... wobbly' },
   4: { status: 'busy', personalMessage: 'presenting tmrw. 14 index cards' },
   5: { status: 'online', personalMessage: 'B+ :) (sorry for bragging)' },
+  ...theoWeek2Days,
 };
 
 export const theoDayScripts: readonly Script[] = [
@@ -393,4 +396,5 @@ export const theoDayScripts: readonly Script[] = [
       },
     },
   },
+  ...theoWeek2Scripts,
 ];

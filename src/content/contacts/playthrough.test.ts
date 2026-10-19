@@ -384,6 +384,41 @@ describe("P2-04: Pia's day-5 present", () => {
   });
 });
 
+describe("W1-02: Theo's day-10 poster", () => {
+  it.each(COMBOS)(
+    'unlocks the lantern poster once on every path (%s, %s)',
+    (locale, gender) => {
+      const theo = rawContentFor(locale).contacts.find(
+        (c) => c.contact.id === 'theo',
+      );
+      const script = theo?.scripts.find((s) => s.id === 'day10');
+      if (!theo || !script) throw new Error('theo/day10 missing');
+      for (const picks of paths(script)) {
+        const unlocks: string[] = [];
+        const { t, id } = playPath(
+          theo,
+          script,
+          picks,
+          (u) => unlocks.push(u),
+          gender,
+        );
+        expect(unlocks, picks.join(',')).toEqual(['lantern-poster']);
+        if (locale === 'en')
+          expect(t.said(id).join('\n')).toContain('pia said she knows how');
+      }
+    },
+  );
+
+  it('no other script unlocks it', () => {
+    for (const { contact, scripts } of contacts)
+      for (const s of scripts)
+        for (const n of Object.values(s.nodes))
+          for (const l of n.lines)
+            if (l.unlock === 'lantern-poster')
+              expect(`${contact.id}/${s.id}`).toBe('theo/day10');
+  });
+});
+
 describe('P6-07: game reactions', () => {
   it('every friend reacts to at least one game', () => {
     for (const { contact, scripts } of contacts) {
