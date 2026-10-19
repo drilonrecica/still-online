@@ -41,3 +41,23 @@ test('an old Spaceport favorite opens Friendspace', async ({ page }) => {
     'http://friendspace.example/',
   );
 });
+
+test('Friendspace home, a friend profile and /me all render', async ({
+  page,
+}) => {
+  await logIn(page, 'Ada');
+  const web = await openBrowserOnline(page);
+  await go(web, 'http://friendspace.example/');
+  await expect(
+    web.getByRole('heading', { name: 'a place for friends in orbit' }),
+  ).toBeVisible();
+  await go(web, 'http://friendspace.example/jess');
+  await expect(web.getByTestId('profile')).toBeVisible();
+  await expect(web).toContainText('Top 8');
+  await go(web, 'http://spaceport.example/me');
+  await expect(web.getByLabel('Address')).toHaveValue(
+    'http://friendspace.example/me',
+  );
+  await expect(web).toContainText('Hello, Ada');
+  await expect(web).not.toContainText('Spaceport');
+});
