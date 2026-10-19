@@ -451,8 +451,8 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P5-01 | **v0.4 e2e** — the flows listed in the spec's Testing section, EN + DE. | P4-G | in progress | sonnet | agent | — | e2e | — | New `tests/e2e/v04-*.spec.ts` pass in the default suite. | §P5-01 |
-| P5-02 | **Docs + release notes** — player gender + v0.4 in README, CREDITS (new SVGs), architecture docs, `docs/release-notes-v0.4.0.md` (EN + German summary), screenshots. | P5-01 | blocked | sonnet | agent | — | — | — | Docs accurate; notes list user-visible changes; screenshots committed. | §P5-02 |
+| P5-01 | **v0.4 e2e** — the flows listed in the spec's Testing section, EN + DE. | P4-G | done | sonnet | agent | — | e2e | — | New `tests/e2e/v04-*.spec.ts` pass in the default suite. | §P5-01 |
+| P5-02 | **Docs + release notes** — player gender + v0.4 in README, CREDITS (new SVGs), architecture docs, `docs/release-notes-v0.4.0.md` (EN + German summary), screenshots. | P5-01 | in progress | sonnet | agent | — | — | — | Docs accurate; notes list user-visible changes; screenshots committed. | §P5-02 |
 | P5-G | **Release-ready gate (self-review)** — Gate procedure; play days 1–3 in English and 4–5 in German across Friendspace, Pixlog and GlitterCodez. **Do not tag, push or release.** | P5-01, P5-02 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v04-P5.md`; bundle sizes reported (German stays lazy); nothing pushed or tagged. | §Gate |
 
 ---

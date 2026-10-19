@@ -1,6 +1,6 @@
 # still online — v0.4 architecture (Friendspace, Pixlog, GlitterCodez)
 
-Extends `architecture.md` and `architecture-v0.2.md`; gender is in `gender.md`, i18n in `i18n.md`. Written in P0-02 (data model only); later tasks keep the section they change up to date. Design: `docs/superpowers/specs/2026-10-15-v04-social-design.md`.
+Extends `architecture.md` and `architecture-v0.2.md`; gender is in `gender.md`, i18n in `i18n.md`. Written in P0-02 and kept up to date by each later task; as of the v0.4.0 release it matches what was built. Design: `docs/superpowers/specs/2026-10-15-v04-social-design.md`.
 
 ## Where things live
 
@@ -12,11 +12,11 @@ Extends `architecture.md` and `architecture-v0.2.md`; gender is in `gender.md`, 
 | Layout-code fixed sets (ids only)                                               | `src/content/friendspace/layoutSets.ts`                                      |
 | Pixlog types · profiles (one module per friend) · surveys                       | `src/content/pixlog/{types,index,<friend>,surveys}.ts`                       |
 | GlitterCodez host + `LayoutDef` + `LAYOUTS`                                     | `src/content/sites/glittercodez.ts`                                          |
-| German twins (placeholders until P4)                                            | same paths under `src/content/de/`, wired in `de/bundle.ts`                  |
+| German twins (written in P4)                                                    | same paths under `src/content/de/`, wired in `de/bundle.ts`                  |
 | `web` store v0.4 fields and actions                                             | `src/apps/browser/store.ts`; sanitizers in `src/apps/browser/webSanitize.ts` |
 | Structural lint of the v0.4 content                                             | `src/content/lintSocial.ts` (run per locale × gender in `content.test.ts`)   |
 
-Site code goes in `src/apps/browser/sites/{friendspace,pixlog,glittercodez}/`. Sites never import Messenger or Amplifier; they talk through `src/os/events.ts`.
+Player gender (girl/boy, User Accounts, CheatCave, Kickflip Kings, per-gender files, chats, mail and favorites) is documented in `gender.md` and `architecture-v0.2.md`; this file covers the social sites. Site code goes in `src/apps/browser/sites/{friendspace,pixlog,glittercodez}/`. Sites never import Messenger or Amplifier; they talk through `src/os/events.ts`.
 
 ## Content types
 
@@ -44,7 +44,7 @@ Site code goes in `src/apps/browser/sites/{friendspace,pixlog,glittercodez}/`. S
 
 `LocaleContent` gains `bulletins`, `bands`, `top8Reactions`, `pixlog`, `surveys` and `layouts`. Accessors take `(locale, gender)` like the rest: `getBulletins`, `getBands`, `getTop8Reactions`, `getPixlogProfiles`, `getSurveys`, `getLayouts` (`src/content/locale.ts`), all through `contentFor(locale, gender)`, which resolves `g()`/`gendered()` once per locale and gender.
 
-German: each module has a twin under `src/content/de/**`, a `structuredClone` of English marked `// P4 replaces this with German`, reachable only through `de/bundle.ts` (lazy). `parity.test.ts` compares the raw modules deeply with `deepParityProblems`: same array lengths, keys, numbers and ids (`id`, `contactId`, `surveyId`, `seed`, `link`, `scene`, `skin`, `side`, `kind`, `pos`, `trackIds`, `extras`) and the same placeholders; only wording may differ. Gender parity (`genderParityProblems`) covers the new modules with the rest of `contentFor`.
+German: each module has a twin under `src/content/de/**`, written in German in P4 (not a clone of English), reachable only through `de/bundle.ts` (lazy). `parity.test.ts` compares the raw modules deeply with `deepParityProblems`: same array lengths, keys, numbers and ids (`id`, `contactId`, `surveyId`, `seed`, `link`, `scene`, `skin`, `side`, `kind`, `pos`, `trackIds`, `extras`) and the same placeholders; only wording may differ. Gender parity (`genderParityProblems`) covers the new modules with the rest of `contentFor`.
 
 ## Saved state (`web` store, key `still-online:v1:web`)
 

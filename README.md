@@ -4,7 +4,7 @@ _everyone you knew, still online._
 
 A browser-based nostalgia simulator recreating Windows XP and the social internet of 2007 through MSN, Netlog, MySpace, Winamp, and a living fictional desktop.
 
-> **v0.3 — now in German.** Play it now: **<https://drilonrecica.github.io/still-online/>**
+> **v0.4 — Friendspace, Pixlog and GlitterCodez, for a girl or a boy.** Play it now: **<https://drilonrecica.github.io/still-online/>**
 
 ![The still online desktop](docs/screenshots/desktop.png)
 
@@ -20,6 +20,7 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 
 - **Windows XP–style shell**: boot and login screens, Start menu with an All Programs flyout, taskbar and tray (mute, network, clock), draggable/resizable windows, desktop icons, synthesized system sounds
 - **A world that moves on**: the in-game day advances after a shutdown or a new real date, and each day brings new chats, mail, guestbook entries and profile comments (days 1–5 are scripted; later days keep the day-5 state)
+- **User Accounts**: pick your name, a picture (eight to choose from) and whether you play as a **girl or a boy**. The friends, voices and story stay the same; what is addressed to or about you changes: files, favorites, chats, mail and a few sites. Switch any time, live
 - **Display Properties**: eleven procedurally drawn wallpapers (nine homages and two easter eggs), Blue / Olive / Silver appearance, and screensavers (Pipes, Flying Panes, Marquee, My Pictures Slideshow)
 - **Explorer**: My Documents, My Pictures and My Music on a persistent virtual file system, plus a Recycle Bin you can restore from
 - **Balloon tips**, a dial-up connection dialog with a synthesized modem handshake, and a **Disk Cleanup** that scans forever and frees nothing
@@ -33,7 +34,11 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 
 ### Internet
 
-- **Web Explorer** with history, favorites and a fully fictional, local web: **Searchly** (search over every page), **Friendspace** profiles for each friend and you (Top 8, comment wall, profile song), a cursed 2003 fan page, a gossip blog, a school site and more
+- **Web Explorer** with history, favorites and a fully fictional, local web: **Searchly** (search over every page), a cursed 2003 fan page, a gossip blog, a school site and more
+- **Friendspace** (a 2007 profile site): profiles for each friend and you, with a **Top 8** that reacts when you drop someone (they notice the next day, in Messenger and on your wall), **bulletins**, **band pages** with a player that hands tracks to the Amplifier, a profile song with autoplay, and a layout-code box
+- **Pixlog** (a photo-sharing site): each friend's albums, blog, surveys and guestbook, a shouts feed, kudos, and your own page with an album built from your pictures, surveys to fill in and six skins
+- **GlitterCodez**: twelve copy-and-paste layouts, glitter text, stickers and cursors; paste a code into your Friendspace profile and it restyles the page
+- **CheatCave** and **Kickflip Kings** (the boy side of the web): cheats, flash-game news and a forum, and a skate crew site with a shoutbox and Velvet Lantern gigs. Every site is on both sides and findable through Searchly; the favorites and the front page follow who you are
 - **Mail** with a new batch of messages per day: chain letters, spam, family and friends, with replies to what you send
 - **TuneMole**, a fake peer-to-peer client with slow, jittery downloads that lands tracks in My Music and the Amplifier
 
@@ -53,8 +58,12 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 | ![The desktop](docs/screenshots/desktop.png) | ![Messenger contact list](docs/screenshots/messenger.png) |
 | **Amplifier** | **Web Explorer** |
 | ![Amplifier with its playlist](docs/screenshots/amplifier.png) | ![Web Explorer on Searchly](docs/screenshots/browser.png) |
-| **Friendspace** | **Paint** |
-| ![A Friendspace profile](docs/screenshots/friendspace.png) | ![Paint with a drawing](docs/screenshots/paint.png) |
+| **Friendspace** | **Pixlog** |
+| ![A Friendspace profile](docs/screenshots/friendspace.png) | ![A Pixlog profile](docs/screenshots/pixlog.png) |
+| **GlitterCodez** | **CheatCave** |
+| ![GlitterCodez layouts](docs/screenshots/glittercodez.png) | ![CheatCave, as a boy](docs/screenshots/cheatcave.png) |
+| **User Accounts** | **Paint** |
+| ![User Accounts: girl or boy](docs/screenshots/useraccounts.png) | ![Paint with a drawing](docs/screenshots/paint.png) |
 | **Mines** | **Hen Hunt** |
 | ![Mines mid-game](docs/screenshots/mines.png) | ![Hen Hunt mid-round](docs/screenshots/henhunt.png) |
 
@@ -62,19 +71,21 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 
 still online is fully playable in **German** as well as English. It is not a word-for-word translation: the six friends, the mail, the websites and the files were rewritten for a German 2007 (SchülerVZ-era chat-speak, a Gymnasium instead of a US high school, euros and Fischstäbchen), with the same storylines and the same ids underneath.
 
-- **What's localized:** the whole desktop and every app, all chats, mail, Friendspace profiles, Searchly and the other sites, seeded files, balloons, assistant tips, TuneMole results, and date/time/number formatting.
+- **What's localized:** the whole desktop and every app, all chats, mail, Friendspace, Pixlog, GlitterCodez, CheatCave and Kickflip Kings, Searchly and the other sites, seeded files, balloons, assistant tips, TuneMole results, and date/time/number formatting.
 - **How to switch:** a German browser starts in Deutsch automatically. Otherwise pick a flag under **Language / Sprache** on the login screen, the **DE/EN** badge in the tray, or **Regional and Language Options** (*Regions- und Sprachoptionen*) in the Start menu. Switching is live, with no reload; your saves, chats and files carry over.
 - **What stays as written:** things you typed or named yourself keep their language, like files on a real disk.
 
 ![Der still online Desktop mit geöffnetem Startmenü](docs/screenshots/desktop-de.png)
 
+Girl and boy exist in German too, with natural forms (no gender stars).
+
 See [docs/i18n.md](docs/i18n.md) for how it works and [docs/localization-de.md](docs/localization-de.md) for the German style guide.
 
-## Planned
-
-Not built yet:
+## Known gaps and planned
 
 - Content beyond day 5: stories for later days currently repeat the day-5 state
+- Friendspace, Pixlog and GlitterCodez are read-and-tweak, not social networks: you can't message strangers, upload to Pixlog beyond your own pictures, or add your own band
+- German has been reviewed by the project, not by a native-speaker editor
 - More friends, sites and games
 - Further languages (the i18n system is built for them, see [docs/i18n.md](docs/i18n.md))
 - Mobile and touch layouts (small screens only get a notice)
@@ -93,7 +104,7 @@ Other useful scripts: `npm run verify` (typecheck, lint, unit tests, build) and 
 
 ## Tech stack
 
-React 18, TypeScript, Vite, Zustand, [xp.css](https://botoxparty.github.io/XP.css/) for the window chrome, Vitest and Playwright. Everything runs client-side and is deployed to GitHub Pages. See [docs/architecture.md](docs/architecture.md) for how it fits together.
+React 18, TypeScript, Vite, Zustand, [xp.css](https://botoxparty.github.io/XP.css/) for the window chrome, Vitest and Playwright. Everything runs client-side and is deployed to GitHub Pages. See [docs/architecture.md](docs/architecture.md) for how it fits together, [docs/architecture-v0.4.md](docs/architecture-v0.4.md) for the social sites and [docs/gender.md](docs/gender.md) for the girl/boy content model.
 
 ## Contributing
 

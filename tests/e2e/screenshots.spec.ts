@@ -3,6 +3,7 @@ import {
   closeNudgeChats,
   go,
   logIn,
+  openBrowserOnline,
   openFromStart,
   pickGender,
   quietIdle,
@@ -149,6 +150,49 @@ test('README screenshots @screenshots', async ({ page }) => {
   await expect(hen.getByRole('img', { name: /Hen Hunt field/ })).toBeVisible();
   await page.waitForTimeout(2500);
   await page.screenshot({ path: `${DIR}/henhunt.png` });
+});
+
+test('v0.4 README screenshots @screenshots', async ({ page }) => {
+  test.setTimeout(120_000);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await logIn(page);
+  const stapley = page.locator('[data-assistant-balloon]');
+  await expect(stapley).toContainText("I'm Stapley", { timeout: 10_000 });
+  await stapley.getByRole('button', { name: 'No thanks' }).click();
+
+  // Pixlog and GlitterCodez, as a girl.
+  const browser = await openBrowserOnline(page);
+  await go(browser, 'pixlog.example/jess');
+  await page.mouse.move(900, 700);
+  await page.waitForTimeout(500);
+  await page.screenshot({ path: `${DIR}/pixlog.png` });
+  await go(browser, 'glittercodez.example');
+  await page.mouse.move(900, 700);
+  await page.waitForTimeout(500);
+  await page.screenshot({ path: `${DIR}/glittercodez.png` });
+  await browser.getByRole('button', { name: 'Minimize' }).click();
+
+  // User Accounts: name, picture and Girl / Boy.
+  await openFromStart(page, 'User Accounts');
+  const accounts = page.getByRole('region', { name: 'User Accounts' });
+  await expect(accounts).toBeVisible();
+  await page.mouse.move(900, 700);
+  await page.screenshot({ path: `${DIR}/useraccounts.png` });
+  await accounts.getByRole('button', { name: 'Cancel' }).click();
+});
+
+test('v0.4 boy README screenshot @screenshots', async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await logIn(page, 'Ada', { gender: 'boy' });
+  const stapley = page.locator('[data-assistant-balloon]');
+  await expect(stapley).toContainText("I'm Stapley", { timeout: 10_000 });
+  await stapley.getByRole('button', { name: 'No thanks' }).click();
+  const browser = await openBrowserOnline(page);
+  await go(browser, 'cheatcave.example');
+  await page.mouse.move(900, 700);
+  await page.waitForTimeout(500);
+  await page.screenshot({ path: `${DIR}/cheatcave.png` });
 });
 
 test.describe('German README screenshot', () => {
