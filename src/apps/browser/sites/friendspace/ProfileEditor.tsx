@@ -1,12 +1,16 @@
 // The `/me` editor: headline, mood, about me, profile song, autoplay, theme (6 presets or custom
-// colours) and the Top 8 order. Nothing is saved until "Save Changes".
+// colours), a pasted layout code with a live preview, and the Top 8 order. Nothing is saved until "Save Changes".
 import { useId, useState } from 'react';
 import type { PlayerProfile } from '@/content/friendspace/profiles/types';
 import { PLAYLIST } from '@/content/playlist';
 import { PROFILE_LIMITS, FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import { useLocale, useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
-import { cleanProfile, moveTop8, topEntryKey } from './logic';
+import { cleanProfile, moveTop8, playerTheme, topEntryKey } from './logic';
+import { LAYOUT_CODE_MAX, parseLayoutCode } from './layoutCode';
+import { LayoutPreview } from './LayoutPreview';
+import { Mood } from './Mood';
+import extrasStyles from './Extras.module.css';
 import { topFriendView } from './people';
 import styles from './Friendspace.module.css';
 
@@ -169,6 +173,34 @@ export function ProfileEditor({
             </span>
           </>
         )}
+
+        <label htmlFor={`${id}-layout`}>
+          {t('sites.friendspace.editor.layoutCode')}
+        </label>
+        <div className={extrasStyles.layoutField}>
+          <textarea
+            id={`${id}-layout`}
+            rows={5}
+            spellCheck={false}
+            value={p.layoutCode ?? ''}
+            maxLength={LAYOUT_CODE_MAX}
+            aria-describedby={`${id}-layout-hint`}
+            onChange={(e) => set({ layoutCode: e.target.value })}
+          />
+          <p id={`${id}-layout-hint`} className={extrasStyles.layoutHint}>
+            {t('sites.friendspace.editor.layoutHint')}
+          </p>
+        </div>
+
+        <span>{t('sites.friendspace.editor.layoutPreview')}</span>
+        <LayoutPreview
+          theme={playerTheme(p)}
+          extras={parseLayoutCode(p.layoutCode)}
+          title={p.headline}
+          label={t('sites.friendspace.editor.layoutPreview')}
+        >
+          <Mood text={p.mood.text} emoticon={p.mood.emoticon} />
+        </LayoutPreview>
 
         <span>{t('sites.friendspace.editor.top8')}</span>
         <ol

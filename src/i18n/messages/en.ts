@@ -1291,6 +1291,12 @@ export const en = {
       pausedInAmplifier: 'paused in Amplifier',
       stopSong: 'Stop',
       autoplay: 'Autoplay profile songs',
+      moodHistory: 'Mood history',
+      graphics: {
+        thanks: 'Thanks for the add!!',
+        hug: '*hugs*',
+        glitterheart: '<3 glitter heart <3',
+      },
       band: {
         about: 'About {name}',
         genre: 'Genre:',
@@ -1323,6 +1329,9 @@ export const en = {
         top8Order: 'Top 8 order',
         moveUp: 'Move {name} up',
         moveDown: 'Move {name} down',
+        layoutCode: 'Layout code:',
+        layoutHint: 'paste your code from glittercodez.example!',
+        layoutPreview: 'Preview:',
         save: 'Save Changes',
         cancel: 'Cancel',
       },

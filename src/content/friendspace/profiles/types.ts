@@ -1,5 +1,6 @@
 // Friendspace profiles (P4-04): one module per friend in src/content/friendspace/profiles/<contactId>.ts.
 import type { ContactId } from '../../types';
+import type { LayoutExtras } from '../layoutSets';
 import type { BandId, PlayerTopEntry } from '../types';
 
 export interface ProfileTheme {
@@ -56,8 +57,14 @@ export interface ProfileContent {
   /** Text may use `{name}` (the player's name). */
   comments: readonly ProfileComment[];
   /** Comments this friend leaves on the player's `/me` page. */
-  commentsOnPlayer: readonly { day: number; text: string }[];
+  commentsOnPlayer: readonly {
+    day: number;
+    text: string;
+    graphic?: CommentGraphic;
+  }[];
   theme: ProfileTheme;
+  /** Layout-code extras over `theme` (stickers, cursor, glitter…), as if the friend pasted a code. */
+  layout?: LayoutExtras;
 }
 
 /** The player's editable `/me` profile, persisted in the `web` store. */

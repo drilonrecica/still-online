@@ -86,11 +86,13 @@ export function wallComment(
       picture: friendPicture(c.contactId),
       href: `/${c.contactId}`,
       text,
+      ...(c.graphic && { graphic: c.graphic }),
     };
   return {
     day: c.day,
     from: c.from,
     picture: { seed: c.from, colors: extraColors(c.from) },
     text,
+    ...(c.graphic && { graphic: c.graphic }),
   };
 }

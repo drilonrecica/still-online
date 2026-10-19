@@ -17,6 +17,7 @@ import {
   topFriendView,
   wallComment,
 } from './people';
+import { applyLayout } from './layoutStyles';
 import { ProfileView } from './ProfileView';
 import { useProfileAutoplay } from './useProfileAutoplay';
 import styles from './Friendspace.module.css';
@@ -64,7 +65,8 @@ export default function Profile({ path }: SitePageProps) {
         )}
         emptyWall={T.emptyWall}
         day={day}
-        theme={profile.theme}
+        theme={applyLayout(profile.theme, profile.layout)}
+        extras={profile.layout}
       />
     </Layout>
   );

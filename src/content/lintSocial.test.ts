@@ -92,6 +92,17 @@ describe('lintSocial', () => {
     ]);
   });
 
+  it("flags a friend profile's layout outside the fixed sets", () => {
+    const p = en.profiles[0]!;
+    expect(
+      broken({
+        profiles: [
+          { ...p, layout: { cursor: 'laser' as never, stickers: [] } },
+        ],
+      }),
+    ).toEqual([`profiles.${p.contactId}.layout: unknown cursor`]);
+  });
+
   it('flags duplicate ids and stray placeholders', () => {
     const r = en.top8Reactions[0]!;
     expect(

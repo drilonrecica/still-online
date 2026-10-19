@@ -19,6 +19,8 @@ import type { Bulletin, PlayerTopEntry } from '@/content/friendspace/types';
 import type { ContactId } from '@/content/types';
 import type { Locale } from '@/i18n/types';
 import { mulberry32, seedFrom } from '@/os/random';
+import { WEB_LIMITS } from '../../webSanitize';
+import { LAYOUT_CODE_MAX } from './layoutCode';
 
 /** `kayla` → `Kayla`. */
 export function profileName(id: string): string {
@@ -53,6 +55,7 @@ export function playerWall(
       from: p.contactId,
       contactId: p.contactId,
       text: c.text,
+      ...(c.graphic && { graphic: c.graphic }),
     })),
   );
   return visibleComments(all, currentDay);
@@ -166,9 +169,29 @@ export function cleanProfile(p: PlayerProfile): PlayerProfile {
     themePreset: preset === 'custom' && !colors ? 'default' : preset,
     customColors: colors,
     top8: [...p.top8],
-    ...(p.layoutCode !== undefined ? { layoutCode: p.layoutCode } : {}),
+    ...(p.layoutCode?.trim()
+      ? { layoutCode: p.layoutCode.slice(0, LAYOUT_CODE_MAX) }
+      : {}),
     ...(p.autoplay !== undefined ? { autoplay: p.autoplay } : {}),
     ...(p.moodHistory ? { moodHistory: [...p.moodHistory] } : {}),
+  };
+}
+
+/** On save: a changed mood goes on top of the mood history (newest first, max 5). */
+export function withMoodHistory(
+  prev: PlayerProfile,
+  next: PlayerProfile,
+  day: number,
+): PlayerProfile {
+  const { text, emoticon } = next.mood;
+  if (!text || (text === prev.mood.text && emoticon === prev.mood.emoticon))
+    return next;
+  return {
+    ...next,
+    moodHistory: [{ text, emoticon, day }, ...(prev.moodHistory ?? [])].slice(
+      0,
+      WEB_LIMITS.moodHistory,
+    ),
   };
 }
 

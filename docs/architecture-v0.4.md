@@ -102,6 +102,8 @@ A made-up markup, never CSS or HTML, parsed by a total `parseLayoutCode` (`sites
 
 Values come only from the fixed sets in `layoutSets.ts` (12 backgrounds, 6 fonts, 9 stickers, 4 positions, 4 cursors; ≤ 4 stickers) plus `#rgb`/`#rrggbb`. Unknown input is ignored. Nothing else reaches a `style`, and nothing is rendered as HTML.
 
+**Rendering (P1-03):** `layoutStyles.ts` maps the ids to CSS backgrounds and font stacks; `applyLayout(theme, extras)` lays the extras over a profile's theme (`/me`: `playerTheme`; friends: their `theme` plus the optional `ProfileContent.layout`). `ProfileView` then draws the glitter headline (whenever the effective theme has `glitter`; static under reduced motion), corner stickers (`src/assets/stickers/`), the cursor trail (`CursorTrail.tsx`: ≤ 12 nodes, 40 ms throttle, profile frame only, off under reduced motion), comment graphics (`graphic` on friends' comments and on `commentsOnPlayer`) and, on `/me`, the mood history. The editor's live preview is `LayoutPreview`, reusable by GlitterCodez tiles. Parsed colours are lowercased; `layoutCodeFor` writes them that way.
+
 ## Derived Pixlog feed and visitors (P2-02)
 
 Pure functions in `sites/pixlog/logic.ts`, not saved: `shoutsFeed(profiles, day, locale)` (shouts, plus "added N photos"/"new blog" items for content dated that day, worded by the catalog at render), `visitors(profiles, day)` (≤ 8: friends active that day plus seeded strangers from `STRANGERS` in `pixlog/index.ts`, `mulberry32(seedFrom('pixlog:visitors:' + day))`) and `visitorCount(day)` (monotonic, seeded). Kudos received = friends' `kudosToPlayer` days ≤ today.

@@ -93,10 +93,13 @@ export function lintSocial(c: LocaleContent): string[] {
           out.push(`top8Reactions.${r.contactId}: unknown placeholder ${p}`);
   }
 
-  for (const p of c.profiles)
+  for (const p of c.profiles) {
     for (const t of p.top8)
       if (t.kind === 'band' && !bandIds.has(t.id))
         out.push(`profiles.${p.contactId}: unknown band "${t.id}" in Top 8`);
+    if (p.layout)
+      out.push(...layoutProblems(p.layout, `profiles.${p.contactId}.layout`));
+  }
 
   unique(
     c.surveys.map((s) => s.id),

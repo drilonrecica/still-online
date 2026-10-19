@@ -1,7 +1,13 @@
 // The profile layout shared by friends' pages and the player's `/me`: themed header, picture,
-// mood, song strip, about me, interests, Top 8 and the comment wall.
+// mood, song strip, about me, interests, Top 8 and the comment wall, plus the layout-code extras
+// (glitter headline, stickers, cursor trail, comment graphics, mood history).
 import type { CSSProperties, ReactNode } from 'react';
-import type { ProfileTheme } from '@/content/friendspace/profiles/types';
+import type { LayoutExtras } from '@/content/friendspace/layoutSets';
+import type {
+  CommentGraphic,
+  MoodHistoryEntry,
+  ProfileTheme,
+} from '@/content/friendspace/profiles/types';
 import { useT } from '@/i18n/useT';
 import { SiteLink } from '../../SiteLink';
 import { Mood } from './Mood';
@@ -9,6 +15,13 @@ import { Picture } from './Picture';
 import { rich } from '../rich';
 import { SongStrip } from './SongStrip';
 import { dayLabel } from './logic';
+import { CursorTrail, useCursorTrail } from './CursorTrail';
+import {
+  CommentBadge,
+  LayoutStickers,
+  MoodHistory,
+  useGlitterClass,
+} from './ProfileExtras';
 import styles from './Friendspace.module.css';
 
 export interface PictureSpec {
@@ -29,6 +42,7 @@ export interface WallComment {
   picture: PictureSpec;
   href?: string;
   text: string;
+  graphic?: CommentGraphic;
 }
 
 export interface ProfileViewProps {
@@ -46,7 +60,12 @@ export interface ProfileViewProps {
   comments: readonly WallComment[];
   emptyWall: string;
   day: number;
+  /** The theme with any layout code already applied (`applyLayout`). */
   theme: ProfileTheme;
+  /** Stickers and cursor from a layout code. */
+  extras?: LayoutExtras;
+  /** The player's last moods (`/me` only). */
+  moodHistory?: readonly MoodHistoryEntry[];
   /** Extra controls under the picture (the player's "Edit Profile"). */
   actions?: ReactNode;
 }
@@ -79,12 +98,17 @@ export function themeStyle(theme: ProfileTheme): CSSProperties {
 
 export function ProfileView(p: ProfileViewProps) {
   const t = useT();
+  const glitter = useGlitterClass(p.theme.glitter);
+  const { handlers, trail } = useCursorTrail(p.extras?.cursor);
   return (
     <div
       className={`${styles.profile} ${p.theme.glitter ? styles.glitter : ''}`}
       style={themeStyle(p.theme)}
       data-testid="profile"
+      {...handlers}
     >
+      {p.extras && <LayoutStickers stickers={p.extras.stickers} />}
+      {trail && <CursorTrail {...trail} />}
       {p.theme.stickers && (
         <div className={styles.stickers} aria-hidden>
           {p.theme.stickers.map((s, i) => (
@@ -104,7 +128,10 @@ export function ProfileView(p: ProfileViewProps) {
               label={t('sites.friendspace.picture', { name: p.name })}
             />
             <div>
-              <p className={styles.headline}>
+              <p
+                className={`${styles.headline} ${glitter}`}
+                data-glitter={p.theme.glitter || undefined}
+              >
                 {t('sites.friendspace.headlineQuoted', {
                   headline: p.headline,
                 })}
@@ -115,6 +142,7 @@ export function ProfileView(p: ProfileViewProps) {
               </p>
             </div>
           </div>
+          {p.moodHistory && <MoodHistory entries={p.moodHistory} day={p.day} />}
           {p.actions}
           <SongStrip key={p.songTrackId ?? ''} trackId={p.songTrackId} />
           {p.interests && p.interests.length > 0 && (
@@ -211,6 +239,7 @@ export function ProfileView(p: ProfileViewProps) {
                       <span className={styles.commentDate}>
                         {dayLabel(c.day, p.day)}
                       </span>
+                      {c.graphic && <CommentBadge graphic={c.graphic} />}
                       <p>{c.text}</p>
                     </div>
                   </li>

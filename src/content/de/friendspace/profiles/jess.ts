@@ -54,6 +54,7 @@ export const jessProfile: ProfileContent = {
       from: 'kayla',
       contactId: 'kayla',
       text: 'du hast GEWONNEN?? jess hast du ein GLÜCK!!! (L)',
+      graphic: 'glitterheart',
     },
     {
       day: 1,

@@ -1,0 +1,265 @@
+/* Profile extras switched on by layout codes (P1-03): glitter headline, stickers, cursor trail,
+   comment graphics, mood history and the editor's live preview. */
+
+.glitterHeadline {
+  background: linear-gradient(
+    100deg,
+    var(--sp-accent) 0 35%,
+    #fff 45%,
+    #fff6a8 50%,
+    var(--sp-accent) 60% 100%
+  );
+  background-size: 250% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: bold;
+  animation: shimmer 2.4s linear infinite;
+}
+
+/* Static under reduced motion: the gradient stays, it just doesn't move. */
+.glitterStatic {
+  animation: none;
+  background-position: 50% 0;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitterHeadline {
+    animation: none;
+  }
+}
+
+.layoutStickers {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.layoutSticker {
+  position: absolute;
+  filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, 0.4));
+}
+
+.layoutSticker[data-pos='top-left'] {
+  top: 4px;
+  left: 4px;
+  transform: rotate(-12deg);
+}
+
+.layoutSticker[data-pos='top-right'] {
+  top: 4px;
+  right: 4px;
+  transform: rotate(10deg);
+}
+
+.layoutSticker[data-pos='bottom-left'] {
+  bottom: 4px;
+  left: 4px;
+  transform: rotate(8deg);
+}
+
+.layoutSticker[data-pos='bottom-right'] {
+  right: 4px;
+  bottom: 4px;
+  transform: rotate(-9deg);
+}
+
+.layoutSticker[data-pos$='-left'][data-nth='1'],
+.layoutSticker[data-pos$='-left'][data-nth='3'] {
+  left: calc(var(--st, 48px) + 4px);
+}
+
+.layoutSticker[data-pos$='-right'][data-nth='1'],
+.layoutSticker[data-pos$='-right'][data-nth='3'] {
+  right: calc(var(--st, 48px) + 4px);
+}
+
+.layoutSticker[data-nth='2'],
+.layoutSticker[data-nth='3'] {
+  margin-top: calc(var(--st, 48px) - 4px);
+}
+
+.trail {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.trailNode {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  animation: trailFade 600ms ease-out forwards;
+}
+
+@keyframes trailFade {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.3) translateY(8px);
+  }
+}
+
+.trail-sparkle {
+  background: radial-gradient(circle, #fff 0 20%, #fff6a8 35%, transparent 70%);
+  clip-path: polygon(
+    50% 0,
+    60% 40%,
+    100% 50%,
+    60% 60%,
+    50% 100%,
+    40% 60%,
+    0 50%,
+    40% 40%
+  );
+}
+
+.trail-stars {
+  background: #ffd21f;
+  clip-path: polygon(
+    50% 0,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+}
+
+.trail-hearts {
+  background: #ff3d8b;
+  clip-path: polygon(
+    50% 95%,
+    5% 45%,
+    10% 15%,
+    30% 5%,
+    50% 25%,
+    70% 5%,
+    90% 15%,
+    95% 45%
+  );
+}
+
+.trail-flames {
+  border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+  background: radial-gradient(
+    circle at 50% 70%,
+    #ffd21f 0 25%,
+    #ff6600 55%,
+    #c11a00 80%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trail {
+    display: none;
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font:
+    bold 12px 'Comic Sans MS',
+    'Comic Neue',
+    cursive;
+}
+
+.badge-thanks {
+  border: 2px dashed #ff66cc;
+  background:
+    radial-gradient(circle, #fff 0 1px, transparent 1.5px) 0 0 / 9px 9px,
+    linear-gradient(90deg, #ff9fd6, #c9a3ff, #8fe3ff);
+  color: #6a005a;
+  text-shadow: 0 0 3px #fff;
+}
+
+.badge-hug {
+  border: 1px solid #7fb2ff;
+  background: #eaf3ff;
+  color: #24508f;
+}
+
+.badge-glitterheart {
+  border: 1px solid #ff9fd6;
+  background: #fff0f8;
+  color: #b3005a;
+}
+
+.moodHistory {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.moodHistory li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 0;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
+}
+
+.moodDay {
+  font-size: 10px;
+  opacity: 0.75;
+}
+
+.preview {
+  position: relative;
+  min-height: 120px;
+  padding: 10px;
+  overflow: hidden;
+  border: 1px solid #a7bde8;
+}
+
+.previewPanel {
+  position: relative;
+  z-index: 1;
+  margin: 8px 0 0;
+  padding: 6px;
+  background: var(--sp-panel);
+}
+
+.previewTitle {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 14px;
+}
+
+.layoutHint {
+  margin: 2px 0 0;
+  font-size: 10px;
+  font-style: italic;
+}
+
+.layoutField textarea {
+  box-sizing: border-box;
+  width: 100%;
+  font-family: 'Courier New', Courier, monospace;
+}

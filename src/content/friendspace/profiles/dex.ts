@@ -108,4 +108,10 @@ export const dexProfile: ProfileContent = {
       'BOARD IS MAD AT ME',
     ],
   },
+  layout: {
+    stickers: [
+      { id: 'skateboard', pos: 'bottom-right' },
+      { id: 'skull', pos: 'top-right' },
+    ],
+  },
 };

@@ -1299,6 +1299,12 @@ export const de: Messages = {
       pausedInAmplifier: 'in Amplifier pausiert',
       stopSong: 'Stopp',
       autoplay: 'Profilsongs automatisch abspielen',
+      moodHistory: 'Stimmungsverlauf',
+      graphics: {
+        thanks: 'Danke fürs Adden!!',
+        hug: '*knuddel*',
+        glitterheart: '<3 Glitzerherz <3',
+      },
       band: {
         about: 'Über {name}',
         genre: 'Genre:',
@@ -1331,6 +1337,9 @@ export const de: Messages = {
         top8Order: 'Reihenfolge der Top 8',
         moveUp: '{name} nach oben',
         moveDown: '{name} nach unten',
+        layoutCode: 'Layout-Code:',
+        layoutHint: 'hol dir deinen Code auf glittercodez.example!',
+        layoutPreview: 'Vorschau:',
         save: 'Änderungen speichern',
         cancel: 'Abbrechen',
       },

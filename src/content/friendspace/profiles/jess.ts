@@ -55,6 +55,7 @@ export const jessProfile: ProfileContent = {
       from: 'kayla',
       contactId: 'kayla',
       text: 'u WON?? jess thats sooo lucky!!! (L)',
+      graphic: 'glitterheart',
     },
     {
       day: 1,
@@ -142,5 +143,12 @@ export const jessProfile: ProfileContent = {
     glitter: true,
     font: "'Comic Sans MS', 'Chalkboard', cursive",
     panel: 'rgba(255, 255, 255, 0.9)',
+  },
+  layout: {
+    cursor: 'sparkle',
+    stickers: [
+      { id: 'star', pos: 'top-right' },
+      { id: 'music', pos: 'bottom-left' },
+    ],
   },
 };

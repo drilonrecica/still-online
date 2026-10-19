@@ -104,10 +104,12 @@ export const kaylaProfile: ProfileContent = {
     {
       day: 2,
       text: 'omg du bist endlich auf friendspace!!! du bist in meinen top 8. platz 1 natürlich. sags nich jess ;)',
+      graphic: 'thanks',
     },
     {
       day: 3,
       text: `danke fürs zuhören gestern. du bist ${g('ne echte freundin. (L)', 'n echter freund. (Y)')}`,
+      graphic: 'hug',
     },
     {
       day: 4,

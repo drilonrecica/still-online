@@ -18,7 +18,10 @@ import {
   playerTheme,
   playerWall,
   shortDate,
+  withMoodHistory,
 } from './logic';
+import { parseLayoutCode } from './layoutCode';
+import { applyLayout } from './layoutStyles';
 import {
   FRIEND_IDS,
   playerPicture,
@@ -43,6 +46,7 @@ export default function Me() {
   const [editing, setEditing] = useState(false);
   const autoplayId = useId();
   const profile = effectiveProfile(saved, FRIEND_IDS, locale, gender);
+  const extras = parseLayoutCode(profile.layoutCode);
 
   if (editing) {
     return (
@@ -50,7 +54,7 @@ export default function Me() {
         <ProfileEditor
           initial={profile}
           onSave={(p) => {
-            save(p);
+            save(withMoodHistory(profile, p, day));
             setEditing(false);
           }}
           onCancel={() => setEditing(false)}
@@ -81,7 +85,9 @@ export default function Me() {
         )}
         emptyWall={T.myEmptyWall}
         day={day}
-        theme={playerTheme(profile)}
+        theme={applyLayout(playerTheme(profile), extras)}
+        extras={extras}
+        moodHistory={profile.moodHistory ?? []}
         actions={
           <>
             <button

@@ -101,10 +101,12 @@ export const kaylaProfile: ProfileContent = {
     {
       day: 2,
       text: 'omg ur on friendspace finally!!! ur in my top 8. #1 obviously. dont tell jess ;)',
+      graphic: 'thanks',
     },
     {
       day: 3,
       text: `thx for listening yesterday. ur a real friend. ${g('(L)', '(Y)')}`,
+      graphic: 'hug',
     },
     { day: 4, text: 'brianna is... NICE??? i am so confused. call me' },
     { day: 5, text: 'peace treaty friends. its a thing. ur still #1 tho ~*~' },
