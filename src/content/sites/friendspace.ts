@@ -32,6 +32,10 @@ export const SITE_META: SiteMeta = {
       title: 'Friendspace - My Profile',
       keywords: ['my profile', 'edit', 'me'],
     },
+    '/bulletins': {
+      title: 'Friendspace - Bulletins',
+      keywords: ['bulletins', 'news', 'friends'],
+    },
     '/*': { title: 'Friendspace - Lost in orbit' },
   },
 };

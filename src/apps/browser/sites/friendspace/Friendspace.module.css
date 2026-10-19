@@ -481,3 +481,55 @@
   gap: 8px;
   padding: 0 10px 10px;
 }
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.unreadDot {
+  color: #ff5a1f;
+}
+
+.bulletinList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bulletin {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  border-top: 1px dotted var(--sp-accent, #3d6f9f);
+}
+
+.bulletin:first-child {
+  border-top: 0;
+}
+
+.bulletinPicture {
+  flex: none;
+}
+
+.bulletinText {
+  min-width: 0;
+}
+
+.bulletinMeta {
+  color: #556;
+  font-size: 10px;
+}
+
+.bulletinSubject {
+  font-weight: bold;
+}
+
+.bulletinBody {
+  margin: 2px 0;
+  overflow-wrap: anywhere;
+}

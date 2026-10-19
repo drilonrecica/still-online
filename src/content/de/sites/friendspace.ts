@@ -33,6 +33,10 @@ export const SITE_META: SiteMeta = {
       title: 'Friendspace - Mein Profil',
       keywords: ['mein profil', 'bearbeiten', 'ich'],
     },
+    '/bulletins': {
+      title: 'Friendspace - Bulletins',
+      keywords: ['bulletins', 'neuigkeiten', 'freunde'],
+    },
     '/*': { title: 'Friendspace - Verloren im All' },
   },
 };

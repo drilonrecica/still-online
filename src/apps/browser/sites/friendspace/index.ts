@@ -36,6 +36,7 @@ export const FRIENDSPACE_SITE: SiteDefinition = {
   pages: {
     '/': { component: lazy(() => import('./Home')) },
     '/me': { component: lazy(() => import('./Me')) },
+    '/bulletins': { component: lazy(() => import('./Bulletins')) },
     ...Object.fromEntries(
       friendPaths.map((path): [string, SitePage] => [
         path,

@@ -15,7 +15,7 @@ import {
   FRIENDSPACE_HOST,
   THEME_PRESETS,
 } from '@/content/sites/friendspace';
-import type { PlayerTopEntry } from '@/content/friendspace/types';
+import type { Bulletin, PlayerTopEntry } from '@/content/friendspace/types';
 import type { ContactId } from '@/content/types';
 import type { Locale } from '@/i18n/types';
 import { mulberry32, seedFrom } from '@/os/random';
@@ -187,4 +187,21 @@ export function playerTheme(p: PlayerProfile): ProfileTheme {
   return (
     THEME_PRESETS.find((t) => t.id === p.themePreset)?.theme ?? DEFAULT_THEME
   );
+}
+
+/** Bulletins out by `day`: newest day first, content order within a day. */
+export function visibleBulletins(
+  bulletins: readonly Bulletin[],
+  day: number,
+): Bulletin[] {
+  return bulletins.filter((b) => b.day <= day).sort((a, b) => b.day - a.day); // stable: ties keep content order
+}
+
+/** The nav dot: something new landed today and `/bulletins` hasn't been opened since. */
+export function hasUnreadBulletins(
+  bulletins: readonly Bulletin[],
+  day: number,
+  seen: number | undefined,
+): boolean {
+  return (seen ?? 0) < day && bulletins.some((b) => b.day === day);
 }

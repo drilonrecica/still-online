@@ -1,7 +1,12 @@
 // The Friendspace frame: logo bar, nav and footer around every page.
 import { useId, type ReactNode } from 'react';
 import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
-import { useT } from '@/i18n/useT';
+import { getBulletins } from '@/content/locale';
+import { useGender } from '@/i18n/settingsText';
+import { useLocale, useT } from '@/i18n/useT';
+import { useWorldStore } from '@/os/world';
+import { useWebStore } from '../../store';
+import { hasUnreadBulletins } from './logic';
 import { useSiteText } from '../useSiteText';
 import { SiteLink } from '../../SiteLink';
 import styles from './Friendspace.module.css';
@@ -61,6 +66,11 @@ export function Logo() {
 export function Layout({ children }: { children: ReactNode }) {
   const { FRIENDSPACE_TEXT: T } = useSiteText(FRIENDSPACE_HOST);
   const t = useT();
+  const locale = useLocale();
+  const gender = useGender();
+  const day = useWorldStore((s) => s.day);
+  const seen = useWebStore((s) => s.bulletinsSeen);
+  const unread = hasUnreadBulletins(getBulletins(locale, gender), day, seen);
   return (
     <div className={styles.page}>
       <header className={styles.topBar}>
@@ -73,6 +83,22 @@ export function Layout({ children }: { children: ReactNode }) {
         <SiteLink href="/">{t('sites.friendspace.nav.home')}</SiteLink>
         <span aria-hidden> | </span>
         <SiteLink href="/me">{t('sites.friendspace.nav.myProfile')}</SiteLink>
+        <span aria-hidden> | </span>
+        <SiteLink href="/bulletins">
+          {unread ? (
+            <>
+              <span className={styles.srOnly}>
+                {t('sites.friendspace.nav.bulletinsUnread')}
+              </span>
+              <span aria-hidden>
+                {t('sites.friendspace.nav.bulletins')} (
+                <span className={styles.unreadDot}>●</span>)
+              </span>
+            </>
+          ) : (
+            t('sites.friendspace.nav.bulletins')
+          )}
+        </SiteLink>
         <span aria-hidden> | </span>
         <SiteLink href="http://searchly.example/">
           {t('sites.friendspace.nav.search')}

@@ -10,6 +10,7 @@ import { useSiteText } from '../useSiteText';
 import { now } from '@/os/clock';
 import { useWorldStore } from '@/os/world';
 import { useWebStore } from '../../store';
+import { SiteLink } from '../../SiteLink';
 import { Layout } from './Layout';
 import { effectiveProfile, playerTheme, playerWall, shortDate } from './logic';
 import {
@@ -19,6 +20,7 @@ import {
   wallComment,
 } from './people';
 import { ProfileEditor } from './ProfileEditor';
+import { BulletinList } from './Bulletins';
 import { ProfileView } from './ProfileView';
 import styles from './Friendspace.module.css';
 
@@ -83,6 +85,22 @@ export default function Me() {
           </button>
         }
       />
+      <section
+        className={styles.box}
+        aria-label={t('sites.friendspace.bulletins.title')}
+      >
+        <h3 className={styles.boxTitle}>
+          {t('sites.friendspace.bulletins.title')}
+        </h3>
+        <div className={styles.boxBody}>
+          <BulletinList limit={3} />
+          <p>
+            <SiteLink href="/bulletins">
+              {t('sites.friendspace.bulletins.viewAll')}
+            </SiteLink>
+          </p>
+        </div>
+      </section>
     </Layout>
   );
 }

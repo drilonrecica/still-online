@@ -205,3 +205,45 @@ describe('friendspace.example', () => {
     expect(screen.getByTestId('profile')).toHaveStyle({ color: '#ffff66' });
   });
 });
+
+describe('friendspace.example bulletins', () => {
+  const navLink = () => screen.getByRole('link', { name: /^Bulletins/ });
+
+  it('shows the dot while unseen, lists day-gated bulletins and clears the dot', async () => {
+    const { user } = open('/');
+    await finishLoad();
+    expect(navLink()).toHaveTextContent('Bulletins (new)');
+    await user.click(navLink());
+    await finishLoad();
+    expect(await screen.findAllByTestId('bulletin')).toHaveLength(1);
+    expect(screen.getByText(/TINFOIL COMETS COUNTDOWN/)).toBeTruthy();
+    expect(screen.queryByText(/GOOD LUCK/)).toBeNull();
+    expect(useWebStore.getState().bulletinsSeen).toBe(1);
+    expect(navLink()).toHaveTextContent(/^Bulletins$/);
+  });
+
+  it('links to .example pages and brings the dot back on a later day', async () => {
+    const { user } = open('/bulletins');
+    await finishLoad();
+    const link = await screen.findByRole('link', {
+      name: 'http://tinfoilcomets.example/',
+    });
+    expect(link).toHaveAttribute('href', 'http://tinfoilcomets.example/');
+    act(() => useWorldStore.setState({ day: 2 }));
+    expect(await screen.findAllByTestId('bulletin')).toHaveLength(2);
+    await user.click(screen.getByRole('link', { name: 'Home' }));
+    await finishLoad();
+    expect(navLink()).toHaveTextContent(/^Bulletins$/); // opened on day 2 too
+  });
+
+  it('/me shows the newest bulletins with a view-all link', async () => {
+    useWorldStore.setState({ day: 2 });
+    open('/me');
+    await finishLoad();
+    const box = await screen.findByRole('region', { name: 'Bulletin Space' });
+    expect(within(box).getAllByTestId('bulletin')).toHaveLength(2);
+    expect(
+      within(box).getByRole('link', { name: 'view all bulletins' }),
+    ).toBeTruthy();
+  });
+});

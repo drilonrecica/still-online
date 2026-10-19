@@ -282,6 +282,25 @@ describe('Friendspace in German', () => {
   });
 });
 
+describe('Friendspace bulletins in German', () => {
+  it('renders the German UI, dot and clears it on opening', async () => {
+    open('http://friendspace.example/');
+    await finishLoad();
+    expect(
+      await screen.findByRole('link', { name: /^Bulletins/ }),
+    ).toHaveTextContent('Bulletins (neu)');
+    cleanup();
+    open('http://friendspace.example/bulletins');
+    await finishLoad();
+    expect(
+      await screen.findByRole('heading', { name: 'Bulletin-Ecke' }),
+    ).toBeTruthy();
+    expect(screen.getByText(/Betreff:/)).toBeTruthy();
+    expect(screen.getByText(/gepostet heute/)).toBeTruthy();
+    expect(useWebStore.getState().bulletinsSeen).toBe(1);
+  });
+});
+
 describe('switching language on an open site', () => {
   it('re-renders the page and the window title without a reload', async () => {
     const { windowId } = open('http://westfield-high.example/staff');

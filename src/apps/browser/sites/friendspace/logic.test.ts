@@ -14,6 +14,7 @@ import {
   effectiveProfile,
   extraColors,
   fillName,
+  hasUnreadBulletins,
   moveTop8,
   normalizeTop8,
   playerTheme,
@@ -21,6 +22,7 @@ import {
   profileName,
   shortDate,
   trackLabel,
+  visibleBulletins,
   visibleComments,
 } from './logic';
 
@@ -185,5 +187,29 @@ describe('friendspace logic', () => {
       customColors: { background: '#112233', text: '#ffeedd' },
     });
     expect(custom).toMatchObject({ background: '#112233', text: '#ffeedd' });
+  });
+});
+
+describe('bulletins', () => {
+  const b = (id: string, day: number) => ({
+    id,
+    day,
+    from: { extra: 'x', seed: 'x' },
+    subject: id,
+    body: id,
+  });
+  const list = [b('a', 1), b('b', 2), b('c', 2), b('d', 3)];
+
+  it('day-gates and lists newest day first, content order within a day', () => {
+    expect(visibleBulletins(list, 2).map((x) => x.id)).toEqual(['b', 'c', 'a']);
+    expect(visibleBulletins(list, 0)).toEqual([]);
+  });
+
+  it('shows the dot only for an unseen day that has a bulletin', () => {
+    expect(hasUnreadBulletins(list, 2, undefined)).toBe(true);
+    expect(hasUnreadBulletins(list, 2, 1)).toBe(true);
+    expect(hasUnreadBulletins(list, 2, 2)).toBe(false);
+    expect(hasUnreadBulletins(list, 4, 3)).toBe(false); // nothing posted on day 4
+    expect(hasUnreadBulletins([], 1, undefined)).toBe(false);
   });
 });
