@@ -74,7 +74,7 @@ export const KICKFLIP_TEXT = {
   shoutboxClosed:
     'grad darf nur die crew shouten. die spam-bots haben uns gefunden (danke auch, cheap_ringtones_4u). kev „repariert das“',
   stickers: [
-    'SKATE OR DIE',
+    'SKATE ALL DAY',
     'SKATEN VERBOTEN (lol)',
     'KINGS',
     'griptape 4 life',

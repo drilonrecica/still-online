@@ -175,7 +175,7 @@ export const PROFILE_LIMITS = {
 export const DEFAULT_PLAYER_PROFILE: Omit<PlayerProfile, 'top8'> = {
   headline: g(
     'new 2 Friendspace!! ~*sparkle*~ <3',
-    'new to Friendspace. skate or die',
+    'new to Friendspace. skate all day',
   ),
   mood: { text: g('giggly', 'pumped'), emoticon: g(':D', '(8)') },
   aboutMe: g(

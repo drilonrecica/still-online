@@ -77,7 +77,11 @@ export const jess: ContactOverlay = {
         ],
       },
       yes: {
-        lines: ['AAAAAHHHHH', 'beste nacht UNSERES LEBENS (L) hdgdl', ''],
+        lines: [
+          'AAAAAHHHHH',
+          `beste nacht UNSERES LEBENS ${g('(L) hdgdl', '(Y) (Y)')}`,
+          '',
+        ],
         personalMessages: { 2: 'TINFOIL COMETS MIT {name}!!!!' },
       },
       mom: {
@@ -513,7 +517,11 @@ export const jess: ContactOverlay = {
         choices: [{ text: 'das zählt voll' }, { text: 'lol schlupfloch' }],
       },
       night: {
-        lines: ['ok ich VERSUCH zu schlafen', 'gn8 {name}!!!! hdgdl (L)', ''],
+        lines: [
+          'ok ich VERSUCH zu schlafen',
+          `gn8 {name}!!!! ${g('hdgdl (L)', 'bis morgen (Y)')}`,
+          '',
+        ],
         personalMessages: {
           2: 'schlafe (NICHT) NUR NOCH 1 MAL SCHLAFEN!!!',
         },
@@ -587,7 +595,7 @@ export const jess: ContactOverlay = {
         lines: [
           'da is jetzt ne kleine beule',
           'ich nenn sie mein souvenir',
-          `danke dass du mitgekommen bist {name}. ${g('HDGDL (L)', 'du bist der BESTE (L)')}`,
+          `danke dass du mitgekommen bist {name}. ${g('HDGDL (L)', 'du bist der BESTE (Y)')}`,
           '',
         ],
         personalMessages: {

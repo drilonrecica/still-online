@@ -481,7 +481,7 @@ export const CHEATCAVE_THREADS: readonly ForumThread[] = [
         user: 'theo_k',
         text: 'hi. sorry if this is a dumb question. how do u beat level 4? the guy with the umbrella blocks everything. i tried 23 times. sorry for the long post',
       },
-      { day: 1, user: 'xXSniperWolfXx', text: 'n00b' },
+      { day: 1, user: 'xXSniperHawkXx', text: 'n00b' },
       { day: 1, user: 'l33t_m4st3r_99', text: 'n00b' },
       { day: 2, user: 'DarkFlame2007', text: 'n00b lol' },
       {
@@ -566,7 +566,7 @@ export const CHEATCAVE_THREADS: readonly ForumThread[] = [
       },
       {
         day: 2,
-        user: 'xXSniperWolfXx',
+        user: 'xXSniperHawkXx',
         text: 'i landed a 900 in Rail Grind Pro 2. thats basically irl',
       },
       {

@@ -63,7 +63,7 @@ export const CHEATCAVE_TEXT = {
   welcomeHeading: 'WILLKOMMEN IN DER HÖHLE',
   welcome: g(
     'hey zockerin!!! willkommen in der höhle. du bist offiziell cooler als 99% unserer besucher (die heißen alle Kevin)',
-    'hey alter!!! willkommen in der höhle. schnapp dir nen cheat, guck nen clip, bleib a bisschen. füße abtreten',
+    'hey alter!!! willkommen in der höhle. schnapp dir nen cheat, guck nen clip, bleib n bisschen. füße abtreten',
   ),
   newsHeading: 'NEUESTE NEWS',
   sinceLine: 'du bist besucher nr.',
@@ -498,7 +498,7 @@ export const CHEATCAVE_THREADS: readonly ForumThread[] = [
         user: 'theo_k',
         text: 'hallo. sorry, falls das ne dumme frage ist. wie schafft man level 4? der typ mit dem schirm blockt alles. hab es 23 mal probiert. sorry für den langen beitrag',
       },
-      { day: 1, user: 'xXSniperWolfXx', text: 'n00b' },
+      { day: 1, user: 'xXSniperHawkXx', text: 'n00b' },
       { day: 1, user: 'l33t_m4st3r_99', text: 'n00b' },
       { day: 2, user: 'DarkFlame2007', text: 'n00b lol' },
       {
@@ -583,7 +583,7 @@ export const CHEATCAVE_THREADS: readonly ForumThread[] = [
       },
       {
         day: 2,
-        user: 'xXSniperWolfXx',
+        user: 'xXSniperHawkXx',
         text: 'ich hab in Rail Grind Pro 2 nen 900er gestanden. is quasi in echt',
       },
       {

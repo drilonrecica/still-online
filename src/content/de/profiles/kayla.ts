@@ -107,7 +107,7 @@ export const kaylaProfile: ProfileContent = {
     },
     {
       day: 3,
-      text: `danke fürs zuhören gestern. du bist ${g('ne echte freundin', 'n echter freund')}. (L)`,
+      text: `danke fürs zuhören gestern. du bist ${g('ne echte freundin. (L)', 'n echter freund. (Y)')}`,
     },
     {
       day: 4,

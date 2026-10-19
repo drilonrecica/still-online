@@ -211,7 +211,8 @@ describe('G-04: chats about the player follow the gender', () => {
 
   it("Theo's bean line is buddy banter for a boy", () => {
     const boy = playedAll('en', 'boy', 'theo', 'followup1');
-    expect(boy).toContain('lol. bean cell');
+    expect(boy).toContain('beans r legit. bean cell');
+    expect(boy).toMatch(/^< heh. ok :\)$/m);
     expect(boy).not.toMatch(/^< :\)$/m);
     expect(boy).not.toContain('thats cute');
     expect(playedAll('en', 'girl', 'theo', 'followup1')).toMatch(/^< :\)$/m);

@@ -138,7 +138,7 @@ export const jessProfile: ProfileContent = {
     },
     {
       day: 5,
-      text: `beste. nacht. ALLER ZEITEN. du bist ${g('die beste konzertfreundin', 'der beste konzertkumpel')} der galaxis (L) hdgdl`,
+      text: `beste. nacht. ALLER ZEITEN. du bist ${g('die beste konzertfreundin', 'der beste konzertkumpel')} der galaxis ${g('(L) hdgdl', '(Y)')}`,
     },
   ],
 };

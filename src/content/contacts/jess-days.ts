@@ -389,7 +389,10 @@ export const jessDayScripts: readonly Script[] = [
         lines: [
           { text: 'it has a little bump', delayMs: 800 },
           { text: 'i call it my souvenir', delayMs: 700 },
-          { text: 'thx for coming w me {name}. ur the best (L)', delayMs: 900 },
+          {
+            text: `thx for coming w me {name}. ur the best ${g('(L)', '(Y)')}`,
+            delayMs: 900,
+          },
           {
             delayMs: 1500,
             personalMessageChange: 'i caught ZIGGYS DRUMSTICK!!!!! (w my face)',

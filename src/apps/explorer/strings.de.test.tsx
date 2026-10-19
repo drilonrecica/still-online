@@ -22,7 +22,7 @@ describe('Image viewer in German', () => {
       />,
     );
     expect(
-      screen.getByRole('button', { name: 'Zurück zum Ordner' }),
+      screen.getByRole('button', { name: 'Zum Ordner' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Weiter' })).toBeInTheDocument();
     expect(screen.getByText('bild.png (2 von 3)')).toBeInTheDocument();

@@ -164,11 +164,7 @@ export const theo: ContactOverlay = {
         ],
       },
       cute: {
-        lines: [
-          g(':)', 'lol. bohnenzelle'),
-          'ok. ich fang mit den skizzen an',
-          '',
-        ],
+        lines: [g(':)', 'hehe. ok :)'), 'ok. ich fang mit den skizzen an', ''],
         personalMessages: {
           2: 'male zellen. bitte nicht ansprechen. war ein witz',
         },

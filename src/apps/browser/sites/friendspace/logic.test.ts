@@ -110,12 +110,12 @@ describe('friendspace logic', () => {
     });
     expect(boy).toMatchObject({
       themePreset: 'midnight',
-      headline: 'new to Friendspace. skate or die',
+      headline: 'new to Friendspace. skate all day',
       mood: { text: 'pumped', emoticon: '(8)' },
     });
     expect(effectiveProfile(null, [], 'de', 'boy')).toMatchObject({
       themePreset: 'midnight',
-      headline: 'neu auf Friendspace. skate or die',
+      headline: 'neu auf Friendspace. skaten bis zum umfallen',
       mood: { text: 'voll motiviert' },
     });
     // A saved profile wins over the gender's preset.

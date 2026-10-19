@@ -60,8 +60,7 @@ export const FRIENDSPACE_TEXT = {
   notFoundTitle: 'Verloren im All!',
   notFoundText:
     'Dieses Profil ist ins All abgedriftet. Prüf die Adresse, oder flieg zurück zur Startrampe.',
-  emptyWall:
-    'Noch keine Kommentare. Sei die erste Person!! (sobald die Kommentare aus dem All zurück sind)',
+  emptyWall: `Noch keine Kommentare. ${g('Sei die Erste!!', 'Sei der Erste!!')} (sobald die Kommentare aus dem All zurück sind)`,
   myEmptyWall:
     'Noch keine Kommentare. Deine Freunde finden dich bestimmt bald!',
 };
@@ -101,7 +100,7 @@ export const PROFILE_LIMITS = {
 export const DEFAULT_PLAYER_PROFILE: Omit<PlayerProfile, 'top8'> = {
   headline: g(
     'neu auf Friendspace!! ~*glitzer*~ <3',
-    'neu auf Friendspace. skate or die',
+    'neu auf Friendspace. skaten bis zum umfallen',
   ),
   mood: { text: g('kicherig', 'voll motiviert'), emoticon: g(':D', '(8)') },
   aboutMe: g(

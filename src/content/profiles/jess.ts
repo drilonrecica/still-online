@@ -131,7 +131,7 @@ export const jessProfile: ProfileContent = {
     { day: 4, text: 'TOMORROW!!! i cant sleep. i cant eat. i can only scream' },
     {
       day: 5,
-      text: 'best. night. EVER. ur the best concert buddy in the galaxy (L)',
+      text: `best. night. EVER. ur the best concert buddy in the galaxy ${g('(L)', '(Y)')}`,
     },
   ],
   theme: {

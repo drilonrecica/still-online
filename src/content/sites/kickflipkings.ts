@@ -74,7 +74,7 @@ export const KICKFLIP_TEXT = {
   shoutboxHeading: 'SHOUTBOX',
   shoutboxClosed:
     'only the crew can shout rn. the spam bots found us (thx a lot, cheap_ringtones_4u). kev is "fixing it"',
-  stickers: ['SKATE OR DIE', 'NO SKATING (lol)', 'KINGS', 'grip tape 4 life'],
+  stickers: ['SKATE ALL DAY', 'NO SKATING (lol)', 'KINGS', 'grip tape 4 life'],
   crewHeading: 'THE CREW',
   crewIntro:
     'four ppl, five boards (one is broken but we keep it for luck). we skate the park by the school every day it doesnt rain. and some days it does',

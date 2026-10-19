@@ -71,7 +71,7 @@ export const SEARCHLY_HOT_SITES: readonly HotSite[] = [
   {
     url: 'http://kickflipkings.example/',
     title: 'Kickflip Kings',
-    note: 'Skate tricks from ollie to kickflip, plus a brand-new skate video.',
+    note: 'Skate tricks from ollie to kickflip, the crew and a shoutbox.',
     side: 'boy',
   },
   {

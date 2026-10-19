@@ -266,7 +266,7 @@ export const theo: ContactContent = {
         },
         cute: {
           lines: [
-            { text: g(':)', 'lol. bean cell'), delayMs: 2500 },
+            { text: g(':)', 'heh. ok :)'), delayMs: 2500 },
             { text: 'ok. ill start sketching', delayMs: 1500 },
             {
               delayMs: 1500,

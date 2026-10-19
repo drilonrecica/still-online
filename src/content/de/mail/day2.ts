@@ -15,7 +15,7 @@ export const day2Mail: readonly MailContent[] = [
     body: [
       g(
         'ich glaub nich an sowas ABER nur für den fall. schick es NICHT an brianna. hdl k',
-        'ich glaub nich an sowas ABER es geht um konsolen, da musste ich an dich denken. schick es NICHT an brianna. hdl k',
+        'ich glaub nich an sowas ABER es geht um konsolen, da musste ich an dich denken. schick es NICHT an brianna. cu k',
       ),
       '',
       '----- Weitergeleitete Nachricht -----',

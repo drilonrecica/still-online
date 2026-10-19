@@ -529,7 +529,7 @@ export const de: Messages = {
   },
   explorer: {
     loading: 'Wird geladen…',
-    back: 'Zurück zum Ordner',
+    back: 'Zum Ordner',
     previous: 'Zurück',
     next: 'Weiter',
     actualSize: 'Originalgröße',
