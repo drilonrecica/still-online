@@ -1,6 +1,5 @@
 // German Pixlog profiles, same contact ids and order as `src/content/pixlog`.
 import type { PixlogProfile } from '../../pixlog/types';
-import { STRANGERS as EN_STRANGERS } from '../../pixlog';
 import { dexPixlog } from './dex';
 import { jessPixlog } from './jess';
 import { kaylaPixlog } from './kayla';
@@ -17,5 +16,18 @@ export const PIXLOG_PROFILES: readonly PixlogProfile[] = [
   dexPixlog,
 ];
 
-/** Same count as English. P4 replaces this with German screen names. */
-export const STRANGERS: readonly string[] = [...EN_STRANGERS];
+/** Screen names of strangers in the visitors box; same count as English, German 2007 handles. */
+export const STRANGERS: readonly string[] = [
+  'xX_KometenMaus_Xx',
+  'sk8erjunge_4ever',
+  'kleiner_sonnenschein',
+  'DarkAngel_1991',
+  'pinker_panda88',
+  'zockerjunge_x',
+  'muffin_maus',
+  'HerrKuschel07',
+  'rockgirl_jo',
+  'n00b_schreck',
+  'glitzer_kitty',
+  'emo_kind_93',
+];

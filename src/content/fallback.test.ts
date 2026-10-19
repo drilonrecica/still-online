@@ -140,3 +140,67 @@ describe.each(GENDERS)(
     });
   },
 );
+
+const PIXLOG_DE = ['jess', 'kayla', 'pia'];
+/** Pixlog lines that are the same in German: a name, „pizza", „COMETS LIVE!!!", Pia shouting „DEX". */
+const SAME_IN_GERMAN = new Set(['kayla', 'pizza', 'COMETS LIVE!!!', 'DEX']);
+const differs = (de: string, en: string, where: string) => {
+  if (!SAME_IN_GERMAN.has(en)) expect(de, where).not.toBe(en);
+};
+
+describe.each(GENDERS)('v0.4 Pixlog German (%s)', (gender) => {
+  const deG = contentFor('de', gender);
+  const enG = contentFor('en', gender);
+
+  it.each(PIXLOG_DE)('%s differs from English at every text', (id) => {
+    const d = deG.pixlog.find((p) => p.contactId === id)!;
+    const e = enG.pixlog.find((p) => p.contactId === id)!;
+    expect(d.about).not.toBe(e.about);
+    d.albums.forEach((a, i) => {
+      const ea = e.albums[i]!;
+      expect([a.id, a.day]).toEqual([ea.id, ea.day]);
+      differs(a.title, ea.title, a.id);
+      a.photos.forEach((ph, j) => {
+        const ep = ea.photos[j]!;
+        differs(ph.photo.caption ?? '', ep.photo.caption ?? '', a.id);
+        ph.comments.forEach((c, k) =>
+          differs(c.text, ep.comments[k]!.text, a.id),
+        );
+      });
+    });
+    d.blog.forEach((b, i) => {
+      differs(b.title, e.blog[i]!.title, b.id);
+      differs(b.body, e.blog[i]!.body, b.id);
+    });
+    d.survey.answers.forEach((a, i) => differs(a, e.survey.answers[i]!, id));
+    d.shouts.forEach((s, i) => differs(s.text, e.shouts[i]!.text, id));
+    d.guestbook.forEach((gb, i) => differs(gb.text, e.guestbook[i]!.text, id));
+  });
+
+  it('surveys and strangers differ from English', () => {
+    deG.surveys.forEach((s, i) => {
+      const es = enG.surveys[i]!;
+      expect(s.id).toBe(es.id);
+      expect(s.title, s.id).not.toBe(es.title);
+      // "name:" is the same word in German.
+      const differ = s.questions.filter((q, j) => q !== es.questions[j]);
+      expect(differ.length, s.id).toBeGreaterThanOrEqual(
+        s.questions.length - 1,
+      );
+    });
+    expect(deG.pixlogStrangers).toHaveLength(enG.pixlogStrangers.length);
+    expect(deG.pixlogStrangers).not.toEqual(enG.pixlogStrangers);
+  });
+
+  it('Pia writes about the player in the right German gender', () => {
+    const pia = JSON.stringify(deG.pixlog.find((p) => p.contactId === 'pia'));
+    if (gender === 'girl') {
+      expect(pia).toContain('meine große schwester');
+      expect(pia).not.toContain('bruder');
+    } else {
+      expect(pia).toContain('mein großer bruder');
+      expect(pia).toContain('verdächtiger nr. 2');
+      expect(pia).not.toContain('schwester');
+    }
+  });
+});
