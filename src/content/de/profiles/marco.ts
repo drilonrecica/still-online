@@ -1,4 +1,5 @@
 // Marco's German Friendspace profile: lowercase, deadpan, never „!“ (Tante Rita shouts for him).
+import { g } from '../../gender';
 import { marcoProfile as en } from '../../profiles/marco';
 import type { ProfileContent } from '../../profiles/types';
 
@@ -95,7 +96,13 @@ export const marcoProfile: ProfileContent = {
     },
   ],
   commentsOnPlayer: [
-    { day: 2, text: 'schöne seite, zwerg. lass den glitzer weg' },
+    {
+      day: 2,
+      text: g(
+        'schöne seite, zwerg. lass den glitzer weg',
+        'schöne seite, zwerg. schön düster. respekt',
+      ),
+    },
     { day: 3, text: 'derek ist raus. schon wieder. frag nicht' },
     {
       day: 4,

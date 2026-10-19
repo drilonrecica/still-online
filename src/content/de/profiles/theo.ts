@@ -1,4 +1,5 @@
 // Theo's German Friendspace profile: shy, „ähm“, „sorry“, „…“, draws frogs. Mama comments formally.
+import { g } from '../../gender';
 import { theoProfile as en } from '../../profiles/theo';
 import type { ProfileContent } from '../../profiles/types';
 
@@ -101,7 +102,7 @@ export const theoProfile: ProfileContent = {
     },
     {
       day: 5,
-      text: 'ne 2+. danke, dass du mit mir das referat gemacht hast. sorry. ich mein. danke',
+      text: `ne 2+. danke, dass du ${g('meine partnerin', 'mein partner')} warst. sorry. ich mein. danke`,
     },
   ],
 };

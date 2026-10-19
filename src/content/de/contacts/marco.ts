@@ -204,7 +204,7 @@ export const marco: ContactOverlay = {
       keep: {
         lines: [
           'richtige antwort',
-          'ich sag derek, dass ihn der zwerg aus meiner familie überstimmt hat. der schmollt die ganze woche',
+          `ich sag derek, dass ihn ${g('meine kleine cousine', 'mein kleiner cousin')} überstimmt hat. der schmollt die ganze woche`,
         ],
         choices: [
           { text: 'sag ihm sorry von mir lol', label: 'Sorry sagen' },
@@ -382,7 +382,7 @@ export const marco: ContactOverlay = {
       plea: {
         lines: [
           'ich sags ihm',
-          'auf mich hört er nicht. auf n zwerg vielleicht',
+          `auf mich hört er nicht. auf ${g('meine kleine cousine', 'meinen kleinen cousin')} vielleicht`,
           'ok. ich ruf ihn an. drück mir die daumen',
           '',
         ],

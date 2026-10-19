@@ -1,6 +1,7 @@
 // Second now-playing reactions (P5-06), one per friend. Track-specific where the joke needs it;
 // friends who already react to any track (jess, kayla, marco) only get track-specific ones here,
 // so the first track the player plays never triggers two reactions from the same friend.
+import { g } from '../gender';
 import type { Script } from '../types';
 
 export const jessNowPlaying2: Script = {
@@ -41,9 +42,15 @@ export const jessNowPlaying2: Script = {
     },
     nodance: {
       lines: [
-        { text: 'u DO at sleepovers', delayMs: 600 },
         {
-          text: 'the hairbrush microphone thing. i have WITNESSES',
+          text: g('u DO at sleepovers', 'u DO at my bday parties'),
+          delayMs: 600,
+        },
+        {
+          text: g(
+            'the hairbrush microphone thing. i have WITNESSES',
+            'the air guitar on the couch thing. i have WITNESSES',
+          ),
           delayMs: 800,
         },
         { text: 'DANCE!!!', delayMs: 500, nudge: true },

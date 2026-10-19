@@ -1,4 +1,5 @@
 // Jess, days 2–5: concert week. Sign panic, outfit crisis, the night before, the front-row recap.
+import { g } from '../gender';
 import type { Contact, Script } from '../types';
 
 export const jessDays: Contact['days'] = {
@@ -122,8 +123,11 @@ export const jessDayScripts: readonly Script[] = [
             next: 'shirt',
           },
           {
-            text: 'the sparkly purple top!!',
-            label: 'Sparkly top',
+            text: g(
+              'the sparkly purple top!!',
+              'the shiny purple thing?? idk what its called',
+            ),
+            label: g('Sparkly top', 'The purple thing'),
             next: 'sparkly',
           },
           {
@@ -156,8 +160,11 @@ export const jessDayScripts: readonly Script[] = [
         choices: [
           { text: 'YES the star jeans', label: 'Star jeans', next: 'mirror' },
           {
-            text: 'and glitter. obviously',
-            label: 'And glitter',
+            text: g(
+              'and glitter. obviously',
+              'and glitter i guess?? u love glitter',
+            ),
+            label: g('And glitter', 'Glitter i guess'),
             next: 'mirror',
           },
         ],

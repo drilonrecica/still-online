@@ -167,6 +167,89 @@ describe('G-02: a chat line varies by gender', () => {
   });
 });
 
+/** Everything a script says and offers on every path, played for `locale` and `gender`. */
+function playedAll(
+  locale: Locale,
+  gender: Gender,
+  contactId: string,
+  scriptId: string,
+): string {
+  const content = rawContentFor(locale).contacts.find(
+    (c) => c.contact.id === contactId,
+  );
+  const script = content?.scripts.find((s) => s.id === scriptId);
+  if (!content || !script) throw new Error(`${contactId}/${scriptId} missing`);
+  return paths(script)
+    .map((picks) => {
+      const { t, id } = playPath(content, script, picks, undefined, gender);
+      return [...t.said(id), ...t.log].join('\n');
+    })
+    .join('\n');
+}
+
+describe('G-04: chats about the player follow the gender', () => {
+  it('Kayla gets movie night from a boy and a sleepover from a girl', () => {
+    const boy = playedAll('en', 'boy', 'kayla', 'day3');
+    expect(boy).toContain('Movie night');
+    expect(boy).toContain('a COUNTER movie night. but better');
+    expect(boy).not.toContain('Our own sleepover');
+    expect(boy).not.toContain('face masks');
+    const girl = playedAll('en', 'girl', 'kayla', 'day3');
+    expect(girl).toContain('a COUNTER sleepover. but better');
+    expect(playedAll('de', 'boy', 'kayla', 'day3')).toContain('Filmabend');
+  });
+
+  it("a boy's concert sign asks Ziggy for a drumstick, not marriage", () => {
+    const boy = playedAll('en', 'boy', 'jess', 'followup1');
+    expect(boy).toContain('Throw a drumstick');
+    expect(boy).not.toMatch(/marry/i);
+    expect(playedAll('en', 'girl', 'jess', 'followup1')).toContain(
+      'Ziggy marry me',
+    );
+    expect(playedAll('de', 'boy', 'jess', 'followup1')).not.toMatch(/heirate/i);
+  });
+
+  it("Theo's bean line is buddy banter for a boy", () => {
+    const boy = playedAll('en', 'boy', 'theo', 'followup1');
+    expect(boy).toContain('lol. bean cell');
+    expect(boy).not.toMatch(/^< :\)$/m);
+    expect(boy).not.toContain('thats cute');
+    expect(playedAll('en', 'girl', 'theo', 'followup1')).toMatch(/^< :\)$/m);
+  });
+
+  it.each([
+    ['girl', 'meine partnerin', 'die BESTE'],
+    ['boy', 'mein partner', 'der BESTE'],
+  ] as const)(
+    'German friends use natural forms for a %s („%s“, „%s“)',
+    (gender, partner, best) => {
+      expect(playedAll('de', gender, 'theo', 'opening')).toContain(
+        `du bist ${partner} fürs zell-referat`,
+      );
+      expect(playedAll('de', gender, 'theo', 'day5')).toContain(
+        `danke, dass du ${partner} warst`,
+      );
+      expect(playedAll('de', gender, 'jess', 'day5')).toContain(
+        `du bist ${best}`,
+      );
+    },
+  );
+
+  it('a boy has no crush in any chat', () => {
+    for (const locale of LOCALES) {
+      for (const content of rawContentFor(locale).contacts) {
+        for (const script of content.scripts) {
+          const said = playedAll(locale, 'boy', content.contact.id, script.id);
+          expect(
+            said,
+            `${locale} ${content.contact.id}/${script.id}`,
+          ).not.toMatch(/crush|marry me|schwarm|heirate mich/i);
+        }
+      }
+    }
+  });
+});
+
 /** Friends whose German overlay is complete (all six since P2-04). */
 const TRANSLATED = ['jess', 'kayla', 'dex', 'theo', 'marco', 'pia'];
 

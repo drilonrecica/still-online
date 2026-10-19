@@ -1,4 +1,5 @@
 // Theo: the shy classmate from bio. Short, hesitant lines, apologises a lot.
+import { g } from '../gender';
 import type { ContactContent } from '../types';
 import { theoDayScripts, theoDays } from './theo-days';
 import { theoGameScore } from './game-reactions';
@@ -226,7 +227,10 @@ export const theo: ContactContent = {
             { text: 'sorry. that was a weird thing to say', delayMs: 2000 },
           ],
           choices: [
-            { text: 'lol no thats cute', next: 'cute' },
+            {
+              text: g('lol no thats cute', 'lol no beans r legit. bean cell'),
+              next: 'cute',
+            },
             {
               text: 'green beans r a good description tbh',
               label: 'Accurate',
@@ -262,7 +266,7 @@ export const theo: ContactContent = {
         },
         cute: {
           lines: [
-            { text: ':)', delayMs: 2500 },
+            { text: g(':)', 'lol. bean cell'), delayMs: 2500 },
             { text: 'ok. ill start sketching', delayMs: 1500 },
             {
               delayMs: 1500,

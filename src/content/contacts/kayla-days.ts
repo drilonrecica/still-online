@@ -1,4 +1,5 @@
 // Kayla, days 2–5: the Brianna saga. The hoodie, the sleepover, the twist, an awkward peace.
+import { g } from '../gender';
 import type { Contact, Script } from '../types';
 
 export const kaylaDays: Contact['days'] = {
@@ -128,14 +129,17 @@ export const kaylaDayScripts: readonly Script[] = [
           { text: 'its fine. im FINE', delayMs: 1100 },
           { delayMs: 500, personalMessageChange: '~*FINE*~' },
           {
-            text: 'theyre doing face masks and scary movies. i HATE fun',
+            text: g(
+              'theyre doing face masks and scary movies. i HATE fun',
+              'theyre doing pizza and scary movies. i HATE fun',
+            ),
             delayMs: 1400,
           },
         ],
         choices: [
           {
-            text: 'we can have our own sleepover!!',
-            label: 'Our own sleepover',
+            text: g('we can have our own sleepover!!', 'movie night at mine!!'),
+            label: g('Our own sleepover', 'Movie night'),
             next: 'own',
           },
           {
@@ -153,8 +157,11 @@ export const kaylaDayScripts: readonly Script[] = [
         ],
         choices: [
           {
-            text: 'then we have our own sleepover. a better one',
-            label: 'Our own sleepover',
+            text: g(
+              'then we have our own sleepover. a better one',
+              'then come to movie night at mine. a better one',
+            ),
+            label: g('Our own sleepover', 'Movie night'),
             next: 'own',
           },
           {
@@ -167,12 +174,27 @@ export const kaylaDayScripts: readonly Script[] = [
       own: {
         lines: [
           { text: 'omg yes', delayMs: 900 },
-          { text: 'a COUNTER sleepover. but better', delayMs: 1100 },
-          { text: 'we will have 2 kinds of ice cream', delayMs: 1000 },
+          {
+            text: g(
+              'a COUNTER sleepover. but better',
+              'a COUNTER movie night. but better',
+            ),
+            delayMs: 1100,
+          },
+          {
+            text: g(
+              'we will have 2 kinds of ice cream',
+              'we will have 2 kinds of pizza',
+            ),
+            delayMs: 1000,
+          },
           { text: 'thats one more than brianna probably', delayMs: 1100 },
           {
             delayMs: 800,
-            personalMessageChange: '~*sleepovers r 4 REAL friends*~ (L)',
+            personalMessageChange: g(
+              '~*sleepovers r 4 REAL friends*~ (L)',
+              '~*movie nights r 4 REAL friends*~ (Y)',
+            ),
           },
         ],
         end: true,

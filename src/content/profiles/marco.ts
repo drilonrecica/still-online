@@ -1,5 +1,6 @@
 // Marco's Friendspace profile: black and minimal. Marco never uses exclamation marks (others may).
 // Velvet Lantern at the Bean Cellar: the flyer (2), Derek quits (3), Derek un-quits (4), 11 people (5).
+import { g } from '../gender';
 import type { ProfileContent } from './types';
 
 export const marcoProfile: ProfileContent = {
@@ -93,7 +94,13 @@ export const marcoProfile: ProfileContent = {
     },
   ],
   commentsOnPlayer: [
-    { day: 2, text: 'nice page kid. lose the glitter' },
+    {
+      day: 2,
+      text: g(
+        'nice page kid. lose the glitter',
+        'nice page kid. very dark. respect',
+      ),
+    },
     { day: 3, text: 'derek quit. again. dont ask' },
     {
       day: 4,

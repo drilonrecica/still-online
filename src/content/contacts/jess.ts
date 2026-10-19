@@ -1,4 +1,5 @@
 // Jess: the hyperactive best friend. ALL CAPS, many exclamation marks, nudges constantly.
+import { g } from '../gender';
 import type { ContactContent } from '../types';
 import { jessDayScripts, jessDays } from './jess-days';
 import { jessGameScore } from './game-reactions';
@@ -288,7 +289,11 @@ export const jess: ContactContent = {
             { text: 'what should it say?? :D', delayMs: 700 },
           ],
           choices: [
-            { text: 'ZIGGY MARRY ME', label: 'Ziggy marry me', next: 'marry' },
+            {
+              text: g('ZIGGY MARRY ME', 'ZIGGY THROW A DRUMSTICK'),
+              label: g('Ziggy marry me', 'Throw a drumstick'),
+              next: 'marry',
+            },
             {
               text: 'WE DROVE 3 HRS FOR THIS (we didnt)',
               label: 'We drove 3 hrs',
@@ -303,7 +308,13 @@ export const jess: ContactContent = {
         },
         marry: {
           lines: [
-            { text: 'LOL ziggy is like 28 thats OLD', delayMs: 900 },
+            {
+              text: g(
+                'LOL ziggy is like 28 thats OLD',
+                'YESSS he throws one every show. EVERY SHOW',
+              ),
+              delayMs: 900,
+            },
             {
               text: 'but he does the drumstick spin thing so... worth it',
               delayMs: 1000,
@@ -311,7 +322,10 @@ export const jess: ContactContent = {
             { text: 'writing it in pink. BIG pink', delayMs: 700 },
             {
               delayMs: 1500,
-              personalMessageChange: 'ZIGGY MARRY ME (L) (L) (L)',
+              personalMessageChange: g(
+                'ZIGGY MARRY ME (L) (L) (L)',
+                'ZIGGY THROW A DRUMSTICK!!! (Y) (Y)',
+              ),
             },
           ],
           end: true,
@@ -459,7 +473,10 @@ export const jess: ContactContent = {
             { text: 'ok new rule', delayMs: 900 },
             { text: 'my mom holds the tickets until friday', delayMs: 700 },
             { text: 'i cant be trusted w nice things :P', delayMs: 800 },
-            { text: 'luv u bye!!! (L)', delayMs: 700 },
+            {
+              text: g('luv u bye!!! (L)', 'ur the BEST. bye!!! (Y)'),
+              delayMs: 700,
+            },
             {
               delayMs: 1500,
               personalMessageChange: 'tickets: SAFE. me: a mess :P',

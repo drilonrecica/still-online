@@ -1,5 +1,6 @@
 // German text for theo (docs/localization-de.md → "Theo: shy, apologizing, …"). Same ids, same
 // line and choice counts as `src/content/contacts/theo*.ts`; '' = a line without text.
+import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
 
 export const theo: ContactOverlay = {
@@ -42,7 +43,7 @@ export const theo: ContactOverlay = {
       },
       project: {
         lines: [
-          'also ähm. wir machen das zell-referat zusammen',
+          `also ähm. du bist ${g('meine partnerin', 'mein partner')} fürs zell-referat`,
           'herr dalton hat uns eingeteilt',
           'sorry',
         ],
@@ -132,7 +133,12 @@ export const theo: ContactOverlay = {
           'tschuldige. das war komisch. vergiss es',
         ],
         choices: [
-          { text: 'lol nein das is süß' },
+          {
+            text: g(
+              'lol nein das is süß',
+              'lol nein bohnen sind fett. bohnenzelle',
+            ),
+          },
           {
             text: 'grüne bohnen trifft’s ehrlich gesagt ziemlich gut',
             label: 'Stimmt genau',
@@ -158,7 +164,11 @@ export const theo: ContactOverlay = {
         ],
       },
       cute: {
-        lines: [':)', 'ok. ich fang mit den skizzen an', ''],
+        lines: [
+          g(':)', 'lol. bohnenzelle'),
+          'ok. ich fang mit den skizzen an',
+          '',
+        ],
         personalMessages: {
           2: 'male zellen. bitte nicht ansprechen. war ein witz',
         },
@@ -502,11 +512,13 @@ export const theo: ContactOverlay = {
       thanks: {
         lines: [
           'ähm',
-          'danke, dass wir das zusammen gemacht haben, {name}',
+          `danke, dass du ${g('meine partnerin', 'mein partner')} warst, {name}`,
           'sorry. ich mein. danke. nicht sorry',
           '',
         ],
-        personalMessages: { 3: 'ne 2+ und ein gutes team :)' },
+        personalMessages: {
+          3: `ne 2+ und ${g('ne gute partnerin', 'ein guter partner')} :)`,
+        },
       },
     },
     nowPlaying2: {

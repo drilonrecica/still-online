@@ -1,5 +1,6 @@
 // German text for jess (docs/localization-de.md → "Jess: loud, ALL CAPS, nudges"). Same ids,
 // same line and choice counts as `src/content/contacts/jess*.ts`; '' = a line without text.
+import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
 
 export const jess: ContactOverlay = {
@@ -180,7 +181,10 @@ export const jess: ContactOverlay = {
           'was soll draufstehen?? :D',
         ],
         choices: [
-          { text: 'ZIGGY HEIRATE MICH', label: 'Ziggy heirate mich' },
+          {
+            text: g('ZIGGY HEIRATE MICH', 'ZIGGY WIRF NEN DRUMSTICK'),
+            label: g('Ziggy heirate mich', 'Wirf nen Drumstick'),
+          },
           {
             text: 'WIR SIND 3 STD HERGEFAHREN (sind wir nich)',
             label: '3 Std hergefahren',
@@ -193,12 +197,20 @@ export const jess: ContactOverlay = {
       },
       marry: {
         lines: [
-          'LOL ziggy is so 28 das is ALT',
+          g(
+            'LOL ziggy is so 28 das is ALT',
+            'JAAA der wirft jedes mal einen. JEDES MAL',
+          ),
           'aber er macht das ding wo er den drumstick wirbelt also... lohnt sich',
           'ich schreibs in rosa. GROSS in rosa',
           '',
         ],
-        personalMessages: { 3: 'ZIGGY HEIRATE MICH (L) (L) (L)' },
+        personalMessages: {
+          3: g(
+            'ZIGGY HEIRATE MICH (L) (L) (L)',
+            'ZIGGY WIRF NEN DRUMSTICK!!! (Y) (Y)',
+          ),
+        },
       },
       drove: {
         lines: [
@@ -297,7 +309,7 @@ export const jess: ContactOverlay = {
           'ok neue regel',
           'meine mama behält die karten bis freitag',
           'mir kann man keine schönen sachen anvertrauen :P',
-          'hdgdl bye!!! (L)',
+          g('hdgdl bye!!! (L)', 'du bist der BESTE. bye!!! (Y)'),
           '',
         ],
         personalMessages: { 4: 'karten: SICHER. ich: ein wrack :P' },
@@ -382,7 +394,13 @@ export const jess: ContactOverlay = {
         ],
         choices: [
           { text: 'dein tinfoil-comets-shirt!!', label: 'Band-Shirt' },
-          { text: 'das glitzernde lila top!!', label: 'Glitzertop' },
+          {
+            text: g(
+              'das glitzernde lila top!!',
+              'das lila glänzende ding?? keine ahnung wie das heißt',
+            ),
+            label: g('Glitzertop', 'Das lila Ding'),
+          },
           {
             text: 'zieh echtes tinfoil an. also alufolie lol',
             label: 'Echte Alufolie',
@@ -404,7 +422,13 @@ export const jess: ContactOverlay = {
         lines: ['OMG JA', 'mit der jeans mit den sternen auf der tasche??'],
         choices: [
           { text: 'JA die sternchenjeans', label: 'Sternchenjeans' },
-          { text: 'und glitzer. logisch', label: 'Und Glitzer' },
+          {
+            text: g(
+              'und glitzer. logisch',
+              'und glitzer halt?? du liebst glitzer',
+            ),
+            label: g('Und Glitzer', 'Glitzer halt'),
+          },
         ],
       },
       tinfoil: {
@@ -552,7 +576,7 @@ export const jess: ContactOverlay = {
         lines: [
           'ECHT. der liegt unter meinem kopfkissen',
           'beste. nacht. ALLER ZEITEN. (L)',
-          'danke dass du mitgekommen bist {name}. du bist SPITZE',
+          `danke dass du mitgekommen bist {name}. du bist ${g('die BESTE', 'der BESTE')}`,
           '',
         ],
         personalMessages: {
@@ -563,7 +587,7 @@ export const jess: ContactOverlay = {
         lines: [
           'da is jetzt ne kleine beule',
           'ich nenn sie mein souvenir',
-          'danke dass du mitgekommen bist {name}. HDGDL (L)',
+          `danke dass du mitgekommen bist {name}. ${g('HDGDL (L)', 'du bist der BESTE (L)')}`,
           '',
         ],
         personalMessages: {
@@ -594,8 +618,14 @@ export const jess: ContactOverlay = {
       },
       nodance: {
         lines: [
-          'doch auf übernachtungspartys schon',
-          'das ding mit der haarbürste als mikro. ich hab ZEUGEN',
+          g(
+            'doch auf übernachtungspartys schon',
+            'doch auf meinen geburtstagen schon',
+          ),
+          g(
+            'das ding mit der haarbürste als mikro. ich hab ZEUGEN',
+            'das ding mit der luftgitarre auf dem sofa. ich hab ZEUGEN',
+          ),
           'TANZ!!!',
         ],
       },

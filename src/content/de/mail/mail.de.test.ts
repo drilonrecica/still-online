@@ -102,3 +102,34 @@ describe('German auto-replies', () => {
     expect(`${marco.subject} ${marco.body} ${marco.again}`).not.toContain('!');
   });
 });
+
+describe('G-04: German mail per gender', () => {
+  const mail = (gender: 'girl' | 'boy', id: string) => {
+    const m = resolveGender(MAIL_CONTENT, gender).find((x) => x.id === id);
+    if (!m) throw new Error(`${id} missing`);
+    return m;
+  };
+
+  it('uses natural gendered forms for the player', () => {
+    expect(mail('girl', 'd2-spaceport-views').body).toMatch(
+      /^Hey, Weltraumkadettin!/,
+    );
+    expect(mail('boy', 'd4-spaceport-comment').body).toMatch(
+      /^Hey, Weltraumkadett!/,
+    );
+    expect(mail('boy', 'd3-theo-labels').attachments?.[0]?.text).toContain(
+      'von Theo + Partner\n',
+    );
+    expect(mail('boy', 'd5-mom-dex').body).toMatch(/^Hallo mein Großer,/);
+  });
+
+  it('gives a boy the console chain letter and the CheatCave newsletter', () => {
+    const chain = mail('boy', 'd2-chain-love');
+    expect(chain.subject).toContain('konsole KAPUTT');
+    expect(`${chain.subject} ${chain.body}`).not.toMatch(/schwarm|liebe!/i);
+    const d3 = mail('boy', 'd3-fanclub-newsletter');
+    expect(d3.from.address).toBe('news@cheatcave.example');
+    expect(d3.body).toContain('riverside arena. AUSVERKAUFT');
+    expect(mail('boy', 'd5-mom-dex').body).toContain('Helme');
+  });
+});

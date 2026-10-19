@@ -1,6 +1,7 @@
 // German day 4 mail (`src/content/mail/day4.ts`): Referate tomorrow, Pia forwards the
 // girl-from-the-well Kettenbrief, Jess's official concert plan, Mama's curfew and a new Friendspace
 // comment.
+import { g } from '../../gender';
 import type { MailContent } from '../../mail/types';
 
 export const day4Mail: readonly MailContent[] = [
@@ -118,7 +119,7 @@ export const day4Mail: readonly MailContent[] = [
     from: { name: 'Mama', address: 'mom.at.home@livemail.example' },
     subject: 'wegen morgen',
     body: [
-      'Hallo Schatz,',
+      g('Hallo Schatz,', 'Hallo mein Großer,'),
       '',
       "Ich habe mit Jess' Mama gesprochen. Sie fährt euch beide zum Konzert und bringt euch wieder nach Hause. Um halb elf bist du zu Hause. Ich meine das ernst. Halb elf heißt nicht „so gegen 11“.",
       '',
@@ -142,7 +143,7 @@ export const day4Mail: readonly MailContent[] = [
     from: { name: 'Friendspace', address: 'notifications@friendspace.example' },
     subject: 'Friendspace: Du hast einen neuen Kommentar!',
     body: [
-      'Hallo aus dem Orbit!',
+      `Hey, ${g('Weltraumkadettin', 'Weltraumkadett')}!`,
       '',
       'Jemand hat einen Kommentar auf deinem Profil hinterlassen! Schau nach, was drinsteht:',
       '',

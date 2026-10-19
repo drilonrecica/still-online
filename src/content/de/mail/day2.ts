@@ -1,5 +1,6 @@
-// German day 2 mail (`src/content/mail/day2.ts`): Kayla's love Kettenbrief, Friendspace, Marco's
+// German day 2 mail (`src/content/mail/day2.ts`): Kayla's Kettenbrief (love/console), Friendspace, Marco's
 // flyer (before Derek's marker got to it) and Pia's VERMISST poster for Sternenstaub.
+import { g } from '../../gender';
 import type { MailContent } from '../../mail/types';
 
 export const day2Mail: readonly MailContent[] = [
@@ -7,31 +8,57 @@ export const day2Mail: readonly MailContent[] = [
     id: 'd2-chain-love',
     day: 2,
     from: { name: '~*kayla*~', address: 'kayla.xoxo@livemail.example' },
-    subject:
+    subject: g(
       'WG: WG: WG: schick das an 10 leute sonst hast du pech in der liebe!!!',
+      'WG: WG: WG: schick das an 10 leute sonst geht deine konsole KAPUTT!!!',
+    ),
     body: [
-      'ich glaub nich an sowas ABER nur für den fall. schick es NICHT an brianna. hdl k',
+      g(
+        'ich glaub nich an sowas ABER nur für den fall. schick es NICHT an brianna. hdl k',
+        'ich glaub nich an sowas ABER es geht um konsolen, da musste ich an dich denken. schick es NICHT an brianna. hdl k',
+      ),
       '',
       '----- Weitergeleitete Nachricht -----',
       '',
       '~*~*~ LIES DAS BIS ZUM ENDE ~*~*~',
       '',
-      'das is KEIN fake!!! es war mal ein mädchen namens jacqueline, die hat diese mail bekommen und sie GELÖSCHT. am nächsten tag hat sich ihr schwarm in mathe neben sie gesetzt und gefragt „kann ich mir nen bleistift leihen“. sie hat ja gesagt. er hat ihn NIE ZURÜCKGEGEBEN. sie hat ihn nie wiedergekriegt. nich den bleistift. nich ihr herz. GAR NICHTS.',
+      g(
+        'das is KEIN fake!!! es war mal ein mädchen namens jacqueline, die hat diese mail bekommen und sie GELÖSCHT. am nächsten tag hat sich ihr schwarm in mathe neben sie gesetzt und gefragt „kann ich mir nen bleistift leihen“. sie hat ja gesagt. er hat ihn NIE ZURÜCKGEGEBEN. sie hat ihn nie wiedergekriegt. nich den bleistift. nich ihr herz. GAR NICHTS.',
+        'das is KEIN fake!!! es war mal ein junge namens dennis, der hat diese mail bekommen und sie GELÖSCHT. am nächsten tag hat seine konsole traurig gepiept und seine speicherkarte gefressen. 97 stunden Galaxy Raiders 3. WEG. sein kleiner bruder hat „haha“ gesagt. er hat sie nie wiedergekriegt. nich den spielstand. nich die 97 stunden. GAR NICHTS.',
+      ),
       '',
-      'dann hat ein mädchen namens vanessa diese mail bekommen und sie an 10 leute geschickt. am nächsten tag hat ihr schwarm sie zur schulparty eingeladen UND sie hat 5 € in ihrer jackentasche gefunden!!!!',
+      g(
+        'dann hat ein mädchen namens vanessa diese mail bekommen und sie an 10 leute geschickt. am nächsten tag hat ihr schwarm sie zur schulparty eingeladen UND sie hat 5 € in ihrer jackentasche gefunden!!!!',
+        'dann hat ein junge namens marcel diese mail bekommen und sie an 10 leute geschickt. am nächsten tag hat er den endgegner beim ERSTEN versuch geschafft UND er hat 5 € in seinem skaterschuh gefunden!!!!',
+      ),
       '',
       'schick das an:',
-      '  1 person = dein schwarm guckt dich an',
-      '  5 leute = dein schwarm sagt hallo',
-      '  10 leute = dein schwarm fragt ob du mit ins kino kommst',
-      '  0 leute = pech in der liebe FÜR IMMER (oder so 7 jahre)',
+      g(
+        '  1 person = dein schwarm guckt dich an',
+        '  1 person = dein controller klemmt nich mehr',
+      ),
+      g(
+        '  5 leute = dein schwarm sagt hallo',
+        '  5 leute = dein board steht jeden trick',
+      ),
+      g(
+        '  10 leute = dein schwarm fragt ob du mit ins kino kommst',
+        '  10 leute = du findest ein geheimes level, das keiner kennt',
+      ),
+      g(
+        '  0 leute = pech in der liebe FÜR IMMER (oder so 7 jahre)',
+        '  0 leute = deine konsole geht kaputt. oder dein skateboard. FÜR IMMER (oder so 7 jahre)',
+      ),
       '',
       'wünsch dir was bevor du runterscrollst!!!!',
       '',
       '',
       '',
       '',
-      'hast du dir was gewünscht?? ok jetzt schick es weiter. wenn du die kette unterbrichst weißt du selber wer du bist <3',
+      g(
+        'hast du dir was gewünscht?? ok jetzt schick es weiter. wenn du die kette unterbrichst weißt du selber wer du bist <3',
+        'hast du dir was gewünscht?? ok jetzt schick es weiter. wenn du die kette unterbrichst weiß deine konsole bescheid. die weiß IMMER bescheid',
+      ),
     ].join('\n'),
   },
   {
@@ -40,7 +67,7 @@ export const day2Mail: readonly MailContent[] = [
     from: { name: 'Friendspace', address: 'notifications@friendspace.example' },
     subject: 'Friendspace: 3 Leute haben dein Profil angeschaut',
     body: [
-      'Hallo aus dem Orbit!',
+      `Hey, ${g('Weltraumkadettin', 'Weltraumkadett')}!`,
       '',
       '3 Leute haben diese Woche dein Profil angeschaut.',
       'Willst du wissen, wer? Log dich bei Friendspace ein und finde es heraus!*',

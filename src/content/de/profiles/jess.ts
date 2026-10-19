@@ -1,4 +1,5 @@
 // Jess's German Friendspace profile: neon chaos, CAPS, „!!!“, hdgdl. Same Top 8, days and theme.
+import { g } from '../../gender';
 import { jessProfile as en } from '../../profiles/jess';
 import type { ProfileContent } from '../../profiles/types';
 
@@ -126,7 +127,10 @@ export const jessProfile: ProfileContent = {
     },
     {
       day: 3,
-      text: 'was ziehst du freitag an?? sag NICHT pulli. ich meins ernst',
+      text: g(
+        'was ziehst du freitag an?? sag NICHT pulli. ich meins ernst',
+        'was ziehst du freitag an?? NICHT den hoodie mit dem loch. ich meins ernst',
+      ),
     },
     {
       day: 4,
@@ -134,7 +138,7 @@ export const jessProfile: ProfileContent = {
     },
     {
       day: 5,
-      text: 'beste. nacht. ALLER ZEITEN. du bist der beste konzertmensch der galaxis (L) hdgdl',
+      text: `beste. nacht. ALLER ZEITEN. du bist ${g('die beste konzertfreundin', 'der beste konzertkumpel')} der galaxis (L) hdgdl`,
     },
   ],
 };

@@ -1,5 +1,6 @@
 // German text for kayla (docs/localization-de.md → "Kayla: ~*drama*~"). Same ids, same line
 // and choice counts as `src/content/contacts/kayla*.ts`; '' = a line without text.
+import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
 
 export const kayla: ContactOverlay = {
@@ -138,7 +139,10 @@ export const kayla: ContactOverlay = {
         ],
         choices: [
           { text: '1 natürlich' },
-          { text: '2. steh einfach drüber', label: '2, drüberstehen' },
+          {
+            text: `2. sei ${g('die klügere', 'der klügere')}`,
+            label: `2, ${g('Die Klügere', 'Der Klügere')}`,
+          },
           {
             text: '3 lol du bist so ne drama-queen',
             label: '3, Drama-Queen',
@@ -357,13 +361,19 @@ export const kayla: ContactOverlay = {
         lines: [
           'is ok. mir gehts GUT',
           '',
-          'die machen gesichtsmasken und horrorfilme. ich HASSE spaß. ich kann nich mehr',
+          g(
+            'die machen gesichtsmasken und horrorfilme. ich HASSE spaß. ich kann nich mehr',
+            'die machen pizza und horrorfilme. ich HASSE spaß. ich kann nich mehr',
+          ),
         ],
         personalMessages: { 1: '~*GUT*~' },
         choices: [
           {
-            text: 'wir machen unsere eigene übernachtungsparty!!',
-            label: 'Eigene Party',
+            text: g(
+              'wir machen unsere eigene übernachtungsparty!!',
+              'filmabend bei mir!!',
+            ),
+            label: g('Eigene Party', 'Filmabend'),
           },
           {
             text: 'du darfst auch traurig sein weißt du',
@@ -379,8 +389,11 @@ export const kayla: ContactOverlay = {
         ],
         choices: [
           {
-            text: 'dann machen wir unsere eigene übernachtungsparty. ne bessere',
-            label: 'Eigene Party',
+            text: g(
+              'dann machen wir unsere eigene übernachtungsparty. ne bessere',
+              'dann komm zum filmabend bei mir. n besserer',
+            ),
+            label: g('Eigene Party', 'Filmabend'),
           },
           { text: 'das is echt doof. tut mir leid', label: 'Tut mir leid' },
         ],
@@ -388,13 +401,19 @@ export const kayla: ContactOverlay = {
       own: {
         lines: [
           'omg ja',
-          'ne GEGEN-übernachtungsparty. aber besser',
-          'wir haben 2 sorten eis',
+          g(
+            'ne GEGEN-übernachtungsparty. aber besser',
+            'n GEGEN-filmabend. aber besser',
+          ),
+          g('wir haben 2 sorten eis', 'wir haben 2 sorten pizza'),
           'das is eine mehr als bei brianna wahrscheinlich',
           '',
         ],
         personalMessages: {
-          4: '~*übernachtungspartys sind für ECHTE freunde*~ (L)',
+          4: g(
+            '~*übernachtungspartys sind für ECHTE freunde*~ (L)',
+            '~*filmabende sind für ECHTE freunde*~ (Y)',
+          ),
         },
       },
       upset: {

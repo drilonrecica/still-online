@@ -1,7 +1,8 @@
 // German sites and profiles keep the English structure (days, ids, tags of celebs, Top 8 seeds,
 // comment authors, themes) and only change text. The text lint runs in content.test.ts.
 import { describe, expect, it } from 'vitest';
-import { getProfiles, getSiteText } from '@/content/locale';
+import { resolveGender } from '@/content/gender';
+import { getProfiles, getSiteText, rawContentFor } from '@/content/locale';
 import { PROFILES as EN_PROFILES } from '@/content/profiles';
 import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
 import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
@@ -119,7 +120,11 @@ describe('German school site, Friendspace and VirusGuard', () => {
 
 describe('German Friendspace profiles', () => {
   it('are what getProfiles returns for de', () => {
-    expect(getProfiles('de', 'girl')).toBe(PROFILES);
+    expect(rawContentFor('de').profiles).toBe(PROFILES);
+    for (const gender of ['girl', 'boy'] as const)
+      expect(getProfiles('de', gender)).toEqual(
+        resolveGender(PROFILES, gender),
+      );
   });
 
   it.each(EN_PROFILES.map((p, i) => [p.contactId, p, PROFILES[i]!] as const))(

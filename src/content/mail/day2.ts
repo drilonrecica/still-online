@@ -1,5 +1,6 @@
-// Day 2 mail: Kayla forwards a love chain letter, Friendspace wants you to log in, Marco's gig flyer
+// Day 2 mail: Kayla forwards a chain letter (love for a girl, console for a boy), Friendspace wants you to log in, Marco's gig flyer
 // goes out (before Derek's marker got to it), and Pia's MISSING poster for Stardust.
+import { g } from '../gender';
 import type { MailContent } from './types';
 
 export const day2Mail: readonly MailContent[] = [
@@ -7,31 +8,57 @@ export const day2Mail: readonly MailContent[] = [
     id: 'd2-chain-love',
     day: 2,
     from: { name: '~*kayla*~', address: 'kayla.xoxo@livemail.example' },
-    subject:
+    subject: g(
       'FWD: FWD: FWD: send this to 10 ppl or u will have bad luck in love!!!',
+      'FWD: FWD: FWD: send this to 10 ppl or ur console will BREAK!!!',
+    ),
     body: [
-      'i dont believe in these BUT just in case. do NOT send it to brianna. xoxo k',
+      g(
+        'i dont believe in these BUT just in case. do NOT send it to brianna. xoxo k',
+        'i dont believe in these BUT its about consoles so i thought of u. do NOT send it to brianna. xoxo k',
+      ),
       '',
       '----- Forwarded Message -----',
       '',
       '~*~*~ READ THIS ALL THE WAY 2 THE END ~*~*~',
       '',
-      'once there was a girl named ashley who got this email and DELETED IT. the next day her crush sat next to her in math and said "can i borrow a pencil." she said yes. he NEVER GAVE IT BACK. she never got it back. not the pencil. not her heart. not ANYTHING.',
+      g(
+        'once there was a girl named ashley who got this email and DELETED IT. the next day her crush sat next to her in math and said "can i borrow a pencil." she said yes. he NEVER GAVE IT BACK. she never got it back. not the pencil. not her heart. not ANYTHING.',
+        'once there was a boy named tyler who got this email and DELETED IT. the next day his console made a sad beep and ate his memory card. 97 hours of Galaxy Raiders 3. GONE. his little brother said "ha". he never got it back. not the save. not the 97 hours. not ANYTHING.',
+      ),
       '',
-      'then a girl named brittany got this email and sent it to 10 ppl. the next day her crush asked her to the winter formal AND she found $5 in her coat!!!!',
+      g(
+        'then a girl named brittany got this email and sent it to 10 ppl. the next day her crush asked her to the winter formal AND she found $5 in her coat!!!!',
+        'then a boy named josh got this email and sent it to 10 ppl. the next day he beat the last boss on the FIRST try AND he found $5 in his skate shoe!!!!',
+      ),
       '',
       'send this to:',
-      '  1 person = ur crush will look at u',
-      '  5 people = ur crush will say hi',
-      '  10 people = ur crush will ask u out 2 the movies',
-      '  0 people = bad luck in love 4 EVER (or like 7 years)',
+      g(
+        '  1 person = ur crush will look at u',
+        '  1 person = ur controller stops sticking',
+      ),
+      g(
+        '  5 people = ur crush will say hi',
+        '  5 people = ur board lands every trick',
+      ),
+      g(
+        '  10 people = ur crush will ask u out 2 the movies',
+        '  10 people = u find a secret level nobody knows about',
+      ),
+      g(
+        '  0 people = bad luck in love 4 EVER (or like 7 years)',
+        '  0 people = ur console breaks. or ur skateboard. 4 EVER (or like 7 years)',
+      ),
       '',
       'make a wish before u scroll down!!!!',
       '',
       '',
       '',
       '',
-      'did u make it?? ok now send it. if u stop the chain u will know who u r <3',
+      g(
+        'did u make it?? ok now send it. if u stop the chain u will know who u r <3',
+        'did u make it?? ok now send it. if u stop the chain ur console will know. it ALWAYS knows',
+      ),
     ].join('\n'),
   },
   {
