@@ -56,7 +56,7 @@ const DEFAULT_FAVORITE_KEYS: Readonly<Record<string, MessageKey>> = {
 
 /**
  * Each gender's default favorites, by url. Both share Searchly, Friendspace and Westfield High;
- * the girl list is the v0.2/v0.3 default list unchanged, the boy list swaps in his two sites.
+ * the girl list is the v0.2/v0.3 default list unchanged, the boy list puts his two sites first.
  */
 const DEFAULT_FAVORITE_URLS: Readonly<Record<Gender, readonly string[]>> = {
   girl: [
@@ -69,11 +69,22 @@ const DEFAULT_FAVORITE_URLS: Readonly<Record<Gender, readonly string[]>> = {
   boy: [
     'http://searchly.example/',
     'http://cheatcave.example/',
+    'http://kickflipkings.example/',
+    'http://friendspace.example/',
+    'http://westfield-high.example/',
+  ],
+};
+
+/** Earlier default lists a save may still hold untouched: the v0.4 boy order. */
+const LEGACY_DEFAULT_FAVORITE_URLS: readonly (readonly string[])[] = [
+  [
+    'http://searchly.example/',
+    'http://cheatcave.example/',
     'http://friendspace.example/',
     'http://westfield-high.example/',
     'http://kickflipkings.example/',
   ],
-};
+];
 
 /** Stored without a title: they are named in the current language (`favoriteTitle`). */
 export const defaultFavoritesFor = (gender: Gender): FavoriteRecord[] =>
@@ -85,12 +96,16 @@ export const DEFAULT_FAVORITES: readonly FavoriteRecord[] =
 
 /**
  * Favorites the player never changed: exactly one gender's default list (which covers the old
- * v0.3 list, the girl one). They follow the gender; any add, rename or removal makes them custom.
+ * v0.3 list, the girl one) or a legacy default list. They follow the gender; any add, rename,
+ * removal or reorder makes them custom.
  */
 export function isUntouchedFavorites(
   favorites: readonly FavoriteRecord[],
 ): boolean {
-  return Object.values(DEFAULT_FAVORITE_URLS).some(
+  return [
+    ...Object.values(DEFAULT_FAVORITE_URLS),
+    ...LEGACY_DEFAULT_FAVORITE_URLS,
+  ].some(
     (urls) =>
       urls.length === favorites.length &&
       urls.every(

@@ -94,9 +94,9 @@ schneller als du so ahnst, ja
 
 --- song 3: „beste freundinnen für immer (jess ihr song)“ ---
 du leihst mir deine spangen
-ich leih dir meinen stift
-wir streiten uns um gar nix
-und vertragen uns dann gleich
+ich leih dir mein kleid
+wir vertragen uns sofort
+nach jedem doofen streit
 
 -----
 notiz an mich: die NIEMALS vorsingen. nich ma auf der übernachtungsparty.
@@ -150,18 +150,23 @@ das passwort ist „pudding“. sag keinem das passwort.
 das clubhaus is der baum bei dex im garten. schwestern verboten.
 
 liebes tagebuch,
-heute bin ich in der schlange in der mensa vor ALLEN gestolpert und
-mein tablett ist überall rumgeflogen. das ist der schlimmste tag meines
-ganzen lebens. ich geh nie wieder hin. ich zieh ins gartenhaus.
+mutprobe von dex: für einen euro einen regenwurm essen. ich hab einen
+HALBEN gegessen. er hat mir nur 50 cent gegeben. das ist der schlimmste
+tag meines ganzen lebens.
 
 liebes tagebuch,
-bin doch wieder in die schule gegangen. keiner hat sich dran erinnert. puh.
+wollte vor der ganzen straße nen ollie vom bordstein machen. voll auf
+den hintern gefallen. die alte frau von nebenan hat trotzdem geklatscht.
+das is noch schlimmer.
 
 liebes tagebuch,
-ich glaub ich bin jetzt zu alt für ein tagebuch. das ist der letzte eintrag.
+pia hat das gelesen. PIA HAT DAS GELESEN. pia wenn du das liest, du
+schuldest mir einen euro pro seite. (pia HÖR AUF ZU LESEN)
 
 liebes tagebuch,
-ok noch einer. mama hat lasagne gemacht. war lecker.`;
+ich bin zu alt für ein logbuch. das is der letzte eintrag.
+ok einer noch. dex und ich bauen ne rampe aus dem alten garagentor.
+papa weiß noch nix davon.`;
 
 const PONY_FANFIC = `PRINZESSIN STERNENSTAUB UND DER STURM DER TRÄNEN
 eine geschichte von PIA (9 dreiviertel jahre)

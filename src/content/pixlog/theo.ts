@@ -214,7 +214,7 @@ export const theoPixlog: PixlogProfile = {
       'frog green',
       'the one on my friendspace. it came with the page',
       'grilled cheese. my little sister steals half',
-      'the grey hoodie. i have 3 of the same one',
+      'the gray hoodie. i have 3 of the same one',
       '"at piano. sorry"',
       g(
         'my bio partner. about bio. only about bio :$',

@@ -190,7 +190,7 @@ export const DEFAULT_PLAYER_PROFILE: Omit<PlayerProfile, 'top8'> = {
     'new 2 Friendspace!! ~*sparkle*~ <3',
     'new to Friendspace. skate all day',
   ),
-  mood: { text: g('giggly', 'pumped'), emoticon: g(':D', '(8)') },
+  mood: { text: g('giggly', 'bored'), emoticon: g(':D', '(N)') },
   aboutMe: g(
     'Hi!! <3 I just joined Friendspace. Click "Edit Profile" to tell the galaxy about yourself.',
     'Hey. I just joined Friendspace. Click "Edit Profile" to tell the galaxy about yourself.',

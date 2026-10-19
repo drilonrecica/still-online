@@ -333,12 +333,12 @@ export const en = {
     },
     colors: 'Colors',
     color: 'Color {hex}',
-    colorCurrent: 'Primary colour {primary}, secondary colour {secondary}',
+    colorCurrent: 'Primary color {primary}, secondary color {secondary}',
     canvas: 'Canvas',
     picture: 'Picture',
     status: {
       text: 'Click to place text, Enter to finish.',
-      draw: 'Left click draws with the primary colour, right click with the secondary.',
+      draw: 'Left click draws with the primary color, right click with the secondary.',
     },
     error: {
       read: 'Paint cannot read this file.\n{file}',

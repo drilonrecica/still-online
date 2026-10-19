@@ -83,12 +83,12 @@ describe('/me default text after Save', () => {
 
     act(() => useSettingsStore.setState({ language: 'de' }));
     expect(screen.getByText(/neu auf Friendspace!!/)).toBeTruthy();
-    expect(screen.getByText('kicherig')).toBeTruthy();
+    expect(screen.getByText('albern')).toBeTruthy();
     expect(screen.queryByText(/new 2 Friendspace/)).toBeNull();
 
     act(() => useSettingsStore.setState({ gender: 'boy' }));
     expect(screen.getByText(/skaten bis zum umfallen/)).toBeTruthy();
-    expect(screen.getByText('voll motiviert')).toBeTruthy();
+    expect(screen.getByText('gelangweilt')).toBeTruthy();
     expect(screen.getByText(/^Hey\. Ich bin neu auf Friendspace/)).toBeTruthy();
 
     act(() => useSettingsStore.setState({ language: 'en' }));
@@ -103,7 +103,7 @@ describe('/me default text after Save', () => {
     });
     act(() => useSettingsStore.setState({ language: 'de', gender: 'boy' }));
     expect(screen.getByText(/still online/)).toBeTruthy();
-    expect(screen.getByText('voll motiviert')).toBeTruthy();
+    expect(screen.getByText('gelangweilt')).toBeTruthy();
   });
 
   it('scrolls the page back to the top after Save', async () => {

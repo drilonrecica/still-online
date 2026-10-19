@@ -42,7 +42,7 @@ Theo's idea: a giant jello cell!!! in a baking dish.
 === CONCLUSION ===
 In conclusion, cells are`;
 
-const HOMEWORK = `maths homework p. 112, ex 1-12
+const HOMEWORK = `math homework p. 112, ex 1-12
 
 1. 3x + 7 = 22
    3x = 15
@@ -157,7 +157,7 @@ export const SCHOOL_DOCS: readonly FsNode[] = [
   seedText(
     'homework-maths',
     FS_FOLDERS.docs,
-    'homework_maths.txt',
+    'homework_math.txt',
     HOMEWORK,
     at(2007, 10, 10, 18, 40),
     at(2007, 10, 10, 19, 2),

@@ -191,7 +191,7 @@ export const pia: ContactContent = {
             { text: '{name}', delayMs: 3000 },
             { text: '{name} {name} {name}', delayMs: 700, nudge: true },
             {
-              text: 'how do u change the grey writing under ur name',
+              text: 'how do u change the gray writing under ur name',
               delayMs: 1200,
             },
           ],

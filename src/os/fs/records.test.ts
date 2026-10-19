@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { getSeedFiles } from '@/content/locale';
 import { systemFolders } from './nodes';
 import {
   localizeNodes,
@@ -120,6 +121,40 @@ describe('sanitizeFsState', () => {
       text: 'my edit',
       dirty: true,
     });
+  });
+
+  it('a v0.2 seed renamed to American spelling since (F-02) still reads as untouched', () => {
+    const seeds = getSeedFiles('en', 'girl');
+    const seed = (id: string) => seeds.find((n) => n.id === id)!;
+    const homework = seed('seed:homework-maths');
+    const beach = seed('seed:beach-holiday');
+    const v02 = {
+      nodes: {
+        [homework.id]: {
+          ...homework,
+          name: 'homework_maths.txt',
+          text: homework.text!.replace(/^math /, 'maths '),
+        },
+        [beach.id]: {
+          ...beach,
+          name: 'beach_holiday.jpg',
+          photo: {
+            ...beach.photo!,
+            caption: 'beach holiday, before the sunburn',
+          },
+        },
+      },
+    };
+    const lookup = seedLookup(seeds);
+    const out = sanitizeFsState(v02, T, 'en', 'girl', lookup, lookup).nodes;
+    expect(out[homework.id]).toMatchObject({
+      name: 'homework_math.txt',
+      text: homework.text,
+    });
+    expect(out[beach.id]).toMatchObject({ name: 'beach_vacation.jpg' });
+    expect(out[beach.id]?.photo?.caption).toMatch(/^beach vacation/);
+    for (const id of [homework.id, beach.id])
+      expect(out[id]).not.toHaveProperty('dirty');
   });
 
   it('drops a neutral seed record whose content is gone', () => {

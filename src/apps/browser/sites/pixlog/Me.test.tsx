@@ -246,7 +246,7 @@ describe('pixlog.example/me', () => {
         within(box).getByRole('button', { name: `Add ${name}` }),
       ).toBeTruthy();
     expect(
-      within(box).queryByRole('button', { name: 'Add beach_holiday.jpg' }),
+      within(box).queryByRole('button', { name: 'Add beach_vacation.jpg' }),
     ).toBeNull();
     await user.click(
       within(box).getByRole('button', { name: 'Add skatepark_wipeout.jpg' }),

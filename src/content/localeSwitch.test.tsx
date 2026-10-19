@@ -37,8 +37,8 @@ describe('content follows the language', () => {
       getLocalizedContents(locale, 'girl').find(
         (c) => c.contact.id === 'jess',
       )!;
-    expect(jess('de').contact.personalMessage).toBe('OMG noch 3 TAGE!!!1 (L)');
-    expect(jess('en').contact.personalMessage).toBe('OMG 3 more days!!!1 (L)');
+    expect(jess('de').contact.personalMessage).toBe('OMG noch 4 TAGE!!!1 (L)');
+    expect(jess('en').contact.personalMessage).toBe('OMG 4 more days!!!1 (L)');
     expect(getContacts('de', 'girl').find((c) => c.contact.id === 'jess')).toBe(
       jess('de'),
     );

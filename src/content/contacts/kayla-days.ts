@@ -222,7 +222,7 @@ export const kaylaDayScripts: readonly Script[] = [
           { text: 'thx {name}. dont tell anyone i said that', delayMs: 1300 },
           {
             delayMs: 800,
-            personalMessageChange: '~*some days r just grey*~ :(',
+            personalMessageChange: '~*some days r just gray*~ :(',
           },
         ],
         end: true,

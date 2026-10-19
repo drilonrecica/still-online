@@ -11,7 +11,7 @@ what i write.
 
 i just wanted to say that you are really nice. you are the only person
 who laughs at my jokes even the bad ones (the cell wall fence one).
-also you always bring markers and you never take the good colours.
+also you always bring markers and you never take the good colors.
 
 when mr dalton paired us for the cell project i acted like i didnt care
 but actually i did a little dance in my head.
@@ -148,18 +148,21 @@ the password is "pudding". do not tell anyone the password.
 the clubhouse is the tree in dex's yard. no sisters allowed.
 
 dear diary,
-today at school i tripped in front of everybody in the lunch line and
-my tray went everywhere. this is the worst day of my whole life.
-i am never going back. i am going to live in the garden shed.
+dex dared me to eat a worm for a dollar. i ate HALF a worm.
+he only paid me 50 cents. this is the worst day of my whole life.
 
 dear diary,
-went back to school. nobody remembered. phew.
+tried to ollie off the curb in front of the whole street.
+landed on my butt. the old lady next door clapped anyway. that is worse.
 
 dear diary,
-i think i am too old for a diary now. this is my last entry.
+pia read this. PIA READ THIS. pia if you are reading this you owe me
+a dollar for every page. (pia STOP READING)
 
 dear diary,
-ok one more. mom made lasagna. it was good.`;
+i am too old for a journal now. this is my last entry.
+ok one more. dex and i are building a ramp out of the old garage door.
+dad doesnt know yet.`;
 
 const PONY_FANFIC = `PRINCESS STARDUST AND THE STORM OF TEARS
 a story by PIA (age 9 3/4)

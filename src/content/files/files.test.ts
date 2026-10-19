@@ -165,6 +165,15 @@ describe('the girl and the boy have their own files', () => {
     expect(text(boy, 'seed:diary-age-11')).toMatch(
       /stunt man AND a pro skater[\s\S]*dex and i made a secret club/,
     );
+    // Its own last entries, not the girl's: a dumb dare, skating, Pia, Dex's ramp.
+    const diary = text(boy, 'seed:diary-age-11');
+    expect(diary).toMatch(
+      /dex dared me[\s\S]*ollie off the curb[\s\S]*PIA READ THIS[\s\S]*a ramp/,
+    );
+    expect(diary.split('dear diary,').length).toBe(
+      text(girl, 'seed:diary-age-11').split('dear diary,').length,
+    );
+    expect(diary).not.toMatch(/lunch line|lasagna/);
     const all = boy.map((n) => `${n.name}\n${n.text ?? ''}`).join('\n');
     expect(all).not.toMatch(/dear theo|swoosh|will theo|crush|<3/i);
   });
@@ -200,7 +209,7 @@ describe('the girl and the boy have their own files', () => {
         ['lan_party_marcos.jpg', 'lanparty', 1337],
       ],
       'seed:beach-holiday': [
-        ['beach_holiday.jpg', 'beach', 808],
+        ['beach_vacation.jpg', 'beach', 808],
         ['dexs_ramp.jpg', 'ramp', 4040],
       ],
     } as const;
@@ -311,7 +320,7 @@ describe('seeding the fs store', () => {
     );
     expect(fs().get('seed:me-webcam-test')?.photo?.look).toBe('long');
     expect(fs().get('seed:beach-holiday')).toMatchObject({
-      name: 'beach_holiday.jpg',
+      name: 'beach_vacation.jpg',
       photo: { scene: 'beach', seed: 808 },
     });
   });

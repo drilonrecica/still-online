@@ -91,12 +91,12 @@ export const PICTURES: readonly FsNode[] = [
   ),
   photo(
     'beach-holiday',
-    g('beach_holiday.jpg', 'dexs_ramp.jpg'),
+    g('beach_vacation.jpg', 'dexs_ramp.jpg'),
     genderedPhoto(
       {
         scene: 'beach',
         seed: 808,
-        caption: 'beach holiday, before the sunburn',
+        caption: 'beach vacation, before the sunburn',
       },
       {
         scene: 'ramp',

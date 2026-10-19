@@ -83,7 +83,7 @@ export const TIPS: readonly Tip[] = [
 /** What Stapley says after 3 idle minutes, in rotation. Each joke can be silenced for good. */
 export const IDLE_JOKES: readonly Tip[] = [
   'Why did the computer go to the doctor? It had a virus. Also it was a computer.',
-  'My favourite folder is My Documents. It has the best documents.',
+  'My favorite folder is My Documents. It has the best documents.',
   'I asked the modem for a joke. It screamed at me for 30 seconds. Rude, but accurate.',
   'What do you call a sleeping computer? A snooze button with a monitor.',
   'There are 10 kinds of people: those who know binary and those who left their sandwich on the keyboard.',

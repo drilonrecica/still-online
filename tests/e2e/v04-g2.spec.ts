@@ -36,7 +36,7 @@ test('G2 gate: a boy gets the skate session thread and his own photos', async ({
   ])
     await expect(pics.getByRole('option', { name })).toBeVisible();
   await expect(
-    pics.getByRole('option', { name: 'beach_holiday.jpg' }),
+    pics.getByRole('option', { name: 'beach_vacation.jpg' }),
   ).toHaveCount(0);
 });
 

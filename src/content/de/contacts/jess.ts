@@ -4,7 +4,7 @@ import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
 
 export const jess: ContactOverlay = {
-  personalMessage: 'OMG noch 3 TAGE!!!1 (L)',
+  personalMessage: 'OMG noch 4 TAGE!!!1 (L)',
   awayReply: 'DU BIST WEG?? menno. ok dann bin ich AUCH ma kurz weg. bg',
   days: {
     2: { personalMessage: 'SCHILD-NOTFALL!!! ÜBERALL GLITZER' },
@@ -67,7 +67,7 @@ export const jess: ContactOverlay = {
         ],
       },
       invite: {
-        lines: ['sooooo...', 'willste mitkommen?? :D is nächsten freitag'],
+        lines: ['sooooo...', 'willste mitkommen?? :D is in 4 tagen'],
         choices: [
           { text: 'JA na klar', label: 'JA' },
           {
@@ -123,7 +123,7 @@ export const jess: ContactOverlay = {
         lines: [
           'BIN WIEDER DA',
           'ok SEHR wichtige frage',
-          'is deine mama ok mit freitag?? so OFFIZIELL offiziell??',
+          'is deine mama ok mit dem konzert?? so OFFIZIELL offiziell??',
         ],
         choices: [
           { text: 'jap sie findet das total ok!!', label: 'Jap, alles gut!' },
@@ -169,7 +169,7 @@ export const jess: ContactOverlay = {
       notyet: {
         lines: [
           'WAS',
-          '{name} das is in ner WOCHE',
+          '{name} das is in 4 TAGEN',
           'frag sie direkt danach. versprich es mir',
         ],
         choices: [
@@ -323,7 +323,7 @@ export const jess: ContactOverlay = {
       found: {
         lines: [
           'ok neue regel',
-          'meine mama behält die karten bis freitag',
+          'meine mama behält die karten bis zum konzert',
           'mir kann man keine schönen sachen anvertrauen :P',
           g('hdgdl bye!!! (L)', 'du bist der BESTE. bye!!! (Y)'),
           '',

@@ -111,7 +111,7 @@ export const DEFAULT_PLAYER_PROFILE: Omit<PlayerProfile, 'top8'> = {
     'neu auf Friendspace!! ~*glitzer*~ <3',
     'neu auf Friendspace. skaten bis zum umfallen',
   ),
-  mood: { text: g('kicherig', 'voll motiviert'), emoticon: g(':D', '(8)') },
+  mood: { text: g('albern', 'gelangweilt'), emoticon: g(':D', '(N)') },
   aboutMe: g(
     'Hi!! <3 Ich bin neu auf Friendspace. Klick auf „Profil bearbeiten“ und erzähl der Galaxis von dir.',
     'Hey. Ich bin neu auf Friendspace. Klick auf „Profil bearbeiten“ und erzähl der Galaxis von dir.',

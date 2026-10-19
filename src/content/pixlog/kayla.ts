@@ -188,7 +188,7 @@ export const kaylaPixlog: PixlogProfile = {
     {
       id: 'kayla-grey',
       day: 3,
-      title: '~*some days r just grey*~',
+      title: '~*some days r just gray*~',
       body:
         'everyone got a pink envelope. EVERYONE.\n\n' +
         'its fine. im FINE. sad songs r playing and it isnt even raining. thats how fine i am.\n\n' +

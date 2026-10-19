@@ -14,7 +14,7 @@ export const jess: ContactContent = {
     avatar: { kind: 'pattern', seed: 'jess', colors: ['#FF6FB5', '#FFF27A'] },
     group: 'friends',
     initialStatus: 'online',
-    personalMessage: 'OMG 3 more days!!!1 (L)',
+    personalMessage: 'OMG 4 more days!!!1 (L)',
     signInAfterMs: 8_000,
     days: jessDays,
     awayReply: 'UR AWAY?? ugh fine. BRB 2',
@@ -107,7 +107,7 @@ export const jess: ContactContent = {
         invite: {
           lines: [
             { text: 'sooooo...', delayMs: 800 },
-            { text: 'wanna come with me?? :D its next friday', delayMs: 900 },
+            { text: 'wanna come with me?? :D its in 4 days', delayMs: 900 },
           ],
           choices: [
             { text: 'YES obviously', label: 'YES', next: 'yes' },
@@ -214,7 +214,7 @@ export const jess: ContactContent = {
             { text: 'IM BACK', delayMs: 1500, nudge: true },
             { text: 'ok VERY important question', delayMs: 600 },
             {
-              text: 'is ur mom ok w friday?? like OFFICIALLY officially??',
+              text: 'is ur mom ok w the concert?? like OFFICIALLY officially??',
               delayMs: 800,
             },
           ],
@@ -277,7 +277,7 @@ export const jess: ContactContent = {
         notyet: {
           lines: [
             { text: 'WHAT', delayMs: 600, nudge: true },
-            { text: '{name} its in like a WEEK', delayMs: 700 },
+            { text: '{name} its in 4 DAYS', delayMs: 700 },
             { text: 'go ask her right after this. promise me', delayMs: 800 },
           ],
           choices: [
@@ -494,7 +494,10 @@ export const jess: ContactContent = {
         found: {
           lines: [
             { text: 'ok new rule', delayMs: 900 },
-            { text: 'my mom holds the tickets until friday', delayMs: 700 },
+            {
+              text: 'my mom holds the tickets until the concert',
+              delayMs: 700,
+            },
             { text: 'i cant be trusted w nice things :P', delayMs: 800 },
             {
               text: g('luv u bye!!! (L)', 'ur the BEST. bye!!! (Y)'),

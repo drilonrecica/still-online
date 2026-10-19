@@ -137,7 +137,7 @@ describe('Paint', () => {
       screen.getByRole('button', { name: 'Color #0000ff' }),
     );
     expect(
-      screen.getByRole('img', { name: /secondary colour #0000ff/ }),
+      screen.getByRole('img', { name: /secondary color #0000ff/ }),
     ).toBeInTheDocument();
     drag(canvas, [10, 30], [12, 30], 2);
     expect(painted(shown!, [0, 0, 255, 255])).toHaveLength(3);
@@ -180,7 +180,7 @@ describe('Paint', () => {
       pointerId: 1,
     });
     expect(
-      screen.getByRole('img', { name: /Primary colour #ffffff/ }),
+      screen.getByRole('img', { name: /Primary color #ffffff/ }),
     ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Rectangle' })).toHaveAttribute(
       'aria-pressed',

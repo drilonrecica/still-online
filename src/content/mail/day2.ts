@@ -144,11 +144,11 @@ export const day2Mail: readonly MailContent[] = [
     id: 'd2-pixlog-visitors',
     day: 2,
     from: { name: 'Pixlog', address: 'noreply@pixlog.example' },
-    subject: 'You have 3 new visitors on Pixlog!',
+    subject: 'You have new visitors on Pixlog!',
     body: [
       'Hi there, shutterbug!',
       '',
-      '3 people visited your Pixlog page this week.',
+      'Friends and new faces visited your Pixlog page this week.',
       'Go see who they are and say hi:',
       '',
       '  pixlog.example/me',

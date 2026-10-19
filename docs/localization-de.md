@@ -325,11 +325,11 @@ Site names stay (Friendspace, Pixlog, GlitterCodez, band names, track titles, la
 - **No `.de` domains** (or `.com`, `.at`, `.ch` …), even in jokes. Hosts and email addresses stay exactly as in English.
 - **PG-13.** No slurs or schoolyard insults („Opfer", „Spast", „schwul" as an insult). „geil", „voll fies", „ätzend" are fine in moderation.
 - **No dialect parody.** No Bavarian, Saxon, Kölsch, Berlinerisch spelling, no „Kiezdeutsch". Casual standard German only („nich", „is", „ma" are colloquial, not dialect). „net" is dialect: don't use it.
-- **No English left** except loanwords German teens really used in 2007: cool, sorry, lol, okay/ok, chillen, Party, Fan, Flyer, Hoodie, Toolbar, Kickflip, Board, Skatepark, Drumstick, Drama-Queen, Camcorder, Handy, 4ever. "crush" is borderline → prefer „verknallt" / „Schwarm". "rn", "tmrw", "tbh", "jk" → „grad", „morgen", „ehrlich gesagt", „spaß".
+- **No English left** except loanwords German teens really used in 2007: cool, sorry, lol, okay/ok, chillen, Party, Fan, Flyer, Hoodie, Toolbar, Kickflip, Board, Skatepark, Drumstick, Drama-Queen, Camcorder, Handy, 4ever, adden („danke fürs adden", „hab dich geaddet"). "crush" is borderline → prefer „verknallt" / „Schwarm". "rn", "tmrw", "tbh", "jk" → „grad", „morgen", „ehrlich gesagt", „spaß".
 - **No ae/oe/ue/ss substitutes** for ä ö ü ß, except a deliberate chat voice (nobody in the cast has one by default).
 - **Quotes:** „…" everywhere, chat included (P2-01 decision). `…` or `...` both fine in chat; prose uses `…`.
 - **No gender-star forms, and no neutral workarounds for the player** (see §2): use `g()` with the natural girl and boy forms.
-- **No weekday names for story days**, same as English: „heute", „gestern", „Tag 3". Days the English already names (the concert „nächsten Freitag") keep them.
+- **No weekday names for story days**, same as English: „heute", „gestern", „Tag 3". Days the English already names (the band site's „DIESEN FREITAG") keep them; Jess counts the concert down in days („is in 4 tagen").
 - **No US-only references:** dollars, Thanksgiving, letter grades, homeroom, prom, Halloween trick-or-treat, high-school football, yearbook. Swap them using §4 and §5.
 
 ## 7. Parity reminder

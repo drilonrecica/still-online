@@ -121,6 +121,12 @@ describe('German seeded files', () => {
     expect(text('boy', 'seed:diary-age-11')).toContain(
       'stuntman UND profi-skater',
     );
+    expect(text('boy', 'seed:diary-age-11')).toMatch(
+      /mutprobe von dex[\s\S]*ollie vom bordstein[\s\S]*PIA HAT DAS GELESEN[\s\S]*rampe/,
+    );
+    expect(
+      text('boy', 'seed:diary-age-11').split('liebes tagebuch,').length,
+    ).toBe(text('girl', 'seed:diary-age-11').split('liebes tagebuch,').length);
     const boy = getSeedFiles('de', 'boy')
       .map((n) => `${n.name}\n${n.text ?? ''}`)
       .join('\n');

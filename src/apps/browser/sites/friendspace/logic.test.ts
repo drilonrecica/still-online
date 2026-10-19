@@ -147,12 +147,12 @@ describe('friendspace logic', () => {
     expect(boy).toMatchObject({
       themePreset: 'midnight',
       headline: 'new to Friendspace. skate all day',
-      mood: { text: 'pumped', emoticon: '(8)' },
+      mood: { text: 'bored', emoticon: '(N)' },
     });
     expect(effectiveProfile(null, [], 'de', 'boy')).toMatchObject({
       themePreset: 'midnight',
       headline: 'neu auf Friendspace. skaten bis zum umfallen',
-      mood: { text: 'voll motiviert' },
+      mood: { text: 'gelangweilt' },
     });
     // A saved profile wins over the gender's preset.
     expect(effectiveProfile(base, [], 'en', 'boy').themePreset).toBe('glitter');
@@ -171,7 +171,7 @@ describe('friendspace logic', () => {
     expect(pasted.layoutCode).toBe('[layout bg=starry]');
     expect(effectiveProfile(pasted, ['jess'], 'de', 'boy')).toMatchObject({
       headline: 'neu auf Friendspace. skaten bis zum umfallen',
-      mood: { text: 'voll motiviert', emoticon: '(8)' },
+      mood: { text: 'gelangweilt', emoticon: '(N)' },
       themePreset: 'midnight',
       layoutCode: '[layout bg=starry]',
     });

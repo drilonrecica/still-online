@@ -111,9 +111,9 @@ describe('per-gender default favorites', () => {
     expect(titles('boy')).toEqual([
       'Searchly',
       'CheatCave',
+      'Kickflip Kings',
       'Friendspace',
       'Westfield High',
-      'Kickflip Kings',
     ]);
     expect(titles('boy', 'de')).toContain('Westfield-Gymnasium');
     expect(DEFAULT_FAVORITES).toEqual(defaultFavoritesFor('girl'));
@@ -146,9 +146,9 @@ describe('per-gender default favorites', () => {
     web().removeFavorite('http://cheatcave.example/');
     expect(titles('girl')).toEqual([
       'Searchly',
+      'Kickflip Kings',
       'Friendspace',
       'Westfield High',
-      'Kickflip Kings',
     ]);
   });
 
@@ -174,11 +174,37 @@ describe('per-gender default favorites', () => {
       expect(renderFavorites(saved, 'en', 'boy').map((f) => f.title)).toEqual([
         'Searchly',
         'CheatCave',
+        'Kickflip Kings',
         'Friendspace',
         'Westfield High',
-        'Kickflip Kings',
       ]);
     }
+  });
+
+  it('a v0.4 boy save with the old untouched order still follows the gender', () => {
+    const v04Boy = sanitizeWeb(
+      {
+        favorites: [
+          { url: 'http://searchly.example/' },
+          { url: 'http://cheatcave.example/' },
+          { url: 'http://friendspace.example/' },
+          { url: 'http://westfield-high.example/' },
+          { url: 'http://kickflipkings.example/' },
+        ],
+      },
+      WEB_DEFAULTS,
+    ).favorites;
+    expect(isUntouchedFavorites(v04Boy)).toBe(true);
+    expect(renderFavorites(v04Boy, 'en', 'boy').map((f) => f.title)).toEqual([
+      'Searchly',
+      'CheatCave',
+      'Kickflip Kings',
+      'Friendspace',
+      'Westfield High',
+    ]);
+    expect(renderFavorites(v04Boy, 'en', 'girl').map((f) => f.title)).toContain(
+      'Celeb Gossip 07',
+    );
   });
 });
 

@@ -10,7 +10,7 @@ if you are pia close this RIGHT NOW
 <3 ~*~ untitled (for now) ~*~ <3
 
 you sit two seats in front of me
-in third period maths
+in third period math
 i dont hear what the teacher says
 i only hear you laugh
 
