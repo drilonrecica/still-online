@@ -43,7 +43,7 @@ Saves store ids and references, never rendered text, so a gender switch re-rende
 
 ## Gender-only scripts
 
-A Messenger script with `forGender: 'boy'` (or `'girl'`) runs only for that gender (G2-03; `docs/content-format.md` → Rules). It is written for one side, so the lint rejects `g()`/`gendered()` in it. The boy-only threads are Marco's LAN party (day 1), cheat-code trade (2) and roadie job at the bean cellar load-in (4), and Dex's skate session (2), backyard wrestling (3) and video night (5). The girl-only threads (W1) are Jess's late-night chat (day 8) and glitter-sign workshop (9), and Kayla's outfit pick (9). German overlays cover them like any script; the playthrough plays each for its gender and asserts it never starts for the other.
+A Messenger script with `forGender: 'boy'` (or `'girl'`) runs only for that gender (G2-03; `docs/content-format.md` → Rules). It is written for one side, so the lint rejects `g()`/`gendered()` in it. The boy-only threads are Marco's LAN party (day 1), cheat-code trade (2), roadie job at the bean cellar load-in (4), LAN rematch (7) and rec hall load-in crew (10), and Dex's skate session (2), backyard wrestling (3), video night (5) and Jam course (8). The girl-only threads (W1) are Jess's late-night chat (day 8) and glitter-sign workshop (9), and Kayla's outfit pick (9). German overlays cover them like any script; the playthrough plays each for its gender and asserts it never starts for the other.
 
 ## Audit
 

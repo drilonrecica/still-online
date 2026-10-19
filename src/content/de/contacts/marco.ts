@@ -2,7 +2,9 @@
 // same line and choice counts as `src/content/contacts/marco*.ts`; '' = a line without text.
 import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
+import { marcoWeek2Days, marcoWeek2Scripts } from '../../contacts/marco-week2';
 import { marcoBoyThreads } from './boy-threads';
+import { placeholderDays, placeholderScripts } from './placeholder';
 
 export const marco: ContactOverlay = {
   personalMessage: 'studio heute abend. nicht anrufen.',
@@ -12,6 +14,8 @@ export const marco: ContactOverlay = {
     3: { personalMessage: 'schlagzeuger gesucht. muss in nen rucksack passen' },
     4: { personalMessage: 'derek ist zurück. der eimer auch' },
     5: { personalMessage: 'ausverkauft. kapazität: 11' },
+    // Days 6–10: placeholders until W3.
+    ...placeholderDays(marcoWeek2Days),
   },
   scripts: {
     opening: {
@@ -571,6 +575,8 @@ export const marco: ContactOverlay = {
       },
     },
     ...marcoBoyThreads,
+    // Days 6–10 (W1-03): placeholders until W3.
+    ...placeholderScripts(marcoWeek2Scripts),
     // Top 8 drama (P0-03).
     'top8-dropped': {
       noticed: {

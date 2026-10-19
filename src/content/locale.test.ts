@@ -30,9 +30,17 @@ describe('accessors', () => {
   it('returns the English modules for en, resolved for the gender', () => {
     expect(rawContentFor('en').seedFiles).toBe(SEED_FILES);
     expect(rawContentFor('en').mail).toBe(MAIL_CONTENT);
-    // Parts without variants come back as they are (Dex has none).
+    // Parts without variants come back as they are (Dex's card and day 5 have none; his day 10
+    // has one since W1-03).
     const dex = (c: { contact: { id: string } }) => c.contact.id === 'dex';
-    expect(getContacts('en', 'boy').find(dex)).toBe(contacts.find(dex));
+    const day5 = (c?: (typeof contacts)[number]) =>
+      c?.scripts.find((s) => s.id === 'day5');
+    expect(getContacts('en', 'boy').find(dex)?.contact).toBe(
+      contacts.find(dex)?.contact,
+    );
+    expect(day5(getContacts('en', 'boy').find(dex))).toBe(
+      day5(contacts.find(dex)),
+    );
     expect(getProfiles('en', 'boy').find((p) => p.contactId === 'dex')).toBe(
       PROFILES.find((p) => p.contactId === 'dex'),
     );

@@ -285,6 +285,9 @@ describe('G2-03: boy-only threads', () => {
     ['dex', 'wrestling', 'THE MODEM MAULER? lol. ok ur in'],
     ['marco', 'roadie', 'pay: a crew shirt'],
     ['dex', 'videoNight', 'kickflipkings.example/video'],
+    ['marco', 'lanRematch', 'u and me vs roommate and derek. derek yells'],
+    ['dex', 'jamCourse', 'bring the dragon helmet'],
+    ['marco', 'loadInCrew', 'then he ran out of shirt on CREW'],
   ] as const;
 
   it.each(BOY_THREADS)(
@@ -308,11 +311,18 @@ describe('G2-03: boy-only threads', () => {
   });
 
   it('each thread follows its day script, so it fires on that day', () => {
-    const days = { lanParty: 'followup2', cheatTrade: 'day2', roadie: 'day4' };
+    const days = {
+      lanParty: 'followup2',
+      cheatTrade: 'day2',
+      roadie: 'day4',
+      lanRematch: 'day7',
+      loadInCrew: 'day10',
+    };
     const dexDays = {
       skateSession: 'day2',
       wrestling: 'day3',
       videoNight: 'day5',
+      jamCourse: 'day8',
     };
     for (const [id, map] of [
       ['marco', days],
@@ -323,6 +333,34 @@ describe('G2-03: boy-only threads', () => {
         const t = content?.scripts.find((s) => s.id === scriptId)?.trigger;
         expect(t?.type === 'afterScript' && t.scriptId, scriptId).toBe(after);
       }
+    }
+  });
+
+  // W1-03: the week-two threads start after their day script for a boy, never for a girl.
+  it.each([
+    ['marco', 'lanRematch', 'day7'],
+    ['dex', 'jamCourse', 'day8'],
+    ['marco', 'loadInCrew', 'day10'],
+  ] as const)('%s/%s runs after %s only for a boy', (id, scriptId, after) => {
+    for (const locale of LOCALES) {
+      const content = rawContentFor(locale).contacts.find(
+        (c) => c.contact.id === id,
+      );
+      const script = content?.scripts.find((s) => s.id === scriptId);
+      if (!content || !script) throw new Error(`${id}/${scriptId} missing`);
+      const boy = playPath(
+        content,
+        script,
+        paths(script)[0]!,
+        undefined,
+        'boy',
+      );
+      expect(boy.t.log).toContain(`end ${boy.id}/${scriptId}`);
+      const girl = playPath(content, script, [], undefined, 'girl');
+      expect(girl.t.log).not.toContain(`start ${girl.id}/${scriptId}`);
+      expect(girl.t.progress(girl.id).scripts[scriptId]).toBeUndefined();
+      const t = script.trigger;
+      expect(t.type === 'afterScript' && t.scriptId).toBe(after);
     }
   });
 });

@@ -1,6 +1,7 @@
 // Dex's boy-only threads (G2-03, `forGender: 'boy'`): a skate session at the gas station curb
-// (day 2), backyard wrestling (3) and the video night after the premiere (5). Each follows his day
-// script, so it never crowds it. One side only: no `g()`. Slow, lowercase, always Away.
+// (day 2), backyard wrestling (3) and the video night after the premiere (5); in week two (W1-03)
+// the Jam course at night (8). Each follows his day script, so it never crowds it. One side only:
+// no `g()`. Slow, lowercase, always Away.
 import type { Script } from '../types';
 
 export const dexBoyThreads: readonly Script[] = [
@@ -204,6 +205,52 @@ export const dexBoyThreads: readonly Script[] = [
             delayMs: 2200,
           },
           { text: 'ok see u. its a big pizza', delayMs: 2000 },
+        ],
+        end: true,
+      },
+    },
+  },
+  {
+    id: 'jamCourse',
+    forGender: 'boy',
+    trigger: { type: 'afterScript', scriptId: 'day8', minutes: 6 },
+    start: 'course',
+    nodes: {
+      course: {
+        lines: [
+          { text: '{name}', delayMs: 15_000 },
+          { text: 'come skate the jam course 2nite', delayMs: 3000 },
+          { text: 'park closes at 8', delayMs: 2000 },
+          { text: 'bring the dragon helmet', delayMs: 2000 },
+        ],
+        choices: [
+          { text: 'im there', label: 'Im there', next: 'there' },
+          { text: 'ill time ur run', label: 'Ill time ur run', next: 'time' },
+        ],
+      },
+      there: {
+        lines: [
+          { text: 'cool', delayMs: 3000 },
+          { text: 'kev says ur the official hype guy now', delayMs: 2200 },
+          { text: 'u yell when i land it. thats the job', delayMs: 2000 },
+          {
+            delayMs: 1000,
+            personalMessageChange: 'jam course. 2 of us. 1 dragon',
+          },
+        ],
+        end: true,
+      },
+      time: {
+        lines: [
+          { text: 'ok. kev has a watch with a stopwatch', delayMs: 3000 },
+          {
+            text: 'he says ur the official hype guy tho. so time it and yell',
+            delayMs: 2200,
+          },
+          {
+            delayMs: 1000,
+            personalMessageChange: 'jam course. 2 of us. 1 dragon',
+          },
         ],
         end: true,
       },

@@ -1,6 +1,7 @@
 // Marco's boy-only threads (G2-03, `forGender: 'boy'`): the LAN party (day 1), the cheat-code
-// trade (2) and roadie at the bean cellar load-in (4). Each follows one of his day scripts, so it
-// never crowds them. One side only: no `g()`. Lowercase, dry, never "!".
+// trade (2) and roadie at the bean cellar load-in (4); in week two (W1-03) the LAN rematch (7) and
+// the rec hall load-in crew report (10). Each follows one of his day scripts, so it never crowds
+// them. One side only: no `g()`. Lowercase, dry, never "!".
 import type { Script } from '../types';
 
 export const marcoBoyThreads: readonly Script[] = [
@@ -187,6 +188,116 @@ export const marcoBoyThreads: readonly Script[] = [
           {
             delayMs: 1200,
             personalMessageChange: 'now hiring: roadies. pay: 1 shirt',
+          },
+        ],
+        end: true,
+      },
+    },
+  },
+  {
+    id: 'lanRematch',
+    forGender: 'boy',
+    trigger: { type: 'afterScript', scriptId: 'day7', minutes: 5 },
+    start: 'rematch',
+    nodes: {
+      rematch: {
+        lines: [
+          { text: 'kid. rematch', delayMs: 7000 },
+          {
+            text: 'my roommate wants revenge for the lan party. galaxy raiders 3. same 4 pcs',
+            delayMs: 1600,
+          },
+          {
+            text: 'u and me vs roommate and derek. derek yells',
+            delayMs: 1400,
+          },
+        ],
+        choices: [
+          { text: 'dude im in', label: 'Im in', next: 'in' },
+          {
+            text: 'can we use BIGBRAIN',
+            label: 'Use BIGBRAIN?',
+            next: 'bigbrain',
+          },
+        ],
+      },
+      in: {
+        lines: [
+          { text: 'good. same rules. u bring chips', delayMs: 1300 },
+          {
+            text: 'ur mom says home by 10. same as last time',
+            delayMs: 1400,
+          },
+          {
+            delayMs: 1200,
+            personalMessageChange: 'rematch. bring chips. mostly chips',
+          },
+        ],
+        end: true,
+      },
+      bigbrain: {
+        lines: [
+          { text: 'my roommate says big heads are cheating', delayMs: 1400 },
+          { text: 'they are. were using them', delayMs: 1200 },
+          {
+            text: 'ur mom says home by 10. same as last time',
+            delayMs: 1400,
+          },
+          {
+            delayMs: 1200,
+            personalMessageChange: 'rematch. bring chips. mostly chips',
+          },
+        ],
+        end: true,
+      },
+    },
+  },
+  {
+    id: 'loadInCrew',
+    forGender: 'boy',
+    trigger: { type: 'afterScript', scriptId: 'day10', minutes: 5 },
+    start: 'report',
+    nodes: {
+      report: {
+        lines: [
+          { text: 'kid. crew report', delayMs: 7000 },
+          {
+            text: 'u carried the amp in at 4. 4 stairs this time. luxury',
+            delayMs: 1500,
+          },
+          {
+            text: 'derek made new shirts. he spelled LANTERN right',
+            delayMs: 1400,
+          },
+          { text: 'then he ran out of shirt on CREW', delayMs: 1300 },
+          {
+            text: 'u stayed for the show this time. ur mom said yes. i asked twice',
+            delayMs: 1600,
+          },
+        ],
+        choices: [
+          { text: 'best crew job ever', label: 'Best crew job', next: 'best' },
+          { text: 'do i get the soda', label: 'The soda?', next: 'soda' },
+        ],
+      },
+      best: {
+        lines: [
+          { text: 'it was ur only crew job. but ok', delayMs: 1300 },
+          { text: 'same job next show. same pay', delayMs: 1300 },
+          {
+            delayMs: 1200,
+            personalMessageChange: 'crew: 1. paid in shirts',
+          },
+        ],
+        end: true,
+      },
+      soda: {
+        lines: [
+          { text: '2 sodas. union rules', delayMs: 1300 },
+          { text: 'derek drank one. i owe u a soda', delayMs: 1300 },
+          {
+            delayMs: 1200,
+            personalMessageChange: 'crew: 1. paid in shirts',
           },
         ],
         end: true,

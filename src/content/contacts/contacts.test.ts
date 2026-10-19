@@ -4,7 +4,7 @@ import { TOP8_REACTIONS } from '../friendspace/top8Reactions';
 import { lintContact, lintContactText, lintScriptGraph } from '../lint';
 import { getContacts } from '../locale';
 import { PLAYLIST } from '../playlist';
-import { contentDays, STORY_DAYS } from '../storyDays';
+import { contentDays } from '../storyDays';
 import type { ContactContent, Script } from '../types';
 import { contacts } from './index';
 
@@ -91,29 +91,8 @@ describe('content lint: shipped contacts', () => {
     (_id, content) =>
       expectDayScripts(
         content,
-        contentDays().filter((d) => d >= 2),
+        contentDays('contacts').filter((d) => d >= 2),
       ),
-  );
-
-  // Week two per finished friend (W1): every day after the written ones up to the last story
-  // day. W1-03 raises `contentDays()` for contacts and folds this into the test above.
-  const weekTwoFriends = ['jess', 'kayla', 'theo', 'pia'];
-  const weekTwo = (): number[] => {
-    const days: number[] = [];
-    for (let d = Math.max(...contentDays()) + 1; d <= STORY_DAYS.last; d++)
-      days.push(d);
-    return days;
-  };
-  it.each(weekTwoFriends)(
-    '%s has week-two day scripts and new personal messages (days 1–10)',
-    (id) => {
-      const content = contacts.find((c) => c.contact.id === id)!;
-      expect(weekTwo().length).toBeGreaterThan(0);
-      expectDayScripts(content, [
-        ...contentDays().filter((d) => d >= 2),
-        ...weekTwo(),
-      ]);
-    },
   );
 
   // Top 8 drama (P3-01): a short pair per friend (≤ 1 choice node) plus both wall lines.
@@ -154,6 +133,26 @@ describe('content lint: shipped contacts', () => {
       ),
     ];
     expect(texts.filter((t) => t?.includes('!'))).toEqual([]);
+  });
+
+  it.each([
+    ['en', 'girl'],
+    ['en', 'boy'],
+    ['de', 'girl'],
+    ['de', 'boy'],
+  ] as const)('dex is always away (%s, %s)', (locale, gender) => {
+    const dex = getContacts(locale, gender).find((c) => c.contact.id === 'dex');
+    expect(dex?.contact.initialStatus).toBe('away');
+    for (const day of contentDays('contacts').filter((d) => d >= 2))
+      expect(dex?.contact.days?.[day]?.status, `day ${day}`).toBe('away');
+    const changes = (dex?.scripts ?? []).flatMap((s) =>
+      Object.values(s.nodes).flatMap((n) =>
+        n.lines.flatMap((l) =>
+          l.statusChange === undefined ? [] : [l.statusChange],
+        ),
+      ),
+    );
+    expect(changes).toEqual([]);
   });
 
   // §P5-06: a second now-playing reaction per friend.

@@ -1,7 +1,9 @@
 // Dex, days 2–5: the skate video. Filming, the camcorder eats the tape, the kickflip nobody filmed,
 // and a 30-second blur (which Kev also puts on kickflipkings.example/video). He stays Away the
 // whole time and still answers slowly.
+// Days 6–10 are in `dex-week2.ts`; both are exported from here.
 import type { Contact, Script } from '../types';
+import { dexWeek2Days, dexWeek2Scripts } from './dex-week2';
 
 export const dexDays: Contact['days'] = {
   2: { status: 'away', personalMessage: 'found the charger. ACTION' },
@@ -11,6 +13,7 @@ export const dexDays: Contact['days'] = {
     status: 'away',
     personalMessage: 'world premiere. 30 sec. no refunds',
   },
+  ...dexWeek2Days,
 };
 
 export const dexDayScripts: readonly Script[] = [
@@ -417,4 +420,5 @@ export const dexDayScripts: readonly Script[] = [
       },
     },
   },
+  ...dexWeek2Scripts,
 ];

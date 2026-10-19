@@ -339,6 +339,59 @@ describe('Theo and Pia in week two (W1-02) for a boy', () => {
   });
 });
 
+describe('Marco and Dex in week two (W1-03) for a boy', () => {
+  it('Marco: flames, "56k" in the set, and crew instead of the list', () => {
+    expect(node('en', 'boy', 'marco', 'day6', 'poster').choices[1]).toBe(
+      'ill do flames again',
+    );
+    expect(node('en', 'boy', 'marco', 'day6', 'flyer').lines[0]).toBe(
+      'small flames. tasteful',
+    );
+    expect(node('en', 'boy', 'marco', 'day8', 'song').lines[3]).toBe(
+      '"56k". ur song. from ur notebook',
+    );
+    const pm = (gender: 'girl' | 'boy') =>
+      getContacts('en', gender)
+        .find((c) => c.contact.id === 'marco')
+        ?.scripts.find((s) => s.id === 'day8')
+        ?.nodes.song?.lines.at(-1)?.personalMessageChange;
+    expect(pm('boy')).toBe('now playing: 56k (by my cousin)');
+    expect(pm('girl')).toBe('now playing: lantern heart (by my cousin)');
+    expect(node('en', 'boy', 'marco', 'day9', 'poster').lines[2]).toBe(
+      'ur crew tmrw. load-in at 4. ur mom said yes. to the show too this time',
+    );
+    expect(said('en', 'boy', 'marco', 'day10', 'song')).toContain(
+      'derek did the beeeep krrrsh on the bucket',
+    );
+    expect(said('en', 'boy', 'marco', 'day10', 'song')).not.toContain(
+      'lantern heart',
+    );
+    // The girl gets the list and her song.
+    expect(node('en', 'girl', 'marco', 'day9', 'poster').lines[2]).toBe(
+      'ur on the list. ur mom said yes. 8 rows this time. pick one',
+    );
+    expect(said('en', 'girl', 'marco', 'day10', 'song')).toContain(
+      'sang "oh oh lantern"',
+    );
+  });
+
+  it('Dex: Mom asks a boy about helmets', () => {
+    expect(node('en', 'boy', 'dex', 'day10', 'mom').lines[3]).toBe(
+      'she asked about helmets. for filming',
+    );
+    expect(node('en', 'girl', 'dex', 'day10', 'mom').lines[3]).toBe(
+      'she asked if im the one with the video',
+    );
+    for (const day of ['day6', 'day7', 'day8', 'day9', 'day10'])
+      for (const n of Object.keys(
+        getContacts('en', 'boy')
+          .find((c) => c.contact.id === 'dex')
+          ?.scripts.find((s) => s.id === day)?.nodes ?? {},
+      ))
+        expect(said('en', 'boy', 'dex', day, n)).not.toMatch(/<3|\(L\)/);
+  });
+});
+
 describe('Pia for a boy', () => {
   it('he is the annoyed big brother who still helps; her lines stay pony-mad', () => {
     expect(node('en', 'boy', 'pia', 'opening', 'quiz').choices).toEqual([

@@ -1,6 +1,8 @@
 // Marco, days 2–5: Velvet Lantern plays the bean cellar. The flyer goes up, Derek quits over a
 // one-snare rule, un-quits with a paint bucket, and 11 people come. Lowercase, dry, never "!".
+// Days 6–10 are in `marco-week2.ts`; both are exported from here.
 import type { Contact, Script } from '../types';
+import { marcoWeek2Days, marcoWeek2Scripts } from './marco-week2';
 
 export const marcoDays: Contact['days'] = {
   2: {
@@ -13,6 +15,7 @@ export const marcoDays: Contact['days'] = {
   },
   4: { status: 'busy', personalMessage: 'derek is back. so is the bucket' },
   5: { status: 'online', personalMessage: 'sold out show. venue capacity: 11' },
+  ...marcoWeek2Days,
 };
 
 export const marcoDayScripts: readonly Script[] = [
@@ -444,4 +447,5 @@ export const marcoDayScripts: readonly Script[] = [
       },
     },
   },
+  ...marcoWeek2Scripts,
 ];
