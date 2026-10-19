@@ -33,4 +33,16 @@ describe('amplifier:enqueue', () => {
     expect(useAmplifierStore.getState().playlist).toHaveLength(1);
     expect(useWindowsStore.getState().windows).toHaveLength(0);
   });
+
+  it('plays a quiet enqueue without opening the window', () => {
+    const track = PLAYLIST[2]!;
+    events.emit('amplifier:enqueue', {
+      trackId: track.id,
+      play: true,
+      quiet: true,
+    });
+    const s = useAmplifierStore.getState();
+    expect(s.playlist[s.index]?.id).toBe(track.id);
+    expect(useWindowsStore.getState().windows).toHaveLength(0);
+  });
 });

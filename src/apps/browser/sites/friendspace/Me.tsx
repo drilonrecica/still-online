@@ -1,7 +1,7 @@
 // friendspace.example `/me`: the player's own profile, editable (persisted in `web.myProfile`).
 // Friends comment on it on days 2–5.
 import { useGender, usePlayerName } from '@/i18n/settingsText';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { getProfiles } from '@/content/locale';
 import { useLocale, useT } from '@/i18n/useT';
 import { rich } from '../rich';
@@ -12,7 +12,13 @@ import { useWorldStore } from '@/os/world';
 import { useWebStore } from '../../store';
 import { SiteLink } from '../../SiteLink';
 import { Layout } from './Layout';
-import { effectiveProfile, playerTheme, playerWall, shortDate } from './logic';
+import {
+  cleanProfile,
+  effectiveProfile,
+  playerTheme,
+  playerWall,
+  shortDate,
+} from './logic';
 import {
   FRIEND_IDS,
   playerPicture,
@@ -35,6 +41,7 @@ export default function Me() {
   const saved = useWebStore((s) => s.myProfile);
   const save = useWebStore((s) => s.saveProfile);
   const [editing, setEditing] = useState(false);
+  const autoplayId = useId();
   const profile = effectiveProfile(saved, FRIEND_IDS, locale, gender);
 
   if (editing) {
@@ -76,13 +83,28 @@ export default function Me() {
         day={day}
         theme={playerTheme(profile)}
         actions={
-          <button
-            type="button"
-            className={styles.bigButton}
-            onClick={() => setEditing(true)}
-          >
-            {t('sites.friendspace.editProfile')}
-          </button>
+          <>
+            <button
+              type="button"
+              className={styles.bigButton}
+              onClick={() => setEditing(true)}
+            >
+              {t('sites.friendspace.editProfile')}
+            </button>
+            <div className={styles.autoplayToggle}>
+              <input
+                id={`${autoplayId}-autoplay`}
+                type="checkbox"
+                checked={profile.autoplay !== false}
+                onChange={(e) =>
+                  save(cleanProfile({ ...profile, autoplay: e.target.checked }))
+                }
+              />
+              <label htmlFor={`${autoplayId}-autoplay`}>
+                {t('sites.friendspace.autoplay')}
+              </label>
+            </div>
+          </>
         }
       />
       <section

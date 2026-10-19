@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { createStore, type StateCreator, type StoreApi } from 'zustand/vanilla';
-import { events } from '@/os/events';
+import { events, type OsEventMap } from '@/os/events';
 import { isRecord, persistOptions } from '@/os/persist';
 import { useSettingsStore } from '@/os/store/settings';
 import { PLAYLIST, type PlaylistTrack } from '@/content/playlist';
@@ -444,10 +444,52 @@ function bindVolume(store: StoreApi<AmplifierStore>, audio: HTMLAudioElement) {
   });
 }
 
+/**
+ * Emits `amplifier:progress` when the playing track's whole second changes (~1×/s) and on every
+ * play/pause switch, so other apps can show the position and pause state without the store.
+ */
+function bindProgress(store: StoreApi<AmplifierStore>) {
+  let last = '';
+  store.subscribe((s) => {
+    const t = s.playlist[s.index];
+    if (!t || s.status === 'stopped') {
+      last = '';
+      return;
+    }
+    const position = Math.floor(s.currentTime);
+    const key = `${t.id}|${s.status}|${position}`;
+    if (key === last) return;
+    last = key;
+    events.emit('amplifier:progress', {
+      trackId: t.id,
+      position,
+      duration: Math.round(s.duration),
+      playing: s.status === 'playing',
+    });
+  });
+}
+
+/** Applies an `amplifier:control` action to `store`. */
+export function applyControl(
+  store: StoreApi<AmplifierStore>,
+  action: OsEventMap['amplifier:control']['action'],
+) {
+  const s = store.getState();
+  if (action === 'pause') s.pause();
+  else if (action === 'stop') s.stop();
+  // Resume only continues a paused track; it never starts the playlist from scratch.
+  else if (s.status === 'paused') s.play();
+}
+
+function bind(store: StoreApi<AmplifierStore>, audio: HTMLAudioElement) {
+  bindVolume(store, audio);
+  bindProgress(store);
+}
+
 /** A fresh store around the given audio element. Used by tests. */
 export function createAmplifierStore(deps: AmplifierDeps) {
   const store = createStore<AmplifierStore>()(withPersist(deps));
-  bindVolume(store, deps.audio);
+  bind(store, deps.audio);
   return store;
 }
 
@@ -458,7 +500,7 @@ export const amplifierAudio: HTMLAudioElement = audio;
 export const useAmplifierStore = create<AmplifierStore>()(
   withPersist({ audio }),
 );
-bindVolume(useAmplifierStore, audio);
+bind(useAmplifierStore, audio);
 
 // `amplifier:enqueue`: add the track to the playlist if it's missing, then play it on request.
 // Opening the window is `os/amplifierRouter.ts`' job.
@@ -469,3 +511,7 @@ events.on('amplifier:enqueue', ({ trackId, play }) => {
   const index = store.addTrack(track);
   if (play) store.playIndex(index);
 });
+
+events.on('amplifier:control', ({ action }) =>
+  applyControl(useAmplifierStore, action),
+);

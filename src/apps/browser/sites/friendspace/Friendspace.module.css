@@ -533,3 +533,8 @@
   margin: 2px 0;
   overflow-wrap: anywhere;
 }
+
+.autoplayToggle {
+  margin: 4px 0;
+  font-size: 11px;
+}

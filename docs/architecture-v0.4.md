@@ -72,10 +72,12 @@ Top 8 reaction **bookkeeping** (`top8: Record<ContactId, {state, day}>`) lives i
 | --------------------------------------------------------- | ---------------------------------------------- | --------------------------------------- | ----- |
 | `web:top8Changed`                                         | `{ dropped: ContactId[]; added: ContactId[] }` | `saveProfile` → Messenger runtime       | P0-03 |
 | `messenger:top8Reacted`                                   | `{ contactId; kind: 'dropped' \| 'readded' }`  | Messenger → `web.appendTop8Wall`        | P0-03 |
-| `amplifier:enqueue` (existing)                            | `{ trackId; play? }`                           | band player, autoplay → Amplifier       | P1-02 |
+| `amplifier:enqueue` (existing)                            | `{ trackId; play?; quiet? }`                   | band player, autoplay → Amplifier       | P1-02 |
 | `amplifier:control`                                       | `{ action: 'pause' \| 'resume' \| 'stop' }`    | band player, song strip ■ → Amplifier   | P1-02 |
 | `amplifier:trackChanged` / `amplifier:stopped` (existing) |                                                | Amplifier → band player, autoplay guard | P1-02 |
-| `amplifier:progress` (only if needed)                     | `{ trackId; position; duration }` ~1×/s        | Amplifier → band player                 | P1-02 |
+| `amplifier:progress`                                      | `{ trackId; position; duration; playing }`     | Amplifier → band player                 | P1-02 |
+
+**Player state for sites** (P1-02): `src/os/nowPlaying.ts` mirrors the Amplifier from `trackChanged`/`stopped`/`progress` (`track`, `playing`, `position`, `duration`). `progress` is needed because the older events never report a pause; it fires on each whole second while playing and on every play/pause switch. The band player and song strip read the mirror. Autoplay (`friendspace/useProfileAutoplay.ts`, friend and band pages, once per page view) needs `!settings.muted`, `!playing` (a paused track may be replaced) and `myProfile.autoplay !== false`; it sends `quiet: true`, so `os/amplifierRouter.ts` plays the song without opening the Amplifier window. `amplifier:control` `resume` only continues a paused track.
 
 New triggers `onTop8Dropped` (the day after a drop, on sign-in) and `onTop8Readded` go in `src/content/types.ts` (P0-03).
 

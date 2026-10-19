@@ -1,7 +1,8 @@
-// friendspace.example: the social-network homage. A page per friend profile (so Searchly finds
-// them), the player's editable `/me`, and a `/*` catch-all for profiles lost in orbit.
+// friendspace.example: the social-network homage. A page per friend profile and per band (so
+// Searchly finds them), the player's editable `/me`, and a `/*` catch-all for profiles lost in orbit.
 import { lazy } from 'react';
-import { getSiteText } from '@/content/locale';
+import { BANDS } from '@/content/friendspace/bands';
+import { getBands, getSiteText } from '@/content/locale';
 import { getGender } from '@/i18n/settingsText';
 import { PROFILES } from '@/content/friendspace/profiles';
 import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
@@ -10,12 +11,14 @@ import { interpolate } from '@/i18n/t';
 import { profileName } from './logic';
 
 const profile = lazy(() => import('./Profile'));
+const band = lazy(() => import('./Band'));
 const friendPaths = PROFILES.map((p) => `/${p.contactId}`);
+const bandPaths = BANDS.map((b) => `/band/${b.id}`);
 
 export const FRIENDSPACE_SITE: SiteDefinition = {
   host: FRIENDSPACE_HOST,
   meta: (locale) => {
-    const { SITE_META, PROFILE_PAGE } = getSiteText(
+    const { SITE_META, PROFILE_PAGE, BAND_PAGE } = getSiteText(
       FRIENDSPACE_HOST,
       locale,
       getGender(),
@@ -31,7 +34,19 @@ export const FRIENDSPACE_SITE: SiteDefinition = {
         },
       ]),
     );
-    return { ...SITE_META, pages: { ...SITE_META.pages, ...friendPages } };
+    const bandPages = Object.fromEntries(
+      getBands(locale, getGender()).map((b) => [
+        `/band/${b.id}`,
+        {
+          title: interpolate(BAND_PAGE.title, { name: b.name }),
+          keywords: [b.name, b.genre, ...BAND_PAGE.keywords],
+        },
+      ]),
+    );
+    return {
+      ...SITE_META,
+      pages: { ...SITE_META.pages, ...friendPages, ...bandPages },
+    };
   },
   pages: {
     '/': { component: lazy(() => import('./Home')) },
@@ -42,6 +57,9 @@ export const FRIENDSPACE_SITE: SiteDefinition = {
         path,
         { component: profile },
       ]),
+    ),
+    ...Object.fromEntries(
+      bandPaths.map((path): [string, SitePage] => [path, { component: band }]),
     ),
     '/*': { component: profile },
   },

@@ -3,7 +3,7 @@ import { events } from '@/os/events';
 import { useSettingsStore } from '@/os/store/settings';
 import type { PlaylistTrack } from '@/content/playlist';
 import { PLAYLIST } from '@/content/playlist';
-import { createAmplifierStore } from './store';
+import { applyControl, createAmplifierStore } from './store';
 
 const track = (n: number): PlaylistTrack => ({
   id: `t${n}`,
@@ -417,6 +417,65 @@ describe('amplifier store', () => {
       expect(store.getState().playlist.map((t) => t.id)).toEqual([
         (PLAYLIST[1] as PlaylistTrack).id,
       ]);
+    });
+  });
+
+  describe('amplifier:progress and amplifier:control (P1-02)', () => {
+    it('emits progress once per whole second and on pause/resume', () => {
+      const progress = vi.fn();
+      events.on('amplifier:progress', progress);
+      const { audio, get } = setup();
+
+      get().playIndex(1);
+      expect(progress).toHaveBeenLastCalledWith({
+        trackId: 't1',
+        position: 0,
+        duration: 101,
+        playing: true,
+      });
+      const calls = progress.mock.calls.length;
+
+      audio.currentTime = 0.4;
+      audio.dispatchEvent(new Event('timeupdate'));
+      expect(progress).toHaveBeenCalledTimes(calls);
+      audio.currentTime = 1.2;
+      audio.dispatchEvent(new Event('timeupdate'));
+      expect(progress).toHaveBeenCalledTimes(calls + 1);
+      expect(progress).toHaveBeenLastCalledWith(
+        expect.objectContaining({ position: 1, playing: true }),
+      );
+
+      get().pause();
+      expect(progress).toHaveBeenLastCalledWith(
+        expect.objectContaining({ position: 1, playing: false }),
+      );
+      get().play();
+      expect(progress).toHaveBeenLastCalledWith(
+        expect.objectContaining({ playing: true }),
+      );
+
+      const before = progress.mock.calls.length;
+      get().stop();
+      expect(progress).toHaveBeenCalledTimes(before);
+    });
+
+    it('pauses, resumes and stops on control actions', () => {
+      const stopped = vi.fn();
+      events.on('amplifier:stopped', stopped);
+      const { store, get } = setup();
+
+      applyControl(store, 'resume');
+      expect(get().status).toBe('stopped'); // resume never starts from scratch
+
+      get().playIndex(0);
+      applyControl(store, 'pause');
+      expect(get().status).toBe('paused');
+      applyControl(store, 'resume');
+      expect(get().status).toBe('playing');
+      expect(get().index).toBe(0);
+      applyControl(store, 'stop');
+      expect(get().status).toBe('stopped');
+      expect(stopped).toHaveBeenCalledWith({ trackId: 't0' });
     });
   });
 });

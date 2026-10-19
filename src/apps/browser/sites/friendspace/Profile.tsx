@@ -1,5 +1,5 @@
 // friendspace.example `/<contactId>`: a friend's profile, with the comment wall up to today's day.
-// Any other single-segment path lands here too and shows "Lost in orbit!".
+// Any other single-segment path lands here too and shows "Lost in orbit!". The song autoplays.
 import { useGender, usePlayerName } from '@/i18n/settingsText';
 import { getProfiles } from '@/content/locale';
 import { useLocale, useT } from '@/i18n/useT';
@@ -18,6 +18,7 @@ import {
   wallComment,
 } from './people';
 import { ProfileView } from './ProfileView';
+import { useProfileAutoplay } from './useProfileAutoplay';
 import styles from './Friendspace.module.css';
 
 export default function Profile({ path }: SitePageProps) {
@@ -30,6 +31,7 @@ export default function Profile({ path }: SitePageProps) {
   const playerName = usePlayerName();
   const id = path.slice(1).toLowerCase();
   const profile = PROFILES.find((p) => p.contactId === id);
+  useProfileAutoplay(profile?.songTrackId, path);
 
   if (!profile) {
     return (

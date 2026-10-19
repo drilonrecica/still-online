@@ -1,0 +1,132 @@
+/* Band pages: the dark inline player and the band facts card. */
+
+.player {
+  margin: 0 0 8px;
+  padding: 6px;
+  border: 1px solid #000;
+  background: linear-gradient(#2b2b2b, #111);
+  color: #d8d8d8;
+  font:
+    11px Verdana,
+    sans-serif;
+}
+
+.lcd {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 3px 6px;
+  border: 1px inset #444;
+  background: #0b140b;
+  color: #8dff7a;
+  font:
+    11px 'Courier New',
+    monospace;
+}
+
+.lcdTitle {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lcdTime {
+  flex: none;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0;
+}
+
+.playButton,
+.track {
+  min-width: 0;
+  border: 1px solid #555;
+  background: linear-gradient(#4a4a4a, #222);
+  color: #fff;
+  font:
+    bold 11px Verdana,
+    sans-serif;
+  cursor: pointer;
+}
+
+.playButton {
+  width: 32px;
+  padding: 2px 0;
+}
+
+.playButton:focus-visible,
+.track:focus-visible {
+  outline: 1px dotted #8dff7a;
+  outline-offset: 1px;
+}
+
+.progress {
+  flex: 1;
+  height: 8px;
+  border: 1px solid #555;
+  background: #000;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(#b4ff9f, #3fa82c);
+}
+
+.tracks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.track {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 2px;
+  padding: 2px 6px;
+  background: #1b1b1b;
+  font-weight: normal;
+  text-align: left;
+}
+
+.track:hover {
+  background: #333;
+}
+
+.track[aria-current='true'] {
+  color: #8dff7a;
+  font-weight: bold;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 6px;
+  margin: 0 0 6px;
+}
+
+.facts dt {
+  font-weight: bold;
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.list {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.blogEntry + .blogEntry {
+  margin-top: 8px;
+}
+
+.blogDate {
+  font-size: 10px;
+  opacity: 0.8;
+}

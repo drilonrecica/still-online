@@ -39,7 +39,7 @@ export const jessProfile: ProfileContent = {
     { kind: 'extra', name: 'xX_CometGirl_Xx', seed: 'cometgirl' },
     { kind: 'contact', id: 'dex' },
     { kind: 'contact', id: 'theo' },
-    { kind: 'extra', name: 'ZIGGY FANCLUB', seed: 'ziggyfanclub' },
+    { kind: 'band', id: 'tinfoil-comets' },
     { kind: 'contact', id: 'marco' },
     { kind: 'contact', id: 'pia' },
   ],

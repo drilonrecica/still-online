@@ -1,5 +1,5 @@
-// The `/me` editor: headline, mood, about me, profile song, theme (6 presets or custom colours)
-// and the Top 8 order. Nothing is saved until "Save Changes".
+// The `/me` editor: headline, mood, about me, profile song, autoplay, theme (6 presets or custom
+// colours) and the Top 8 order. Nothing is saved until "Save Changes".
 import { useId, useState } from 'react';
 import type { PlayerProfile } from '@/content/friendspace/profiles/types';
 import { PLAYLIST } from '@/content/playlist';
@@ -102,6 +102,19 @@ export function ProfileEditor({
             </option>
           ))}
         </select>
+
+        <span aria-hidden />
+        <span className={styles.row}>
+          <input
+            id={`${id}-autoplay`}
+            type="checkbox"
+            checked={p.autoplay !== false}
+            onChange={(e) => set({ autoplay: e.target.checked })}
+          />
+          <label htmlFor={`${id}-autoplay`}>
+            {t('sites.friendspace.autoplay')}
+          </label>
+        </span>
 
         <label htmlFor={`${id}-theme`}>
           {t('sites.friendspace.editor.theme')}

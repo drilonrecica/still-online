@@ -12,11 +12,13 @@ describe('Friendspace profiles', () => {
   });
 
   it.each(PROFILES.map((p) => [p.contactId, p] as const))(
-    '%s: Top 8 is the player, the 5 other friends and 2 extras',
+    '%s: Top 8 is the player, the 5 other friends and 2 extras or bands',
     (id, p) => {
       expect(p.top8).toHaveLength(8);
       expect(p.top8.filter((t) => t.kind === 'player')).toHaveLength(1);
-      expect(p.top8.filter((t) => t.kind === 'extra')).toHaveLength(2);
+      expect(
+        p.top8.filter((t) => t.kind === 'extra' || t.kind === 'band'),
+      ).toHaveLength(2);
       const friends = p.top8.flatMap((t) =>
         t.kind === 'contact' ? [t.id] : [],
       );

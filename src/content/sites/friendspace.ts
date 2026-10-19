@@ -46,6 +46,12 @@ export const PROFILE_PAGE = {
   keywords: ['profile', 'top 8', 'comments'],
 };
 
+/** A band page (`/band/<id>`); `{name}` is the band's name. */
+export const BAND_PAGE = {
+  title: '{name} on Friendspace Music',
+  keywords: ['band', 'music', 'songs', 'shows'],
+};
+
 export const FRIENDSPACE_TEXT = {
   logo: 'Friendspace',
   tagline: 'a place for friends in orbit',

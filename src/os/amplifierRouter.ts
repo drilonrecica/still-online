@@ -8,8 +8,8 @@ import { useWindowsStore } from '@/os/store/windows';
 
 /** Subscribes once; returns the unsubscribe function (used by the App effect). */
 export function installAmplifierRouter(): () => void {
-  return events.on('amplifier:enqueue', ({ trackId, play }) => {
-    if (!play || !PLAYLIST.some((t) => t.id === trackId)) return;
+  return events.on('amplifier:enqueue', ({ trackId, play, quiet }) => {
+    if (!play || quiet || !PLAYLIST.some((t) => t.id === trackId)) return;
     const { windows, openApp } = useWindowsStore.getState();
     if (!windows.some((w) => w.appId === 'amplifier')) openApp('amplifier');
   });

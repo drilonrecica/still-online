@@ -14,8 +14,11 @@ export interface OsEventMap {
   // v0.2 (docs/architecture-v0.2.md → "Events")
   /** Open Web Explorer at `url` (`http://<host>.example/...`). Handled by `os/browserRouter.ts`. */
   'browser:open': { url: string };
-  /** Add a playlist track if missing; `play` also starts it and opens the Amplifier. */
-  'amplifier:enqueue': { trackId: string; play?: boolean };
+  /**
+   * Add a playlist track if missing; `play` also starts it and opens the Amplifier, unless
+   * `quiet` (profile-song autoplay) keeps the window closed.
+   */
+  'amplifier:enqueue': { trackId: string; play?: boolean; quiet?: boolean };
   /** A finished game. Mines: `score` = seconds, `detail` = level. */
   'game:score': { game: GameId; score: number; detail?: string };
   /** The day advanced (at most +1 per boot). */
@@ -41,6 +44,18 @@ export interface OsEventMap {
   'messenger:top8Reacted': {
     contactId: ContactId;
     kind: 'dropped' | 'readded';
+  };
+  /** Pause, resume or stop the Amplifier (Friendspace's band player and song strip). */
+  'amplifier:control': { action: 'pause' | 'resume' | 'stop' };
+  /**
+   * The current track's position (seconds), ~1×/s while playing and once on every pause or
+   * resume. `playing` is false while paused; a stop sends `amplifier:stopped` instead.
+   */
+  'amplifier:progress': {
+    trackId: string;
+    position: number;
+    duration: number;
+    playing: boolean;
   };
 }
 

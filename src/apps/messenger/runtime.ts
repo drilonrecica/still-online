@@ -139,7 +139,10 @@ function createEngine(): ConversationEngine {
     }
   };
   stopListening?.();
-  const stopTrack = useNowPlayingStore.subscribe(syncNowPlaying);
+  // Position ticks (~1×/s) don't change the line; only a new or cleared track does.
+  const stopTrack = useNowPlayingStore.subscribe((s, prev) => {
+    if (s.track !== prev.track) syncNowPlaying();
+  });
   const stopToggle = useMessengerStore.subscribe((s, prev) => {
     // The engine ignores nowPlaying while signed out, so signing in syncs again.
     if (

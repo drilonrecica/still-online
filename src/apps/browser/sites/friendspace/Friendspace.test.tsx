@@ -123,7 +123,18 @@ describe('friendspace.example', () => {
     expect(heard).not.toHaveBeenCalled();
     await user.click(play);
     expect(heard).toHaveBeenCalledWith({ trackId: 'cool-rock', play: true });
+    // The strip shows what the Amplifier reports, not its own guess.
+    expect(screen.getByText('click to play')).toBeTruthy();
+    act(() =>
+      events.emit('amplifier:trackChanged', {
+        trackId: 'cool-rock',
+        artist: 'Kevin MacLeod',
+        title: 'Cool Rock',
+        durationSec: 209,
+      }),
+    );
     expect(screen.getByText('now playing in Amplifier')).toBeTruthy();
+    act(() => events.emit('amplifier:stopped', { trackId: 'cool-rock' }));
     off();
   });
 

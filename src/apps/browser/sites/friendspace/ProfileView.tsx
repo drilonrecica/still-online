@@ -51,7 +51,13 @@ export interface ProfileViewProps {
   actions?: ReactNode;
 }
 
-function Box({ title, children }: { title: string; children: ReactNode }) {
+export function Box({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
   return (
     <section className={styles.box} aria-label={title}>
       <h3 className={styles.boxTitle}>{title}</h3>
@@ -60,19 +66,23 @@ function Box({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
+/** The page colours, font and box variables of a profile or band theme. */
+export function themeStyle(theme: ProfileTheme): CSSProperties {
+  return {
+    background: theme.background,
+    color: theme.text,
+    fontFamily: theme.font,
+    '--sp-accent': theme.accent,
+    '--sp-panel': theme.panel ?? 'rgba(255, 255, 255, 0.88)',
+  } as CSSProperties;
+}
+
 export function ProfileView(p: ProfileViewProps) {
   const t = useT();
-  const style = {
-    background: p.theme.background,
-    color: p.theme.text,
-    fontFamily: p.theme.font,
-    '--sp-accent': p.theme.accent,
-    '--sp-panel': p.theme.panel ?? 'rgba(255, 255, 255, 0.88)',
-  } as CSSProperties;
   return (
     <div
       className={`${styles.profile} ${p.theme.glitter ? styles.glitter : ''}`}
-      style={style}
+      style={themeStyle(p.theme)}
       data-testid="profile"
     >
       {p.theme.stickers && (

@@ -46,6 +46,11 @@ export const PROFILE_PAGE = {
   keywords: ['profil', 'top 8', 'kommentare'],
 };
 
+export const BAND_PAGE = {
+  title: '{name} auf Friendspace Music',
+  keywords: ['band', 'musik', 'songs', 'auftritte'],
+};
+
 export const FRIENDSPACE_TEXT = {
   logo: 'Friendspace',
   tagline: 'ein Ort für Freunde im Orbit',

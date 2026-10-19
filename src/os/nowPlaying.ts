@@ -9,14 +9,41 @@ export interface NowPlaying {
   title: string;
 }
 
-export const useNowPlayingStore = create<{ track: NowPlaying | null }>()(
-  () => ({ track: null }),
-);
+export interface NowPlayingState {
+  /** A paused track still counts as "listening"; only a stop (or closing the player) clears it. */
+  track: NowPlaying | null;
+  /** Audio is actually running (false while paused or stopped). */
+  playing: boolean;
+  /** Seconds into `track`, from `amplifier:progress`. */
+  position: number;
+  /** Seconds; the playlist length until the file's metadata says otherwise. */
+  duration: number;
+}
 
-// A paused track still counts as "listening"; only a stop (or closing the player) clears it.
-events.on('amplifier:trackChanged', ({ trackId, artist, title }) =>
-  useNowPlayingStore.setState({ track: { trackId, artist, title } }),
+export const NOW_PLAYING_IDLE: NowPlayingState = {
+  track: null,
+  playing: false,
+  position: 0,
+  duration: 0,
+};
+
+export const useNowPlayingStore = create<NowPlayingState>()(() => ({
+  ...NOW_PLAYING_IDLE,
+}));
+
+events.on('amplifier:trackChanged', ({ trackId, artist, title, durationSec }) =>
+  useNowPlayingStore.setState({
+    track: { trackId, artist, title },
+    playing: true,
+    position: 0,
+    duration: durationSec,
+  }),
 );
 events.on('amplifier:stopped', () =>
-  useNowPlayingStore.setState({ track: null }),
+  useNowPlayingStore.setState({ ...NOW_PLAYING_IDLE }),
 );
+events.on('amplifier:progress', ({ trackId, position, duration, playing }) => {
+  // Progress for a track we never heard start (the mirror loaded late) is ignored.
+  if (useNowPlayingStore.getState().track?.trackId !== trackId) return;
+  useNowPlayingStore.setState({ playing, position, duration });
+});
