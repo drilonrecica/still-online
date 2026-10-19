@@ -168,3 +168,44 @@ describe('Top 8 drama triggers (P0-03)', () => {
     ]);
   });
 });
+
+describe('forGender (G2-03)', () => {
+  const thread = (extra: Partial<Script>, text = 'dude'): ContactContent => ({
+    contact: kayla.contact,
+    scripts: [
+      {
+        id: 'boyThread',
+        trigger: { type: 'onSignIn' },
+        start: 'a',
+        nodes: { a: { lines: [{ text, delayMs: 0 }], end: true } },
+        ...extra,
+      },
+    ],
+  });
+
+  it('accepts a one-sided boy or girl script', () => {
+    expect(lintContact(thread({ forGender: 'boy' }))).toEqual([]);
+    expect(lintContact(thread({ forGender: 'girl' }))).toEqual([]);
+  });
+
+  it('rejects an unknown gender', () => {
+    const bad = thread({ forGender: 'other' as Script['forGender'] });
+    expect(lintContact(bad)).toEqual([
+      `kayla: script "boyThread" forGender must be 'girl' or 'boy'`,
+    ]);
+  });
+
+  it('rejects g() and gendered() in a gendered script', () => {
+    expect(
+      lintContact(thread({ forGender: 'boy' }, g('hey girl', 'hey dude'))),
+    ).toEqual(['kayla.boyThread.a.lines[0].text: boy-only script uses g()']);
+    const sides = gendered({ girl: 'a', boy: 'b' });
+    expect(
+      lintContact(thread({ forGender: 'boy' }, sides)).some((p) =>
+        p.includes('boy-only but uses gendered()'),
+      ),
+    ).toBe(true);
+    // Without forGender, g() is fine.
+    expect(lintContact(thread({}, g('hey girl', 'hey dude')))).toEqual([]);
+  });
+});

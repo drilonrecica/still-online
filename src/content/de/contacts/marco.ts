@@ -2,6 +2,7 @@
 // same line and choice counts as `src/content/contacts/marco*.ts`; '' = a line without text.
 import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
+import { marcoBoyThreads } from './boy-threads';
 
 export const marco: ContactOverlay = {
   personalMessage: 'studio heute abend. nicht anrufen.',
@@ -569,6 +570,7 @@ export const marco: ContactOverlay = {
         lines: ['den schlägt jeder', 'ich sags ihm. das braucht er'],
       },
     },
+    ...marcoBoyThreads,
     // Top 8 drama (P0-03).
     'top8-dropped': {
       noticed: {

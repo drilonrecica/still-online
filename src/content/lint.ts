@@ -2,7 +2,12 @@
 // Each check returns human-readable problems; an empty list means the content is fine.
 import type { Locale } from '../i18n/types';
 import { isGameId } from '../os/types';
-import { genderMarkerProblems, isGendered } from './gender';
+import {
+  GENDERS,
+  genderMarkerProblems,
+  hasGenderMarkers,
+  isGendered,
+} from './gender';
 import {
   CONTENT_UNLOCKS,
   isWinkId,
@@ -308,6 +313,30 @@ function lintTop8(content: ContactContent): string[] {
   );
 }
 
+/** True when `value` holds a `gendered()` value anywhere. */
+const holdsGendered = (value: unknown): boolean =>
+  isGendered(value) ||
+  (!!value &&
+    typeof value === 'object' &&
+    Object.values(value).some(holdsGendered));
+
+/** `forGender` is a known gender, and a gendered script has one side: no `g()` or `gendered()`. */
+function lintForGender(content: ContactContent): string[] {
+  const known: readonly string[] = GENDERS;
+  return content.scripts.flatMap((s) => {
+    if (s.forGender === undefined) return [];
+    const at = `${content.contact.id}: script "${s.id}"`;
+    if (!known.includes(s.forGender))
+      return [`${at} forGender must be 'girl' or 'boy'`];
+    const variants = strings(s.nodes, `${content.contact.id}.${s.id}`)
+      .filter(([, text]) => hasGenderMarkers(text))
+      .map(([path]) => `${path}: ${s.forGender}-only script uses g()`);
+    return holdsGendered(s.nodes)
+      ? [...variants, `${at} is ${s.forGender}-only but uses gendered()`]
+      : variants;
+  });
+}
+
 /** All checks for one contact, including unique script ids; text rules follow `locale`. */
 export function lintContact(
   content: ContactContent,
@@ -332,6 +361,7 @@ export function lintContact(
     ...lintWinks(content),
     ...lintGameScores(content),
     ...lintTop8(content),
+    ...lintForGender(content),
     ...content.scripts.flatMap((s) =>
       lintScriptGraph(s).map((p) => `${content.contact.id}: ${p}`),
     ),

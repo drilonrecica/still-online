@@ -41,6 +41,10 @@ Saves store ids and references, never rendered text, so a gender switch re-rende
 - **Mail:** `renderMail`/`renderMails` take the gender. Attachments saved to disk are frozen copies and don't change.
 - **Sites:** `useSiteText(host)` reads `useGender()`; `meta(locale)` reads `getGender()`, and Searchly rebuilds its index on a switch.
 
+## Gender-only scripts
+
+A Messenger script with `forGender: 'boy'` (or `'girl'`) runs only for that gender (G2-03; `docs/content-format.md` → Rules). It is written for one side, so the lint rejects `g()`/`gendered()` in it. The boy-only threads are Marco's LAN party (day 1), cheat-code trade (2) and roadie job at the bean cellar load-in (4), and Dex's skate session (2), backyard wrestling (3) and video night (5). German overlays cover them like any script; the playthrough plays them for a boy and asserts they never start for a girl.
+
 ## Audit
 
 `src/content/genderAudit.test.ts` (G2) resolves all content as a boy (`contentFor(locale, 'boy')`, EN and DE) and scans every readable string for girly cue words (`<3`, `(L)`, `glitter`, `sleepover`, `cute`, „hdgdl", „Glitzer", „Übernachtungsparty" …; the list is in `src/content/genderAudit.ts`). Ids, styling, links and author screen names are skipped.

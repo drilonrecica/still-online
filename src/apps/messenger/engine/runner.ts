@@ -82,6 +82,9 @@ export function createRunner(ctx: EngineContext) {
   };
 
   const eligible = (id: ContactId, script: Script, context: TriggerContext) => {
+    // A gendered script never arms for the other gender; a switch mid-run lets it finish.
+    if (script.forGender !== undefined && script.forGender !== gender())
+      return false;
     // Top 8 reactions run once per drop / re-add: the record decides, not `runs`.
     const record = top8Of(id);
     if (script.trigger.type === 'onTop8Dropped')

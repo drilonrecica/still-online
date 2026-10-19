@@ -21,7 +21,7 @@ Messenger content is authored as typed TS modules. The types are in `src/content
 
 ## Script
 
-A script is a graph of nodes: `{ id, trigger, start, nodes, repeat? }`. Script ids are unique per contact. Node ids are unique per script.
+A script is a graph of nodes: `{ id, trigger, start, nodes, repeat?, forGender? }`. Script ids are unique per contact. Node ids are unique per script.
 
 A **node** has `lines` (contact lines, played in order, may be empty) and exactly one of:
 
@@ -64,6 +64,7 @@ Rules:
 
 - A trigger only starts a script while the contact is signed in. A trigger that fires earlier (e.g. `afterMinutes` before the contact signs in) is queued and starts after sign-in.
 - **One script per contact at a time.** A trigger that fires while another script of the same contact is active is added to that contact's `queue` (FIFO), and starts when the active script ends. A script waiting for a player choice stays active. Scripts of different contacts run in parallel.
+- **Gendered scripts.** `forGender: 'girl' | 'boy'` (G2-03) arms the script only while the player's gender matches (`getGender()`, null = girl); the check sits in the engine's `eligible`, so it covers firing and the queue. A gender switch leaves `runs` alone: an active script of the other gender finishes normally, a queued one is dropped and arms again on a later sign-in once the gender matches. A gendered script has one side, so it uses no `g()`. Marco's and Dex's boy-only threads (`marco-boy.ts`, `dex-boy.ts`) are `afterScript` follow-ups of a day script, so they never crowd it.
 - **Runs.** By default a script runs at most once ever. With `repeat: true` it can run again after it ends. An `onNowPlaying` script still runs at most once per `trackId`. A trigger for a script that is already active or queued is ignored.
 
 ## Days
@@ -185,4 +186,4 @@ Run `npm run test -- src/content` after changing either language. The lint below
 
 ## Content lint
 
-`src/content/lint.ts` checks what the types can't: `start`/`next` ids exist, every node is reachable, every node can reach an `end`, script ids are unique, `afterScript` follows an existing other script of the same contact with `minutes > 0`, there are no real-looking emails or URLs, no real product names or post-2007 terms, `{artist}`/`{title}` appear only in `onNowPlaying` scripts and `{score}`/`{game}` only in `onGameScore` scripts, `onGameScore` names a known game with `minScore >= 0`, a contact has at most one `onTop8Dropped` and one `onTop8Readded` script, `onDay` days and `days` keys are whole days ≥ 2, `onDay` scripts don't `repeat`, `days` personal messages have no placeholders, every `unlock` is in `CONTENT_UNLOCKS`, and every `wink` is in `WINK_IDS`. `src/content/contacts/contacts.test.ts` runs it on every shipped contact.
+`src/content/lint.ts` checks what the types can't: `start`/`next` ids exist, every node is reachable, every node can reach an `end`, script ids are unique, `afterScript` follows an existing other script of the same contact with `minutes > 0`, there are no real-looking emails or URLs, no real product names or post-2007 terms, `{artist}`/`{title}` appear only in `onNowPlaying` scripts and `{score}`/`{game}` only in `onGameScore` scripts, `onGameScore` names a known game with `minScore >= 0`, a contact has at most one `onTop8Dropped` and one `onTop8Readded` script, `onDay` days and `days` keys are whole days ≥ 2, `onDay` scripts don't `repeat`, `days` personal messages have no placeholders, every `unlock` is in `CONTENT_UNLOCKS`, every `wink` is in `WINK_IDS`, and `forGender` is `'girl'` or `'boy'` with no `g()` or `gendered()` in that script. `src/content/contacts/contacts.test.ts` runs it on every shipped contact.

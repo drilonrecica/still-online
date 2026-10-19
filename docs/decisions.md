@@ -317,3 +317,7 @@
 - G2-02: Pia keeps asking „pinky swear?“ (her line); a boy answers „no pinkies. spit shake?“ / „in die hand spucken und einschlagen?“ and she says „EW“. Pony jail stays; he volunteers as the guard. The quiz question stays a horse quiz; his options are „a foal. obviously. can i go now“, „a calf“, „a mini donkey lol“
 - G2-02: the „last time“ survey's sleepover question is „slept over at a buddys?“ for a boy; Pia's and Dex's answers fit both versions, so they stay shared
 - G2-02: Marco's flyer for a boy is flames and a flaming skull; Derek vetoes the skull („for metal bands“) as he vetoes glitter for a girl
+- G2-03: `forGender` is checked in the engine's `eligible` (fire and queue); a queued thread of the other gender is dropped on a switch, not kept, and re-arms at the next matching sign-in since its `runs` stays 0
+- G2-03: the six boy threads are `afterScript` follow-ups (Marco: `followup2` +3 min, `day2` +5, `day4` +5; Dex: `day2`, `day3`, `day5` +6), because `onDay` can't be day 1 and would queue right behind the day script
+- G2-03: Marco's LAN party is on friday night, not saturday as the plan says: his day-1 opening already puts the Velvet Lantern show on saturday
+- G2-03: the roadie thread uses the bean cellar, not the rec hall the plan names: every site, mail and chat from day 2 on has the show at the bean cellar. He carries the amp at the load-in but doesn't stay for the show („load-in yes, show no"), which fits Marco's day 5 „next time ur on the list. front row"

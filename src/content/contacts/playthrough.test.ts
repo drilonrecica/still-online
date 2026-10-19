@@ -135,6 +135,15 @@ describe.each(COMBOS)(
     for (const content of rawContentFor(locale).contacts) {
       for (const script of content.scripts) {
         const all = paths(script);
+        // A gendered script (G2-03) plays for its gender and never starts for the other.
+        if (script.forGender !== undefined && script.forGender !== gender) {
+          it(`${content.contact.id}/${script.id}: never runs for a ${gender}`, () => {
+            const { t, id } = playPath(content, script, [], undefined, gender);
+            expect(t.log).not.toContain(`start ${id}/${script.id}`);
+            expect(t.progress(id).scripts[script.id]).toBeUndefined();
+          });
+          continue;
+        }
         it(`${content.contact.id}/${script.id}: ${all.length} path(s) end cleanly`, () => {
           expect(all.length).toBeGreaterThan(0);
           for (const picks of all) {
@@ -261,6 +270,56 @@ describe('G-04: chats about the player follow the gender', () => {
             `${locale} ${content.contact.id}/${script.id}`,
           ).not.toMatch(/crush|marry me|schwarm|heirate mich/i);
         }
+      }
+    }
+  });
+});
+
+describe('G2-03: boy-only threads', () => {
+  const BOY_THREADS = [
+    ['marco', 'lanParty', 'bring ur own cable. and chips. mostly chips'],
+    ['dex', 'skateSession', 'bring the helmet ur mom bought. or dont tell her'],
+    ['marco', 'cheatTrade', 'cheatcave.example'],
+    ['dex', 'wrestling', 'THE MODEM MAULER? lol. ok ur in'],
+    ['marco', 'roadie', 'pay: a crew shirt'],
+    ['dex', 'videoNight', 'kickflipkings.example/video'],
+  ] as const;
+
+  it.each(BOY_THREADS)(
+    '%s/%s is boy-only and says „%s“',
+    (id, scriptId, words) => {
+      const script = contacts
+        .find((c) => c.contact.id === id)
+        ?.scripts.find((s) => s.id === scriptId);
+      expect(script?.forGender).toBe('boy');
+      expect(playedAll('en', 'boy', id, scriptId)).toContain(words);
+    },
+  );
+
+  it('German threads are real German', () => {
+    expect(playedAll('de', 'boy', 'dex', 'wrestling')).toContain(
+      'DER MODEM-MÄHDRESCHER? lol. ok du bist dabei',
+    );
+    expect(playedAll('de', 'boy', 'marco', 'lanParty')).toContain(
+      'vor allem chips',
+    );
+  });
+
+  it('each thread follows its day script, so it fires on that day', () => {
+    const days = { lanParty: 'followup2', cheatTrade: 'day2', roadie: 'day4' };
+    const dexDays = {
+      skateSession: 'day2',
+      wrestling: 'day3',
+      videoNight: 'day5',
+    };
+    for (const [id, map] of [
+      ['marco', days],
+      ['dex', dexDays],
+    ] as const) {
+      const content = contacts.find((c) => c.contact.id === id);
+      for (const [scriptId, after] of Object.entries(map)) {
+        const t = content?.scripts.find((s) => s.id === scriptId)?.trigger;
+        expect(t?.type === 'afterScript' && t.scriptId, scriptId).toBe(after);
       }
     }
   });

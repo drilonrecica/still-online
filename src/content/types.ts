@@ -1,6 +1,6 @@
 // Messenger content format: authored contacts + scripts, and the persisted progress shape.
 // See docs/content-format.md for the semantics the engine (M2-02) implements.
-import type { AppId, GameId } from '../os/types';
+import type { AppId, GameId, Gender } from '../os/types';
 import type { FsNode, PhotoSpec } from '../os/fs/types';
 import type { MailAddress, MailAttachment, MailFolder } from './mail/types';
 
@@ -189,6 +189,11 @@ export interface Script {
    * an `onNowPlaying` script still runs at most once per trackId.
    */
   repeat?: boolean;
+  /**
+   * Only for this gender (G2-03): the trigger arms only while the player's gender matches. The
+   * script has one side, so its text uses no `g()`. Unset: everyone.
+   */
+  forGender?: Gender;
 }
 
 /** One contact module (`src/content/contacts/<id>.ts`) exports one of these. */

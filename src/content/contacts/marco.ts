@@ -1,6 +1,7 @@
 // Marco: the cool older cousin at college. Lowercase, dry, never uses exclamation marks.
 import { g } from '../gender';
 import type { ContactContent } from '../types';
+import { marcoBoyThreads } from './marco-boy';
 import { marcoDayScripts, marcoDays } from './marco-days';
 import { marcoGameScore } from './game-reactions';
 import { marcoNowPlaying2 } from './now-playing';
@@ -411,6 +412,7 @@ export const marco: ContactContent = {
       },
     },
     ...marcoDayScripts,
+    ...marcoBoyThreads,
     marcoNowPlaying2,
     marcoGameScore,
     marcoTop8Dropped,

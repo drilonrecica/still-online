@@ -1,6 +1,7 @@
 // German text for dex (docs/localization-de.md → "Dex: slow, short, always Abwesend"). Same ids,
 // same line and choice counts as `src/content/contacts/dex*.ts`; '' = a line without text.
 import type { ContactOverlay } from '../../types';
+import { dexBoyThreads } from './boy-threads';
 
 export const dex: ContactOverlay = {
   personalMessage: 'skaten. schreib halt was',
@@ -544,6 +545,7 @@ export const dex: ContactOverlay = {
         lines: ['jo', 'ich war ma eine nacht lang richtig gut im flippern'],
       },
     },
+    ...dexBoyThreads,
     // Top 8 drama (P0-03).
     'top8-dropped': {
       noticed: {
