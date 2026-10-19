@@ -4,6 +4,7 @@ import { splitLinks } from '@/os/linkify';
 import { contacts } from '../contacts';
 import { GENDERS, resolveGender } from '../gender';
 import { lintContentStrings } from '../lint';
+import { contentDays, STORY_DAYS } from '../storyDays';
 import { MAIL_CONTENT } from '.';
 
 const texts = (m: (typeof MAIL_CONTENT)[number]) => [
@@ -12,12 +13,15 @@ const texts = (m: (typeof MAIL_CONTENT)[number]) => [
 ];
 
 describe('mail content', () => {
-  it('has at least 3 mails on each of days 1-5', () => {
-    for (let day = 1; day <= 5; day++)
+  it('has at least 3 mails on each written story day, none after the last', () => {
+    const written = contentDays();
+    for (let day = STORY_DAYS.first; day <= STORY_DAYS.last; day++)
       expect(
         MAIL_CONTENT.filter((m) => m.day === day).length,
         `day ${day}`,
-      ).toBeGreaterThanOrEqual(3);
+        // W2-01 tightens this: days 6–10 stay empty until their mail is written.
+      ).toBeGreaterThanOrEqual(written.includes(day) ? 3 : 0);
+    expect(MAIL_CONTENT.every((m) => m.day <= STORY_DAYS.last)).toBe(true);
   });
 
   it('has unique ids', () => {

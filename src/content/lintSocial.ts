@@ -14,8 +14,8 @@ import { GENDERS } from './gender';
 import type { LocaleContent } from './locale';
 import { PIXLOG_SKINS } from './pixlog/types';
 import { PLAYLIST } from './playlist';
+import { STORY_DAYS } from './storyDays';
 
-const STORY_DAYS = { first: 1, last: 5 } as const;
 const HEX = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i;
 const EXAMPLE_URL = /^http:\/\/[a-z0-9-]+(?:\.[a-z0-9-]+)*\.example(?:\/\S*)?$/;
 const PLACEHOLDER = /\{[^}]*\}/g;
@@ -48,7 +48,9 @@ export function lintSocial(c: LocaleContent): string[] {
   const trackIds = new Set(PLAYLIST.map((t) => t.id));
   const day = (d: number, at: string) => {
     if (!Number.isInteger(d) || d < STORY_DAYS.first || d > STORY_DAYS.last)
-      out.push(`${at}: day ${d} is outside days 1–5`);
+      out.push(
+        `${at}: day ${d} is outside days ${STORY_DAYS.first}–${STORY_DAYS.last}`,
+      );
   };
   const contact = (id: string, at: string) => {
     if (!contactIds.has(id)) out.push(`${at}: unknown contact "${id}"`);

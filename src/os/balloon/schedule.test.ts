@@ -4,6 +4,7 @@ import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
 import { useWorldStore } from '@/os/world';
 import { newDayBalloonText } from '@/content/balloons';
+import { STORY_DAYS } from '@/content/storyDays';
 import type { Contact } from '@/content/types';
 import { installBalloons } from './schedule';
 import { BALLOON_MS, useBalloonStore } from './store';
@@ -55,8 +56,14 @@ describe('new-day balloons', () => {
     ).toBe(true);
   });
 
-  it('uses the vague line from day 6 on', () => {
-    expect(newDayBalloonText([], 6)).toBe('Your friends are up to something.');
+  it('uses the vague line after the last story day', () => {
+    const c = { days: { 10: { personalMessage: 'x' } } } as unknown as Contact;
+    expect(newDayBalloonText([c], STORY_DAYS.last)).toBe(
+      '1 friend changed their personal message.',
+    );
+    expect(newDayBalloonText([c], STORY_DAYS.last + 1)).toBe(
+      'Your friends are up to something.',
+    );
     expect(newDayBalloonText([], 2)).toBe('Your friends are up to something.');
   });
 

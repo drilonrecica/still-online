@@ -1,35 +1,13 @@
 // v0.4 P3 gate: the English content on the new sites. Day 5 follows Jess's "NEW PICS" bulletin to
 // her Pixlog page and concert album, opens Velvet Lantern's band page and the 12 GlitterCodez
 // layouts; day 1 shows none of the day-5 news.
-import { expect, test, type Page } from '@playwright/test';
-import { go, logIn, openBrowserOnline } from './helpers';
-
-/** Starts on `day` on the same real date, so the boot keeps the day. */
-async function startOnDay(page: Page, day: number) {
-  await page.addInitScript((day) => {
-    if (localStorage.getItem('still-online:v1:world')) return;
-    const d = new Date();
-    const pad = (n: number) => String(n).padStart(2, '0');
-    localStorage.setItem(
-      'still-online:v1:world',
-      JSON.stringify({
-        version: 1,
-        state: {
-          day,
-          lastRealDate: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`,
-          shutdownPending: false,
-          dayStartedAt: d.getTime(),
-          unlocks: [],
-        },
-      }),
-    );
-  }, day);
-}
+import { expect, test } from '@playwright/test';
+import { go, logIn, openBrowserOnline, setDay } from './helpers';
 
 test('day 5: a NEW PICS bulletin leads to the album; bands and layouts', async ({
   page,
 }) => {
-  await startOnDay(page, 5);
+  await setDay(page, 5);
   await logIn(page);
   const web = await openBrowserOnline(page);
 
@@ -63,7 +41,7 @@ test('day 5: a NEW PICS bulletin leads to the album; bands and layouts', async (
 });
 
 test('day 1: the day-5 news is not out yet', async ({ page }) => {
-  await startOnDay(page, 1);
+  await setDay(page, 1);
   await logIn(page);
   const web = await openBrowserOnline(page);
 

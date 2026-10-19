@@ -3,7 +3,7 @@ import { de } from '../../src/i18n/messages/de';
 import { en } from '../../src/i18n/messages/en';
 import type { Locale, Messages } from '../../src/i18n/types';
 import type { Gender } from '../../src/os/types';
-import { openFromStart, pickGender, quietIdle } from './helpers';
+import { openFromStart, pickGender, quietIdle, setDay } from './helpers';
 
 const DIR = 'docs/review/v04-G';
 const CATALOG: Record<Locale, Messages> = { en, de };
@@ -155,26 +155,9 @@ for (const gender of ['girl', 'boy'] as const satisfies readonly Gender[]) {
     }
     await both('06-theo-chat');
 
-    // ── Jump to day 5: same real date, no shutdown pending, so the boot keeps the day ──
+    // ── Jump to day 5 ──
     await closeAll();
-    await page.evaluate(() => {
-      const d = new Date();
-      const pad = (n: number) => String(n).padStart(2, '0');
-      localStorage.setItem(
-        'still-online:v1:world',
-        JSON.stringify({
-          version: 1,
-          state: {
-            day: 5,
-            lastRealDate: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`,
-            shutdownPending: false,
-            dayStartedAt: d.getTime(),
-            unlocks: [],
-          },
-        }),
-      );
-    });
-    await page.reload();
+    await setDay(page, 5);
     await page.getByTestId('boot-screen').click();
     await expect(page.getByTestId('login-screen')).toBeVisible();
     await logOn();

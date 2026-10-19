@@ -38,7 +38,7 @@ Player gender (girl/boy, User Accounts, CheatCave, Kickflip Kings, per-gender fi
 
 **GlitterCodez** (`sites/glittercodez.ts`): `LayoutDef { id; name; blurb; side: Gender; extras: LayoutExtras }`. `side` says girly or boyish; the gallery puts the player's side first and hides nothing.
 
-**Rules** (enforced by `lintSocial`, parity and the text lint): every `day` is 1–5; contact, band, track and survey ids resolve; ids are unique; a photo comment is not older than its album; survey answers match the question count; layouts use only the fixed sets and `#rgb`/`#rrggbb`; `side` is `girl` or `boy`. Text addressed to or about the player uses `g()` (a boy has no crush).
+**Rules** (enforced by `lintSocial`, parity and the text lint): every `day` is within `STORY_DAYS` (1–10, was 1–5 until v0.5); contact, band, track and survey ids resolve; ids are unique; a photo comment is not older than its album; survey answers match the question count; layouts use only the fixed sets and `#rgb`/`#rrggbb`; `side` is `girl` or `boy`. Text addressed to or about the player uses `g()` (a boy has no crush).
 
 ## Locale and gender wiring
 

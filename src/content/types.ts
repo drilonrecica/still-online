@@ -41,7 +41,7 @@ export interface Contact {
   /**
    * Presence per world day (keys ≥ 2; day 1 is `initialStatus`/`personalMessage`). On the
    * contact's first sign-in of a new day, the highest entry with `key <= day` is applied once;
-   * script changes later that day win. From day 6 on, the day-5 entry stays.
+   * script changes later that day win. From day 11 on, the day-10 entry stays.
    */
   days?: Partial<Record<number, DayPresence>>;
   /**

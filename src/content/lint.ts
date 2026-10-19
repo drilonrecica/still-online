@@ -8,6 +8,7 @@ import {
   hasGenderMarkers,
   isGendered,
 } from './gender';
+import { STORY_DAYS } from './storyDays';
 import {
   CONTENT_UNLOCKS,
   isWinkId,
@@ -225,18 +226,21 @@ export function lintContactText(
   return problems;
 }
 
-const isDay = (n: number) => Number.isInteger(n) && n >= 2;
+const isDay = (n: number) =>
+  Number.isInteger(n) && n >= 2 && n <= STORY_DAYS.last;
+const DAY_RANGE = `a whole day 2–${STORY_DAYS.last}`;
 
 /**
- * Day checks: `onDay` days and `days` keys are whole days ≥ 2, `onDay` isn't `repeat`, and
- * presence messages have no placeholders (they aren't resolved, like `personalMessage`).
+ * Day checks: `onDay` days and `days` keys are whole story days from 2 to `STORY_DAYS.last`,
+ * `onDay` isn't `repeat`, and presence messages have no placeholders (they aren't resolved,
+ * like `personalMessage`).
  */
 function lintDays(content: ContactContent): string[] {
   const id = content.contact.id;
   const problems: string[] = [];
   for (const [key, presence] of Object.entries(content.contact.days ?? {})) {
     if (!isDay(Number(key)))
-      problems.push(`${id}: days key "${key}" must be a whole day >= 2`);
+      problems.push(`${id}: days key "${key}" must be ${DAY_RANGE}`);
     const pm = presence?.personalMessage;
     if (pm !== undefined)
       problems.push(
@@ -249,7 +253,7 @@ function lintDays(content: ContactContent): string[] {
     const t = s.trigger;
     if (t.type !== 'onDay') continue;
     if (!isDay(t.day))
-      problems.push(`${id}: script "${s.id}" day must be a whole day >= 2`);
+      problems.push(`${id}: script "${s.id}" day must be ${DAY_RANGE}`);
     if (s.repeat) problems.push(`${id}: script "${s.id}" onDay can't repeat`);
   }
   return problems;

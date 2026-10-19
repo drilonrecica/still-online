@@ -1,28 +1,11 @@
 // v0.4 P2 gate: Pixlog. The feed on the home page, a friend's photos tab and album, kudos once a
 // day, and /me with an album from My Pictures, a posted survey and the visitors box.
 import { expect, test } from '@playwright/test';
-import { go, logIn, openBrowserOnline } from './helpers';
+import { go, logIn, openBrowserOnline, setDay } from './helpers';
 
 /** Day 5 on the same real date, so Jess's day-5 album is visible and the boot keeps the day. */
 test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => {
-    if (localStorage.getItem('still-online:v1:world')) return;
-    const d = new Date();
-    const pad = (n: number) => String(n).padStart(2, '0');
-    localStorage.setItem(
-      'still-online:v1:world',
-      JSON.stringify({
-        version: 1,
-        state: {
-          day: 5,
-          lastRealDate: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`,
-          shutdownPending: false,
-          dayStartedAt: d.getTime(),
-          unlocks: [],
-        },
-      }),
-    );
-  });
+  await setDay(page, 5);
 });
 
 test('pixlog: feed, a friend’s photos and album, kudos, and /me', async ({

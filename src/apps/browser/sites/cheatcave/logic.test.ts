@@ -4,6 +4,7 @@ import {
   CHEATCAVE_GAMES,
   CHEATCAVE_THREADS,
 } from '@/content/sites/cheatcave';
+import { contentDays, STORY_DAYS } from '@/content/storyDays';
 import {
   CHART_SIZE,
   cheatsHref,
@@ -25,7 +26,7 @@ describe('cheatcave logic', () => {
 
   it('has a made-up "online now" number that stays the same all day', () => {
     expect(onlineCount(2)).toBe(onlineCount(2));
-    for (const day of [1, 2, 3, 4, 5, 9]) {
+    for (let day = STORY_DAYS.first; day <= STORY_DAYS.last + 1; day++) {
       expect(onlineCount(day)).toBeGreaterThanOrEqual(23);
       expect(onlineCount(day)).toBeLessThan(83);
     }
@@ -65,6 +66,12 @@ describe('cheatcave logic', () => {
     const day5 = visibleThreads(CHEATCAVE_THREADS, 5);
     expect(day5).toHaveLength(3);
     expect(day5.every((s) => s.lastDay === 5)).toBe(true);
+    // The forum is busy on every written day: the top thread has a post from that day.
+    for (const day of contentDays())
+      expect(
+        visibleThreads(CHEATCAVE_THREADS, day)[0]?.lastDay,
+        `day ${day}`,
+      ).toBe(day);
     const trick = day5.find((s) => s.thread.id === 'best-trick-irl');
     expect(trick?.posts.at(-1)?.user).toBe('dex.kickflip');
     expect(

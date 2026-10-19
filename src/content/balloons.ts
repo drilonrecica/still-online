@@ -1,5 +1,6 @@
 // Scheduled tray balloons. The scheduler (`os/balloon/schedule.ts`) turns these into pushes.
 import type { BalloonIcon } from '@/os/serviceTypes';
+import { STORY_DAYS } from './storyDays';
 import type { Contact } from './types';
 
 /** What clicking a balloon does; resolved by the scheduler so content stays free of OS imports. */
@@ -95,12 +96,15 @@ export function friendsChangedOn(
     .length;
 }
 
-/** Text of the "new day" balloon: a count on days 2–5, a vague line from day 6 on. */
+/**
+ * Text of the "new day" balloon: a count on story days 2–10 (`STORY_DAYS`), a vague line from
+ * day 11 on and on any day where no friend changed their message.
+ */
 export function newDayBalloonText(
   contacts: readonly Contact[],
   day: number,
 ): string {
-  const n = day >= 6 ? 0 : friendsChangedOn(contacts, day);
+  const n = day > STORY_DAYS.last ? 0 : friendsChangedOn(contacts, day);
   if (n === 0) return 'Your friends are up to something.';
   return `${n} ${n === 1 ? 'friend' : 'friends'} changed their personal message${n === 1 ? '' : 's'}.`;
 }

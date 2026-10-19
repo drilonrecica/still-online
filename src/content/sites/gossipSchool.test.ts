@@ -1,13 +1,14 @@
 // Shape checks for the gossip blog, school site and VirusGuard content (the text lint runs separately).
 import { describe, expect, it } from 'vitest';
+import { contentDays } from '../storyDays';
 import { CELEBS, GOSSIP_POLLS, GOSSIP_POSTS } from './celebgossip07';
 import { VIRUSGUARD_TEXT } from './virusguard';
 import { WESTFIELD_NEWS, WESTFIELD_STAFF } from './westfieldhigh';
 
-const days = [1, 2, 3, 4, 5];
+const days = contentDays();
 
 describe('celebgossip07 content', () => {
-  it('has two posts a day for days 1-5 with unique ids', () => {
+  it('has two posts on each written day with unique ids', () => {
     for (const day of days)
       expect(GOSSIP_POSTS.filter((p) => p.day === day)).toHaveLength(2);
     const ids = GOSSIP_POSTS.map((p) => p.id);

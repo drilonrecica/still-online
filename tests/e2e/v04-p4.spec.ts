@@ -2,31 +2,9 @@
 // bulletin to her Pixlog page and concert album, reads her German blog, opens Velvet Lantern's
 // band page and the German GlitterCodez layouts; day 1 shows none of the day-5 news.
 import { expect, test, type Page } from '@playwright/test';
-import { pickGender, quietIdle } from './helpers';
+import { pickGender, quietIdle, setDay } from './helpers';
 
 test.use({ locale: 'de-DE' });
-
-/** Starts on `day` on the same real date, so the boot keeps the day. */
-async function startOnDay(page: Page, day: number) {
-  await page.addInitScript((day) => {
-    if (localStorage.getItem('still-online:v1:world')) return;
-    const d = new Date();
-    const pad = (n: number) => String(n).padStart(2, '0');
-    localStorage.setItem(
-      'still-online:v1:world',
-      JSON.stringify({
-        version: 1,
-        state: {
-          day,
-          lastRealDate: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`,
-          shutdownPending: false,
-          dayStartedAt: d.getTime(),
-          unlocks: [],
-        },
-      }),
-    );
-  }, day);
-}
 
 /** Logs on in German (the browser locale picks it) and dials in with Web Explorer. */
 async function germanBrowser(page: Page) {
@@ -66,7 +44,7 @@ async function go(web: ReturnType<Page['locator']>, url: string) {
 test('Tag 5: ein NEUE-FOTOS-Bulletin führt zum Album; Bands und Layouts', async ({
   page,
 }) => {
-  await startOnDay(page, 5);
+  await setDay(page, 5);
   const web = await germanBrowser(page);
 
   await go(web, 'http://friendspace.example/bulletins');
@@ -105,7 +83,7 @@ test('Tag 5: ein NEUE-FOTOS-Bulletin führt zum Album; Bands und Layouts', async
 test('Tag 1: die Neuigkeiten von Tag 5 sind noch nicht da', async ({
   page,
 }) => {
-  await startOnDay(page, 1);
+  await setDay(page, 1);
   const web = await germanBrowser(page);
 
   await go(web, 'http://friendspace.example/bulletins');

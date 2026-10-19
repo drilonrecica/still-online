@@ -1,4 +1,5 @@
 // German tray balloons, same exports as `src/content/balloons`. The system speaks „Sie“.
+import { STORY_DAYS } from '../storyDays';
 import type { Contact } from '../types';
 import type { ScheduledBalloon } from '../balloons';
 import type { BalloonIcon } from '@/os/serviceTypes';
@@ -70,12 +71,12 @@ export const WELCOME_BALLOON = {
   text: 'Klicken Sie hier, um eine Verbindung mit dem Internet herzustellen.',
 };
 
-/** Text of the "new day" balloon: a count on days 2–5, a vague line from day 6 on. */
+/** Text of the "new day" balloon, as in English: a count on days 2–10, vague from day 11 on. */
 export function newDayBalloonText(
   contacts: readonly Contact[],
   day: number,
 ): string {
-  const n = day >= 6 ? 0 : friendsChangedOn(contacts, day);
+  const n = day > STORY_DAYS.last ? 0 : friendsChangedOn(contacts, day);
   if (n === 0) return 'Ihre Freunde führen etwas im Schilde.';
   return n === 1
     ? 'Ein Freund hat seine persönliche Nachricht geändert.'

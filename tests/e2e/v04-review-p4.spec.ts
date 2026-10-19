@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import type { Gender } from '../../src/os/types';
-import { pickGender, quietIdle } from './helpers';
+import { pickGender, quietIdle, setDay } from './helpers';
 
 const DIR = 'docs/review/v04-P4';
 
@@ -19,24 +19,7 @@ async function start(
   });
   page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`));
 
-  await page.addInitScript((day) => {
-    if (localStorage.getItem('still-online:v1:world')) return;
-    const d = new Date();
-    const pad = (n: number) => String(n).padStart(2, '0');
-    localStorage.setItem(
-      'still-online:v1:world',
-      JSON.stringify({
-        version: 1,
-        state: {
-          day,
-          lastRealDate: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`,
-          shutdownPending: false,
-          dayStartedAt: d.getTime(),
-          unlocks: [],
-        },
-      }),
-    );
-  }, day);
+  await setDay(page, day);
   await quietIdle(page);
   await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('./?speed=fast');

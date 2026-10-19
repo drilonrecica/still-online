@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { GENDERS } from '../gender';
 import { getContacts, getSiteText } from '../locale';
 import { LOCALES } from '@/i18n/types';
+import { contentDays } from '../storyDays';
 import { KICKFLIP_HOST } from './kickflipkings';
 
 const COMBOS = LOCALES.flatMap((locale) =>
@@ -13,8 +14,8 @@ describe.each(COMBOS)('kickflipkings content (%s, %s)', (locale, gender) => {
   const site = getSiteText(KICKFLIP_HOST, locale, gender);
   const en = getSiteText(KICKFLIP_HOST, 'en', gender);
 
-  it('posts news every day 1-5 and keeps days, authors and handles across languages', () => {
-    for (const day of [1, 2, 3, 4, 5])
+  it('posts news every written day and keeps days, authors and handles across languages', () => {
+    for (const day of contentDays())
       expect(
         site.KICKFLIP_NEWS.some((p) => p.day === day),
         `day ${day}`,

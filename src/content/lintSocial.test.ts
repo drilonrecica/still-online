@@ -16,11 +16,16 @@ describe('lintSocial', () => {
     expect(
       broken({
         bulletins: [
-          { ...b, day: 6, from: { contactId: 'ghost' }, link: 'http://x.com/' },
+          {
+            ...b,
+            day: 11,
+            from: { contactId: 'ghost' },
+            link: 'http://x.com/',
+          },
         ],
       }),
     ).toEqual([
-      `bulletins.${b.id}: day 6 is outside days 1–5`,
+      `bulletins.${b.id}: day 11 is outside days 1–10`,
       `bulletins.${b.id}: unknown contact "ghost"`,
       `bulletins.${b.id}: link "http://x.com/" is not an http://….example URL`,
     ]);

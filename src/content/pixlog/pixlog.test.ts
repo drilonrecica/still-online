@@ -5,8 +5,9 @@ import { getBulletins, getPixlogProfiles } from '../locale';
 import { PIXLOG_PROFILES } from '.';
 import { SURVEYS } from './surveys';
 import { photoDateStamp } from '@/os/fs/photos';
+import { contentDays } from '../storyDays';
 
-const DAYS = [1, 2, 3, 4, 5];
+const DAYS = contentDays();
 
 describe.each(PIXLOG_PROFILES.map((p) => [p.contactId, p] as const))(
   'pixlog content: %s',
@@ -30,7 +31,7 @@ describe.each(PIXLOG_PROFILES.map((p) => [p.contactId, p] as const))(
       expect(new Set(p.blog.map((b) => b.day)).size).toBe(p.blog.length);
     });
 
-    it('shouts 1–2 times on each of days 1–5', () => {
+    it('shouts 1–2 times on each written day', () => {
       for (const day of DAYS) {
         const n = p.shouts.filter((s) => s.day === day).length;
         expect(n, `day ${day}`).toBeGreaterThanOrEqual(1);

@@ -3,9 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { GENDERS } from '../gender';
 import { getSiteText } from '../locale';
 import { LOCALES } from '@/i18n/types';
+import { contentDays } from '../storyDays';
 import { CHEATCAVE_HOST } from './cheatcave';
 
-const days = [1, 2, 3, 4, 5];
+const days = contentDays();
 const COMBOS = LOCALES.flatMap((locale) =>
   GENDERS.map((gender) => [locale, gender] as const),
 );
@@ -14,7 +15,7 @@ describe.each(COMBOS)('cheatcave content (%s, %s)', (locale, gender) => {
   const site = getSiteText(CHEATCAVE_HOST, locale, gender);
   const en = getSiteText(CHEATCAVE_HOST, 'en', gender);
 
-  it('posts 1-2 news items a day for days 1-5', () => {
+  it('posts 1-2 news items on each written day', () => {
     for (const day of days) {
       const n = site.CHEATCAVE_NEWS.filter((p) => p.day === day).length;
       expect(n, `day ${day}`).toBeGreaterThanOrEqual(1);

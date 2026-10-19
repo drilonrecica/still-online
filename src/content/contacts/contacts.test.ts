@@ -4,6 +4,7 @@ import { TOP8_REACTIONS } from '../friendspace/top8Reactions';
 import { lintContact, lintContactText, lintScriptGraph } from '../lint';
 import { getContacts } from '../locale';
 import { PLAYLIST } from '../playlist';
+import { contentDays } from '../storyDays';
 import type { ContactContent, Script } from '../types';
 import { contacts } from './index';
 
@@ -54,17 +55,17 @@ describe('content lint: shipped contacts', () => {
     },
   );
 
-  // Friends whose days 2–5 are written (§P2-02).
+  // Friends with a script on every written day after day 1 (§P2-02).
   const storyFriends = ['jess', 'kayla', 'dex', 'theo', 'marco', 'pia'];
   it.each(
     contacts
       .filter((c) => storyFriends.includes(c.contact.id))
       .map((c) => [c.contact.id, c] as const),
   )(
-    '%s has a day script (≥ 4 nodes, a real branch) and a new personal message on days 2–5',
+    '%s has a day script (≥ 4 nodes, a real branch) and a new personal message on each later day',
     (_id, { contact, scripts }) => {
       const messages = [contact.personalMessage];
-      for (const day of [2, 3, 4, 5]) {
+      for (const day of contentDays().filter((d) => d >= 2)) {
         const script = scripts.find(
           (s) => s.trigger.type === 'onDay' && s.trigger.day === day,
         );
@@ -355,6 +356,8 @@ describe('content lint: catches mistakes', () => {
             1: { status: 'busy' },
             2: { personalMessage: 'day 2 :)' },
             3: { personalMessage: 'hi {name}' },
+            10: { personalMessage: 'last day' },
+            11: { personalMessage: 'too late' },
           },
         },
         scripts: [
@@ -362,15 +365,19 @@ describe('content lint: catches mistakes', () => {
           day('ok', 2),
           day('first', 1),
           day('half', 2.5),
+          day('last', 10),
+          day('late', 11),
           day('again', 3, true),
           { ...gift, id: 'gift' },
         ],
       }),
     ).toEqual([
-      'mika: days key "1" must be a whole day >= 2',
+      'mika: days key "1" must be a whole day 2–10',
       'mika.days.3.personalMessage: unknown placeholder {name}',
-      'mika: script "first" day must be a whole day >= 2',
-      'mika: script "half" day must be a whole day >= 2',
+      'mika: days key "11" must be a whole day 2–10',
+      'mika: script "first" day must be a whole day 2–10',
+      'mika: script "half" day must be a whole day 2–10',
+      'mika: script "late" day must be a whole day 2–10',
       'mika: script "again" onDay can\'t repeat',
       'mika: script "gift" node "a" unlocks unknown "free-money"',
     ]);

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { pickGender, quietIdle } from './helpers';
+import { pickGender, quietIdle, setDay } from './helpers';
 
 const DIR = 'docs/review/v04-P2';
 
@@ -16,24 +16,7 @@ for (const lang of ['en', 'de'] as const) {
     page.on('pageerror', (err) => problems.push(`pageerror: ${err.message}`));
 
     // Day 5 on the same real date: Jess's album is up and the feed has several days in it.
-    await page.addInitScript(() => {
-      if (localStorage.getItem('still-online:v1:world')) return;
-      const d = new Date();
-      const pad = (n: number) => String(n).padStart(2, '0');
-      localStorage.setItem(
-        'still-online:v1:world',
-        JSON.stringify({
-          version: 1,
-          state: {
-            day: 5,
-            lastRealDate: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`,
-            shutdownPending: false,
-            dayStartedAt: d.getTime(),
-            unlocks: [],
-          },
-        }),
-      );
-    });
+    await setDay(page, 5);
     await quietIdle(page);
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('./?speed=fast');

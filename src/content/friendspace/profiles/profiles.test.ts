@@ -2,6 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { contacts } from '../../contacts';
 import { PLAYLIST } from '../../playlist';
+import { contentDays, STORY_DAYS } from '../../storyDays';
 import { PROFILES } from '.';
 
 const ids = contacts.map((c) => c.contact.id);
@@ -33,14 +34,14 @@ describe('Friendspace profiles', () => {
       expect(p.interests.length).toBeGreaterThan(0);
       for (const c of p.comments) {
         expect(c.day).toBeGreaterThanOrEqual(1);
-        expect(c.day).toBeLessThanOrEqual(5);
+        expect(c.day).toBeLessThanOrEqual(STORY_DAYS.last);
         if (c.contactId) {
           expect(ids).toContain(c.contactId);
           expect(c.contactId).not.toBe(p.contactId);
         }
       }
       // Something new on the wall every story day.
-      for (let day = 1; day <= 5; day++)
+      for (const day of contentDays())
         expect(
           p.comments.some((c) => c.day === day),
           `day ${day}`,
@@ -48,7 +49,7 @@ describe('Friendspace profiles', () => {
       expect(p.commentsOnPlayer.length).toBeGreaterThan(0);
       for (const c of p.commentsOnPlayer) {
         expect(c.day).toBeGreaterThanOrEqual(2);
-        expect(c.day).toBeLessThanOrEqual(5);
+        expect(c.day).toBeLessThanOrEqual(STORY_DAYS.last);
       }
     },
   );

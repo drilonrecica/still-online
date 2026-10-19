@@ -216,6 +216,33 @@ export async function playChat(
   return chat;
 }
 
+/**
+ * Puts the save on story `day` and reloads: the world is written with today's real date and no
+ * shutdown pending, so the boot keeps the day. On a fresh page it opens the app first. Call it
+ * before logging on (or mid-test, then click through the boot and log on again).
+ */
+export async function setDay(page: Page, day: number) {
+  if (page.url() === 'about:blank') await page.goto('./?speed=fast');
+  await page.evaluate((day) => {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    localStorage.setItem(
+      'still-online:v1:world',
+      JSON.stringify({
+        version: 1,
+        state: {
+          day,
+          lastRealDate: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`,
+          shutdownPending: false,
+          dayStartedAt: d.getTime(),
+          unlocks: [],
+        },
+      }),
+    );
+  }, day);
+  await page.reload();
+}
+
 /** Turn Off Computer, boot into `day` and log on again as `name` (English UI). */
 export async function nextDay(page: Page, day: number, name = 'Ada') {
   await page.locator('[data-start-button]').click();
