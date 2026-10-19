@@ -178,7 +178,7 @@ export const piaPixlog: PixlogProfile = {
       day: 5,
       title: 'ein GESCHENK',
       body:
-        'ich hab jemandem ein GESCHENK gemacht. rat ma wem. (L)\n\n' +
+        `ich hab jemandem ein GESCHENK gemacht. rat ma wem. ${g('(L)', '(Y)')}\n\n` +
         'wie das geht is geheim. (papa hat geholfen. nich papa sagen dass ich das gesagt hab)\n\n' +
         'wer ein geschenk von mir hat muss es FÜR IMMER benutzen. oder ne woche. so is die regel',
     },
@@ -218,7 +218,10 @@ export const piaPixlog: PixlogProfile = {
       day: 4,
       text: 'keks hat ein entschuldigungs-leckerli gekriegt. macht kein drama draus',
     },
-    { day: 5, text: 'ich hab jemandem ein GESCHENK gemacht (L) rat ma wem' },
+    {
+      day: 5,
+      text: `ich hab jemandem ein GESCHENK gemacht ${g('(L)', '(Y)')} rat ma wem`,
+    },
   ],
   kudosToPlayer: [4, 5],
   guestbook: [

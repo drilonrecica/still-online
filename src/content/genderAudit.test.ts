@@ -55,30 +55,8 @@ describe('gender audit', () => {
   });
 
   it('never allows what the boy types (choice text and labels)', () => {
-    expect(
-      hits
-        .filter((h) => isChoicePath(h.where) && allowed(h))
-        .filter(
-          (h) =>
-            !GENDER_AUDIT_ALLOW.some(
-              (e) => allows(e, h) && e.reason === 'pending',
-            ),
-        ),
-    ).toEqual([]);
-    const reasoned = GENDER_AUDIT_ALLOW.filter((e) => e.reason !== 'pending');
-    expect(reasoned.filter((e) => isChoicePath(e.where))).toEqual([]);
-  });
-
-  it('Jess and Kayla have no pending entries and pass on every choice', () => {
-    const jk = /\/(contacts|profiles|pixlog)\/(jess|kayla)\//;
-    expect(
-      GENDER_AUDIT_ALLOW.filter(
-        (e) => e.reason === 'pending' && jk.test(e.where),
-      ),
-    ).toEqual([]);
-    expect(
-      hits.filter((h) => jk.test(h.where) && isChoicePath(h.where)),
-    ).toEqual([]);
+    expect(hits.filter((h) => isChoicePath(h.where))).toEqual([]);
+    expect(GENDER_AUDIT_ALLOW.filter((e) => isChoicePath(e.where))).toEqual([]);
   });
 
   it('has a known reason, a valid wildcard and no stale entry', () => {
@@ -115,14 +93,14 @@ describe('gender audit', () => {
             ([m, r]) =>
               `  ${m.padEnd(34)} hits ${String(r.hits).padStart(4)}   differ ${String(r.differ).padStart(4)} / ${r.strings}`,
           );
-        const pending = GENDER_AUDIT_ALLOW.filter(
-          (e) => e.reason === 'pending' && e.where.startsWith(`${locale}/`),
+        const allowed = GENDER_AUDIT_ALLOW.filter((e) =>
+          e.where.startsWith(`${locale}/`),
         ).length;
         node.stdout.write(
           [
             `gender audit (${locale}, as a boy)`,
             ...lines,
-            `  total: ${sum((r) => r.hits)} hits, ${pending} pending; ${sum((r) => r.differ)} of ${sum((r) => r.strings)} strings differ by gender`,
+            `  total: ${sum((r) => r.hits)} hits, ${allowed} allowlist entries; ${sum((r) => r.differ)} of ${sum((r) => r.strings)} strings differ by gender`,
             `  chat:  ${sum((r) => r.hits, true)} hits; ${sum((r) => r.differ, true)} of ${sum((r) => r.strings, true)} strings differ by gender`,
           ].join('\n') + '\n',
         );

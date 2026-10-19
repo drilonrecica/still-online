@@ -13,7 +13,12 @@ export const pia: ContactOverlay = {
     },
     3: { personalMessage: 'detektivin pia ERMITTELT' },
     4: { personalMessage: 'fall ABGESCHLOSSEN (nich fragen)' },
-    5: { personalMessage: 'ich hab wem ein GESCHENK gemacht (L) rate ma wem' },
+    5: {
+      personalMessage: g(
+        'ich hab wem ein GESCHENK gemacht (L) rate ma wem',
+        'ich hab wem ein GESCHENK gemacht (Y) rate ma wem',
+      ),
+    },
   },
   scripts: {
     opening: {
@@ -67,19 +72,29 @@ export const pia: ContactOverlay = {
       quiz: {
         lines: ['wie heißt ein pferdebaby'],
         choices: [
-          { text: 'ein fohlen' },
-          { text: 'ein pony' },
-          { text: 'ein pferdchen' },
+          {
+            text: g('ein fohlen', 'ein fohlen. logisch. kann ich jetzt gehen'),
+          },
+          { text: g('ein pony', 'ein kalb') },
+          { text: g('ein pferdchen', 'n mini-esel lol') },
         ],
       },
       right: {
         lines: ['RICHTIG!!! :D', 'du bist ja doch nich so doof', ''],
-        personalMessages: { 2: '{name} kennt sich mit pferden aus (Y)' },
+        personalMessages: {
+          2: g(
+            '{name} kennt sich mit pferden aus (Y)',
+            '{name} is nich GANZ doof (Y)',
+          ),
+        },
       },
       wrong: {
         lines: [
           'FALSCH lol',
-          'es is ein FOHLEN. ein pony is was ganz anderes',
+          g(
+            'es is ein FOHLEN. ein pony is was ganz anderes',
+            'es is ein FOHLEN. kein kalb. kein esel. ein FOHLEN',
+          ),
           'ich sags papa',
         ],
       },
@@ -145,7 +160,7 @@ export const pia: ContactOverlay = {
         personalMessages: { 1: 'pia is die CHEFIN von diesem haus (L)' },
         choices: [
           { text: 'mama is die chefin vom haus', label: 'Mama ist es' },
-          { text: 'süß :)' },
+          { text: g('süß :)', 'chefin vom hundenapf vielleicht') },
         ],
       },
       boss: {
@@ -156,7 +171,10 @@ export const pia: ContactOverlay = {
         ],
       },
       cute: {
-        lines: ['das is nich SÜSS das is WAHR', 'aber danke'],
+        lines: [
+          g('das is nich SÜSS das is WAHR', 'der hundenapf gehört AUCH mir'),
+          g('aber danke', 'keks is meiner meinung. 2 gegen 1'),
+        ],
       },
     },
     followup2: {
@@ -170,11 +188,17 @@ export const pia: ContactOverlay = {
         choices: [
           { text: 'nein?? wieso sollte ich', label: 'Nein??' },
           {
-            text: 'ok ich hab EIN pony verstellt',
-            label: 'Ein Pony verstellt',
+            text: g(
+              'ok ich hab EIN pony verstellt',
+              'ok ich hab EINS von deinen plastikviechern verstellt',
+            ),
+            label: g('Ein Pony verstellt', 'Eins verstellt'),
           },
           {
-            text: 'ich hab deine ponys nach farben sortiert. bitte schön',
+            text: g(
+              'ich hab deine ponys nach farben sortiert. bitte schön',
+              'ich hab deine ganze armee nach farben aufgestellt. bitte schön',
+            ),
             label: 'Nach Farben sortiert',
           },
         ],
@@ -274,13 +298,19 @@ export const pia: ContactOverlay = {
       swear: {
         lines: ['großes ehrenwort?'],
         choices: [
-          { text: 'großes ehrenwort', label: 'Großes Ehrenwort' },
-          { text: 'ich mach keine ehrenworte', label: 'Kein Ehrenwort' },
+          {
+            text: g('großes ehrenwort', 'in die hand spucken und einschlagen?'),
+            label: g('Großes Ehrenwort', 'Spucken + einschlagen'),
+          },
+          {
+            text: g('ich mach keine ehrenworte', 'ich bin doch nich 6 pia'),
+            label: g('Kein Ehrenwort', 'Bin nich 6'),
+          },
         ],
       },
       pinky: {
         lines: [
-          'ok. ich glaub dir. erstmal',
+          g('ok. ich glaub dir. erstmal', 'IHHH. ok. ich glaub dir. erstmal'),
           'ich mach ein VERMISST-plakat',
           '',
         ],
@@ -290,7 +320,10 @@ export const pia: ContactOverlay = {
       },
       mom: {
         lines: [
-          'ich sags mama dass du kein ehrenwort gibst',
+          g(
+            'ich sags mama dass du kein ehrenwort gibst',
+            'ich sags mama dass du auf GAR NIX schwörst',
+          ),
           'das is praktisch ein GESTÄNDNIS',
         ],
       },
@@ -304,8 +337,17 @@ export const pia: ContactOverlay = {
         ],
         choices: [
           { text: 'das sind keine beweise pia', label: 'Keine Beweise' },
-          { text: 'glitzer?', label: 'Glitzer?' },
-          { text: 'fall abgeschlossen. verhaften', label: 'Verhaften' },
+          {
+            text: g('glitzer?', 'der hund hat jetzt bling?'),
+            label: g('Glitzer?', 'Bling?'),
+          },
+          {
+            text: g(
+              'fall abgeschlossen. verhaften',
+              'fall abgeschlossen. ich bewach die zelle',
+            ),
+            label: g('Verhaften', 'Ich bin der Wärter'),
+          },
         ],
       },
       sparkle: {
@@ -315,8 +357,11 @@ export const pia: ContactOverlay = {
         ],
         choices: [
           {
-            text: 'dein glitzerstift is aber überall',
-            label: 'Glitzer is überall',
+            text: g(
+              'dein glitzerstift is aber überall',
+              'boah dein stift läuft überall aus. mein controller GLÄNZT jetzt',
+            ),
+            label: g('Glitzer is überall', 'Dein Stift läuft aus'),
           },
           { text: 'ok keks wars', label: 'Keks war’s' },
         ],
@@ -344,7 +389,10 @@ export const pia: ContactOverlay = {
         lines: [
           'ich hab ihn in den ponyknast gesteckt',
           'der ponyknast is der wäschekorb',
-          'er is drin eingeschlafen. verbrecher haben KEIN SCHAMGEFÜHL',
+          g(
+            'er is drin eingeschlafen. verbrecher haben KEIN SCHAMGEFÜHL',
+            'er is drin eingeschlafen. verbrecher haben KEIN SCHAMGEFÜHL. du bist jetzt der WÄRTER',
+          ),
           '',
         ],
       },
@@ -376,7 +424,10 @@ export const pia: ContactOverlay = {
         ],
         choices: [
           { text: 'wie is sie in ne socke gekommen?', label: 'Wie?' },
-          { text: 'juhu sternenstaub!!', label: 'Juhu Sternenstaub!!' },
+          {
+            text: g('juhu sternenstaub!!', 'cool. die königin lebt'),
+            label: g('Juhu Sternenstaub!!', 'Die Königin lebt'),
+          },
         ],
       },
       biscuit: {
@@ -426,7 +477,10 @@ export const pia: ContactOverlay = {
           'ich hab dir ein GESCHENK in den computer getan!!! guck bei den hintergrüden',
         ],
         choices: [
-          { text: 'oh danke pia :)', label: 'Danke Pia :)' },
+          {
+            text: g('oh danke pia :)', 'oh. danke. glaub ich'),
+            label: g('Danke Pia :)', 'Danke, glaub ich'),
+          },
           { text: 'was isses?', label: 'Was isses?' },
           { text: 'wie bist du in meinen computer gekommen??', label: 'Wie??' },
         ],
@@ -474,13 +528,19 @@ export const pia: ContactOverlay = {
           '',
         ],
         personalMessages: {
-          2: 'hab {name} ein GESCHENK gemacht (L) bitte schön',
+          2: g(
+            'hab {name} ein GESCHENK gemacht (L) bitte schön',
+            'hab {name} ein GESCHENK gemacht (Y) bitte schön',
+          ),
         },
       },
       dislike: {
         lines: [
           'du WIRST es mögen',
-          'es glitzert. glitzer mag jeder',
+          g(
+            'es glitzert. glitzer mag jeder',
+            'da is ein REGENBOGEN drauf. jungs dürfen auch regenbögen mögen. is ne TATSACHE',
+          ),
           'wenn dus änderst sag ichs mama',
         ],
       },

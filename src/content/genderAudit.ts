@@ -198,8 +198,6 @@ export const ALLOW_REASONS = [
   'friend-self-talk',
   'story-fact',
   'site-content',
-  /** Seeded before G2; G2-02 rewrites the line or gives it one of the reasons above. */
-  'pending',
 ] as const;
 
 export interface AllowEntry {

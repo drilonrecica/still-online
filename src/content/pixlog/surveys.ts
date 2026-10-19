@@ -1,5 +1,6 @@
 // Pixlog surveys (P2-03): friends answer one each; the player can fill any of them in.
 // Jess and Marco answer "this or that", Kayla and Theo "about me", Pia and Dex "last time".
+import { g } from '../gender';
 import type { Survey } from './types';
 
 export const SURVEYS: readonly Survey[] = [
@@ -49,7 +50,7 @@ export const SURVEYS: readonly Survey[] = [
       'lost something important?',
       'got a present?',
       'sang out loud?',
-      'had a sleepover?',
+      g('had a sleepover?', 'slept over at a buddys?'),
       'told a secret?',
     ],
   },

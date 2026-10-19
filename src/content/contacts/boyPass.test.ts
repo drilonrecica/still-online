@@ -7,6 +7,8 @@ import {
   getAutoReplies,
   getContacts,
   getMailContent,
+  getPixlogProfiles,
+  getSurveys,
   getTop8Reactions,
 } from '../locale';
 
@@ -201,5 +203,120 @@ describe('Kayla for a boy', () => {
       getContacts('en', 'boy').find((c) => c.contact.id === 'kayla')!.contact
         .displayName,
     ).toBe('~*Kayla*~ <3');
+  });
+});
+
+describe('Pia for a boy', () => {
+  it('he is the annoyed big brother who still helps; her lines stay pony-mad', () => {
+    expect(node('en', 'boy', 'pia', 'opening', 'quiz').choices).toEqual([
+      'a foal. obviously. can i go now',
+      'a calf',
+      'a mini donkey lol',
+    ]);
+    expect(node('en', 'boy', 'pia', 'opening', 'quiz').lines[0]).toBe(
+      'what is a baby horse called',
+    );
+    expect(node('de', 'boy', 'pia', 'opening', 'quiz').choices[0]).toBe(
+      'ein fohlen. logisch. kann ich jetzt gehen',
+    );
+    expect(node('en', 'boy', 'pia', 'followup2', 'sneak').labels[1]).toBe(
+      'Moved one',
+    );
+    expect(said('en', 'boy', 'pia', 'followup2', 'herself')).toContain(
+      'pony wedding',
+    );
+    expect(node('en', 'girl', 'pia', 'opening', 'quiz').choices[1]).toBe(
+      'a pony',
+    );
+  });
+
+  it('he guards pony jail and refuses the pinky swear', () => {
+    expect(node('en', 'boy', 'pia', 'day3', 'solved').labels[2]).toBe(
+      'Ill be the guard',
+    );
+    expect(said('en', 'boy', 'pia', 'day3', 'arrest')).toContain(
+      'ur the GUARD now',
+    );
+    expect(said('en', 'boy', 'pia', 'day3', 'arrest')).toContain('pony jail');
+    expect(node('de', 'boy', 'pia', 'day3', 'solved').labels[2]).toBe(
+      'Ich bin der Wärter',
+    );
+    expect(node('en', 'boy', 'pia', 'day2', 'swear')).toEqual({
+      lines: ['pinky swear?'],
+      choices: ['no pinkies. spit shake?', 'im not 6 pia'],
+      labels: ['Spit shake', 'Im not 6'],
+    });
+    expect(node('de', 'boy', 'pia', 'day2', 'swear').labels[0]).toBe(
+      'Spucken + einschlagen',
+    );
+    expect(node('en', 'girl', 'pia', 'day2', 'swear').labels[0]).toBe(
+      'Pinky swear',
+    );
+  });
+
+  it('he teases instead of "cute", and gets (Y) for the present', () => {
+    expect(node('en', 'boy', 'pia', 'followup1', 'helped').choices[1]).toBe(
+      'boss of the dog bowl maybe',
+    );
+    expect(node('de', 'boy', 'pia', 'followup1', 'helped').choices[1]).toBe(
+      'chefin vom hundenapf vielleicht',
+    );
+    expect(node('en', 'boy', 'pia', 'day5', 'present').labels[0]).toBe(
+      'Thanks i guess',
+    );
+    for (const locale of ['en', 'de'] as const) {
+      const pia = getContacts(locale, 'boy').find(
+        (c) => c.contact.id === 'pia',
+      )!;
+      expect(pia.contact.days?.[5]?.personalMessage).toContain('(Y)');
+      expect(pia.contact.displayName).toContain('(L)'); // her own name
+      const pix = getPixlogProfiles(locale, 'boy').find(
+        (p) => p.contactId === 'pia',
+      )!;
+      expect(pix.shouts.map((s) => s.text).join(' ')).not.toMatch(
+        /PRESENT \(L\)|GESCHENK gemacht \(L\)/,
+      );
+    }
+    expect(node('en', 'girl', 'pia', 'followup1', 'helped').choices[1]).toBe(
+      'cute :)',
+    );
+  });
+});
+
+describe('Marco, Theo and the shared bits for a boy', () => {
+  it('Marco: flames and a skull on the flyer, not glitter', () => {
+    expect(node('en', 'boy', 'marco', 'followup1', 'flyer').labels[0]).toBe(
+      'Flames + skull',
+    );
+    expect(said('en', 'boy', 'marco', 'followup1', 'glitter')).toContain(
+      'if derek sees a skull',
+    );
+    expect(node('de', 'boy', 'marco', 'followup1', 'flyer').labels[0]).toBe(
+      'Flammen + Totenkopf',
+    );
+    expect(node('en', 'girl', 'marco', 'followup1', 'flyer').labels[0]).toBe(
+      'Glitter + flames',
+    );
+  });
+
+  it('Theo offers him the Galaxy Raiders 3 cheat', () => {
+    expect(said('en', 'boy', 'theo', 'gameScore', 'show')).toContain(
+      'galaxy raiders 3 cheat',
+    );
+    expect(said('de', 'boy', 'theo', 'gameScore', 'show')).toContain(
+      'galaxy-raiders-3-cheat',
+    );
+    expect(said('en', 'girl', 'theo', 'gameScore', 'show')).not.toContain(
+      'galaxy',
+    );
+  });
+
+  it('the "last time" survey asks him about a buddy, not a sleepover', () => {
+    const q = (locale: 'en' | 'de', gender: Gender) =>
+      getSurveys(locale, gender).find((s) => s.id === 'last-time')!
+        .questions[8];
+    expect(q('en', 'boy')).toBe('slept over at a buddys?');
+    expect(q('de', 'boy')).toBe('bei nem kumpel gepennt?');
+    expect(q('en', 'girl')).toBe('had a sleepover?');
   });
 });

@@ -175,7 +175,7 @@ export const piaPixlog: PixlogProfile = {
       day: 5,
       title: 'a PRESENT',
       body:
-        'i gave someone a PRESENT. guess who. (L)\n\n' +
+        `i gave someone a PRESENT. guess who. ${g('(L)', '(Y)')}\n\n` +
         'its a secret how. (dad helped. dont tell dad i said that)\n\n' +
         'if u got a present from me u have to use it FOREVER. or a week. thats the rule',
     },
@@ -206,7 +206,7 @@ export const piaPixlog: PixlogProfile = {
     { day: 3, text: 'detective pia is ON THE CASE' },
     { day: 4, text: 'STARDUST IS HOME (L) extra fluffy' },
     { day: 4, text: 'biscuit got a sorry treat. dont make it a big deal' },
-    { day: 5, text: 'i gave someone a PRESENT (L) guess who' },
+    { day: 5, text: `i gave someone a PRESENT ${g('(L)', '(Y)')} guess who` },
   ],
   kudosToPlayer: [4, 5],
   guestbook: [

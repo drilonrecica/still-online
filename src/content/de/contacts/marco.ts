@@ -147,8 +147,11 @@ export const marco: ContactOverlay = {
         ],
         choices: [
           {
-            text: 'JA. glitzerschrift und überall flammen',
-            label: 'Glitzer + Flammen',
+            text: g(
+              'JA. glitzerschrift und überall flammen',
+              'JA. überall flammen. und n brennender totenkopf',
+            ),
+            label: g('Glitzer + Flammen', 'Flammen + Totenkopf'),
           },
           {
             text: 'schwarz-weiß. ganz düster. ganz ernst',
@@ -161,11 +164,17 @@ export const marco: ContactOverlay = {
           'nein',
           '...',
           'ok vielleicht flammen. kleine flammen. geschmackvolle flammen',
-          'wenn derek glitzer sieht, steigt er aus. schon wieder',
+          g(
+            'wenn derek glitzer sieht, steigt er aus. schon wieder',
+            'wenn derek nen totenkopf sieht, steigt er aus. schon wieder. totenköpfe sind „was für metalbands“',
+          ),
           '',
         ],
         personalMessages: {
-          4: 'neuer flyer in arbeit. kein glitzer. ok n paar flammen',
+          4: g(
+            'neuer flyer in arbeit. kein glitzer. ok n paar flammen',
+            'neuer flyer in arbeit. keine totenköpfe. ok n paar flammen',
+          ),
         },
       },
       serious: {

@@ -574,7 +574,10 @@ export const theo: ContactOverlay = {
       show: {
         lines: [
           'echt?',
-          'vielleicht im computerraum. wenn das ok ist',
+          g(
+            'vielleicht im computerraum. wenn das ok ist',
+            'vielleicht im computerraum. danach zeig ich dir den galaxy-raiders-3-cheat. wenn das ok ist',
+          ),
           'danke {name}',
         ],
       },

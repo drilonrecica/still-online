@@ -1,6 +1,7 @@
 // Game reactions (P6-07), one per friend: `onGameScore` scripts that fire when the player finishes
 // a game while signed in. `{score}` is the raw score (Mines: seconds), `{game}` the game's name.
 // Hen Hunt and Star Pinball need at least 1 point, so a scoreless round doesn't get an "OMG 0??".
+import { g } from '../gender';
 import type { Script } from '../types';
 
 export const jessGameScore: Script = {
@@ -164,7 +165,13 @@ export const theoGameScore: Script = {
     show: {
       lines: [
         { text: 'really?', delayMs: 1000 },
-        { text: 'maybe in the computer lab. if thats ok', delayMs: 1300 },
+        {
+          text: g(
+            'maybe in the computer lab. if thats ok',
+            'maybe in the computer lab. i can show u the galaxy raiders 3 cheat after. if thats ok',
+          ),
+          delayMs: 1300,
+        },
         { text: 'thanks {name}', delayMs: 900 },
       ],
       end: true,

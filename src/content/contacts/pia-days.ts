@@ -1,5 +1,6 @@
 // Pia, days 2–5: the Stardust crisis. The queen pony goes missing, Biscuit is the prime suspect,
 // she turns up in the laundry, and Pia says thank you with a present: the Pony Paradise wallpaper.
+import { g } from '../gender';
 import type { Contact, Script } from '../types';
 
 export const piaDays: Contact['days'] = {
@@ -11,7 +12,10 @@ export const piaDays: Contact['days'] = {
   4: { status: 'online', personalMessage: 'case CLOSED (dont ask)' },
   5: {
     status: 'online',
-    personalMessage: 'i gave someone a PRESENT (L) guess who',
+    personalMessage: g(
+      'i gave someone a PRESENT (L) guess who',
+      'i gave someone a PRESENT (Y) guess who',
+    ),
   },
 };
 
@@ -97,17 +101,24 @@ export const piaDayScripts: readonly Script[] = [
       swear: {
         lines: [{ text: 'pinky swear?', delayMs: 1200 }],
         choices: [
-          { text: 'pinky swear', label: 'Pinky swear', next: 'pinky' },
           {
-            text: 'i dont do pinky swears',
-            label: 'No pinky swears',
+            text: g('pinky swear', 'no pinkies. spit shake?'),
+            label: g('Pinky swear', 'Spit shake'),
+            next: 'pinky',
+          },
+          {
+            text: g('i dont do pinky swears', 'im not 6 pia'),
+            label: g('No pinky swears', 'Im not 6'),
             next: 'mom',
           },
         ],
       },
       pinky: {
         lines: [
-          { text: 'ok. i believe u. for now', delayMs: 1100 },
+          {
+            text: g('ok. i believe u. for now', 'EW. ok. i believe u. for now'),
+            delayMs: 1100,
+          },
           { text: 'im making a MISSING poster', delayMs: 1000 },
           {
             delayMs: 800,
@@ -119,7 +130,13 @@ export const piaDayScripts: readonly Script[] = [
       },
       mom: {
         lines: [
-          { text: 'im telling mom u wont pinky swear', delayMs: 1000 },
+          {
+            text: g(
+              'im telling mom u wont pinky swear',
+              'im telling mom u wont swear on ANYTHING',
+            ),
+            delayMs: 1000,
+          },
           { text: 'thats basically a CONFESSION', delayMs: 900 },
         ],
         end: true,
@@ -146,10 +163,17 @@ export const piaDayScripts: readonly Script[] = [
             label: 'Not evidence',
             next: 'notevidence',
           },
-          { text: 'a sparkle?', label: 'A sparkle?', next: 'sparkle' },
           {
-            text: 'case closed. arrest him',
-            label: 'Arrest him',
+            text: g('a sparkle?', 'the dog has bling now?'),
+            label: g('A sparkle?', 'Bling?'),
+            next: 'sparkle',
+          },
+          {
+            text: g(
+              'case closed. arrest him',
+              'case closed. ill guard the cell',
+            ),
+            label: g('Arrest him', 'Ill be the guard'),
             next: 'arrest',
           },
         ],
@@ -164,8 +188,11 @@ export const piaDayScripts: readonly Script[] = [
         ],
         choices: [
           {
-            text: 'ur glitter pen is everywhere tho',
-            label: 'Glitter is everywhere',
+            text: g(
+              'ur glitter pen is everywhere tho',
+              'dude ur pen leaks on everything. my controller is SHINY now',
+            ),
+            label: g('Glitter is everywhere', 'Ur pen leaks'),
             next: 'glitter',
           },
           {
@@ -206,7 +233,10 @@ export const piaDayScripts: readonly Script[] = [
           { text: 'i put him in pony jail', delayMs: 1000 },
           { text: 'pony jail is the laundry basket', delayMs: 1000 },
           {
-            text: 'he fell asleep in it. criminals have NO SHAME',
+            text: g(
+              'he fell asleep in it. criminals have NO SHAME',
+              'he fell asleep in it. criminals have NO SHAME. ur the GUARD now',
+            ),
             delayMs: 1200,
           },
           { delayMs: 800, statusChange: 'busy' },
@@ -257,7 +287,11 @@ export const piaDayScripts: readonly Script[] = [
         ],
         choices: [
           { text: 'how did she get in a sock?', label: 'How?', next: 'sock' },
-          { text: 'yay stardust!!', label: 'Yay stardust!!', next: 'yay' },
+          {
+            text: g('yay stardust!!', 'cool. the queen lives'),
+            label: g('Yay stardust!!', 'The queen lives'),
+            next: 'yay',
+          },
         ],
       },
       biscuit: {
@@ -348,7 +382,11 @@ export const piaDayScripts: readonly Script[] = [
           },
         ],
         choices: [
-          { text: 'aww thanks pia :)', label: 'Thanks pia :)', next: 'thanks' },
+          {
+            text: g('aww thanks pia :)', 'oh. thanks i guess'),
+            label: g('Thanks pia :)', 'Thanks i guess'),
+            next: 'thanks',
+          },
           { text: 'what is it?', label: 'What is it?', next: 'what' },
           {
             text: 'how did u get in my computer??',
@@ -410,7 +448,10 @@ export const piaDayScripts: readonly Script[] = [
           },
           {
             delayMs: 800,
-            personalMessageChange: 'gave {name} a PRESENT (L) ur welcome',
+            personalMessageChange: g(
+              'gave {name} a PRESENT (L) ur welcome',
+              'gave {name} a PRESENT (Y) ur welcome',
+            ),
           },
         ],
         end: true,
@@ -418,7 +459,13 @@ export const piaDayScripts: readonly Script[] = [
       dislike: {
         lines: [
           { text: 'u WILL like it', delayMs: 900 },
-          { text: 'it has sparkles. everyone likes sparkles', delayMs: 1100 },
+          {
+            text: g(
+              'it has sparkles. everyone likes sparkles',
+              'it has a RAINBOW. boys can like rainbows. its a FACT',
+            ),
+            delayMs: 1100,
+          },
           { text: 'if u change it im telling mom', delayMs: 1000 },
         ],
         end: true,

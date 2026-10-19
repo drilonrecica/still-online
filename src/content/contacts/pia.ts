@@ -1,4 +1,5 @@
 // Pia: the little sibling on dad's laptop downstairs. Bossy, pony-obsessed, tells mom everything.
+import { g } from '../gender';
 import type { ContactContent } from '../types';
 import { piaDayScripts, piaDays } from './pia-days';
 import { piaGameScore } from './game-reactions';
@@ -92,16 +93,25 @@ export const pia: ContactContent = {
         quiz: {
           lines: [{ text: 'what is a baby horse called', delayMs: 1500 }],
           choices: [
-            { text: 'a foal', next: 'right' },
-            { text: 'a pony', next: 'wrong' },
-            { text: 'a horselet', next: 'wrong' },
+            {
+              text: g('a foal', 'a foal. obviously. can i go now'),
+              next: 'right',
+            },
+            { text: g('a pony', 'a calf'), next: 'wrong' },
+            { text: g('a horselet', 'a mini donkey lol'), next: 'wrong' },
           ],
         },
         right: {
           lines: [
             { text: 'CORRECT!!! :D', delayMs: 800 },
             { text: 'ur not that dumb after all', delayMs: 900 },
-            { delayMs: 1500, personalMessageChange: '{name} knows horses (Y)' },
+            {
+              delayMs: 1500,
+              personalMessageChange: g(
+                '{name} knows horses (Y)',
+                '{name} is not COMPLETELY dumb (Y)',
+              ),
+            },
           ],
           end: true,
         },
@@ -109,7 +119,10 @@ export const pia: ContactContent = {
           lines: [
             { text: 'WRONG lol', delayMs: 700 },
             {
-              text: 'its a FOAL. a pony is a whole different thing',
+              text: g(
+                'its a FOAL. a pony is a whole different thing',
+                'its a FOAL. not a calf. not a donkey. a FOAL',
+              ),
               delayMs: 1300,
             },
             { text: 'im telling dad', delayMs: 800 },
@@ -237,7 +250,7 @@ export const pia: ContactContent = {
               label: 'Mom is',
               next: 'boss',
             },
-            { text: 'cute :)', next: 'cute' },
+            { text: g('cute :)', 'boss of the dog bowl maybe'), next: 'cute' },
           ],
         },
         boss: {
@@ -250,8 +263,14 @@ export const pia: ContactContent = {
         },
         cute: {
           lines: [
-            { text: 'its not CUTE its TRUE', delayMs: 900 },
-            { text: 'but thank u', delayMs: 1000 },
+            {
+              text: g('its not CUTE its TRUE', 'the dog bowl is ALSO mine'),
+              delayMs: 900,
+            },
+            {
+              text: g('but thank u', 'biscuit agrees. 2 against 1'),
+              delayMs: 1000,
+            },
           ],
           end: true,
         },
@@ -275,12 +294,18 @@ export const pia: ContactContent = {
           choices: [
             { text: 'no?? why would i', label: 'No??', next: 'denied' },
             {
-              text: 'ok i moved ONE pony',
-              label: 'I moved one pony',
+              text: g(
+                'ok i moved ONE pony',
+                'ok i moved ONE of ur plastic guys',
+              ),
+              label: g('I moved one pony', 'Moved one'),
               next: 'confess',
             },
             {
-              text: 'i sorted ur ponies by color. ur welcome',
+              text: g(
+                'i sorted ur ponies by color. ur welcome',
+                'i lined up ur whole army by color. ur welcome',
+              ),
               label: 'Sorted them by color',
               next: 'sorted',
             },

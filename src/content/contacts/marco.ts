@@ -1,4 +1,5 @@
 // Marco: the cool older cousin at college. Lowercase, dry, never uses exclamation marks.
+import { g } from '../gender';
 import type { ContactContent } from '../types';
 import { marcoDayScripts, marcoDays } from './marco-days';
 import { marcoGameScore } from './game-reactions';
@@ -233,8 +234,11 @@ export const marco: ContactContent = {
           ],
           choices: [
             {
-              text: 'YES. glitter text and flames everywhere',
-              label: 'Glitter + flames',
+              text: g(
+                'YES. glitter text and flames everywhere',
+                'YES. flames everywhere. and a flaming skull',
+              ),
+              label: g('Glitter + flames', 'Flames + skull'),
               next: 'glitter',
             },
             {
@@ -253,13 +257,18 @@ export const marco: ContactContent = {
               delayMs: 1600,
             },
             {
-              text: 'if derek sees glitter he quits the band. again',
+              text: g(
+                'if derek sees glitter he quits the band. again',
+                'if derek sees a skull he quits the band. again. he says skulls r "for metal bands"',
+              ),
               delayMs: 1300,
             },
             {
               delayMs: 1500,
-              personalMessageChange:
+              personalMessageChange: g(
                 'new flyer in the works. no glitter. ok some flames',
+                'new flyer in the works. no skulls. ok some flames',
+              ),
             },
           ],
           end: true,

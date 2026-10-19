@@ -1,5 +1,6 @@
 // German Pixlog surveys, same ids, question counts and order as `src/content/pixlog/surveys`.
 // Written like German 2007 Freundebuch/Bulletin-Umfragen: lowercase, „du", chat spelling.
+import { g } from '../../gender';
 import type { Survey } from '../../pixlog/types';
 
 export const SURVEYS: readonly Survey[] = [
@@ -49,7 +50,7 @@ export const SURVEYS: readonly Survey[] = [
       'was wichtiges verloren?',
       'ein geschenk gekriegt?',
       'laut gesungen?',
-      'ne übernachtungsparty gemacht?',
+      g('ne übernachtungsparty gemacht?', 'bei nem kumpel gepennt?'),
       'ein geheimnis verraten?',
     ],
   },
