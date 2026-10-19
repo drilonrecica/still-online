@@ -13,10 +13,15 @@ export type PhotoScene =
   | 'selfportrait';
 
 /** A procedural "digicam photo", drawn by `renderPhoto` from `seed`. */
+/** The player's hair in the `selfportrait` scene (long for a girl, short and spiky for a boy). */
+export type PhotoLook = 'long' | 'short';
+
 export interface PhotoSpec {
   scene: PhotoScene;
   seed: number;
   caption?: string;
+  /** Only the `selfportrait` scene uses it; without it the hair is the v0.3 middle length. */
+  look?: PhotoLook;
 }
 
 export interface FsNode {

@@ -1,7 +1,9 @@
 // The "cartoon me" fallback: a procedurally drawn face on a 2D canvas, so the filters apply to it
 // exactly like they do to a webcam frame.
 
-export const HAIR = ['spiky', 'bob', 'curly', 'bald'] as const;
+import type { Gender } from '@/os/types';
+
+export const HAIR = ['spiky', 'bob', 'curly', 'bald', 'long'] as const;
 export const EYES = ['round', 'sleepy', 'wink', 'stars'] as const;
 export const MOUTHS = ['smile', 'grin', 'oh', 'smirk'] as const;
 
@@ -11,7 +13,11 @@ export interface CartoonLook {
   mouth: number;
 }
 
-export const DEFAULT_LOOK: CartoonLook = { hair: 0, eyes: 0, mouth: 0 };
+/** The look the booth starts with: long hair for a girl, spiky for a boy. */
+export const DEFAULT_LOOK: Readonly<Record<Gender, CartoonLook>> = {
+  girl: { hair: HAIR.indexOf('long'), eyes: 0, mouth: 0 },
+  boy: { hair: HAIR.indexOf('spiky'), eyes: 0, mouth: 0 },
+};
 
 /** Next index in a list of `count` choices. */
 export function cycle(index: number, count: number): number {
@@ -51,6 +57,14 @@ function drawHair(
     ctx.arc(cx, cy, r * 1.08, Math.PI * 0.9, Math.PI * 2.1);
     ctx.lineTo(cx + r * 1.08, cy + r * 0.7);
     ctx.lineTo(cx - r * 1.08, cy + r * 0.7);
+    ctx.closePath();
+    ctx.fill();
+  } else if (style === 4) {
+    // Long: a crown of hair that falls down both sides past the chin.
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 1.12, Math.PI, Math.PI * 2);
+    ctx.lineTo(cx + r * 1.18, cy + r * 1.35);
+    ctx.quadraticCurveTo(cx, cy + r * 1.5, cx - r * 1.18, cy + r * 1.35);
     ctx.closePath();
     ctx.fill();
   } else if (style === 2) {

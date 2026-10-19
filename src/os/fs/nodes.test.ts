@@ -47,6 +47,18 @@ describe('fs nodes', () => {
       parseNode({ ...node('x', 'docs'), photo: { scene: 'moon', seed: 1 } })
         ?.photo,
     ).toBeUndefined();
+    expect(
+      parseNode({
+        ...node('x', 'docs'),
+        photo: { scene: 'selfportrait', seed: 1, look: 'short' },
+      })?.photo,
+    ).toEqual({ scene: 'selfportrait', seed: 1, look: 'short' });
+    expect(
+      parseNode({
+        ...node('x', 'docs'),
+        photo: { scene: 'selfportrait', seed: 1, look: 'mohawk' },
+      })?.photo,
+    ).toEqual({ scene: 'selfportrait', seed: 1 });
     expect(parseNode({ ...node('x', 'docs'), type: 'exe' })).toBeNull();
     expect(
       parseNode({ ...node('x', 'docs'), createdAt: 'yesterday' }),

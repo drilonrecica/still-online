@@ -174,6 +174,7 @@ function parsePhoto(v: unknown): PhotoSpec | undefined {
   }
   const photo: PhotoSpec = { scene: v.scene as PhotoScene, seed: v.seed };
   if (typeof v.caption === 'string') photo.caption = v.caption;
+  if (v.look === 'long' || v.look === 'short') photo.look = v.look;
   return photo;
 }
 

@@ -6,6 +6,7 @@ import '@/apps/registry';
 import { renderFavorites, useWebStore } from '@/apps/browser/store';
 import { renderMail, renderMails } from '@/apps/mail/records';
 import { playerAddress, useMailStore } from '@/apps/mail/store';
+import { getSeedFiles } from '@/content/locale';
 import type { MailMessage } from '@/content/mail/types';
 import { getPlayerName, screensaverText } from '@/i18n/settingsText';
 import { getLocale } from '@/i18n/t';
@@ -128,12 +129,21 @@ describe('v0.2 file system', () => {
       v02Nodes.filter((n) => n.parentId === FS_FOLDERS.recycle).length,
     );
     expect(binned.every((n) => n.deletedFrom && !n.dirty)).toBe(true);
-    // Untouched seeds read exactly as before.
+    // Untouched seeds read as today's seeds (girl, English), even where the text changed since
+    // v0.2; renamed and edited ones keep the player's text.
+    const current = new Map(getSeedFiles('en', 'girl').map((n) => [n.id, n]));
     for (const old of v02Nodes) {
       const node = nodes[old.id];
-      expect(node?.name, old.id).toBe(old.name);
-      expect(node?.text, old.id).toBe('text' in old ? old.text : undefined);
+      const seed = current.get(old.id);
+      if (node?.dirty || !seed) {
+        expect(node?.name, old.id).toBe(old.name);
+        expect(node?.text, old.id).toBe('text' in old ? old.text : undefined);
+      } else {
+        expect(node?.name, old.id).toBe(seed.name);
+        expect(node?.text, old.id).toBe(seed.text);
+      }
     }
+    expect(nodes['seed:diary-age-11']?.text).toContain('Starlight');
   });
 
   it('saves no system folder names and no text of untouched seeds', () => {

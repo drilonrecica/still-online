@@ -1,5 +1,6 @@
 // German friendspace.example, same exports as `src/content/sites/friendspace`: „ein Ort für Freunde im
 // Orbit", says „du“. Theme ids and colours come from English; only their names are German.
+import { g } from '../../gender';
 import type { PlayerProfile } from '../../profiles/types';
 import {
   THEME_PRESETS as EN_THEME_PRESETS,
@@ -98,11 +99,16 @@ export const PROFILE_LIMITS = {
 } as const;
 
 export const DEFAULT_PLAYER_PROFILE: Omit<PlayerProfile, 'top8'> = {
-  headline: 'neu auf Friendspace!!',
-  mood: { text: 'aufgeregt', emoticon: ':D' },
-  aboutMe:
-    'Hi!! Ich bin neu auf Friendspace. Klick auf „Profil bearbeiten“ und erzähl der Galaxis von dir.',
+  headline: g(
+    'neu auf Friendspace!! ~*glitzer*~ <3',
+    'neu auf Friendspace. skate or die',
+  ),
+  mood: { text: g('kicherig', 'voll motiviert'), emoticon: g(':D', '(8)') },
+  aboutMe: g(
+    'Hi!! <3 Ich bin neu auf Friendspace. Klick auf „Profil bearbeiten“ und erzähl der Galaxis von dir.',
+    'Hey. Ich bin neu auf Friendspace. Klick auf „Profil bearbeiten“ und erzähl der Galaxis von dir.',
+  ),
   songTrackId: null,
-  themePreset: 'default',
+  themePreset: g('glitter', 'midnight'),
   customColors: null,
 };

@@ -37,7 +37,7 @@ describe('Snapshot Booth in German', () => {
       screen.getByRole('button', { name: 'Foto aufnehmen' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: 'Haare: Stachelig' }),
+      screen.getByRole('button', { name: 'Haare: Lang' }),
     ).toBeInTheDocument();
   });
 });

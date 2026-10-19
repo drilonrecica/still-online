@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { resolveGender } from '@/content/gender';
 import type { PlayerProfile, ProfileContent } from '@/content/profiles/types';
 import {
   DEFAULT_PLAYER_PROFILE,
@@ -21,7 +22,7 @@ import {
 } from './logic';
 
 const base: PlayerProfile = {
-  ...DEFAULT_PLAYER_PROFILE,
+  ...resolveGender(DEFAULT_PLAYER_PROFILE, 'girl'),
   top8: ['jess', 'pia'],
 };
 
@@ -89,7 +90,7 @@ describe('friendspace logic', () => {
 
   it('falls back to the starting profile until the player saves one', () => {
     expect(effectiveProfile(null, ['jess', 'dex'])).toEqual({
-      ...DEFAULT_PLAYER_PROFILE,
+      ...resolveGender(DEFAULT_PLAYER_PROFILE, 'girl'),
       top8: ['jess', 'dex'],
     });
     expect(effectiveProfile(base, ['dex', 'pia', 'jess']).top8).toEqual([
@@ -97,6 +98,28 @@ describe('friendspace logic', () => {
       'pia',
       'dex',
     ]);
+  });
+
+  it('starts a girl on pink glitter and a boy on midnight', () => {
+    const girl = effectiveProfile(null, [], 'en', 'girl');
+    const boy = effectiveProfile(null, [], 'en', 'boy');
+    expect(girl).toMatchObject({
+      themePreset: 'glitter',
+      headline: 'new 2 Friendspace!! ~*sparkle*~ <3',
+      mood: { text: 'giggly', emoticon: ':D' },
+    });
+    expect(boy).toMatchObject({
+      themePreset: 'midnight',
+      headline: 'new to Friendspace. skate or die',
+      mood: { text: 'pumped', emoticon: '(8)' },
+    });
+    expect(effectiveProfile(null, [], 'de', 'boy')).toMatchObject({
+      themePreset: 'midnight',
+      headline: 'neu auf Friendspace. skate or die',
+      mood: { text: 'voll motiviert' },
+    });
+    // A saved profile wins over the gender's preset.
+    expect(effectiveProfile(base, [], 'en', 'boy').themePreset).toBe('glitter');
   });
 
   it('cleans edits before saving', () => {

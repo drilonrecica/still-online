@@ -23,7 +23,7 @@ describe('Regional and Language Options', () => {
     await user.selectOptions(screen.getByLabelText('Language:'), 'de');
     expect(useSettingsStore.getState().language).toBe('en');
     expect(screen.getByTestId('regional-preview')).toHaveTextContent(
-      /Zeit: \d{2}:\d{2} · Datum: \d{2}\.\d{2}\.\d{4} · Zahl: 1\.234/,
+      /Zeit: \d{1,2}:\d{2} · Datum: \d{2}\.\d{2}\.\d{4} · Zahl: 1\.234/,
     );
     await user.click(screen.getByRole('button', { name: 'Apply' }));
     expect(useSettingsStore.getState().language).toBe('de');

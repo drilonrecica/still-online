@@ -101,7 +101,7 @@ export const concert: Painter = (ctx, rand, w, h) => {
   crowd(ctx, rand, w, h, h * 0.72, ['#000000', '#0c0a10', '#14101a']);
 };
 
-export const selfportrait: Painter = (ctx, rand, w, h) => {
+export const selfportrait: Painter = (ctx, rand, w, h, look) => {
   rect(
     ctx,
     pick(rand, ['#c8b8d8', '#d8d0b0', '#b0c8d8', '#e0b8b8']),
@@ -136,9 +136,27 @@ export const selfportrait: Painter = (ctx, rand, w, h) => {
     [w * 0.72, h],
     [w * 0.8, h * 0.8],
   ]);
-  ellipse(ctx, hair, fx, fy - h * 0.06, w * 0.17, h * 0.27);
+  if (look === 'short') {
+    // Short and spiky: a cap of hair with gelled spikes on top.
+    ellipse(ctx, hair, fx, fy - h * 0.09, w * 0.145, h * 0.17);
+    for (let i = -2; i <= 2; i++) {
+      const x = fx + i * w * 0.05;
+      poly(ctx, hair, [
+        [x - w * 0.035, fy - h * 0.2],
+        [x + w * 0.01, fy - h * (0.33 - Math.abs(i) * 0.02)],
+        [x + w * 0.035, fy - h * 0.2],
+      ]);
+    }
+  } else {
+    // Long hair falls past the shoulders; without a look it stops at the chin (v0.3).
+    if (look === 'long')
+      ellipse(ctx, hair, fx, fy + h * 0.14, w * 0.19, h * 0.34);
+    ellipse(ctx, hair, fx, fy - h * 0.06, w * 0.17, h * 0.27);
+  }
   ellipse(ctx, skin, fx, fy + h * 0.02, w * 0.13, h * 0.2);
-  ellipse(ctx, hair, fx - w * 0.04, fy - h * 0.16, w * 0.12, h * 0.06);
+  if (look === 'short')
+    ellipse(ctx, hair, fx, fy - h * 0.17, w * 0.11, h * 0.04);
+  else ellipse(ctx, hair, fx - w * 0.04, fy - h * 0.16, w * 0.12, h * 0.06);
   ellipse(ctx, '#202020', fx - w * 0.045, fy, w * 0.012, h * 0.015);
   ellipse(ctx, '#202020', fx + w * 0.045, fy, w * 0.012, h * 0.015);
   ellipse(ctx, '#a04040', fx, fy + h * 0.1, w * 0.03, h * 0.012);

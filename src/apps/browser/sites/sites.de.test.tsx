@@ -268,11 +268,11 @@ describe('Friendspace in German', () => {
       'Hallo Ada! Du bist eingeloggt.',
     );
     expect(screen.getByTestId('profile')).toHaveTextContent(
-      'neu auf Friendspace!!',
+      'neu auf Friendspace!! ~*glitzer*~ <3',
     );
     await user.click(screen.getByRole('button', { name: 'Profil bearbeiten' }));
     expect(screen.getByLabelText('Überschrift:')).toHaveValue(
-      'neu auf Friendspace!!',
+      'neu auf Friendspace!! ~*glitzer*~ <3',
     );
     expect(screen.getByRole('option', { name: 'Pink Glitzer' })).toBeTruthy();
     expect(screen.getByRole('option', { name: ':( traurig' })).toBeTruthy();

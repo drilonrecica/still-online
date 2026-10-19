@@ -1,4 +1,6 @@
-// German Recycle Bin (`src/content/files/recycleBin.ts`): still deleted, still embarrassing.
+// German Recycle Bin (`src/content/files/recycleBin.ts`): still deleted, still embarrassing, a
+// girl and a boy version of each of the player's own files (docs/gender.md).
+import { g } from '../../gender';
 import type { SeedText } from './types';
 
 const LETTER_TO_THEO = `lieber theo,
@@ -18,9 +20,29 @@ bisschen getanzt.
 ok das wars. das is so peinlich. LÖSCHEN LÖSCHEN LÖSCHEN
 
 von
-mir
+mir <3
 
 p.s. die wackelpudding-zelle is die beste idee die jemals wer hatte`;
+
+const CHEAT_CODES = `CHEATCODES!!!!! NICHT PIA SAGEN
+(sonst benutzt sie die auf meinem spielstand und sagt dann sie hat gewonnen)
+
+GALAXY RAIDERS 3
+- unendlich leben: pause, L + R halten, hoch hoch runter runter drücken
+- riesenkopf-modus: auf dem titelbild BIGBRAIN eintippen (is der HAMMER)
+- alle schiffe: level 1 schaffen ohne zu schießen (unmöglich) (marco sagt möglich)
+
+THUNDER KART
+- regenbogen-kart: beim ladebildschirm select halten
+- jess sagt es gibt ne geheime bananenstrecke. JESS LÜGT
+- turbostart: gas geben genau wenn die 2 weggeht
+
+NINJA TURBO KOMBAT
+- als hausmeister spielen: logo markieren und 7 mal start drücken
+- mondschwerkraft: hat dex gesagt. dex sagt nie wie
+
+(marco hat die aus nem forum. manche gehen nich.
+der riesenkopf geht. der is der beste)`;
 
 const RAP_LYRICS = `MC MEGABYTE - „WÄHL DICH EIN“ (feat. niemand)
 
@@ -35,6 +57,11 @@ sie sagt „du hast mich gehört“, also sag ich: ok, egal
 ich mach hausaufgaben, ich räum mein zimmer auf
 dann bin ich wieder online und die menge rastet aus
 
+ich hab n skateboard, ich hab nen highscore
+dex steht den kickflip, ich lieg aufm boden davor
+marco an der gitarre, ich am mikrofon
+megabyte reimt und du kennst das schon
+
 (hier beatbox)
 (pia sagt mein beatbox klingt wie keks wenn er niest)
 
@@ -42,9 +69,40 @@ yo yo yo
 megabyte is RAUS
 
 -----
-notiz an mich: das NIEMALS vortragen. nich ma auf der übernachtungsparty.`;
+notiz an mich: das NIEMALS vortragen. nich ma bei dex.`;
 
-const DIARY = `MEIN TAGEBUCH!!!!!!
+const COMETS_SONGS = `SONGS DIE ICH FÜR TINFOIL COMETS GESCHRIEBEN HAB <3 <3 <3
+(wenn nova das jemals liest sterbe ich) (aber im guten sinn)
+
+--- song 1: „glitzer in meinem herz“ ---
+in meinem herz is glitzer
+und es funkelt nur für dich
+auf meinem zimmerboden auch
+mama sagt staubsaugen, ich sag: ich nich
+
+oh oh glitzer
+funkel die ganze nacht
+oh oh glitzer
+alles strahlt und lacht
+
+--- song 2: „space girl teil 2“ ---
+(die fortsetzung von space girl. die comets haben nich danach gefragt)
+ich bin auch ein space girl
+meine rakete is rosa
+ich flieg zu den sternen
+schneller als du so ahnst, ja
+
+--- song 3: „beste freundinnen für immer (jess ihr song)“ ---
+du leihst mir deine spangen
+ich leih dir meinen stift
+wir streiten uns um gar nix
+und vertragen uns dann gleich
+
+-----
+notiz an mich: die NIEMALS vorsingen. nich ma auf der übernachtungsparty.
+(ok vielleicht auf der übernachtungsparty)`;
+
+const DIARY_GIRL = `MEIN TAGEBUCH!!!!!! <3
 PRIVAT - BETRETEN VERBOTEN - DAS GILT AUCH FÜR DICH
 
 liebes tagebuch,
@@ -52,12 +110,44 @@ heute bin ich 11 geworden!!! ich hab einen roller und ein pferdebuch
 gekriegt. pia hat einen luftballon gekriegt, obwohl MEIN geburtstag war.
 
 liebes tagebuch,
-ich hab beschlossen, dass ich später tiere rette (als beruf) UND popstar
-werde. am wochenende flieg ich ins weltall.
+ich hab beschlossen, dass ich später tierärztin UND popstar werde.
+am wochenende flieg ich ins weltall. und ich krieg ein pferd, das heißt
+Sternchen.
 
 liebes tagebuch,
 jess und ich haben einen geheimclub gegründet. er heißt Der Geheimclub.
 das passwort ist „pudding“. sag keinem das passwort.
+wir haben jetzt freundschaftsbänder. meins is rosa, ihrs is lila.
+
+liebes tagebuch,
+heute bin ich in der schlange in der mensa vor ALLEN gestolpert und
+mein tablett ist überall rumgeflogen. das ist der schlimmste tag meines
+ganzen lebens. ich geh nie wieder hin. ich zieh ins gartenhaus.
+
+liebes tagebuch,
+bin doch wieder in die schule gegangen. keiner hat sich dran erinnert. puh.
+
+liebes tagebuch,
+ich glaub ich bin jetzt zu alt für ein tagebuch. das ist der letzte eintrag.
+
+liebes tagebuch,
+ok noch einer. mama hat lasagne gemacht. war lecker.`;
+
+const DIARY_BOY = `MEIN TAGEBUCH (DAS IS KEIN TAGEBUCH DAS IS EIN LOGBUCH)
+PRIVAT - BETRETEN VERBOTEN - DAS GILT AUCH FÜR DICH
+
+liebes tagebuch,
+heute bin ich 11 geworden!!! ich hab einen roller und ein haibuch
+gekriegt. pia hat einen luftballon gekriegt, obwohl MEIN geburtstag war.
+
+liebes tagebuch,
+ich hab beschlossen, dass ich später stuntman UND profi-skater werde.
+am wochenende flieg ich ins weltall.
+
+liebes tagebuch,
+dex und ich haben einen geheimclub gegründet. er heißt Der Geheimclub.
+das passwort ist „pudding“. sag keinem das passwort.
+das clubhaus is der baum bei dex im garten. schwestern verboten.
 
 liebes tagebuch,
 heute bin ich in der schlange in der mensa vor ALLEN gestolpert und
@@ -116,11 +206,17 @@ ps wer das liest muss 10 von 10 punkten geben`;
 
 export const RECYCLE_BIN: Readonly<Record<string, SeedText>> = {
   'letter-to-theo-never-send': {
-    name: 'brief_an_theo_NIE_ABSCHICKEN.txt',
-    text: LETTER_TO_THEO,
+    name: g('brief_an_theo_NIE_ABSCHICKEN.txt', 'cheatcodes.txt'),
+    text: g(LETTER_TO_THEO, CHEAT_CODES),
   },
-  'my-rap-lyrics': { name: 'meine_rap_texte.txt', text: RAP_LYRICS },
-  'diary-age-11': { name: 'tagebuch_mit_11.txt', text: DIARY },
+  'my-rap-lyrics': {
+    name: g('meine_songs_fuer_tinfoil_comets.txt', 'meine_rap_texte.txt'),
+    text: g(COMETS_SONGS, RAP_LYRICS),
+  },
+  'diary-age-11': {
+    name: 'tagebuch_mit_11.txt',
+    text: g(DIARY_GIRL, DIARY_BOY),
+  },
   'pony-fanfic-by-pia': {
     name: 'pony_geschichte_von_pia.txt',
     text: PONY_FANFIC,

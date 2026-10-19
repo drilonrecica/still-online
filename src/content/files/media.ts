@@ -1,6 +1,11 @@
 // My Pictures (procedural digicam photos, one per scene the camera "took") and My Music.
-import { FS_FOLDERS, type FsNode, type PhotoSpec } from '@/os/fs/types';
-import { g } from '../gender';
+import {
+  FS_FOLDERS,
+  type FsNode,
+  type PhotoLook,
+  type PhotoSpec,
+} from '@/os/fs/types';
+import { g, gendered } from '../gender';
 import { at, seedFile } from './seed';
 
 const photo = (
@@ -60,6 +65,7 @@ export const PICTURES: readonly FsNode[] = [
     {
       scene: 'selfportrait',
       seed: 3000,
+      look: gendered<PhotoLook>({ girl: 'long', boy: 'short' }),
       caption: g(
         'testing the new webcam. is my hair always like that',
         'testing the new webcam. does my hair always stick up like that',

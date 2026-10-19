@@ -1,5 +1,7 @@
-// Recycle Bin: things the player deleted from My Documents (but never emptied the bin).
+// Recycle Bin: things the player deleted from My Documents (but never emptied the bin). Each of
+// the player's own files has a girl and a boy version (docs/gender.md); Pia's fanfic is hers.
 import { FS_FOLDERS, type FsNode } from '@/os/fs/types';
+import { g } from '../gender';
 import { at, seedFile } from './seed';
 
 const LETTER_TO_THEO = `dear theo,
@@ -17,9 +19,29 @@ but actually i did a little dance in my head.
 ok that is all. this is so embarrassing. DELETE DELETE DELETE
 
 from,
-me
+me <3
 
 p.s. the jello cell is the best idea anyone has ever had`;
+
+const CHEAT_CODES = `CHEAT CODES!!!!! DONT TELL PIA
+(she will use them on my save and then say she won)
+
+GALAXY RAIDERS 3
+- infinite lives: pause, hold L + R, press up up down down
+- big head mode: type BIGBRAIN at the title screen (it is HILARIOUS)
+- all ships: finish level 1 without shooting (impossible) (marco says possible)
+
+THUNDER KART
+- rainbow kart: hold select on the loading screen
+- jess says there is a secret banana track. JESS IS LYING
+- turbo start: press gas right when the 2 goes away
+
+NINJA TURBO KOMBAT
+- play as the janitor: highlight the logo and press start 7 times
+- moon gravity: dex said it. dex never says how
+
+(marco got these from a forum. some of them dont work.
+the big head one works. that one is the best one)`;
 
 const RAP_LYRICS = `MC MEGABYTE - "DIAL IT UP" (feat. nobody)
 
@@ -34,6 +56,11 @@ she says "you heard me" so i say ok
 i do my homework, i do my chores
 then i'm back online, the crowd ROARS
 
+i got a skateboard, i got a high score
+dex lands a kickflip, i land on the floor
+marco on guitar, me on the mic
+megabyte rhymes and you know that you like
+
 (beatbox here)
 (pia says my beatbox sounds like biscuit sneezing)
 
@@ -41,9 +68,40 @@ yo yo yo
 megabyte OUT
 
 -----
-note to self: NEVER perform this. not even at the sleepover.`;
+note to self: NEVER perform this. not even at dex's.`;
 
-const DIARY = `MY DIARY!!!!!!
+const COMETS_SONGS = `SONGS I WROTE 4 TINFOIL COMETS <3 <3 <3
+(if nova ever reads this i will die) (in a good way)
+
+--- song 1: "glitter in my heart" ---
+there is glitter in my heart
+and it's sparkling just for you
+there is glitter on my bedroom floor
+mom says vacuum, i say ew
+
+oh oh glitter
+sparkle all night
+oh oh glitter
+everything's bright
+
+--- song 2: "space girl part 2" ---
+(the sequel to space girl. the comets did not ask for it)
+i'm a space girl too
+my rocket is pink
+i fly to the stars
+faster than you think
+
+--- song 3: "best friends forever (jess's song)" ---
+you lend me your hair clips
+i lend you my pen
+we fight about nothing
+and then we're friends again
+
+-----
+note to self: NEVER sing these. not even at the sleepover.
+(ok maybe at the sleepover)`;
+
+const DIARY_GIRL = `MY DIARY!!!!!! <3
 PRIVATE PROPERTY - KEEP OUT - THIS MEANS YOU
 
 dear diary,
@@ -52,11 +110,42 @@ pia got a balloon even though it was MY birthday.
 
 dear diary,
 i have decided i will be a famous veterinarian AND a pop star.
-on weekends i will be an astronaut.
+on weekends i will be an astronaut. and i will have a horse called Starlight.
 
 dear diary,
 jess and i made a secret club. it is called the Secret Club.
 the password is "pudding". do not tell anyone the password.
+we have matching friendship bracelets now. mine is pink, hers is purple.
+
+dear diary,
+today at school i tripped in front of everybody in the lunch line and
+my tray went everywhere. this is the worst day of my whole life.
+i am never going back. i am going to live in the garden shed.
+
+dear diary,
+went back to school. nobody remembered. phew.
+
+dear diary,
+i think i am too old for a diary now. this is my last entry.
+
+dear diary,
+ok one more. mom made lasagna. it was good.`;
+
+const DIARY_BOY = `MY DIARY (ITS NOT A DIARY ITS A JOURNAL)
+PRIVATE PROPERTY - KEEP OUT - THIS MEANS YOU
+
+dear diary,
+today i turned 11!!! i got a scooter and a book about sharks.
+pia got a balloon even though it was MY birthday.
+
+dear diary,
+i have decided i will be a stunt man AND a pro skater.
+on weekends i will be an astronaut.
+
+dear diary,
+dex and i made a secret club. it is called the Secret Club.
+the password is "pudding". do not tell anyone the password.
+the clubhouse is the tree in dex's yard. no sisters allowed.
 
 dear diary,
 today at school i tripped in front of everybody in the lunch line and
@@ -133,22 +222,22 @@ const binned = (
 export const RECYCLE_BIN: readonly FsNode[] = [
   binned(
     'letter-to-theo-never-send',
-    'letter_to_theo_NEVER_SEND.txt',
-    LETTER_TO_THEO,
+    g('letter_to_theo_NEVER_SEND.txt', 'cheat_codes.txt'),
+    g(LETTER_TO_THEO, CHEAT_CODES),
     at(2007, 10, 9, 22, 41),
     at(2007, 10, 9, 22, 52),
   ),
   binned(
     'my-rap-lyrics',
-    'my_rap_lyrics.txt',
-    RAP_LYRICS,
+    g('songs_i_wrote_4_tinfoil_comets.txt', 'my_rap_lyrics.txt'),
+    g(COMETS_SONGS, RAP_LYRICS),
     at(2007, 9, 8, 16, 0),
     at(2007, 9, 8, 16, 34),
   ),
   binned(
     'diary-age-11',
     'diary_age_11.txt',
-    DIARY,
+    g(DIARY_GIRL, DIARY_BOY),
     at(2004, 3, 14, 19, 30),
     at(2007, 9, 1, 13, 12),
   ),

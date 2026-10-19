@@ -402,6 +402,7 @@ export const de: Messages = {
       bob: 'Bob',
       curly: 'Lockig',
       bald: 'Glatze',
+      long: 'Lang',
     },
     eyes: {
       label: 'Augen: {value}',

@@ -78,6 +78,22 @@ describe('renderPhoto', () => {
     );
   });
 
+  it('draws the self-portrait with long hair, short hair, or the v0.3 hair', () => {
+    const long = draw({ scene: 'selfportrait', seed: 3000, look: 'long' }).log;
+    const short = draw({
+      scene: 'selfportrait',
+      seed: 3000,
+      look: 'short',
+    }).log;
+    const none = draw({ scene: 'selfportrait', seed: 3000 }).log;
+    expect(long).not.toEqual(short);
+    expect(long).not.toEqual(none);
+    expect(short).not.toEqual(none);
+    expect(
+      draw({ scene: 'selfportrait', seed: 3000, look: 'short' }).log,
+    ).toEqual(short);
+  });
+
   it('does nothing without a 2D context (jsdom)', () => {
     const canvas = document.createElement('canvas');
     expect(() =>

@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
 import { events } from '@/os/events';
+import { useSettingsStore } from '@/os/store/settings';
 import Photobooth from './Photobooth';
 import { nextBoothName } from './photos';
 
@@ -42,6 +43,7 @@ describe('Snapshot Booth', () => {
     vi.useRealTimers();
     vi.restoreAllMocks();
     setCamera(undefined);
+    useSettingsStore.setState({ gender: 'girl' });
   });
 
   it('shows the consent screen first and does not touch the camera', () => {
@@ -106,6 +108,8 @@ describe('Snapshot Booth', () => {
     const user = userEvent.setup();
     render(<Photobooth />);
     await user.click(screen.getByRole('button', { name: /use a cartoon me/i }));
+    // A girl starts with long hair; the list wraps around to spiky.
+    await user.click(screen.getByRole('button', { name: 'Hair: Long' }));
     await user.click(screen.getByRole('button', { name: 'Hair: Spiky' }));
     expect(screen.getByRole('button', { name: 'Hair: Bob' })).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Comic' }));
@@ -117,6 +121,14 @@ describe('Snapshot Booth', () => {
       'aria-pressed',
       'false',
     );
+  });
+
+  it('starts a boy on spiky hair', async () => {
+    useSettingsStore.setState({ gender: 'boy' });
+    const user = userEvent.setup();
+    render(<Photobooth />);
+    await user.click(screen.getByRole('button', { name: /use a cartoon me/i }));
+    expect(screen.getByRole('button', { name: 'Hair: Spiky' })).toBeVisible();
   });
 
   it('counts down 3-2-1, then saves booth_<n>.png to My Pictures and offers the DP action', async () => {

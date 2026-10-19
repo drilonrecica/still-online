@@ -401,6 +401,7 @@ export const en = {
       bob: 'Bob',
       curly: 'Curly',
       bald: 'Bald',
+      long: 'Long',
     },
     eyes: {
       label: 'Eyes: {value}',

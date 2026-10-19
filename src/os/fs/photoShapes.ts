@@ -1,8 +1,15 @@
 // Shape helpers shared by the photo scene painters. Everything random comes from the seeded `rand`.
 import { pick, type Rand } from '@/os/random';
+import type { PhotoLook } from './types';
 
 export type Ctx = CanvasRenderingContext2D;
-export type Painter = (ctx: Ctx, rand: Rand, w: number, h: number) => void;
+export type Painter = (
+  ctx: Ctx,
+  rand: Rand,
+  w: number,
+  h: number,
+  look?: PhotoLook,
+) => void;
 
 export const between = (rand: Rand, min: number, max: number) =>
   min + rand() * (max - min);

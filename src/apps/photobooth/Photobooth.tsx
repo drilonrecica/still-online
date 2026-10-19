@@ -1,5 +1,6 @@
 // Snapshot Booth: webcam photos (never uploaded) with filters and a countdown, plus a cartoon fallback.
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useGender } from '@/i18n/settingsText';
 import type { MessageKey } from '@/i18n/types';
 import { useT } from '@/i18n/useT';
 import { useBlobUrl } from '@/os/blobStore';
@@ -60,7 +61,8 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
   const [mode, setMode] = useState<Mode>('start');
   const [notice, setNotice] = useState<MessageKey | null>(null);
   const [filter, setFilter] = useState<FilterId>('normal');
-  const [look, setLook] = useState<CartoonLook>(DEFAULT_LOOK);
+  const gender = useGender();
+  const [look, setLook] = useState<CartoonLook>(DEFAULT_LOOK[gender]);
   const [count, setCount] = useState<number | null>(null);
   const [flash, setFlash] = useState(false);
   const [photos, setPhotos] = useState<string[]>([]);

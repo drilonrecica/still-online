@@ -1,5 +1,6 @@
 // friendspace.example: "Friendspace: a place for friends in orbit". Site text, theme presets and the
 // player's starting profile. Friend profiles live in src/content/profiles/.
+import { g } from '../gender';
 import type { PlayerProfile, ProfileTheme } from '../profiles/types';
 import type { SiteMeta } from './types';
 
@@ -167,13 +168,21 @@ export const PROFILE_LIMITS = {
   aboutMe: 1000,
 } as const;
 
-/** The player's `/me` until they save their own (`web.myProfile` is null). */
+/**
+ * The player's `/me` until they save their own (`web.myProfile` is null): pink glitter for a girl,
+ * midnight for a boy.
+ */
 export const DEFAULT_PLAYER_PROFILE: Omit<PlayerProfile, 'top8'> = {
-  headline: 'new to Friendspace!!',
-  mood: { text: 'excited', emoticon: ':D' },
-  aboutMe:
-    'Hi!! I just joined Friendspace. Click "Edit Profile" to tell the galaxy about yourself.',
+  headline: g(
+    'new 2 Friendspace!! ~*sparkle*~ <3',
+    'new to Friendspace. skate or die',
+  ),
+  mood: { text: g('giggly', 'pumped'), emoticon: g(':D', '(8)') },
+  aboutMe: g(
+    'Hi!! <3 I just joined Friendspace. Click "Edit Profile" to tell the galaxy about yourself.',
+    'Hey. I just joined Friendspace. Click "Edit Profile" to tell the galaxy about yourself.',
+  ),
   songTrackId: null,
-  themePreset: 'default',
+  themePreset: g('glitter', 'midnight'),
   customColors: null,
 };

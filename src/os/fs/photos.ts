@@ -23,7 +23,7 @@ export function renderPhoto(
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   ctx.save();
-  SCENE_PAINTERS[spec.scene](ctx, mulberry32(spec.seed), w, h);
+  SCENE_PAINTERS[spec.scene](ctx, mulberry32(spec.seed), w, h, spec.look);
   ctx.restore();
 
   // Warm tint and lifted blacks.
