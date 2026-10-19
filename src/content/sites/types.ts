@@ -107,6 +107,50 @@ export interface Poll {
   options: readonly string[];
 }
 
+/** One code on cheatcave.example's `/cheats` page: what to press, and what (supposedly) happens. */
+export interface Cheat {
+  code: string;
+  effect: string;
+}
+
+/** A game on cheatcave.example's `/cheats?game=` page: real-ish tips plus one joke cheat. */
+export interface CheatGame {
+  /** The `?game=` value, the same in every language. */
+  id: string;
+  name: string;
+  genre: string;
+  blurb: string;
+  cheats: readonly Cheat[];
+  joke: Cheat;
+}
+
+/** A "top 10 funny clips" entry; the chart is the 10 most-viewed clips out by today. */
+export interface FunnyClip {
+  id: string;
+  day: number;
+  title: string;
+  /** `m:ss`. */
+  length: string;
+  views: number;
+  uploader: string;
+  /** The thumbnail, drawn by `renderPhoto`. */
+  photo: PhotoSpec;
+}
+
+export interface ForumPost {
+  day: number;
+  user: string;
+  text: string;
+}
+
+/** A read-only forum thread; it shows from its first post's day, each reply from its own. */
+export interface ForumThread {
+  id: string;
+  title: string;
+  board: string;
+  posts: readonly ForumPost[];
+}
+
 // ---------------------------------------------------------------------------
 // Persisted `web` store (src/apps/browser/store.ts)
 // ---------------------------------------------------------------------------

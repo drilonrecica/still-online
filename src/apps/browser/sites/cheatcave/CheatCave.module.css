@@ -1,0 +1,320 @@
+/* cheatcave.example: a 2007 games portal. Near-black cave background, neon green and orange,
+   blocky "pixel" headers, a blinking UPDATED DAILY!! badge and 88x31 link buttons. The blink
+   switches off under prefers-reduced-motion. */
+.page {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: 0 0 16px;
+  color: #d8ffd0;
+  font-family: Verdana, Tahoma, sans-serif;
+  font-size: 12px;
+  background-color: #0b0f0a;
+  background-image:
+    linear-gradient(rgb(57 255 20 / 5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(57 255 20 / 5%) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.page a {
+  color: #39ff14;
+  font-weight: bold;
+}
+
+.page a:hover {
+  color: #0b0f0a;
+  background: #ff8c00;
+}
+
+.page a:focus-visible {
+  outline: 2px dashed #ff8c00;
+  outline-offset: 2px;
+}
+
+.banner {
+  padding: 12px 16px 8px;
+  text-align: center;
+  background: linear-gradient(180deg, #1c2a12 0%, #0b0f0a 100%);
+  border-bottom: 4px solid #ff8c00;
+}
+
+.title {
+  margin: 0;
+  color: #39ff14;
+  font-family: 'Courier New', monospace;
+  font-size: 38px;
+  font-weight: bold;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  text-shadow:
+    3px 0 0 #ff8c00,
+    0 3px 0 #ff8c00,
+    3px 3px 0 #000000;
+}
+
+.tagline {
+  margin: 6px 0 0;
+  color: #ffb347;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+.updated {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  color: #0b0f0a;
+  background: #39ff14;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  background: #000000;
+  border-bottom: 2px solid #39ff14;
+}
+
+.nav a {
+  padding: 2px 12px;
+  color: #ff8c00;
+  font-family: 'Courier New', monospace;
+  border: 2px outset #ff8c00;
+  text-decoration: none;
+}
+
+.columns {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 12px 0;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar {
+  flex: 0 0 190px;
+  width: 190px;
+  min-width: 0;
+}
+
+.heading {
+  margin: 0 0 8px;
+  padding: 3px 8px;
+  color: #0b0f0a;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  letter-spacing: 2px;
+  background: #ff8c00;
+  box-shadow: 3px 3px 0 #39ff14;
+}
+
+.box,
+.card {
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  background: #141c10;
+  border: 2px solid #39ff14;
+}
+
+.box h2 {
+  margin: -8px -10px 8px;
+  padding: 3px 8px;
+  color: #0b0f0a;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  background: #39ff14;
+}
+
+.box p {
+  margin: 0 0 4px;
+}
+
+.cardTitle {
+  margin: 0 0 2px;
+  color: #ff8c00;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+}
+
+.meta {
+  margin: 0 0 6px;
+  color: #8fbf85;
+  font-size: 11px;
+}
+
+.counter {
+  display: flex;
+  gap: 1px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.digit {
+  padding: 0 3px;
+  color: #39ff14;
+  background: #000000;
+  border: 1px solid #ff8c00;
+}
+
+.online {
+  color: #ffb347;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0 0 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.button88 {
+  box-sizing: border-box;
+  width: 88px;
+  height: 31px;
+  padding: 2px;
+  overflow: hidden;
+  color: #39ff14;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 25px;
+  text-align: center;
+  background: linear-gradient(180deg, #2b1a00 0%, #000000 100%);
+  border: 1px solid #ff8c00;
+}
+
+.games,
+.threads {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.games li,
+.threads li {
+  margin: 0 0 6px;
+}
+
+.cheats {
+  margin: 8px 0;
+}
+
+.cheats dt {
+  color: #39ff14;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+.cheats dd {
+  margin: 0 0 6px 16px;
+}
+
+.joke {
+  padding: 4px 6px;
+  color: #ffb347;
+  border: 1px dashed #ff8c00;
+}
+
+.clips {
+  margin: 8px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clip {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 6px;
+  padding: 4px;
+  background: #141c10;
+  border: 1px solid #2f4a24;
+}
+
+.rank {
+  flex: 0 0 34px;
+  color: #ff8c00;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.thumb {
+  position: relative;
+  flex: 0 0 96px;
+  height: 72px;
+  border: 1px solid #39ff14;
+}
+
+.thumb canvas {
+  display: block;
+}
+
+.length {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  padding: 0 2px;
+  color: #ffffff;
+  font-size: 10px;
+  background: rgb(0 0 0 / 75%);
+}
+
+.clipText {
+  min-width: 0;
+}
+
+.posts {
+  margin: 8px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.posts li {
+  margin: 0 0 6px;
+  padding: 4px 6px;
+  border-left: 3px solid #ff8c00;
+  background: #0f150c;
+}
+
+.posts p {
+  margin: 0 0 2px;
+}
+
+.empty,
+.closed {
+  color: #ffb347;
+  font-style: italic;
+}
+
+.footer {
+  margin: 8px 12px 0;
+  color: #8fbf85;
+  font-size: 10px;
+  text-align: center;
+}
+
+.footer p {
+  margin: 2px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .updated {
+    animation: none;
+  }
+}

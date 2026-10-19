@@ -4,6 +4,7 @@ import type { ResolvedPage, SiteDefinition } from '@/content/sites/types';
 import type { Locale } from '@/i18n/types';
 import { parseUrl } from '../url';
 import { ABOUT_SITE } from './about';
+import { CHEATCAVE_SITE } from './cheatcave';
 import { GOSSIP_SITE } from './celebgossip07';
 import { SEARCHLY_SITE } from './searchly';
 import { FRIENDSPACE_SITE } from './friendspace';
@@ -17,6 +18,7 @@ export const SITES: readonly SiteDefinition[] = [
   FRIENDSPACE_SITE,
   WESTFIELD_SITE,
   GOSSIP_SITE,
+  CHEATCAVE_SITE,
   VIRUSGUARD_SITE,
   ABOUT_SITE,
 ];

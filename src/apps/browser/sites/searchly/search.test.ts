@@ -146,6 +146,16 @@ describe.each(LOCALES)('searchly over the registered sites (%s)', (locale) => {
     }
   });
 
+  it('finds CheatCave for cheat and clip searches', () => {
+    const top = (q: string) => search(q, index)[0]?.url;
+    const cheats = locale === 'de' ? 'cheatcodes zocken' : 'cheat codes';
+    expect(top(cheats)).toMatch(/^http:\/\/cheatcave\.example\//);
+    expect(top('CheatCave Forum')).toBe('http://cheatcave.example/forum');
+    expect(top(locale === 'de' ? 'lustige Clips' : 'funny clips')).toBe(
+      'http://cheatcave.example/clips',
+    );
+  });
+
   it('is deterministic and paginates in tens', () => {
     expect(search('web', index)).toEqual(search('web', index));
     expect(PAGE_SIZE).toBe(10);

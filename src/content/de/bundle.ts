@@ -6,6 +6,7 @@ import type { LocaleContent } from '../locale';
 import { mergeOverlay } from '../overlay';
 import { ABOUT_HOST } from '../sites/about';
 import { GOSSIP_HOST } from '../sites/celebgossip07';
+import { CHEATCAVE_HOST } from '../sites/cheatcave';
 import { SEARCHLY_HOST } from '../sites/searchly';
 import { FRIENDSPACE_HOST } from '../sites/friendspace';
 import { TINFOIL_HOST } from '../sites/tinfoilcomets';
@@ -20,6 +21,7 @@ import * as mail from './mail';
 import * as profiles from './profiles';
 import * as about from './sites/about';
 import * as gossip from './sites/celebgossip07';
+import * as cheatcave from './sites/cheatcave';
 import * as searchly from './sites/searchly';
 import * as friendspace from './sites/friendspace';
 import * as tinfoil from './sites/tinfoilcomets';
@@ -49,6 +51,7 @@ export const content: LocaleContent = {
     [TINFOIL_HOST]: tinfoil,
     [VIRUSGUARD_HOST]: virusguard,
     [WESTFIELD_HOST]: westfield,
+    [CHEATCAVE_HOST]: cheatcave,
   },
   balloons,
   tips: assistant,
