@@ -2,7 +2,7 @@
 // Friends comment on it on days 2–5.
 import { useGender, usePlayerName } from '@/i18n/settingsText';
 import { useId, useState } from 'react';
-import { getProfiles } from '@/content/locale';
+import { getProfiles, getTop8Reactions } from '@/content/locale';
 import { useLocale, useT } from '@/i18n/useT';
 import { rich } from '../rich';
 import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
@@ -18,6 +18,8 @@ import {
   playerTheme,
   playerWall,
   shortDate,
+  mergeWall,
+  top8WallComments,
   withMoodHistory,
 } from './logic';
 import { parseLayoutCode } from './layoutCode';
@@ -43,6 +45,7 @@ export default function Me() {
   const playerName = usePlayerName();
   const saved = useWebStore((s) => s.myProfile);
   const save = useWebStore((s) => s.saveProfile);
+  const top8Wall = useWebStore((s) => s.top8Wall);
   const [editing, setEditing] = useState(false);
   const autoplayId = useId();
   const profile = effectiveProfile(saved, FRIEND_IDS, locale, gender);
@@ -80,9 +83,10 @@ export default function Me() {
         songTrackId={profile.songTrackId}
         aboutMe={profile.aboutMe}
         top8={profile.top8.map((e) => topFriendView(e, playerName, locale))}
-        comments={playerWall(PROFILES, day).map((c) =>
-          wallComment(c, playerName, locale),
-        )}
+        comments={mergeWall(
+          playerWall(PROFILES, day),
+          top8WallComments(top8Wall ?? [], getTop8Reactions(locale, gender)),
+        ).map((c) => wallComment(c, playerName, locale))}
         emptyWall={T.myEmptyWall}
         day={day}
         theme={applyLayout(playerTheme(profile), extras)}

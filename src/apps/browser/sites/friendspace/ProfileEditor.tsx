@@ -2,17 +2,26 @@
 // colours), a pasted layout code with a live preview, and the Top 8 order. Nothing is saved until "Save Changes".
 import { useId, useState } from 'react';
 import type { PlayerProfile } from '@/content/friendspace/profiles/types';
+import { getBands, getProfiles } from '@/content/locale';
 import { PLAYLIST } from '@/content/playlist';
 import { PROFILE_LIMITS, FRIENDSPACE_HOST } from '@/content/sites/friendspace';
+import { useGender } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
 import { SiteLink } from '../../SiteLink';
 import { useSiteText } from '../useSiteText';
-import { cleanProfile, moveTop8, playerTheme, topEntryKey } from './logic';
+import {
+  cleanProfile,
+  moveTop8,
+  playerTheme,
+  top8Candidates,
+  topEntryKey,
+} from './logic';
 import { LAYOUT_CODE_MAX, parseLayoutCode } from './layoutCode';
 import { LayoutPreview } from './LayoutPreview';
 import { Mood } from './Mood';
 import extrasStyles from './Extras.module.css';
-import { topFriendView } from './people';
+import { FRIEND_IDS, topFriendView } from './people';
+import { WEB_LIMITS } from '../../webSanitize';
 import styles from './Friendspace.module.css';
 
 const DEFAULT_CUSTOM = { background: '#000033', text: '#ffff66' };
@@ -31,6 +40,17 @@ export function ProfileEditor({
   const t = useT();
   const [p, setP] = useState(initial);
   const id = useId();
+  const gender = useGender();
+  const [pick, setPick] = useState('');
+  const taken = new Set(p.top8.map(topEntryKey));
+  const pickable = top8Candidates(
+    FRIEND_IDS,
+    getBands(locale, gender).map((b) => b.id),
+    getProfiles(locale, gender),
+  ).filter((e) => !taken.has(topEntryKey(e)));
+  const pickedKey = pickable.some((e) => topEntryKey(e) === pick)
+    ? pick
+    : topEntryKey(pickable[0]!);
   const set = (patch: Partial<PlayerProfile>) =>
     setP((old) => ({ ...old, ...patch }));
   const colors = p.customColors ?? DEFAULT_CUSTOM;
@@ -210,38 +230,87 @@ export function ProfileEditor({
         </LayoutPreview>
 
         <span>{t('sites.friendspace.editor.top8')}</span>
-        <ol
-          className={styles.orderList}
-          aria-label={t('sites.friendspace.editor.top8Order')}
-        >
-          {p.top8.map((entry, i) => (
-            <li key={topEntryKey(entry)}>
-              <span className={styles.orderName}>
-                {topFriendView(entry, '', locale).label}
-              </span>
+        <div>
+          <ol
+            className={styles.orderList}
+            aria-label={t('sites.friendspace.editor.top8Order')}
+          >
+            {p.top8.map((entry, i) => {
+              const name = topFriendView(entry, '', locale).label;
+              return (
+                <li key={topEntryKey(entry)}>
+                  <span className={styles.orderName}>{name}</span>
+                  <button
+                    type="button"
+                    aria-label={t('sites.friendspace.editor.moveUp', { name })}
+                    disabled={i === 0}
+                    onClick={() => set({ top8: moveTop8(p.top8, i, -1) })}
+                  >
+                    &#9650;
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={t('sites.friendspace.editor.moveDown', {
+                      name,
+                    })}
+                    disabled={i === p.top8.length - 1}
+                    onClick={() => set({ top8: moveTop8(p.top8, i, 1) })}
+                  >
+                    &#9660;
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={t('sites.friendspace.editor.remove', { name })}
+                    onClick={() =>
+                      set({ top8: p.top8.filter((_, j) => j !== i) })
+                    }
+                  >
+                    &#10005;
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+          {p.top8.length < WEB_LIMITS.top8 && pickable.length > 0 && (
+            <span className={styles.row}>
+              <select
+                aria-label={t('sites.friendspace.editor.pick')}
+                value={pickedKey}
+                onChange={(e) => setPick(e.target.value)}
+              >
+                {(['contact', 'band', 'extra'] as const).map((kind) => {
+                  const group = pickable.filter((e) => e.kind === kind);
+                  return group.length > 0 ? (
+                    <optgroup
+                      key={kind}
+                      label={t(`sites.friendspace.editor.group.${kind}`)}
+                    >
+                      {group.map((e) => (
+                        <option key={topEntryKey(e)} value={topEntryKey(e)}>
+                          {topFriendView(e, '', locale).label}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ) : null;
+                })}
+              </select>
               <button
                 type="button"
-                aria-label={t('sites.friendspace.editor.moveUp', {
-                  name: entry.kind === 'extra' ? entry.name : entry.id,
-                })}
-                disabled={i === 0}
-                onClick={() => set({ top8: moveTop8(p.top8, i, -1) })}
+                onClick={() => {
+                  const entry = pickable.find(
+                    (e) => topEntryKey(e) === pickedKey,
+                  );
+                  if (entry) {
+                    set({ top8: [...p.top8, entry] });
+                    setPick('');
+                  }
+                }}
               >
-                &#9650;
+                {t('sites.friendspace.editor.add')}
               </button>
-              <button
-                type="button"
-                aria-label={t('sites.friendspace.editor.moveDown', {
-                  name: entry.kind === 'extra' ? entry.name : entry.id,
-                })}
-                disabled={i === p.top8.length - 1}
-                onClick={() => set({ top8: moveTop8(p.top8, i, 1) })}
-              >
-                &#9660;
-              </button>
-            </li>
-          ))}
-        </ol>
+            </span>
+          )}
+        </div>
       </div>
       <div className={styles.editorButtons}>
         <button type="submit" className={styles.bigButton}>

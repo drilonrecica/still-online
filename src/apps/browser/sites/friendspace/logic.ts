@@ -15,7 +15,12 @@ import {
   FRIENDSPACE_HOST,
   THEME_PRESETS,
 } from '@/content/sites/friendspace';
-import type { Bulletin, PlayerTopEntry } from '@/content/friendspace/types';
+import type {
+  Bulletin,
+  PlayerTopEntry,
+  Top8Reaction,
+} from '@/content/friendspace/types';
+import type { Top8WallEntry } from '@/content/sites/types';
 import type { ContactId } from '@/content/types';
 import type { Locale } from '@/i18n/types';
 import { mulberry32, seedFrom } from '@/os/random';
@@ -90,26 +95,39 @@ export const topEntryKey = (e: PlayerTopEntry): string =>
   e.kind === 'extra' ? `extra:${e.seed}` : `${e.kind}:${e.id}`;
 
 /**
- * The player's Top 8: the saved entries in order (friends not in `known` and duplicates are
- * dropped), then any friend missing from it, so every friend shows up exactly once (max 8).
- * The reorder-only editor relies on that; P1-05's editor makes removal possible.
+ * A saved Top 8 as shown: entries in order, friends not in `known` and duplicates dropped (max 8).
+ * Nothing is added back, so the player can remove friends (P1-05).
+ */
+export function cleanTop8(
+  saved: readonly PlayerTopEntry[],
+  known: readonly ContactId[],
+): PlayerTopEntry[] {
+  const keys = new Set<string>();
+  return saved
+    .filter((e) => {
+      const key = topEntryKey(e);
+      if (keys.has(key) || (e.kind === 'contact' && !known.includes(e.id)))
+        return false;
+      keys.add(key);
+      return true;
+    })
+    .slice(0, WEB_LIMITS.top8);
+}
+
+/**
+ * The starting Top 8, before the player saves one: `cleanTop8`, then any friend missing from it,
+ * so every friend shows up exactly once (max 8).
  */
 export function normalizeTop8(
   saved: readonly PlayerTopEntry[],
   known: readonly ContactId[],
 ): PlayerTopEntry[] {
-  const keys = new Set<string>();
-  const kept = saved.filter((e) => {
-    const key = topEntryKey(e);
-    if (keys.has(key) || (e.kind === 'contact' && !known.includes(e.id)))
-      return false;
-    keys.add(key);
-    return true;
-  });
+  const kept = cleanTop8(saved, known);
+  const have = new Set(kept.map(topEntryKey));
   const missing = known
-    .filter((id) => !keys.has(`contact:${id}`))
+    .filter((id) => !have.has(`contact:${id}`))
     .map((id): PlayerTopEntry => ({ kind: 'contact', id }));
-  return [...kept, ...missing].slice(0, 8);
+  return [...kept, ...missing].slice(0, WEB_LIMITS.top8);
 }
 
 /** `web.myProfile`, or the starting profile when the player hasn't saved one yet. */
@@ -125,7 +143,10 @@ export function effectiveProfile(
     gender,
   );
   const base = saved ?? { ...DEFAULT_PLAYER_PROFILE, top8: [] };
-  return { ...base, top8: normalizeTop8(base.top8, known) };
+  return {
+    ...base,
+    top8: saved ? cleanTop8(base.top8, known) : normalizeTop8(base.top8, known),
+  };
 }
 
 /** Moves the Top 8 entry at `index` by `delta` places (no-op at the ends). */
@@ -227,4 +248,45 @@ export function hasUnreadBulletins(
   seen: number | undefined,
 ): boolean {
   return (seen ?? 0) < day && bulletins.some((b) => b.day === day);
+}
+
+/** Friends' Top 8 reactions (drop / re-add) as wall comments, from the saved `top8Wall` entries. */
+export function top8WallComments(
+  entries: readonly Top8WallEntry[],
+  reactions: readonly Top8Reaction[],
+): ProfileComment[] {
+  return entries.flatMap((e): ProfileComment[] => {
+    const text = reactions.find((r) => r.contactId === e.contactId)?.[e.kind];
+    return text
+      ? [{ day: e.day, from: e.contactId, contactId: e.contactId, text }]
+      : [];
+  });
+}
+
+/** What the Top 8 editor can add: friends first, then bands, then extras from friends' Top 8s. */
+export function top8Candidates(
+  known: readonly ContactId[],
+  bandIds: readonly string[],
+  profiles: readonly ProfileContent[],
+): PlayerTopEntry[] {
+  const extras = new Map<string, PlayerTopEntry>();
+  for (const p of profiles)
+    for (const e of p.top8)
+      if (e.kind === 'extra' && !extras.has(e.seed))
+        extras.set(e.seed, { kind: 'extra', name: e.name, seed: e.seed });
+  return [
+    ...known.map((id): PlayerTopEntry => ({ kind: 'contact', id })),
+    ...bandIds.map((id): PlayerTopEntry => ({ kind: 'band', id })),
+    ...extras.values(),
+  ];
+}
+
+/** `/me`'s wall: friends' comments and Top 8 reactions together, newest day first (reactions first within a day). */
+export function mergeWall(
+  comments: readonly ProfileComment[],
+  reactions: readonly ProfileComment[],
+): ProfileComment[] {
+  return [...[...reactions].reverse(), ...comments].sort(
+    (a, b) => b.day - a.day,
+  );
 }

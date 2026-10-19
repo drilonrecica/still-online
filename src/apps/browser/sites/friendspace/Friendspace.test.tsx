@@ -170,7 +170,9 @@ describe('friendspace.example', () => {
       'newer-wave',
     );
     await user.selectOptions(within(form).getByLabelText('Theme:'), 'midnight');
-    await user.click(within(form).getByRole('button', { name: 'Move pia up' }));
+    await user.click(
+      within(form).getByRole('button', { name: 'Move pia (L) ponies (L) up' }),
+    );
     await user.click(
       within(form).getByRole('button', { name: 'Save Changes' }),
     );

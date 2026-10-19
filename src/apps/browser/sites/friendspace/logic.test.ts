@@ -16,7 +16,11 @@ import {
   fillName,
   hasUnreadBulletins,
   moveTop8,
+  cleanTop8,
+  mergeWall,
   normalizeTop8,
+  top8Candidates,
+  top8WallComments,
   playerTheme,
   playerWall,
   profileName,
@@ -121,10 +125,13 @@ describe('friendspace logic', () => {
       ...resolveGender(DEFAULT_PLAYER_PROFILE, 'girl'),
       top8: [c('jess'), c('dex')],
     });
+    // A saved Top 8 keeps its order and is not refilled, so friends can be removed (P1-05).
     expect(effectiveProfile(base, ['dex', 'pia', 'jess']).top8).toEqual([
       c('jess'),
       c('pia'),
-      c('dex'),
+    ]);
+    expect(cleanTop8([c('pia'), c('ghost'), c('pia')], ['pia'])).toEqual([
+      c('pia'),
     ]);
   });
 
@@ -211,5 +218,40 @@ describe('bulletins', () => {
     expect(hasUnreadBulletins(list, 2, 2)).toBe(false);
     expect(hasUnreadBulletins(list, 4, 3)).toBe(false); // nothing posted on day 4
     expect(hasUnreadBulletins([], 1, undefined)).toBe(false);
+  });
+
+  it('turns Top 8 wall entries into comments and merges them newest first', () => {
+    const reactions = [{ contactId: 'kayla', dropped: 'd', readded: 'r' }];
+    const wall = top8WallComments(
+      [
+        { contactId: 'kayla', kind: 'dropped', day: 2 },
+        { contactId: 'kayla', kind: 'readded', day: 3 },
+        { contactId: 'ghost', kind: 'dropped', day: 3 },
+      ],
+      reactions,
+    );
+    expect(wall.map((w) => [w.day, w.text])).toEqual([
+      [2, 'd'],
+      [3, 'r'],
+    ]);
+    const other = { day: 3, from: 'jess', contactId: 'jess', text: 'hi' };
+    expect(mergeWall([other], wall).map((w) => w.text)).toEqual([
+      'r',
+      'hi',
+      'd',
+    ]);
+  });
+
+  it('offers friends, then bands, then distinct extras', () => {
+    const out = top8Candidates(['jess'], ['b1'], [
+      {
+        top8: [
+          { kind: 'extra', name: 'Lexi', seed: 'lexi' },
+          { kind: 'player' },
+        ],
+      },
+      { top8: [{ kind: 'extra', name: 'Lexi', seed: 'lexi' }] },
+    ] as never);
+    expect(out.map((e) => e.kind)).toEqual(['contact', 'band', 'extra']);
   });
 });
