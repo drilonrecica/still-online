@@ -78,3 +78,48 @@ test('band page plays through the Amplifier; profile songs autoplay and stop', a
     'click to play',
   );
 });
+
+test('bulletins, a GlitterCodez layout pasted on /me, and the Top 8 editor', async ({
+  page,
+}) => {
+  await logIn(page);
+  const web = await openBrowserOnline(page);
+
+  // Bulletins: day 1 has one; opening the page clears the nav dot.
+  await go(web, 'http://friendspace.example/me');
+  await expect(
+    web.getByRole('link', { name: 'Bulletins (new)' }),
+  ).toBeVisible();
+  await go(web, 'http://friendspace.example/bulletins');
+  await expect(web.getByTestId('bulletin').first()).toContainText(
+    'TINFOIL COMETS COUNTDOWN',
+  );
+  await expect(web.getByRole('link', { name: 'Bulletins (new)' })).toHaveCount(
+    0,
+  );
+
+  // GlitterCodez: take the first gallery code and paste it into the /me editor.
+  await go(web, 'http://glittercodez.example/');
+  const code = await web.locator('article textarea').first().inputValue();
+  expect(code).toContain('[layout');
+  await go(web, 'http://friendspace.example/me');
+  await web.getByRole('button', { name: 'Edit Profile' }).click();
+  await web.getByLabel('Layout code:').fill(code);
+  await expect(web.getByRole('group', { name: 'Preview:' })).toBeVisible();
+
+  // Top 8: remove the first entry and add another; the saved profile shows 7 → 8 again.
+  const order = web.getByRole('list', { name: 'Top 8 order' });
+  const before = await order.getByRole('listitem').count();
+  await order
+    .getByRole('listitem')
+    .first()
+    .getByRole('button', { name: /Remove .* from the Top 8/ })
+    .click();
+  await expect(order.getByRole('listitem')).toHaveCount(before - 1);
+  await web.getByRole('button', { name: 'Add', exact: true }).click();
+  await expect(order.getByRole('listitem')).toHaveCount(before);
+  await web.getByRole('button', { name: 'Save Changes' }).click();
+
+  await expect(web.getByRole('button', { name: 'Edit Profile' })).toBeVisible();
+  await expect(web.getByRole('list', { name: 'Top 8' })).toBeVisible();
+});

@@ -131,7 +131,8 @@ export async function go(browser: Locator, url: string) {
   const address = browser.getByLabel('Address');
   await address.fill(url);
   await address.press('Enter');
-  await expect(browser.getByRole('status')).toHaveText('Done', {
+  // `.last()`: the status bar; pages such as GlitterCodez have their own live regions.
+  await expect(browser.getByRole('status').last()).toHaveText('Done', {
     timeout: 10_000,
   });
 }

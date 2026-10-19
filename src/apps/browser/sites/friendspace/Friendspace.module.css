@@ -513,11 +513,14 @@
 }
 
 .bulletinPicture {
-  flex: none;
+  float: left;
+  margin: 0 8px 2px 0;
+  line-height: 0;
 }
 
 .bulletinText {
   min-width: 0;
+  display: flow-root;
 }
 
 .bulletinMeta {
