@@ -1,13 +1,19 @@
-// Pixlog profiles, one per friend, in sign-in order. P3-03 adds Marco, Theo and Dex.
+// Pixlog profiles, one per friend, in sign-in order.
+import { dexPixlog } from './dex';
 import { jessPixlog } from './jess';
 import { kaylaPixlog } from './kayla';
+import { marcoPixlog } from './marco';
 import { piaPixlog } from './pia';
+import { theoPixlog } from './theo';
 import type { PixlogProfile } from './types';
 
 export const PIXLOG_PROFILES: readonly PixlogProfile[] = [
   jessPixlog,
   piaPixlog,
   kaylaPixlog,
+  marcoPixlog,
+  theoPixlog,
+  dexPixlog,
 ];
 
 /** Screen names of strangers who drop by the player's page (P2-02 `visitors`, seeded per day). */

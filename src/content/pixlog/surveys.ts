@@ -1,5 +1,5 @@
 // Pixlog surveys (P2-03): friends answer one each; the player can fill any of them in.
-// Jess answers "this or that", Kayla "about me", Pia "last time"; P3-03 reuses them.
+// Jess and Marco answer "this or that", Kayla and Theo "about me", Pia and Dex "last time".
 import type { Survey } from './types';
 
 export const SURVEYS: readonly Survey[] = [

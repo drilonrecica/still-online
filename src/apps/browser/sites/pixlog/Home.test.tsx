@@ -79,7 +79,13 @@ describe('pixlog home feed', () => {
     expect(items).toHaveLength(FEED_LIMIT);
     expect(items[0]!.textContent).toContain('Jess shouts:');
     expect(items[0]!.textContent).toContain('today');
-    expect(items.at(-1)!.textContent).toContain('2 days ago');
+    // Six friends fill the whole feed with day 5 alone.
+    expect(items.at(-1)!.textContent).toContain('today');
+    expect(
+      feed().getByRole('link', {
+        name: 'Dex added 4 photos to “world premiere (my living room)”',
+      }),
+    ).toBeTruthy();
   });
 
   it('day-gates the feed', async () => {

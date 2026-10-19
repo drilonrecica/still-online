@@ -62,13 +62,23 @@ describe('pixlog content and the story', () => {
     for (const b of newPics) {
       const id = b.link!.slice('http://pixlog.example/'.length);
       const profile = profiles.find((p) => p.contactId === id);
-      // P3-03 adds the remaining friends.
-      if (!profile) continue;
+      expect(profile, `${b.id} → ${id}`).toBeDefined();
       expect(
-        profile.albums.some((a) => a.day === b.day),
+        profile!.albums.some((a) => a.day === b.day),
         `${b.id} → ${id} on day ${b.day}`,
       ).toBe(true);
     }
+  });
+
+  it('has a profile for every friend', () => {
+    expect(PIXLOG_PROFILES.map((p) => p.contactId)).toEqual([
+      'jess',
+      'pia',
+      'kayla',
+      'marco',
+      'theo',
+      'dex',
+    ]);
   });
 
   it('defines ~3 surveys', () => {
@@ -97,5 +107,19 @@ describe('pixlog content and the story', () => {
       expect(s.text).toContain('(Y)');
       expect(s.text).not.toContain('(L)');
     }
+  });
+
+  it('gives a boy no crush on Theo and his own jokes from Marco and Dex', () => {
+    const text = (id: string, gender: 'girl' | 'boy') =>
+      JSON.stringify(
+        getPixlogProfiles('en', gender).find((p) => p.contactId === id)!,
+      );
+    expect(text('theo', 'girl')).toContain(':$');
+    expect(text('theo', 'boy')).not.toContain(':$');
+    expect(text('theo', 'boy')).toContain('we r a good team (Y)');
+    expect(text('marco', 'girl')).toContain('too much glitter');
+    expect(text('marco', 'boy')).not.toContain('glitter');
+    expect(text('dex', 'boy')).toContain('next video ur in it. bring a board');
+    expect(text('dex', 'girl')).not.toContain('bring a board');
   });
 });
