@@ -40,11 +40,11 @@ export default function Browser({ windowId, props }: AppComponentProps) {
   const t = useT();
   const locale = useLocale();
   // Page titles come from site metadata, which resolves for the gender: re-render on a switch.
-  useGender();
-  // Default favorites are named in the current language.
+  const gender = useGender();
+  // Untouched default favorites follow the gender and are named in the current language.
   const favorites = useMemo(
-    () => renderFavorites(favoriteRecords, locale),
-    [favoriteRecords, locale],
+    () => renderFavorites(favoriteRecords, locale, gender),
+    [favoriteRecords, locale, gender],
   );
 
   const shown = nav.shown;

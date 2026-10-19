@@ -89,8 +89,12 @@ describe('saved favorites', () => {
       { title: 'My Spaceport', url: `http://${NEW}/me` },
       { url: `http://${NEW}/kayla` },
     ]);
-    expect(renderFavorites(favorites, 'en')[0]?.title).toBe('Friendspace');
-    expect(renderFavorites(favorites, 'de')[0]?.title).toBe('Friendspace');
+    expect(renderFavorites(favorites, 'en', 'girl')[0]?.title).toBe(
+      'Friendspace',
+    );
+    expect(renderFavorites(favorites, 'de', 'girl')[0]?.title).toBe(
+      'Friendspace',
+    );
   });
 
   it('merges an old favorite with its new twin', () => {

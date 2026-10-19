@@ -6,6 +6,7 @@ import { parseUrl } from '../url';
 import { ABOUT_SITE } from './about';
 import { CHEATCAVE_SITE } from './cheatcave';
 import { GOSSIP_SITE } from './celebgossip07';
+import { KICKFLIP_SITE } from './kickflipkings';
 import { SEARCHLY_SITE } from './searchly';
 import { FRIENDSPACE_SITE } from './friendspace';
 import { TINFOIL_SITE } from './tinfoilcomets';
@@ -19,6 +20,7 @@ export const SITES: readonly SiteDefinition[] = [
   WESTFIELD_SITE,
   GOSSIP_SITE,
   CHEATCAVE_SITE,
+  KICKFLIP_SITE,
   VIRUSGUARD_SITE,
   ABOUT_SITE,
 ];

@@ -431,9 +431,10 @@ export const dex: ContactOverlay = {
           'heut morgen den rest von der 1999er kassette vollgefilmt',
           'is 30 sekunden lang. is eher so verschwommen',
           'so richtig verschwommen. man sieht orange. das is mein shirt',
+          'kev hats auf die crew-seite gestellt: kickflipkings.example/video. lädt aber ewig',
         ],
         choices: [
-          { text: 'schick rüber!!', label: 'Schick’s mir!!' },
+          { text: 'schick mir das echte!!', label: 'Schick’s mir!!' },
           { text: 'verschwommen?? lol', label: 'Verschwommen??' },
         ],
       },

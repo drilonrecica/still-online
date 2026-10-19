@@ -9,9 +9,11 @@ import type {
   WebState,
 } from '@/content/sites/types';
 import type { FavoriteRecord } from '@/content/types';
+import { getGender } from '@/i18n/settingsText';
 import { translate } from '@/i18n/t';
 import type { Locale, MessageKey } from '@/i18n/types';
 import { isRecord, persistOptions } from '@/os/persist';
+import type { Gender } from '@/os/types';
 import { LEGACY_DEFAULT_FAVORITE_NAMES } from './legacyHosts';
 import { normalizeUrl } from './url';
 
@@ -22,12 +24,62 @@ const DEFAULT_FAVORITE_KEYS: Readonly<Record<string, MessageKey>> = {
   'http://friendspace.example/': 'browser.defaultFavorites.friendspace',
   'http://westfield-high.example/': 'browser.defaultFavorites.westfield-high',
   'http://celebgossip07.example/': 'browser.defaultFavorites.celebgossip07',
+  'http://cheatcave.example/': 'browser.defaultFavorites.cheatcave',
+  'http://kickflipkings.example/': 'browser.defaultFavorites.kickflipkings',
+};
+
+/**
+ * Each gender's default favorites, by url. Both share Searchly, Friendspace and Westfield High;
+ * the girl list is the v0.2/v0.3 default list unchanged, the boy list swaps in his two sites.
+ */
+const DEFAULT_FAVORITE_URLS: Readonly<Record<Gender, readonly string[]>> = {
+  girl: [
+    'http://searchly.example/',
+    'http://tinfoilcomets.example/',
+    'http://friendspace.example/',
+    'http://westfield-high.example/',
+    'http://celebgossip07.example/',
+  ],
+  boy: [
+    'http://searchly.example/',
+    'http://cheatcave.example/',
+    'http://friendspace.example/',
+    'http://westfield-high.example/',
+    'http://kickflipkings.example/',
+  ],
 };
 
 /** Stored without a title: they are named in the current language (`favoriteTitle`). */
-export const DEFAULT_FAVORITES: readonly FavoriteRecord[] = Object.keys(
-  DEFAULT_FAVORITE_KEYS,
-).map((url) => ({ url }));
+export const defaultFavoritesFor = (gender: Gender): FavoriteRecord[] =>
+  DEFAULT_FAVORITE_URLS[gender].map((url) => ({ url }));
+
+/** The girl defaults, which are also what v0.2/v0.3 saved and what a fresh store holds. */
+export const DEFAULT_FAVORITES: readonly FavoriteRecord[] =
+  defaultFavoritesFor('girl');
+
+/**
+ * Favorites the player never changed: exactly one gender's default list (which covers the old
+ * v0.3 list, the girl one). They follow the gender; any add, rename or removal makes them custom.
+ */
+export function isUntouchedFavorites(
+  favorites: readonly FavoriteRecord[],
+): boolean {
+  return Object.values(DEFAULT_FAVORITE_URLS).some(
+    (urls) =>
+      urls.length === favorites.length &&
+      urls.every(
+        (url, i) =>
+          favorites[i]?.url === url && favorites[i]?.title === undefined,
+      ),
+  );
+}
+
+/** The favorites to show and edit for `gender`: untouched defaults become that gender's list. */
+export const effectiveFavorites = (
+  favorites: readonly FavoriteRecord[],
+  gender: Gender,
+): readonly FavoriteRecord[] =>
+  isUntouchedFavorites(favorites) ? defaultFavoritesFor(gender) : favorites;
 
 /** A favorite's title: the one the player added it with, else the default's name in `locale`. */
 export function favoriteTitle(f: FavoriteRecord, locale: Locale): string {
@@ -36,11 +88,16 @@ export function favoriteTitle(f: FavoriteRecord, locale: Locale): string {
   return key ? translate(locale, key) : f.url;
 }
 
+/** The favorites as the Favorites menu shows them, for `gender` and in `locale`. */
 export const renderFavorites = (
   favorites: readonly FavoriteRecord[],
   locale: Locale,
+  gender: Gender,
 ): Favorite[] =>
-  favorites.map((f) => ({ url: f.url, title: favoriteTitle(f, locale) }));
+  effectiveFavorites(favorites, gender).map((f) => ({
+    url: f.url,
+    title: favoriteTitle(f, locale),
+  }));
 
 export const WEB_DEFAULTS: WebState = {
   favorites: [...DEFAULT_FAVORITES],
@@ -194,21 +251,24 @@ export const useWebStore = create<WebStore>()(
             ? s
             : { votes: { ...s.votes, [pollId]: option } },
         ),
+      // Edits start from what the player sees, so untouched defaults become this gender's list.
       addFavorite: ({ title, url }) =>
         set((s) => {
+          const shown = effectiveFavorites(s.favorites, getGender());
           const key = normalizeUrl(url);
           const name = title.trim() || key;
-          const at = s.favorites.findIndex((f) => f.url === key);
+          const at = shown.findIndex((f) => f.url === key);
           if (at === -1)
-            return { favorites: [...s.favorites, { title: name, url: key }] };
-          const favorites = [...s.favorites];
+            return { favorites: [...shown, { title: name, url: key }] };
+          const favorites = [...shown];
           favorites[at] = { title: name, url: key };
           return { favorites };
         }),
       removeFavorite: (url) =>
         set((s) => {
           const key = normalizeUrl(url);
-          return { favorites: s.favorites.filter((f) => f.url !== key) };
+          const shown = effectiveFavorites(s.favorites, getGender());
+          return { favorites: shown.filter((f) => f.url !== key) };
         }),
     }),
     persistOptions<WebStore, WebState>({

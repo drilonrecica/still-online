@@ -18,6 +18,7 @@ import type { ProfileContent } from './profiles/types';
 import * as enAbout from './sites/about';
 import * as enGossip from './sites/celebgossip07';
 import * as enCheatCave from './sites/cheatcave';
+import * as enKickflip from './sites/kickflipkings';
 import * as enSearchly from './sites/searchly';
 import * as enFriendspace from './sites/friendspace';
 import * as enTinfoil from './sites/tinfoilcomets';
@@ -40,6 +41,7 @@ const EN_SITES = {
   [enVirusguard.VIRUSGUARD_HOST]: enVirusguard,
   [enWestfield.WESTFIELD_HOST]: enWestfield,
   [enCheatCave.CHEATCAVE_HOST]: enCheatCave,
+  [enKickflip.KICKFLIP_HOST]: enKickflip,
 };
 
 export type SiteTexts = typeof EN_SITES;

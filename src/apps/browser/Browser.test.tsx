@@ -186,6 +186,24 @@ describe('Web Explorer', () => {
     expect(within(pane).getByText('Westfield-Gymnasium')).toBeTruthy();
   });
 
+  it('untouched favorites follow the gender; customized ones stay', async () => {
+    const { user } = renderBrowser('about.example/tips');
+    await finishLoad();
+    await user.click(screen.getByRole('button', { name: 'Favorites' }));
+    const pane = screen.getByRole('complementary', { name: 'Favorites' });
+    expect(within(pane).getByText('Celeb Gossip 07')).toBeTruthy();
+    act(() => useSettingsStore.setState({ gender: 'boy' }));
+    expect(within(pane).getByText('CheatCave')).toBeTruthy();
+    expect(within(pane).getByText('Kickflip Kings')).toBeTruthy();
+    expect(within(pane).queryByText('Celeb Gossip 07')).toBeNull();
+    await user.click(
+      within(pane).getByRole('button', { name: 'Delete Westfield High' }),
+    );
+    act(() => useSettingsStore.setState({ gender: 'girl' }));
+    expect(within(pane).getByText('CheatCave')).toBeTruthy();
+    expect(within(pane).queryByText('Tinfoil Comets')).toBeNull();
+  });
+
   it('the Favorites pane opens and deletes favorites', async () => {
     const { user } = renderBrowser('about.example/tips');
     await finishLoad();

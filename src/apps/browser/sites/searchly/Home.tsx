@@ -2,18 +2,21 @@
 import { useState } from 'react';
 import { SEARCHLY_HOST } from '@/content/sites/searchly';
 import type { SitePageProps } from '@/content/sites/types';
+import { useGender } from '@/i18n/settingsText';
 import { useT } from '@/i18n/useT';
 import { SiteLink } from '../../SiteLink';
 import { rich } from '../rich';
 import { useSiteText } from '../useSiteText';
+import { hotSitesFor } from './hotSites';
 import { Logo } from './Logo';
 import { SearchBox } from './SearchBox';
 import styles from './Searchly.module.css';
 import { searchUrl } from './search';
 
 export default function Home({ navigate }: SitePageProps) {
-  const { SEARCHLY_TEXT: T } = useSiteText(SEARCHLY_HOST);
+  const { SEARCHLY_HOT_SITES, SEARCHLY_TEXT: T } = useSiteText(SEARCHLY_HOST);
   const t = useT();
+  const gender = useGender();
   const [installing, setInstalling] = useState(false);
   return (
     <div className={styles.page}>
@@ -44,6 +47,20 @@ export default function Home({ navigate }: SitePageProps) {
             </span>
           ))}
         </p>
+        <section
+          className={styles.hotSites}
+          aria-label={t('sites.searchly.hotSites')}
+        >
+          <h2 className={styles.hotHeading}>{t('sites.searchly.hotSites')}</h2>
+          <p className={styles.small}>{T.hotSitesIntro}</p>
+          <ul>
+            {hotSitesFor(SEARCHLY_HOT_SITES, gender).map((site) => (
+              <li key={site.url}>
+                <SiteLink href={site.url}>{site.title}</SiteLink> – {site.note}
+              </li>
+            ))}
+          </ul>
+        </section>
         <p className={styles.footer}>{T.footer}</p>
       </div>
       {installing && (

@@ -253,13 +253,17 @@ describe('v0.2 web', () => {
     expect(favorites.map((f) => f.url)).toEqual(
       renamed(save.web.state.favorites.map((f) => f.url)),
     );
-    expect(renderFavorites(favorites, 'en')).toEqual(
+    expect(renderFavorites(favorites, 'en', 'girl')).toEqual(
       save.web.state.favorites.map((f) =>
         f.title === 'Spaceport' ? renamed(f) : { ...f, url: renamed(f.url) },
       ),
     );
-    expect(renderFavorites(favorites, 'de').map((f) => f.title)).toContain(
-      'Westfield-Gymnasium',
+    expect(
+      renderFavorites(favorites, 'de', 'girl').map((f) => f.title),
+    ).toContain('Westfield-Gymnasium');
+    // The player added "My Spaceport", so these are custom and don't follow the gender.
+    expect(renderFavorites(favorites, 'en', 'boy')).toEqual(
+      renderFavorites(favorites, 'en', 'girl'),
     );
     expect(counters).toEqual(save.web.state.counters);
     resave();

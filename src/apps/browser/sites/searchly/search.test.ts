@@ -156,6 +156,19 @@ describe.each(LOCALES)('searchly over the registered sites (%s)', (locale) => {
     );
   });
 
+  it('finds Kickflip Kings for skate searches', () => {
+    const top = (q: string) => search(q, index)[0]?.url;
+    expect(top(locale === 'de' ? 'skaten' : 'skateboarding')).toMatch(
+      /^http:\/\/kickflipkings\.example\//,
+    );
+    expect(top(locale === 'de' ? 'Trick-Tipps' : 'trick tips')).toBe(
+      'http://kickflipkings.example/tricks',
+    );
+    expect(top(locale === 'de' ? 'Skatevideo' : 'skate video')).toBe(
+      'http://kickflipkings.example/video',
+    );
+  });
+
   it('is deterministic and paginates in tens', () => {
     expect(search('web', index)).toEqual(search('web', index));
     expect(PAGE_SIZE).toBe(10);

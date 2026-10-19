@@ -151,6 +151,49 @@ export interface ForumThread {
   posts: readonly ForumPost[];
 }
 
+/** A line that appears from `day` on (shoutbox shouts, video teasers, gig updates). */
+export interface DayLine {
+  day: number;
+  text: string;
+}
+
+/** A shout in kickflipkings.example's read-only shoutbox. */
+export interface Shout extends DayLine {
+  user: string;
+}
+
+/** A kickflipkings.example crew member; from `after.day` on the best trick reads `after.bestTrick`. */
+export interface CrewMember {
+  /** The handle, the same in every language (the friends' mail handles without the domain). */
+  handle: string;
+  name: string;
+  role: string;
+  bestTrick: string;
+  bio: string;
+  after?: { day: number; bestTrick: string };
+}
+
+/** A step-by-step trick tip on kickflipkings.example's `/tricks` page (ollie → kickflip). */
+export interface Trick {
+  id: string;
+  name: string;
+  level: string;
+  steps: readonly string[];
+  tip: string;
+}
+
+/** A show on kickflipkings.example's `/gigs`, listed from `day`; `after` replaces it once played. */
+export interface Gig {
+  id: string;
+  day: number;
+  band: string;
+  venue: string;
+  when: string;
+  note: string;
+  updates?: readonly DayLine[];
+  after?: { day: number; when: string; note: string };
+}
+
 // ---------------------------------------------------------------------------
 // Persisted `web` store (src/apps/browser/store.ts)
 // ---------------------------------------------------------------------------

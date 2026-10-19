@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useNetworkStore } from '@/os/network';
@@ -38,6 +38,42 @@ afterEach(() => {
 });
 
 describe('Searchly pages', () => {
+  it('the home page has a hot sites box per gender', async () => {
+    open('http://searchly.example/');
+    await finishLoad();
+    const hot = await screen.findByRole('region', {
+      name: 'Hot sites this week!',
+    });
+    const links = () =>
+      within(hot)
+        .getAllByRole('link')
+        .map((a) => a.textContent);
+    expect(links()).toEqual([
+      'Celeb Gossip 07',
+      'Tinfoil Comets Fan Page',
+      'Friendspace',
+      'CheatCave',
+      'Kickflip Kings',
+    ]);
+    expect(hot).toHaveTextContent(/gossip, glitter/);
+    act(() => useSettingsStore.setState({ gender: 'boy' }));
+    expect(links()).toEqual([
+      'CheatCave',
+      'Kickflip Kings',
+      'Friendspace',
+      'Celeb Gossip 07',
+      'Tinfoil Comets Fan Page',
+    ]);
+    expect(hot).toHaveTextContent(/games, skating and funny clips/);
+    expect(hot).not.toHaveTextContent(/glitter/i);
+    act(() => useSettingsStore.setState({ language: 'de' }));
+    expect(
+      await screen.findByRole('region', {
+        name: 'Die heißesten Seiten der Woche!',
+      }),
+    ).toHaveTextContent(/Täglich neu!/);
+  });
+
   it('shows ranked results with green URLs for a query', async () => {
     open('http://searchly.example/search?q=surfing');
     await finishLoad();

@@ -1,7 +1,10 @@
 import { beforeEach, describe, expect, it } from 'vitest';
+import { useSettingsStore } from '@/os/store/settings';
 import {
   DEFAULT_FAVORITES,
   WEB_DEFAULTS,
+  defaultFavoritesFor,
+  isUntouchedFavorites,
   renderFavorites,
   sanitizeWeb,
   useWebStore,
@@ -18,7 +21,7 @@ describe('web store', () => {
   it('seeds the five favorite sites, named in the current language', () => {
     expect(web().favorites.every((f) => f.title === undefined)).toBe(true);
     const names = (locale: 'en' | 'de') =>
-      renderFavorites(web().favorites, locale).map((f) => f.title);
+      renderFavorites(web().favorites, locale, 'girl').map((f) => f.title);
     expect(names('en')).toEqual([
       'Searchly',
       'Tinfoil Comets',
@@ -90,6 +93,92 @@ describe('web store', () => {
     expect(out.votes).toEqual({});
     expect(out.myProfile).toBeNull();
     expect(sanitizeWeb('garbage', WEB_DEFAULTS)).toBe(WEB_DEFAULTS);
+  });
+});
+
+describe('per-gender default favorites', () => {
+  const titles = (gender: 'girl' | 'boy', locale: 'en' | 'de' = 'en') =>
+    renderFavorites(web().favorites, locale, gender).map((f) => f.title);
+
+  it('shares Searchly, Friendspace and Westfield High; the rest follows the gender', () => {
+    expect(titles('girl')).toEqual([
+      'Searchly',
+      'Tinfoil Comets',
+      'Friendspace',
+      'Westfield High',
+      'Celeb Gossip 07',
+    ]);
+    expect(titles('boy')).toEqual([
+      'Searchly',
+      'CheatCave',
+      'Friendspace',
+      'Westfield High',
+      'Kickflip Kings',
+    ]);
+    expect(titles('boy', 'de')).toContain('Westfield-Gymnasium');
+    expect(DEFAULT_FAVORITES).toEqual(defaultFavoritesFor('girl'));
+  });
+
+  it('either default list counts as untouched; any change makes it custom', () => {
+    expect(isUntouchedFavorites(defaultFavoritesFor('girl'))).toBe(true);
+    expect(isUntouchedFavorites(defaultFavoritesFor('boy'))).toBe(true);
+    const [first, ...rest] = defaultFavoritesFor('boy');
+    expect(isUntouchedFavorites([...rest, first!])).toBe(false);
+    expect(
+      isUntouchedFavorites([{ ...first!, title: 'my search' }, ...rest]),
+    ).toBe(false);
+    expect(isUntouchedFavorites(rest)).toBe(false);
+  });
+
+  it('a boy edits his own defaults; customized favorites stay put on a switch', () => {
+    useSettingsStore.setState({ gender: 'boy' });
+    web().addFavorite({ title: 'Mines tips', url: 'http://about.example/' });
+    expect(web().favorites.map((f) => f.url)).toEqual([
+      ...defaultFavoritesFor('boy').map((f) => f.url),
+      'http://about.example/',
+    ]);
+    expect(titles('girl')).toEqual(titles('boy'));
+    expect(titles('girl')).toContain('CheatCave');
+  });
+
+  it('removing a default as a boy keeps his other defaults', () => {
+    useSettingsStore.setState({ gender: 'boy' });
+    web().removeFavorite('http://cheatcave.example/');
+    expect(titles('girl')).toEqual([
+      'Searchly',
+      'Friendspace',
+      'Westfield High',
+      'Kickflip Kings',
+    ]);
+  });
+
+  it('migrates untouched v0.2 and v0.3 favorites so they follow the gender', () => {
+    const v02 = sanitizeWeb(
+      {
+        favorites: [
+          { title: 'Searchly', url: 'http://searchly.example/' },
+          { title: 'Tinfoil Comets', url: 'http://tinfoilcomets.example/' },
+          { title: 'Spaceport', url: 'http://spaceport.example/' },
+          { title: 'Westfield High', url: 'http://westfield-high.example/' },
+          { title: 'Celeb Gossip 07', url: 'http://celebgossip07.example/' },
+        ],
+      },
+      WEB_DEFAULTS,
+    ).favorites;
+    const v03 = sanitizeWeb(
+      { favorites: defaultFavoritesFor('girl') },
+      WEB_DEFAULTS,
+    ).favorites;
+    for (const saved of [v02, v03]) {
+      expect(isUntouchedFavorites(saved)).toBe(true);
+      expect(renderFavorites(saved, 'en', 'boy').map((f) => f.title)).toEqual([
+        'Searchly',
+        'CheatCave',
+        'Friendspace',
+        'Westfield High',
+        'Kickflip Kings',
+      ]);
+    }
   });
 });
 

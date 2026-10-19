@@ -119,6 +119,31 @@
   font-size: 11px;
 }
 
+/* "Hot sites this week!": a boxed list under the search box, per gender. */
+.hotSites {
+  margin: 24px auto 0;
+  padding: 6px 12px 8px;
+  text-align: left;
+  background: #fff8e1;
+  border: 1px solid #f0b400;
+}
+
+.hotHeading {
+  margin: 0 0 4px;
+  color: #d9480f;
+  font-size: 13px;
+}
+
+.hotSites ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 11px;
+}
+
+.hotSites li {
+  margin: 2px 0;
+}
+
 .footer {
   margin-top: 36px;
   color: #595959;

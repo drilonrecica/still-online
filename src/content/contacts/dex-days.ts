@@ -1,5 +1,6 @@
 // Dex, days 2–5: the skate video. Filming, the camcorder eats the tape, the kickflip nobody filmed,
-// and a 30-second blur. He stays Away the whole time and still answers slowly.
+// and a 30-second blur (which Kev also puts on kickflipkings.example/video). He stays Away the
+// whole time and still answers slowly.
 import type { Contact, Script } from '../types';
 
 export const dexDays: Contact['days'] = {
@@ -305,9 +306,17 @@ export const dexDayScripts: readonly Script[] = [
             text: 'like a real blur. u can see orange. thats my shirt',
             delayMs: 2200,
           },
+          {
+            text: 'kev put it on the crew site: kickflipkings.example/video. it buffers forever tho',
+            delayMs: 2400,
+          },
         ],
         choices: [
-          { text: 'send it!!', label: 'Send it!!', next: 'send' },
+          {
+            text: 'send me the real one!!',
+            label: 'Send it!!',
+            next: 'send',
+          },
           { text: 'a blur?? lol', label: 'A blur??', next: 'blur' },
         ],
       },

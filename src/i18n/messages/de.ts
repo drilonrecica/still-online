@@ -1075,6 +1075,8 @@ export const de: Messages = {
       friendspace: 'Friendspace',
       'westfield-high': 'Westfield-Gymnasium',
       celebgossip07: 'Celeb Gossip 07',
+      cheatcave: 'CheatCave',
+      kickflipkings: 'Kickflip Kings',
     },
   },
   dialup: {
@@ -1165,6 +1167,7 @@ export const de: Messages = {
       previous: '« Zurück',
       next: 'Weiter »',
       page: 'Seite {n}',
+      hotSites: 'Die heißesten Seiten der Woche!',
     },
     celebgossip07: {
       nav: {
@@ -1223,6 +1226,38 @@ export const de: Messages = {
       posts: 'Beiträge',
       wrote: '{user} schrieb {when}:',
       buttons: 'Verlinkt-uns-Buttons',
+    },
+    kickflipkings: {
+      nav: {
+        label: 'Seite',
+        home: 'START',
+        crew: 'CREW',
+        tricks: 'TRICKS',
+        video: 'VIDEO',
+        gigs: 'KONZERTE',
+      },
+      stickers: 'Sticker',
+      postedBy: 'von {author}, {when}',
+      shouts: 'Shouts',
+      crew: 'Crew-Mitglieder',
+      bestTrick: 'bester Trick:',
+      tricks: 'Tricks',
+      steps: 'So geht der {trick}',
+      tip: 'TIPP:',
+      player: 'Videoplayer',
+      play: 'Video abspielen',
+      percent: '{n} %',
+      timeline: 'Szene für Szene',
+      length: 'Länge {length}',
+      premiereIn: (p: { n: number }) =>
+        p.n <= 0
+          ? 'Premiere: heute!!'
+          : p.n === 1
+            ? 'Premiere: morgen!!'
+            : `Premiere: in ${p.n} Tagen`,
+      gigs: 'Konzerte',
+      where: 'wo:',
+      when: 'wann:',
     },
     friendspace: {
       nav: {
