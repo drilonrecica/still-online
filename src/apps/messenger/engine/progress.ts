@@ -118,6 +118,7 @@ function scripts(v: unknown): Record<string, ScriptProgress> {
       runs: s.runs,
       visited: strings(s.visited),
       trackIds: strings(s.trackIds),
+      ...(isCount(s.day) && s.day >= 1 ? { day: s.day } : {}),
     };
   }
   return out;

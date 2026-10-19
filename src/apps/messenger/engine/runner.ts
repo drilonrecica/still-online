@@ -81,10 +81,33 @@ export function createRunner(ctx: EngineContext) {
     return active && script && node ? { script, node, active } : null;
   };
 
+  /**
+   * A follow-up from an earlier day: its chain started (its target last started) on a world day
+   * before an `onDay` script of the contact that has started since. It never runs, so a skipped
+   * day-1 follow-up can't arrive after the day-2 chat. Saves from before F-04 have no target
+   * `day`: an `onDay` target counts as its own day, anything else as day 1.
+   */
+  const expired = (id: ContactId, script: Script) => {
+    const t = script.trigger;
+    if (t.type !== 'afterScript') return false;
+    const scripts = contentOf(id)?.scripts ?? [];
+    const progress = progressOf(id).scripts;
+    const target = scripts.find((s) => s.id === t.scriptId)?.trigger;
+    const chainDay =
+      progress[t.scriptId]?.day ?? (target?.type === 'onDay' ? target.day : 1);
+    return scripts.some(
+      (s) =>
+        s.trigger.type === 'onDay' &&
+        s.trigger.day > chainDay &&
+        (progress[s.id]?.visited.length ?? 0) > 0,
+    );
+  };
+
   const eligible = (id: ContactId, script: Script, context: TriggerContext) => {
     // A gendered script never arms for the other gender; a switch mid-run lets it finish.
     if (script.forGender !== undefined && script.forGender !== gender())
       return false;
+    if (expired(id, script)) return false;
     // Top 8 reactions run once per drop / re-add: the record decides, not `runs`.
     const record = top8Of(id);
     if (script.trigger.type === 'onTop8Dropped')
@@ -140,11 +163,16 @@ export function createRunner(ctx: EngineContext) {
       awaitingChoice: false,
       context,
     };
-    patchContact(id, (c) => ({
-      ...c,
-      active,
-      scripts: visit(c, script.id, script.start),
-    }));
+    patchContact(id, (c) => {
+      const scripts = visit(c, script.id, script.start);
+      const s = scripts[script.id] ?? defaultScriptProgress();
+      // The world day of this start: its follow-ups' chain day (see `expired`).
+      return {
+        ...c,
+        active,
+        scripts: { ...scripts, [script.id]: { ...s, day: getDay() } },
+      };
+    });
     // The friend has reacted: a re-add from now on fires `onTop8Readded`.
     const record = top8Of(id);
     if (script.trigger.type === 'onTop8Dropped' && record)

@@ -97,6 +97,23 @@ describe('sanitizeProgress', () => {
     expect(p.contacts.mika?.presenceDay).toBe(expected);
   });
 
+  it.each([
+    [4, 4],
+    [0, undefined],
+    [1.5, undefined],
+    ['2', undefined],
+  ])('a script day %j sanitizes to %j', (day, expected) => {
+    const p = sanitizeProgress({
+      contacts: {
+        mika: {
+          ...valid(),
+          scripts: { opening: { runs: 1, visited: [], trackIds: [], day } },
+        },
+      },
+    });
+    expect(p.contacts.mika?.scripts.opening?.day).toBe(expected);
+  });
+
   it('drops broken contacts and invalid list items', () => {
     const p = sanitizeProgress({
       player: { status: 'sleepy' },

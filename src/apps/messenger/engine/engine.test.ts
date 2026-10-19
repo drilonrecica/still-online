@@ -304,6 +304,7 @@ describe('branching', () => {
       runs: 1,
       visited: ['a', node],
       trackIds: [],
+      day: 1,
     });
   });
 

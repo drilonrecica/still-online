@@ -241,6 +241,11 @@ export interface ScriptProgress {
   visited: NodeId[];
   /** `onNowPlaying` only: tracks this script already ran for. */
   trackIds: string[];
+  /**
+   * The world day this script last started (F-04; absent in older saves). An `afterScript`
+   * follow-up of it expires once a later `onDay` script of the contact has started.
+   */
+  day?: number;
 }
 
 /**
