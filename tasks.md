@@ -1,92 +1,84 @@
-# still online — v0.4 plan (player gender, Friendspace, Pixlog, GlitterCodez, boyish pass)
+# still online — v0.4.1 fixes + v0.5 plan (week two, days 6–10)
 
 <!-- igris:format 1 -->
 
-This is the build plan for still online v0.4, written for [igris](https://github.com/drilonrecica/igris). Each task row runs in its own fresh Claude Code session, so **everything a session needs is written down in this file** and in the design spec it points to. Read the whole brief, the global rules, the v0.4 rules and your task's spec before starting. Earlier plans (all done) are archived in `docs/plans/v0.1-tasks.md`, `v0.2-tasks.md` and `v0.3-tasks.md`.
+This is the build plan for still online v0.4.1 and v0.5, written for [igris](https://github.com/drilonrecica/igris). Each task row runs in its own fresh Claude Code session, so **everything a session needs is written down in this file** and in the design spec it points to. Read the whole brief, the global rules, the v0.4 and v0.5 rules and your task's spec before starting. Earlier plans (all done) are archived in `docs/plans/` (`v0.1-tasks.md` … `v0.4-tasks.md`).
 
 ```sh
 igris check --strict          # validate this plan
-igris arise G --through P5    # run everything (yolo mode is the default in igris.toml)
-igris arise G2                # the boyish pass (G, P0–P5 are done)
+igris arise F --through W4    # run everything (yolo mode is the default in igris.toml)
+igris arise F                 # only the v0.4.1 fixes
 ```
 
 ---
 
 # Project brief
 
-still online is a browser-based nostalgia simulator: an XP-style desktop frozen in **2007**, bilingual (English and German). v0.1–v0.3 shipped the shell, Messenger with 6 scripted friends and a 5-day living world, Amplifier, a fictional internet (Web Explorer, Searchly, **Spaceport**, Mail, TuneMole, a fan site, a gossip blog, a school site), Paint, Snapshot Booth, games, Fluff and Tacki/Stapley, and full German localization. v0.3.1 made the player name required, added flag buttons for the language, and moved German into a lazy chunk.
+still online is a browser-based nostalgia simulator: an XP-style desktop frozen in **2007**, bilingual (English and German).
 
-v0.4 brings back the two social networks a 2007 teenager had open side by side. **Before that, phase G lets the player be a girl or a boy.**
+**Shipped so far:**
+- the shell
+- Messenger with 6 scripted friends and a 5-day living world
+- Amplifier
+- a fictional internet: Web Explorer, Searchly, Mail, TuneMole and the sites
+- Paint, Snapshot Booth, games, Fluff and Tacki/Stapley
+- full German localization
+- **v0.4:**
+  - the player is a girl or a boy, with a User Accounts app
+  - CheatCave and Kickflip Kings
+  - Friendspace (the MySpace homage), Pixlog (the Netlog homage) and GlitterCodez
+  - **G2**, the boyish pass: a gender audit test and boy-only chat threads (`Script.forGender`)
 
-**The agreed designs are binding; read them first:**
-- `docs/superpowers/specs/2026-10-16-player-gender-design.md` (phase G, and its effects on everything after it)
-- `docs/superpowers/specs/2026-10-15-v04-social-design.md` (P0–P5)
+**This plan:**
+1. **Phase F (v0.4.1):** fixes every known gap the v0.4 reviews listed.
+2. **Phases W0–W4 (v0.5):** add a **second school week, days 6–10**. It ends with the Velvet Lantern show at the rec hall on day 10.
 
-## Phase G scope (runs first)
+**The agreed designs are binding; read the ones your task touches:**
+- `docs/superpowers/specs/2026-10-19-v05-week-two-design.md` (W0–W4: the arcs day by day)
+- `docs/superpowers/specs/2026-10-16-player-gender-design.md` (gender, incl. the G2 addendum)
+- `docs/superpowers/specs/2026-10-15-v04-social-design.md` (Friendspace, Pixlog, GlitterCodez)
+- `docs/review/v04-*.md` (what v0.4 built and its known gaps; F fixes them)
 
-The player picks **Girl or Boy** on the login screen (binary, no third option). Anything girly stays girly, or gets girlier, for a girl. A boy gets the boy version of 2007 instead:
-- **His files, pictures, mail and favorites:** cheat codes, skate tricks, band names, a CheatCave newsletter.
-- **Chat lines about him:** girl-talk aimed at the player becomes boy-talk.
-- **Two new sites:** **CheatCave** (`cheatcave.example`) and **Kickflip Kings** (`kickflipkings.example`).
+## Phase F scope (v0.4.1, runs first)
 
-A girl keeps the crush on Theo; a boy has no crush. The six friends, their voices and the 5-day story stay the same. A **User Accounts** app changes the name, gender and user picture later. Content varies through `g(girl, boy)` (see "Gender rules").
+Small fixes only, no new features:
+- **Friendspace/Pixlog player profile:** the saved profile no longer freezes default text, the player picture comes from User Accounts, and the page scrolls to the top after Save.
+- **Content polish:** the boy diary, the boy favorites order, the boy mood, the timeline wording, British spellings, a German rhyme, „adden".
+- **Visual fixes:**
+  - story-dated photo stamps
+  - the pixel-font digit spacing
+  - bulletins in one column
+  - Theo's transcript after a language switch
+- **Messenger engine:** stale `afterScript` follow-ups from an earlier day no longer arrive after the next day's chat.
 
-## Phase G2 scope (after P5; the boyish pass)
+## v0.5 scope (W0–W4)
 
-Phase G and v0.4 are done and live, but a boy still gets a mostly girly game:
-- **Messenger:** only 26 of 2,567 resolved English chat strings differ by gender. As a boy you still make a glitter sign with Jess, are Kayla's sleepover insider, do Pia's horse quiz and pinky swears, and your own reply options say "Glitter is everywhere", "pinky swear" and "cute".
-- **Pictures:** 5 of 6 photos are shared and none show boy moments.
-- **Friendspace and Pixlog:** comments and guestbook lines aimed at the player barely change.
-
-G2 fixes that **without changing who the friends are**:
-- **Friends stay the same:** Jess still loves glitter, Kayla still has ~*drama*~, Pia still loves ponies.
-- **What changes is how they talk to a boy and what he is pulled into:**
-  - A boy gets 2007 guy-friend talk: teasing, games, skating, music, „dude".
-  - He is the outsider or the reluctant helper in the girls' plans, never the sleepover insider.
-  - His own reply options are boyish.
-- **Dex and Marco** get boy-only chat threads (new: `Script.forGender`).
-- **Pictures:** boy-only photos and a boy lyrics notebook.
-- **An audit test** keeps it that way.
-
-A girl's side does not get less girly; where a boy line is rewritten, the girl line may get girlier.
-
-In short, v0.4 is:
-
-## v0.4 scope (this plan)
-
-1. **Spaceport is renamed Friendspace** (`friendspace.example`), the MySpace homage. Old `spaceport.example` URLs, favorites and open windows redirect. It gains:
-   - **bulletins**
-   - **band pages** with an inline music player
-   - **profile-song autoplay**
-   - a fully editable **Top 8 with drama**: dropped friends react in Messenger and on your wall
-   - **profile extras**: glitter headline, stickers, sparkle cursor, comment graphics, mood history
-2. **GlitterCodez** (`glittercodez.example`): a 2007 free-layouts site. You copy a layout code (a safe made-up markup, never real CSS or HTML) and paste it into Friendspace's editor.
-3. **Pixlog** (`pixlog.example`), the Netlog homage:
-   - visitors and kudos
-   - photo albums (friends' albums plus your own, from My Pictures)
-   - blogs and surveys
-   - a shouts feed
-4. **Content** for days 1–5, tied into the existing storylines, in **English and German** (German written for a German 2007, as in v0.3).
-5. **Release v0.4:** e2e coverage, review screenshots, docs and release notes.
-
-**Focus:** self-expression, story content and nostalgia details. It is **not** a social engine. The only things the player writes are their own pages (profile, layout code, Top 8, album, surveys, skin) and kudos.
+- **W0 (foundations):**
+  - story days 1–10 everywhere: lint, balloons, tests, docs
+  - an e2e `setDay` helper
+  - the week-two story bible
+  - three new photo scenes (`stage`, `classroom`, `livingroom`)
+  - the `lantern-poster` wallpaper unlock
+- **W1 (English chats days 6–10):** all six friends, gender-aware, plus 3 boy-only and 3 girl-only threads.
+- **W2 (English mail, sites and social, days 6–10):** mail, the sites, Friendspace and Pixlog.
+- **W3:** real German for everything W1 and W2 wrote.
+- **W4:** e2e, docs, release notes and the release-ready gate.
 
 ## Explicitly out of scope (do NOT build these)
 
-- Player-written comments on friends' walls, photos or blogs, and friend requests, messages or groups on the sites.
-- New story days (6+). Content stays within days 1–5.
+- Story days past 10. From day 11 on, the day-10 state stays.
+- New apps, new sites or new games. Player-written comments on friends' walls, photos or blogs; friend requests, messages or groups on the sites.
 - Real CSS/HTML in layout codes, or any `dangerouslySetInnerHTML` of player or content text.
-- Any backend, real (online) accounts, real networking, real web access or AI-generated text. The local User Accounts app (G-01) is fine.
-- A third gender option, or gender-star forms in German. The owner decided on Girl/Boy.
-- Changing the six friends' personalities or the story to fit a gender. Only what is about or addressed to the player varies.
-- Real product names, logos or brand-alike names (no "MySpace", "Netlog", "YourSpace", "NetZLog" anywhere in the UI or content). Homages only.
+- Any backend, real (online) accounts, real networking, real web access or AI-generated text.
+- A third gender option, or gender-star forms in German.
+- Changing the six friends' personalities to fit a gender. Only what is about or addressed to the player varies, plus `forGender` threads.
+- Real product names, logos or brand-alike names. Homages only.
 - New runtime dependencies.
 - Tagging, pushing or publishing a release.
 
 If a task seems to need one of these, leave it out and mention it in your `igris done --note`.
 
 ---
-
 
 # Global rules (apply to every task)
 
@@ -242,7 +234,7 @@ Tests sit next to the code as `*.test.ts(x)`. Use path alias `@/` → `src/`.
 | Window sizes | Explorer 520×380 · Display Properties 400×440 (fixed) · Connect to the Internet 360×260 (fixed) · Disk Cleanup 380×300 · Message History 520×420 · Web Explorer 800×600 · Mail 720×500 · TuneMole 640×460 · Paint 720×560 · Snapshot Booth 560×480 · Mines: sized to its board · Hen Hunt 800×560 · Star Pinball 460×640 · Desktop Wrecker: full-screen overlay |
 | Idle | Screensaver after 5 min (setting; 0 = never). Messenger auto-Away after 5 min idle (setting). Idle = no pointer/keyboard/wheel input on the page. |
 | Art | Everything is drawn in code: SVG, CSS, or canvas with seeded randomness so it's identical every run. No new binary image/audio files, except player data in IndexedDB. Use `mulberry32(seed)` (add it to `src/os/random.ts` in P0) for seeded randomness. |
-| World day | Starts at 1. Story content covers days 1–5; from day 6 on, friends keep their day-5 presence and only ambient content runs. Don't name weekdays for story days (the tray shows the real date); say "today", "yesterday", "Day 3". |
+| World day | Starts at 1. Story content covers days 1–10 (v0.5; days 1–5 before); from day 11 on, friends keep their day-10 presence and only ambient content runs. Don't name weekdays for story days (the tray shows the real date); say "today", "yesterday", "Day 3". |
 | Online | Messenger sign-in, Web Explorer, Mail and TuneMole need a connection. When offline they call `requireOnline()`, which opens "Connect to the Internet" and **dials automatically** ("Connect automatically" is on by default). Dialing takes ~6 s, scaled by `scaleMs`. The connection is not persisted: every boot starts offline. |
 | Fictional text | Run new authored text through the shared content lint (P0-09). Sites, mails, files and profiles follow the same voice rules as chats: 2007, PG-13, fictional people only. |
 | Game scores | Games emit `game:score` on the event bus; best scores persist in the `games` store. |
@@ -405,100 +397,116 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 
 ---
 
-# Phases
+## v0.5 rules (apply to every task in this plan; they override older text above)
 
-## G — Player gender
+**German:**
+- **Phase F** writes real German in the same task, as v0.3 did.
+- **W1 and W2** follow "German placeholders until P4", read as "until W3":
+  - Every new English content module, mail day or contact script gets a structural German placeholder (`// W3 replaces this with German`).
+  - Contact overlays may copy the English text as a placeholder.
+- **W3** replaces every placeholder. The gates W1-G and W2-G note English in German screenshots as expected.
 
-| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
-|---|---|---|---|---|---|---|---|---|---|---|
-| G-01 | **Gender + user picture, login, User Accounts** — settings fields with sanitize, `GenderPicker` on the login screen, 8 user tile SVGs (login tile + Start menu), new User Accounts app (name, gender, picture). | P0-01 | done | opus | agent | — | e2e | — | Log On disabled until name + gender are set; old saves (no gender) are asked once; picture defaults by gender; User Accounts changes name/gender/picture live; keyboard-operable radio group; EN + DE UI strings; unit + e2e tests. | §G-01 |
-| G-02 | **Gendered content engine** — `g()`/`gendered()`, `resolveGender`, `contentFor(locale, gender)` + accessors, re-render on gender change (Messenger, fs seeds, mail), lint/parity/playthrough for both genders, `docs/gender.md`, localization-de §2 rewrite. | G-01 | done | opus | agent | — | fast | — | A sample variant renders per gender in a chat, a seeded file and a mail; switching gender re-renders them without reload, edited files keep their text; malformed variants fail lint; playthrough runs girl/boy × en/de; no content changes beyond samples. | §G-02 |
-| G-03 | **Player files, pictures + defaults per gender** — My Documents, Recycle Bin, My Pictures (self-portrait hair), Friendspace player profile, Snapshot Booth look, Messenger picture colours; EN + DE. | G-02 | done | opus | agent | — | fast | — | Every personal seed slot has a girl and a boy version (girl girlier, boy boyish, no boy crush); school/system files stay shared; self-portrait differs; defaults differ; real German; tests per gender. | §G-03 |
-| G-04 | **Chats + mail per gender** — lines about the player, topic swaps (girl-talk → boy-talk), no boy crush, Mom, chain letters, newsletters/spam; German workarounds become natural gendered forms. | G-02 | done | opus | agent | — | fast | — | Every inventory item in §G-04 handled; voices intact; story facts identical; parity + playthrough green for all 4 combos; boy assertions added; decisions logged. | §G-04 |
-| G-05 | **CheatCave site** — `cheatcave.example`: home, cheats, flash-game news, funny clips top 10, forum; day-gated; EN + DE; Searchly. | G-02 | done | opus | agent | — | fast | — | All pages render from content in both languages; day-gated posts; forum ties into the story (Theo, Dex, Marco); Searchly finds it; lint green; tests. | §G-05 |
-| G-06 | **Kickflip Kings + per-gender web** — `kickflipkings.example` (crew, trick tips, shoutbox, Dex's video premiere day 5, Velvet Lantern gigs); per-gender default favorites + Searchly "hot sites"; story links. | G-03, G-04, G-05 | done | opus | agent | — | fast | — | Site renders EN + DE, day-gated; untouched favorites follow the gender, customized ones stay; Searchly home box per gender; Dex links his video on day 5 for both genders; tests. | §G-06 |
-| G-G | **G gate (self-review)** — Gate procedure + Content rubric + Gender rubric; screenshots for girl/boy × en/de. | G-01…G-06 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v04-G.md` + screenshots (suffix `-girl-en` etc.); gender rubric met; `tests/e2e/v04-g.spec.ts` covers the boy flow. | §G-G |
+**Story days:**
+- Days 1–10 are story days. Day-gated content uses `day` 1–10, and `after: { day }` states may point at days 6–10.
+- Day-5 content never changes meaning. Week two continues it; nothing is retconned.
+- Facts from days 1–5 stay true:
+  - Jess caught the drumstick with her forehead.
+  - Kayla and Brianna signed a peace treaty.
+  - Stardust is home.
+  - The bean cellar gig had 11 people.
+  - Theo got a B+.
+  - Dex's video is 30 seconds long.
+- **The week-two story bible** (`docs/story-week2.md`, written in W0-02) is binding for W1–W3. If the bible and the design spec disagree, follow the bible.
 
-## P0 — Foundations
+**Gender (G2 rules continue):**
+- Every line about or addressed to the player uses `g()` where a boy and a girl would be told something different.
+- Every task that adds player-facing content:
+  - keeps `npm run gender-audit` green
+  - adds allowlist entries only with a real reason, never on a choice
+  - adds boy assertions
+- A boy is a guy friend: teasing, games, skating, music, (Y), never an insider at a girls' sleepover, no hearts aimed at him.
+- A girl gets girly 2007 and the slow Theo crush.
+- `forGender` threads have only one side and no `g()`.
 
-| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
-|---|---|---|---|---|---|---|---|---|---|---|
-| P0-01 | **Rename Spaceport → Friendspace** — host, folders, catalog keys, every visible "Spaceport" in EN + DE content, new logo, redirects for old URLs/favorites/windows. | — | done | opus | agent | — | e2e | — | No "Spaceport"/`spaceport.example` left in `src/` except the redirect map and migration tests; old URLs, favorites and restored windows land on `friendspace.example`; ids like `d2-spaceport-views` unchanged; all tests green. | §P0-01 |
-| P0-02 | **v0.4 architecture + data model** — `docs/architecture-v0.4.md`, content types, `LocaleContent` fields + accessors, `web` store fields with sanitize/migrations, empty content modules + DE placeholders. | G-G | done | opus | agent | — | fast | — | Doc covers every new type, store field, event and route; types compile; v0.3 save fixture loads unchanged (Top 8 migrates); sanitize tests per new field; parity covers new modules; no UI yet. | §P0-02 |
-| P0-03 | **Top 8 drama engine** — `onTop8Dropped`/`onTop8Readded` triggers, events between the web store and Messenger, reaction bookkeeping, lint support. | P0-02 | done | opus | agent | — | fast | — | Dropping a friend in a saved Top 8 queues one reaction that runs on their first sign-in on a later day; re-adding runs the readded script once; wall entries recorded; engine + lint + store tests. | §P0-03 |
-| P0-G | **P0 gate (self-review)** — follow "Task specs → Gate procedure"; screenshots: Friendspace home, a friend profile, `/me` (EN + DE). | P0-01…P0-03 | done | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/v04-P0.md` + screenshots; redirect checked by hand. | §Gate |
+**Photo date stamps (from F-03):**
+- Story photos give `day` in their `PhotoSpec`, and the stamp then reads `'07 10 <7 + day>` (day 1 = `'07 10 8`, day 10 = `'07 10 17`).
+- Photos without `day` keep the seeded stamp.
 
-## P1 — Friendspace + GlitterCodez
+**Testing:**
+- Per-day unit tests loop over `STORY_DAYS` (W0-01 exports it), never a literal 5 or 10.
+- e2e reaches a day with `setDay(page, n)` (W0-01), never by hand-writing localStorage in a spec.
 
-| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
-|---|---|---|---|---|---|---|---|---|---|---|
-| P1-01 | **Bulletins** — `/bulletins` page, newest 3 on `/me`, unread dot in the nav. | P0-G | done | sonnet | agent | — | fast | — | Day-gated list renders from content; dot shows until the page is opened that day (persisted `bulletinsSeen`); links to `.example` URLs work; tests EN + DE UI. | §P1-01 |
-| P1-02 | **Band pages + player + autoplay** — `/band/<id>`, dark inline `BandPlayer` driving Amplifier through events, profile-song autoplay with stop + `/me` setting. | P0-G | done | opus | agent | — | fast | — | Band page plays/pauses its tracks through Amplifier and reflects Amplifier state; autoplay only when unmuted, idle and enabled; stop works; bands linkable from Top 8; tests. | §P1-02 |
-| P1-03 | **Layout codes + profile extras** — `layoutCode.ts` parser/generator, backgrounds/fonts/stickers/cursors sets, editor textarea with live preview, glitter headline, stickers, sparkle cursor, comment graphics, mood history. | P0-G | done | opus | agent | — | fast | — | Parser is total (fuzz-style tests: junk, partial, huge input); generator round-trips; pasted code changes the profile; extras render on friend and own pages; reduced motion honoured; no raw CSS/HTML path. | §P1-03 |
-| P1-04 | **GlitterCodez site** — `glittercodez.example`: layout gallery with live mini previews and copy boxes, `/glitter`, `/stickers`, `/cursors`, 2007 look. | P1-03 | done | sonnet | agent | — | fast | — | Every gallery code is produced by `layoutCodeFor` and parses back to its layout; Copy works (clipboard + select fallback); Searchly indexes it; tests. | §P1-04 |
-| P1-05 | **Top 8 editor + drama UI** — add/remove/reorder friends, bands and extras; wall shows drop/readd reactions; mood history saved on mood change. | P0-03, P1-02 | done | sonnet | agent | — | fast | — | Editor saves typed Top 8 (max 8), emits the P0-03 event; reactions appear on `/me` wall from content; keyboard operable; tests EN + DE UI. | §P1-05 |
-| P1-G | **P1 gate (self-review)** — Gate procedure; screenshots: bulletins, a band page playing, GlitterCodez home, `/me` with a pasted layout (sparkles, stickers), Top 8 editor. | P1-01…P1-05 | done | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/v04-P1.md` + EN/DE screenshots. | §Gate |
-
-## P2 — Pixlog
-
-| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
-|---|---|---|---|---|---|---|---|---|---|---|
-| P2-01 | **Pixlog shell** — `pixlog.example`: look + logo, home splash, friend profile with tabs (profile, photos, blog, surveys, guestbook), album page, 6 skins. | P1-G | done | sonnet | agent | — | fast | — | All routes render from content; tabs via `?tab=`; album page shows procedural photos + day-gated comments; skins switch; Searchly indexes friend pages; tests. | §P2-01 |
-| P2-02 | **Pixlog logic: feed + visitors** — derived shouts feed, visitor list and counter (pure, seeded), home feed UI, visitors box. | P2-01 | done | opus | agent | — | fast | — | `shoutsFeed`/`visitors`/`visitorCount` deterministic per day and locale, unit-tested; feed lines localized via the catalog; UI shows them. | §P2-02 |
-| P2-03 | **Pixlog `/me`** — kudos (give once per friend per day; received from content), your album from My Pictures with captions, surveys you fill in and post, skin picker. | P2-02 | done | opus | agent | — | fast | — | Kudos persisted and limited per day; album picks procedural and blob images, deleted files drop out; survey answers persisted and shown; tests EN + DE UI. | §P2-03 |
-| P2-G | **P2 gate (self-review)** — Gate procedure; screenshots: Pixlog home feed, a friend's photos tab, an album, `/me` with album + survey + visitors. | P2-01…P2-03 | done | sonnet | agent | — | e2e | — | verify + e2e pass; `docs/review/v04-P2.md` + EN/DE screenshots. | §Gate |
-
-## P3 — English content
-
-| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
-|---|---|---|---|---|---|---|---|---|---|---|
-| P3-01 | **Friendspace content** — ~15 bulletins (days 1–5), 4 bands, Top 8 reaction wall lines + Messenger `top8-dropped`/`top8-readded` scripts for all 6 friends, `commentGraphic` on some wall comments, friends' Top 8 gain bands. | P2-G | done | opus | agent | — | fast | — | Content lint + playthrough green; reactions in each friend's voice; storylines consistent; German placeholders updated to match structure. | §P3-01 |
-| P3-02 | **Pixlog content: Jess, Kayla, Pia** — albums (photos, captions, comments), blog posts, surveys, shouts, guestbooks, kudos days. | P2-G | done | opus | agent | — | fast | — | Per spec volume; voices + storylines hold; lint green; placeholders updated. | §P3-02 |
-| P3-03 | **Pixlog content: Marco, Theo, Dex** — as P3-02. | P2-G | done | opus | agent | — | fast | — | As P3-02. | §P3-02 |
-| P3-04 | **GlitterCodez layouts + mail** — 12 layouts with names/blurbs, glitter/sticker/cursor page text, site chrome text; mails `d2-pixlog-visitors`, `d4-friendspace-bulletin`. | P2-G | done | sonnet | agent | — | fast | — | 12 distinct good-looking layouts (screenshot each); mails delivered on their days; lint green; placeholders updated. | §P3-04 |
-| P3-G | **P3 gate (content self-review)** — Gate procedure + Content rubric; 5-day English playthrough of the new sites. | P3-01…P3-04 | done | opus | agent | — | e2e | — | verify + e2e pass; rubric per friend; day-by-day screenshots; `docs/review/v04-P3.md`. | §Gate |
-
-## P4 — German content
-
-| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
-|---|---|---|---|---|---|---|---|---|---|---|
-| P4-01 | **German: Friendspace + GlitterCodez + mail** — bulletins, bands, Top 8 reaction lines + contact overlays for the new scripts, layouts text, mails; glossary in `docs/localization-de.md`. | P3-G | done | opus | agent | — | fast | — | No placeholder left in these modules; overlays complete (overlay fallback test green); fallback assertions added; German voices per style guide. | §P4-01 |
-| P4-02 | **German: Pixlog Jess, Kayla, Pia** | P3-G | done | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
-| P4-03 | **German: Pixlog Marco, Theo, Dex** | P3-G | done | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
-| P4-G | **P4 gate (German content self-review)** — Gate procedure + German content rubric; 5-day German playthrough of the new sites. | P4-01…P4-03 | done | opus | agent | — | e2e | — | verify + e2e pass; no placeholder comments left in `src/content/de`; `docs/review/v04-P4.md`. | §Gate |
-
-## P5 — Release v0.4
-
-| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
-|---|---|---|---|---|---|---|---|---|---|---|
-| P5-01 | **v0.4 e2e** — the flows listed in the spec's Testing section, EN + DE. | P4-G | done | sonnet | agent | — | e2e | — | New `tests/e2e/v04-*.spec.ts` pass in the default suite. | §P5-01 |
-| P5-02 | **Docs + release notes** — player gender + v0.4 in README, CREDITS (new SVGs), architecture docs, `docs/release-notes-v0.4.0.md` (EN + German summary), screenshots. | P5-01 | done | sonnet | agent | — | — | — | Docs accurate; notes list user-visible changes; screenshots committed. | §P5-02 |
-| P5-G | **Release-ready gate (self-review)** — Gate procedure; play days 1–3 in English and 4–5 in German across Friendspace, Pixlog and GlitterCodez. **Do not tag, push or release.** | P5-01, P5-02 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v04-P5.md`; bundle sizes reported (German stays lazy); nothing pushed or tagged. | §Gate |
-
-## G2 — Boyish pass
-
-| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
-|---|---|---|---|---|---|---|---|---|---|---|
-| G2-01 | **Gender audit + Jess and Kayla for a boy** — `genderAudit.test.ts` with a reasoned allowlist; boy pass over every Jess and Kayla script (days, choices, personal messages, profile/Pixlog lines aimed at the player, Kayla's mail); EN + DE. | P5-G | done | opus | agent | — | fast | — | Audit test exists and is green; no boy-side choice text of Jess/Kayla contains a cue word; the boy is never a sleepover insider or glitter partner; voices and story facts intact; real German; boy assertions; parity + playthrough green for all 4 combos. | §G2-01 |
-| G2-02 | **Pia, Theo, Marco, Dex + shared bits for a boy** — the same pass over the other four contacts, `game-reactions`, `now-playing`, `top8-reactions`, auto-replies, bulletins, surveys and Friendspace/Pixlog lines aimed at the player; EN + DE. | G2-01 | done | opus | agent | — | fast | — | Every boy-side choice text across all six contacts passes the audit; Pia's pony scenes are "annoying little sister" moments for a boy; allowlist shrank and every remaining entry is a friend's self-talk; tests green. | §G2-02 |
-| G2-03 | **Boy-only threads** — `Script.forGender` in the engine, lint and playthrough; 6 boy-only threads for Dex and Marco (days 1–5: LAN party, skate session, cheat-code trade, backyard wrestling, band roadie, Dex's video night); EN + DE. | G2-02 | done | opus | agent | — | fast | — | A `forGender: 'boy'` script never arms for a girl (and vice versa); switching gender mid-day doesn't break progress; threads fire on their days, in-voice, with real German; playthrough covers them; engine + lint tests. | §G2-03 |
-| G2-04 | **Pictures + documents for a boy** — 3 new procedural scenes (skatepark, LAN party, backyard ramp) as boy sides of shared photo slots, boy captions everywhere, neutral lips for the `short` self-portrait, a boy `song_lyrics_notebook.txt`; EN + DE. | G2-03 | done | opus | agent | — | fast | — | My Pictures shows ≥ 3 boy-only photos for a boy and today's set for a girl; every photo caption has a boy-voiced side; the lyrics notebook differs; Pixlog `/me` album picks up the boy photos; scenes deterministic per seed; tests. | §G2-04 |
-| G2-G | **G2 gate (self-review)** — Gate procedure + Content rubric + Gender rubric + the "boy read-through"; screenshots boy-en/boy-de and girl-en. | G2-01…G2-04 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v04-G2.md` with the before/after numbers from the audit; screenshots looked at; nothing pushed or tagged. | §G2-G |
 
 ---
 
+# Phases
+
+## F — v0.4.1 fixes
+
+| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
+|---|---|---|---|---|---|---|---|---|---|---|
+| F-01 | **Player profile fixes** — Friendspace saves only fields the player typed (defaults resolve at render, old saves migrate), `/me` scrolls to top after Save, Friendspace + Pixlog use the User Accounts picture for the player. | — | ready | opus | agent | — | e2e | — | After Save with only a pasted layout, switching to German or to boy changes headline/mood/about to that side's defaults; typed fields stay; v0.4 saves with default text migrate; player picture = User Accounts tile on both sites; tests. | §F-01 |
+| F-02 | **Content polish** — boy diary, boy favorites order, boy mood, concert timeline wording, American spellings, German song rhyme, „adden", d2 visitors mail; EN + DE. | F-01 | blocked | opus | agent | — | fast | — | Every item in §F-02 done or logged as decided; untouched favorites still detected (old order counts); audit + parity + playthrough green; boy assertions. | §F-02 |
+| F-03 | **Visual fixes** — story-dated photo stamps (`PhotoSpec.day`), pixel-font digit spacing on reply buttons, bulletins in one column, Theo's transcript after a language switch, Stapley's balloon not covering the browser. | F-02 | blocked | opus | agent | — | e2e | — | Concert album stamps read `'07 10 11`; „1 obviously" keeps its space; survey bulletins don't wrap under the picture; a language flip mid-chat shows the whole transcript; balloon avoids the active browser window; tests. | §F-03 |
+| F-04 | **Stale follow-ups** — `afterScript` follow-ups armed on an earlier day expire when the contact's next `onDay` script starts; docs. | F-03 | blocked | opus | agent | — | fast | — | Skipping Dex's day-1 follow-ups never delivers them after his day-2 chat; same-day follow-ups unchanged; boy-only threads still fire; engine tests; `docs/content-format.md` updated. | §F-04 |
+| F-G | **F gate (self-review) + v0.4.1 notes** — Gate procedure + Gender rubric; `docs/release-notes-v0.4.1.md`. | F-01…F-04 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v041-F.md` + screenshots (`/me` after Save girl→boy, Pixlog `/me` picture, concert album stamp, a reply button with a digit, a survey bulletin); notes written; nothing pushed or tagged. | §F-G |
+
+## W0 — Week-two foundations
+
+| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
+|---|---|---|---|---|---|---|---|---|---|---|
+| W0-01 | **Days 1–10 plumbing** — `STORY_DAYS` 1–10 shared, lint range, balloons' vague line from day 11, per-day tests via `STORY_DAYS`, mail `day6`…`day10` modules (empty + DE), e2e `setDay` helper, docs/README. | F-G | blocked | opus | agent | — | e2e | — | No literal 1–5 day cap left (grep listed in §W0-01); lint accepts day 10, rejects 11; empty day 6–10 modules wired EN + DE; existing specs use `setDay`; all tests green. | §W0-01 |
+| W0-02 | **Story bible** — `docs/story-week2.md`: day-by-day beats per friend, mails, sites, social, gender variants, gender-only threads, cross-links, facts table. | W0-01 | blocked | opus | agent | — | fast | — | Covers days 6–10 for all six friends, Mom, Mr Dalton, every site, Friendspace, Pixlog; every cross-reference named once with its day; girl/boy differences listed; consistent with days 1–5 (facts table). | §W0-02 |
+| W0-03 | **Scenes + poster wallpaper** — photo scenes `stage`, `classroom`, `livingroom`; `lantern-poster` procedural wallpaper + unlock id. | W0-01 | blocked | opus | agent | — | fast | — | Scenes deterministic per seed, in the XP-era photo style; wallpaper renders in Display Properties once unlocked; `CONTENT_UNLOCKS` includes `lantern-poster`; tests. | §W0-03 |
+
+## W1 — English chats, days 6–10
+
+| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
+|---|---|---|---|---|---|---|---|---|---|---|
+| W1-01 | **Jess + Kayla, days 6–10** — `onDay` scripts 6–10, presence per day, gender variants, Jess's girl-only threads (day 8 call, day 9 sign workshop) + Kayla's (day 9 outfit); DE placeholders. | W0-02, W0-03 | blocked | opus | agent | — | fast | — | Bible beats delivered in voice; per-day test (≥ 4 nodes, a real branch, new PM) passes for 6–10; audit green; boy assertions; playthrough green 1–10 × 4 combos. | §W1 |
+| W1-02 | **Pia + Theo, days 6–10** — scripts 6–10, presence, gender variants (Theo's girl crush step, boy buddy), Theo's day-10 `lantern-poster` unlock; DE placeholders. | W1-01 | blocked | opus | agent | — | fast | — | As W1-01; the unlock fires once on day 10 for both genders. | §W1 |
+| W1-03 | **Marco + Dex, days 6–10** — scripts 6–10, presence, the 3 boy-only threads (Dex Jam course d8, Marco LAN rematch d7, Marco load-in crew d10); DE placeholders. | W1-02 | blocked | opus | agent | — | fast | — | As W1-01; boy-only threads never run for a girl; Marco never uses „!"; Dex stays Away. | §W1 |
+| W1-G | **W1 gate (content self-review)** — Gate procedure + Content rubric + Gender rubric; read days 6–10 as a girl and as a boy. | W1-01…W1-03 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W1.md` + screenshots (one chat per friend per gender on its key day, EN); fixes made. | §W1-G |
+
+## W2 — English mail, sites + social, days 6–10
+
+| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
+|---|---|---|---|---|---|---|---|---|---|---|
+| W2-01 | **Mail days 6–10** — 4–6 mails a day: Mom, Mr Dalton, Westfield High, fan club, CheatCave/Kickflip notices, spam, Friendspace/Pixlog notifications, a chain letter; gender variants; DE placeholders. | W1-G | blocked | opus | agent | — | fast | — | Per bible; ≥ 4 mails a day; Mom's day-10 mail per gender (no romance for a boy, none on Dex for either beyond the girl's „So THAT is Dex"); audit green; tests. | §W2-01 |
+| W2-02 | **Sites days 6–10** — Celeb Gossip 07, Westfield High (election, show listing), Tinfoil Comets (contest, winners, sold out), CheatCave, Kickflip Kings (Jam, views); DE placeholders. | W2-01 | blocked | opus | agent | — | fast | — | Every site posts on days 6–10 at its days-1–5 rate; cross-links match the bible; `after` states move to day 10 where the story moved; tests per site. | §W2-02 |
+| W2-03 | **Friendspace + Pixlog days 6–10** — bulletins, walls, `commentsOnPlayer`, Velvet Lantern band page show + blog, one new album per friend (day-10 show album with `stage`), blog posts, shouts, guestbooks, kudos; DE placeholders. | W2-02 | blocked | opus | agent | — | fast | — | `lintSocial` green for 1–10; a wall comment every day; 1–2 shouts a day; the show album uses `stage` and day stamps; gender variants on lines to the player; audit green. | §W2-03 |
+| W2-G | **W2 gate (content self-review)** — Gate procedure + Content rubric + Gender rubric; English playthrough days 6–10 across mail, sites, Friendspace, Pixlog as girl and boy. | W2-01…W2-03 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W2.md` + day-by-day screenshots; cross-links checked; fixes made. | §W2-G |
+
+## W3 — German, days 6–10
+
+| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
+|---|---|---|---|---|---|---|---|---|---|---|
+| W3-01 | **German chats days 6–10** — overlays for every W1 script, presence and gender-only thread; glossary additions. | W2-G | blocked | opus | agent | — | fast | — | No W1 placeholder left in `src/content/de/contacts`; overlay fallback test green; German voices per style guide; natural gendered forms via `g()`; fallback assertions added. | §W3 |
+| W3-02 | **German mail, sites, social days 6–10** — every W2 placeholder module. | W3-01 | blocked | opus | agent | — | fast | — | No `W3 replaces` comment left in `src/content/de`; parity + fallback green; audit green in DE. | §W3 |
+| W3-G | **W3 gate (German content self-review)** — Gate procedure + German content rubric + Gender rubric; German playthrough days 6–10 as girl and boy. | W3-01, W3-02 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W3.md`; DE screenshots of the key days; fixes made. | §Gate |
+
+## W4 — Release v0.5
+
+| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
+|---|---|---|---|---|---|---|---|---|---|---|
+| W4-01 | **v0.5 e2e + docs** — e2e flows from the spec's Testing section; README, architecture notes, `docs/release-notes-v0.5.0.md` (EN + „Auf Deutsch"), screenshots. | W3-G | blocked | sonnet | agent | — | e2e | — | New `tests/e2e/v05-*.spec.ts` pass in the default suite; README says days 1–10; notes list user-visible changes. | §W4-01 |
+| W4-G | **Release-ready gate (self-review)** — Gate procedure; play days 6–8 in English as a girl and 9–10 in German as a boy. **Do not tag, push or release.** | W4-01 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W4.md`; bundle sizes reported (German stays lazy); nothing pushed or tagged. | §W4-G |
+
+---
 
 # Task specs
 
-Full descriptions for every task. The row's Acceptance cell always applies too, and so does the design spec (`docs/superpowers/specs/2026-10-15-v04-social-design.md`). When a spec and the existing code disagree about a detail the spec doesn't care about, follow the code's existing pattern.
+Full descriptions for every task. The row's Acceptance cell always applies too, and so does the design spec named in the brief. When a spec and the existing code disagree about a detail the spec doesn't care about, follow the code's existing pattern.
 
 ## Specs
 
 ### Gate — Gate procedure (all phase gates)
 
+`<ver>` is `v041` for phase F and `v05` for the W phases (lowercase phase in file names, e.g. `tests/e2e/v05-w1.spec.ts`, `docs/review/v05-W1.md`).
+
 1. Run `npm run verify` and `npm run e2e` and fix any failure.
-2. Add one e2e happy-path spec for the phase's main user flows: `tests/e2e/v04-<phase>.spec.ts` (lowercase phase, e.g. `v04-p0.spec.ts`), using the helpers in `tests/e2e/helpers.ts`. It runs in the default suite.
-3. Write `tests/e2e/v04-review-<phase>.spec.ts`, tagged `@review` (already excluded from the default run by `grepInvert`). It saves the screenshots named in the gate's row to `docs/review/v04-<phase>/` at 1280×800. Run it with `npx playwright test --grep @review`. Collect console errors and page errors and assert there are none, like the v0.1 review specs.
+2. Add one e2e happy-path spec for the phase's main user flows: `tests/e2e/<ver>-<phase>.spec.ts` (lowercase phase, e.g. `v05-w0.spec.ts`), using the helpers in `tests/e2e/helpers.ts`. It runs in the default suite.
+3. Write `tests/e2e/<ver>-review-<phase>.spec.ts`, tagged `@review` (already excluded from the default run by `grepInvert`). It saves the screenshots named in the gate's row to `docs/review/<ver>-<phase>/` at 1280×800. Run it with `npx playwright test --grep @review`. Collect console errors and page errors and assert there are none, like the v0.1 review specs.
 4. **Look at every screenshot** with your image-reading tool and fix the obvious problems:
    - broken layout or overlap
    - missing icons
@@ -506,7 +514,7 @@ Full descriptions for every task. The row's Acceptance cell always applies too, 
    - text overflow
    - anything that looks un-XP-like or breaks the asset rules
 5. Review the phase's code against the Acceptance cells of its tasks. Do missing work that is small (≤ ~30 min); list larger gaps as follow-ups.
-6. Write `docs/review/v04-<phase>.md`:
+6. Write `docs/review/<ver>-<phase>.md`:
    - what was built
    - how to try it (`npm run dev` plus steps, mentioning `?speed=fast`)
    - the screenshots, linked
@@ -554,696 +562,260 @@ Full descriptions for every task. The row's Acceptance cell always applies too, 
 - Umlauts and ß correct; German quotes „…"; no ae/oe/ue substitutes outside deliberate chat voice.
 - Storylines still consistent across chat, mail, sites and profiles in German (the glossary in `docs/localization-de.md`).
 
-### G — common rules (G-01…G-G)
 
-- **Read first:** `docs/superpowers/specs/2026-10-16-player-gender-design.md`, the Gender rules (in "v0.4 rules"), `docs/localization-de.md` and `docs/decisions.md`. The current code has **no** gender anywhere; the old rule "the player has no gender" (`docs/localization-de.md` §2, decisions P2-01) is replaced in G-02.
-- **German:** write real German in the same task (no placeholders), following the German voices and defaults. System UI uses „Sie" (User Accounts and Login). Friends and sites use „du".
-- **Assets:** original SVG and CSS only (asset rules). No real brands, games, skaters, wrestlers or sites. Invent names, e.g. "Galaxy Raiders 3", "Thunder Kart", "Ninja Turbo Kombat" (avoid anything close to a real title).
-- **Code:** the v0.4 Friendspace data-model work (P0-02 onward) has not happened yet. Friendspace profiles are still in `src/content/profiles/`; don't move them.
+### F-01 — Player profile fixes
 
-### G-01 — Gender + user picture, login, User Accounts
+**Default text frozen on Save** (`docs/review/v04-P5.md`, "Known gaps"):
+- **The bug:** Save Changes in the Friendspace editor (`src/apps/browser/sites/friendspace/`, `myProfile` in `src/apps/browser/store.ts`) stores the headline, mood and "About me" even when the player only pasted a layout. Those are the girl's English defaults, and they stay after a switch to German or to boy.
+- **The fix:**
+  - Only fields the player changed are persisted. A field equal to the current default for the current locale and gender is stored as absent.
+  - `effectiveProfile` fills absent fields from the defaults at render, like untouched seed files.
+- **Migration** in `sanitizeProfile`: a saved headline, mood or about text equal to **any** default (girl/boy × en/de) becomes absent. Other saved values stay.
+- `docs/i18n.md` currently says `myProfile` is player data. Change it to "only what the player typed".
 
-**Settings** (`src/os/types.ts`, `src/os/store/settings.ts`):
-- Add `gender: Gender | null` (`type Gender = 'girl' | 'boy'`, exported from `src/os/types.ts`) and `userPicture: UserPictureId | null`.
-- Add setters `setGender` and `setUserPicture`, and include both in `PersistedSettings`, `partialize` and the hydrate sanitize. Follow `sanitizePlayerName` (settings.ts:67-76): `undefined` = invalid, keep the current value. An old save without the field → `null`.
-- Readers: `getGender()` / `useGender()` and `getUserPicture()` (effective: the saved picture or the gender's default) in `src/i18n/settingsText.ts`.
+**`/me` after Save:** scroll the page to the top (the review screenshots `d1-05`, `d2-03` show it halfway down the wall).
 
-**User pictures:**
-- `src/os/user/pictures.ts` defines 8 ids: `butterfly`, `flower`, `kitten`, `heart-guitar` (girl defaults: `butterfly`) and `skateboard`, `controller`, `football`, `rocket` (boy default: `skateboard`).
-- Each is an original 48×48 XP-style SVG tile (a rounded square with a glossy frame) in `src/assets/user/`.
-- Replace the single `src/os/startmenu/avatar.svg` use in the Login tile and Start menu header with the effective picture. `null` gender shows the old avatar.
-
-**Login** (`src/os/login/Login.tsx`):
-- `src/os/login/GenderPicker.tsx` mirrors `src/i18n/LanguagePicker.tsx`:
-  - `role="radiogroup"`, buttons with `role="radio"`, arrow keys.
-  - With no selection, the first option has `tabIndex=0`.
-  - Each option shows a small girl/boy pictogram SVG and the label.
-- It shows when `askName || gender === null`, below the name input and above the language.
-- The tile is `disabled={!name || !gender}`.
-- `submit()` saves the gender with the name.
-- Styles in `Login.module.css`, reusing the `.language*` look.
-
-**User Accounts app** (`src/apps/useraccounts/`, app id `useraccounts`):
-- Register it like the other apps: the registry, a Control Panel entry if one exists, otherwise the Start menu next to Regional and Language Options. Window 420×380, fixed. Icon: original SVG.
-- **Contents:**
-  - the current picture + name
-  - "Change my name" (input, max 20, Apply)
-  - "I am a" (`GenderPicker`)
-  - "Change my picture" (a grid of the 8 tiles plus "Use default")
-  - OK / Cancel / Apply, as in the Display Properties pattern
-- Changes apply live (Start menu, Messenger handle display, and the content re-render once G-02 exists).
-- German title: „Benutzerkonten".
-
-**UI strings:** add `login.gender*`, `useraccounts.*` and `apps.useraccounts` to `en.ts`/`de.ts`. German: „Ich bin:", „Mädchen", „Junge", „Benutzerkonten", „Eigenen Namen ändern", „Eigenes Bild ändern" („Sie" form).
+**Player picture:**
+- Friendspace and Pixlog build the player's picture from the name (`playerPicture(playerName)` in `src/apps/browser/sites/friendspace/people.ts:34`). Use the effective User Accounts picture instead (`getUserPicture()`, the tiles in `src/os/user/pictures.ts`).
+- Render the tile SVG wherever the player's picture shows: `/me`, wall comments by the player, the Pixlog `/me`, visitors, and the Top 8 if the player appears.
+- Friends keep their pattern pictures. A switch in User Accounts updates live.
 
 **Tests:**
-- settings sanitize (valid, invalid, missing)
-- Login gating (name-only stays disabled)
-- an old save asks for the gender once
-- GenderPicker keyboard
-- User Accounts changes
-- `src/test/setup.ts` pins `gender: 'girl'`
-- one e2e: first login picks Boy → the Start menu shows the skateboard tile → User Accounts switches to Girl → the tile changes
-- the e2e helpers' login (`tests/e2e/helpers.ts`) must pick a gender (default girl), so the existing specs keep passing
-
-### G-02 — Gendered content engine
-
-**`src/content/gender.ts`:**
-- `g(girl: string, boy: string): string` returns `'' + girl + '' + boy + ''`.
-- `gendered<T>({girl, boy})` returns a branded object `{ __gendered: true, girl, boy }` for non-strings.
-- `resolveGender<T>(value: T, gender: Gender): T`:
-  - deep-walks objects and arrays, keeping frozen and identity-free data intact;
-  - in strings, replaces each marker with the chosen side;
-  - replaces branded objects with their side.
-- `hasGenderMarkers(s)` and `genderMarkerProblems(s)`: unbalanced, nested, or empty side.
-- `GENDERS = ['girl','boy'] as const`.
-
-**Resolving and accessors** (`src/content/locale.ts`):
-- `contentFor(locale, gender)` returns `resolveGender(raw, gender)`, memoized per `(raw object, gender)`.
-- `null` resolves as `'girl'`.
-- Every `getX(locale)` accessor gains a required `gender` parameter. Update all call sites by passing `getGender()`, or `useGender()` in components.
-- Overlays merge **before** resolving (`mergeOverlay` sees raw strings).
-- Parity compares the **raw** English and German modules (markers are not placeholders; `tokens()` must ignore them). It also checks that **both resolved genders** have identical structure.
-
-**Re-render on gender change:**
-- **Messenger:**
-  - `src/apps/messenger/engine/render.ts`: the cache key gains gender, and `renderEntry`/`renderTranscript`/`renderPersonalMessage` take it.
-  - `src/apps/messenger/runtime.ts` `getLocalizedContents(locale, gender)`.
-  - `engine/context.ts` gains `getGender`.
-  - Live lines in `runner.ts` resolve with the current gender.
-- **fs:**
-  - `src/os/fs/store.ts:265-273` re-renders untouched seeds when the gender changes, as it does for the locale, so track `renderedFor = locale+gender`.
-  - `seedFilesFor(locale, gender)` in `src/os/fs/seeds.ts`.
-  - `records.ts` `localizeNodes`/`restoreNode` take the gender.
-  - Dirty seeds keep their text.
-- **Mail:** `renderMail`/`renderMails` (`src/apps/mail/records.ts`, `Mail.tsx`) take the gender. Saved attachments are already frozen; leave them.
-- **Sites:** `useSiteText(host)` and `meta(locale)` resolve with the current gender (`useGender()`; `meta` may read `getGender()`). The Searchly index rebuilds on a gender change.
-
-**Lint and tests:**
-- `src/content/lint.ts`: every string passes `genderMarkerProblems`.
-- `content.test.ts` lints both resolved genders per locale.
-- `playthrough.test.ts` runs girl/boy × en/de.
-- `contacts.test.ts` string assumptions work on resolved content.
-- Add **one sample variant each** so the plumbing is proven end to end, and keep them (they are real content):
-  - a chat line: Marco's „mein lieblingsmensch in der familie" → `g('meine lieblingscousine', 'mein lieblingscousin')` in German, English unchanged;
-  - a seed-file caption: `me-webcam-test`;
-  - a mail line: Mom's `d1-mom-rules` greeting.
-- Unit tests: `resolveGender`, the memo, and a switch re-rendering a chat, a file and a mail.
-
-**Docs:**
-- `docs/gender.md` (≤ 1 page): settings, `g()`, `gendered()`, the resolving point, re-render, rules.
-- `docs/localization-de.md` §2: replace "The player has no gender" with "The player is a girl or a boy: use natural gendered forms through `g()`; never gender-star forms; friends' own words don't change". Keep „Zwerg" as Marco's nickname.
-- `docs/decisions.md`: a line superseding P2-01's no-gender rule.
-- `docs/architecture.md`: a pointer.
-
-### G-03 — Player files, pictures + defaults per gender
-
-**Seed slots** (ids never change; `src/content/files/*.ts` + `src/content/de/files/*`; German `SEED_TEXT` entries become `g()` where they differ):
-
-| Slot (id) | Girl (girlier than today) | Boy |
-|---|---|---|
-| `poem-do-not-read` | the crush poem about Theo ("your hair does a little swoosh thing"), more hearts | `my_wrestling_entrance_speech.txt` (no crush) |
-| `top-8-drama` | today's drama, more Kayla/Brianna and "will theo think something??" | `top 8 (FINAL final).txt`: ranking friends by who has the best games, Dex vs Marco, no crush |
-| `concert-packing-list` | today's list (hair clips, glitter sign) | his list: hair gel (Jess says spikes), earplugs (Marco said), disposable camera, sign "ZIGGY THROW A DRUMSTICK"; same concert facts |
-| `letter-to-theo-never-send` | today's crush letter | `cheat_codes.txt` (invented games, "DONT TELL PIA") |
-| `my-rap-lyrics` | a girlier file in this slot: `songs_i_wrote_4_tinfoil_comets.txt` | the rap lyrics (MC Megabyte), boyified |
-| `diary-age-11` | horses, vet AND pop star, secret club with Jess | `diary_age_11.txt`: wants to be a stunt man AND pro skater, a secret club with Dex |
-| `song-lyrics-notebook` | shared (Marco's band) | shared |
-| `pony-fanfic-by-pia` | shared (Pia's) | shared |
-| school/system docs | shared | shared |
-
-**Pictures** (`media.ts`):
-- `me-webcam-test`: `gendered()` photo spec. The `selfportrait` scene (`src/os/fs/photoScenesIndoor.ts:104`) gets an optional `look: 'long' | 'short'` (long hair for a girl, short and spiky for a boy).
-- Captions use `g()` where they talk about the player.
-- `kaylas-party-blurry` and the others stay shared unless their caption is about the player.
-
-**Defaults:**
-- **Friendspace player profile** (the `DEFAULT_PLAYER_PROFILE` content): girl preset `glitter`, a girly headline and mood; boy preset `midnight` (or `outer-space`), a boyish headline and mood. `effectiveProfile` uses it until the player saves.
-- **Snapshot Booth cartoon** (`src/apps/photobooth/cartoon.ts`): the default look per gender (girl: add a `long` hair style and use it; boy: `spiky`).
-- **Messenger player picture colours** (`PlayerPicture.tsx` `DEFAULT_COLORS`): a pink/purple set vs a blue/green set.
-
-**Tests:** per-gender seed names and texts (en + de); a switch swaps untouched files only; Recycle Bin restore still works; the selfportrait renders both looks.
-
-### G-04 — Chats + mail per gender
-
-**Rules:** girl side = today's text, made girlier where it fits. Boy side = boy-talk with the same beats. Same line/choice counts. No crush for a boy. Friends' self-talk unchanged. Inventory (line refs from the 2026-10-16 survey; re-grep to find them):
-
-- **Marco:**
-  - "ur my favorite cousin" (marco.ts:268); "outvoted by my little cousin" (322); "he might listen to a kid" (marco-days.ts:234).
-  - The German workarounds become `g()`: „lieblingscousine/lieblingscousin", „meine kleine cousine / mein kleiner cousin".
-  - „zwerg" stays his nickname.
-- **Jess:**
-  - "ur the best" (jess-days.ts:373, 385); "ur a GENIUS".
-  - Profile `commentsOnPlayer` "what r u wearing friday?? DONT say a sweater" → boy: "DONT wear the hoodie w/ the hole"; "concert buddy".
-  - German „du bist SPITZE" → `g('die BESTE', 'der BESTE')` where natural.
-- **Theo:**
-  - "partner" lines (theo.ts:74, theo-days.ts:385, the pm "B+ and a good partner :)", profile).
-  - The flirty "lol no thats cute" branch (theo.ts:229-263) becomes buddy banter for a boy.
-  - German „Partnerin/Partner" through `g()`.
-- **Kayla:**
-  - "be the bigger person" (kayla.ts:237); German `g('sei die klügere', 'sei der klügere')`.
-  - The Brianna sleepover arc stays Kayla's story, but the player's options change: "we can have our own sleepover!!" / "face masks and scary movies" → boy: "movie night at mine!!" / "pizza and scary movies".
-  - "ur #1" comments.
-- **Dex:** check his lines to the player. He already says "dude"; for a girl, keep only what fits her, otherwise leave it.
-- **Pia:** "your sister" stays (Pia is the sibling). Check lines about the player's looks.
-- **Mail** (`src/content/mail/day1-5.ts` + de):
-  - `d2-chain-love` (Kayla): the boy version is a "send to 10 ppl or ur console/skateboard breaks" chain. Same id, sender and day.
-  - `d5-mom-dex`: the boy version drops the romance ("is he the skateboard boy? please wear a helmet").
-  - `d3` and `d5` Comet Chatter newsletters: the boy version is a CheatCave newsletter from `news@cheatcave.example` (concert facts the chats need stay present as a news item, or are dropped only if no chat refers to the newsletter; check).
-  - `d3` ringtone spam: the boy version is "FREE cheat codes CD" spam.
-  - `d2-spaceport-views`/`d4-spaceport-comment` "space cadet" → German `g('Weltraumkadettin', 'Weltraumkadett')` if it reads well, else keep „Hallo aus dem Orbit!".
-  - `d3-theo-labels`/`d5-dalton-grade`: "partner" handled like Theo.
-- **German:** go through every workaround listed in `docs/decisions.md` (P2-01…P2-05 lines about gender) and replace it with natural gendered forms through `g()` where that reads better; log each in `docs/decisions.md`.
-
-**Tests:** boy assertions for 3 chats and 2 mails; the playthrough covers all 4 combos; Marco's "no !" test still holds on both sides.
-
-### G-05 — CheatCave site
-
-`cheatcave.example`, a 2007 boys' games portal: a dark background, neon green and orange, pixel headers, "UPDATED DAILY!!", a fake hit counter, "link 2 us" buttons. Code in `src/apps/browser/sites/cheatcave/`, content in `src/content/sites/cheatcave.ts` + `src/content/de/sites/cheatcave.ts` (real German), registered in `sites/index.ts`, `meta(locale)` for Searchly.
-
-**Pages:**
-- `/`: news feed, day-gated with 1–2 posts a day, days 1–5.
-- `/cheats?game=`: about 6 invented games plus the in-game Mines, Hen Hunt and Star Pinball (cheeky "cheats" that are really tips, plus one joke cheat per game).
-- `/clips`: "top 10 funny clips", with procedural thumbnails via the existing photo scenes or CSS and invented titles.
-- `/forum`: 3 threads with day-gated replies:
-  - Theo asks shyly how to beat a level ("sorry if this is a dumb question");
-  - Dex posts once, late;
-  - Marco is dry.
-  - Strangers have 2007 handles.
-
-Reuse `sites/daily.ts` (`upToDay`, `postedLabel`), `useSiteText`, `SiteLink` and `rich.tsx`, following the existing site patterns (e.g. `celebgossip07/`). Content lint clean. Tests EN + DE. **No player-written posts** (read-only, like the gossip site's comments).
-
-### G-06 — Kickflip Kings + per-gender web
-
-**Kickflip Kings** (`kickflipkings.example`):
-- A skate crew site: concrete grey, stencil headers, sticker-bomb borders.
-- **Pages:**
-  - `/` news + shoutbox (day-gated)
-  - `/crew` with Dex and 3 invented members
-  - `/tricks` (ollie → kickflip guide, with Dex's "landed it" story on day 4)
-  - `/video`: Dex's skate video premieres on **day 5**; a procedural "video player" still and a fake play button with "buffering…" humour
-  - `/gigs`, a Velvet Lantern show listing tied to Marco
-- English + real German, in `src/content/sites/kickflipkings.ts` + de, registered with Searchly meta.
-- Add a link to the `/video` page in Dex's day-5 chat (a `.example` URL in a line, as other chats do), for both genders. Add matching overlay text in German.
-
-**Per-gender web:**
-- **Default favorites** (`src/apps/browser/store.ts` `DEFAULT_FAVORITE_KEYS`):
-  - shared: Friendspace and Westfield High
-  - girl: Celeb Gossip 07 and Tinfoil Comets
-  - boy: CheatCave and Kickflip Kings
-- `defaultFavoritesFor(gender)`. If the saved favorites equal either gender's default list (or the old v0.3 default list), they are "untouched" and render as the current gender's defaults. Any player change makes them custom.
-- Test the migration with the v0.2/v0.3 fixtures.
-- **Searchly home:** a "hot sites this week" box (content per gender via `g()`/`gendered()`).
-- `docs/decisions.md` entries.
-
-### G-G — G gate
-
-Follow the Gate procedure (`v04-g.spec.ts`, `v04-review-g.spec.ts` @review, `docs/review/v04-G.md`) with the Content rubric and **Gender rubric**.
-
-**Screenshots** at 1280×800 for **girl-en, girl-de, boy-en, boy-de**:
-1. Login with the gender picker
-2. User Accounts
-3. My Documents
-4. Recycle Bin
-5. My Pictures
-6. Theo's chat where the branches differ
-7. Mom's Dex mail (day 5)
-8. CheatCave home + forum
-9. Kickflip Kings home + video (day 5)
-10. The Favorites menu
-
-**The e2e** covers:
-1. A boy login shows the boy files and favorites.
-2. Switching to girl in User Accounts swaps untouched files and favorites.
-3. Both sites are found via Searchly.
-
-Find everything with `grep -rni "spaceport" src tests docs/*.md README.md CREDITS.md`.
-
-**Code:**
-- `src/apps/browser/sites/spaceport/` → `friendspace/`; `SPACEPORT_HOST` → `FRIENDSPACE_HOST = 'friendspace.example'`.
-- `src/content/sites/spaceport.ts` and `src/content/de/sites/spaceport.ts` → `friendspace.ts`; the exports follow (`SPACEPORT_TEXT` → `FRIENDSPACE_TEXT`, …).
-- Catalog key `sites.spaceport.*` → `sites.friendspace.*` in `en.ts` and `de.ts`; CSS module and test file names too.
-
-**Visible text:**
-- Every visible "Spaceport" becomes "Friendspace" in EN and DE: contact scripts and overlays, mail, seeded files, site text, Searchly metadata, default favorites, balloons, tips.
-- Keep sentence rhythm and voice: "Spaceport" → "Friendspace" in place, lowercase where a friend types lowercase ("friendspace").
-- **Ids don't change:** mail ids (`d2-spaceport-views`, `d4-spaceport-comment`), seed file ids, script ids. Saves reference them.
-
-**Logo:**
-- Replace the planet in `Layout.tsx` with an original SVG: two overlapping round chat bubbles in the existing colours, one with a small ring like a planet.
-- Wordmark "Friendspace" in the existing italic style.
-
-**Redirect:**
-- Add `LEGACY_HOSTS = { 'spaceport.example': 'friendspace.example' }`.
-- Apply it:
-  - in the browser's URL resolution (typed URLs, links, history)
-  - in the `web` store's sanitize (favorites)
-  - where a restored browser window reads `props.url`
-- The path and query are kept. Unit tests cover each place; one e2e opens `http://spaceport.example/jess` and lands on Friendspace.
-- `docs/decisions.md`: one line for the rename.
-
-### P0-02 — v0.4 architecture + data model
-
-Write `docs/architecture-v0.4.md` (≤ 4 pages, extends the older architecture docs). Add the types and store fields below, empty content modules, and their German placeholders. No UI in this task.
-
-**Content types** (`src/content/friendspace/types.ts`, `src/content/pixlog/types.ts`, `src/content/sites/glittercodez.ts` types):
-
-```ts
-// friendspace
-type BandId = string;                       // 'tinfoil-comets', …
-interface Bulletin { id: string; day: number;
-  from: { contactId: ContactId } | { extra: string; seed: string };
-  subject: string; body: string; link?: string /* *.example URL */ }
-interface Band { id: BandId; name: string; genre: string; hometown: string; bio: string;
-  trackIds: string[] /* playlist ids */; shows: { day: number; text: string }[];
-  blog: { day: number; title: string; body: string }[]; theme: ProfileTheme }
-interface Top8Reaction { contactId: ContactId; dropped: string; readded: string } // wall lines
-// ProfileContent.top8 gains a band variant: TopFriend | { band: BandId }
-// ProfileComment gains graphic?: 'thanks' | 'hug' | 'glitterheart'
-
-// pixlog
-type PixlogSkinId = 'orange' | 'ocean' | 'bubblegum' | 'lime' | 'night' | 'sunset';
-interface PixlogPhoto { photo: PhotoSpec /* caption inside */;
-  comments: { day: number; from: ContactId | string /* extra name */; text: string }[] }
-interface PixlogAlbum { id: string; day: number; title: string; photos: PixlogPhoto[] }
-interface PixlogProfile { contactId: ContactId; skin: PixlogSkinId; about: string;
-  albums: PixlogAlbum[]; blog: { id: string; day: number; title: string; body: string }[];
-  survey: { surveyId: string; answers: string[] };
-  shouts: { day: number; text: string }[]; kudosToPlayer: number[] /* days */;
-  guestbook: { day: number; from: ContactId | string; text: string }[] }
-interface Survey { id: string; title: string; questions: string[] }   // pixlog/surveys.ts
-
-// glittercodez
-interface LayoutDef { id: string; name: string; blurb: string; side: Gender /* girly or boyish */; extras: LayoutExtras } // see P1-03
-```
-
-**Content modules:**
-- English: `src/content/friendspace/{bulletins,bands,top8Reactions}.ts`, `src/content/pixlog/{index,surveys,<friend>}.ts`, and the layouts in `src/content/sites/glittercodez.ts`.
-- The existing `src/content/profiles/` **moves** to `src/content/friendspace/profiles/` (and `de/` likewise). Update the imports.
-- Each module gets **1–2 sample items** so later UI tasks have something to render. P3 writes the real content.
-- **Locale wiring:** extend `LocaleContent` with `bulletins`, `bands`, `top8Reactions`, `pixlog` (profiles), `surveys` and `layouts`, plus accessors `getBulletins(locale)` etc. Wire EN in `locale.ts`; German placeholders go in `de/bundle.ts` (see "v0.4 rules"). Extend `parity.test.ts` and the content lint to the new modules.
-
-**`web` store fields** (`src/content/sites/types.ts` `WebState` + `src/apps/browser/store.ts`):
-
-```ts
-myProfile: PlayerProfile & {
-  layoutCode?: string;                               // ≤ 2000 chars, parsed at render
-  autoplay?: boolean;                                // default true
-  moodHistory?: { text: string; emoticon: string; day: number }[]; // ≤ 5, newest first
-  top8: PlayerTopEntry[];                            // was ContactId[]
-}
-type PlayerTopEntry = { kind: 'contact'; id: ContactId } | { kind: 'band'; id: BandId }
-                    | { kind: 'extra'; name: string; seed: string };
-bulletinsSeen?: number;                              // highest day the bulletins were opened
-top8Wall?: { contactId: ContactId; kind: 'dropped' | 'readded'; day: number }[];
-pixlog?: { skin: PixlogSkinId; album: { fsNodeId: string; caption: string }[];  // ≤ 24
-           surveys: Record<string, string[]>; kudosGiven: Record<ContactId, number[]> };
-```
-
-- **Migration:** a `top8` of strings → `{kind:'contact', id}`. Unknown kinds or ids are dropped, there are at most 8 entries, and they are deduped.
-- Each field gets its own `sanitize*` function with tests, including a v0.3 fixture: copy `src/test/fixtures/v02-save.json`'s shape, or build a v0.3 one, and assert it loads unchanged except for the `top8` migration.
-- Actions: `saveProfile` (existing, widened), `markBulletinsSeen(day)`, `appendTop8Wall(entry)`, `setPixlogSkin`, `setAlbum`, `saveSurvey`, `giveKudos(contactId, day)` (returns false if already given that day).
-
-**The doc covers:** the routes of all three sites, the types above, the store fields, the events (P0-03, P1-02), the layout-code format (summarized; P1-03 owns it), and the derived feed/visitors (P2-02).
-
-### P0-03 — Top 8 drama engine
-
-**Flow** (browser and Messenger don't import each other):
-1. **Browser:** `saveProfile` compares old vs new `top8` contact ids. For each removed contact, and each added contact, it emits `web:top8Changed { dropped: ContactId[]; added: ContactId[] }` (new typed event in `src/os/events.ts`).
-2. **Messenger runtime** (`src/apps/messenger/runtime.ts`) listens and keeps persisted bookkeeping in the Messenger store: `top8: Record<ContactId, { state: 'dropped' | 'reacted'; day: number }>`.
-   - A drop records `{state:'dropped', day: currentDay}` unless one is already pending.
-   - An add of a contact in state `dropped` (not reacted yet) deletes the record silently.
-   - An add of a contact in state `reacted` deletes the record and queues the `onTop8Readded` trigger.
-3. **New triggers** in `src/content/types.ts`: `{ type: 'onTop8Dropped' }` and `{ type: 'onTop8Readded' }`.
-   - `onTop8Dropped` arms on the contact's sign-in when a `dropped` record has `day < currentDay`. It is the next day: the friend "noticed overnight". When the script runs, the record becomes `reacted`.
-   - `onTop8Readded` fires on the next sign-in, or at once if the contact is online.
-   - Both may run again for a new drop (repeatable by record, not `repeat: true`).
-   - Follow how `onGameScore`/`onDay` are armed in `engine/`.
-4. **After either script ends**, Messenger emits `messenger:top8Reacted { contactId; kind: 'dropped' | 'readded' }`. The browser store's listener appends `top8Wall` with the current day; the wall line text comes from `top8Reactions` content at render.
-
-**Lint and content:**
-- `lint.ts` accepts the new triggers; a contact may have at most one script per new trigger.
-- Add a minimal `top8-dropped`/`top8-readded` script to **one** contact (Kayla) as a sample, plus German overlay placeholders. P3-01 writes all six.
-
-**Tests:** drop → no reaction the same day; next day's sign-in → script runs once, record `reacted`; re-add before reacting → nothing; re-add after → readded once; wall entries appended; events typed.
-
-### P1-01 — Bulletins
-
-- **Route `/bulletins`:** a list (newest day first, then content order) with sender picture and name, subject, relative day label (`sites/daily.ts` `postedLabel`) and body (through `rich.tsx`). `link` renders as a `SiteLink`.
-- **`/me`:** a "Bulletin Space" box with the newest 3 and "view all".
-- **Unread dot:** the nav shows "Bulletins (●)" while `bulletinsSeen < currentDay` and some bulletin exists for today. Opening `/bulletins` calls `markBulletinsSeen(day)`.
-- Senders: friends link to their profile; extras get a seeded `Picture`.
-- **Tests:** day-gating, the dot logic, links; one German UI assertion.
-
-### P1-02 — Band pages, player, autoplay
-
-- **Route `/band/<id>`:** a band profile in its `theme`: name, genre and hometown card, bio, **BandPlayer**, "Upcoming shows" (day-gated, as in the existing Friendspace content) and "Band blog". Bands appear in friends' Top 8 tiles (`TopFriend` band variant) and link here. Fixed paths per band, so Searchly indexes them.
-- **BandPlayer** (`friendspace/BandPlayer.tsx`):
-  - A black and dark-grey box with a small LCD-style track title, ▶/❚❚, a track list (click to play) and a progress bar.
-  - It never owns an `<audio>`. It drives Amplifier through events: `amplifier:enqueue {trackId, play:true}` (existing), plus new `amplifier:control { action: 'pause' | 'resume' | 'stop' }`.
-  - It reflects state from the existing `amplifier:trackChanged`/`amplifier:stopped` events. Add a small `amplifier:progress { trackId; position; duration }` event emitted ~1×/s while playing, only if the existing events can't show progress.
-  - Amplifier handles `amplifier:control` in its store.
-- **Autoplay:**
-  - Opening a friend or band profile emits one `amplifier:enqueue {play:true}` for its song per page view.
-  - Only when all of these hold: `settings.muted` is false, Amplifier is not currently playing (track the last `trackChanged`/`stopped` in a tiny os-level mirror or the player component state; no import of the amplifier store), and the player's `myProfile.autoplay !== false`.
-  - `SongStrip` gets a "■" stop button (`amplifier:control stop`).
-  - `/me` and the profile editor get an "Autoplay profile songs" checkbox.
-- **Tests:** player state from events, autoplay conditions (muted / already playing / disabled), stop; German UI assertion.
-
-### P1-03 — Layout codes + profile extras
-
-**Format** (`src/apps/browser/sites/friendspace/layoutCode.ts`):
-
-```
-<!-- anything in comments is ignored -->
-[layout bg=<BackgroundId> text=<#hex> accent=<#hex> panel=<#hex|none> font=<FontId> glitter=<on|off>]
-[cursor <CursorId>]
-[sticker <StickerId> <top-left|top-right|bottom-left|bottom-right>]   (repeatable, max 4)
-```
-
-- **`parseLayoutCode(text: string): LayoutExtras`** is total. Tags are case-insensitive. Unknown tags, keys and values are ignored, the last value wins, and there are max 4 stickers. Input is capped at 2000 characters. Never throws.
-  - `LayoutExtras = { background?: BackgroundId; text?; accent?; panel?: string | 'none'; font?: FontId; glitter?: boolean; cursor?: CursorId; stickers: {id, pos}[] }`.
-- **`layoutCodeFor(extras, name?)`** writes the canonical code with a header comment `<!-- GlitterCodez.example layout: <name> -->`. Round-trip: `parseLayoutCode(layoutCodeFor(x))` deep-equals `x`.
-- **Fixed sets** (original, CSS-only or hand-written SVG):
-  - **Backgrounds (12):** `starry`, `leopard`, `pastel`, `emo-stripes`, `rainbow`, `grunge`, `matrix`, `hearts`, `checker`, `clouds`, `flames`, `camo`. Each is a CSS background (gradients/repeating patterns).
-  - **Fonts (6):** `comic`, `tahoma`, `verdana`, `courier`, `impact`, `georgia`. These are CSS font stacks; no font files.
-  - **Stickers (9 SVGs in `src/assets/stickers/`):** `star`, `heart`, `skull`, `pony`, `music`, `smiley`, `flame`, `skateboard`, `controller`.
-  - **Cursors (4):** `sparkle`, `hearts`, `stars`, `flames`. This is a trail of small CSS shapes following the pointer **inside the profile area only**, throttled, with at most ~12 nodes. It is off under `prefers-reduced-motion`.
-- **Rendering:** the theme for `/me` = the preset or custom theme (existing `playerTheme`) with the parsed `LayoutExtras` on top. `ProfileView` renders the glitter headline (a CSS shimmer animation, static under reduced motion), stickers absolutely positioned in the profile frame, and the cursor trail.
-- **Editor:** a "Layout code" `<textarea>` (with a hint "paste your code from glittercodez.example!") and a live preview of the parsed result.
-- **Comment graphics:** wall comments with `graphic` render a small original badge above the text ("Thanks for the add!!" glitter box, hug, glitter heart), as CSS/SVG.
-- **Mood history:** on save, if the mood changed, prepend `{text, emoticon, day}` (max 5). `/me` shows "Mood history" under the ID card.
-- **Tests:** the parser (valid, junk, unknown, partial, case, caps, 10k-char input), round-trip for random extras, rendering of each extra, reduced motion. Add `docs/decisions.md` lines.
-
-### P1-04 — GlitterCodez site
-
-- **Look:** host `glittercodez.example`, "GlitterCodez – free layouts 4 ur profile!!". A 2007 layout site: dark purple background, hot-pink headings, an animated "NEW!!" badge (static under reduced motion), a fake "1.337.420 layouts copied" counter, a "link back 2 us plz" box. Original SVG logo.
-- **Routes:**
-  - `/`: the gallery of `layouts` from content. Each tile has a mini preview (a scaled-down `ProfileView`-like box rendered with the layout's extras), the name and blurb, a read-only `<textarea>` with `layoutCodeFor(extras, name)`, and a "Copy code!!" button (`navigator.clipboard.writeText`; fallback: select the textarea text and show "press Ctrl+C!!").
-  - `/glitter`, `/stickers`, `/cursors`: codes for single tags.
-  - **Per gender (Gender rules):** the gallery shows the player's side first (`layout.side === gender`), under a heading like "hot 4 u!!", then the rest under "more layouts". Nothing is hidden.
-- **Wiring:** Searchly indexes it via `meta(locale)`, and Friendspace's editor hint links here.
-- **Tests:** every tile's code parses back to its layout; Copy uses the clipboard and falls back; German UI assertion.
-
-### P1-05 — Top 8 editor + drama UI
-
-- **Defaults:** the player's default Friendspace profile is per gender since G-03. Keep it.
-- **Editor** (replaces the reorder-only list): 8 slots.
-  - Each slot has a picker of friends, then bands, then extras gathered from friends' Top 8s. It also has ▲/▼ and ✕.
-  - "Add" appears while there are fewer than 8 entries. Duplicates are prevented.
-  - Keyboard operable; `aria-label`s.
-- **Saving** uses `saveProfile` (P0-02), which emits `web:top8Changed` (P0-03).
-- **Wall:** `/me` merges `top8Wall` entries with the existing `playerWall`, sorted by day. Each entry renders the friend's `top8Reactions` `dropped`/`readded` line in the current locale, with their picture.
-- **Mood history** UI if P1-03 didn't finish it.
-- **Tests:** add, remove and reorder; the event is emitted with the right diff; wall entries render; German UI assertion.
-
-### P2-01 — Pixlog shell
-
-**Look:** clearly not Friendspace.
-- white page, orange (`#ff7f00`-ish) header bar with a rounded original "pixlog" wordmark (lowercase, a camera-shutter "o")
-- rounded tabs, big square thumbnails, light grey boxes, Verdana 11px
-- six **skins** recolour the header and tabs
-
-**Routes:**
-- `/`: a login splash ("log in" goes to `/me`) and a placeholder for the shouts feed (P2-02).
-- `/<friend>`: a fixed path per profile, tabs via `?tab=profile|photos|blog|surveys|guestbook` (default `profile`):
-  - **profile:** picture (reuse the Friendspace `Picture`), about, skin, latest album thumbnails, kudos count (P2-03).
-  - **photos:** album grid, linking to `/album?id=`.
-  - **blog:** day-gated posts.
-  - **surveys:** the friend's survey, questions and answers.
-  - **guestbook:** day-gated entries.
-- `/album?id=<albumId>`: photos rendered with the existing `renderPhoto`, at large size with prev/next. Each shows its caption and its day-gated comments.
-
-**Also:** Searchly indexes the friend pages; tests per route and a German UI assertion.
-
-### P2-02 — Pixlog logic: feed + visitors
-
-In `src/apps/browser/sites/pixlog/logic.ts`, all pure and tested:
-- **`shoutsFeed(profiles, day, locale)`** returns items `{ day, contactId, kind: 'shout' | 'album' | 'blog', text? , albumId?, count? }`, newest day first. Album and blog items come from content items whose `day` equals the item's day. The text for those generated items comes from the catalog at render (`sites.pixlog.feed.album`: "{name} added {n} photos to „{title}"" etc.), so it localizes.
-- **`visitors(profiles, day)`** returns up to 8 per day: friends with any Pixlog content that day, plus seeded strangers from a fixed name list in content (`pixlog/index.ts` `STRANGERS`, ~12 2007-style screen names), using `mulberry32(seedFrom('pixlog:visitors:' + day))`.
-- **`visitorCount(day)`** grows monotonically (seeded per day).
-
-**UI:** the home feed, and a "Who visited my profile" box (pictures + names + day labels) used by `/me` in P2-03.
-
-### P2-03 — Pixlog `/me`
-
-- **Header:** your name and picture (`playerPicture`), visitor counter, visitors box, "Kudos received: N" (sum of friends' `kudosToPlayer` days ≤ today).
-- **Kudos:** on a friend's page, "Give kudos ★" calls `giveKudos(contactId, day)`. It's disabled once given that day ("Kudos given today!"). The count shown is content-free: the friend's base count is seeded, plus yours.
-- **Album:**
-  - "Add photos" opens a picker of My Pictures (`FS_FOLDERS.pics` children with `photo` or `blobKey`), shown as thumbnails.
-  - Images render with the existing fs image rendering (procedural via `renderPhoto`, blob via `blobStore`).
-  - Captions are editable (≤ 80 chars); remove; max 24 photos. Entries whose node is gone are filtered at render.
-- **Surveys:** pick a survey from `surveys` content, fill in answers (≤ 80 chars each), "Post to my profile". It's shown on `/me` and can be edited later.
-- **Skin picker:** 6 swatches. The default skin follows the gender: girl `bubblegum`, boy `night`.
-- **Tests:** kudos once per day; album add, caption, remove and deleted node; survey save and edit; German UI assertion.
-
-### P3 — common content rules (P3-01…P3-04)
-
-- **Read first:** the Content rubric (Gate procedure), the existing friends' scripts, profiles, mail and site content. Keep every storyline consistent: the Tinfoil Comets concert, the bio cell project with Mr Dalton, Velvet Lantern band life, Pia's ponies, Kayla vs Brianna (sleepover invite by email, day 4), Dex's kickflip and skate video.
-- **Gender rules:** anything addressed to or about the player uses `g()` (crush chain letters, comments on the player's page, Top 8 reactions, kudos/visitor shouts about the player). A boy has no crush. Add boy assertions.
-- **Day-gate everything** to days 1–5, so the new content follows what happens in chat that day: no spoilers before the chat reveals it.
-- **Placeholders:** keep each German placeholder module structurally in sync (same ids, counts, days). Copy the English text into it; P4 translates.
-- **After writing:** run the lint and playthrough tests, and look at your pages in the dev server (screenshots in the done note are welcome).
-
-### P3-01 — Friendspace content
-
-- **~15 bulletins** across days 1–5, from friends and Top 8 extras:
-  - 3 chain letters (one per category: luck, crush, "if u don't repost")
-  - 2 surveys ("bulletin survey: 20 qs about me")
-  - "NEW PICS on pixlog!!" bulletins linking `pixlog.example/<friend>` on the days their albums appear
-  - Tinfoil Comets concert promos and aftermath
-  - Pia's pony club announcement
-  - Marco's dry "this is not a chain letter"
-- **4 bands:**
-  - Tinfoil Comets (existing fan site; the concert)
-  - Velvet Lantern (Dex/Marco band life; check the existing content for who is in it)
-  - two more original bands, one per remaining playlist artist group
-  - Each lists its `trackIds` from `src/content/playlist.ts` (shipped CC BY tracks only), with a bio, shows (the concert on its day) and 2–3 blog lines.
-- **Top 8:** add a band to 3 friends' Top 8s (replacing an extra).
-- **Top 8 drama:** a `top8-dropped` and a `top8-readded` script (2–4 lines each, one choice node at most) for each of the 6 friends, in their voice, plus wall lines in `top8Reactions`. Examples of tone:
-  - Kayla: dramatic
-  - Jess: CAPS hurt then over it
-  - Dex: "wait was i in it"
-  - Theo: apologetic, as if it were his fault
-  - Marco: dry
-  - Pia: tells mom
-- **Comment graphics:** add `graphic` to ~6 existing wall comments where it fits ("thx for the add!!").
-
-### P3-02 — Pixlog content per friend (P3-02: Jess, Kayla, Pia · P3-03: Marco, Theo, Dex)
-
-Per friend:
-- `skin`, `about`
-- **1–2 albums** of 4–6 photos (scenes from `PhotoScene`), with captions in voice and 0–3 comments per photo from other friends or extras, on the album's day or later. The albums tie into story days, e.g.:
-  - Jess: concert album on day 5
-  - Kayla: sleepover drama
-  - Pia: ponies
-  - Dex: skate session
-  - Theo: bio project / camp
-  - Marco: band rehearsal
-- **2–4 blog posts** on different days.
-- **1 survey**, answering every question of one survey in `pixlog/surveys.ts`. Define ~3 surveys there (P3-02 writes them; P3-03 reuses them), e.g. "25 things about me" and "this or that".
-- **shouts** on each of days 1–5 (1–2 per day)
-- `kudosToPlayer` on 1–3 days
-- **3–6 guestbook entries**
-
-### P3-04 — GlitterCodez layouts + mail
-
-- **12 layouts, 6 per side:**
-  - girly: Emo Black/Pink, Pony Pastel, Leopard Luxe, Rainbow Glitter, Hearts 4 Ever, Starry Night
-  - boyish: Skater Grunge, Gamer Green (matrix), Checkerboard Punk, Flames, Camo, Midnight Purple
-  - Boy blurbs sound like 2007 boys ("sick layout bro", "PWNAGE").
-  - Each has a 2007 blurb ("omg my fave!!! ~*~") and extras that look good. Screenshot each preview and fix ugly ones.
-- **Text:** `/glitter`, `/stickers`, `/cursors` page text; site chrome text.
-- **Mail:**
-  - `d2-pixlog-visitors`: "You have 3 new visitors on Pixlog!", from `noreply@pixlog.example`, with a link.
-  - `d4-friendspace-bulletin`: from `noreply@friendspace.example`, about Jess's bulletin, with a link.
-
-### P4-01 — German content (common for P4-01…P4-03)
-
-**Read first:** `docs/localization-de.md`, the "German content rubric", and the v0.3 German content for each friend's German voice.
-
-**For every placeholder:**
-- Replace it with German, written for a German 2007, not translated literally.
-- Keep the structure: same ids, counts, days, scenes and seeds.
-- Remove the `// P4 replaces this` comment.
-- Where German needs a gendered word for the player, use `g()` with natural forms (Gender rules). Never gender-star forms.
-- Contacts' new scripts (`top8-dropped`/`top8-readded`) get overlay entries in `src/content/de/contacts/<id>.ts`, with the same lines and choices count.
-
-**Then:**
-- Add "differs from English" assertions for the new modules to `src/content/fallback.test.ts`.
-- Extend `docs/localization-de.md` with the v0.4 glossary (the "Names" table in "v0.4 rules") and any new recurring terms.
-- **P4-01** covers Friendspace (bulletins, bands, reactions), GlitterCodez (layouts' names and blurbs, page text) and the two mails. **P4-02/P4-03** cover the Pixlog profiles as split in their rows, and `pixlog/surveys.ts` plus `STRANGERS` (in P4-02).
-
-### P4-02 — German Pixlog content
-
-Follow §P4-01 for the Pixlog profiles named in the row; P4-02 also translates `pixlog/surveys.ts` and `STRANGERS`.
-
-### P5-01 — v0.4 e2e
-
-`tests/e2e/v04-*.spec.ts`, default suite, with helpers from `tests/e2e/helpers.ts`:
-1. `spaceport.example/jess` opens Friendspace Jess. A favorite saved as Spaceport opens Friendspace.
-2. Copy a code on GlitterCodez → paste it into the Friendspace editor → save → `/me` shows its background and stickers.
-3. Band page: play → the Amplifier window shows the track; mute → no autoplay on a profile.
-4. Bulletins dot visible → open `/bulletins` → dot gone.
-5. Drop Kayla from the Top 8 → Turn Off → next day, sign in to Messenger → Kayla's reaction opens. `/me` wall shows her line. Re-add → happy line.
-6. Pixlog: give kudos (button then disabled); add a Snapshot Booth picture to your album; post a survey.
-7. German: run 2 and 6 with `test.use({ locale: 'de-DE' })` and German assertions.
-8. Boy: run 2 and 6 logged in as a boy. GlitterCodez features the boyish layouts first, and the Pixlog default skin is `night`.
-
-### P5-02 — Docs + release notes
-
-- **README:** features list (girl/boy player, User Accounts, CheatCave, Kickflip Kings, Friendspace, Pixlog, GlitterCodez), a screenshot or two, known gaps.
-- **CREDITS:** new SVGs (user tiles, gender pictograms, stickers, logos) as original work.
-- **Architecture:** update `docs/architecture-v0.4.md` to match what was built.
-- **Release notes:** `docs/release-notes-v0.4.0.md` (English + „Auf Deutsch" summary), in the style of v0.3.0.
-
-### Gate notes for P5-G
-
-- Play days 1–3 in English **as a girl** and 4–5 in German **as a boy** (switch in User Accounts) across all three sites, CheatCave, Kickflip Kings and Messenger. Apply the Gender rubric. Include one Top 8 drop and re-add, one pasted layout, one album and kudos.
-- Report `npm run build` chunk sizes: the main and App chunks vs v0.3.1 (index ~184 kB, App ~183 kB, English content ~159 kB, German ~197 kB). German must stay in its lazy chunk (`tests/e2e/i18n-detect.spec.ts` green).
+- the store migration (all four defaults → absent; typed text stays)
+- a render test that switches locale and gender after Save
+- the picture follows User Accounts
+- one e2e: paste a layout, Save, switch to boy in User Accounts, and `/me` shows the boy's default headline
+
+### F-02 — Content polish (EN + DE, real German)
+
+1. **Boy diary** (`diary_age_11.txt`, `src/content/files/recycleBin.ts` `DIARY_BOY` + de): its last four entries are shared with the girl's. Write boy-only ones (skate, Dex, a dumb dare, Pia), with the same entry count.
+2. **Boy favorites order** (`src/apps/browser/store.ts` `DEFAULT_FAVORITE_URLS`/`defaultFavoritesFor`):
+   - The boy list becomes Searchly, CheatCave, Kickflip Kings, Friendspace, Westfield High.
+   - `isUntouchedFavorites` must also accept the **old** boy order (add it as a legacy list) so saved untouched lists still follow the gender.
+   - Test it with a v0.4 boy save.
+3. **Boy mood:** the Friendspace boy default mood „pumped" with the (8) emoticon becomes a pair that fits, e.g. „bored" with :|, or a games mood. Pick one and make the DE side natural (not „voll motiviert").
+4. **Concert timeline:**
+   - Jess says „next friday"/„in like a week" (`jess.ts:110`) and „3 more days" in her day-1 status, but the concert falls between days 4 and 5.
+   - Make the day-1 wording match: „in 4 days", „OMG 4 more days", or a relative phrase without weekdays. Check her day 2–4 statuses count down consistently (EN + DE).
+   - Leave Marco's day-1 rec hall line: it is the **day-10 show** in v0.5 (decisions P2-04).
+5. **American spellings** in English player-voiced and friend content: grep `maths`, `colour`, `favourite`, `mum`, `realise`, `organise`, `grey`, `holiday` (as vacation). Fix them, except proper nouns and lines that are deliberately British. `homework_maths.txt` becomes `homework_math.txt`: the seed id stays; check the tests that refer to the name.
+6. **German song rhyme:** `meine_songs_fuer_tinfoil_comets.txt`, song 3: „stift / gleich" → a real rhyme.
+7. **„adden"**: add it to the allowed anglicisms in `docs/localization-de.md`.
+8. **d2 visitors mail** (`d2-pixlog-visitors`): it says „3 new visitors", but the day-2 visitors box lists more. Make the mail count match what the box shows on day 2 for friends (count friends only, or say "new visitors" without a number). Decide, log it, EN + DE.
+9. **Minor German wording** from `docs/review/v04-P4.md`: „kicherig" → a more natural girl mood. Keep „emo_kind_93" and „stiefel. das ist ein look".
+
+### F-03 — Visual fixes
+
+1. **Story-dated photo stamps:**
+   - Add an optional `day?: number` to `PhotoSpec` (`src/os/fs/types.ts`). `src/os/fs/photos.ts` prints `'07 10 <7 + day>` when it's set, otherwise the seeded stamp.
+   - Set `day` on story photos whose day is known: the Pixlog albums (concert = day 4 → `'07 10 11`), Dex's premiere, Theo's cell, etc.
+   - Seed photos in My Pictures stay seeded (they are older).
+   - Test: `day: 4` → `'07 10 11`.
+2. **Pixel-font digit spacing:** on reply buttons, „1 obviously" renders as „1obviously" because the pixel font's „1" glyph eats the following space. Find the font (Messenger reply buttons) and fix the glyph's advance width, or use `word-spacing`. Test by rendering, or in the gate's screenshot.
+3. **Bulletins in one column:** long survey bulletins wrap under the floated sender picture. Give the bulletin body a `margin-left` (or `overflow: hidden`) so numbered lists stay in one column (`docs/review/v04-P4.md`).
+4. **Theo's transcript after a language switch:**
+   - The transcript can stop short of the last line when it re-renders in a longer language (`docs/review/v04-G.md`, `06-theo-chat-girl-de.png`).
+   - Find why. Likely the scroll-to-bottom or a height measured before the re-render. Fix it so the last line is visible after a flip.
+   - Add a test if it can be unit-tested, otherwise the gate checks the screenshot.
+5. **Stapley's balloon** covers the bottom-right of the browser content in every review screenshot.
+   - When the browser (or any window) is maximized or covers the balloon's corner, the balloon sits above the taskbar tray but must not cover page content that matters.
+   - Pick one: shift it left of the scrollbar and make it smaller, or auto-hide it after its timeout while a browser is focused. Log the choice. Keep the existing "Hide Stapley" behaviour.
+
+### F-04 — Stale follow-ups
+
+- **The problem:**
+  - `afterScript` follow-ups (`src/content/types.ts` Trigger docs) are re-armed on each Messenger sign-in when their target already ran.
+  - If the player never answered Dex's day-1 follow-ups, they arrive **after** Dex's day-2 chat, e.g. „tmrw for sure" → „tried the kickflip again. landed it 0 times" after he already landed it (`docs/review/v04-G2.md`).
+- **The fix** (in `src/apps/messenger/engine/`):
+  - An `afterScript` follow-up whose chain started on an earlier world day than the contact's newest due `onDay` script expires when that `onDay` script starts. It's marked as skipped, not run.
+  - Same-day chains are unchanged, and so are `forGender` threads hanging off `afterScript: 'dayN'` on day N.
+- Persist nothing new unless needed. If a field is needed, add it optional and sanitized, without a version bump.
+- **Tests:**
+  - Dex: skip the day-1 follow-ups, advance to day 2, and the follow-ups never deliver.
+  - A same-day follow-up still fires.
+  - The boy-only `afterScript` threads still fire.
+- **Unanswered chats from earlier days** (a script awaiting a choice) stay by design. Document both behaviours in `docs/content-format.md`.
+
+### F-G — F gate + v0.4.1 notes
+
+- **Gate procedure:** use `<ver>` = `v041`, the e2e `v041-f.spec.ts`, the review spec `v041-review-f.spec.ts` and `docs/review/v041-F.md`. Apply the Gender rubric to F-01/F-02.
+- **Screenshots** (EN + DE):
+  1. `/me` after Save, then switched to boy
+  2. Pixlog `/me` with the User Accounts picture
+  3. the concert album with its stamp
+  4. a reply button with a digit
+  5. a long survey bulletin
+  6. Theo's chat after a language flip
+  7. the browser with Stapley's balloon
+- **Release notes:** `docs/release-notes-v0.4.1.md`, short, English + „Auf Deutsch", in the v0.3.1 style. Don't tag.
+
+### W0-01 — Days 1–10 plumbing
+
+- **`STORY_DAYS`:**
+  - Export `STORY_DAYS = { first: 1, last: 10 }` from one place (`src/content/storyDays.ts`).
+  - Use it in `src/content/lintSocial.ts:18` (replace the local constant; message „outside days 1–10"; `lintSocial.test.ts:23` uses 11).
+  - Add a `days` key ≤ 10 check to `src/content/lint.ts` (`Contact.days` and `onDay` ≤ `STORY_DAYS.last`).
+- **Balloons:** `src/content/balloons.ts:103` and `src/content/de/balloons.ts:78` switch to the vague line from day `STORY_DAYS.last + 1`. Update their doc comments and `src/os/balloon/schedule.test.ts:58`.
+- **Types doc:** `src/content/types.ts:42-46` `Contact.days` says "From day 11 on, the day-10 entry stays".
+- **Mail:** add empty `day6.ts`…`day10.ts` to `src/content/mail/` and `src/content/de/mail/` and wire both indexes. The empty arrays stay valid until W2-01, so loosen the per-day mail test for days > 5 until W2-01 (with a `// W2-01 tightens this` comment).
+- **Per-day tests:** loop over `STORY_DAYS` but keep the days-6–10 expectations off until their content task. Use a helper `contentDays()` that returns 1–5 now. Each W task raises it, and W2-03 finally makes it 1–10.
+  - `mail.test.ts:15`
+  - `contacts.test.ts:64-81`
+  - `pixlog.test.ts:8,32`
+  - `profiles.test.ts:36,43`
+  - `gossipSchool.test.ts:7,10`
+  - `cheatcave.test.ts:8,17`
+  - `kickflipkings.test.ts:16`
+  - `cheatcave/logic.test.ts:28,67`
+  - Document the helper in `docs/content-format.md`.
+- **e2e:**
+  - Add `setDay(page, n)` to `tests/e2e/helpers.ts`. It writes `still-online:v1:world` like the specs do today, then reloads.
+  - Replace the hand-written world writes in `v04-p2`, `v04-p3`, `v04-p4`, `v04-review-p2`, `v04-review-p3` and `v04-review-g`.
+  - Day-looping review specs keep 1–5.
+- **Docs:** `docs/content-format.md:72`, `README.md:22,86` (say days 1–10 only in W4-01; for now add nothing user-facing), and a `docs/decisions.md` line.
+
+### W0-02 — Story bible
+
+Write `docs/story-week2.md` (≤ 6 pages) from `docs/superpowers/specs/2026-10-19-v05-week-two-design.md`. It is binding for W1–W3.
+
+**Per friend and per day 6–10:**
+- the status and personal message
+- the beats of the `onDay` script, including what the player can choose
+- the girl/boy differences
+- any link to a site, file or mail
+
+**Also cover:**
+- **Gender-only threads:** 3 boy, 3 girl, with day, trigger (`onDay` or `afterScript: 'dayN'`) and beats.
+- **Mail per day:** id, sender, subject, the gist and gender variants.
+- **Sites per day:** what each posts.
+- **Friendspace:** bulletins, wall comments, `commentsOnPlayer`, and the band page show and blog.
+- **Pixlog:** the album per friend with its day, scene and photo count; blog posts, shouts, guestbooks, kudos days.
+
+**A facts table:**
+- everything days 1–5 established that week two touches, with file references
+- the new week-two facts: dates, counts, names, the Jam placing, the vote tie, the goldfish name, the poster
+
+**Rules for the bible:**
+- Read days 1–5 first:
+  - every `*-days.ts` file
+  - the mails
+  - the sites' day-5 states
+  - `docs/review/v04-P3.md` and `v04-G2.md`
+- Keep every voice. No new main characters; Kev, Brianna, Derek and Mr Dalton already exist. New side characters must be named in the bible.
+
+### W0-03 — Scenes + poster wallpaper
+
+- **Scenes:** add `stage` (a rec hall stage, a low ceiling, string lights, a band silhouette, a raised hand with a pick), `classroom` (a whiteboard, desks, cell drawings on the wall) and `livingroom` (a TV glow, a couch, a VHS stack). Add them to `PhotoScene` and `SCENE_PAINTERS` (`src/os/fs/photoScenes*.ts`), in the existing style, deterministic per seed, with the date stamp.
+- **Wallpaper:**
+  - `lantern-poster` is a procedural wallpaper of Theo's show poster: a lantern drawing, „VELVET LANTERN · LIVE AT THE REC HALL", hand-lettered look, original.
+  - Register it in `src/os/wallpapers/registry.ts` as an unlockable like `ponies`, and add it to `CONTENT_UNLOCKS` (`src/content/types.ts:89`).
+  - German title in `de.ts`.
+- **Tests:** scenes render; the unlock shows the wallpaper in Display Properties.
+
+### W1 — English chats days 6–10 (W1-01…W1-03)
+
+- **Content per friend** (`src/content/contacts/<friend>-days.ts`):
+  - `onDay` scripts `day6`…`day10` and `days` entries 6–10, following the bible.
+  - Same density as days 2–5: one script a day, 4–6 nodes, 2–3 choices per branch, a mid-script `personalMessageChange`, about 20–35 contact lines.
+- **Gender-only threads:** in `<friend>-boy.ts` / `<friend>-girl.ts` (create the girl files like `dex-boy.ts`), with `forGender`.
+- **German:** placeholder overlays (`src/content/de/contacts/<friend>.ts`, `boy-threads.ts`, plus a new `girl-threads.ts`).
+- **Tests:**
+  - Raise `contentDays()` for contacts to 1–10 in W1-03; until then, test each finished friend's days 6–10 directly.
+  - Add boy assertions.
+  - The playthrough stays green for days 1–10 × girl/boy × en/de.
+- **Voices** (Content rubric): Jess ALL CAPS; Kayla ~*drama*~ and a new PM; Dex slow and always Away; Theo shy and apologising; Marco dry, lowercase, never „!"; Pia bossy and tells mom.
+- **W1-02:** Theo's day-10 line carries `unlock: 'lantern-poster'`, once, for both genders.
+
+### W1-G — W1 gate
+
+- **Gate procedure:** `<ver>` = `v05`, with the Content rubric and the Gender rubric.
+- **Read every chat:** days 6–10 in full, as a girl and as a boy (English; use the playthrough transcripts, or `?speed=fast`). Fix what reads off.
+- **Screenshots** (`-girl-en`, `-boy-en`):
+  1. Jess day 9
+  2. Kayla day 9
+  3. Pia day 10
+  4. Theo day 9
+  5. Marco day 8
+  6. Dex day 9
+  7. one boy-only thread
+  8. one girl-only thread
+- **Note:** German shows English placeholders (expected).
+
+### W2-01 — Mail days 6–10
+
+- **Files:** `src/content/mail/day6.ts`…`day10.ts` per the bible, 4–6 mails a day. Senders and ids follow the existing pattern (`d6-mom-week`, …).
+- **Gender variants:** through `g()`/`gendered()`, keeping the same ids, senders and days.
+- **Mom's day-10 mail:**
+  - girl: „So THAT is Dex. He was very polite. He called me ma'am. Twice."
+  - boy: the helmet humour, no romance
+- **Tests:** tighten the per-day mail test to 1–10; add boy assertions; DE placeholders.
+
+### W2-02 — Sites days 6–10
+
+- **Posting rate:** each site posts on days 6–10 at its days-1–5 rate (counts in the bible).
+  - Celeb Gossip 07: 2 posts a day.
+  - Westfield High:
+    - 2 a day
+    - the class rep election (posters day 7, the tie day 9, co-reps day 10)
+    - the rec hall show listing
+    - Theo's drawings on the art wall (day 6)
+  - Tinfoil Comets: the fan art contest (day 7), the sold-out Lakeview Fairgrounds show (day 8), the winners with Jess second (day 9).
+  - CheatCave: news and forum days 6–10 (Theo, Dex, Marco cameos per the bible).
+  - Kickflip Kings: the video view counter (41 on day 6), the Westfield Jam (announced day 7, results day 9: Dex third), Kev's clip of Dex's kickflip.
+- **`after` states:** move them to day 10 where the story moved, e.g. the tour list in `tinfoilcomets.ts:170` and the crew in `kickflipkings.ts:221,358`.
+- **Searchly:** keep indexing the new pages.
+- **Tests:** per-site day tests to 1–10; DE placeholders.
+
+### W2-03 — Friendspace + Pixlog days 6–10
+
+- **Friendspace:**
+  - bulletins at about 3 a day
+  - each friend's wall comments and `commentsOnPlayer` (gender variants)
+  - the Velvet Lantern band page: the rec hall show on day 10 and a blog post after it
+- **Pixlog** (per friend):
+  - one new album with `day` stamps; the day-10 show album uses `stage`, and `classroom`/`livingroom` where they fit
+  - blog posts, 1–2 shouts a day, guestbook entries
+  - `kudosToPlayer` days
+- **Tests:**
+  - `lintSocial` covers 1–10.
+  - Set `contentDays()` to 1–10 everywhere and remove the `// W2-01 tightens this` comments.
+  - The audit stays green.
+  - DE placeholders.
+
+### W2-G — W2 gate
+
+- **Gate procedure:** `<ver>` = `v05`, with the Content rubric and the Gender rubric.
+- **Playthrough:** play days 6–10 in English as a girl, then as a boy, across mail, every site, Friendspace and Pixlog.
+- **Cross-links:** check each one in the bible against the content (a fact mentioned in chat appears on the site that day, or earlier).
+- **Screenshots:**
+  - per day 6–10: mail inbox and one site
+  - day 10: Westfield High election result, the Pixlog show album, Friendspace's Velvet Lantern band page, Theo's poster wallpaper on the desktop
+
+### W3 — German (W3-01, W3-02)
+
+- **What to replace:** every W1/W2 placeholder, with real German in the German voices (`docs/localization-de.md`), natural gendered forms via `g()`, and the glossary terms.
+- **Glossary:** add the new terms, e.g. rec hall → „Jugendzentrum" (already in the glossary), class rep → „Klassensprecher/Klassensprecherin", the Westfield Jam, the goldfish's name.
+- **Tests:** add fallback assertions ("differs from English") for the new modules, and keep the audit green in DE.
+- **W3-02 acceptance:** `grep -rn "W3 replaces" src/content/de` is empty.
+
+### W4-01 — v0.5 e2e + docs
+
+- **e2e `tests/e2e/v05-w4.spec.ts`:**
+  1. A girl at day 10 opens the Pixlog show album, finds the poster wallpaper in Display Properties, and sees the Westfield High election result.
+  2. A boy at day 10: the same, plus a boy-only thread appears in Messenger.
+  3. German: run 1 with `locale: 'de-DE'`.
+- **Docs:**
+  - README: days 1–10, the week-two features, known gaps.
+  - `docs/architecture-v0.4.md`: a short "v0.5" section.
+  - `docs/release-notes-v0.5.0.md`: English + „Auf Deutsch", in the v0.4.0 style.
+  - Screenshots.
+
+### W4-G — release-ready gate
+
+- **Gate procedure:** `<ver>` = `v05`, with the Content rubric, the German content rubric and the Gender rubric.
+- **Play:** days 6–8 in English as a girl, then switch in User Accounts and play days 9–10 in German as a boy, across Messenger, Mail, every site, Friendspace and Pixlog.
+- **Bundle sizes:** report the `npm run build` chunk sizes against v0.4. German must stay lazy (`tests/e2e/i18n-detect.spec.ts` green).
 - **Do not tag, push or release.**
-
-### G2 — common rules (G2-01…G2-G)
-
-- **Read first:**
-  - "Phase G2 scope"
-  - the Gender rules (in "v0.4 rules")
-  - `docs/superpowers/specs/2026-10-16-player-gender-design.md` (incl. "Addendum: the boyish pass")
-  - `docs/gender.md` and `docs/localization-de.md`
-  - `docs/review/v04-G.md` (what G did and its follow-ups)
-- **The test for every line:** would a 14-year-old boy in 2007 say, or be told, this on MSN by this friend? The friend's voice stays. What changes is what the friend says *to him*, what she asks him to do, and what he answers.
-- **Patterns for a boy** (use them; don't invent new story facts):
-  - **Glitter, sparkles, hearts aimed at him** → he teases it ("u have glitter in ur KEYBOARD"), or the friend teases him ("u would make it all black w flames").
-  - **Girly plans he is pulled into** (sleepovers, outfits, face masks, pony games) → he hears about it from outside, gives a guy's honest opinion, or helps reluctantly with a joke. He is never an insider at a girls' sleepover.
-  - **Affection** → (Y), „dude", „man", „ur alright", fist bumps, „best buds". Never (L), <3, „luv u", :-*, „hdgdl" towards him. Girls keep theirs.
-  - **His reply options** (`text` and `label`) are short, dry or goofy guy-talk: „lol", „dude", „no way", „sweet", „ok that's actually funny". None of the audit's cue words.
-  - **Compliments** → about skills, games, music, being funny or loyal, never about looks or being cute.
-- **Keep:** script ids, node ids, the line and choice counts per node, days, links and story facts (concert, bio project, Velvet Lantern, Pia's ponies, Kayla vs Brianna, Dex's video). A girl's lines may get girlier, never less girly.
-- **German:** real German in the same task, using the German voices; „Alter", „Digga" sparingly; boy forms through `g()` where natural; no gender-star forms.
-- **Tests:** every task adds boy assertions for what it changed. Parity, lint and the playthrough stay green for girl/boy × en/de.
-
-### G2-01 — Gender audit + Jess and Kayla for a boy
-
-**Audit test** (`src/content/genderAudit.test.ts` + `src/content/genderAudit.allow.ts`):
-- Resolve all English and German content as a boy (`contentFor(locale, 'boy')`: contacts, mail, seed files, profiles, bulletins, Pixlog, surveys, Top 8 reactions, sites' text).
-- Scan every string for cue words, case-insensitive:
-  - EN: `<3`, `(L)`, `:-*`, `xoxo`, `luv u`, `bff`, `hun`, `babe`, `sweetie`, `cutie`, `cute`, `pretty`, `gorgeous`, `glitter`, `sparkl*`, `sleepover`, `lip gloss`, `nail polish`, `makeup`, `outfit`, `pink`, `pony`, `ponies`, `horse`, `crush`, `pinky swear`, `pinky promise`
-  - DE: `hdgdl`, `süß`, `hübsch`, `Schatz`, `Mädchen`, `Glitzer`, `Pyjamaparty`, `Übernachtungsparty`, `Pony`, `Ponys`, `Pferd`, `Outfit`, `Lipgloss`, `rosa`, `pink`, `Schwarm`
-- The test fails on any hit that is not in the allowlist.
-- **Allowlist entries** are `{ where, match, reason }`. `where` is a stable path such as `contacts/jess/day3/glitter/lines[2]`. `reason` is one of:
-  - `friend-self-talk`: the friend about herself or her own plans, not aimed at him
-  - `story-fact`: a story fact, e.g. Pia's ponies or Brianna's sleepover as Kayla's story
-  - `site-content`: e.g. Celeb Gossip 07 itself
-- **Choice `text`/`label` lines may never be allowlisted:** what the boy types must pass.
-- Seed the allowlist with the current hits and shrink it in each G2 task.
-- Print a summary (hits per module, how many strings differ by gender) with `npm run gender-audit`, a script that runs the test in report mode. Record today's numbers in `docs/review/v04-G2.md` as "before".
-
-**Jess** (`jess.ts`, `jess-days.ts`, her profile and Pixlog lines aimed at the player, DE overlays):
-- **The concert sign:** she still makes it with glitter, because that's her. For a boy, he is the one who wanted drumsticks and flames, teases her glitter, and gets glitter on his stuff by accident. The cat still gets sparkly.
-- **„outfit"/„disco ball mode"/„the purple thing" lines aimed at him** → band T-shirt, „ur NOT wearing the hoodie w the hole", spikes with hair gel (G's line stays).
-- **Sleepover/hairbrush memories** → bday party/air guitar (G started this); finish it everywhere.
-- Every (L) aimed at him → (Y), or a nudge.
-
-**Kayla** (`kayla.ts`, `kayla-days.ts`, her profile/Pixlog lines aimed at the player, her chain mail, DE):
-- The Brianna sleepover arc stays her story.
-- **A boy is not invited to the sleepover:**
-  - Kayla asks him whether he'll be at Brianna's birthday *party* (the afternoon part, with the boys), or asks him to find out from the guys what Brianna said.
-  - Rewrite „so r u going to the sleepover?" and the follow-ups that way.
-  - „cute pajamas" → what Brianna said about *him* or the boys („she said ur 'kinda funny'").
-- **The "cute pm" analysis:** a boy gives the guy answer („it's 2 words kayla. its fine"). His choices aren't „cute".
-- Her ~*away messages*~ and her (L)/<3 in her own personal messages stay (self-talk); <3 aimed at him go.
-
-### G2-02 — Pia, Theo, Marco, Dex + shared bits for a boy
-
-**Pia** (the little sister; „your sister" stays; ponies stay her thing):
-- **Horse quiz, pony wedding, pony jail, Stardust's sparkle, pinky swears:**
-  - For a boy, he is the annoyed big brother who still helps: „a foal. obviously. can i go now", plays pony jail as the prison guard, refuses the pinky swear and does a „spit shake" or „big brother promise" instead.
-  - Pia's own lines stay pony-mad; his options are boyish.
-  - „pinky" choices → his own.
-- **„pia is the BOSS"/„cute :)" replies by him** → teasing.
-
-**Theo:** G handled the crush. Check his remaining lines to a boy: buddy tone, nerd jokes, shared games (Galaxy Raiders 3, chess), „partner" stays.
-
-**Marco and Dex:** check their existing scripts for lines to the player that assume a girl („cute"), and the player's choices. Keep Marco dry and never „!"; Dex slow, always Away.
-
-**Shared modules:**
-- `game-reactions.ts` and `now-playing.ts`: any reply aimed at him.
-- `top8-reactions.ts` + their Messenger scripts.
-- The auto-replies.
-- Bulletins and surveys the player fills in: questions and answer options aimed at the player.
-- Friendspace comments on the player's `/me` wall, Pixlog guestbook and kudos lines addressed to him, and `commentsOnPlayer`.
-- The mail he receives: whatever G left girly and the audit flags.
-
-**Allowlist:** at the end of G2-02, every remaining entry is `friend-self-talk`, `story-fact` or `site-content`, and none sits on a choice. Write the count in the review doc's "after" line.
-
-### G2-03 — Boy-only threads
-
-**Engine:**
-- Add `forGender?: Gender` to `Script` (`src/content/types.ts`). A script with `forGender` arms only when `getGender()` (null = girl) matches; check this where triggers are armed (`src/apps/messenger/engine/`).
-- A gender switch mid-day leaves `runs` alone. An active script of the other gender finishes normally and arms nothing new.
-- **Lint:** `forGender` is `'girl' | 'boy'`, and a gendered script uses no `g()` (it has only one side).
-- **Parity:** German overlays must cover these scripts too.
-- **Playthrough:** runs them for the boy and asserts they never run for the girl.
-- **Docs:** `docs/gender.md` and `docs/content-format.md`.
-
-**Threads** (`forGender: 'boy'`, triggers `onDay` or `afterScript` so they don't crowd the existing day scripts; 4–8 lines and 1–2 choices each; EN + real German overlays):
-
-| Day | Who | Thread |
-|---|---|---|
-| 1 | Marco | LAN party at his place on Saturday: „bring ur own cable. and chips. mostly chips" (Galaxy Raiders 3) |
-| 2 | Dex | skate session after school, the curb at the gas station; „bring the helmet ur mom bought. or dont tell her" |
-| 2 | Marco | cheat-code trade: he trades a Thunder Kart code for one from `cheat_codes.txt`, links `cheatcave.example` |
-| 3 | Dex | backyard wrestling at Dex's, ties to `my_wrestling_entrance_speech.txt` („THE MODEM MAULER? lol. ok ur in") |
-| 4 | Marco | roadie for Velvet Lantern's rec hall show: carry the amp, get a „crew" T-shirt (same show facts as everywhere) |
-| 5 | Dex | the video night after the premiere: pizza at Dex's to watch the 30 seconds on repeat; links `kickflipkings.example/video` |
-
-All facts must match the existing storylines and the sites (CheatCave forum, Kickflip Kings crew page, Velvet Lantern gigs). Kayla's Brianna arc and Jess's concert are untouched.
-
-### G2-04 — Pictures + documents for a boy
-
-**Scenes** (`src/os/fs/photoScenesOutdoor.ts` / `photoScenesIndoor.ts`, `PhotoScene` in `src/os/fs/types.ts`):
-- Add `skatepark` (concrete, a quarter pipe, a blurry kid mid-fall, tags on the wall), `lanparty` (a dark room, CRT glow, three monitors, cables, pizza box) and `ramp` (a wooden backyard ramp, a fence, Dex's board).
-- They are original procedural drawings in the existing style, deterministic per seed, with the date stamp.
-
-**Photos** (`src/content/files/media.ts` + de):
-- Make 3 shared slots `gendered()` photos. The boy sides are `skatepark_wipeout.jpg` („me. the curb won"), `lan_party_marcos.jpg` and `dexs_ramp.jpg`. Keep slot ids, and pick the slots whose current scene is least about the player.
-- Every remaining caption gets a boy-voiced side where it's in the player's voice.
-- **The `short` self-portrait:** the mouth uses the neutral line colour, not pink.
-- The girl side stays as it is, or gets girlier.
-
-**Documents:**
-- `song-lyrics-notebook` gets a boy side: lyrics for Velvet Lantern about skating, being grounded, dial-up and the bus. Keep the notes about Marco's „not terrible" and the rec hall show.
-- Check the Recycle Bin and `READ ME FIRST.txt` for lines in the player's voice that are girly.
-
-**Also:**
-- The Pixlog `/me` album and Snapshot Booth read My Pictures; check the boy photos show there.
-- **Tests:** scenes render, per-gender file names, the switch swaps untouched photos only.
-
-### G2-G — G2 gate
-
-Follow the Gate procedure (`v04-g2.spec.ts`, `v04-review-g2.spec.ts` @review, `docs/review/v04-G2.md`) with the Content rubric and the Gender rubric.
-
-**Boy read-through:**
-- As a boy, in English, read every chat of days 1–5 in full (use the playthrough's resolved transcripts, or play with `?speed=fast`) and fix anything that still reads girly towards him.
-- Read days 1 and 3 in German too.
-- Report the audit numbers before and after: differing strings per contact and allowlist size.
-
-**Screenshots** at 1280×800 for **boy-en, boy-de, girl-en**:
-1. Jess's concert-sign chat
-2. Kayla's Brianna chat (day 3–4)
-3. Pia's horse quiz
-4. One boy-only thread (Dex day 2)
-5. My Pictures
-6. The skatepark photo
-7. The lyrics notebook
-8. Pixlog `/me` album
-
-**e2e:**
-- A boy sees a boy-only thread.
-- A girl doesn't.
-- My Pictures shows the boy photos.
-
-`igris done`. Don't push or tag.
 
 
 ---
@@ -1267,20 +839,20 @@ Follow the Gate procedure (`v04-g2.spec.ts`, `v04-review-g2.spec.ts` @review, `d
 Corner radius on titlebars is 8px top-left/top-right. Taskbar height 30px. Start menu ~380×480.
 
 
+
 # Notes for the owner
 
-- **G2 (boyish pass):** `igris arise G2` inside herdr or tmux. Review `docs/review/v04-G2.md` afterwards, then push yourself. G and P0–P5 are done and pushed.
-- **Run it (done):** `igris arise G --through P5` inside herdr or tmux (`igris.toml` sets yolo mode, auto-commit and 5 verify attempts). Nothing is pushed or tagged.
+- **Run it:** `igris arise F --through W4` inside herdr or tmux (`igris.toml`: yolo, auto-commit, 5 verify attempts). Run `igris arise F` alone first if you want to ship v0.4.1 before v0.5. Nothing is pushed or tagged.
+- **Before the run:** read `docs/superpowers/specs/2026-10-19-v05-week-two-design.md`. It holds the story decisions for days 6–10 (the rec hall show finale, Kayla's election, Pia's hamster, Dex's Jam, Jess's contest, Theo's poster). Change it before W0-02 turns it into the story bible.
 - **Afterwards, review:**
-  - `docs/review/v04-G.md` (girl/boy × EN/DE screenshots)
-  - `docs/review/v04-P0.md` … `v04-P5.md` (with EN + DE screenshots)
-  - the new German content (`src/content/de/friendspace`, `src/content/de/pixlog`)
+  - `docs/review/v041-F.md`
+  - `docs/review/v05-W1.md` … `v05-W4.md`
+  - `docs/story-week2.md`
   - `docs/decisions.md`
-  - `docs/release-notes-v0.4.0.md`
-  Then push, check the live site, and tag `v0.4.0` if you want.
-- **Design:** `docs/superpowers/specs/2026-10-16-player-gender-design.md` and `docs/superpowers/specs/2026-10-15-v04-social-design.md` (the agreed brainstorms).
-- The old P0-02 work in progress is still in `git stash` ("igris P0-02 WIP (before phase G)"). P0-02 is done, so it can be dropped.
-- **Existing saves** keep working: Spaceport favorites redirect to Friendspace, and the Top 8 migrates.
+  - `docs/release-notes-v0.4.1.md` and `v0.5.0.md`
+- **Then:** push, check the live site, and tag `v0.4.1`/`v0.5.0` if you want.
+- **The old v0.4 plan** is archived in `docs/plans/v0.4-tasks.md`.
+- **The old stash** "igris P0-02 WIP (before phase G)" can be dropped.
 - igris can still stop for any of these:
   - verify failing 5× in a row
   - a crashed session
