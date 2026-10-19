@@ -1,6 +1,6 @@
 # still online v0.5: week two (days 6–10)
 
-Design spec. Status: written 2026-10-19 at the owner's request ("plan both as igris phases"). The owner reviews it before the run. It ships as igris phases **W0–W4**, after the v0.4.1 fixes (phase **F**).
+Design spec. Status: **approved by the owner on 2026-10-19**. It ships as igris phases **W0–W4**, after the v0.4.1 fixes (phase **F**).
 
 ## Why
 
