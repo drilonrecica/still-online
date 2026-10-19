@@ -135,7 +135,11 @@ describe('glittercodez.example', () => {
     const tile = await screen.findByRole('article', { name: 'Starry Night' });
     await user.click(within(tile).getByRole('button', { name: 'Copy code!!' }));
     expect(writeText).toHaveBeenCalledWith(
-      codeFor(layoutEntries(getLayouts('en', 'girl'))[0]!),
+      codeFor(
+        layoutEntries(getLayouts('en', 'girl')).find(
+          (e) => e.name === 'Starry Night',
+        )!,
+      ),
     );
     expect(within(tile).getByRole('status')).toHaveTextContent(/Copied!!/);
   });
