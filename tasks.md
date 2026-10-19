@@ -1,4 +1,4 @@
-# still online — v0.4 plan (player gender, Friendspace, Pixlog, GlitterCodez)
+# still online — v0.4 plan (player gender, Friendspace, Pixlog, GlitterCodez, boyish pass)
 
 <!-- igris:format 1 -->
 
@@ -7,6 +7,7 @@ This is the build plan for still online v0.4, written for [igris](https://github
 ```sh
 igris check --strict          # validate this plan
 igris arise G --through P5    # run everything (yolo mode is the default in igris.toml)
+igris arise G2                # the boyish pass (G, P0–P5 are done)
 ```
 
 ---
@@ -29,6 +30,25 @@ The player picks **Girl or Boy** on the login screen (binary, no third option). 
 - **Two new sites:** **CheatCave** (`cheatcave.example`) and **Kickflip Kings** (`kickflipkings.example`).
 
 A girl keeps the crush on Theo; a boy has no crush. The six friends, their voices and the 5-day story stay the same. A **User Accounts** app changes the name, gender and user picture later. Content varies through `g(girl, boy)` (see "Gender rules").
+
+## Phase G2 scope (after P5; the boyish pass)
+
+Phase G and v0.4 are done and live, but a boy still gets a mostly girly game:
+- **Messenger:** only 26 of 2,567 resolved English chat strings differ by gender. As a boy you still make a glitter sign with Jess, are Kayla's sleepover insider, do Pia's horse quiz and pinky swears, and your own reply options say "Glitter is everywhere", "pinky swear" and "cute".
+- **Pictures:** 5 of 6 photos are shared and none show boy moments.
+- **Friendspace and Pixlog:** comments and guestbook lines aimed at the player barely change.
+
+G2 fixes that **without changing who the friends are**:
+- **Friends stay the same:** Jess still loves glitter, Kayla still has ~*drama*~, Pia still loves ponies.
+- **What changes is how they talk to a boy and what he is pulled into:**
+  - A boy gets 2007 guy-friend talk: teasing, games, skating, music, „dude".
+  - He is the outsider or the reluctant helper in the girls' plans, never the sleepover insider.
+  - His own reply options are boyish.
+- **Dex and Marco** get boy-only chat threads (new: `Script.forGender`).
+- **Pictures:** boy-only photos and a boy lyrics notebook.
+- **An audit test** keeps it that way.
+
+A girl's side does not get less girly; where a boy line is rewritten, the girl line may get girlier.
 
 In short, v0.4 is:
 
@@ -454,6 +474,16 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 | P5-01 | **v0.4 e2e** — the flows listed in the spec's Testing section, EN + DE. | P4-G | done | sonnet | agent | — | e2e | — | New `tests/e2e/v04-*.spec.ts` pass in the default suite. | §P5-01 |
 | P5-02 | **Docs + release notes** — player gender + v0.4 in README, CREDITS (new SVGs), architecture docs, `docs/release-notes-v0.4.0.md` (EN + German summary), screenshots. | P5-01 | done | sonnet | agent | — | — | — | Docs accurate; notes list user-visible changes; screenshots committed. | §P5-02 |
 | P5-G | **Release-ready gate (self-review)** — Gate procedure; play days 1–3 in English and 4–5 in German across Friendspace, Pixlog and GlitterCodez. **Do not tag, push or release.** | P5-01, P5-02 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v04-P5.md`; bundle sizes reported (German stays lazy); nothing pushed or tagged. | §Gate |
+
+## G2 — Boyish pass
+
+| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
+|---|---|---|---|---|---|---|---|---|---|---|
+| G2-01 | **Gender audit + Jess and Kayla for a boy** — `genderAudit.test.ts` with a reasoned allowlist; boy pass over every Jess and Kayla script (days, choices, personal messages, profile/Pixlog lines aimed at the player, Kayla's mail); EN + DE. | P5-G | ready | opus | agent | — | fast | — | Audit test exists and is green; no boy-side choice text of Jess/Kayla contains a cue word; the boy is never a sleepover insider or glitter partner; voices and story facts intact; real German; boy assertions; parity + playthrough green for all 4 combos. | §G2-01 |
+| G2-02 | **Pia, Theo, Marco, Dex + shared bits for a boy** — the same pass over the other four contacts, `game-reactions`, `now-playing`, `top8-reactions`, auto-replies, bulletins, surveys and Friendspace/Pixlog lines aimed at the player; EN + DE. | G2-01 | blocked | opus | agent | — | fast | — | Every boy-side choice text across all six contacts passes the audit; Pia's pony scenes are "annoying little sister" moments for a boy; allowlist shrank and every remaining entry is a friend's self-talk; tests green. | §G2-02 |
+| G2-03 | **Boy-only threads** — `Script.forGender` in the engine, lint and playthrough; 6 boy-only threads for Dex and Marco (days 1–5: LAN party, skate session, cheat-code trade, backyard wrestling, band roadie, Dex's video night); EN + DE. | G2-02 | blocked | opus | agent | — | fast | — | A `forGender: 'boy'` script never arms for a girl (and vice versa); switching gender mid-day doesn't break progress; threads fire on their days, in-voice, with real German; playthrough covers them; engine + lint tests. | §G2-03 |
+| G2-04 | **Pictures + documents for a boy** — 3 new procedural scenes (skatepark, LAN party, backyard ramp) as boy sides of shared photo slots, boy captions everywhere, neutral lips for the `short` self-portrait, a boy `song_lyrics_notebook.txt`; EN + DE. | G2-03 | blocked | opus | agent | — | fast | — | My Pictures shows ≥ 3 boy-only photos for a boy and today's set for a girl; every photo caption has a boy-voiced side; the lyrics notebook differs; Pixlog `/me` album picks up the boy photos; scenes deterministic per seed; tests. | §G2-04 |
+| G2-G | **G2 gate (self-review)** — Gate procedure + Content rubric + Gender rubric + the "boy read-through"; screenshots boy-en/boy-de and girl-en. | G2-01…G2-04 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v04-G2.md` with the before/after numbers from the audit; screenshots looked at; nothing pushed or tagged. | §G2-G |
 
 ---
 
@@ -1073,6 +1103,148 @@ Follow §P4-01 for the Pixlog profiles named in the row; P4-02 also translates `
 - Report `npm run build` chunk sizes: the main and App chunks vs v0.3.1 (index ~184 kB, App ~183 kB, English content ~159 kB, German ~197 kB). German must stay in its lazy chunk (`tests/e2e/i18n-detect.spec.ts` green).
 - **Do not tag, push or release.**
 
+### G2 — common rules (G2-01…G2-G)
+
+- **Read first:**
+  - "Phase G2 scope"
+  - the Gender rules (in "v0.4 rules")
+  - `docs/superpowers/specs/2026-10-16-player-gender-design.md` (incl. "Addendum: the boyish pass")
+  - `docs/gender.md` and `docs/localization-de.md`
+  - `docs/review/v04-G.md` (what G did and its follow-ups)
+- **The test for every line:** would a 14-year-old boy in 2007 say, or be told, this on MSN by this friend? The friend's voice stays. What changes is what the friend says *to him*, what she asks him to do, and what he answers.
+- **Patterns for a boy** (use them; don't invent new story facts):
+  - **Glitter, sparkles, hearts aimed at him** → he teases it ("u have glitter in ur KEYBOARD"), or the friend teases him ("u would make it all black w flames").
+  - **Girly plans he is pulled into** (sleepovers, outfits, face masks, pony games) → he hears about it from outside, gives a guy's honest opinion, or helps reluctantly with a joke. He is never an insider at a girls' sleepover.
+  - **Affection** → (Y), „dude", „man", „ur alright", fist bumps, „best buds". Never (L), <3, „luv u", :-*, „hdgdl" towards him. Girls keep theirs.
+  - **His reply options** (`text` and `label`) are short, dry or goofy guy-talk: „lol", „dude", „no way", „sweet", „ok that's actually funny". None of the audit's cue words.
+  - **Compliments** → about skills, games, music, being funny or loyal, never about looks or being cute.
+- **Keep:** script ids, node ids, the line and choice counts per node, days, links and story facts (concert, bio project, Velvet Lantern, Pia's ponies, Kayla vs Brianna, Dex's video). A girl's lines may get girlier, never less girly.
+- **German:** real German in the same task, using the German voices; „Alter", „Digga" sparingly; boy forms through `g()` where natural; no gender-star forms.
+- **Tests:** every task adds boy assertions for what it changed. Parity, lint and the playthrough stay green for girl/boy × en/de.
+
+### G2-01 — Gender audit + Jess and Kayla for a boy
+
+**Audit test** (`src/content/genderAudit.test.ts` + `src/content/genderAudit.allow.ts`):
+- Resolve all English and German content as a boy (`contentFor(locale, 'boy')`: contacts, mail, seed files, profiles, bulletins, Pixlog, surveys, Top 8 reactions, sites' text).
+- Scan every string for cue words, case-insensitive:
+  - EN: `<3`, `(L)`, `:-*`, `xoxo`, `luv u`, `bff`, `hun`, `babe`, `sweetie`, `cutie`, `cute`, `pretty`, `gorgeous`, `glitter`, `sparkl*`, `sleepover`, `lip gloss`, `nail polish`, `makeup`, `outfit`, `pink`, `pony`, `ponies`, `horse`, `crush`, `pinky swear`, `pinky promise`
+  - DE: `hdgdl`, `süß`, `hübsch`, `Schatz`, `Mädchen`, `Glitzer`, `Pyjamaparty`, `Übernachtungsparty`, `Pony`, `Ponys`, `Pferd`, `Outfit`, `Lipgloss`, `rosa`, `pink`, `Schwarm`
+- The test fails on any hit that is not in the allowlist.
+- **Allowlist entries** are `{ where, match, reason }`. `where` is a stable path such as `contacts/jess/day3/glitter/lines[2]`. `reason` is one of:
+  - `friend-self-talk`: the friend about herself or her own plans, not aimed at him
+  - `story-fact`: a story fact, e.g. Pia's ponies or Brianna's sleepover as Kayla's story
+  - `site-content`: e.g. Celeb Gossip 07 itself
+- **Choice `text`/`label` lines may never be allowlisted:** what the boy types must pass.
+- Seed the allowlist with the current hits and shrink it in each G2 task.
+- Print a summary (hits per module, how many strings differ by gender) with `npm run gender-audit`, a script that runs the test in report mode. Record today's numbers in `docs/review/v04-G2.md` as "before".
+
+**Jess** (`jess.ts`, `jess-days.ts`, her profile and Pixlog lines aimed at the player, DE overlays):
+- **The concert sign:** she still makes it with glitter, because that's her. For a boy, he is the one who wanted drumsticks and flames, teases her glitter, and gets glitter on his stuff by accident. The cat still gets sparkly.
+- **„outfit"/„disco ball mode"/„the purple thing" lines aimed at him** → band T-shirt, „ur NOT wearing the hoodie w the hole", spikes with hair gel (G's line stays).
+- **Sleepover/hairbrush memories** → bday party/air guitar (G started this); finish it everywhere.
+- Every (L) aimed at him → (Y), or a nudge.
+
+**Kayla** (`kayla.ts`, `kayla-days.ts`, her profile/Pixlog lines aimed at the player, her chain mail, DE):
+- The Brianna sleepover arc stays her story.
+- **A boy is not invited to the sleepover:**
+  - Kayla asks him whether he'll be at Brianna's birthday *party* (the afternoon part, with the boys), or asks him to find out from the guys what Brianna said.
+  - Rewrite „so r u going to the sleepover?" and the follow-ups that way.
+  - „cute pajamas" → what Brianna said about *him* or the boys („she said ur 'kinda funny'").
+- **The "cute pm" analysis:** a boy gives the guy answer („it's 2 words kayla. its fine"). His choices aren't „cute".
+- Her ~*away messages*~ and her (L)/<3 in her own personal messages stay (self-talk); <3 aimed at him go.
+
+### G2-02 — Pia, Theo, Marco, Dex + shared bits for a boy
+
+**Pia** (the little sister; „your sister" stays; ponies stay her thing):
+- **Horse quiz, pony wedding, pony jail, Stardust's sparkle, pinky swears:**
+  - For a boy, he is the annoyed big brother who still helps: „a foal. obviously. can i go now", plays pony jail as the prison guard, refuses the pinky swear and does a „spit shake" or „big brother promise" instead.
+  - Pia's own lines stay pony-mad; his options are boyish.
+  - „pinky" choices → his own.
+- **„pia is the BOSS"/„cute :)" replies by him** → teasing.
+
+**Theo:** G handled the crush. Check his remaining lines to a boy: buddy tone, nerd jokes, shared games (Galaxy Raiders 3, chess), „partner" stays.
+
+**Marco and Dex:** check their existing scripts for lines to the player that assume a girl („cute"), and the player's choices. Keep Marco dry and never „!"; Dex slow, always Away.
+
+**Shared modules:**
+- `game-reactions.ts` and `now-playing.ts`: any reply aimed at him.
+- `top8-reactions.ts` + their Messenger scripts.
+- The auto-replies.
+- Bulletins and surveys the player fills in: questions and answer options aimed at the player.
+- Friendspace comments on the player's `/me` wall, Pixlog guestbook and kudos lines addressed to him, and `commentsOnPlayer`.
+- The mail he receives: whatever G left girly and the audit flags.
+
+**Allowlist:** at the end of G2-02, every remaining entry is `friend-self-talk`, `story-fact` or `site-content`, and none sits on a choice. Write the count in the review doc's "after" line.
+
+### G2-03 — Boy-only threads
+
+**Engine:**
+- Add `forGender?: Gender` to `Script` (`src/content/types.ts`). A script with `forGender` arms only when `getGender()` (null = girl) matches; check this where triggers are armed (`src/apps/messenger/engine/`).
+- A gender switch mid-day leaves `runs` alone. An active script of the other gender finishes normally and arms nothing new.
+- **Lint:** `forGender` is `'girl' | 'boy'`, and a gendered script uses no `g()` (it has only one side).
+- **Parity:** German overlays must cover these scripts too.
+- **Playthrough:** runs them for the boy and asserts they never run for the girl.
+- **Docs:** `docs/gender.md` and `docs/content-format.md`.
+
+**Threads** (`forGender: 'boy'`, triggers `onDay` or `afterScript` so they don't crowd the existing day scripts; 4–8 lines and 1–2 choices each; EN + real German overlays):
+
+| Day | Who | Thread |
+|---|---|---|
+| 1 | Marco | LAN party at his place on Saturday: „bring ur own cable. and chips. mostly chips" (Galaxy Raiders 3) |
+| 2 | Dex | skate session after school, the curb at the gas station; „bring the helmet ur mom bought. or dont tell her" |
+| 2 | Marco | cheat-code trade: he trades a Thunder Kart code for one from `cheat_codes.txt`, links `cheatcave.example` |
+| 3 | Dex | backyard wrestling at Dex's, ties to `my_wrestling_entrance_speech.txt` („THE MODEM MAULER? lol. ok ur in") |
+| 4 | Marco | roadie for Velvet Lantern's rec hall show: carry the amp, get a „crew" T-shirt (same show facts as everywhere) |
+| 5 | Dex | the video night after the premiere: pizza at Dex's to watch the 30 seconds on repeat; links `kickflipkings.example/video` |
+
+All facts must match the existing storylines and the sites (CheatCave forum, Kickflip Kings crew page, Velvet Lantern gigs). Kayla's Brianna arc and Jess's concert are untouched.
+
+### G2-04 — Pictures + documents for a boy
+
+**Scenes** (`src/os/fs/photoScenesOutdoor.ts` / `photoScenesIndoor.ts`, `PhotoScene` in `src/os/fs/types.ts`):
+- Add `skatepark` (concrete, a quarter pipe, a blurry kid mid-fall, tags on the wall), `lanparty` (a dark room, CRT glow, three monitors, cables, pizza box) and `ramp` (a wooden backyard ramp, a fence, Dex's board).
+- They are original procedural drawings in the existing style, deterministic per seed, with the date stamp.
+
+**Photos** (`src/content/files/media.ts` + de):
+- Make 3 shared slots `gendered()` photos. The boy sides are `skatepark_wipeout.jpg` („me. the curb won"), `lan_party_marcos.jpg` and `dexs_ramp.jpg`. Keep slot ids, and pick the slots whose current scene is least about the player.
+- Every remaining caption gets a boy-voiced side where it's in the player's voice.
+- **The `short` self-portrait:** the mouth uses the neutral line colour, not pink.
+- The girl side stays as it is, or gets girlier.
+
+**Documents:**
+- `song-lyrics-notebook` gets a boy side: lyrics for Velvet Lantern about skating, being grounded, dial-up and the bus. Keep the notes about Marco's „not terrible" and the rec hall show.
+- Check the Recycle Bin and `READ ME FIRST.txt` for lines in the player's voice that are girly.
+
+**Also:**
+- The Pixlog `/me` album and Snapshot Booth read My Pictures; check the boy photos show there.
+- **Tests:** scenes render, per-gender file names, the switch swaps untouched photos only.
+
+### G2-G — G2 gate
+
+Follow the Gate procedure (`v04-g2.spec.ts`, `v04-review-g2.spec.ts` @review, `docs/review/v04-G2.md`) with the Content rubric and the Gender rubric.
+
+**Boy read-through:**
+- As a boy, in English, read every chat of days 1–5 in full (use the playthrough's resolved transcripts, or play with `?speed=fast`) and fix anything that still reads girly towards him.
+- Read days 1 and 3 in German too.
+- Report the audit numbers before and after: differing strings per contact and allowlist size.
+
+**Screenshots** at 1280×800 for **boy-en, boy-de, girl-en**:
+1. Jess's concert-sign chat
+2. Kayla's Brianna chat (day 3–4)
+3. Pia's horse quiz
+4. One boy-only thread (Dex day 2)
+5. My Pictures
+6. The skatepark photo
+7. The lyrics notebook
+8. Pixlog `/me` album
+
+**e2e:**
+- A boy sees a boy-only thread.
+- A girl doesn't.
+- My Pictures shows the boy photos.
+
+`igris done`. Don't push or tag.
+
 
 ---
 
@@ -1097,7 +1269,8 @@ Corner radius on titlebars is 8px top-left/top-right. Taskbar height 30px. Start
 
 # Notes for the owner
 
-- **Run it:** `igris arise G --through P5` inside herdr or tmux (`igris.toml` sets yolo mode, auto-commit and 5 verify attempts). Nothing is pushed or tagged.
+- **G2 (boyish pass):** `igris arise G2` inside herdr or tmux. Review `docs/review/v04-G2.md` afterwards, then push yourself. G and P0–P5 are done and pushed.
+- **Run it (done):** `igris arise G --through P5` inside herdr or tmux (`igris.toml` sets yolo mode, auto-commit and 5 verify attempts). Nothing is pushed or tagged.
 - **Afterwards, review:**
   - `docs/review/v04-G.md` (girl/boy × EN/DE screenshots)
   - `docs/review/v04-P0.md` … `v04-P5.md` (with EN + DE screenshots)
@@ -1106,7 +1279,7 @@ Corner radius on titlebars is 8px top-left/top-right. Taskbar height 30px. Start
   - `docs/release-notes-v0.4.0.md`
   Then push, check the live site, and tag `v0.4.0` if you want.
 - **Design:** `docs/superpowers/specs/2026-10-16-player-gender-design.md` and `docs/superpowers/specs/2026-10-15-v04-social-design.md` (the agreed brainstorms).
-- The P0-02 work in progress from the first run is kept in `git stash` ("igris P0-02 WIP (before phase G)"). P0-02 redoes it after phase G; drop the stash once P0-02 is done.
+- The old P0-02 work in progress is still in `git stash` ("igris P0-02 WIP (before phase G)"). P0-02 is done, so it can be dropped.
 - **Existing saves** keep working: Spaceport favorites redirect to Friendspace, and the Top 8 migrates.
 - igris can still stop for any of these:
   - verify failing 5× in a row

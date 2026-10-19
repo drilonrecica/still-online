@@ -128,3 +128,26 @@ There is no boy-oriented site at all. Meanwhile, German has to work around the p
   - switch to Girl in User Accounts → untouched files and favorites swap
   - both new sites open and are found by Searchly
 - **Review:** screenshots of every changed surface for girl and boy, in English and German, looked at full size.
+
+## Addendum: the boyish pass (2026-10-19)
+
+After phase G and v0.4 shipped, the owner found that a boy still gets a mostly girly game, especially in Messenger.
+
+**What was measured:**
+- **Chats:** only 26 of 2,567 resolved English chat strings differ by gender.
+- **Pictures:** 5 of 6 photos are shared.
+- **Friendspace and Pixlog:** lines aimed at the player barely change.
+
+G only swapped lines *about* the player. Phase **G2** also changes how the friends talk *to* a boy and what they pull him into.
+
+**Decisions:**
+- **Friends:** they keep their personalities and storylines (Jess's glitter, Kayla's drama, Pia's ponies).
+- **A boy is a guy friend:**
+  - teasing, games, skating, music
+  - he is the outsider or the reluctant helper in girly plans, never a sleepover insider
+  - no hearts aimed at him
+  - his reply options are boyish
+- **Girls:** a girl's lines may get girlier, never less girly.
+- **Boy-only chat threads:** a new optional `Script.forGender` lets Dex and Marco run threads only a boy sees, for example a LAN party, a skate session, a cheat-code trade, backyard wrestling, roadie duty and video night.
+- **Pictures and documents:** three new procedural photo scenes (skatepark, LAN party, backyard ramp) as boy-only photos, boy-voiced captions, and a boy lyrics notebook.
+- **Audit test:** it scans all boy-resolved content for girly cue words. Every remaining hit needs an allowlist reason: a friend's self-talk, a story fact or site content. The boy's own reply options may never be allowlisted.
