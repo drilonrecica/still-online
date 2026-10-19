@@ -1339,6 +1339,7 @@ export const de: Messages = {
         moveDown: '{name} nach unten',
         layoutCode: 'Layout-Code:',
         layoutHint: 'hol dir deinen Code auf glittercodez.example!',
+        layoutLink: 'Layouts auf GlitterCodez holen »',
         layoutPreview: 'Vorschau:',
         save: 'Änderungen speichern',
         cancel: 'Abbrechen',

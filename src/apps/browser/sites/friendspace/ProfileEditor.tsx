@@ -5,6 +5,7 @@ import type { PlayerProfile } from '@/content/friendspace/profiles/types';
 import { PLAYLIST } from '@/content/playlist';
 import { PROFILE_LIMITS, FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import { useLocale, useT } from '@/i18n/useT';
+import { SiteLink } from '../../SiteLink';
 import { useSiteText } from '../useSiteText';
 import { cleanProfile, moveTop8, playerTheme, topEntryKey } from './logic';
 import { LAYOUT_CODE_MAX, parseLayoutCode } from './layoutCode';
@@ -190,6 +191,12 @@ export function ProfileEditor({
           <p id={`${id}-layout-hint`} className={extrasStyles.layoutHint}>
             {t('sites.friendspace.editor.layoutHint')}
           </p>
+          <SiteLink
+            href="http://glittercodez.example/"
+            className={extrasStyles.layoutHint}
+          >
+            {t('sites.friendspace.editor.layoutLink')}
+          </SiteLink>
         </div>
 
         <span>{t('sites.friendspace.editor.layoutPreview')}</span>

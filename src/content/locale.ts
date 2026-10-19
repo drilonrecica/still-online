@@ -28,7 +28,8 @@ import * as enCheatCave from './sites/cheatcave';
 import * as enKickflip from './sites/kickflipkings';
 import * as enSearchly from './sites/searchly';
 import * as enFriendspace from './sites/friendspace';
-import { LAYOUTS, type LayoutDef } from './sites/glittercodez';
+import * as enGlitter from './sites/glittercodez';
+import type { LayoutDef } from './sites/glittercodez';
 import * as enTinfoil from './sites/tinfoilcomets';
 import * as enVirusguard from './sites/virusguard';
 import * as enWestfield from './sites/westfieldhigh';
@@ -50,6 +51,7 @@ const EN_SITES = {
   [enWestfield.WESTFIELD_HOST]: enWestfield,
   [enCheatCave.CHEATCAVE_HOST]: enCheatCave,
   [enKickflip.KICKFLIP_HOST]: enKickflip,
+  [enGlitter.GLITTERCODEZ_HOST]: enGlitter,
 };
 
 export type SiteTexts = typeof EN_SITES;
@@ -98,7 +100,7 @@ const EN: LocaleContent = {
   top8Reactions: TOP8_REACTIONS,
   pixlog: PIXLOG_PROFILES,
   surveys: SURVEYS,
-  layouts: LAYOUTS,
+  layouts: enGlitter.LAYOUTS,
 };
 
 /**

@@ -1331,6 +1331,7 @@ export const en = {
         moveDown: 'Move {name} down',
         layoutCode: 'Layout code:',
         layoutHint: 'paste your code from glittercodez.example!',
+        layoutLink: 'Get layouts at GlitterCodez »',
         layoutPreview: 'Preview:',
         save: 'Save Changes',
         cancel: 'Cancel',
