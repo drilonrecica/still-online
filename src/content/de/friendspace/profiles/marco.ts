@@ -1,7 +1,7 @@
 // Marco's German Friendspace profile: lowercase, deadpan, never „!“ (Tante Rita shouts for him).
-import { g } from '../../gender';
-import { marcoProfile as en } from '../../profiles/marco';
-import type { ProfileContent } from '../../profiles/types';
+import { g } from '../../../gender';
+import { marcoProfile as en } from '../../../friendspace/profiles/marco';
+import type { ProfileContent } from '../../../friendspace/profiles/types';
 
 export const marcoProfile: ProfileContent = {
   ...en,

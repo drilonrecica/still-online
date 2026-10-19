@@ -1,5 +1,5 @@
-// German Friendspace profiles, same contact ids and order as `src/content/profiles`.
-import type { ProfileContent } from '../../profiles/types';
+// German Friendspace profiles, same contact ids and order as `src/content/friendspace/profiles`.
+import type { ProfileContent } from '../../../friendspace/profiles/types';
 import { dexProfile } from './dex';
 import { jessProfile } from './jess';
 import { kaylaProfile } from './kayla';

@@ -211,3 +211,64 @@ export function genderParityProblems(
     ? []
     : [`${path}: girl has ${String(girl)}, boy has ${String(boy)}`];
 }
+
+/** Keys whose string values are ids, urls or set members, never translated text. */
+const NON_TEXT_KEYS = new Set([
+  'id',
+  'contactId',
+  'surveyId',
+  'seed',
+  'link',
+  'scene',
+  'skin',
+  'side',
+  'kind',
+  'pos',
+  'trackIds',
+  'extras',
+]);
+
+/**
+ * Deep structural parity for the v0.4 modules (bulletins, bands, Top 8 reactions, Pixlog,
+ * surveys, layouts): the same array lengths, object keys, numbers (days, seeds) and ids at every
+ * level, and the same placeholders in every text. Only the wording may differ.
+ */
+export function deepParityProblems(
+  en: unknown,
+  other: unknown,
+  path: string,
+  textAllowed = true,
+): string[] {
+  if (Array.isArray(en)) {
+    if (!Array.isArray(other)) return [`${path} has a different type`];
+    if (en.length !== other.length)
+      return [`${path} has ${other.length} items, English has ${en.length}`];
+    return en.flatMap((item, i) =>
+      deepParityProblems(item, other[i], `${path}[${i}]`, textAllowed),
+    );
+  }
+  if (en && typeof en === 'object') {
+    if (!other || typeof other !== 'object' || Array.isArray(other))
+      return [`${path} has a different type`];
+    const a = en as Record<string, unknown>;
+    const b = other as Record<string, unknown>;
+    if (Object.keys(a).sort().join(',') !== Object.keys(b).sort().join(','))
+      return [`${path} keys differ from English`];
+    return Object.keys(a).flatMap((key) =>
+      deepParityProblems(
+        a[key],
+        b[key],
+        `${path}.${key}`,
+        textAllowed && !NON_TEXT_KEYS.has(key),
+      ),
+    );
+  }
+  if (typeof en !== typeof other) return [`${path} has a different type`];
+  if (typeof en === 'string' && textAllowed)
+    return tokens(en) === tokens(other as string)
+      ? []
+      : [`${path} placeholders differ from English`];
+  return en === other
+    ? []
+    : [`${path} is ${String(other)}, English has ${String(en)}`];
+}

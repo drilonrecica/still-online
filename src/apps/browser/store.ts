@@ -1,14 +1,18 @@
-// Web Explorer's persisted `web` store: favorites now; counters, guestbooks, votes and the
-// Friendspace profile for the site tasks (P4-03…P4-05). See docs/architecture-v0.2.md → "Stores".
+// Web Explorer's persisted `web` store: favorites, counters, guestbooks, votes, the Friendspace
+// profile and (v0.4) bulletins, Top 8 wall and Pixlog. See docs/architecture-v0.2.md → "Stores"
+// and docs/architecture-v0.4.md → "Saved state"; the v0.4 sanitizers live in ./webSanitize.
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { PlayerProfile } from '@/content/profiles/types';
+import type { PlayerProfile } from '@/content/friendspace/profiles/types';
+import type { PixlogSkinId } from '@/content/pixlog/types';
 import type {
   Favorite,
+  PixlogState,
   PlayerGuestbookEntry,
+  Top8WallEntry,
   WebState,
 } from '@/content/sites/types';
-import type { FavoriteRecord } from '@/content/types';
+import type { ContactId, FavoriteRecord } from '@/content/types';
 import { getGender } from '@/i18n/settingsText';
 import { translate } from '@/i18n/t';
 import type { Locale, MessageKey } from '@/i18n/types';
@@ -16,6 +20,21 @@ import { isRecord, persistOptions } from '@/os/persist';
 import type { Gender } from '@/os/types';
 import { LEGACY_DEFAULT_FAVORITE_NAMES } from './legacyHosts';
 import { normalizeUrl } from './url';
+import {
+  PIXLOG_DEFAULTS,
+  WEB_LIMITS,
+  cleanSurveyAnswers,
+  isContactId,
+  isPixlogSkin,
+  sanitizeAlbum,
+  sanitizeAutoplay,
+  sanitizeBulletinsSeen,
+  sanitizeLayoutCode,
+  sanitizeMoodHistory,
+  sanitizePixlog,
+  sanitizeTop8,
+  sanitizeTop8Wall,
+} from './webSanitize';
 
 /** The default favorites' names, by url. */
 const DEFAULT_FAVORITE_KEYS: Readonly<Record<string, MessageKey>> = {
@@ -119,6 +138,16 @@ export interface WebStore extends WebState {
   saveProfile: (profile: PlayerProfile) => void;
   /** Records the player's answer to poll `pollId`; the first vote sticks ("u already voted!!"). */
   vote: (pollId: string, option: number) => void;
+  /** Friendspace `/bulletins` was opened on `day` (the unread dot clears until a later day). */
+  markBulletinsSeen: (day: number) => void;
+  /** A friend reacted to a Top 8 drop or re-add (P0-03). */
+  appendTop8Wall: (entry: Top8WallEntry) => void;
+  setPixlogSkin: (skin: PixlogSkinId) => void;
+  /** Replaces the player's Pixlog album (deduped, captions capped, max 24). */
+  setAlbum: (album: PixlogState['album']) => void;
+  saveSurvey: (surveyId: string, answers: readonly string[]) => void;
+  /** One kudo per friend per day; returns false if already given that day. */
+  giveKudos: (contactId: ContactId, day: number) => boolean;
 }
 
 const str = (v: unknown): v is string => typeof v === 'string';
@@ -192,8 +221,7 @@ export function sanitizeProfile(v: unknown): PlayerProfile | null {
     !str(mood.emoticon) ||
     !str(aboutMe) ||
     !(songTrackId === null || str(songTrackId)) ||
-    !str(themePreset) ||
-    !Array.isArray(v.top8)
+    !str(themePreset)
   ) {
     return null;
   }
@@ -210,9 +238,28 @@ export function sanitizeProfile(v: unknown): PlayerProfile | null {
     songTrackId,
     themePreset,
     customColors: colors,
-    top8: v.top8.filter(str),
+    top8: sanitizeTop8(v.top8),
+    ...defined('layoutCode', sanitizeLayoutCode(v.layoutCode)),
+    ...defined('autoplay', sanitizeAutoplay(v.autoplay)),
+    ...defined('moodHistory', sanitizeMoodHistory(v.moodHistory)),
   };
 }
+
+/** `{ [key]: value }`, or nothing when `value` is undefined (optional fields stay absent). */
+const defined = <K extends string, V>(key: K, value: V | undefined) =>
+  (value === undefined ? {} : { [key]: value }) as Partial<Record<K, V>>;
+
+/** An optional field: kept as is when absent from the save, else sanitized (dropped if bad). */
+const optional = <K extends keyof WebState>(
+  key: K,
+  persisted: Record<string, unknown>,
+  current: WebState,
+  sanitize: (v: unknown) => WebState[K] | undefined,
+) =>
+  defined(
+    key,
+    persisted[key] === undefined ? current[key] : sanitize(persisted[key]),
+  );
 
 export function sanitizeWeb(persisted: unknown, current: WebState): WebState {
   if (!isRecord(persisted)) return current;
@@ -225,8 +272,13 @@ export function sanitizeWeb(persisted: unknown, current: WebState): WebState {
       persisted.myProfile === undefined
         ? current.myProfile
         : sanitizeProfile(persisted.myProfile),
+    ...optional('bulletinsSeen', persisted, current, sanitizeBulletinsSeen),
+    ...optional('top8Wall', persisted, current, sanitizeTop8Wall),
+    ...optional('pixlog', persisted, current, sanitizePixlog),
   };
 }
+
+const pixlogOf = (s: WebState): PixlogState => s.pixlog ?? PIXLOG_DEFAULTS;
 
 export const useWebStore = create<WebStore>()(
   persist(
@@ -245,6 +297,51 @@ export const useWebStore = create<WebStore>()(
           },
         })),
       saveProfile: (profile) => set({ myProfile: profile }),
+      markBulletinsSeen: (day) =>
+        set((s) =>
+          Number.isInteger(day) && day > (s.bulletinsSeen ?? 0)
+            ? { bulletinsSeen: day }
+            : s,
+        ),
+      appendTop8Wall: (entry) =>
+        set((s) => ({
+          top8Wall: [...(s.top8Wall ?? []), entry].slice(-WEB_LIMITS.top8Wall),
+        })),
+      setPixlogSkin: (skin) =>
+        set((s) =>
+          isPixlogSkin(skin) ? { pixlog: { ...pixlogOf(s), skin } } : s,
+        ),
+      setAlbum: (album) =>
+        set((s) => ({
+          pixlog: { ...pixlogOf(s), album: sanitizeAlbum(album) },
+        })),
+      saveSurvey: (surveyId, answers) =>
+        set((s) => {
+          const p = pixlogOf(s);
+          return {
+            pixlog: {
+              ...p,
+              surveys: {
+                ...p.surveys,
+                [surveyId]: cleanSurveyAnswers(answers),
+              },
+            },
+          };
+        }),
+      giveKudos: (contactId, day) => {
+        const p = pixlogOf(get());
+        const given = p.kudosGiven[contactId] ?? [];
+        if (!isContactId(contactId) || !Number.isInteger(day) || day < 1)
+          return false;
+        if (given.includes(day)) return false;
+        set({
+          pixlog: {
+            ...p,
+            kudosGiven: { ...p.kudosGiven, [contactId]: [...given, day] },
+          },
+        });
+        return true;
+      },
       vote: (pollId, option) =>
         set((s) =>
           pollId in s.votes || !count(option)
@@ -273,12 +370,24 @@ export const useWebStore = create<WebStore>()(
     }),
     persistOptions<WebStore, WebState>({
       name: 'web',
-      partialize: ({ favorites, counters, guestbook, votes, myProfile }) => ({
+      partialize: ({
         favorites,
         counters,
         guestbook,
         votes,
         myProfile,
+        bulletinsSeen,
+        top8Wall,
+        pixlog,
+      }) => ({
+        favorites,
+        counters,
+        guestbook,
+        votes,
+        myProfile,
+        bulletinsSeen,
+        top8Wall,
+        pixlog,
       }),
       sanitize: (persisted, current) => ({
         ...current,

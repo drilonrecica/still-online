@@ -8,6 +8,8 @@ import { SEED_FILES } from './files';
 import { MAIL_CONTENT } from './mail';
 import {
   getBalloons,
+  getBulletins,
+  getLayouts,
   getContacts,
   getMailContent,
   getProfiles,
@@ -19,7 +21,7 @@ import {
   overlayFallbacks,
   rawContentFor,
 } from './locale';
-import { PROFILES } from './profiles';
+import { PROFILES } from './friendspace/profiles';
 import { FRIENDSPACE_HOST, FRIENDSPACE_TEXT } from './sites/friendspace';
 import type { ContactLine } from './types';
 
@@ -52,6 +54,21 @@ describe('accessors', () => {
     expect(getSeedFiles('en', null)).toBe(getSeedFiles('en', 'girl'));
     expect(getSiteText(FRIENDSPACE_HOST, 'en', 'girl').FRIENDSPACE_TEXT).toBe(
       FRIENDSPACE_TEXT,
+    );
+  });
+
+  it('v0.4 modules resolve per gender (a boy gets no crush)', () => {
+    const chain = (gender: 'girl' | 'boy') =>
+      getBulletins('en', gender).find((b) => b.id === 'd2-lexi-luck-chain')!
+        .body;
+    expect(chain('girl')).toContain('ur crush will IM u');
+    expect(chain('boy')).toContain('kickflip');
+    expect(chain('boy')).not.toContain('crush');
+    expect(getBulletins('de', 'boy').map((b) => b.id)).toEqual(
+      getBulletins('en', 'boy').map((b) => b.id),
+    );
+    expect(new Set(getLayouts('en', 'boy').map((l) => l.side))).toEqual(
+      new Set(['girl', 'boy']),
     );
   });
 

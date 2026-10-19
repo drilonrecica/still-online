@@ -8,6 +8,7 @@ import { g } from './gender';
 import { contentFor, rawContentFor } from './locale';
 import {
   contactParityProblems,
+  deepParityProblems,
   genderParityProblems,
   moduleParityProblems,
 } from './parity';
@@ -64,6 +65,21 @@ describe('full German modules', () => {
     const ids = new Set(enSite.GOSSIP_POSTS.flatMap((p) => p.tags));
     for (const id of Object.keys(deSite.GOSSIP_TAG_LABELS))
       expect(ids).toContain(id);
+  });
+
+  // v0.4: same ids, counts, days, seeds and layout extras at every level; only wording differs.
+  const social = [
+    'bulletins',
+    'bands',
+    'top8Reactions',
+    'pixlog',
+    'surveys',
+    'layouts',
+  ] as const;
+
+  it.each(social)('%s matches the English structure deeply', (key) => {
+    expect(en[key].length).toBeGreaterThan(0);
+    expect(deepParityProblems(en[key], de[key], `de.${key}`)).toEqual([]);
   });
 
   it('balloons and tips have the same exports as English', () => {
@@ -207,6 +223,35 @@ describe('parity checks catch drift', () => {
       'x.id: girl has a, boy has b',
       'x.day: girl has 1, boy has 2',
       'x.list: girl has 2 items, boy has 1',
+    ]);
+  });
+
+  it('flags deep drift: days, ids, nested counts, layout extras and placeholders', () => {
+    const en = [
+      {
+        id: 'b1',
+        day: 2,
+        body: 'hi {name}',
+        link: 'http://a.example/',
+        extras: { background: 'starry', text: '#fff', stickers: [] },
+        photos: [{ comments: [{ day: 3, text: 'x' }] }],
+      },
+    ];
+    const ok = structuredClone(en);
+    ok[0]!.body = 'hallo {name}';
+    expect(deepParityProblems(en, ok, 'm')).toEqual([]);
+    const bad = structuredClone(en);
+    bad[0]!.day = 3;
+    bad[0]!.body = 'hallo';
+    bad[0]!.link = 'http://b.example/';
+    bad[0]!.extras.text = '#000';
+    bad[0]!.photos[0]!.comments = [];
+    expect(deepParityProblems(en, bad, 'm')).toEqual([
+      'm[0].day is 3, English has 2',
+      'm[0].body placeholders differ from English',
+      'm[0].link is http://b.example/, English has http://a.example/',
+      'm[0].extras.text is #000, English has #fff',
+      'm[0].photos[0].comments has 0 items, English has 1',
     ]);
   });
 

@@ -1,7 +1,7 @@
 // German friendspace.example, same exports as `src/content/sites/friendspace`: „ein Ort für Freunde im
 // Orbit", says „du“. Theme ids and colours come from English; only their names are German.
 import { g } from '../../gender';
-import type { PlayerProfile } from '../../profiles/types';
+import type { PlayerProfile } from '../../friendspace/profiles/types';
 import {
   THEME_PRESETS as EN_THEME_PRESETS,
   type ThemePreset,

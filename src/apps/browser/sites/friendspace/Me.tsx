@@ -66,9 +66,7 @@ export default function Me() {
         lastLogin={shortDate(now())}
         songTrackId={profile.songTrackId}
         aboutMe={profile.aboutMe}
-        top8={profile.top8.map((id) =>
-          topFriendView({ kind: 'contact', id }, playerName, locale),
-        )}
+        top8={profile.top8.map((e) => topFriendView(e, playerName, locale))}
         comments={playerWall(PROFILES, day).map((c) =>
           wallComment(c, playerName, locale),
         )}

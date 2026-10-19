@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { resolveGender } from '@/content/gender';
-import type { PlayerProfile, ProfileContent } from '@/content/profiles/types';
+import type {
+  PlayerProfile,
+  ProfileContent,
+} from '@/content/friendspace/profiles/types';
 import {
   DEFAULT_PLAYER_PROFILE,
   THEME_PRESETS,
@@ -21,9 +24,11 @@ import {
   visibleComments,
 } from './logic';
 
+const c = (id: string) => ({ kind: 'contact' as const, id });
+
 const base: PlayerProfile = {
   ...resolveGender(DEFAULT_PLAYER_PROFILE, 'girl'),
-  top8: ['jess', 'pia'],
+  top8: [c('jess'), c('pia')],
 };
 
 describe('friendspace logic', () => {
@@ -81,8 +86,29 @@ describe('friendspace logic', () => {
 
   it('normalises the Top 8 and moves entries', () => {
     expect(
-      normalizeTop8(['pia', 'ghost', 'pia', 'jess'], ['jess', 'pia', 'dex']),
-    ).toEqual(['pia', 'jess', 'dex']);
+      normalizeTop8(
+        [c('pia'), c('ghost'), c('pia'), c('jess')],
+        ['jess', 'pia', 'dex'],
+      ),
+    ).toEqual([c('pia'), c('jess'), c('dex')]);
+    const band = { kind: 'band' as const, id: 'tinfoil-comets' };
+    const extra = { kind: 'extra' as const, name: 'Lexi', seed: 'lexi' };
+    expect(
+      normalizeTop8(
+        [band, c('jess'), extra, band, { ...extra }],
+        ['jess', 'pia'],
+      ),
+    ).toEqual([band, c('jess'), extra, c('pia')]);
+    expect(
+      normalizeTop8(
+        Array.from({ length: 8 }, (_, i) => ({
+          kind: 'extra' as const,
+          name: `x${i}`,
+          seed: `x${i}`,
+        })),
+        ['jess'],
+      ),
+    ).toHaveLength(8);
     expect(moveTop8(['a', 'b', 'c'], 2, -1)).toEqual(['a', 'c', 'b']);
     expect(moveTop8(['a', 'b', 'c'], 0, -1)).toEqual(['a', 'b', 'c']);
     expect(moveTop8(['a', 'b', 'c'], 0, 1)).toEqual(['b', 'a', 'c']);
@@ -91,12 +117,12 @@ describe('friendspace logic', () => {
   it('falls back to the starting profile until the player saves one', () => {
     expect(effectiveProfile(null, ['jess', 'dex'])).toEqual({
       ...resolveGender(DEFAULT_PLAYER_PROFILE, 'girl'),
-      top8: ['jess', 'dex'],
+      top8: [c('jess'), c('dex')],
     });
     expect(effectiveProfile(base, ['dex', 'pia', 'jess']).top8).toEqual([
-      'jess',
-      'pia',
-      'dex',
+      c('jess'),
+      c('pia'),
+      c('dex'),
     ]);
   });
 
@@ -139,6 +165,13 @@ describe('friendspace logic', () => {
     expect(cleanProfile({ ...base, themePreset: 'bogus' }).themePreset).toBe(
       'default',
     );
+    const extras = {
+      layoutCode: '[layout bg=starry]',
+      autoplay: false,
+      moodHistory: [{ text: 'meh', emoticon: ':(', day: 2 }],
+    };
+    expect(cleanProfile({ ...base, ...extras })).toMatchObject(extras);
+    expect(cleanProfile(base)).not.toHaveProperty('layoutCode');
   });
 
   it('resolves presets and custom colours to a theme', () => {

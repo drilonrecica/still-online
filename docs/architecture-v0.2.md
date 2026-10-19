@@ -2,17 +2,17 @@
 
 This doc extends [architecture.md](architecture.md) (session, windows, apps, event bus, persistence and clock still apply). It fixes the v0.2 foundations so feature tasks don't have to design them. The shared types are the source of truth:
 
-| File                                              | Holds                                                                                                                                        |
-| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/os/types.ts`                                 | `AppId`, `AppCategory`, `AppDefinition.category/pinned`, `Shortcut`, `SettingsV02` + `SETTINGS_V02_DEFAULTS`, `PersistedStoreName`, `GameId` |
-| `src/os/events.ts`                                | `OsEventMap`                                                                                                                                 |
-| `src/os/serviceTypes.ts`                          | world, network, idle, balloon and games contracts                                                                                            |
-| `src/os/fs/types.ts`                              | `FsNode`, `PhotoSpec`, `FsStore`                                                                                                             |
-| `src/os/overlay/slots.ts`                         | `OVERLAY_SLOTS`, `Z_INDEX`                                                                                                                   |
-| `src/os/random.ts`                                | `mulberry32`, `seedFrom`, `randInt`, `pick`                                                                                                  |
-| `src/content/sites/types.ts`                      | `SiteDefinition`, `SitePageProps`, site content, `WebState`                                                                                  |
-| `src/content/profiles/types.ts` · `mail/types.ts` | Friendspace profiles · mail content and `MailState`                                                                                          |
-| `src/content/types.ts` (end)                      | `TuneMoleResult`, `AssistantTip`                                                                                                             |
+| File                                                          | Holds                                                                                                                                        |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/os/types.ts`                                             | `AppId`, `AppCategory`, `AppDefinition.category/pinned`, `Shortcut`, `SettingsV02` + `SETTINGS_V02_DEFAULTS`, `PersistedStoreName`, `GameId` |
+| `src/os/events.ts`                                            | `OsEventMap`                                                                                                                                 |
+| `src/os/serviceTypes.ts`                                      | world, network, idle, balloon and games contracts                                                                                            |
+| `src/os/fs/types.ts`                                          | `FsNode`, `PhotoSpec`, `FsStore`                                                                                                             |
+| `src/os/overlay/slots.ts`                                     | `OVERLAY_SLOTS`, `Z_INDEX`                                                                                                                   |
+| `src/os/random.ts`                                            | `mulberry32`, `seedFrom`, `randInt`, `pick`                                                                                                  |
+| `src/content/sites/types.ts`                                  | `SiteDefinition`, `SitePageProps`, site content, `WebState`                                                                                  |
+| `src/content/friendspace/profiles/types.ts` · `mail/types.ts` | Friendspace profiles · mail content and `MailState`                                                                                          |
+| `src/content/types.ts` (end)                                  | `TuneMoleResult`, `AssistantTip`                                                                                                             |
 
 Content files under `src/content/` use **relative imports**, because the e2e tsconfig compiles them and has no `@/` alias.
 
@@ -144,7 +144,7 @@ The task that creates `OverlayLayer` also sets `.layer { z-index: 1 }` in `Windo
 - **CheatCave (G-05):** `sites/cheatcave/` (`/` news, `/cheats?game=`, `/clips`, `/forum?t=`); text in `src/content/sites/cheatcave.ts` (+ `de/`). News and forum replies are day-gated (`upToDay`/`postedLabel`; a thread shows from its first post's day, a later thread id reads as missing). The clip chart is the 10 most-viewed clips out by today (`topClips`), thumbnails via `renderPhoto`. The visitor counter is fake (`visitorCount(day, hits)`: 13,370 on day 3, +1 per view through `web.hit`). Read-only: no player posts.
 - **Kickflip Kings (G-06):** `sites/kickflipkings/` (`/` news + read-only shoutbox, `/crew`, `/tricks`, `/video`, `/gigs`); text in `src/content/sites/kickflipkings.ts` (+ `de/`). News, shouts, video teasers and gig updates are day-gated (`upToDay`/`postedLabel`); `logic.ts` has `bestTrickOn` (crew `after`), `visibleGigs` (a played show reads its `after`), `daysToPremiere` and `bufferAt` (the fake player's seeded crawl to 99%). Dex's day-5 chat links `kickflipkings.example/video`.
 - **Per-gender web (G-06):** default favorites come from `defaultFavoritesFor(gender)` (`apps/browser/store.ts`); saved favorites equal to either gender's list are untouched and render through `effectiveFavorites(favorites, gender)`, edits start from that list. Searchly's home „hot sites" box orders `SEARCHLY_HOT_SITES` with `hotSitesFor` (player's side first).
-- **Content:** site text lives in `src/content/sites/` (`GuestbookEntry`, `BlogPost`, `NewsPost`, `Poll`, all gated by `day`), profiles in `src/content/profiles/<contactId>.ts` (`ProfileContent`), and mail in `src/content/mail/` (`MailContent`, `AutoReply`). Site pages may import content and `os/`, but never Messenger. Profile pictures re-draw the contact's pattern avatar from its seed.
+- **Content:** site text lives in `src/content/sites/` (`GuestbookEntry`, `BlogPost`, `NewsPost`, `Poll`, all gated by `day`), profiles in `src/content/friendspace/profiles/<contactId>.ts` (`ProfileContent`), and mail in `src/content/mail/` (`MailContent`, `AutoReply`). Site pages may import content and `os/`, but never Messenger. Profile pictures re-draw the contact's pattern avatar from its seed.
 
 ## Games
 

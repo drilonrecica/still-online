@@ -1,7 +1,10 @@
 // friendspace.example: "Friendspace: a place for friends in orbit". Site text, theme presets and the
-// player's starting profile. Friend profiles live in src/content/profiles/.
+// player's starting profile. Friend profiles live in src/content/friendspace/profiles/.
 import { g } from '../gender';
-import type { PlayerProfile, ProfileTheme } from '../profiles/types';
+import type {
+  PlayerProfile,
+  ProfileTheme,
+} from '../friendspace/profiles/types';
 import type { SiteMeta } from './types';
 
 export const FRIENDSPACE_HOST = 'friendspace.example';

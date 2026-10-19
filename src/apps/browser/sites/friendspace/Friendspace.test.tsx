@@ -170,7 +170,10 @@ describe('friendspace.example', () => {
       songTrackId: 'newer-wave',
       themePreset: 'midnight',
     });
-    expect(saved?.top8.slice(0, 2)).toEqual(['pia', 'jess']);
+    expect(saved?.top8.slice(0, 2)).toEqual([
+      { kind: 'contact', id: 'pia' },
+      { kind: 'contact', id: 'jess' },
+    ]);
     expect(JSON.stringify(localStorage)).toContain('still online');
 
     expect(screen.getByText(/still online/)).toBeTruthy();

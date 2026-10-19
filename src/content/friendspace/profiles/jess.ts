@@ -1,6 +1,6 @@
 // Jess's Friendspace profile: neon chaos, all caps, concert week (sign → outfit → night before →
 // front row + the drumstick). The concert is between days 4 and 5.
-import { g } from '../gender';
+import { g } from '../../gender';
 import type { ProfileContent } from './types';
 
 export const jessProfile: ProfileContent = {

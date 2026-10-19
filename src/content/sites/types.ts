@@ -3,8 +3,9 @@
 import type { ComponentType, LazyExoticComponent } from 'react';
 import type { Locale } from '@/i18n/types';
 import type { PhotoSpec } from '@/os/fs/types';
-import type { PlayerProfile } from '../profiles/types';
-import type { FavoriteRecord } from '../types';
+import type { PlayerProfile } from '../friendspace/profiles/types';
+import type { PixlogSkinId } from '../pixlog/types';
+import type { ContactId, FavoriteRecord } from '../types';
 
 /** What every site page component receives from Web Explorer. */
 export interface SitePageProps {
@@ -218,4 +219,28 @@ export interface WebState {
   votes: Record<string, number>;
   /** Friendspace `/me`; null until the player edits it (defaults derive from the player name). */
   myProfile: PlayerProfile | null;
+  /** v0.4: the highest day the player opened Friendspace's `/bulletins`. */
+  bulletinsSeen?: number;
+  /** v0.4: friends' Top 8 reactions on `/me`, oldest first (text from `top8Reactions` at render). */
+  top8Wall?: Top8WallEntry[];
+  /** v0.4: the player's Pixlog page. */
+  pixlog?: PixlogState;
+}
+
+export interface Top8WallEntry {
+  contactId: ContactId;
+  kind: 'dropped' | 'readded';
+  /** The day the friend reacted. */
+  day: number;
+}
+
+export interface PixlogState {
+  /** The skin the player picked; absent = the gender's default (`pixlogSkinFor`). */
+  skin?: PixlogSkinId;
+  /** My Pictures files (`FsNode.id`) with the player's captions (≤ 80 chars), max 24, in order. */
+  album: { fsNodeId: string; caption: string }[];
+  /** Survey id → the player's answers, in question order. */
+  surveys: Record<string, string[]>;
+  /** Contact id → the days the player gave them a kudo. */
+  kudosGiven: Record<ContactId, number[]>;
 }

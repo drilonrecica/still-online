@@ -3,13 +3,13 @@
 import { describe, expect, it } from 'vitest';
 import { resolveGender } from '@/content/gender';
 import { getProfiles, getSiteText, rawContentFor } from '@/content/locale';
-import { PROFILES as EN_PROFILES } from '@/content/profiles';
+import { PROFILES as EN_PROFILES } from '@/content/friendspace/profiles';
 import { GOSSIP_HOST } from '@/content/sites/celebgossip07';
 import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
 import { VIRUSGUARD_HOST } from '@/content/sites/virusguard';
 import { WESTFIELD_HOST } from '@/content/sites/westfieldhigh';
-import { PROFILES } from '../profiles';
+import { PROFILES } from '../friendspace/profiles';
 
 const placeholders = (text: string) => (text.match(/\{\w+\}/g) ?? []).sort();
 

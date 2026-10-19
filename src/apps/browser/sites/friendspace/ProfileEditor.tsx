@@ -1,13 +1,13 @@
 // The `/me` editor: headline, mood, about me, profile song, theme (6 presets or custom colours)
 // and the Top 8 order. Nothing is saved until "Save Changes".
 import { useId, useState } from 'react';
-import type { PlayerProfile } from '@/content/profiles/types';
+import type { PlayerProfile } from '@/content/friendspace/profiles/types';
 import { PLAYLIST } from '@/content/playlist';
 import { PROFILE_LIMITS, FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import { useLocale, useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
-import { cleanProfile, moveTop8 } from './logic';
-import { friendName } from './people';
+import { cleanProfile, moveTop8, topEntryKey } from './logic';
+import { topFriendView } from './people';
 import styles from './Friendspace.module.css';
 
 const DEFAULT_CUSTOM = { background: '#000033', text: '#ffff66' };
@@ -162,15 +162,15 @@ export function ProfileEditor({
           className={styles.orderList}
           aria-label={t('sites.friendspace.editor.top8Order')}
         >
-          {p.top8.map((friend, i) => (
-            <li key={friend}>
+          {p.top8.map((entry, i) => (
+            <li key={topEntryKey(entry)}>
               <span className={styles.orderName}>
-                {friendName(friend, locale)}
+                {topFriendView(entry, '', locale).label}
               </span>
               <button
                 type="button"
                 aria-label={t('sites.friendspace.editor.moveUp', {
-                  name: friend,
+                  name: entry.kind === 'extra' ? entry.name : entry.id,
                 })}
                 disabled={i === 0}
                 onClick={() => set({ top8: moveTop8(p.top8, i, -1) })}
@@ -180,7 +180,7 @@ export function ProfileEditor({
               <button
                 type="button"
                 aria-label={t('sites.friendspace.editor.moveDown', {
-                  name: friend,
+                  name: entry.kind === 'extra' ? entry.name : entry.id,
                 })}
                 disabled={i === p.top8.length - 1}
                 onClick={() => set({ top8: moveTop8(p.top8, i, 1) })}

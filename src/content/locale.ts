@@ -10,17 +10,25 @@ import * as enAssistant from './assistant';
 import * as enBalloons from './balloons';
 import { contacts as enContacts } from './contacts';
 import { SEED_FILES } from './files';
+import { BANDS } from './friendspace/bands';
+import { BULLETINS } from './friendspace/bulletins';
+import { TOP8_REACTIONS } from './friendspace/top8Reactions';
+import type { Band, Bulletin, Top8Reaction } from './friendspace/types';
 import { MAIL_CONTENT } from './mail';
 import { autoReplies } from './mail/autoReplies';
 import type { AutoReply, MailContent } from './mail/types';
-import { PROFILES } from './profiles';
-import type { ProfileContent } from './profiles/types';
+import { PROFILES } from './friendspace/profiles';
+import type { ProfileContent } from './friendspace/profiles/types';
+import { PIXLOG_PROFILES } from './pixlog';
+import { SURVEYS } from './pixlog/surveys';
+import type { PixlogProfile, Survey } from './pixlog/types';
 import * as enAbout from './sites/about';
 import * as enGossip from './sites/celebgossip07';
 import * as enCheatCave from './sites/cheatcave';
 import * as enKickflip from './sites/kickflipkings';
 import * as enSearchly from './sites/searchly';
 import * as enFriendspace from './sites/friendspace';
+import { LAYOUTS, type LayoutDef } from './sites/glittercodez';
 import * as enTinfoil from './sites/tinfoilcomets';
 import * as enVirusguard from './sites/virusguard';
 import * as enWestfield from './sites/westfieldhigh';
@@ -60,6 +68,15 @@ export interface LocaleContent {
   balloons: BalloonContent;
   tips: TipContent;
   tuneMole: readonly TuneMoleResult[];
+  /** Friendspace (v0.4). */
+  bulletins: readonly Bulletin[];
+  bands: readonly Band[];
+  top8Reactions: readonly Top8Reaction[];
+  /** Pixlog profiles, one per friend. */
+  pixlog: readonly PixlogProfile[];
+  surveys: readonly Survey[];
+  /** GlitterCodez gallery layouts. */
+  layouts: readonly LayoutDef[];
 }
 
 // ---------------------------------------------------------------------------
@@ -76,6 +93,12 @@ const EN: LocaleContent = {
   balloons: enBalloons,
   tips: enAssistant,
   tuneMole: enTuneMole.TUNEMOLE_RESULTS,
+  bulletins: BULLETINS,
+  bands: BANDS,
+  top8Reactions: TOP8_REACTIONS,
+  pixlog: PIXLOG_PROFILES,
+  surveys: SURVEYS,
+  layouts: LAYOUTS,
 };
 
 /**
@@ -108,6 +131,18 @@ export const getTips = (locale: Locale, gender: Gender | null) =>
   contentFor(locale, gender).tips;
 export const getTuneMoleResults = (locale: Locale, gender: Gender | null) =>
   contentFor(locale, gender).tuneMole;
+export const getBulletins = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).bulletins;
+export const getBands = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).bands;
+export const getTop8Reactions = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).top8Reactions;
+export const getPixlogProfiles = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).pixlog;
+export const getSurveys = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).surveys;
+export const getLayouts = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).layouts;
 
 /** One content-backed site's text module (`src/content/sites/<site>.ts`) in `locale`. */
 export function getSiteText<H extends SiteTextHost>(

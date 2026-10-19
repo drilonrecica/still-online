@@ -1,0 +1,39 @@
+{
+  "state": {
+    "favorites": [
+      { "url": "http://searchly.example/" },
+      { "url": "http://tinfoilcomets.example/" },
+      { "url": "http://spaceport.example/" },
+      { "url": "http://westfield-high.example/" },
+      { "url": "http://celebgossip07.example/" },
+      { "title": "kaylas page lol", "url": "http://spaceport.example/kayla" }
+    ],
+    "counters": {
+      "tinfoilcomets.example": 7,
+      "spaceport.example": 12,
+      "celebgossip07.example": 3
+    },
+    "guestbook": {
+      "tinfoilcomets.example": [
+        { "name": "Ada", "message": "COMETS RULE!!!", "day": 2 },
+        {
+          "name": "Ada",
+          "message": "see u friday",
+          "homepage": "http://spaceport.example/me",
+          "day": 4
+        }
+      ]
+    },
+    "votes": { "scrunchies": 1, "kyle-hair": 0 },
+    "myProfile": {
+      "headline": "~*still online*~",
+      "mood": { "text": "bored", "emoticon": ":P" },
+      "aboutMe": "hi its me. ponies > everything",
+      "songTrackId": "newer-wave",
+      "themePreset": "custom",
+      "customColors": { "background": "#000033", "text": "#ffff66" },
+      "top8": ["pia", "jess", "kayla", "dex", "theo", "marco"]
+    }
+  },
+  "version": 1
+}

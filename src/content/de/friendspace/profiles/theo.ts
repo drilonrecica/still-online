@@ -1,7 +1,7 @@
 // Theo's German Friendspace profile: shy, „ähm“, „sorry“, „…“, draws frogs. Mama comments formally.
-import { g } from '../../gender';
-import { theoProfile as en } from '../../profiles/theo';
-import type { ProfileContent } from '../../profiles/types';
+import { g } from '../../../gender';
+import { theoProfile as en } from '../../../friendspace/profiles/theo';
+import type { ProfileContent } from '../../../friendspace/profiles/types';
 
 export const theoProfile: ProfileContent = {
   ...en,

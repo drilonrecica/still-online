@@ -1,6 +1,6 @@
 // Kayla's Friendspace profile: pink glitter, drama princess. The Brianna saga plays out on her wall
 // (twin hoodies day 2, the "missing" invite day 3, Brianna is nice day 4, peace treaty day 5).
-import { g } from '../gender';
+import { g } from '../../gender';
 import type { ProfileContent } from './types';
 
 export const kaylaProfile: ProfileContent = {

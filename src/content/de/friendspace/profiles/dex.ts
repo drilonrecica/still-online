@@ -1,7 +1,7 @@
 // Dex's German Friendspace profile: slow, short, lowercase, always away. Same days and theme colours;
 // the skate stickers are German skater talk (Kickflip, Grip Tape and Board stay).
-import { dexProfile as en } from '../../profiles/dex';
-import type { ProfileContent } from '../../profiles/types';
+import { dexProfile as en } from '../../../friendspace/profiles/dex';
+import type { ProfileContent } from '../../../friendspace/profiles/types';
 
 export const dexProfile: ProfileContent = {
   ...en,

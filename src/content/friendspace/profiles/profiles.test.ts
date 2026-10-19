@@ -1,7 +1,7 @@
 // Friendspace profile content: one per contact, valid Top 8s and songs, day-gated comments.
 import { describe, expect, it } from 'vitest';
-import { contacts } from '../contacts';
-import { PLAYLIST } from '../playlist';
+import { contacts } from '../../contacts';
+import { PLAYLIST } from '../../playlist';
 import { PROFILES } from '.';
 
 const ids = contacts.map((c) => c.contact.id);

@@ -1,7 +1,7 @@
 // Jess's German Friendspace profile: neon chaos, CAPS, „!!!“, hdgdl. Same Top 8, days and theme.
-import { g } from '../../gender';
-import { jessProfile as en } from '../../profiles/jess';
-import type { ProfileContent } from '../../profiles/types';
+import { g } from '../../../gender';
+import { jessProfile as en } from '../../../friendspace/profiles/jess';
+import type { ProfileContent } from '../../../friendspace/profiles/types';
 
 export const jessProfile: ProfileContent = {
   ...en,

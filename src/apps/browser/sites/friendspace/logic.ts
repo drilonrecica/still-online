@@ -6,7 +6,7 @@ import type {
   ProfileComment,
   ProfileContent,
   ProfileTheme,
-} from '@/content/profiles/types';
+} from '@/content/friendspace/profiles/types';
 import { PLAYLIST } from '@/content/playlist';
 import { getSiteText } from '@/content/locale';
 import type { Gender } from '@/os/types';
@@ -15,6 +15,7 @@ import {
   FRIENDSPACE_HOST,
   THEME_PRESETS,
 } from '@/content/sites/friendspace';
+import type { PlayerTopEntry } from '@/content/friendspace/types';
 import type { ContactId } from '@/content/types';
 import type { Locale } from '@/i18n/types';
 import { mulberry32, seedFrom } from '@/os/random';
@@ -81,16 +82,31 @@ export function extraColors(seed: string): [string, string] {
   return [`hsl(${hue}, 70%, 85%)`, `hsl(${(hue + 150) % 360}, 60%, 35%)`];
 }
 
+/** A Top 8 entry's identity, for dedupe and React keys. */
+export const topEntryKey = (e: PlayerTopEntry): string =>
+  e.kind === 'extra' ? `extra:${e.seed}` : `${e.kind}:${e.id}`;
+
 /**
- * The player's Top 8 order: known friends in the saved order, then any friend missing from it
- * (unknown ids are dropped), so every friend shows up exactly once.
+ * The player's Top 8: the saved entries in order (friends not in `known` and duplicates are
+ * dropped), then any friend missing from it, so every friend shows up exactly once (max 8).
+ * The reorder-only editor relies on that; P1-05's editor makes removal possible.
  */
 export function normalizeTop8(
-  saved: readonly string[],
+  saved: readonly PlayerTopEntry[],
   known: readonly ContactId[],
-): ContactId[] {
-  const kept = [...new Set(saved)].filter((id) => known.includes(id));
-  return [...kept, ...known.filter((id) => !kept.includes(id))].slice(0, 8);
+): PlayerTopEntry[] {
+  const keys = new Set<string>();
+  const kept = saved.filter((e) => {
+    const key = topEntryKey(e);
+    if (keys.has(key) || (e.kind === 'contact' && !known.includes(e.id)))
+      return false;
+    keys.add(key);
+    return true;
+  });
+  const missing = known
+    .filter((id) => !keys.has(`contact:${id}`))
+    .map((id): PlayerTopEntry => ({ kind: 'contact', id }));
+  return [...kept, ...missing].slice(0, 8);
 }
 
 /** `web.myProfile`, or the starting profile when the player hasn't saved one yet. */
@@ -150,6 +166,9 @@ export function cleanProfile(p: PlayerProfile): PlayerProfile {
     themePreset: preset === 'custom' && !colors ? 'default' : preset,
     customColors: colors,
     top8: [...p.top8],
+    ...(p.layoutCode !== undefined ? { layoutCode: p.layoutCode } : {}),
+    ...(p.autoplay !== undefined ? { autoplay: p.autoplay } : {}),
+    ...(p.moodHistory ? { moodHistory: [...p.moodHistory] } : {}),
   };
 }
 

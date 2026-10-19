@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { LOCALES } from '@/i18n/types';
 import { GENDERS } from './gender';
 import { lintContact, lintContentStrings } from './lint';
+import { lintSocial } from './lintSocial';
 import { contentFor } from './locale';
 
 const modules = import.meta.glob('./**/*.ts', { eager: true }) as Record<
@@ -53,6 +54,10 @@ describe.each(COMBOS)(
         expect(lintContact(c, locale)).toEqual([]);
       },
     );
+
+    it('v0.4 content resolves (ids, days 1–5, layout sets)', () => {
+      expect(lintSocial(content)).toEqual([]);
+    });
 
     it('every module passes the text lint', () => {
       // JSON drops the functions (helpers like `newDayBalloonText`).

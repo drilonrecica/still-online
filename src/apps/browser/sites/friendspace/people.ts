@@ -1,7 +1,10 @@
 // Turns profile content into what ProfileView shows: friends' names and pictures come from the
 // contact content (never from Messenger's state), the player's from their name.
-import { getContacts } from '@/content/locale';
-import type { ProfileComment, TopFriend } from '@/content/profiles/types';
+import { getBands, getContacts } from '@/content/locale';
+import type {
+  ProfileComment,
+  TopFriend,
+} from '@/content/friendspace/profiles/types';
 import type { ContactId } from '@/content/types';
 import { getGender } from '@/i18n/settingsText';
 import type { Locale } from '@/i18n/types';
@@ -54,6 +57,14 @@ export function topFriendView(
       label: friendName(t.id, locale),
       picture: friendPicture(t.id),
       href: `/${t.id}`,
+    };
+  if (t.kind === 'band')
+    return {
+      key: `band:${t.id}`,
+      label:
+        getBands(locale, getGender()).find((b) => b.id === t.id)?.name ?? t.id,
+      picture: { seed: `band:${t.id}`, colors: extraColors(`band:${t.id}`) },
+      href: `/band/${t.id}`,
     };
   return {
     key: `x:${t.seed}`,

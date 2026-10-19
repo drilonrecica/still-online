@@ -1,7 +1,7 @@
 // The profile layout shared by friends' pages and the player's `/me`: themed header, picture,
 // mood, song strip, about me, interests, Top 8 and the comment wall.
 import type { CSSProperties, ReactNode } from 'react';
-import type { ProfileTheme } from '@/content/profiles/types';
+import type { ProfileTheme } from '@/content/friendspace/profiles/types';
 import { useT } from '@/i18n/useT';
 import { SiteLink } from '../../SiteLink';
 import { Mood } from './Mood';

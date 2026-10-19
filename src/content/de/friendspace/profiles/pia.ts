@@ -1,7 +1,7 @@
 // Pia's German Friendspace profile: bossy, Ponys (never „Ponies“), Sternenstaub is the queen, Keks the
 // dog is a suspect. Same days and theme colours; the stickers are German.
-import { piaProfile as en } from '../../profiles/pia';
-import type { ProfileContent } from '../../profiles/types';
+import { piaProfile as en } from '../../../friendspace/profiles/pia';
+import type { ProfileContent } from '../../../friendspace/profiles/types';
 
 export const piaProfile: ProfileContent = {
   ...en,

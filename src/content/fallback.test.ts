@@ -7,7 +7,7 @@ import { TIPS, IDLE_JOKES } from './assistant';
 import { SCHEDULED_BALLOONS, WELCOME_BALLOON } from './balloons';
 import { SEED_FILES } from './files';
 import { MAIL_CONTENT } from './mail';
-import { PROFILES } from './profiles';
+import { PROFILES } from './friendspace/profiles';
 import { TUNEMOLE_RESULTS } from './tunemole';
 
 const de = contentFor('de', 'girl');

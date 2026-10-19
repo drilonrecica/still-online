@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { jess } from '../../src/content/de/contacts/jess';
 import { MAIL_CONTENT } from '../../src/content/de/mail';
-import { jessProfile } from '../../src/content/de/profiles/jess';
+import { jessProfile } from '../../src/content/de/friendspace/profiles/jess';
 import { de } from '../../src/i18n/messages/de';
 import { closeNudgeChats, pickGender, quietIdle } from './helpers';
 

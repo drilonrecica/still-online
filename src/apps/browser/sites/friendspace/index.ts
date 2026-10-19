@@ -3,7 +3,7 @@
 import { lazy } from 'react';
 import { getSiteText } from '@/content/locale';
 import { getGender } from '@/i18n/settingsText';
-import { PROFILES } from '@/content/profiles';
+import { PROFILES } from '@/content/friendspace/profiles';
 import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import type { SitePage, SiteDefinition } from '@/content/sites/types';
 import { interpolate } from '@/i18n/t';

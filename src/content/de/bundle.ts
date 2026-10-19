@@ -18,14 +18,20 @@ import * as assistant from './assistant';
 import * as balloons from './balloons';
 import { contactOverlays } from './contacts';
 import * as files from './files';
+import { BANDS } from './friendspace/bands';
+import { BULLETINS } from './friendspace/bulletins';
+import { TOP8_REACTIONS } from './friendspace/top8Reactions';
 import * as mail from './mail';
-import * as profiles from './profiles';
+import { PIXLOG_PROFILES } from './pixlog';
+import { SURVEYS } from './pixlog/surveys';
+import * as profiles from './friendspace/profiles';
 import * as about from './sites/about';
 import * as gossip from './sites/celebgossip07';
 import * as cheatcave from './sites/cheatcave';
 import * as kickflip from './sites/kickflipkings';
 import * as searchly from './sites/searchly';
 import * as friendspace from './sites/friendspace';
+import { LAYOUTS } from './sites/glittercodez';
 import * as tinfoil from './sites/tinfoilcomets';
 import * as virusguard from './sites/virusguard';
 import * as westfield from './sites/westfieldhigh';
@@ -59,4 +65,10 @@ export const content: LocaleContent = {
   balloons,
   tips: assistant,
   tuneMole: tuneMole.TUNEMOLE_RESULTS,
+  bulletins: BULLETINS,
+  bands: BANDS,
+  top8Reactions: TOP8_REACTIONS,
+  pixlog: PIXLOG_PROFILES,
+  surveys: SURVEYS,
+  layouts: LAYOUTS,
 };

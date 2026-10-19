@@ -1,5 +1,6 @@
-// Friendspace profiles (P4-04): one module per friend in src/content/profiles/<contactId>.ts.
-import type { ContactId } from '../types';
+// Friendspace profiles (P4-04): one module per friend in src/content/friendspace/profiles/<contactId>.ts.
+import type { ContactId } from '../../types';
+import type { BandId, PlayerTopEntry } from '../types';
 
 export interface ProfileTheme {
   /** Any CSS background (colour or gradient). */
@@ -20,8 +21,13 @@ export type TopFriend =
   | { kind: 'contact'; id: ContactId }
   /** A fictional extra with no profile page; the picture is a pattern from `seed`. */
   | { kind: 'extra'; name: string; seed: string }
+  /** A band; links to its `/band/<id>` page (v0.4). */
+  | { kind: 'band'; id: BandId }
   /** The player; links to `/me`. */
   | { kind: 'player' };
+
+/** A small original badge drawn above a wall comment (v0.4, P1-03). */
+export type CommentGraphic = 'thanks' | 'hug' | 'glitterheart';
 
 export interface ProfileComment {
   /** Shows when `day <= currentDay`; newest first. */
@@ -31,6 +37,7 @@ export interface ProfileComment {
   /** Set when the author is a friend, for the picture and a link. */
   contactId?: ContactId;
   text: string;
+  graphic?: CommentGraphic;
 }
 
 export interface ProfileContent {
@@ -44,7 +51,7 @@ export interface ProfileContent {
   wantToMeet: string;
   /** Rows like "Music", "Movies", "Heroes". */
   interests: readonly { label: string; text: string }[];
-  /** Exactly 8: the player, the five other friends and two fictional extras. */
+  /** Exactly 8: the player, the five other friends and two fictional extras (or bands). */
   top8: readonly TopFriend[];
   /** Text may use `{name}` (the player's name). */
   comments: readonly ProfileComment[];
@@ -62,5 +69,18 @@ export interface PlayerProfile {
   /** One of the 6 preset ids, or 'custom' with the player's colours. */
   themePreset: string;
   customColors: { background: string; text: string } | null;
-  top8: ContactId[];
+  /** At most 8, no duplicates. v0.3 saves stored contact ids; `sanitizeTop8` migrates them. */
+  top8: PlayerTopEntry[];
+  /** A pasted GlitterCodez layout code (≤ 2000 chars), parsed when the page renders. */
+  layoutCode?: string;
+  /** Play friends' and bands' profile songs on open; absent = on. */
+  autoplay?: boolean;
+  /** The last moods, newest first (≤ 5). */
+  moodHistory?: MoodHistoryEntry[];
+}
+
+export interface MoodHistoryEntry {
+  text: string;
+  emoticon: string;
+  day: number;
 }
