@@ -3,6 +3,7 @@ import type { ContactContent } from '../types';
 import { dexDayScripts, dexDays } from './dex-days';
 import { dexGameScore } from './game-reactions';
 import { dexNowPlaying2 } from './now-playing';
+import { dexTop8Dropped, dexTop8Readded } from './top8-reactions';
 
 export const dex: ContactContent = {
   contact: {
@@ -372,5 +373,7 @@ export const dex: ContactContent = {
     ...dexDayScripts,
     dexNowPlaying2,
     dexGameScore,
+    dexTop8Dropped,
+    dexTop8Readded,
   ],
 };

@@ -73,6 +73,7 @@ export const theoProfile: ProfileContent = {
       day: 4,
       from: 'Mama',
       text: 'Wir sind so stolz, dass du morgen dein Referat hältst! Hab dich lieb, Mama',
+      graphic: 'hug',
     },
     {
       day: 5,

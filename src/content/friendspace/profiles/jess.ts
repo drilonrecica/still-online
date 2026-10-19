@@ -115,12 +115,14 @@ export const jessProfile: ProfileContent = {
       day: 5,
       from: 'xX_CometGirl_Xx',
       text: 'U CAUGHT IT??? ur my HERO!!! i am crying!!!',
+      graphic: 'glitterheart',
     },
   ],
   commentsOnPlayer: [
     {
       day: 2,
       text: '{name}!!! ur on friendspace!!! ur in my top 8. #1. obviously :D',
+      graphic: 'thanks',
     },
     {
       day: 3,

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { exampleContact } from '../example.fixture';
+import { TOP8_REACTIONS } from '../friendspace/top8Reactions';
 import { lintContact, lintContactText, lintScriptGraph } from '../lint';
 import { getContacts } from '../locale';
 import { PLAYLIST } from '../playlist';
@@ -83,6 +84,22 @@ describe('content lint: shipped contacts', () => {
       expect(new Set(messages).size).toBe(messages.length);
     },
   );
+
+  // Top 8 drama (P3-01): a short pair per friend (≤ 1 choice node) plus both wall lines.
+  it.each(storyFriends)('%s reacts to a Top 8 drop and re-add', (id) => {
+    const { scripts } = contacts.find((c) => c.contact.id === id)!;
+    for (const type of ['onTop8Dropped', 'onTop8Readded'] as const) {
+      const pair = scripts.filter((s) => s.trigger.type === type);
+      expect(pair, type).toHaveLength(1);
+      const nodes = Object.values(pair[0]!.nodes);
+      expect(nodes.filter((n) => 'choices' in n).length).toBeLessThanOrEqual(1);
+      const texts = nodes[0]!.lines.filter((l) => l.text !== undefined);
+      expect(texts.length).toBeGreaterThanOrEqual(2);
+    }
+    const wall = TOP8_REACTIONS.find((r) => r.contactId === id);
+    expect(wall?.dropped).toBeTruthy();
+    expect(wall?.readded).toBeTruthy();
+  });
 
   // Checked on resolved content, so both sides of every gender variant count.
   it.each([

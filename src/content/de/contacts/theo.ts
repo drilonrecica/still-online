@@ -579,5 +579,50 @@ export const theo: ContactOverlay = {
         ],
       },
     },
+    // P4 replaces this with German (Top 8 drama, P0-03).
+    'top8-dropped': {
+      noticed: {
+        lines: [
+          'um hi {name}',
+          'i saw im not in ur top 8 anymore',
+          'sorry. i probably did something',
+          'was it the bio poster. i can redo the poster',
+        ],
+        choices: [
+          {
+            text: g(
+              'its not ur fault theo!! u didnt do anything',
+              'its not ur fault man. u didnt do anything',
+            ),
+            label: 'Its not your fault',
+          },
+          { text: 'i just needed the space', label: 'Needed the space' },
+        ],
+      },
+      notFault: {
+        lines: ['oh. ok', 'sorry for asking. i mean. thanks', ''],
+        personalMessages: { 2: 'not in a top 8. its ok. sorry' },
+      },
+      space: {
+        lines: [
+          'thats ok. 8 is not a lot of spaces',
+          'sorry for taking one',
+          '',
+        ],
+        personalMessages: { 2: 'not in a top 8. its ok. sorry' },
+      },
+    },
+    // P4 replaces this with German.
+    'top8-readded': {
+      back: {
+        lines: [
+          'um. im back in ur top 8',
+          'thanks. sorry. i mean thanks',
+          'i drew a frog to celebrate. its a small frog',
+          '',
+        ],
+        personalMessages: { 3: 'back in a top 8 :) sorry' },
+      },
+    },
   },
 };

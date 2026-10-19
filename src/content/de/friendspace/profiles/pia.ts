@@ -39,7 +39,7 @@ export const piaProfile: ProfileContent = {
     { kind: 'contact', id: 'marco' },
     { kind: 'contact', id: 'theo' },
     { kind: 'contact', id: 'dex' },
-    { kind: 'extra', name: 'Keks', seed: 'biscuit' },
+    { kind: 'band', id: 'sugarcube-parade' },
     { kind: 'player' },
   ],
   comments: [
@@ -58,6 +58,7 @@ export const piaProfile: ProfileContent = {
       day: 2,
       from: 'ponyprinzessin_99',
       text: 'sternenstaub is VERMISST?? ich hoffe sie kommt nach hause :(',
+      graphic: 'hug',
     },
     {
       day: 2,
@@ -86,6 +87,7 @@ export const piaProfile: ProfileContent = {
       day: 4,
       from: 'ponyprinzessin_99',
       text: 'SIE IS WIEDER DA!!! bester tag überhaupt!!!',
+      graphic: 'glitterheart',
     },
     {
       day: 5,

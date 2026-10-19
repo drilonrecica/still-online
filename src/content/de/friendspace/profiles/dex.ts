@@ -28,7 +28,7 @@ export const dexProfile: ProfileContent = {
     { kind: 'player' },
     { kind: 'contact', id: 'jess' },
     { kind: 'contact', id: 'theo' },
-    { kind: 'extra', name: 'das board', seed: 'dexboard' },
+    { kind: 'band', id: 'grip-tapes' },
     { kind: 'contact', id: 'kayla' },
     { kind: 'contact', id: 'marco' },
     { kind: 'contact', id: 'pia' },

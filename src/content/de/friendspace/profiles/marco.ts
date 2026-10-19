@@ -28,7 +28,7 @@ export const marcoProfile: ProfileContent = {
     { kind: 'player' },
     { kind: 'contact', id: 'jess' },
     { kind: 'contact', id: 'dex' },
-    { kind: 'extra', name: 'Tante Rita', seed: 'auntrita' },
+    { kind: 'band', id: 'velvet-lantern' },
     { kind: 'contact', id: 'theo' },
     { kind: 'contact', id: 'kayla' },
     { kind: 'contact', id: 'pia' },
@@ -87,6 +87,7 @@ export const marcoProfile: ProfileContent = {
       day: 5,
       from: 'Tante Rita',
       text: 'Ich bin so stolz auf dich!!! Deine Mutter hat geweint!!! Ich habe 11 gezählt!!!',
+      graphic: 'glitterheart',
     },
     {
       day: 5,

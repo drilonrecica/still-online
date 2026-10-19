@@ -100,6 +100,20 @@ describe('friendspace band pages', () => {
     ).toBeTruthy();
     expect(within(page).getByText('Space Rock / Indie / Robot')).toBeTruthy();
     expect(within(page).getByText(/thx 4 the adds/)).toBeTruthy();
+    expect(within(page).getByText(/Riverside Arena - SOLD OUT/)).toBeTruthy();
+    expect(within(page).queryByText(/the big show/)).toBeNull();
+    expect(within(page).getByText('riverside!!!')).toBeTruthy();
+    expect(within(page).queryByText('practice update')).toBeNull();
+  });
+
+  it('shows empty states before a band has shows or blog posts', async () => {
+    useSettingsStore.setState({ muted: true });
+    open('/band/velvet-lantern');
+    await finishLoad();
+    const page = await screen.findByTestId('band');
+    expect(
+      within(page).getByRole('heading', { name: 'Velvet Lantern' }),
+    ).toBeTruthy();
     expect(within(page).getByText(/No shows booked yet/)).toBeTruthy();
     expect(within(page).getByText('No blog entries yet.')).toBeTruthy();
   });

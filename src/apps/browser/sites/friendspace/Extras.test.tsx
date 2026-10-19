@@ -129,9 +129,10 @@ describe('layout codes on /me', () => {
   it("shows friends' comment graphics on the player's wall", async () => {
     open('/me');
     await finishLoad();
+    // Kayla's and Jess's day-2 comments.
     expect(
-      await screen.findByRole('img', { name: 'Thanks for the add!!' }),
-    ).toBeTruthy();
+      await screen.findAllByRole('img', { name: 'Thanks for the add!!' }),
+    ).toHaveLength(2);
   });
 });
 
@@ -153,7 +154,7 @@ describe("friends' profile extras", () => {
     open('/me');
     await finishLoad();
     expect(
-      await screen.findByRole('img', { name: 'Danke fürs Adden!!' }),
-    ).toBeTruthy();
+      await screen.findAllByRole('img', { name: 'Danke fürs Adden!!' }),
+    ).toHaveLength(2);
   });
 });

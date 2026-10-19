@@ -295,8 +295,8 @@ describe('Friendspace bulletins in German', () => {
     expect(
       await screen.findByRole('heading', { name: 'Bulletin-Ecke' }),
     ).toBeTruthy();
-    expect(screen.getByText(/Betreff:/)).toBeTruthy();
-    expect(screen.getByText(/gepostet heute/)).toBeTruthy();
+    expect(screen.getAllByText(/Betreff:/)).toHaveLength(3);
+    expect(screen.getAllByText(/gepostet heute/)).toHaveLength(3);
     expect(useWebStore.getState().bulletinsSeen).toBe(1);
   });
 });

@@ -70,6 +70,7 @@ export const kaylaProfile: ProfileContent = {
       day: 3,
       from: 'lipgloss_lexi',
       text: 'deine übernachtungsparty wird 10x besser. 2 sorten eis!!!',
+      graphic: 'hug',
     },
     {
       day: 4,

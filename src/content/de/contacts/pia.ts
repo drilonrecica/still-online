@@ -1,5 +1,6 @@
 // German text for pia (docs/localization-de.md → "Pia: the bossy little sister"). Same ids, same
 // line and choice counts as `src/content/contacts/pia*.ts`; '' = a line without text.
+import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
 
 export const pia: ContactOverlay = {
@@ -546,6 +547,44 @@ export const pia: ContactOverlay = {
       },
       turn: {
         lines: ['10 minuten is keine runde', 'ne runde geht bis ich gewinne'],
+      },
+    },
+    // P4 replaces this with German (Top 8 drama, P0-03).
+    'top8-dropped': {
+      noticed: {
+        lines: [
+          '{name}',
+          'I AM NOT IN UR TOP 8',
+          'i checked on dads laptop. TWICE',
+          'im telling mom',
+        ],
+        choices: [
+          { text: 'pia its just a website', label: 'Its just a website' },
+          { text: 'ok ok ill put u back', label: 'Ill put you back' },
+        ],
+      },
+      website: {
+        lines: ['MOOOOOOOM', 'mom says be nice to ur sister. HA', ''],
+        personalMessages: { 2: 'NOT in a top 8. mom knows' },
+      },
+      back: {
+        lines: ['u have 5 min', 'i am counting. 1. 2. 3', ''],
+        personalMessages: { 2: 'waiting 4 my top 8 spot. 4. 5' },
+      },
+    },
+    // P4 replaces this with German.
+    'top8-readded': {
+      back: {
+        lines: [
+          'ok i saw. im back in ur top 8',
+          'i told mom u fixed it',
+          g(
+            'ur not the WORST sister. ur like the 3rd worst',
+            'ur not the WORST brother. ur like the 3rd worst',
+          ),
+          '',
+        ],
+        personalMessages: { 3: 'back in the top 8. as i SHOULD be' },
       },
     },
   },

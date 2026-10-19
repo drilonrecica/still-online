@@ -32,7 +32,7 @@ export const piaProfile: ProfileContent = {
     { kind: 'contact', id: 'marco' },
     { kind: 'contact', id: 'theo' },
     { kind: 'contact', id: 'dex' },
-    { kind: 'extra', name: 'Biscuit', seed: 'biscuit' },
+    { kind: 'band', id: 'sugarcube-parade' },
     { kind: 'player' },
   ],
   comments: [
@@ -51,6 +51,7 @@ export const piaProfile: ProfileContent = {
       day: 2,
       from: 'ponyprincess_99',
       text: 'stardust is MISSING?? i hope she comes home :(',
+      graphic: 'hug',
     },
     {
       day: 2,
@@ -79,6 +80,7 @@ export const piaProfile: ProfileContent = {
       day: 4,
       from: 'ponyprincess_99',
       text: 'SHE CAME HOME!!! best day ever!!!',
+      graphic: 'glitterheart',
     },
     {
       day: 5,

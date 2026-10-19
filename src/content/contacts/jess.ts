@@ -4,6 +4,7 @@ import type { ContactContent } from '../types';
 import { jessDayScripts, jessDays } from './jess-days';
 import { jessGameScore } from './game-reactions';
 import { jessNowPlaying2 } from './now-playing';
+import { jessTop8Dropped, jessTop8Readded } from './top8-reactions';
 
 export const jess: ContactContent = {
   contact: {
@@ -489,5 +490,7 @@ export const jess: ContactContent = {
     ...jessDayScripts,
     jessNowPlaying2,
     jessGameScore,
+    jessTop8Dropped,
+    jessTop8Readded,
   ],
 };

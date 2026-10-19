@@ -535,6 +535,7 @@
 .bulletinBody {
   margin: 2px 0;
   overflow-wrap: anywhere;
+  white-space: pre-line;
 }
 
 .autoplayToggle {

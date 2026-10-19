@@ -67,6 +67,7 @@ export const kaylaProfile: ProfileContent = {
       day: 3,
       from: 'lipgloss_lexi',
       text: 'ur sleepover will be 10x better. 2 kinds of ice cream!!!',
+      graphic: 'hug',
     },
     {
       day: 4,

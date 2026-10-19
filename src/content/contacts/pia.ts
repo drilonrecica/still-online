@@ -3,6 +3,7 @@ import type { ContactContent } from '../types';
 import { piaDayScripts, piaDays } from './pia-days';
 import { piaGameScore } from './game-reactions';
 import { piaNowPlaying2 } from './now-playing';
+import { piaTop8Dropped, piaTop8Readded } from './top8-reactions';
 
 export const pia: ContactContent = {
   contact: {
@@ -354,5 +355,7 @@ export const pia: ContactContent = {
     ...piaDayScripts,
     piaNowPlaying2,
     piaGameScore,
+    piaTop8Dropped,
+    piaTop8Readded,
   ],
 };

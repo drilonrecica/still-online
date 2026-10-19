@@ -544,5 +544,23 @@ export const dex: ContactOverlay = {
         lines: ['jo', 'ich war ma eine nacht lang richtig gut im flippern'],
       },
     },
+    // P4 replaces this with German (Top 8 drama, P0-03).
+    'top8-dropped': {
+      noticed: {
+        lines: [
+          '{name}',
+          'ry says im not in ur top 8 anymore',
+          'wait was i in it',
+          'huh. cool. didnt know',
+        ],
+      },
+    },
+    // P4 replaces this with German.
+    'top8-readded': {
+      back: {
+        lines: ['ry says im back in ur top 8', 'nice. didnt know i left', ''],
+        personalMessages: { 2: 'away. but in a top 8' },
+      },
+    },
   },
 };

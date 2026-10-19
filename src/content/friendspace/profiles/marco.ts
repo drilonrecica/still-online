@@ -26,7 +26,7 @@ export const marcoProfile: ProfileContent = {
     { kind: 'player' },
     { kind: 'contact', id: 'jess' },
     { kind: 'contact', id: 'dex' },
-    { kind: 'extra', name: 'Aunt Rita', seed: 'auntrita' },
+    { kind: 'band', id: 'velvet-lantern' },
     { kind: 'contact', id: 'theo' },
     { kind: 'contact', id: 'kayla' },
     { kind: 'contact', id: 'pia' },
@@ -85,6 +85,7 @@ export const marcoProfile: ProfileContent = {
       day: 5,
       from: 'Aunt Rita',
       text: 'So proud of you!!! Your mother cried!!! I counted 11!!!',
+      graphic: 'glitterheart',
     },
     {
       day: 5,

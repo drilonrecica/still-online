@@ -3,6 +3,7 @@ import type { ContactContent } from '../types';
 import { marcoDayScripts, marcoDays } from './marco-days';
 import { marcoGameScore } from './game-reactions';
 import { marcoNowPlaying2 } from './now-playing';
+import { marcoTop8Dropped, marcoTop8Readded } from './top8-reactions';
 
 export const marco: ContactContent = {
   contact: {
@@ -403,5 +404,7 @@ export const marco: ContactContent = {
     ...marcoDayScripts,
     marcoNowPlaying2,
     marcoGameScore,
+    marcoTop8Dropped,
+    marcoTop8Readded,
   ],
 };

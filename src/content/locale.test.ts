@@ -16,6 +16,7 @@ import {
   getSeedFiles,
   getSiteText,
   getTips,
+  getTop8Reactions,
   getTuneMoleResults,
   mergeOverlay,
   overlayFallbacks,
@@ -59,11 +60,19 @@ describe('accessors', () => {
 
   it('v0.4 modules resolve per gender (a boy gets no crush)', () => {
     const chain = (gender: 'girl' | 'boy') =>
-      getBulletins('en', gender).find((b) => b.id === 'd2-lexi-luck-chain')!
-        .body;
-    expect(chain('girl')).toContain('ur crush will IM u');
-    expect(chain('boy')).toContain('kickflip');
-    expect(chain('boy')).not.toContain('crush');
+      getBulletins('en', gender).find(
+        (b) => b.id === 'd3-cometgirl-crush-chain',
+      )!;
+    expect(chain('girl').body).toContain('ur crush will notice u');
+    expect(chain('boy').subject).toContain('HIGH SCORE');
+    expect(chain('boy').body).toContain('high score');
+    for (const b of getBulletins('en', 'boy'))
+      expect(`${b.subject} ${b.body}`).not.toMatch(/crush/i);
+    const pia = (gender: 'girl' | 'boy') =>
+      getTop8Reactions('en', gender).find((r) => r.contactId === 'pia')!
+        .readded;
+    expect(pia('girl')).toContain('good sister');
+    expect(pia('boy')).toContain('good brother');
     expect(getBulletins('de', 'boy').map((b) => b.id)).toEqual(
       getBulletins('en', 'boy').map((b) => b.id),
     );

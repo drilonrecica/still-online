@@ -119,12 +119,14 @@ export const jessProfile: ProfileContent = {
       day: 5,
       from: 'xX_CometGirl_Xx',
       text: 'DU HAST IHN GEFANGEN??? du bist meine HELDIN!!! ich heul grad!!!',
+      graphic: 'glitterheart',
     },
   ],
   commentsOnPlayer: [
     {
       day: 2,
       text: '{name}!!! du bist auf friendspace!!! du bist in meinen top 8. platz 1. logisch :D',
+      graphic: 'thanks',
     },
     {
       day: 3,

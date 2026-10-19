@@ -4,6 +4,7 @@ import type { ContactContent } from '../types';
 import { theoDayScripts, theoDays } from './theo-days';
 import { theoGameScore } from './game-reactions';
 import { theoNowPlaying2 } from './now-playing';
+import { theoTop8Dropped, theoTop8Readded } from './top8-reactions';
 
 export const theo: ContactContent = {
   contact: {
@@ -395,5 +396,7 @@ export const theo: ContactContent = {
     ...theoDayScripts,
     theoNowPlaying2,
     theoGameScore,
+    theoTop8Dropped,
+    theoTop8Readded,
   ],
 };
