@@ -445,13 +445,13 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 | P4-01 | **German: Friendspace + GlitterCodez + mail** — bulletins, bands, Top 8 reaction lines + contact overlays for the new scripts, layouts text, mails; glossary in `docs/localization-de.md`. | P3-G | done | opus | agent | — | fast | — | No placeholder left in these modules; overlays complete (overlay fallback test green); fallback assertions added; German voices per style guide. | §P4-01 |
 | P4-02 | **German: Pixlog Jess, Kayla, Pia** | P3-G | done | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
 | P4-03 | **German: Pixlog Marco, Theo, Dex** | P3-G | done | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
-| P4-G | **P4 gate (German content self-review)** — Gate procedure + German content rubric; 5-day German playthrough of the new sites. | P4-01…P4-03 | in progress | opus | agent | — | e2e | — | verify + e2e pass; no placeholder comments left in `src/content/de`; `docs/review/v04-P4.md`. | §Gate |
+| P4-G | **P4 gate (German content self-review)** — Gate procedure + German content rubric; 5-day German playthrough of the new sites. | P4-01…P4-03 | done | opus | agent | — | e2e | — | verify + e2e pass; no placeholder comments left in `src/content/de`; `docs/review/v04-P4.md`. | §Gate |
 
 ## P5 — Release v0.4
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| P5-01 | **v0.4 e2e** — the flows listed in the spec's Testing section, EN + DE. | P4-G | blocked | sonnet | agent | — | e2e | — | New `tests/e2e/v04-*.spec.ts` pass in the default suite. | §P5-01 |
+| P5-01 | **v0.4 e2e** — the flows listed in the spec's Testing section, EN + DE. | P4-G | in progress | sonnet | agent | — | e2e | — | New `tests/e2e/v04-*.spec.ts` pass in the default suite. | §P5-01 |
 | P5-02 | **Docs + release notes** — player gender + v0.4 in README, CREDITS (new SVGs), architecture docs, `docs/release-notes-v0.4.0.md` (EN + German summary), screenshots. | P5-01 | blocked | sonnet | agent | — | — | — | Docs accurate; notes list user-visible changes; screenshots committed. | §P5-02 |
 | P5-G | **Release-ready gate (self-review)** — Gate procedure; play days 1–3 in English and 4–5 in German across Friendspace, Pixlog and GlitterCodez. **Do not tag, push or release.** | P5-01, P5-02 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v04-P5.md`; bundle sizes reported (German stays lazy); nothing pushed or tagged. | §Gate |
 
