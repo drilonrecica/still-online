@@ -106,6 +106,7 @@ function useThumbStyle(
     wallpaper.kind === 'custom' ? wallpaper.blobKey : null,
   );
   usePaintersReady();
+  useLocale();
   let source: BackgroundSource | null;
   if (wallpaper.kind === 'color') {
     source = { kind: 'color', color: wallpaper.color };

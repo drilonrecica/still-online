@@ -13,7 +13,10 @@ export type PhotoScene =
   | 'selfportrait'
   | 'skatepark'
   | 'lanparty'
-  | 'ramp';
+  | 'ramp'
+  | 'stage'
+  | 'classroom'
+  | 'livingroom';
 
 /** A procedural "digicam photo", drawn by `renderPhoto` from `seed`. */
 /** The player's hair in the `selfportrait` scene (long for a girl, short and spiky for a boy). */

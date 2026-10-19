@@ -1,5 +1,7 @@
-// Renders wallpapers to JPEG data URLs on an offscreen canvas, cached per id and bucketed size.
+// Renders wallpapers to JPEG data URLs on an offscreen canvas, cached per id, locale (the poster
+// has lettering) and bucketed size.
 import { useSyncExternalStore } from 'react';
+import { getLocale } from '@/i18n/t';
 import { mulberry32, seedFrom } from '@/os/random';
 import { getWallpaper } from './registry';
 import type { Painter, WallpaperDef } from './types';
@@ -54,7 +56,8 @@ export function renderWallpaper(
 const cache = new Map<string, string>();
 
 /**
- * A `data:image/jpeg` URL of wallpaper `id` at about `w`×`h` (bucketed). Null for `classic` (CSS),
+ * A `data:image/jpeg` URL of wallpaper `id` at about `w`×`h` (bucketed), in the current locale.
+ * Callers re-render on a language switch (`useLocale`). Null for `classic` (CSS),
  * unknown ids, and where there is no canvas backend (jsdom).
  */
 export function wallpaperUrl(id: string, w: number, h: number): string | null {
@@ -66,7 +69,7 @@ export function wallpaperUrl(id: string, w: number, h: number): string | null {
   }
   const bw = bucketSize(w);
   const bh = bucketSize(h);
-  const key = `${id}@${bw}x${bh}`;
+  const key = `${id}@${getLocale()}@${bw}x${bh}`;
   const hit = cache.get(key);
   if (hit) {
     // Refresh its place in the least-recently-used order.

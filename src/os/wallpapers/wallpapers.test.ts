@@ -13,6 +13,8 @@ import {
   wallpaperUrl,
 } from './render';
 import { backgroundStyle, DESKTOP_COLOR } from './useDesktopBackground';
+import { CONTENT_UNLOCKS } from '@/content/types';
+import { useSettingsStore } from '@/os/store/settings';
 import type { WallpaperDef } from './types';
 
 /** A 2D context that records every call and property write. */
@@ -60,7 +62,7 @@ const PAINTED = WALLPAPERS.filter((w) => w.painted);
 beforeAll(loadPainters);
 
 describe('wallpaper registry', () => {
-  it('has classic plus 9 homages and 2 hidden easter eggs', () => {
+  it('has classic plus 9 homages and 3 hidden unlockables', () => {
     expect(WALLPAPERS.map((w) => w.id)).toEqual([
       'classic',
       'hill',
@@ -74,8 +76,9 @@ describe('wallpaper registry', () => {
       'peaks',
       'ponies',
       'retro',
+      'lantern-poster',
     ]);
-    expect(PAINTED).toHaveLength(11);
+    expect(PAINTED).toHaveLength(12);
     expect(getWallpaper(CLASSIC_WALLPAPER_ID)?.painted).toBeUndefined();
     expect(new Set(WALLPAPERS.map((w) => w.nameKey)).size).toBe(
       WALLPAPERS.length,
@@ -87,6 +90,7 @@ describe('wallpaper registry', () => {
     expect(hidden.map((w) => [w.id, w.unlock])).toEqual([
       ['ponies', 'ponies'],
       ['retro', 'konami'],
+      ['lantern-poster', 'lantern-poster'],
     ]);
     expect(listWallpapers([]).map((w) => w.id)).not.toContain('retro');
     expect(listWallpapers(['konami']).map((w) => w.id)).toContain('retro');
@@ -98,6 +102,10 @@ describe('wallpaper registry', () => {
     expect(resolveWallpaperId('nope', [])).toBe('classic');
     expect(resolveWallpaperId('ponies', [])).toBe('classic');
     expect(resolveWallpaperId('ponies', ['ponies'])).toBe('ponies');
+    expect(resolveWallpaperId('lantern-poster', [])).toBe('classic');
+    expect(resolveWallpaperId('lantern-poster', ['lantern-poster'])).toBe(
+      'lantern-poster',
+    );
   });
 });
 
@@ -128,6 +136,39 @@ describe('renderWallpaper', () => {
       expect.any(Number),
       expect.any(Number),
     ]);
+  });
+});
+
+describe('the lantern poster', () => {
+  const poster = () => {
+    const def = getWallpaper('lantern-poster');
+    if (!def) throw new Error('missing lantern-poster');
+    return def;
+  };
+  /** The single letters the poster hand-letters, joined back into words. */
+  const lettering = (log: unknown[]) =>
+    log
+      .filter(
+        (e): e is [string, string] =>
+          Array.isArray(e) && e[0] === 'fillText' && e[1] !== 'theo k.',
+      )
+      .map((e) => e[1])
+      // Each letter is drawn twice: its marker outline, then the letter.
+      .filter((_, i) => i % 2 === 0)
+      .join('');
+
+  it('is unlocked by content and shows its title and venue', () => {
+    expect(CONTENT_UNLOCKS).toContain('lantern-poster');
+    const text = lettering(draw(poster(), 640, 400));
+    expect(text).toContain('VELVET LANTERN');
+    expect(text).toContain('· LIVE AT THE REC HALL ·');
+  });
+
+  it('letters the venue in German', () => {
+    useSettingsStore.setState({ language: 'de' });
+    expect(lettering(draw(poster(), 640, 400))).toContain(
+      '· LIVE IM JUGENDZENTRUM ·',
+    );
   });
 });
 

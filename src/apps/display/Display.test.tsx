@@ -103,6 +103,25 @@ describe('Display Properties', () => {
     expect(screen.getByRole('option', { name: 'Retro Grid' })).toBeVisible();
   });
 
+  it("lists Theo's poster once unlocked and applies it", async () => {
+    const user = userEvent.setup();
+    open();
+    await user.click(screen.getByRole('tab', { name: 'Desktop' }));
+    expect(
+      screen.queryByRole('option', { name: 'Velvet Lantern Poster' }),
+    ).toBeNull();
+    act(() => useWorldStore.getState().unlock('lantern-poster'));
+    await user.click(
+      screen.getByRole('option', { name: 'Velvet Lantern Poster' }),
+    );
+    await user.click(screen.getByRole('button', { name: 'Apply' }));
+    expect(s().wallpaper).toEqual({ kind: 'builtin', id: 'lantern-poster' });
+    act(() => useSettingsStore.setState({ language: 'de' }));
+    expect(
+      screen.getByRole('option', { name: 'Velvet-Lantern-Plakat' }),
+    ).toBeVisible();
+  });
+
   it('applies a wallpaper, a position and a solid colour', async () => {
     const user = userEvent.setup();
     open();

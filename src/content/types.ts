@@ -86,7 +86,7 @@ export const TRIGGER_PLACEHOLDERS: Readonly<
 };
 
 /** World unlock ids content may grant (`world.unlock`); the lint rejects others. */
-export const CONTENT_UNLOCKS = ['ponies'] as const;
+export const CONTENT_UNLOCKS = ['ponies', 'lantern-poster'] as const;
 
 /** The full-window animations a contact or the player can send (P3-04). */
 export const WINK_IDS = [

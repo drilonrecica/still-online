@@ -172,6 +172,8 @@ export const de: Messages = {
     peaks: 'Kristallgipfel',
     ponies: 'Pony Paradise',
     retro: 'Retro-Raster',
+    lanternPoster: 'Velvet-Lantern-Plakat',
+    lanternPosterVenue: 'LIVE IM JUGENDZENTRUM',
   },
   fs: {
     folders: {

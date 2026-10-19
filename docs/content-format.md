@@ -32,7 +32,7 @@ A **contact line** is `{ text?, delayMs, nudge?, wink?, statusChange?, personalM
 
 1. Wait `delayMs`. It starts when the previous line is delivered, or when the node is entered.
 2. If the line has `text`: show the typing indicator for `min(text.length × 40ms, 2500ms)`, then deliver the message.
-3. Then apply the line's actions in this order: `nudge` (shake + sound + "… just sent you a nudge!"), `wink` (one of `WINK_IDS`: `kiss`, `hamster`, `hearts`, `pickle`, `fireworks`, `snowball`; it plays once over the chat, opening it like a nudge without the shake, + "… sent you a wink: Hamster"), `statusChange`, `personalMessageChange`, `unlock` (grants a world unlock, e.g. `'ponies'` shows the hidden "Pony Paradise" wallpaper; ids are listed in `CONTENT_UNLOCKS`).
+3. Then apply the line's actions in this order: `nudge` (shake + sound + "… just sent you a nudge!"), `wink` (one of `WINK_IDS`: `kiss`, `hamster`, `hearts`, `pickle`, `fireworks`, `snowball`; it plays once over the chat, opening it like a nudge without the shake, + "… sent you a wink: Hamster"), `statusChange`, `personalMessageChange`, `unlock` (grants a world unlock, e.g. `'ponies'` shows the hidden "Pony Paradise" wallpaper and `'lantern-poster'` Theo's "Velvet Lantern Poster"; ids are listed in `CONTENT_UNLOCKS`).
 
 A line without `text` is a pure action and has no typing indicator. `statusChange: 'offline'` signs the contact out. Their triggers stay armed and fire once they sign back in.
 

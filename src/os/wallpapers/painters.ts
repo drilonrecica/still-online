@@ -4,6 +4,7 @@ import { paintOrbit, paintRipple } from './abstract';
 import { paintPonies, paintRetro } from './hidden';
 import { paintAutumn, paintDunes, paintHill, paintStones } from './landscapes';
 import { paintBloom, paintPeaks, paintTulips } from './nature';
+import { paintLanternPoster } from './poster';
 import type { Painter } from './types';
 
 export const PAINTERS: Readonly<Record<string, Painter>> = {
@@ -18,4 +19,5 @@ export const PAINTERS: Readonly<Record<string, Painter>> = {
   peaks: paintPeaks,
   ponies: paintPonies,
   retro: paintRetro,
+  'lantern-poster': paintLanternPoster,
 };

@@ -1,5 +1,6 @@
 // The desktop root's background, from `settings.wallpaper` and `wallpaperPosition`.
 import { type CSSProperties, useEffect, useState } from 'react';
+import { useLocale } from '@/i18n/useT';
 import { useBlobUrl } from '@/os/blobStore';
 import { useSettingsStore } from '@/os/store/settings';
 import type { WallpaperPosition } from '@/os/types';
@@ -61,6 +62,8 @@ export function useDesktopBackground(): CSSProperties | undefined {
   const unlocks = useWorldStore((s) => s.unlocks);
   const { w, h } = useViewportSize();
   usePaintersReady();
+  // The poster wallpaper is lettered, so a language switch repaints it.
+  useLocale();
   const blobUrl = useBlobUrl(
     wallpaper.kind === 'custom' ? wallpaper.blobKey : null,
   );

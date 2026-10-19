@@ -28,6 +28,13 @@ export const WALLPAPERS: readonly WallpaperDef[] = [
     unlock: 'konami',
     painted: true,
   },
+  {
+    id: 'lantern-poster',
+    nameKey: 'wallpapers.lanternPoster',
+    hidden: true,
+    unlock: 'lantern-poster',
+    painted: true,
+  },
 ];
 
 export function getWallpaper(id: string): WallpaperDef | undefined {

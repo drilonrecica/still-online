@@ -174,6 +174,9 @@ export const en = {
     peaks: 'Crystal Peaks',
     ponies: 'Pony Paradise',
     retro: 'Retro Grid',
+    lanternPoster: 'Velvet Lantern Poster',
+    /** Hand-lettered on the poster wallpaper, under the lantern. */
+    lanternPosterVenue: 'LIVE AT THE REC HALL',
   },
   fs: {
     folders: {

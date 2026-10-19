@@ -27,6 +27,9 @@ const SCENES: readonly PhotoScene[] = [
   'skatepark',
   'lanparty',
   'ramp',
+  'stage',
+  'classroom',
+  'livingroom',
 ];
 
 /** The always-present folders, in creation order (parents first). Names come from the catalog. */

@@ -14,6 +14,9 @@ const SCENES: PhotoScene[] = [
   'skatepark',
   'lanparty',
   'ramp',
+  'stage',
+  'classroom',
+  'livingroom',
 ];
 
 /** A canvas whose 2D context records every call and property write. */
@@ -111,6 +114,20 @@ describe('renderPhoto', () => {
       expect(draw({ scene, seed: 1 }).log, scene).not.toEqual(
         draw({ scene, seed: 2 }).log,
       );
+    }
+  });
+
+  it('draws the week-two scenes differently per seed, with a story stamp', () => {
+    for (const scene of ['stage', 'classroom', 'livingroom'] as const) {
+      expect(draw({ scene, seed: 1 }).log, scene).not.toEqual(
+        draw({ scene, seed: 2 }).log,
+      );
+      expect(draw({ scene, seed: 7, day: 10 }).log, scene).toContainEqual([
+        'fillText',
+        "'07 10 17",
+        expect.any(Number),
+        expect.any(Number),
+      ]);
     }
   });
 

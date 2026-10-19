@@ -47,6 +47,11 @@ describe('fs nodes', () => {
       parseNode({ ...node('x', 'docs'), photo: { scene: 'moon', seed: 1 } })
         ?.photo,
     ).toBeUndefined();
+    for (const scene of ['stage', 'classroom', 'livingroom'])
+      expect(
+        parseNode({ ...node('x', 'docs'), photo: { scene, seed: 1 } })?.photo,
+        scene,
+      ).toEqual({ scene, seed: 1 });
     expect(
       parseNode({
         ...node('x', 'docs'),
