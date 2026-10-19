@@ -292,3 +292,8 @@
 - P1-03: `commentsOnPlayer` entries may carry a `graphic` too, so comment graphics show on the player's own wall; samples on Kayla's (thanks, hug) and on Kayla's comment on Jess's wall (glitter heart), EN + DE.
 - P1-03: the mood history records the _new_ mood when it changed on Save (empty moods are skipped, an emoticon-only change counts); the history box shows only once it has an entry.
 - P1-03: the cursor trail fades each node with CSS instead of timers (nodes are capped at 12 and cleared on pointer leave), so nothing game-timed needs `scaleMs`.
+- P2-02: `shoutsFeed(profiles, day)` takes no `locale`; the profiles passed in are already the locale's (and gender's) content, so the result is deterministic per day and locale without an unused parameter.
+- P2-02: feed/visitors wording lives in the catalog under `sites.pixlog.feed`/`sites.pixlog.visitors` (generated chrome, per the P2-06 split rule), while the rest of Pixlog's text stays in `content/sites/pixlog.ts`; album/blog items carry the content title so the line renders in the current language.
+- P2-02: stranger screen names are a `LocaleContent` field (`pixlogStrangers`, English list + German placeholder) so they get parity and lint like other content and P4 can give German screen names; `visitors` takes them as a third argument.
+- P2-02: a friend "visits" on a day they posted anything on Pixlog, including guestbook entries and photo comments they wrote; 1–3 strangers fill up to 8, and everyone is shuffled with the same seeded generator.
+- P2-02: the visitors box shows each visitor's latest visit over days `day…1` (≤ 8) and sits beside the feed on `/` until P2-03 builds `/me`, which reuses it.

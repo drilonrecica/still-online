@@ -47,8 +47,6 @@ export const PIXLOG_TEXT = {
   loginButton: 'einloggen',
   loginHint: 'Dein pixlog wartet auf dich.',
   feedHeading: 'Was deine Freunde machen',
-  feedPlaceholder:
-    'Shouts, neue Alben und Blogeinträge deiner Freunde erscheinen hier bald.',
   tabsLabel: 'Seiten dieses pixlogs',
   tabs: {
     profile: 'Profil',

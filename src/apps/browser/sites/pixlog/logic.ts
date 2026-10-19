@@ -1,4 +1,5 @@
-// Pure helpers for pixlog.example: tab and album lookup, day gating, and author names.
+// Pure helpers for pixlog.example: tab and album lookup, day gating, author names, and the
+// derived shouts feed, visitors and visitor counter (seeded per day, so nothing drifts).
 import { getContacts } from '@/content/locale';
 import type {
   PixlogAlbum,
@@ -8,6 +9,7 @@ import type {
 import type { ContactId } from '@/content/types';
 import type { Gender } from '@/os/types';
 import type { Locale } from '@/i18n/types';
+import { mulberry32, randInt, seedFrom } from '@/os/random';
 import { upToDay } from '../daily';
 import { profileName } from '../friendspace/logic';
 
@@ -87,4 +89,131 @@ export function authorName(
     (c) => c.contact.id === from,
   );
   return isFriend ? profileName(from) : from;
+}
+
+/** One line of the shouts feed. Album and blog lines get their wording from the catalog. */
+export type FeedItem = { day: number; contactId: ContactId } & (
+  | { kind: 'shout'; text: string }
+  | { kind: 'album'; albumId: string; title: string; count: number }
+  | { kind: 'blog'; postId: string; title: string }
+);
+
+/**
+ * Friends' shouts plus "added N photos" and "new blog post" lines for content out by `day`,
+ * newest day first; within a day, friends in content order (shouts, then albums, then posts).
+ */
+export function shoutsFeed(
+  profiles: readonly PixlogProfile[],
+  day: number,
+): FeedItem[] {
+  const items: FeedItem[] = profiles.flatMap((p) => {
+    const contactId = p.contactId;
+    return [
+      ...p.shouts.map((s): FeedItem => ({ ...s, contactId, kind: 'shout' })),
+      ...p.albums.map((a): FeedItem => ({
+        day: a.day,
+        contactId,
+        kind: 'album',
+        albumId: a.id,
+        title: a.title,
+        count: a.photos.length,
+      })),
+      ...p.blog.map((b): FeedItem => ({
+        day: b.day,
+        contactId,
+        kind: 'blog',
+        postId: b.id,
+        title: b.title,
+      })),
+    ];
+  });
+  // Array.prototype.sort is stable, so content order survives within a day.
+  return items.filter((i) => i.day <= day).sort((a, b) => b.day - a.day);
+}
+
+export type Visitor =
+  { kind: 'friend'; contactId: ContactId } | { kind: 'stranger'; name: string };
+
+export const MAX_VISITORS = 8;
+
+/** True when the friend posted, shouted or wrote anything on Pixlog on `day`. */
+function activeOn(
+  profiles: readonly PixlogProfile[],
+  id: ContactId,
+  day: number,
+): boolean {
+  const own = profiles.find((p) => p.contactId === id);
+  const ownItems = own ? [...own.shouts, ...own.albums, ...own.blog] : [];
+  const written = profiles.flatMap((p) => [
+    ...p.guestbook,
+    ...p.albums.flatMap((a) => a.photos.flatMap((ph) => ph.comments)),
+  ]);
+  return (
+    ownItems.some((i) => i.day === day) ||
+    written.some((w) => w.from === id && w.day === day)
+  );
+}
+
+/**
+ * Who visited the player's page on `day` (at most 8): every friend active on Pixlog that day plus
+ * one to three strangers, in a seeded order. Same profiles and day → same list.
+ */
+export function visitors(
+  profiles: readonly PixlogProfile[],
+  day: number,
+  strangers: readonly string[],
+): Visitor[] {
+  const rand = mulberry32(seedFrom('pixlog:visitors:' + day));
+  const friends: Visitor[] = profiles
+    .filter((p) => activeOn(profiles, p.contactId, day))
+    .map((p) => ({ kind: 'friend', contactId: p.contactId }));
+  const pool = [...strangers];
+  const room = Math.max(0, MAX_VISITORS - friends.length);
+  const picked: Visitor[] = [];
+  for (
+    let n = randInt(rand, 1, 3);
+    n > 0 && pool.length && picked.length < room;
+    n--
+  )
+    picked.push({
+      kind: 'stranger',
+      name: pool.splice(randInt(rand, 0, pool.length - 1), 1)[0]!,
+    });
+  const all = [...friends.slice(0, MAX_VISITORS), ...picked];
+  // Fisher–Yates with the same generator: friends and strangers mix.
+  for (let i = all.length - 1; i > 0; i--) {
+    const j = randInt(rand, 0, i);
+    [all[i], all[j]] = [all[j]!, all[i]!];
+  }
+  return all;
+}
+
+const visitorKey = (v: Visitor) =>
+  v.kind === 'friend' ? `f:${v.contactId}` : `s:${v.name}`;
+
+/** The visitors box: the latest visit of each visitor, newest day first, at most 8. */
+export function recentVisitors(
+  profiles: readonly PixlogProfile[],
+  day: number,
+  strangers: readonly string[],
+): (Visitor & { day: number })[] {
+  const seen = new Set<string>();
+  const out: (Visitor & { day: number })[] = [];
+  for (let d = day; d >= 1 && out.length < MAX_VISITORS; d--)
+    for (const v of visitors(profiles, d, strangers)) {
+      if (seen.has(visitorKey(v)) || out.length >= MAX_VISITORS) continue;
+      seen.add(visitorKey(v));
+      out.push({ ...v, day: d });
+    }
+  return out;
+}
+
+const VISITOR_BASE = 23;
+
+/** The page's visitor counter on `day`: a seeded 3–14 more each day, so it only ever grows. */
+export function visitorCount(day: number): number {
+  let count = VISITOR_BASE;
+  for (let d = 1; d <= day; d++)
+    count += randInt(mulberry32(seedFrom('pixlog:visitorCount:' + d)), 3, 14);
+  return count;
 }

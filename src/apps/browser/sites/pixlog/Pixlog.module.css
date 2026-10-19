@@ -282,3 +282,60 @@
   text-align: center;
   border-top: 1px solid #ddd;
 }
+
+/* Home: the feed beside the visitors box; stacked when the window is narrow. */
+.columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+}
+.columns > :first-child {
+  flex: 2 1 320px;
+  min-width: 0;
+}
+.columns > :last-child {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+.feed {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.feedItem {
+  display: flex;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid #ddd;
+}
+.feedItem:first-child {
+  border-top: 0;
+}
+.feedItem p {
+  margin: 2px 0;
+  overflow-wrap: anywhere;
+}
+.feedItem svg,
+.visitors svg {
+  display: block;
+  border: 1px solid var(--px-bar);
+  border-radius: 4px;
+}
+.visitors {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.visitors li,
+.visitors li > a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}

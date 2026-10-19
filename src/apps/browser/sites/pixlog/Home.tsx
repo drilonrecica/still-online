@@ -1,8 +1,10 @@
-// pixlog.example `/`: the login splash and the place where the shouts feed goes (P2-02).
+// pixlog.example `/`: the login splash, the shouts feed and who visited the player's page.
 import { PIXLOG_HOST } from '@/content/sites/pixlog';
 import { SiteLink } from '../../SiteLink';
 import { useSiteText } from '../useSiteText';
+import { Feed } from './Feed';
 import { Layout } from './Layout';
+import { VisitorsBox } from './Visitors';
 import styles from './Pixlog.module.css';
 
 export default function Home() {
@@ -19,10 +21,13 @@ export default function Home() {
           <span>{T.loginHint}</span>
         </p>
       </section>
-      <section className={styles.box} aria-label={T.feedHeading}>
-        <h2>{T.feedHeading}</h2>
-        <p>{T.feedPlaceholder}</p>
-      </section>
+      <div className={styles.columns}>
+        <section className={styles.box} aria-label={T.feedHeading}>
+          <h2>{T.feedHeading}</h2>
+          <Feed />
+        </section>
+        <VisitorsBox />
+      </div>
     </Layout>
   );
 }

@@ -19,7 +19,7 @@ import { autoReplies } from './mail/autoReplies';
 import type { AutoReply, MailContent } from './mail/types';
 import { PROFILES } from './friendspace/profiles';
 import type { ProfileContent } from './friendspace/profiles/types';
-import { PIXLOG_PROFILES } from './pixlog';
+import { PIXLOG_PROFILES, STRANGERS } from './pixlog';
 import { SURVEYS } from './pixlog/surveys';
 import type { PixlogProfile, Survey } from './pixlog/types';
 import * as enAbout from './sites/about';
@@ -78,6 +78,8 @@ export interface LocaleContent {
   top8Reactions: readonly Top8Reaction[];
   /** Pixlog profiles, one per friend. */
   pixlog: readonly PixlogProfile[];
+  /** Screen names of strangers in the Pixlog visitors box. */
+  pixlogStrangers: readonly string[];
   surveys: readonly Survey[];
   /** GlitterCodez gallery layouts. */
   layouts: readonly LayoutDef[];
@@ -101,6 +103,7 @@ const EN: LocaleContent = {
   bands: BANDS,
   top8Reactions: TOP8_REACTIONS,
   pixlog: PIXLOG_PROFILES,
+  pixlogStrangers: STRANGERS,
   surveys: SURVEYS,
   layouts: enGlitter.LAYOUTS,
 };
@@ -143,6 +146,8 @@ export const getTop8Reactions = (locale: Locale, gender: Gender | null) =>
   contentFor(locale, gender).top8Reactions;
 export const getPixlogProfiles = (locale: Locale, gender: Gender | null) =>
   contentFor(locale, gender).pixlog;
+export const getPixlogStrangers = (locale: Locale, gender: Gender | null) =>
+  contentFor(locale, gender).pixlogStrangers;
 export const getSurveys = (locale: Locale, gender: Gender | null) =>
   contentFor(locale, gender).surveys;
 export const getLayouts = (locale: Locale, gender: Gender | null) =>

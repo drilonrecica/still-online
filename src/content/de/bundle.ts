@@ -24,7 +24,7 @@ import { BANDS } from './friendspace/bands';
 import { BULLETINS } from './friendspace/bulletins';
 import { TOP8_REACTIONS } from './friendspace/top8Reactions';
 import * as mail from './mail';
-import { PIXLOG_PROFILES } from './pixlog';
+import { PIXLOG_PROFILES, STRANGERS } from './pixlog';
 import { SURVEYS } from './pixlog/surveys';
 import * as profiles from './friendspace/profiles';
 import * as about from './sites/about';
@@ -74,6 +74,7 @@ export const content: LocaleContent = {
   bands: BANDS,
   top8Reactions: TOP8_REACTIONS,
   pixlog: PIXLOG_PROFILES,
+  pixlogStrangers: STRANGERS,
   surveys: SURVEYS,
   layouts: glitter.LAYOUTS,
 };

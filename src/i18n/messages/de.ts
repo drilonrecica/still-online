@@ -1349,6 +1349,23 @@ export const de: Messages = {
         cancel: 'Abbrechen',
       },
     },
+    pixlog: {
+      feed: {
+        empty:
+          'Noch nichts Neues von deinen Freunden. Schau später nochmal vorbei!',
+        shout: '{name} ruft:',
+        album: (p: { name: string; n: number; title: string }) =>
+          `${p.name} hat ${p.n === 1 ? '1 Foto' : `${p.n} Fotos`} zu „${p.title}“ hinzugefügt`,
+        blog: '{name} hat einen neuen Blogeintrag geschrieben: „{title}“',
+        picture: 'Bild von {name}',
+      },
+      visitors: {
+        title: 'Wer war auf meinem Profil',
+        empty: 'Noch keine Besucher.',
+        picture: 'Bild von {name}',
+        count: 'bisher {n} Besucher',
+      },
+    },
     tinfoilcomets: {
       nav: {
         label: 'Website',

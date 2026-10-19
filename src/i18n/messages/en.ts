@@ -1341,6 +1341,22 @@ export const en = {
         cancel: 'Cancel',
       },
     },
+    pixlog: {
+      feed: {
+        empty: 'Nothing new from your friends yet. Check back later!',
+        shout: '{name} shouts:',
+        album: (p: { name: string; n: number; title: string }) =>
+          `${p.name} added ${p.n === 1 ? '1 photo' : `${p.n} photos`} to “${p.title}”`,
+        blog: '{name} wrote a new blog post: “{title}”',
+        picture: "{name}'s picture",
+      },
+      visitors: {
+        title: 'Who visited my profile',
+        empty: 'No visitors yet.',
+        picture: "{name}'s picture",
+        count: '{n} visitors so far',
+      },
+    },
     tinfoilcomets: {
       nav: {
         label: 'Site',

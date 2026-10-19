@@ -73,6 +73,7 @@ describe('full German modules', () => {
     'bands',
     'top8Reactions',
     'pixlog',
+    'pixlogStrangers',
     'surveys',
     'layouts',
   ] as const;

@@ -116,7 +116,7 @@ describe('pixlog.example', () => {
     expect(resolve(`http://${PIXLOG_HOST}/nobody`)?.key).toBe('/*');
   });
 
-  it('shows the login splash with a log in link and the feed placeholder', async () => {
+  it('shows the login splash with a log in link and the feed', async () => {
     open('/');
     await finishLoad();
     expect(
