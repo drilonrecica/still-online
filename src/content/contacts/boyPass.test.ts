@@ -206,6 +206,74 @@ describe('Kayla for a boy', () => {
   });
 });
 
+describe('Jess and Kayla in week two (W1-01) for a boy', () => {
+  it('Jess: battle scar, flames, pasta, and (Y) instead of (L)', () => {
+    expect(node('en', 'boy', 'jess', 'day6', 'bruise').choices[1]).toBe(
+      'dude. battle scar',
+    );
+    expect(said('en', 'boy', 'jess', 'day7', 'extra')).toContain(
+      '...ok ONE flame. a SMALL one',
+    );
+    expect(node('en', 'boy', 'jess', 'day8', 'sold').choices[0]).toBe(
+      'the comets will come back. bands always come back',
+    );
+    expect(node('en', 'boy', 'jess', 'day9', 'robbed').lines[0]).toBe(
+      'ur not allowed near my glitter. u said FLAMES',
+    );
+    expect(node('en', 'boy', 'jess', 'day10', 'best').lines[2]).toBe(
+      'best week EVER (Y)',
+    );
+    for (const [script, n] of [
+      ['day6', 'wall'],
+      ['day6', 'museum'],
+      ['day7', 'done'],
+      ['day10', 'best'],
+    ] as const)
+      expect(said('en', 'boy', 'jess', script, n)).not.toContain('(L)');
+    const pm = getContacts('en', 'boy').find((c) => c.contact.id === 'jess')
+      ?.contact.days?.[9]?.personalMessage;
+    expect(pm).toBe('2ND PLACE!!!!! signed setlist (Y)');
+    // The girl's side is untouched.
+    expect(node('en', 'girl', 'jess', 'day6', 'bruise').choices[1]).toBe(
+      'frame it!!',
+    );
+    expect(node('en', 'girl', 'jess', 'day10', 'best').lines[2]).toBe(
+      'best week EVER (L)',
+    );
+  });
+
+  it('Kayla: the guy answers on bangs and the slogan; no hearts at him', () => {
+    expect(node('en', 'boy', 'kayla', 'day6', 'pic').choices[0]).toBe(
+      'they look good. i guess',
+    );
+    expect(node('en', 'boy', 'kayla', 'day6', 'honest').lines[0]).toBe(
+      'u r such a GUY. but thx',
+    );
+    expect(node('en', 'boy', 'kayla', 'day8', 'slogan').choices[1]).toBe(
+      'the loaf one. every guy votes 4 that',
+    );
+    expect(node('en', 'boy', 'kayla', 'day8', 'b').lines[0]).toBe(
+      'ugh. ur right. its the loaf',
+    );
+    expect(said('en', 'boy', 'kayla', 'day7', 'posters')).toContain(
+      'tell the guys',
+    );
+    expect(said('en', 'boy', 'kayla', 'day10', 'friends')).not.toContain('<3');
+    // His options never mention glitter or cute.
+    for (const [script, n] of [
+      ['day6', 'pic'],
+      ['day8', 'slogan'],
+      ['day8', 'a'],
+    ] as const) {
+      const { choices, labels } = node('en', 'boy', 'kayla', script, n);
+      expect([...choices, ...labels].join(' ')).not.toMatch(/glitter|cute/i);
+    }
+    expect(node('en', 'girl', 'kayla', 'day8', 'a').choices[0]).toBe(
+      'glitter on every K!',
+    );
+  });
+});
+
 describe('Pia for a boy', () => {
   it('he is the annoyed big brother who still helps; her lines stay pony-mad', () => {
     expect(node('en', 'boy', 'pia', 'opening', 'quiz').choices).toEqual([

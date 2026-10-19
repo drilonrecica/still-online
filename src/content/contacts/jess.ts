@@ -2,6 +2,7 @@
 import { g } from '../gender';
 import type { ContactContent } from '../types';
 import { jessDayScripts, jessDays } from './jess-days';
+import { jessGirlThreads } from './jess-girl';
 import { jessGameScore } from './game-reactions';
 import { jessNowPlaying2 } from './now-playing';
 import { jessTop8Dropped, jessTop8Readded } from './top8-reactions';
@@ -513,6 +514,7 @@ export const jess: ContactContent = {
       },
     },
     ...jessDayScripts,
+    ...jessGirlThreads,
     jessNowPlaying2,
     jessGameScore,
     jessTop8Dropped,

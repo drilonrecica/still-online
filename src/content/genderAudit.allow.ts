@@ -45,6 +45,11 @@ export const GENDER_AUDIT_ALLOW: readonly AllowEntry[] = [
   { where: 'en/contacts/jess/day3/mirror/lines[5]/personalMessageChange', match: '(L)', reason: 'friend-self-talk' },
   { where: 'en/contacts/jess/day3/mirror/lines[5]/personalMessageChange', match: 'outfit', reason: 'friend-self-talk' },
   { where: 'en/contacts/jess/day4/list/lines[2]', match: 'outfit', reason: 'friend-self-talk' },
+  // Week two (W1-01): her contest collage and her glitter.
+  { where: 'en/contacts/jess/day7/soon/lines[1]', match: 'glitter', reason: 'friend-self-talk' },
+  { where: 'en/contacts/jess/day7/done/lines[1]', match: 'glitter', reason: 'friend-self-talk' },
+  { where: 'en/contacts/jess/day7/done/lines[2]/personalMessageChange', match: 'glitter', reason: 'friend-self-talk' },
+  { where: 'en/contacts/jess/day9/robbed/lines[0]', match: 'glitter', reason: 'friend-self-talk' },
   { where: 'en/contacts/kayla/displayName', match: '<3', reason: 'friend-self-talk' },
   { where: 'en/contacts/kayla/opening/side/lines[2]/personalMessageChange', match: '(L)', reason: 'friend-self-talk' },
   { where: 'en/contacts/kayla/nowPlaying/life/lines[1]/personalMessageChange', match: '<3', reason: 'friend-self-talk' },
@@ -156,6 +161,11 @@ export const GENDER_AUDIT_ALLOW: readonly AllowEntry[] = [
   { where: 'en/pixlog/kayla/blog/kayla-plot-twist/body', match: 'sleepover', reason: 'story-fact' },
   { where: 'en/pixlog/kayla/shouts[6]/text', match: 'sleepover', reason: 'story-fact' },
   { where: 'de/contacts/jess/day2/cat/lines[3]', match: 'Glitzer', reason: 'story-fact' },
+  // Week two (W1-01): English placeholders until W3 writes the German.
+  { where: 'de/contacts/jess/day7/soon/lines[1]', match: 'glitter', reason: 'friend-self-talk' },
+  { where: 'de/contacts/jess/day7/done/lines[1]', match: 'glitter', reason: 'friend-self-talk' },
+  { where: 'de/contacts/jess/day7/done/lines[2]/personalMessageChange', match: 'glitter', reason: 'friend-self-talk' },
+  { where: 'de/contacts/jess/day9/robbed/lines[0]', match: 'glitter', reason: 'friend-self-talk' },
   { where: 'de/contacts/kayla/days/5/personalMessage', match: 'Übernachtungsparty', reason: 'story-fact' },
   { where: 'de/contacts/kayla/followup2/omg/lines[2]', match: 'süß', reason: 'story-fact' },
   { where: 'de/contacts/kayla/followup2/sarcastic/lines[1]', match: 'süß', reason: 'story-fact' },

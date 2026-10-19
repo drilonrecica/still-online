@@ -4,7 +4,7 @@ import { TOP8_REACTIONS } from '../friendspace/top8Reactions';
 import { lintContact, lintContactText, lintScriptGraph } from '../lint';
 import { getContacts } from '../locale';
 import { PLAYLIST } from '../playlist';
-import { contentDays } from '../storyDays';
+import { contentDays, STORY_DAYS } from '../storyDays';
 import type { ContactContent, Script } from '../types';
 import { contacts } from './index';
 
@@ -57,32 +57,62 @@ describe('content lint: shipped contacts', () => {
 
   // Friends with a script on every written day after day 1 (§P2-02).
   const storyFriends = ['jess', 'kayla', 'dex', 'theo', 'marco', 'pia'];
+  /** Each of `days` has a day script (≥ 4 nodes, a real branch) and a new personal message. */
+  const expectDayScripts = (
+    { contact, scripts }: ContactContent,
+    days: readonly number[],
+  ) => {
+    const messages = [contact.personalMessage];
+    for (const day of days) {
+      const script = scripts.find(
+        (s) => s.trigger.type === 'onDay' && s.trigger.day === day,
+      );
+      expect(script, `day ${day} script`).toBeDefined();
+      const nodes = Object.values(script?.nodes ?? {});
+      expect(nodes.length).toBeGreaterThanOrEqual(4);
+      expect(
+        nodes.some(
+          (n) =>
+            'choices' in n && new Set(n.choices.map((c) => c.next)).size > 1,
+        ),
+      ).toBe(true);
+      const pm = contact.days?.[day]?.personalMessage;
+      expect(pm, `day ${day} personal message`).toBeTruthy();
+      messages.push(pm ?? '');
+    }
+    expect(new Set(messages).size).toBe(messages.length);
+  };
   it.each(
     contacts
       .filter((c) => storyFriends.includes(c.contact.id))
       .map((c) => [c.contact.id, c] as const),
   )(
     '%s has a day script (≥ 4 nodes, a real branch) and a new personal message on each later day',
-    (_id, { contact, scripts }) => {
-      const messages = [contact.personalMessage];
-      for (const day of contentDays().filter((d) => d >= 2)) {
-        const script = scripts.find(
-          (s) => s.trigger.type === 'onDay' && s.trigger.day === day,
-        );
-        expect(script, `day ${day} script`).toBeDefined();
-        const nodes = Object.values(script?.nodes ?? {});
-        expect(nodes.length).toBeGreaterThanOrEqual(4);
-        expect(
-          nodes.some(
-            (n) =>
-              'choices' in n && new Set(n.choices.map((c) => c.next)).size > 1,
-          ),
-        ).toBe(true);
-        const pm = contact.days?.[day]?.personalMessage;
-        expect(pm, `day ${day} personal message`).toBeTruthy();
-        messages.push(pm ?? '');
-      }
-      expect(new Set(messages).size).toBe(messages.length);
+    (_id, content) =>
+      expectDayScripts(
+        content,
+        contentDays().filter((d) => d >= 2),
+      ),
+  );
+
+  // Week two per finished friend (W1): every day after the written ones up to the last story
+  // day. W1-03 raises `contentDays()` for contacts and folds this into the test above.
+  const weekTwoFriends = ['jess', 'kayla'];
+  const weekTwo = (): number[] => {
+    const days: number[] = [];
+    for (let d = Math.max(...contentDays()) + 1; d <= STORY_DAYS.last; d++)
+      days.push(d);
+    return days;
+  };
+  it.each(weekTwoFriends)(
+    '%s has week-two day scripts and new personal messages (days 1–10)',
+    (id) => {
+      const content = contacts.find((c) => c.contact.id === id)!;
+      expect(weekTwo().length).toBeGreaterThan(0);
+      expectDayScripts(content, [
+        ...contentDays().filter((d) => d >= 2),
+        ...weekTwo(),
+      ]);
     },
   );
 

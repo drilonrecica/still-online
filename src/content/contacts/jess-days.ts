@@ -1,6 +1,8 @@
 // Jess, days 2–5: concert week. Sign panic, outfit crisis, the night before, the front-row recap.
+// Days 6–10 are in `jess-week2.ts`; both are exported from here.
 import { g } from '../gender';
 import type { Contact, Script } from '../types';
+import { jessWeek2Days, jessWeek2Scripts } from './jess-week2';
 
 export const jessDays: Contact['days'] = {
   2: {
@@ -13,6 +15,7 @@ export const jessDays: Contact['days'] = {
     status: 'online',
     personalMessage: 'FRONT ROW!!!!! u had to be there (L)',
   },
+  ...jessWeek2Days,
 };
 
 export const jessDayScripts: readonly Script[] = [
@@ -438,4 +441,5 @@ export const jessDayScripts: readonly Script[] = [
       },
     },
   },
+  ...jessWeek2Scripts,
 ];

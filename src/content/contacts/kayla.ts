@@ -2,6 +2,7 @@
 import { g } from '../gender';
 import type { ContactContent } from '../types';
 import { kaylaDayScripts, kaylaDays } from './kayla-days';
+import { kaylaGirlThreads } from './kayla-girl';
 import { kaylaGameScore } from './game-reactions';
 import { kaylaNowPlaying2 } from './now-playing';
 import { kaylaTop8Dropped, kaylaTop8Readded } from './top8-reactions';
@@ -436,6 +437,7 @@ export const kayla: ContactContent = {
       },
     },
     ...kaylaDayScripts,
+    ...kaylaGirlThreads,
     kaylaNowPlaying2,
     kaylaGameScore,
     kaylaTop8Dropped,

@@ -1,6 +1,8 @@
 // Kayla, days 2–5: the Brianna saga. The hoodie, the sleepover, the twist, an awkward peace.
+// Days 6–10 are in `kayla-week2.ts`; both are exported from here.
 import { g } from '../gender';
 import type { Contact, Script } from '../types';
+import { kaylaWeek2Days, kaylaWeek2Scripts } from './kayla-week2';
 
 export const kaylaDays: Contact['days'] = {
   2: { status: 'online', personalMessage: '~*some ppl r SO original*~ (not)' },
@@ -10,6 +12,7 @@ export const kaylaDays: Contact['days'] = {
     personalMessage: '~*waiting 4 the universe to explain itself*~',
   },
   5: { status: 'online', personalMessage: '~*sleepover survivor*~' },
+  ...kaylaWeek2Days,
 };
 
 export const kaylaDayScripts: readonly Script[] = [
@@ -475,4 +478,5 @@ export const kaylaDayScripts: readonly Script[] = [
       },
     },
   },
+  ...kaylaWeek2Scripts,
 ];

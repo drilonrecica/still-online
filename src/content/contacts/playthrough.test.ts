@@ -264,6 +264,8 @@ describe('G-04: chats about the player follow the gender', () => {
     for (const locale of LOCALES) {
       for (const content of rawContentFor(locale).contacts) {
         for (const script of content.scripts) {
+          // Girl-only threads never run for him (checked in the M2 gate above).
+          if (script.forGender === 'girl') continue;
           const said = playedAll(locale, 'boy', content.contact.id, script.id);
           expect(
             said,
@@ -321,6 +323,36 @@ describe('G2-03: boy-only threads', () => {
         const t = content?.scripts.find((s) => s.id === scriptId)?.trigger;
         expect(t?.type === 'afterScript' && t.scriptId, scriptId).toBe(after);
       }
+    }
+  });
+});
+
+describe('W1: girl-only threads', () => {
+  const GIRL_THREADS = [
+    ['jess', 'lateNight', 'day8', 'theo says sorry to u in a CUTE way'],
+    ['jess', 'signWorkshop', 'day9', 'its a SERIES now'],
+    ['kayla', 'outfitPick', 'day9', 'destiny: sealed'],
+  ] as const;
+
+  it.each(GIRL_THREADS)(
+    '%s/%s is girl-only, follows %s and says „%s“',
+    (id, scriptId, after, words) => {
+      const script = contacts
+        .find((c) => c.contact.id === id)
+        ?.scripts.find((s) => s.id === scriptId);
+      expect(script?.forGender).toBe('girl');
+      const t = script?.trigger;
+      expect(t?.type === 'afterScript' && t.scriptId).toBe(after);
+      expect(playedAll('en', 'girl', id, scriptId)).toContain(words);
+    },
+  );
+
+  it('every late-night branch ends on „ok ok. nite (L)“', () => {
+    const jess = contacts.find((c) => c.contact.id === 'jess')!;
+    const script = jess.scripts.find((s) => s.id === 'lateNight')!;
+    for (const picks of paths(script)) {
+      const { t, id } = playPath(jess, script, picks, undefined, 'girl');
+      expect(t.said(id).at(-1), picks.join(',')).toBe('< ok ok. nite (L)');
     }
   });
 });

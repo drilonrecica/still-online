@@ -185,6 +185,14 @@ export function contentStrings(
     string,
     unknown
   >;
+  // A `forGender` thread of the other gender never runs for this player, so it isn't read.
+  const contacts = data.contacts as {
+    scripts: { forGender?: Gender }[];
+  }[];
+  for (const c of contacts)
+    c.scripts = c.scripts.filter(
+      (s) => s.forGender === undefined || s.forGender === gender,
+    );
   const raw = new Map<string, string>();
   for (const [key, value] of Object.entries(data)) collect(value, key, raw);
   return new Map([...raw].map(([p, s]) => [tidy(p), s]));
