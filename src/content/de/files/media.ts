@@ -28,7 +28,7 @@ export const PICTURES: Readonly<Record<string, SeedText>> = {
     name: g('kaylas_party_VERWACKELT.jpg', 'lan_party_bei_marco.jpg'),
     caption: g(
       'kaylas party. alle haben sich bewegt. jetzt is es kunst',
-      'lan-party bei marco. galaxy raiders 3 bis 4 uhr früh. hauptsächlich chips',
+      'lan-party bei marco. galaxy raiders 3 bis mama angerufen hat. hauptsächlich chips',
     ),
   },
   'beach-holiday': {

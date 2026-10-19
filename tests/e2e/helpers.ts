@@ -161,3 +161,71 @@ export async function openFromStart(page: Page, name: string) {
   }
   await item.click();
 }
+
+/**
+ * Plays a contact's chat until its log shows `until`: each time replies appear it sends the first
+ * one whose full text (the button's `title`) matches a `prefer` pattern, else the first. Reopens
+ * the chat from the contact list when it is closed. English UI; Messenger must be signed in.
+ */
+export async function playChat(
+  page: Page,
+  contactId: string,
+  displayName: string,
+  until: RegExp,
+  prefer: readonly RegExp[] = [],
+): Promise<Locator> {
+  const chat = page.getByRole('region', {
+    name: `${displayName} - Conversation`,
+    exact: true,
+  });
+  const log = chat.getByRole('log');
+  const replies = chat
+    .getByRole('group', { name: 'Replies' })
+    .getByRole('button');
+  for (let i = 0; i < 40; i++) {
+    if (await log.getByText(until).count()) break;
+    if ((await chat.count()) === 0) {
+      await page
+        .getByRole('group', { name: 'Contacts' })
+        .locator(`[data-contact-id="${contactId}"]`)
+        .dispatchEvent('dblclick');
+      await expect(chat).toBeVisible();
+    }
+    const ready = await replies
+      .first()
+      .waitFor({ timeout: 3000 })
+      .then(
+        () => true,
+        () => false,
+      );
+    if (!ready) continue;
+    let pick = replies.first();
+    const titles = await Promise.all(
+      (await replies.all()).map((b) => b.getAttribute('title')),
+    );
+    const hit = titles.findIndex((t) => prefer.some((p) => p.test(t ?? '')));
+    if (hit >= 0) pick = replies.nth(hit);
+    // Dispatched directly: a nudging chat window is never "stable" for a normal click.
+    await pick.dispatchEvent('click');
+    await chat
+      .getByRole('button', { name: 'Send', exact: true })
+      .dispatchEvent('click');
+    await page.waitForTimeout(300);
+  }
+  await expect(log.getByText(until).first()).toBeVisible({ timeout: 15_000 });
+  return chat;
+}
+
+/** Turn Off Computer, boot into `day` and log on again as `name` (English UI). */
+export async function nextDay(page: Page, day: number, name = 'Ada') {
+  await page.locator('[data-start-button]').click();
+  await page
+    .getByRole('menuitem', { name: 'Turn Off Computer' })
+    .dispatchEvent('click');
+  await expect(page.getByTestId('off-screen')).toBeVisible({ timeout: 5000 });
+  await page.getByTestId('off-screen').click();
+  await expect(page.getByTestId('boot-day')).toHaveText(`Day ${day}`);
+  await expect(page.getByTestId('login-screen')).toBeVisible({ timeout: 5000 });
+  await page.getByRole('button', { name: `Log on as ${name}` }).click();
+  await expect(page.getByTestId('desktop')).toBeVisible();
+}

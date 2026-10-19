@@ -327,7 +327,8 @@ describe('seeding the fs store', () => {
       photo: {
         scene: 'lanparty',
         seed: 1337,
-        caption: "marco's lan party. galaxy raiders 3 til 4am. mostly chips",
+        caption:
+          "marco's lan party. galaxy raiders 3 til mom called. mostly chips",
       },
     });
     // The untouched slots next to it swapped.

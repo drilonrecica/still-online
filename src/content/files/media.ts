@@ -83,7 +83,8 @@ export const PICTURES: readonly FsNode[] = [
       {
         scene: 'lanparty',
         seed: 1337,
-        caption: "marco's lan party. galaxy raiders 3 til 4am. mostly chips",
+        caption:
+          "marco's lan party. galaxy raiders 3 til mom called. mostly chips",
       },
     ),
     at(2007, 8, 25, 21, 45),
