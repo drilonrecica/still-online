@@ -1,12 +1,15 @@
 // Pure helpers for pixlog.example: tab and album lookup, day gating, author names, and the
-// derived shouts feed, visitors and visitor counter (seeded per day, so nothing drifts).
+// derived shouts feed, visitors and visitor counter (seeded per day, so nothing drifts), kudos
+// counts and the player's album.
 import { getContacts } from '@/content/locale';
 import type {
   PixlogAlbum,
   PixlogAuthor,
   PixlogProfile,
 } from '@/content/pixlog/types';
+import type { PixlogState } from '@/content/sites/types';
 import type { ContactId } from '@/content/types';
+import type { FsNode } from '@/os/fs/types';
 import type { Gender } from '@/os/types';
 import type { Locale } from '@/i18n/types';
 import { mulberry32, randInt, seedFrom } from '@/os/random';
@@ -216,4 +219,52 @@ export function visitorCount(day: number): number {
   for (let d = 1; d <= day; d++)
     count += randInt(mulberry32(seedFrom('pixlog:visitorCount:' + d)), 3, 14);
   return count;
+}
+
+/** "Kudos received": one per friend per `kudosToPlayer` day that is out by `day`. */
+export function kudosReceived(
+  profiles: readonly PixlogProfile[],
+  day: number,
+): number {
+  return profiles.reduce(
+    (sum, p) => sum + p.kudosToPlayer.filter((d) => d <= day).length,
+    0,
+  );
+}
+
+/**
+ * A friend's kudos total on `day`: a seeded base that grows a little each day (so content never
+ * has to list it) plus the kudos the player gave by then.
+ */
+export function friendKudos(
+  contactId: ContactId,
+  day: number,
+  given: readonly number[],
+): number {
+  let count = randInt(mulberry32(seedFrom('pixlog:kudos:' + contactId)), 8, 30);
+  for (let d = 1; d <= day; d++)
+    count += randInt(
+      mulberry32(seedFrom(`pixlog:kudos:${contactId}:${d}`)),
+      0,
+      3,
+    );
+  return count + given.filter((d) => d <= day).length;
+}
+
+/** An image the player's album can show: a procedural photo or a blob, not in the Recycle Bin. */
+export const isAlbumImage = (node: FsNode | undefined): node is FsNode =>
+  !!node &&
+  node.type === 'image' &&
+  !node.deletedFrom &&
+  (!!node.photo || !!node.blobKey);
+
+/** The player's album entries whose file still exists, with their node; gone files drop out. */
+export function albumPhotos(
+  album: PixlogState['album'],
+  nodes: Readonly<Record<string, FsNode>>,
+): { fsNodeId: string; caption: string; node: FsNode }[] {
+  return album.flatMap((entry) => {
+    const node = nodes[entry.fsNodeId];
+    return isAlbumImage(node) ? [{ ...entry, node }] : [];
+  });
 }

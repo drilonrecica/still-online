@@ -1,10 +1,15 @@
 /* pixlog.example: a white page, an orange header bar and rounded tabs. The `data-skin` on .page
-   sets the bar and tab colours; everything else stays the same in every skin. */
-.page {
+   sets the bar and tab colours; everything else stays the same in every skin. The `/me` skin
+   picker's swatches (`data-swatch`) read the same colours. */
+.page,
+.swatch[data-swatch='orange'] {
   --px-bar: #ff7f00;
   --px-bar-dark: #d96a00;
   --px-tab: #ffe2c2;
   --px-ink: #fff;
+}
+
+.page {
   min-height: 100%;
   box-sizing: border-box;
   color: #222;
@@ -13,31 +18,36 @@
   background: #fff;
 }
 
-.page[data-skin='ocean'] {
+.page[data-skin='ocean'],
+.swatch[data-swatch='ocean'] {
   --px-bar: #1e88e5;
   --px-bar-dark: #1565c0;
   --px-tab: #cfe6fb;
 }
 
-.page[data-skin='bubblegum'] {
+.page[data-skin='bubblegum'],
+.swatch[data-swatch='bubblegum'] {
   --px-bar: #ec4f9a;
   --px-bar-dark: #c2377d;
   --px-tab: #fcd3e6;
 }
 
-.page[data-skin='lime'] {
+.page[data-skin='lime'],
+.swatch[data-swatch='lime'] {
   --px-bar: #5fa800;
   --px-bar-dark: #468000;
   --px-tab: #dcf0b8;
 }
 
-.page[data-skin='night'] {
+.page[data-skin='night'],
+.swatch[data-swatch='night'] {
   --px-bar: #2b2f5c;
   --px-bar-dark: #1a1c3a;
   --px-tab: #cfd2ee;
 }
 
-.page[data-skin='sunset'] {
+.page[data-skin='sunset'],
+.swatch[data-swatch='sunset'] {
   --px-bar: #d8402e;
   --px-bar-dark: #a82c1e;
   --px-tab: #fbd0c8;
@@ -338,4 +348,56 @@
   gap: 2px;
   text-align: center;
   overflow-wrap: anywhere;
+}
+
+/* Kudos on a friend's page. */
+.kudos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* `/me`: the skin swatches, the My Pictures picker and the survey form. */
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.page .swatch {
+  width: 28px;
+  min-width: 0;
+  height: 28px;
+  padding: 0;
+  background: linear-gradient(var(--px-bar) 60%, var(--px-tab) 60%);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #bbb;
+}
+.page .swatch[aria-pressed='true'] {
+  box-shadow: 0 0 0 3px var(--px-bar-dark);
+}
+.picker {
+  margin-top: 8px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+.page .pick {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+  padding: 4px;
+  overflow-wrap: anywhere;
+}
+.question {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 6px 0;
+  font-weight: bold;
 }

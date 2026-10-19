@@ -4,11 +4,13 @@ import { getPixlogProfiles, getSurveys } from '@/content/locale';
 import type { PixlogProfile } from '@/content/pixlog/types';
 import { PIXLOG_HOST } from '@/content/sites/pixlog';
 import type { SitePageProps } from '@/content/sites/types';
+import type { ContactId } from '@/content/types';
 import { useGender } from '@/i18n/settingsText';
 import { interpolate } from '@/i18n/t';
 import { useLocale } from '@/i18n/useT';
 import { PhotoCanvas } from '@/os/fs/FsIcon';
 import { useWorldStore } from '@/os/world';
+import { useWebStore } from '../../store';
 import { SiteLink } from '../../SiteLink';
 import { postedLabel, upToDay } from '../daily';
 import { profileName } from '../friendspace/logic';
@@ -20,6 +22,7 @@ import {
   PIXLOG_TABS,
   albumHref,
   authorName,
+  friendKudos,
   profileAt,
   tabFrom,
   tabHref,
@@ -31,6 +34,25 @@ type Text = ReturnType<typeof useSiteText<typeof PIXLOG_HOST>>['PIXLOG_TEXT'];
 
 const countLabel = (T: Text, n: number) =>
   n === 1 ? T.photosOne : interpolate(T.photosMany, { n });
+
+/** The friend's kudos total and the once-a-day "Give kudos ★" button. */
+function Kudos({ id, day, T }: { id: ContactId; day: number; T: Text }) {
+  const given = useWebStore((s) => s.pixlog?.kudosGiven[id]) ?? NONE;
+  const giveKudos = useWebStore((s) => s.giveKudos);
+  const done = given.includes(day);
+  return (
+    <p className={styles.kudos}>
+      <span>
+        {interpolate(T.kudos.count, { n: friendKudos(id, day, given) })}
+      </span>
+      <button type="button" disabled={done} onClick={() => giveKudos(id, day)}>
+        {done ? T.kudos.given : T.kudos.give}
+      </button>
+    </p>
+  );
+}
+
+const NONE: readonly number[] = [];
 
 function Albums({
   profile,
@@ -108,6 +130,7 @@ export default function Friend({ path, query }: SitePageProps) {
           <p className={styles.meta}>
             {interpolate(T.skinLabel, { skin: T.skins[profile.skin] })}
           </p>
+          <Kudos id={id} day={day} T={T} />
         </div>
       </div>
       <nav className={styles.tabs} aria-label={T.tabsLabel}>

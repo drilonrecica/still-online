@@ -1,5 +1,5 @@
 // pixlog.example: the photo-sharing homage. A page per friend (so Searchly finds them), the album
-// page, and a `/*` catch-all for addresses with nothing behind them.
+// page, the player's `/me`, and a `/*` catch-all for addresses with nothing behind them.
 import { lazy } from 'react';
 import { getPixlogProfiles, getSiteText } from '@/content/locale';
 import { PIXLOG_HOST } from '@/content/sites/pixlog';
@@ -35,6 +35,7 @@ export const PIXLOG_SITE: SiteDefinition = {
   pages: {
     '/': { component: lazy(() => import('./Home')) },
     '/album': { component: lazy(() => import('./Album')) },
+    '/me': { component: lazy(() => import('./Me')) },
     ...Object.fromEntries(
       getPixlogProfiles('en', null).map((p): [string, SitePage] => [
         `/${p.contactId}`,
