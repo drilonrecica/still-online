@@ -15,7 +15,7 @@ export const BANDS: readonly Band[] = [
     hometown: 'die Garage hinter dem Haus von Ziggys Mama',
     bio:
       'wir sind die Tinfoil Comets. wir spielen laute lieder über den weltraum und roboter. danke fürs adden!! ' +
-      'Nova an gesang + keytar (das keytar heißt Gerald), Buzz an gitarre + alufolienhut, Mo am bass, Ziggy am schlagzeug. ' +
+      'Nova am mikro + keytar (das keytar heißt Gerald), Buzz an der gitarre + alufolienhut, Mo am bass, Ziggy am schlagzeug. ' +
       'auf unserer cd is ein roboter. ein fan hat ihn Kevin getauft. na gut. Kevin',
     trackIds: ['voxel-revolution', 'newer-wave'],
     shows: [
@@ -144,7 +144,7 @@ export const BANDS: readonly Band[] = [
       },
       {
         day: 3,
-        text: 'sonntag - die kinderecke in der stadtbücherei. wir sind auch fast leise',
+        text: 'sonntag - die kinderecke in der stadtbücherei. wir sind auch so halbwegs leise',
       },
     ],
     blog: [

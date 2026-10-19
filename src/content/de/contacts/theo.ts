@@ -601,7 +601,7 @@ export const theo: ContactOverlay = {
       },
       notFault: {
         lines: ['oh. okay', 'sorry, dass ich gefragt hab. ich mein… danke', ''],
-        personalMessages: { 2: 'nicht in einer top 8. is ok. sorry' },
+        personalMessages: { 2: 'nicht in einer top 8. ist ok. sorry' },
       },
       space: {
         lines: [
@@ -609,7 +609,7 @@ export const theo: ContactOverlay = {
           'tschuldige, dass ich einen weggenommen hab',
           '',
         ],
-        personalMessages: { 2: 'nicht in einer top 8. is ok. sorry' },
+        personalMessages: { 2: 'nicht in einer top 8. ist ok. sorry' },
       },
     },
     'top8-readded': {

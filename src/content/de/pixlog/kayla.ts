@@ -58,7 +58,7 @@ export const kaylaPixlog: PixlogProfile = {
             {
               day: 3,
               from: 'pia',
-              text: 'deine katze is dein chef. wie ich und keks',
+              text: 'deine katze is deine chefin. wie ich bei keks',
             },
           ],
         },
@@ -133,7 +133,7 @@ export const kaylaPixlog: PixlogProfile = {
             seed: 5224,
             look: 'long',
             caption:
-              '„süßer schlafanzug" (ihre worte. sie hat geschmack. ätzend)',
+              '„süßer schlafanzug“ (ihre worte. sie hat geschmack. ätzend)',
           },
           comments: [
             {
@@ -153,7 +153,7 @@ export const kaylaPixlog: PixlogProfile = {
             {
               day: 5,
               from: 'pia',
-              text: 'is der netter als keks. nich keks sagen',
+              text: 'is der netter als keks. nich keks verraten',
             },
           ],
         },
@@ -172,7 +172,7 @@ export const kaylaPixlog: PixlogProfile = {
             {
               day: 5,
               from: 'theo',
-              text: 'ähm. das is echt schön. tschuldige, ich mein glückwunsch',
+              text: 'ähm. das ist echt schön. tschuldige, ich mein glückwunsch',
             },
           ],
         },
@@ -251,7 +251,7 @@ export const kaylaPixlog: PixlogProfile = {
     { day: 5, text: '~*übernachtungsparty überlebt*~' },
     {
       day: 5,
-      text: 'minz-schoko is jetzt „unser ding". ätzend. aber iwie süß',
+      text: 'minz-schoko is jetzt „unser ding“. ätzend. aber iwie süß',
     },
   ],
   kudosToPlayer: [3, 5],
@@ -265,7 +265,7 @@ export const kaylaPixlog: PixlogProfile = {
     {
       day: 3,
       from: 'theo',
-      text: 'ähm. hi kayla. deine seite is schön. tschuldige falls das komisch is',
+      text: 'ähm. hi kayla. deine seite ist schön. tschuldige, falls das komisch ist',
     },
     {
       day: 4,

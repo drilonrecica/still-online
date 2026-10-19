@@ -64,7 +64,7 @@ export const GLITTERCODEZ_TEXT = {
   },
   howTo:
     'so gehts: auf „Code kopieren!!“ klicken und in dein Friendspace-Feld „Layout-Code“ einfügen. fertig!!',
-  hotHeading: 'heiß für dich!!',
+  hotHeading: 'grad voll angesagt!!',
   moreHeading: 'mehr Layouts',
   copy: 'Code kopieren!!',
   copied: 'Kopiert!! jetzt in dein Profil einfügen',
@@ -140,7 +140,7 @@ const LAYOUT_TEXT: Record<string, Pick<LayoutDef, 'name' | 'blurb'>> = {
   },
   'gamer-green': {
     name: 'Gamer Grün',
-    blurb: 'matrix-style. PWNAGE. dein profil kriegt +50 skill',
+    blurb: 'matrix-look. PWNAGE. dein profil kriegt +50 skill',
   },
   'checkerboard-punk': {
     name: 'Schachbrett-Punk',

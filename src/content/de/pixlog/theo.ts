@@ -1,6 +1,6 @@
 // Theo on Pixlog in German, same structure as `src/content/pixlog/theo`: schüchtern, „ähm", „sorry", „…".
 // Ferienlager-Fotos vom letzten Sommer (Tag 1; Album), der Waldmeister-Wackelpudding (2), der
-// Wackelpudding „hatte einen Tag" (3; passt zu gerissen und fest), 14 Karteikarten (4) und die 2+
+// Wackelpudding „hatte einen harten Tag" (3; passt zu gerissen und fest), 14 Karteikarten (4) und die 2+
 // (5; Album). Partnerin/Partner per `g()`; als Mädchen wird er rot, ein Junge kriegt keinen Schwarm.
 import { g } from '../../gender';
 import type { PixlogProfile } from '../../pixlog/types';
@@ -10,7 +10,7 @@ export const theoPixlog: PixlogProfile = {
   skin: 'ocean',
   about:
     'ähm hi. das ist mein pixlog. ich zeichne meistens frösche. und anderes. aber meistens frösche. ' +
-    'meine mama sagt, ich soll „mehr aus mir rausgehen". also… das bin ich. draußen. ' +
+    'meine mama sagt, ich soll „mehr aus mir rausgehen“. also… das bin ich. draußen. ' +
     'sorry, dass hier noch nicht so viel ist',
   albums: [
     {
@@ -43,7 +43,7 @@ export const theoPixlog: PixlogProfile = {
             scene: 'camp',
             seed: 5502,
             caption:
-              'unsere hütte hieß „ochsenfrosch". hab ich nicht ausgesucht. aber ich fands gut',
+              'unsere hütte hieß „ochsenfrosch“. hab ich nicht ausgesucht. aber ich fands gut',
           },
           comments: [],
         },
@@ -122,7 +122,7 @@ export const theoPixlog: PixlogProfile = {
             {
               day: 5,
               from: 'froschfan_02',
-              text: 'das mitochondrium hat ein GESICHT. bestes ding überhaupt',
+              text: 'das mitochondrium hat ein GESICHT. das beste überhaupt',
             },
             { day: 5, from: 'kayla', text: 'theo die sind SO süß (L)' },
           ],
@@ -168,7 +168,7 @@ export const theoPixlog: PixlogProfile = {
             scene: 'party',
             seed: 5515,
             caption:
-              'herr dalton hat gesagt, der wackelpudding war „einprägsam". ich glaub, das ist gut',
+              'herr dalton hat gesagt, der wackelpudding war „einprägsam“. ich glaub, das ist gut',
           },
           comments: [
             {
@@ -194,7 +194,7 @@ export const theoPixlog: PixlogProfile = {
     {
       id: 'theo-jello-had-a-day',
       day: 3,
-      title: 'der wackelpudding hatte einen tag',
+      title: 'der wackelpudding hatte einen harten tag',
       body:
         'mit dem wackelpudding ist heute viel passiert. ich geh nicht näher drauf ein.\n\n' +
         g(
@@ -218,7 +218,7 @@ export const theoPixlog: PixlogProfile = {
       title: '2+',
       body:
         'herr dalton hat die noten ausgehängt. wir haben ne 2+.\n\n' +
-        'er hat gesagt, die zeichnungen waren die besten in der klasse. ich hab sorry gesagt. er hat gesagt „nicht sorry sein, stolz sein".\n\n' +
+        'er hat gesagt, die zeichnungen waren die besten in der klasse. ich hab sorry gesagt. er hat gesagt „nicht sorry sein, stolz sein“.\n\n' +
         'also. ich bin stolz. sorry. ich meine. ich bin stolz',
     },
   ],
@@ -232,7 +232,7 @@ export const theoPixlog: PixlogProfile = {
       'das auf meinem friendspace. das war bei der seite dabei',
       'käsetoast. meine kleine schwester klaut immer die hälfte',
       'der graue kapuzenpulli. ich hab den gleichen dreimal',
-      '„beim klavier. sorry"',
+      '„beim klavier. sorry“',
       g(
         'meine bio-partnerin. wegen bio. nur wegen bio :$',
         'mein bio-partner. wegen bio. wir sind ein gutes team (Y)',

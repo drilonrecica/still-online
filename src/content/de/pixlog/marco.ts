@@ -42,7 +42,7 @@ export const marcoPixlog: PixlogProfile = {
             scene: 'party',
             seed: 5402,
             caption:
-              'der eimer. derek nennt ihn „eine zweite trommel". es ist ein farbeimer',
+              'der eimer. derek nennt ihn „eine zweite trommel“. es ist ein farbeimer',
           },
           comments: [
             {
@@ -196,7 +196,7 @@ export const marcoPixlog: PixlogProfile = {
       title: 'zum flyer',
       body:
         'der flyer hängt. café, waschsalon, bushaltestelle.\n\n' +
-        'derek hat ihn mit filzstift „verbessert". das ding in der mitte ist eine laterne. ' +
+        'derek hat ihn mit filzstift „verbessert“. das ding in der mitte ist eine laterne. ' +
         'sieht aus wie ein glas suppe. drei leute haben nach der suppe gefragt.\n\n' +
         'es gibt keine suppe. velvet lantern. bean cellar. nur ein abend.',
     },

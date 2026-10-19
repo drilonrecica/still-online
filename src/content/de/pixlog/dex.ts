@@ -10,7 +10,7 @@ export const dexPixlog: PixlogProfile = {
   skin: 'orange',
   about:
     'dex. ich skate. ry hat mir die seite gemacht. kp wie man die farbe ändert. ' +
-    'die fotos sind meistens wischer. is jetzt mein style. wenn ich nich antworte bin ich im skatepark',
+    'die fotos sind meistens wischer. is jetzt mein ding. wenn ich nich antworte bin ich im skatepark',
   albums: [
     {
       id: 'dex-filming',
@@ -223,7 +223,7 @@ export const dexPixlog: PixlogProfile = {
     {
       day: 5,
       text: g(
-        'im abspann is n besonderer dank. das is die schärfste stelle im ganzen video',
+        'im abspann is n besonderer dank. das is die einzige stelle im video die nich verwackelt is',
         'im abspann is n besonderer dank. im nächsten video bist du drin. bring n board mit',
       ),
     },
@@ -253,7 +253,7 @@ export const dexPixlog: PixlogProfile = {
     {
       day: 5,
       from: 'pia',
-      text: 'dex is das video über ponys. sollte es sein. das is meine kritik',
+      text: 'dex is das video über ponys. sollte es nämlich. das is meine kritik',
     },
   ],
 };

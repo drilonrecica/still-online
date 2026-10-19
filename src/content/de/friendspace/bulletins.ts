@@ -28,7 +28,7 @@ export const BULLETINS: readonly Bulletin[] = [
       '6. lieblingslipgloss: der mit erdbeere',
       '7. lieblingslied grad: alles was traurig is',
       '8. lieblingshoodie: der gestreifte. ICH HATTE IHN ZUERST',
-      '9. haustiere: Princess (meine katze). sie is ne prinzessin',
+      '9. haustiere: Prinzessin (meine katze). der name is programm',
       '10. wen hast du zuletzt angeschrieben: {name}',
       '11. was hast du zuletzt gegessen: popcorn zum abendbrot. nich urteilen',
       '12. größte angst: dass wer meinen style kopiert',
@@ -151,7 +151,7 @@ export const BULLETINS: readonly Bulletin[] = [
   {
     id: 'd4-derek-back',
     day: 4,
-    from: { extra: 'derek (drums)', seed: 'derekdrums' },
+    from: { extra: 'derek (schlagzeug)', seed: 'derekdrums' },
     subject: 'AW: AW: AW: ich bin raus',
     body: 'ok ich bin wieder dabei. velvet lantern is AN. eine snare und ein eimer. der eimer is ne trommel. das tamburin bleibt',
     link: 'http://friendspace.example/band/velvet-lantern',

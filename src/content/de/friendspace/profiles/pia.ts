@@ -51,12 +51,12 @@ export const piaProfile: ProfileContent = {
     },
     {
       day: 1,
-      from: 'ponyprinzessin_99',
+      from: 'ponyprincess_99',
       text: 'ich hab das lila auch!!! wir sind pony-zwillinge!!!',
     },
     {
       day: 2,
-      from: 'ponyprinzessin_99',
+      from: 'ponyprincess_99',
       text: 'sternenstaub is VERMISST?? ich hoffe sie kommt nach hause :(',
       graphic: 'hug',
     },
@@ -85,7 +85,7 @@ export const piaProfile: ProfileContent = {
     },
     {
       day: 4,
-      from: 'ponyprinzessin_99',
+      from: 'ponyprincess_99',
       text: 'SIE IS WIEDER DA!!! bester tag überhaupt!!!',
       graphic: 'glitterheart',
     },

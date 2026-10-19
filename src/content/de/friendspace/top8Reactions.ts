@@ -29,7 +29,7 @@ export const TOP8_REACTIONS: readonly Top8Reaction[] = [
     contactId: 'marco',
     dropped:
       'hab die top 8 gesehen. alles gut. tante rita ist nicht gut. ruf sie an',
-    readded: 'wieder in der top 8. mach jetzt kein ding draus, zwerg',
+    readded: 'wieder in der top 8. mach jetzt kein großes ding draus, zwerg',
   },
   {
     contactId: 'theo',

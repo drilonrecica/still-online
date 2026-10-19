@@ -56,7 +56,7 @@ export const theoProfile: ProfileContent = {
       day: 3,
       from: 'jess',
       contactId: 'jess',
-      text: 'THEO ich hab das mit dem wackelpudding gehört!!! hält er?? WACKELPUDDING IST STARK!!!',
+      text: 'THEO ich hab das mit dem wackelpudding gehört!!! hält er?? WACKELPUDDING IS STARK!!!',
     },
     {
       day: 3,

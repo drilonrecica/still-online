@@ -18,7 +18,7 @@ export const PIXLOG_PROFILES: readonly PixlogProfile[] = [
 
 /** Screen names of strangers in the visitors box; same count as English, German 2007 handles. */
 export const STRANGERS: readonly string[] = [
-  'xX_KometenMaus_Xx',
+  'xX_CometGirl_Xx',
   'sk8erjunge_4ever',
   'kleiner_sonnenschein',
   'DarkAngel_1991',

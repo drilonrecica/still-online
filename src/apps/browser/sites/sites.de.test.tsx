@@ -274,7 +274,7 @@ describe('Friendspace in German', () => {
     expect(screen.getByLabelText('Überschrift:')).toHaveValue(
       'neu auf Friendspace!! ~*glitzer*~ <3',
     );
-    expect(screen.getByRole('option', { name: 'Pink Glitzer' })).toBeTruthy();
+    expect(screen.getByRole('option', { name: 'Pink-Glitzer' })).toBeTruthy();
     expect(screen.getByRole('option', { name: ':( traurig' })).toBeTruthy();
     expect(
       screen.getByRole('button', { name: 'Änderungen speichern' }),

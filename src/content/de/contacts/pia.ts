@@ -588,8 +588,8 @@ export const pia: ContactOverlay = {
           'ok habs gesehen. ich bin wieder in deiner top 8',
           'ich hab mama gesagt dass dus repariert hast',
           g(
-            'du bist nicht die SCHLIMMSTE schwester. eher so die 3.-schlimmste',
-            'du bist nicht der SCHLIMMSTE bruder. eher so der 3.-schlimmste',
+            'du bist nicht die SCHLIMMSTE schwester. eher so die drittschlimmste',
+            'du bist nicht der SCHLIMMSTE bruder. eher so der drittschlimmste',
           ),
           '',
         ],

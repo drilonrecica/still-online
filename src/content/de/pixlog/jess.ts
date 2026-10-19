@@ -110,7 +110,7 @@ export const jessPixlog: PixlogProfile = {
             {
               day: 5,
               from: 'theo',
-              text: 'ähm. is mit deiner stirn alles ok? tschuldige, komische frage…',
+              text: 'ähm. ist mit deiner stirn alles ok? tschuldige, komische frage…',
             },
             { day: 5, from: 'dex', text: 'boah' },
           ],
@@ -172,7 +172,7 @@ export const jessPixlog: PixlogProfile = {
       title: 'der countdown',
       body:
         'ICH HAB DAS RADIO-GEWINNSPIEL GEWONNEN. 2 KARTEN. TINFOIL COMETS. NÄCHSTEN FREITAG.\n\n' +
-        'ich hab 47 mal angerufen. mama sagt das is „ganz schön oft". ich sag das is HINGABE.\n\n' +
+        'ich hab 47 mal angerufen. mama sagt das is „ganz schön oft“. ich sag das is HINGABE.\n\n' +
         'freitag freitag freitag. das wars, das is der eintrag',
     },
     {

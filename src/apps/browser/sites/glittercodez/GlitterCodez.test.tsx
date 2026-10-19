@@ -178,7 +178,7 @@ describe('glittercodez.example', () => {
     open('/');
     await finishLoad();
     expect(
-      await screen.findByRole('heading', { name: 'heiß für dich!!' }),
+      await screen.findByRole('heading', { name: 'grad voll angesagt!!' }),
     ).toBeTruthy();
     expect(
       screen.getAllByRole('button', { name: 'Code kopieren!!' }).length,

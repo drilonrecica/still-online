@@ -76,7 +76,7 @@ export const FRIENDSPACE_TEXT = {
 
 const PRESET_NAMES: Readonly<Record<string, string>> = {
   default: 'Friendspace Klassik',
-  glitter: 'Pink Glitzer',
+  glitter: 'Pink-Glitzer',
   midnight: 'Mitternacht',
   pastel: 'Pastelltraum',
   neon: 'Neon-Rave',

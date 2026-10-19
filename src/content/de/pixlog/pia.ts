@@ -21,7 +21,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5311,
-            caption: 'das erste treffen. ich bin der chef',
+            caption: 'das erste treffen. ich bin die chefin',
           },
           comments: [
             {
@@ -32,7 +32,7 @@ export const piaPixlog: PixlogProfile = {
             {
               day: 1,
               from: 'pia',
-              text: 'da musst du den chef fragen. ich bin der chef. ok ja',
+              text: 'da musst du die chefin fragen. ich bin die chefin. ok ja',
             },
           ],
         },
@@ -99,7 +99,7 @@ export const piaPixlog: PixlogProfile = {
             {
               day: 4,
               from: 'kayla',
-              text: 'die flauschigen haare sind ein LOOK. sternenstaub is jetzt model',
+              text: 'die flauschigen haare stehen ihr SO gut. sternenstaub is jetzt model',
             },
           ],
         },
@@ -113,7 +113,7 @@ export const piaPixlog: PixlogProfile = {
             {
               day: 4,
               from: 'theo',
-              text: 'ähm. das is ne echt schöne party. tschuldige dass ich nich eingeladen war. ich mein is ok…',
+              text: 'ähm. das ist ne echt schöne party. tschuldige, dass ich nicht eingeladen war. ich mein, ist ok…',
             },
           ],
         },
@@ -171,7 +171,7 @@ export const piaPixlog: PixlogProfile = {
         'detektivin pia ermittelt.\n\n' +
         'verdächtiger nr. 1: keks. beweise: er benimmt sich komisch. er hat glitzer auf der nase. er hat mich ANGEGUCKT.\n\n' +
         `${g('verdächtige', 'verdächtiger')} nr. 2: ${g('meine große schwester', 'mein großer bruder')}. sagt ${g('sie', 'er')} hat sie nich genommen. wird noch ermittelt\n\n` +
-        'mama hat gesagt „pia bitte". das heißt ich hab recht',
+        'mama hat gesagt „pia bitte“. das heißt ich hab recht',
     },
     {
       id: 'pia-present',
@@ -188,7 +188,7 @@ export const piaPixlog: PixlogProfile = {
     answers: [
       'als papa die ponystimme machen wollte',
       'nie. ich bin die die PETZT',
-      'ich sag nich sorry. ich sag „ok GUT"',
+      'ich sag nich sorry. ich sag „ok GUT“',
       'jede nacht. ich les ponybücher unter der decke',
       'papas wackelpudding. der war grün. hab ihn trotzdem gegessen',
       `die fernbedienung. ok nich verloren. ${g('meine schwester', 'mein bruder')} hat sie KAPUTT gemacht`,
@@ -240,7 +240,7 @@ export const piaPixlog: PixlogProfile = {
     {
       day: 4,
       from: 'theo',
-      text: 'ähm. ich bin echt froh dass sie wieder da is. tut mir leid dass sie weg war',
+      text: 'ähm. ich bin echt froh, dass sie wieder da ist. tut mir leid, dass sie weg war',
     },
     {
       day: 5,

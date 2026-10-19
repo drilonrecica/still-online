@@ -566,8 +566,8 @@ export const marco: ContactOverlay = {
         lines: [
           'zwerg',
           'tante rita hat angerufen. ich bin wohl nicht mehr in deiner top 8',
-          'sie ist mehr getroffen als ich',
-          'ich bin nicht getroffen. nur fürs protokoll',
+          'sie ist gekränkter als ich',
+          'ich bin nicht gekränkt. nur fürs protokoll',
           '',
         ],
         personalMessages: { 4: 'aus einer top 8 entfernt. komme klar' },
