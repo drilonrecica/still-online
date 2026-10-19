@@ -130,4 +130,16 @@ describe('renderPhoto', () => {
     }
     expect(photoDateStamp(9)).toBe(photoDateStamp(9));
   });
+
+  it("stamps story photos with their day: day 4 → '07 10 11", () => {
+    expect(photoDateStamp(9, 4)).toBe("'07 10 11");
+    expect(photoDateStamp(9, 1)).toBe("'07 10 8");
+    expect(photoDateStamp(9, 10)).toBe("'07 10 17");
+    expect(draw({ scene: 'concert', seed: 42, day: 4 }).log).toContainEqual([
+      'fillText',
+      "'07 10 11",
+      expect.any(Number),
+      expect.any(Number),
+    ]);
+  });
 });

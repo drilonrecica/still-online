@@ -4,8 +4,12 @@ import { mulberry32, randInt } from '@/os/random';
 import { SCENE_PAINTERS } from './photoScenes';
 import type { PhotoSpec } from './types';
 
-/** The stamp printed in the corner, picked from the seed: `'07 6 14`-style (yy m d). */
-export function photoDateStamp(seed: number): string {
+/**
+ * The stamp printed in the corner: `'07 6 14`-style (yy m d). Story photos (`day` set) are dated
+ * October 2007, day 1 = the 8th; the others are picked from the seed.
+ */
+export function photoDateStamp(seed: number, day?: number): string {
+  if (day !== undefined) return `'07 10 ${7 + day}`;
   const rand = mulberry32(seed ^ 0x5eed);
   const year = rand() < 0.7 ? 7 : 6;
   return `'0${year} ${randInt(rand, 1, 12)} ${randInt(rand, 1, 28)}`;
@@ -50,5 +54,9 @@ export function renderPhoto(
   ctx.textAlign = 'right';
   ctx.textBaseline = 'bottom';
   ctx.fillStyle = 'rgba(255, 140, 30, 0.9)';
-  ctx.fillText(photoDateStamp(spec.seed), w - size * 0.6, h - size * 0.5);
+  ctx.fillText(
+    photoDateStamp(spec.seed, spec.day),
+    w - size * 0.6,
+    h - size * 0.5,
+  );
 }

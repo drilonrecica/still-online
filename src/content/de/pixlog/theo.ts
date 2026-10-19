@@ -101,6 +101,7 @@ export const theoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5511,
+            day: 5,
             caption: 'die wackelpudding-zelle. sie hat einiges mitgemacht',
           },
           comments: [
@@ -115,6 +116,7 @@ export const theoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5512,
+            day: 5,
             caption:
               'die beschriftungen. hab ich um 1 uhr nachts gezeichnet. sorry mama',
           },
@@ -131,6 +133,7 @@ export const theoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5513,
+            day: 5,
             caption:
               'unsere kühlbox vom campen. die riecht immer noch n bisschen nach fisch. sorry',
           },
@@ -151,6 +154,7 @@ export const theoPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5514,
+            day: 5,
             look: 'short',
             caption: 'ich danach. ich hab nur 2 mal sorry gesagt',
           },
@@ -167,6 +171,7 @@ export const theoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5515,
+            day: 5,
             caption:
               'herr dalton hat gesagt, der wackelpudding war „einprägsam“. ich glaub, das ist gut',
           },

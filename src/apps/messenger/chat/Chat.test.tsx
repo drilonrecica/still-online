@@ -119,6 +119,33 @@ describe('chat window', () => {
     expect(titleOf(win?.id)).toBe('Lena - Conversation');
   });
 
+  it('keeps the newest line in view after a language flip re-wraps the transcript', async () => {
+    renderChat('lena');
+    await signIn();
+    const el = log();
+    // jsdom has no layout: the transcript is 100px tall, its content 300px, then 400px in German.
+    let height = 300;
+    let top = 0;
+    Object.defineProperty(el, 'scrollHeight', { get: () => height });
+    Object.defineProperty(el, 'clientHeight', { get: () => 100 });
+    Object.defineProperty(el, 'scrollTop', {
+      get: () => top,
+      set: (v: number) => (top = Math.min(v, height - 100)),
+    });
+    el.scrollTop = 300;
+    el.dispatchEvent(new Event('scroll'));
+    height = 400;
+    act(() => useSettingsStore.setState({ language: 'de' }));
+    expect(top).toBe(300);
+
+    // Scrolled up to read: a flip back leaves the position alone.
+    el.scrollTop = 50;
+    el.dispatchEvent(new Event('scroll'));
+    height = 300;
+    act(() => useSettingsStore.setState({ language: 'en' }));
+    expect(top).toBe(50);
+  });
+
   it('renders "<name> says:" lines with emoticons', async () => {
     renderChat('lena');
     await signIn();

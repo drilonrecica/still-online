@@ -21,6 +21,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5311,
+            day: 1,
             caption: 'das erste treffen. ich bin die chefin',
           },
           comments: [
@@ -40,6 +41,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'pet',
             seed: 5312,
+            day: 1,
             caption: 'keks. wachhund. er kann das nich gut',
           },
           comments: [
@@ -51,6 +53,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5313,
+            day: 1,
             look: 'long',
             caption: 'ich. die präsidentin. papa hats fotografiert',
           },
@@ -60,6 +63,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5314,
+            day: 1,
             caption: 'sternenstaub in der MITTE. da gehört sie hin',
           },
           comments: [
@@ -86,6 +90,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5321,
+            day: 4,
             look: 'long',
             caption:
               'ich + sternenstaub. sie is jetzt extra flauschig. (sie nich ich)',
@@ -107,6 +112,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5322,
+            day: 4,
             caption: 'die willkommensparty. 22 ponys waren da. alle',
           },
           comments: [
@@ -121,6 +127,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'pet',
             seed: 5323,
+            day: 4,
             caption:
               'keks. UNSCHULDIG. er hat ein entschuldigungs-leckerli gekriegt',
           },
@@ -137,6 +144,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5324,
+            day: 4,
             caption:
               'der fall is ABGESCHLOSSEN. NICHT fragen wo ich sie gefunden hab',
           },

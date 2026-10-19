@@ -21,6 +21,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5211,
+            day: 3,
             look: 'long',
             caption: 'outfit #1: KEIN hoodie',
           },
@@ -36,6 +37,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5212,
+            day: 3,
             look: 'long',
             caption: 'outfit #2: stulpen. mach DAS mal nach',
           },
@@ -52,6 +54,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'pet',
             seed: 5213,
+            day: 3,
             caption: 'prinzessin bewertet outfit #3. sie sagt nein',
           },
           comments: [
@@ -66,6 +69,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5214,
+            day: 3,
             look: 'long',
             caption: 'der gestreifte hoodie. in rente. vorerst',
           },
@@ -89,6 +93,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5221,
+            day: 4,
             caption: 'feindesland. (die kissen waren schön)',
           },
           comments: [
@@ -103,6 +108,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5222,
+            day: 4,
             caption: 'DASSELBE EIS. minz-schoko. wir haben uns nur angestarrt',
           },
           comments: [
@@ -123,6 +129,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5223,
+            day: 4,
             caption: 'horrorfilm. ich hatte KEINE angst. das war ein kissen',
           },
           comments: [{ day: 5, from: 'dex', text: 'du hattest angst' }],
@@ -131,6 +138,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5224,
+            day: 4,
             look: 'long',
             caption:
               '„süßer schlafanzug“ (ihre worte. sie hat geschmack. ätzend)',
@@ -147,6 +155,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'pet',
             seed: 5225,
+            day: 4,
             caption: 'ihr hund. der einzige der nich 40 mal sorry gesagt hat',
           },
           comments: [
@@ -161,6 +170,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5226,
+            day: 4,
             caption: '~*friedensvertrag*~ mit glitzerstift unterschrieben',
           },
           comments: [

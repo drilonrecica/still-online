@@ -92,6 +92,7 @@ export const theoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5511,
+            day: 5,
             caption: 'the jello cell. it has been through a lot',
           },
           comments: [
@@ -106,6 +107,7 @@ export const theoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5512,
+            day: 5,
             caption: 'the labels. i drew them at 1am. sorry mom',
           },
           comments: [
@@ -121,6 +123,7 @@ export const theoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5513,
+            day: 5,
             caption:
               'our camping cooler. it still smells a bit like fish. sorry',
           },
@@ -137,6 +140,7 @@ export const theoPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5514,
+            day: 5,
             look: 'short',
             caption: 'me after. i only said sorry 2 times',
           },
@@ -153,6 +157,7 @@ export const theoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5515,
+            day: 5,
             caption:
               'mr dalton said the jello was "memorable". i think thats good',
           },

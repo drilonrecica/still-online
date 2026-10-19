@@ -192,6 +192,48 @@ describe('Assistant overlay', () => {
     expect(useSettingsStore.getState().assistantEnabled).toBe(false);
   });
 
+  it('folds the balloon away while the active window covers his corner', () => {
+    render(<Assistant />);
+    const stapley = screen.getByRole('button', { name: 'Stapley the stapler' });
+    act(() => {
+      useAssistantStore.getState().offer(tip('stapley-mines'));
+    });
+    // A small window in the top-left leaves the corner alone.
+    act(() => {
+      const id = useWindowsStore.getState().openApp('browser');
+      useWindowsStore
+        .getState()
+        .resizeWindow(id, { x: 0, y: 0, w: 400, h: 300 });
+    });
+    act(() => vi.advanceTimersByTime(20_000));
+    expect(balloon()).not.toBeNull();
+
+    act(() => {
+      const [win] = useWindowsStore.getState().windows;
+      useWindowsStore.getState().toggleMaximize(win!.id);
+    });
+    act(() => vi.advanceTimersByTime(7000));
+    expect(balloon()).not.toBeNull();
+    act(() => vi.advanceTimersByTime(1000));
+    expect(balloon()).toBeNull();
+    // The tip is still there: a click on Stapley shows it again, for another while.
+    expect(useAssistantStore.getState().current?.tip.id).toBe('stapley-mines');
+    fireEvent.pointerDown(stapley, { button: 0, clientX: 5, clientY: 5 });
+    fireEvent.pointerUp(stapley);
+    expect(balloon()).toHaveTextContent(/phone number/);
+    act(() => vi.advanceTimersByTime(8000));
+    expect(balloon()).toBeNull();
+
+    // Minimized, the window covers nothing and the balloon is back; Hide still works.
+    act(() => {
+      const [win] = useWindowsStore.getState().windows;
+      useWindowsStore.getState().minimizeWindow(win!.id);
+    });
+    expect(balloon()).not.toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Hide Stapley' }));
+    expect(useSettingsStore.getState().assistantEnabled).toBe(false);
+  });
+
   it('drags', () => {
     render(<Assistant />);
     const stapley = screen.getByRole('button', { name: 'Stapley the stapler' });

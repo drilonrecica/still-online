@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { getBulletins, getPixlogProfiles } from '../locale';
 import { PIXLOG_PROFILES } from '.';
 import { SURVEYS } from './surveys';
+import { photoDateStamp } from '@/os/fs/photos';
 
 const DAYS = [1, 2, 3, 4, 5];
 
@@ -67,6 +68,25 @@ describe('pixlog content and the story', () => {
         profile!.albums.some((a) => a.day === b.day),
         `${b.id} → ${id} on day ${b.day}`,
       ).toBe(true);
+    }
+  });
+
+  it('dates story photos: the concert on day 4, never after the album appears', () => {
+    for (const locale of ['en', 'de'] as const) {
+      const profiles = getPixlogProfiles(locale, 'girl');
+      const show = profiles
+        .find((p) => p.contactId === 'jess')!
+        .albums.find((a) => a.id === 'jess-comets-show')!;
+      for (const { photo } of show.photos) {
+        expect(photoDateStamp(photo.seed, photo.day)).toBe("'07 10 11");
+      }
+      for (const a of profiles.flatMap((p) => p.albums)) {
+        for (const { photo } of a.photos) {
+          // Theo's camp pics are from last summer and keep the seeded stamp.
+          if (a.id === 'theo-camp') expect(photo.day, a.id).toBeUndefined();
+          else expect(photo.day, a.id).toBeLessThanOrEqual(a.day);
+        }
+      }
     }
   });
 

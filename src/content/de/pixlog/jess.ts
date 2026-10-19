@@ -21,6 +21,7 @@ export const jessPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5111,
+            day: 2,
             look: 'long',
             caption: 'ich. glitzer im GESICHT. alles gut',
           },
@@ -36,6 +37,7 @@ export const jessPixlog: PixlogProfile = {
           photo: {
             scene: 'pet',
             seed: 5112,
+            day: 2,
             caption: 'der mitkünstler. es tut ihm NICHT leid',
           },
           comments: [
@@ -51,6 +53,7 @@ export const jessPixlog: PixlogProfile = {
           photo: {
             scene: 'pet',
             seed: 5113,
+            day: 2,
             caption: 'der PFOTENABDRUCK. das is jetzt kunst. keine diskussion',
           },
           comments: [
@@ -66,6 +69,7 @@ export const jessPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5114,
+            day: 2,
             look: 'long',
             caption: 'das schild is hinter mir. glaubt mir einfach',
           },
@@ -79,7 +83,12 @@ export const jessPixlog: PixlogProfile = {
       title: 'COMETS LIVE!!!',
       photos: [
         {
-          photo: { scene: 'concert', seed: 5101, caption: 'ERSTE REIHE!!!!' },
+          photo: {
+            scene: 'concert',
+            seed: 5101,
+            day: 4,
+            caption: 'ERSTE REIHE!!!!',
+          },
           comments: [
             { day: 5, from: 'kayla', text: 'omg bin voll neidisch!!' },
             {
@@ -93,6 +102,7 @@ export const jessPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5102,
+            day: 4,
             caption: 'ZIGGY!!!!!! (der wischer is ziggy)',
           },
           comments: [
@@ -103,6 +113,7 @@ export const jessPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5103,
+            day: 4,
             caption:
               'der drumstick-dreher. 1 sekunde bevor er MICH GETROFFEN HAT',
           },
@@ -119,6 +130,7 @@ export const jessPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5104,
+            day: 4,
             look: 'long',
             caption: 'ich + DER DRUMSTICK + die beule',
           },
@@ -144,6 +156,7 @@ export const jessPixlog: PixlogProfile = {
           photo: {
             scene: 'trip',
             seed: 5105,
+            day: 4,
             caption: 'die autofahrt. mama hat gesungen. ALLES',
           },
           comments: [
@@ -158,6 +171,7 @@ export const jessPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5106,
+            day: 4,
             caption: 'letztes lied. keine stimme mehr. HAT SICH GELOHNT',
           },
           comments: [],

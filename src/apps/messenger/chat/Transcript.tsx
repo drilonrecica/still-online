@@ -1,6 +1,6 @@
 // Conversation transcript in the classic "<name> says:" + indented line format.
-import { Fragment, useEffect, useRef, type ReactNode } from 'react';
-import { useT } from '@/i18n/useT';
+import { Fragment, useLayoutEffect, useRef, type ReactNode } from 'react';
+import { useLocale, useT } from '@/i18n/useT';
 import type { TranscriptEntry } from '@/content/types';
 import styles from './Chat.module.css';
 import { events } from '@/os/events';
@@ -95,17 +95,30 @@ export function Transcript({
   playerName: string;
 }) {
   const t = useT();
+  const locale = useLocale();
   const ref = useRef<HTMLDivElement>(null);
+  // Scrolled to the newest line; a language flip re-wraps every line, so it stays there afterwards.
+  const atBottom = useRef(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = ref.current;
     if (el) el.scrollTop = el.scrollHeight;
+    atBottom.current = true;
   }, [entries.length]);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (el && atBottom.current) el.scrollTop = el.scrollHeight;
+  }, [locale]);
 
   return (
     <div
       ref={ref}
       className={styles.transcript}
+      onScroll={(e) => {
+        const el = e.currentTarget;
+        atBottom.current = el.scrollHeight - el.scrollTop - el.clientHeight < 4;
+      }}
       role="log"
       aria-label={t('messenger.chat.transcript')}
       tabIndex={0}

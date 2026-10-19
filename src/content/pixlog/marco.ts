@@ -20,6 +20,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5401,
+            day: 4,
             caption:
               'the stage. its a kitchen. the light is a lamp with a red shirt on it',
           },
@@ -32,6 +33,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5402,
+            day: 4,
             caption:
               'the bucket. derek calls it "a second drum". its a paint bucket',
           },
@@ -48,6 +50,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5403,
+            day: 4,
             caption: 'derek. back after 26 hours. a new record',
           },
           comments: [
@@ -63,6 +66,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5404,
+            day: 4,
             caption: 'the tambourine. the band has voted. it stays',
           },
           comments: [
@@ -77,6 +81,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5405,
+            day: 4,
             look: 'short',
             caption: 'me. not nervous. go away',
           },
@@ -100,6 +105,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5411,
+            day: 4,
             caption:
               'the bean cellar. one row. its the front row and the back row',
           },
@@ -115,6 +121,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5412,
+            day: 4,
             caption: 'six songs. five originals and a cover nobody knows',
           },
           comments: [
@@ -125,6 +132,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5413,
+            day: 4,
             caption:
               'last song. derek kicked the bucket over. its in the act now',
           },
@@ -142,6 +150,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5414,
+            day: 4,
             caption:
               'after. the coffee guy upstairs gave us muffins. day old. still counts',
           },
@@ -157,6 +166,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5415,
+            day: 4,
             caption: 'the napkin. i signed it. its about the principle',
           },
           comments: [

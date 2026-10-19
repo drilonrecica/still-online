@@ -25,6 +25,8 @@ export interface PhotoSpec {
   caption?: string;
   /** Only the `selfportrait` scene uses it; without it the hair is the v0.3 middle length. */
   look?: PhotoLook;
+  /** Story day the photo was taken; the stamp then reads `'07 10 <7 + day>`. Without it, seeded. */
+  day?: number;
 }
 
 export interface FsNode {

@@ -534,7 +534,8 @@
 }
 
 .bulletinBody {
-  margin: 2px 0;
+  /* The 48px picture + its 8px margin: long survey bulletins stay in one column beside it. */
+  margin: 2px 0 2px 56px;
   overflow-wrap: anywhere;
   white-space: pre-line;
 }

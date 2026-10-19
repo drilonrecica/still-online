@@ -1,5 +1,7 @@
 // Stapley: the `assistant` overlay. Bottom-right above the taskbar, draggable; a yellow help balloon
-// with blue bullet options; right-click (or the balloon's link) hides him.
+// with blue bullet options; right-click (or the balloon's link) hides him. While the active window
+// covers his corner (a maximized browser), the balloon folds away after FOLD_MS; a click on him
+// brings it back.
 import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, MouseEvent, PointerEvent } from 'react';
 import type { Tip } from '@/content/assistant';
@@ -9,7 +11,8 @@ import type { Locale } from '@/i18n/types';
 import { useLocale, useT } from '@/i18n/useT';
 import type { Gender } from '@/os/types';
 import { useSettingsStore } from '@/os/store/settings';
-import { TASKBAR_HEIGHT } from '@/os/types';
+import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
+import { TASKBAR_HEIGHT, type WindowState } from '@/os/types';
 import { StapleySprite } from './StapleySprite';
 import { useAssistantStore } from './store';
 import styles from './Assistant.module.css';
@@ -19,6 +22,30 @@ const DRAG_SLOP = 4;
 /** Stapley's footprint, for keeping him on screen. */
 const WIDTH = 72;
 const HEIGHT = 64;
+/** The corner the balloon takes: its max width, and its tallest text above Stapley. */
+const BALLOON_WIDTH = 230;
+const BALLOON_HEIGHT = 170;
+/** How long the balloon stays over a window that covers the corner. */
+const FOLD_MS = 8000;
+
+/** Whether `win` (the active window) lies over Stapley's balloon corner, moved by `offset`. */
+function coversCorner(
+  win: WindowState | undefined,
+  offset: { x: number; y: number },
+): boolean {
+  if (!win) return false;
+  if (win.maximized) return true;
+  const right = window.innerWidth - 16 + offset.x;
+  const bottom = window.innerHeight - TASKBAR_HEIGHT - 8 + offset.y;
+  const left = right - BALLOON_WIDTH;
+  const top = bottom - HEIGHT - 4 - BALLOON_HEIGHT;
+  return (
+    win.x < right &&
+    win.x + win.w > left &&
+    win.y < bottom &&
+    win.y + win.h > top
+  );
+}
 
 /** `tip` with its text in `locale` for `gender`: same id, same options in the same order. */
 function localized(tip: Tip, locale: Locale, gender: Gender): Tip {
@@ -45,6 +72,24 @@ function Stapley() {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [menu, setMenu] = useState(false);
   const drag = useRef<Drag | null>(null);
+  const active = useWindowsStore((s) => {
+    const id = selectActiveWindowId(s);
+    return s.windows.find((w) => w.id === id);
+  });
+  const covered = coversCorner(active, offset);
+  // Each tip (and each click on Stapley) gets one FOLD_MS over a covering window.
+  const [wakes, setWakes] = useState(0);
+  const [foldedKey, setFoldedKey] = useState<string | null>(null);
+  const balloonKey = current
+    ? `${current.tip.id}:${current.reply ? 'reply' : 'tip'}:${wakes}`
+    : null;
+  const folded = covered && balloonKey !== null && foldedKey === balloonKey;
+
+  useEffect(() => {
+    if (!covered || balloonKey === null) return;
+    const id = setTimeout(() => setFoldedKey(balloonKey), FOLD_MS);
+    return () => clearTimeout(id);
+  }, [covered, balloonKey]);
 
   // Any click elsewhere or Escape closes the right-click menu.
   useEffect(() => {
@@ -87,7 +132,11 @@ function Stapley() {
       y: Math.min(maxY, Math.max(minY, d.originY + dy)),
     });
   }
+  function onPointerCancel() {
+    drag.current = null;
+  }
   function onPointerUp() {
+    if (drag.current && !drag.current.moved) setWakes((n) => n + 1);
     drag.current = null;
   }
   function onContextMenu(e: MouseEvent) {
@@ -99,7 +148,8 @@ function Stapley() {
   }
 
   // The store keeps the tip that was offered; text renders in the current language.
-  const tip = current && localized(current.tip, locale, gender);
+  const shown = folded ? null : current;
+  const tip = shown && localized(shown.tip, locale, gender);
   const replyIndex = current?.reply
     ? (current.tip.options ?? []).findIndex((o) => o.reply === current.reply)
     : -1;
@@ -131,7 +181,7 @@ function Stapley() {
                   <button
                     type="button"
                     className={styles.link}
-                    onClick={() => choose(current.tip.options?.[i] ?? option)}
+                    onClick={() => choose(shown.tip.options?.[i] ?? option)}
                   >
                     {option.label}
                   </button>
@@ -175,7 +225,7 @@ function Stapley() {
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
+        onPointerCancel={onPointerCancel}
         onContextMenu={onContextMenu}
       >
         <StapleySprite talking={!!tip} />

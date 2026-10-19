@@ -20,6 +20,7 @@ export const dexPixlog: PixlogProfile = {
           photo: {
             scene: 'trip',
             seed: 5601,
+            day: 2,
             caption: 'the park by the school. after the buses leave its ours',
           },
           comments: [
@@ -34,6 +35,7 @@ export const dexPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5602,
+            day: 2,
             look: 'short',
             caption: 'me + the camcorder. it has a handle on top',
           },
@@ -46,6 +48,7 @@ export const dexPixlog: PixlogProfile = {
           photo: {
             scene: 'trip',
             seed: 5603,
+            day: 2,
             caption: 'me. im the blur on the left',
           },
           comments: [
@@ -57,6 +60,7 @@ export const dexPixlog: PixlogProfile = {
           photo: {
             scene: 'trip',
             seed: 5604,
+            day: 2,
             caption: 'fall 17 of 40. ppl clapped. for the fall',
           },
           comments: [
@@ -72,6 +76,7 @@ export const dexPixlog: PixlogProfile = {
           photo: {
             scene: 'trip',
             seed: 5605,
+            day: 2,
             caption: 'some guy skated thru the shot and fell 2. hes in it now',
           },
           comments: [
@@ -94,6 +99,7 @@ export const dexPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5611,
+            day: 5,
             caption: 'the premiere. 1 couch. 1 tv. 30 sec',
           },
           comments: [
@@ -108,6 +114,7 @@ export const dexPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5612,
+            day: 5,
             caption: 'ry hooking up the tape. took him an hour',
           },
           comments: [{ day: 5, from: 'Ry (my bro)', text: 'ur welcome' }],
@@ -116,6 +123,7 @@ export const dexPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5613,
+            day: 5,
             look: 'short',
             caption: 'me. the director. no refunds',
           },
@@ -132,6 +140,7 @@ export const dexPixlog: PixlogProfile = {
           photo: {
             scene: 'trip',
             seed: 5614,
+            day: 5,
             caption:
               'the spot where i landed it. no camera that day. just the spot',
           },

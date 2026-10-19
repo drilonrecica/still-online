@@ -21,6 +21,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5311,
+            day: 1,
             caption: 'the first meeting. i am the boss',
           },
           comments: [
@@ -40,6 +41,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'pet',
             seed: 5312,
+            day: 1,
             caption: 'biscuit. security guard. he is bad at it',
           },
           comments: [
@@ -51,6 +53,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5313,
+            day: 1,
             look: 'long',
             caption: 'me. the president. dad took it',
           },
@@ -60,6 +63,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5314,
+            day: 1,
             caption: 'stardust in the MIDDLE. where she belongs',
           },
           comments: [
@@ -86,6 +90,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5321,
+            day: 4,
             look: 'long',
             caption: 'me + stardust. she is extra fluffy now. (her not me)',
           },
@@ -106,6 +111,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5322,
+            day: 4,
             caption: 'the welcome home party. 22 ponies came. everyone',
           },
           comments: [
@@ -120,6 +126,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'pet',
             seed: 5323,
+            day: 4,
             caption: 'biscuit. INNOCENT. he got a sorry treat',
           },
           comments: [
@@ -135,6 +142,7 @@ export const piaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5324,
+            day: 4,
             caption: 'the case is CLOSED. do NOT ask where i found her',
           },
           comments: [

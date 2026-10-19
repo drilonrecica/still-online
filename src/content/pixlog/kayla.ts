@@ -21,6 +21,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5211,
+            day: 3,
             look: 'long',
             caption: 'outfit #1: NOT a hoodie',
           },
@@ -32,6 +33,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5212,
+            day: 3,
             look: 'long',
             caption: 'outfit #2: leg warmers. try copying THAT',
           },
@@ -48,6 +50,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'pet',
             seed: 5213,
+            day: 3,
             caption: 'princess judging outfit #3. she said no',
           },
           comments: [
@@ -62,6 +65,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5214,
+            day: 3,
             look: 'long',
             caption: 'the striped hoodie. retired. 4 now',
           },
@@ -81,6 +85,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5221,
+            day: 4,
             caption: 'enemy territory. (it had nice pillows)',
           },
           comments: [
@@ -95,6 +100,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5222,
+            day: 4,
             caption: 'SAME ICE CREAM. mint chip. we just stared',
           },
           comments: [
@@ -111,6 +117,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5223,
+            day: 4,
             caption: 'scary movie. i was NOT scared. that was a pillow',
           },
           comments: [{ day: 5, from: 'dex', text: 'u were scared' }],
@@ -119,6 +126,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5224,
+            day: 4,
             look: 'long',
             caption: '"cute pajamas" (her words. she has good taste. ugh)',
           },
@@ -134,6 +142,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'pet',
             seed: 5225,
+            day: 4,
             caption: 'her dog. the only one who didnt say sorry 40 times',
           },
           comments: [
@@ -148,6 +157,7 @@ export const kaylaPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5226,
+            day: 4,
             caption: '~*peace treaty*~ signed in glitter pen',
           },
           comments: [

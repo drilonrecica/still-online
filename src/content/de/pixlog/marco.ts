@@ -21,6 +21,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5401,
+            day: 4,
             caption:
               'die bühne. ist eine küche. das licht ist eine lampe mit nem roten t-shirt drüber',
           },
@@ -41,6 +42,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5402,
+            day: 4,
             caption:
               'der eimer. derek nennt ihn „eine zweite trommel“. es ist ein farbeimer',
           },
@@ -57,6 +59,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5403,
+            day: 4,
             caption: 'derek. nach 26 stunden zurück. neuer rekord',
           },
           comments: [
@@ -76,6 +79,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5404,
+            day: 4,
             caption: 'das tamburin. die band hat abgestimmt. es bleibt',
           },
           comments: [
@@ -90,6 +94,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'selfportrait',
             seed: 5405,
+            day: 4,
             look: 'short',
             caption: 'ich. nicht nervös. geh weg',
           },
@@ -113,6 +118,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5411,
+            day: 4,
             caption:
               'der bean cellar. eine reihe. das ist die erste und die letzte reihe',
           },
@@ -128,6 +134,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5412,
+            day: 4,
             caption:
               'sechs lieder. fünf eigene und ein cover, das keiner kennt',
           },
@@ -139,6 +146,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'concert',
             seed: 5413,
+            day: 4,
             caption:
               'letztes lied. derek hat den eimer umgetreten. gehört jetzt zur show',
           },
@@ -156,6 +164,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5414,
+            day: 4,
             caption:
               'danach. der café-typ von oben hat uns muffins gegeben. von gestern. zählt trotzdem',
           },
@@ -171,6 +180,7 @@ export const marcoPixlog: PixlogProfile = {
           photo: {
             scene: 'party',
             seed: 5415,
+            day: 4,
             caption: 'die serviette. ich hab sie signiert. aus prinzip',
           },
           comments: [
