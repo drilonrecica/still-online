@@ -10,7 +10,9 @@ import { useWindowsStore } from '@/os/store/windows';
 import { useWorldStore } from '@/os/world';
 import '@/apps/registry';
 import Browser from '../../Browser';
+import { profileName } from '../friendspace/logic';
 import { DEFAULT_FAVORITES, WEB_DEFAULTS, useWebStore } from '../../store';
+import { FEED_LIMIT } from './Feed';
 import { recentVisitors, visitorCount } from './logic';
 
 const LOAD = 1400;
@@ -58,7 +60,7 @@ describe('pixlog home feed', () => {
     await finishLoad();
     await screen.findByRole('heading', { name: 'What your friends are up to' });
     const album = feed().getByRole('link', {
-      name: 'Jess added 1 photo to “COMETS LIVE!!!”',
+      name: 'Jess added 6 photos to “COMETS LIVE!!!”',
     });
     expect(album.getAttribute('href')).toBe(
       `http://${PIXLOG_HOST}/album?id=jess-comets-show`,
@@ -66,15 +68,18 @@ describe('pixlog home feed', () => {
     expect(
       feed()
         .getByRole('link', {
-          name: 'Jess wrote a new blog post: “the countdown”',
+          name: 'Jess wrote a new blog post: “I WAS IN THE FRONT ROW”',
         })
         .getAttribute('href'),
     ).toBe(`http://${PIXLOG_HOST}/jess?tab=blog`);
-    expect(feed().getByText('cant sleep. too excited')).toBeTruthy();
+    expect(
+      feed().getByText('I CAUGHT ZIGGYS DRUMSTICK!!!!! (w my face)'),
+    ).toBeTruthy();
     const items = feed().getAllByRole('listitem');
-    expect(items[0]!.textContent).toContain('COMETS LIVE!!!');
+    expect(items).toHaveLength(FEED_LIMIT);
+    expect(items[0]!.textContent).toContain('Jess shouts:');
     expect(items[0]!.textContent).toContain('today');
-    expect(items.at(-1)!.textContent).toContain('4 days ago');
+    expect(items.at(-1)!.textContent).toContain('2 days ago');
   });
 
   it('day-gates the feed', async () => {
@@ -98,7 +103,7 @@ describe('pixlog home feed', () => {
     const expected = recentVisitors(PIXLOG_PROFILES, 5, STRANGERS);
     expect(box.getAllByRole('listitem')).toHaveLength(expected.length);
     for (const v of expected) {
-      const name = v.kind === 'friend' ? 'Jess' : v.name;
+      const name = v.kind === 'friend' ? profileName(v.contactId) : v.name;
       expect(box.getByRole('img', { name: `${name}'s picture` })).toBeTruthy();
     }
     expect(box.getByRole('link', { name: /Jess/ }).getAttribute('href')).toBe(
@@ -107,16 +112,20 @@ describe('pixlog home feed', () => {
     expect(box.getAllByText('today').length).toBeGreaterThan(0);
   });
 
-  it('renders the same for a boy (no player-directed text here)', async () => {
+  it('words shouts about the player for a boy', async () => {
     useSettingsStore.setState({ gender: 'boy' });
     open('/');
     await finishLoad();
     await screen.findByRole('heading', { name: 'What your friends are up to' });
     expect(
       feed().getByRole('link', {
-        name: 'Jess added 1 photo to “COMETS LIVE!!!”',
+        name: 'Jess added 6 photos to “COMETS LIVE!!!”',
       }),
     ).toBeTruthy();
+    expect(
+      feed().getByText('best concert buddy in the galaxy. u know who u r (Y)'),
+    ).toBeTruthy();
+    expect(feed().queryByText(/galaxy.*\(L\)/)).toBeNull();
   });
 
   it('is German when the language is German', async () => {
@@ -131,9 +140,9 @@ describe('pixlog home feed', () => {
     ).toBeTruthy();
     expect(
       screen.getByRole('link', {
-        name: 'Jess hat 1 Foto zu „COMETS LIVE!!!“ hinzugefügt',
+        name: 'Jess hat 6 Fotos zu „COMETS LIVE!!!“ hinzugefügt',
       }),
     ).toBeTruthy();
-    expect(screen.getByText('Jess ruft:')).toBeTruthy();
+    expect(screen.getAllByText('Jess ruft:').length).toBeGreaterThan(0);
   });
 });

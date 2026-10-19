@@ -1,9 +1,14 @@
-// Pixlog profiles, one per friend, in sign-in order. Sample data for now: P3-02/P3-03 add the
-// rest.
+// Pixlog profiles, one per friend, in sign-in order. P3-03 adds Marco, Theo and Dex.
 import { jessPixlog } from './jess';
+import { kaylaPixlog } from './kayla';
+import { piaPixlog } from './pia';
 import type { PixlogProfile } from './types';
 
-export const PIXLOG_PROFILES: readonly PixlogProfile[] = [jessPixlog];
+export const PIXLOG_PROFILES: readonly PixlogProfile[] = [
+  jessPixlog,
+  piaPixlog,
+  kaylaPixlog,
+];
 
 /** Screen names of strangers who drop by the player's page (P2-02 `visitors`, seeded per day). */
 export const STRANGERS: readonly string[] = [

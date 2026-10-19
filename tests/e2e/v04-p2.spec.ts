@@ -53,7 +53,7 @@ test('pixlog: feed, a friend’s photos and album, kudos, and /me', async ({
   await expect(
     web.getByRole('heading', { name: 'COMETS LIVE!!!' }),
   ).toBeVisible();
-  await expect(web.getByText('Photo 1 of 1')).toBeVisible();
+  await expect(web.getByText('Photo 1 of 6')).toBeVisible();
 
   // Kudos: once per friend per day.
   await go(web, 'http://pixlog.example/jess');

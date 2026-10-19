@@ -27,7 +27,8 @@ import {
 
 const LOAD = 1400;
 const jess = PIXLOG_PROFILES[0]!;
-const album = jess.albums[0]!;
+const album = jess.albums.find((a) => a.id === 'jess-comets-show')!;
+const sign = jess.albums.find((a) => a.id === 'jess-the-sign')!;
 
 function open(path: string) {
   const url = `http://${PIXLOG_HOST}${path}`;
@@ -79,8 +80,9 @@ describe('pixlog logic', () => {
   });
 
   it('gates albums by day', () => {
-    expect(visibleAlbums(jess, 4)).toEqual([]);
-    expect(visibleAlbums(jess, 5)).toEqual([album]);
+    expect(visibleAlbums(jess, 1)).toEqual([]);
+    expect(visibleAlbums(jess, 4)).toEqual([sign]);
+    expect(visibleAlbums(jess, 5)).toEqual([album, sign]);
     expect(findAlbum(PIXLOG_PROFILES, album.id, 4)).toBeNull();
     expect(findAlbum(PIXLOG_PROFILES, album.id, 5)?.profile).toBe(jess);
     expect(findAlbum(PIXLOG_PROFILES, 'nope', 5)).toBeNull();
@@ -176,14 +178,13 @@ describe('pixlog.example', () => {
     useWorldStore.setState({ day: 1 });
     open('/jess?tab=guestbook');
     await finishLoad();
-    expect(
-      await screen.findByText('Nobody signed the guestbook yet.'),
-    ).toBeTruthy();
+    expect(await screen.findByText(/Pia wrote/)).toBeTruthy();
     expect(screen.queryByText('luv ur page!!')).toBeNull();
+    expect(screen.queryByText(/ZIGGY FAN CLUB wrote/)).toBeNull();
   });
 
   it('hides albums before their day', async () => {
-    useWorldStore.setState({ day: 2 });
+    useWorldStore.setState({ day: 1 });
     open('/jess?tab=photos');
     await finishLoad();
     expect(await screen.findByText('No albums yet.')).toBeTruthy();
@@ -204,7 +205,7 @@ describe('pixlog.example', () => {
     const comments = screen.getByRole('region', { name: 'Comments' });
     expect(within(comments).getByText('omg jealous!!')).toBeTruthy();
     expect(within(comments).getByText(/Kayla wrote/)).toBeTruthy();
-    expect(screen.getByText('Photo 1 of 1')).toBeTruthy();
+    expect(screen.getByText('Photo 1 of 6')).toBeTruthy();
   });
 
   it('shows not found for an album that is not out yet', async () => {

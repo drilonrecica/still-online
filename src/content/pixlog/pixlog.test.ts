@@ -1,0 +1,101 @@
+// Pixlog content volume per friend (P3-02/P3-03 spec), the "NEW PICS" bulletins pointing at a day
+// with an album, and the player-directed variants for a girl and a boy.
+import { describe, expect, it } from 'vitest';
+import { getBulletins, getPixlogProfiles } from '../locale';
+import { PIXLOG_PROFILES } from '.';
+import { SURVEYS } from './surveys';
+
+const DAYS = [1, 2, 3, 4, 5];
+
+describe.each(PIXLOG_PROFILES.map((p) => [p.contactId, p] as const))(
+  'pixlog content: %s',
+  (_, p) => {
+    it('has 1–2 albums of 4–6 photos with 0–3 comments each', () => {
+      expect(p.albums.length).toBeGreaterThanOrEqual(1);
+      expect(p.albums.length).toBeLessThanOrEqual(2);
+      for (const a of p.albums) {
+        expect(a.photos.length).toBeGreaterThanOrEqual(4);
+        expect(a.photos.length).toBeLessThanOrEqual(6);
+        for (const ph of a.photos) {
+          expect(ph.comments.length).toBeLessThanOrEqual(3);
+          expect(ph.photo.caption).toBeTruthy();
+        }
+      }
+    });
+
+    it('has 2–4 blog posts on different days', () => {
+      expect(p.blog.length).toBeGreaterThanOrEqual(2);
+      expect(p.blog.length).toBeLessThanOrEqual(4);
+      expect(new Set(p.blog.map((b) => b.day)).size).toBe(p.blog.length);
+    });
+
+    it('shouts 1–2 times on each of days 1–5', () => {
+      for (const day of DAYS) {
+        const n = p.shouts.filter((s) => s.day === day).length;
+        expect(n, `day ${day}`).toBeGreaterThanOrEqual(1);
+        expect(n, `day ${day}`).toBeLessThanOrEqual(2);
+      }
+    });
+
+    it('gives kudos on 1–3 days and has 3–6 guestbook entries', () => {
+      expect(p.kudosToPlayer.length).toBeGreaterThanOrEqual(1);
+      expect(p.kudosToPlayer.length).toBeLessThanOrEqual(3);
+      expect(p.guestbook.length).toBeGreaterThanOrEqual(3);
+      expect(p.guestbook.length).toBeLessThanOrEqual(6);
+    });
+
+    it('answers every question of its survey', () => {
+      const survey = SURVEYS.find((s) => s.id === p.survey.surveyId);
+      expect(survey).toBeDefined();
+      expect(p.survey.answers).toHaveLength(survey!.questions.length);
+      for (const a of p.survey.answers) expect(a.trim()).not.toBe('');
+    });
+  },
+);
+
+describe('pixlog content and the story', () => {
+  it('has an album on the day of every "NEW PICS on pixlog" bulletin', () => {
+    const profiles = getPixlogProfiles('en', 'girl');
+    const newPics = getBulletins('en', 'girl').filter((b) =>
+      b.link?.startsWith('http://pixlog.example/'),
+    );
+    for (const b of newPics) {
+      const id = b.link!.slice('http://pixlog.example/'.length);
+      const profile = profiles.find((p) => p.contactId === id);
+      // P3-03 adds the remaining friends.
+      if (!profile) continue;
+      expect(
+        profile.albums.some((a) => a.day === b.day),
+        `${b.id} → ${id} on day ${b.day}`,
+      ).toBe(true);
+    }
+  });
+
+  it('defines ~3 surveys', () => {
+    expect(SURVEYS.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it('words what Pia writes about the player per gender', () => {
+    const pia = (gender: 'girl' | 'boy') =>
+      getPixlogProfiles('en', gender).find((p) => p.contactId === 'pia')!;
+    expect(pia('girl').about).toContain('my big sister');
+    expect(pia('boy').about).toContain('my big brother');
+    expect(pia('boy').about).not.toContain('sister');
+    const boyText = JSON.stringify(pia('boy'));
+    expect(boyText).not.toMatch(/\bsister\b|\bshe didnt\b/);
+    expect(boyText).toContain('says he didnt take her');
+  });
+
+  it('gives a boy no hearts in shouts about the player', () => {
+    const shouts = (gender: 'girl' | 'boy') =>
+      getPixlogProfiles('en', gender).flatMap((p) =>
+        p.shouts.filter((s) => s.text.includes('u know who u r')),
+      );
+    expect(shouts('girl').length).toBeGreaterThan(0);
+    for (const s of shouts('girl')) expect(s.text).toContain('(L)');
+    for (const s of shouts('boy')) {
+      expect(s.text).toContain('(Y)');
+      expect(s.text).not.toContain('(L)');
+    }
+  });
+});
