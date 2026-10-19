@@ -75,7 +75,10 @@ export const piaTop8Dropped: Script = {
     website: {
       lines: [
         { text: 'MOOOOOOOM', delayMs: 800 },
-        { text: 'mom says be nice to ur sister. HA', delayMs: 1200 },
+        {
+          text: `mom says be nice to ur ${g('sister', 'brother')}. HA`,
+          delayMs: 1200,
+        },
         { delayMs: 600, personalMessageChange: 'NOT in a top 8. mom knows' },
       ],
       end: true,

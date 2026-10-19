@@ -36,7 +36,11 @@ export function LayoutPreview({
       data-testid="layout-preview"
       {...handlers}
     >
-      <p className={`${styles.previewTitle} ${glitter}`}>{title}</p>
+      <p
+        className={`${styles.previewTitle} ${glitter || styles.previewTitlePlain}`}
+      >
+        {title}
+      </p>
       {children && <div className={styles.previewPanel}>{children}</div>}
       <LayoutStickers stickers={extras.stickers} size={28} />
       {trail && <CursorTrail {...trail} />}

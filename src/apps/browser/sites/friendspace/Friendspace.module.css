@@ -519,6 +519,7 @@
 }
 
 .bulletinText {
+  flex: 1;
   min-width: 0;
   display: flow-root;
 }

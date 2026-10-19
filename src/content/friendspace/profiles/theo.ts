@@ -55,7 +55,7 @@ export const theoProfile: ProfileContent = {
       day: 3,
       from: 'jess',
       contactId: 'jess',
-      text: 'THEO i heard about the jello. RIP jello. u will rise again',
+      text: 'THEO i heard about the jello!!! is it ok?? JELLO STRONG!!!',
     },
     {
       day: 3,
@@ -89,7 +89,10 @@ export const theoProfile: ProfileContent = {
   ],
   commentsOnPlayer: [
     { day: 2, text: 'um hi {name}. i made a page. sorry if thats weird' },
-    { day: 3, text: 'sorry about the jello. again. it was my fault' },
+    {
+      day: 3,
+      text: 'sorry about the jello stuff today. thanks for having a plan',
+    },
     { day: 4, text: 'i wrote NO SORRY on my hand for tmrw. ok bye' },
     { day: 5, text: 'B+. thanks for being my partner. sorry. i mean. thanks' },
   ],

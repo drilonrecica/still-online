@@ -100,7 +100,7 @@ describe('glittercodez.example', () => {
       await screen.findByRole('heading', { name: 'hot 4 u!!' }),
     ).toBeTruthy();
     expect(screen.getByText('NEW!!')).toBeTruthy();
-    expect(screen.getByText('1.337.420')).toBeTruthy();
+    expect(screen.getByText('1,337,420')).toBeTruthy();
     const layouts = getLayouts('en', 'girl');
     expect(screen.getAllByTestId('layout-preview')).toHaveLength(
       layouts.length,

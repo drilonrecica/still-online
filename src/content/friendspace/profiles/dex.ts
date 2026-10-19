@@ -51,7 +51,7 @@ export const dexProfile: ProfileContent = {
     {
       day: 2,
       from: 'Ry (my bro)',
-      text: 'u owe me for the camcorder. it was in the closet for a REASON',
+      text: 'u owe me for the camcorder. it was in the garage for a REASON',
     },
     {
       day: 3,

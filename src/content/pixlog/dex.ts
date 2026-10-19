@@ -191,12 +191,12 @@ export const dexPixlog: PixlogProfile = {
       'ry fell off the couch. he says he didnt',
       'came home late. the park doesnt have a clock',
       'to my board. it said no',
-      'never. i fall asleep in my shoes',
+      'at kevs. skate tapes til 3am',
       'frozen peas. they were for my elbow. i ate some',
       'a wheel. it rolled into the creek. its free now',
       'grip tape. from me. for my board',
       'never. ry sings in the car tho',
-      'at kevs. skate tapes til 3am',
+      'at kevs. i fell asleep in my shoes',
       'dont have any. i have a board',
     ],
   },
@@ -231,7 +231,7 @@ export const dexPixlog: PixlogProfile = {
     {
       day: 3,
       from: 'Ry (my bro)',
-      text: 'that tape was older than u. show some respect',
+      text: 'that tape was 9 years old. show some respect',
     },
     {
       day: 4,

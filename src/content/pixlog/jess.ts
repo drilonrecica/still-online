@@ -199,7 +199,7 @@ export const jessPixlog: PixlogProfile = {
       'pizza',
       'IM duh',
       'summer',
-      'mp3 player (comets on repeat)',
+      'CDs!!! the robot one. 40 times a day',
       'CATS. sparkly ones',
       'night owl. i dont sleep. ask my mom',
       'funny. i scream at scary ones and get kicked out',

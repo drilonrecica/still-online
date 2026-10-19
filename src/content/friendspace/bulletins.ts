@@ -182,7 +182,7 @@ export const BULLETINS: readonly Bulletin[] = [
     day: 5,
     from: { extra: 'xX_CometGirl_Xx', seed: 'cometgirl' },
     subject: 'RIVERSIDE WAS THE BEST NIGHT OF MY LIFE!!!',
-    body: 'some1 caught ziggys drumstick WITH THEIR FACE. whoever u r: ur a LEGEND. new concert pics r on my site!!!',
+    body: 'JESS caught ziggys drumstick WITH HER FACE!!! ur a LEGEND jess. new concert pics r on my site!!!',
     link: 'http://tinfoilcomets.example/pics',
   },
   {

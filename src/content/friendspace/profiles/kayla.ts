@@ -66,13 +66,13 @@ export const kaylaProfile: ProfileContent = {
     {
       day: 3,
       from: 'lipgloss_lexi',
-      text: 'ur sleepover will be 10x better. 2 kinds of ice cream!!!',
+      text: 'brianna is SO not worth it. ur 10x more fun anyway!!!',
       graphic: 'hug',
     },
     {
       day: 4,
       from: 'Brianna',
-      text: 'did u get my email?? i hope u come saturday!! :)',
+      text: 'did u get my email?? i hope u come tmrw!! :)',
     },
     {
       day: 4,

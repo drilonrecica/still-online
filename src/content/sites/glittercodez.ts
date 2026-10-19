@@ -14,7 +14,7 @@ export const GLITTERCODEZ_HOST = 'glittercodez.example';
 export const SITE_META: SiteMeta = {
   title: 'GlitterCodez – free layouts 4 ur profile!!',
   description:
-    'FREE profile layouts, glitter, stickers and cursors 4 ur Friendspace!! Just copy the code and paste it. 1.337.420 layouts copied!!',
+    'FREE profile layouts, glitter, stickers and cursors 4 ur Friendspace!! Just copy the code and paste it. 1,337,420 layouts copied!!',
   keywords: [
     'layouts',
     'glitter',
@@ -55,7 +55,7 @@ export const GLITTERCODEZ_TEXT = {
   tagline: 'free layouts 4 ur profile!!',
   newBadge: 'NEW!!',
   counterLabel: 'layouts copied!!',
-  counter: '1.337.420',
+  counter: '1,337,420',
   nav: {
     label: 'GlitterCodez',
     layouts: 'LAYOUTZ',
@@ -332,7 +332,7 @@ export const LAYOUTS: readonly LayoutDef[] = [
   {
     id: 'midnight-purple',
     name: 'Midnight Purple',
-    blurb: 'dark n moody n kinda epic. sick layout bro. 4 real tho',
+    blurb: 'dark n moody n kinda epic. like the final boss level. 4 real tho',
     side: 'boy',
     extras: {
       background: 'starry',

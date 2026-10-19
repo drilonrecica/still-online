@@ -564,7 +564,14 @@ export const pia: ContactOverlay = {
         ],
       },
       website: {
-        lines: ['MOOOOOOOM', 'mom says be nice to ur sister. HA', ''],
+        lines: [
+          'MOOOOOOOM',
+          g(
+            'mom says be nice to ur sister. HA',
+            'mom says be nice to ur brother. HA',
+          ),
+          '',
+        ],
         personalMessages: { 2: 'NOT in a top 8. mom knows' },
       },
       back: {

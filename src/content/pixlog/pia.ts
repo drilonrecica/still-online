@@ -167,7 +167,7 @@ export const piaPixlog: PixlogProfile = {
       body:
         'detective pia is ON THE CASE.\n\n' +
         'suspect #1: biscuit. evidence: he is acting weird. he has a sparkle on his nose. he LOOKED at me.\n\n' +
-        `suspect #2: ${g('my big sister', 'my big brother')}. says ${g('she', 'he')} didnt take her. innocent. for now\n\n` +
+        `suspect #2: ${g('my big sister', 'my big brother')}. says ${g('she', 'he')} didnt take her. under investigation\n\n` +
         'mom said "pia please". that means im right',
     },
     {
@@ -201,7 +201,7 @@ export const piaPixlog: PixlogProfile = {
     { day: 2, text: 'MISSING: STARDUST. if u see her TELL ME' },
     {
       day: 2,
-      text: `${g('my sister', 'my brother')} says ${g('she', 'he')} didnt take her. i believe ${g('her', 'him')}. for now`,
+      text: `${g('my sister', 'my brother')} says ${g('she', 'he')} didnt take her. we will SEE`,
     },
     { day: 3, text: 'detective pia is ON THE CASE' },
     { day: 4, text: 'STARDUST IS HOME (L) extra fluffy' },

@@ -56,7 +56,7 @@ export const theoProfile: ProfileContent = {
       day: 3,
       from: 'jess',
       contactId: 'jess',
-      text: 'THEO ich hab das mit dem wackelpudding gehört. ruhe in frieden wackelpudding. du wirst wieder auferstehen',
+      text: 'THEO ich hab das mit dem wackelpudding gehört!!! hält er?? WACKELPUDDING IST STARK!!!',
     },
     {
       day: 3,
@@ -95,7 +95,7 @@ export const theoProfile: ProfileContent = {
     },
     {
       day: 3,
-      text: 'tut mir leid wegen dem wackelpudding. schon wieder. das war meine schuld',
+      text: 'tut mir leid wegen dem wackelpudding-stress heute. danke dass du nen plan hattest',
     },
     {
       day: 4,
