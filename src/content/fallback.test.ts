@@ -141,7 +141,7 @@ describe.each(GENDERS)(
   },
 );
 
-const PIXLOG_DE = ['jess', 'kayla', 'pia'];
+const PIXLOG_DE = ['jess', 'kayla', 'pia', 'marco', 'theo', 'dex'];
 /** Pixlog lines that are the same in German: a name, „pizza", „COMETS LIVE!!!", Pia shouting „DEX". */
 const SAME_IN_GERMAN = new Set(['kayla', 'pizza', 'COMETS LIVE!!!', 'DEX']);
 const differs = (de: string, en: string, where: string) => {
@@ -201,6 +201,17 @@ describe.each(GENDERS)('v0.4 Pixlog German (%s)', (gender) => {
       expect(pia).toContain('mein großer bruder');
       expect(pia).toContain('verdächtiger nr. 2');
       expect(pia).not.toContain('schwester');
+    }
+  });
+
+  it('Theo writes about his bio partner in the right German gender', () => {
+    const theo = JSON.stringify(deG.pixlog.find((p) => p.contactId === 'theo'));
+    if (gender === 'girl') {
+      expect(theo).toContain('meine bio-partnerin');
+      expect(theo).not.toContain('mein partner');
+    } else {
+      expect(theo).toContain('mein bio-partner');
+      expect(theo).not.toContain('partnerin');
     }
   });
 });

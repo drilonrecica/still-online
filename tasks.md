@@ -443,8 +443,8 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
 | P4-01 | **German: Friendspace + GlitterCodez + mail** — bulletins, bands, Top 8 reaction lines + contact overlays for the new scripts, layouts text, mails; glossary in `docs/localization-de.md`. | P3-G | done | opus | agent | — | fast | — | No placeholder left in these modules; overlays complete (overlay fallback test green); fallback assertions added; German voices per style guide. | §P4-01 |
-| P4-02 | **German: Pixlog Jess, Kayla, Pia** | P3-G | in progress | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
-| P4-03 | **German: Pixlog Marco, Theo, Dex** | P3-G | ready | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
+| P4-02 | **German: Pixlog Jess, Kayla, Pia** | P3-G | done | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
+| P4-03 | **German: Pixlog Marco, Theo, Dex** | P3-G | in progress | opus | agent | — | fast | — | As P4-01 for these Pixlog modules. | §P4-02 |
 | P4-G | **P4 gate (German content self-review)** — Gate procedure + German content rubric; 5-day German playthrough of the new sites. | P4-01…P4-03 | blocked | opus | agent | — | e2e | — | verify + e2e pass; no placeholder comments left in `src/content/de`; `docs/review/v04-P4.md`. | §Gate |
 
 ## P5 — Release v0.4
