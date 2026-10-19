@@ -35,20 +35,30 @@ const sameText = (a: FsNode, b: FsNode): boolean =>
   a.text === b.text &&
   a.photo?.caption === b.photo?.caption;
 
-/** `node` with the name, text, photo caption and photo look of its seed content. */
+/**
+ * `node` with the name, text and photo of its seed content: caption and look, and the scene and
+ * seed too, since a slot can show another photo per gender.
+ */
 function withSeedText(node: FsNode, seed: FsNode): FsNode {
   const out: FsNode = { ...node, name: seed.name };
   if (seed.text !== undefined) out.text = seed.text;
   else delete out.text;
   if (out.photo) {
     out.photo = { ...out.photo };
+    if (seed.photo) {
+      out.photo.scene = seed.photo.scene;
+      out.photo.seed = seed.photo.seed;
+    }
     if (seed.photo?.caption !== undefined)
       out.photo.caption = seed.photo.caption;
     else delete out.photo.caption;
     if (seed.photo?.look !== undefined) out.photo.look = seed.photo.look;
     else delete out.photo.look;
   }
-  return sameText(out, node) && out.photo?.look === node.photo?.look
+  return sameText(out, node) &&
+    out.photo?.look === node.photo?.look &&
+    out.photo?.scene === node.photo?.scene &&
+    out.photo?.seed === node.photo?.seed
     ? node
     : out;
 }

@@ -1,5 +1,5 @@
 // My Documents, part 2: the player's own (very private) writing. Each slot has a girl and a boy
-// version (docs/gender.md); Marco's band notebook is the same for both.
+// version (docs/gender.md).
 import { FS_FOLDERS, type FsNode } from '@/os/fs/types';
 import { g } from '../gender';
 import { at, seedText } from './seed';
@@ -66,7 +66,7 @@ finishers:
 
 (do NOT try the top rope thing on the trampoline again. the arm still hurts)`;
 
-const LYRICS = `SONGS FOR VELVET LANTERN
+const LYRICS_GIRL = `SONGS FOR VELVET LANTERN
 (marco said i can write lyrics for the band if they are "not terrible")
 
 --- song 1: "lantern heart" ---
@@ -107,6 +107,54 @@ yeah
 - marco said song 1 "has potential". THATS A YES
 - what rhymes with lantern. pattern? lantern pattern. no
 - maybe a song about the rec hall show?? "rec hall rock"`;
+
+const LYRICS_BOY = `SONGS FOR VELVET LANTERN
+(marco said i can write lyrics for the band if they are "not terrible")
+
+--- song 1: "grounded" ---
+mom took the keyboard
+dad took the phone
+two weeks in my room
+two weeks ALONE
+
+i didnt even break it
+the window was like that
+(i broke it)
+(it was a really good ollie though)
+
+CHORUS (everybody, LOUD):
+grounded! grounded!
+no tv no pc
+grounded! grounded!
+free me FREE ME
+
+--- song 2: "56k" ---
+beeeep krrrsh
+im connecting
+beeeep krrrsh
+still connecting
+my sister picked up the phone
+NOW IM DISCONNECTED
+(this one is punk. marco plays it fast)
+
+--- song 3: "the curb" ---
+the curb at the gas station
+is calling my name
+i fell on it 9 times
+i'll fall on it again
+(guitar solo here, marco knows what to do)
+
+--- song 4: "bus 14" ---
+bus 14 is late
+bus 14 smells like feet
+the kid in the back row
+is kicking my seat
+
+--- notes ---
+- marco said song 2 "has potential". THATS A YES
+- what rhymes with lantern. pattern? lantern pattern. no
+- maybe a song about the rec hall show?? "rec hall rock"
+- dex says song 3 is about him. it is NOT about him. (it is a little about him)`;
 
 const TOP_8_GIRL = `MY FRIENDSPACE TOP 8 (DO NOT SHOW ANYONE) <3
 
@@ -263,7 +311,7 @@ export const PERSONAL_DOCS: readonly FsNode[] = [
     'song-lyrics-notebook',
     FS_FOLDERS.docs,
     'song_lyrics_notebook.txt',
-    LYRICS,
+    g(LYRICS_GIRL, LYRICS_BOY),
     at(2007, 9, 14, 17, 22),
     at(2007, 10, 6, 15, 40),
   ),

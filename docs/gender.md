@@ -37,7 +37,7 @@ The player is a girl or a boy (v0.4 phase G, design: `docs/superpowers/specs/202
 Saves store ids and references, never rendered text, so a gender switch re-renders like a language switch:
 
 - **Messenger:** `renderEntry`/`renderTranscript`/`renderPersonalMessage` take the gender and cache per gender; views read `useGender()`.
-- **Files:** the fs store tracks `locale:gender` and re-renders untouched seeds (`localizeNodes`): name, text, caption and the self-portrait's `photo.look`. Each personal seed slot (My Documents, Recycle Bin) has a girl and a boy file under the same id; school files, Marco's notebook and Pia's fanfic are shared. Seeds the player renamed or edited (`dirty`) keep their text.
+- **Files:** the fs store tracks `locale:gender` and re-renders untouched seeds (`localizeNodes`): name, text, and the photo (caption, the self-portrait's `photo.look`, and `scene`/`seed`). Each personal seed slot (My Documents, Recycle Bin) has a girl and a boy file under the same id, and so do three photo slots in My Pictures (the boy's skatepark wipeout, Marco's LAN party and Dex's ramp, gendered field by field with `gendered()`); the song lyrics notebook keeps its name but has a boy's lyrics. School files and Pia's fanfic are shared. The gender parity check lets `photo.scene`/`photo.seed` differ. Seeds the player renamed or edited (`dirty`) keep their text and picture. Seeds the player renamed or edited (`dirty`) keep their text.
 - **Mail:** `renderMail`/`renderMails` take the gender. Attachments saved to disk are frozen copies and don't change.
 - **Sites:** `useSiteText(host)` reads `useGender()`; `meta(locale)` reads `getGender()`, and Searchly rebuilds its index on a switch.
 

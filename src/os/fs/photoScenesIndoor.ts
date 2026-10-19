@@ -159,5 +159,113 @@ export const selfportrait: Painter = (ctx, rand, w, h, look) => {
   else ellipse(ctx, hair, fx - w * 0.04, fy - h * 0.16, w * 0.12, h * 0.06);
   ellipse(ctx, '#202020', fx - w * 0.045, fy, w * 0.012, h * 0.015);
   ellipse(ctx, '#202020', fx + w * 0.045, fy, w * 0.012, h * 0.015);
-  ellipse(ctx, '#a04040', fx, fy + h * 0.1, w * 0.03, h * 0.012);
+  // A girl's mouth is pink; a boy's is the plain line colour of the eyes.
+  ellipse(
+    ctx,
+    look === 'short' ? '#202020' : '#a04040',
+    fx,
+    fy + h * 0.1,
+    w * 0.03,
+    h * (look === 'short' ? 0.008 : 0.012),
+  );
+};
+
+export const lanparty: Painter = (ctx, rand, w, h) => {
+  rect(ctx, vertical(ctx, 0, h, ['#12141c', '#08080c']), 0, 0, w, h);
+  // The desk.
+  rect(ctx, '#2a2018', 0, h * 0.62, w, h * 0.06);
+  rect(ctx, '#18120c', 0, h * 0.68, w, h * 0.32);
+  // Three CRTs, each glowing its own game colour into the dark.
+  for (let i = 0; i < 3; i++) {
+    const cx = w * (0.2 + i * 0.3) + between(rand, -w * 0.03, w * 0.03);
+    const size = w * between(rand, 0.2, 0.24);
+    const screen = pick(rand, [
+      '80,140,255',
+      '90,230,140',
+      '255,120,80',
+      '200,200,255',
+    ]);
+    const glow = ctx.createRadialGradient(
+      cx,
+      h * 0.42,
+      1,
+      cx,
+      h * 0.42,
+      size * 1.3,
+    );
+    glow.addColorStop(0, `rgba(${screen},0.35)`);
+    glow.addColorStop(1, `rgba(${screen},0)`);
+    rect(ctx, glow, 0, 0, w, h);
+    rect(
+      ctx,
+      '#c8c0a8',
+      cx - size / 2,
+      h * 0.62 - size * 0.85,
+      size,
+      size * 0.8,
+    );
+    rect(
+      ctx,
+      '#a8a088',
+      cx - size * 0.2,
+      h * 0.62 - size * 0.08,
+      size * 0.4,
+      size * 0.08,
+    );
+    rect(
+      ctx,
+      `rgb(${screen})`,
+      cx - size * 0.4,
+      h * 0.62 - size * 0.77,
+      size * 0.8,
+      size * 0.58,
+    );
+    for (let y = h * 0.62 - size * 0.77; y < h * 0.62 - size * 0.19; y += 3)
+      rect(ctx, 'rgba(0,0,0,0.18)', cx - size * 0.4, y, size * 0.8, 1);
+    // Whatever is on screen: a few bright blocks.
+    for (let j = 0; j < 3; j++)
+      rect(
+        ctx,
+        'rgba(255,255,255,0.6)',
+        cx - size * 0.35 + rand() * size * 0.55,
+        h * 0.62 - size * 0.7 + rand() * size * 0.4,
+        size * 0.08,
+        size * 0.05,
+      );
+  }
+  // Cables everywhere.
+  ctx.lineWidth = Math.max(1.5, h * 0.01);
+  for (let i = 0; i < randInt(rand, 5, 8); i++) {
+    ctx.strokeStyle = pick(rand, ['#303030', '#4a4a4a', '#c8c0a8', '#3050a0']);
+    ctx.beginPath();
+    ctx.moveTo(between(rand, 0, w), h * 0.64);
+    ctx.bezierCurveTo(
+      between(rand, 0, w),
+      h * 0.95,
+      between(rand, 0, w),
+      h * 0.75,
+      between(rand, 0, w),
+      h,
+    );
+    ctx.stroke();
+  }
+  // The pizza box on the floor, open, two slices left.
+  const px = between(rand, w * 0.05, w * 0.3);
+  rect(ctx, '#c8a878', px, h * 0.8, w * 0.28, h * 0.14);
+  rect(ctx, '#b89868', px, h * 0.8, w * 0.28, h * 0.02);
+  for (let i = 0; i < 2; i++) {
+    const sx = px + w * (0.04 + i * 0.1);
+    poly(ctx, '#e8b048', [
+      [sx, h * 0.92],
+      [sx + w * 0.05, h * 0.83],
+      [sx + w * 0.1, h * 0.92],
+    ]);
+    ellipse(ctx, '#b03020', sx + w * 0.05, h * 0.89, w * 0.012, h * 0.012);
+  }
+  // Heads against the screens.
+  for (let i = 0; i < 2; i++) {
+    const hx = w * (0.32 + i * 0.32) + between(rand, -w * 0.04, w * 0.04);
+    ellipse(ctx, '#050508', hx, h * 0.82, w * 0.09, h * 0.12);
+    ellipse(ctx, '#050508', hx, h * 0.66, h * 0.08, h * 0.09);
+  }
 };

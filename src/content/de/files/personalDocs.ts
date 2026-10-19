@@ -65,7 +65,7 @@ finisher:
 
 (das mit dem seil auf dem trampolin NICHT nochmal machen. der arm tut immer noch weh)`;
 
-const LYRICS = `SONGS FÜR VELVET LANTERN
+const LYRICS_GIRL = `SONGS FÜR VELVET LANTERN
 (marco hat gesagt ich darf texte für die band schreiben wenn sie „nicht furchtbar“ sind)
 
 --- song 1: „laternenherz“ ---
@@ -106,6 +106,54 @@ yeah
 - marco hat gesagt song 1 „hat potenzial“. DAS IS EIN JA
 - was reimt sich auf laterne. kaserne? laterne kaserne. nein
 - vielleicht n song übers konzert im jugendzentrum?? „juz rock“`;
+
+const LYRICS_BOY = `SONGS FÜR VELVET LANTERN
+(marco hat gesagt ich darf texte für die band schreiben wenn sie „nicht furchtbar“ sind)
+
+--- song 1: „hausarrest“ ---
+mama hat die tastatur
+papa hat das telefon
+zwei wochen in meim zimmer
+zwei wochen ganz ALLEIN
+
+ich habs nich mal kaputt gemacht
+das fenster war schon so
+(ich habs kaputt gemacht)
+(war aber n echt guter ollie)
+
+REFRAIN (alle, LAUT):
+hausarrest! hausarrest!
+kein fernsehn kein pc
+hausarrest! hausarrest!
+lasst mich RAUS, ey
+
+--- song 2: „56k“ ---
+piiiep krrrsch
+ich wähl mich ein
+piiiep krrrsch
+immer noch am einwähln
+meine schwester geht ans telefon
+JETZT BIN ICH RAUSGEFLOGEN
+(der is punk. marco spielt den schnell)
+
+--- song 3: „der bordstein“ ---
+der bordstein an der tanke
+der ruft nach mir
+ich bin neunmal draufgeflogen
+und flieg nochmal, ich schwörs dir
+(hier gitarrensolo, marco weiß was zu tun is)
+
+--- song 4: „linie 14“ ---
+die 14 is zu spät
+die 14 riecht nach fuß
+der typ in der letzten reihe
+tritt gegen meinen sitz, so n stuss
+
+--- notizen ---
+- marco hat gesagt song 2 „hat potenzial“. DAS IS EIN JA
+- was reimt sich auf laterne. kaserne? laterne kaserne. nein
+- vielleicht n song übers konzert im jugendzentrum?? „juz rock“
+- dex sagt song 3 is über ihn. is er NICH. (n bisschen schon)`;
 
 const TOP_8_GIRL = `MEINE FRIENDSPACE TOP 8 (KEINEM ZEIGEN) <3
 
@@ -254,7 +302,10 @@ export const PERSONAL_DOCS: Readonly<Record<string, SeedText>> = {
     name: g('geheimes gedicht.txt', 'meine_wrestling_einlaufrede.txt'),
     text: g(POEM_GIRL, POEM_BOY),
   },
-  'song-lyrics-notebook': { name: 'songtexte_notizbuch.txt', text: LYRICS },
+  'song-lyrics-notebook': {
+    name: 'songtexte_notizbuch.txt',
+    text: g(LYRICS_GIRL, LYRICS_BOY),
+  },
   'top-8-drama': {
     name: g('top 8 drama.txt', 'top 8 (FINAL final).txt'),
     text: g(TOP_8_GIRL, TOP_8_BOY),

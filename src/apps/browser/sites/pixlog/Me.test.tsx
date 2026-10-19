@@ -1,6 +1,7 @@
 import { act, cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { getSeedFiles } from '@/content/locale';
 import { PIXLOG_PROFILES } from '@/content/pixlog';
 import { SURVEYS } from '@/content/pixlog/surveys';
 import { PIXLOG_HOST } from '@/content/sites/pixlog';
@@ -227,6 +228,32 @@ describe('pixlog.example/me', () => {
     act(() => useFsStore.getState().remove(camp));
     expect(within(box).queryByRole('img', { name: 'camp!!' })).toBeNull();
     expect(within(box).getByText(/Your album is empty/)).toBeTruthy();
+  });
+
+  it('offers a boy his own seeded photos for the album', async () => {
+    useSettingsStore.setState({ gender: 'boy' });
+    useFsStore.getState().seed(getSeedFiles('en', 'boy'));
+    const user = open('/me');
+    await finishLoad();
+    const box = await screen.findByRole('region', { name: 'My album' });
+    await user.click(within(box).getByRole('button', { name: 'Add photos' }));
+    for (const name of [
+      'skatepark_wipeout.jpg',
+      'lan_party_marcos.jpg',
+      'dexs_ramp.jpg',
+    ])
+      expect(
+        within(box).getByRole('button', { name: `Add ${name}` }),
+      ).toBeTruthy();
+    expect(
+      within(box).queryByRole('button', { name: 'Add beach_holiday.jpg' }),
+    ).toBeNull();
+    await user.click(
+      within(box).getByRole('button', { name: 'Add skatepark_wipeout.jpg' }),
+    );
+    expect(pixlog()?.album.map((e) => e.fsNodeId)).toEqual([
+      'seed:school-trip-museum',
+    ]);
   });
 
   it('stops adding at the album limit', async () => {

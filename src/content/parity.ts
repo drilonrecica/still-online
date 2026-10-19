@@ -171,13 +171,16 @@ export function moduleParityProblems(
 const REFERENCE_KEY =
   /\.(?:id|\w+Id|next|start|host|\w+_HOST|url|href|scene|unlock|wink)$/;
 
+/** A photo is drawn content, not a reference: a slot may show another scene per gender (G2-04). */
+const GENDERED_PHOTO = /\.photo\.(?:scene|seed)$/;
+
 const kind = (v: unknown) =>
   Array.isArray(v) ? 'array' : v === null ? 'null' : typeof v;
 
 /**
  * Problems between the two resolved genders of the same content: identical structure (types,
  * array lengths, object keys) and identical non-text values (ids, days, links, hosts). Only text
- * may differ.
+ * and photos may differ.
  */
 export function genderParityProblems(
   girl: unknown,
@@ -186,7 +189,7 @@ export function genderParityProblems(
 ): string[] {
   if (kind(girl) !== kind(boy))
     return [`${path}: girl is ${kind(girl)}, boy is ${kind(boy)}`];
-  if (typeof girl === 'function') return [];
+  if (typeof girl === 'function' || GENDERED_PHOTO.test(path)) return [];
   if (typeof girl === 'string')
     return girl === boy || !REFERENCE_KEY.test(path)
       ? []

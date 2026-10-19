@@ -11,6 +11,9 @@ const SCENES: PhotoScene[] = [
   'snow',
   'concert',
   'selfportrait',
+  'skatepark',
+  'lanparty',
+  'ramp',
 ];
 
 /** A canvas whose 2D context records every call and property write. */
@@ -92,6 +95,23 @@ describe('renderPhoto', () => {
     expect(
       draw({ scene: 'selfportrait', seed: 3000, look: 'short' }).log,
     ).toEqual(short);
+  });
+
+  it('gives a girl a pink mouth and a boy the plain line colour', () => {
+    const fills = (look: 'long' | 'short') =>
+      draw({ scene: 'selfportrait', seed: 3000, look }).log.filter(
+        (e) => Array.isArray(e) && e[0] === 'set' && e[1] === 'fillStyle',
+      );
+    expect(fills('long')).toContainEqual(['set', 'fillStyle', '#a04040']);
+    expect(fills('short')).not.toContainEqual(['set', 'fillStyle', '#a04040']);
+  });
+
+  it('draws the boy scenes differently per seed', () => {
+    for (const scene of ['skatepark', 'lanparty', 'ramp'] as const) {
+      expect(draw({ scene, seed: 1 }).log, scene).not.toEqual(
+        draw({ scene, seed: 2 }).log,
+      );
+    }
   });
 
   it('does nothing without a 2D context (jsdom)', () => {

@@ -227,6 +227,26 @@ describe('parity checks catch drift', () => {
     ]);
   });
 
+  it('lets a photo differ between the genders, but no other scene', () => {
+    expect(
+      genderParityProblems(
+        { photo: { scene: 'beach', seed: 808 } },
+        { photo: { scene: 'ramp', seed: 4040 } },
+        'x',
+      ),
+    ).toEqual([]);
+    expect(
+      genderParityProblems(
+        { scene: 'beach', seed: 808 },
+        { scene: 'ramp', seed: 4040 },
+        'x',
+      ),
+    ).toEqual([
+      'x.scene: girl has beach, boy has ramp',
+      'x.seed: girl has 808, boy has 4040',
+    ]);
+  });
+
   it('flags deep drift: days, ids, nested counts, layout extras and placeholders', () => {
     const en = [
       {

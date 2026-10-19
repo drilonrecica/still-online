@@ -56,20 +56,17 @@ describe.each(GENDERS)('seeded files for a %s', (gender) => {
     expect(new Set(keys).size).toBe(keys.length);
   });
 
-  it('ships at least 8 docs, all 6 photo scenes and 2 tracks', () => {
+  it('ships at least 8 docs, 6 photo scenes and 2 tracks', () => {
     const docs = inFolder(FS_FOLDERS.docs);
     expect(docs.length).toBeGreaterThanOrEqual(8);
     for (const d of docs) expect(d.text?.length, d.id).toBeGreaterThan(0);
 
     const pics = inFolder(FS_FOLDERS.pics);
-    const scenes: PhotoScene[] = [
-      'camp',
-      'pet',
-      'trip',
-      'party',
-      'beach',
-      'selfportrait',
-    ];
+    const scenes: PhotoScene[] =
+      gender === 'girl'
+        ? ['camp', 'pet', 'trip', 'party', 'beach', 'selfportrait']
+        : ['camp', 'pet', 'skatepark', 'lanparty', 'ramp', 'selfportrait'];
+    for (const p of pics) expect(p.photo?.caption, p.id).toBeTruthy();
     expect(pics.map((p) => p.photo?.scene).sort()).toEqual([...scenes].sort());
 
     const music = inFolder(FS_FOLDERS.music);
@@ -84,10 +81,9 @@ describe.each(GENDERS)('seeded files for a %s', (gender) => {
     for (const n of bin) expect(n.deletedFrom).toBe(FS_FOLDERS.docs);
   });
 
-  it('shares the school and system files, Pia’s fanfic and the band notebook', () => {
+  it('shares the school and system files and Pia’s fanfic', () => {
     const girl = getSeedFiles('en', 'girl');
     const shared = [
-      'seed:song-lyrics-notebook',
       'seed:pony-fanfic-by-pia',
       'seed:bio-project-draft',
       'seed:homework-maths',
@@ -190,6 +186,75 @@ describe('the girl and the boy have their own files', () => {
     expect(photo(girl)).toMatchObject({ scene: 'selfportrait', look: 'long' });
     expect(photo(boy)).toMatchObject({ scene: 'selfportrait', look: 'short' });
   });
+
+  it('gives the boy his own photos in three slots, and the girl today’s', () => {
+    const pic = (seeds: typeof girl, id: string) =>
+      seeds.find((n) => n.id === id);
+    const slots = {
+      'seed:school-trip-museum': [
+        ['school_trip_museum.jpg', 'trip', 77],
+        ['skatepark_wipeout.jpg', 'skatepark', 5150],
+      ],
+      'seed:kaylas-party-blurry': [
+        ['kaylas_party_BLURRY.jpg', 'party', 1313],
+        ['lan_party_marcos.jpg', 'lanparty', 1337],
+      ],
+      'seed:beach-holiday': [
+        ['beach_holiday.jpg', 'beach', 808],
+        ['dexs_ramp.jpg', 'ramp', 4040],
+      ],
+    } as const;
+    for (const [
+      id,
+      [[gName, gScene, gSeed], [bName, bScene, bSeed]],
+    ] of Object.entries(slots)) {
+      expect(pic(girl, id)).toMatchObject({
+        name: gName,
+        photo: { scene: gScene, seed: gSeed },
+      });
+      expect(pic(boy, id)).toMatchObject({
+        name: bName,
+        photo: { scene: bScene, seed: bSeed },
+      });
+    }
+    expect(pic(boy, 'seed:school-trip-museum')?.photo?.caption).toBe(
+      'me. the curb won',
+    );
+    expect(pic(girl, 'seed:kaylas-party-blurry')?.photo?.caption).toBe(
+      "kayla's party. everyone moved. it's art now",
+    );
+  });
+
+  it('gives every photo a boy-voiced caption', () => {
+    const captions = (seeds: typeof girl) =>
+      seeds
+        .filter((n) => n.parentId === FS_FOLDERS.pics)
+        .map((n) => n.photo?.caption);
+    for (const locale of ['en', 'de'] as const) {
+      const g = captions(getSeedFiles(locale, 'girl'));
+      const b = captions(getSeedFiles(locale, 'boy'));
+      expect(b).toHaveLength(6);
+      b.forEach((c, i) => expect(c, `${locale} ${i}`).not.toBe(g[i]));
+    }
+  });
+
+  it('gives the boy his own lyrics notebook, with the same band notes', () => {
+    const girlLyrics = text(girl, 'seed:song-lyrics-notebook');
+    const boyLyrics = text(boy, 'seed:song-lyrics-notebook');
+    expect(boyLyrics).not.toBe(girlLyrics);
+    expect(girlLyrics).toContain('my heart is a lantern');
+    expect(boyLyrics).toMatch(/grounded[\s\S]*56k[\s\S]*the curb[\s\S]*bus 14/);
+    for (const fact of ['"not terrible"', 'rec hall show']) {
+      expect(girlLyrics).toContain(fact);
+      expect(boyLyrics).toContain(fact);
+    }
+    for (const gender of GENDERS)
+      expect(
+        getSeedFiles('en', gender).find(
+          (n) => n.id === 'seed:song-lyrics-notebook',
+        )?.name,
+      ).toBe('song_lyrics_notebook.txt');
+  });
 });
 
 describe('seeding the fs store', () => {
@@ -228,6 +293,10 @@ describe('seeding the fs store', () => {
       'my_wrestling_entrance_speech.txt',
     );
     expect(fs().get('seed:me-webcam-test')?.photo?.look).toBe('short');
+    expect(fs().get('seed:beach-holiday')).toMatchObject({
+      name: 'dexs_ramp.jpg',
+      photo: { scene: 'ramp', seed: 4040 },
+    });
     expect(fs().get('seed:top-8-drama')).toMatchObject({
       name: 'top 8 drama.txt',
       text: 'my own top 8',
@@ -241,6 +310,28 @@ describe('seeding the fs store', () => {
       'poem_DO_NOT_READ.txt',
     );
     expect(fs().get('seed:me-webcam-test')?.photo?.look).toBe('long');
+    expect(fs().get('seed:beach-holiday')).toMatchObject({
+      name: 'beach_holiday.jpg',
+      photo: { scene: 'beach', seed: 808 },
+    });
+  });
+
+  it('a gender switch leaves a photo the player renamed as it was', () => {
+    setGender('boy');
+    fs().seed(getSeedFiles('en', 'boy'));
+    fs().rename('seed:kaylas-party-blurry', 'best night ever.jpg');
+    setGender('girl');
+    expect(fs().get('seed:kaylas-party-blurry')).toMatchObject({
+      name: 'best night ever.jpg',
+      dirty: true,
+      photo: {
+        scene: 'lanparty',
+        seed: 1337,
+        caption: "marco's lan party. galaxy raiders 3 til 4am. mostly chips",
+      },
+    });
+    // The untouched slots next to it swapped.
+    expect(fs().get('seed:school-trip-museum')?.photo?.scene).toBe('trip');
   });
 
   it('restores a boy’s file from the Recycle Bin to My Documents', () => {
