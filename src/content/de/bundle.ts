@@ -8,6 +8,7 @@ import { ABOUT_HOST } from '../sites/about';
 import { GOSSIP_HOST } from '../sites/celebgossip07';
 import { CHEATCAVE_HOST } from '../sites/cheatcave';
 import { GLITTERCODEZ_HOST } from '../sites/glittercodez';
+import { PIXLOG_HOST } from '../sites/pixlog';
 import { KICKFLIP_HOST } from '../sites/kickflipkings';
 import { SEARCHLY_HOST } from '../sites/searchly';
 import { FRIENDSPACE_HOST } from '../sites/friendspace';
@@ -33,6 +34,7 @@ import * as kickflip from './sites/kickflipkings';
 import * as searchly from './sites/searchly';
 import * as friendspace from './sites/friendspace';
 import * as glitter from './sites/glittercodez';
+import * as pixlog from './sites/pixlog';
 import * as tinfoil from './sites/tinfoilcomets';
 import * as virusguard from './sites/virusguard';
 import * as westfield from './sites/westfieldhigh';
@@ -63,6 +65,7 @@ export const content: LocaleContent = {
     [CHEATCAVE_HOST]: cheatcave,
     [KICKFLIP_HOST]: kickflip,
     [GLITTERCODEZ_HOST]: glitter,
+    [PIXLOG_HOST]: pixlog,
   },
   balloons,
   tips: assistant,

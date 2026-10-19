@@ -107,3 +107,7 @@ Values come only from the fixed sets in `layoutSets.ts` (12 backgrounds, 6 fonts
 ## Derived Pixlog feed and visitors (P2-02)
 
 Pure functions in `sites/pixlog/logic.ts`, not saved: `shoutsFeed(profiles, day, locale)` (shouts, plus "added N photos"/"new blog" items for content dated that day, worded by the catalog at render), `visitors(profiles, day)` (≤ 8: friends active that day plus seeded strangers from `STRANGERS` in `pixlog/index.ts`, `mulberry32(seedFrom('pixlog:visitors:' + day))`) and `visitorCount(day)` (monotonic, seeded). Kudos received = friends' `kudosToPlayer` days ≤ today.
+
+## Pixlog shell (P2-01)
+
+`sites/pixlog/`: `Layout` (orange bar, shutter-"o" wordmark; `data-skin` recolours bar and tabs, six skins in `Pixlog.module.css`), `Home` (login splash → `/me`, feed placeholder), `Friend` (one fixed path per Pixlog profile plus the `/*` catch-all, tabs via `?tab=`, unknown values fall back to `profile`), `Album` (`?id=` and `?n=` photo position, `PhotoCanvas` at 480×360, prev/next, caption, comments out by today). Albums, blog posts, guestbook entries and photo comments are day-gated. Names use `profileName` (like Friendspace pages), not the Messenger display names. Text lives in `content/sites/pixlog.ts` (+ German twin); Searchly indexes `/`, `/album` and every friend page from the site meta. `/me` arrives with P2-03 (until then it shows "Page not found").

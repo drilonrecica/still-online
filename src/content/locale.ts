@@ -29,6 +29,7 @@ import * as enKickflip from './sites/kickflipkings';
 import * as enSearchly from './sites/searchly';
 import * as enFriendspace from './sites/friendspace';
 import * as enGlitter from './sites/glittercodez';
+import * as enPixlog from './sites/pixlog';
 import type { LayoutDef } from './sites/glittercodez';
 import * as enTinfoil from './sites/tinfoilcomets';
 import * as enVirusguard from './sites/virusguard';
@@ -52,6 +53,7 @@ const EN_SITES = {
   [enCheatCave.CHEATCAVE_HOST]: enCheatCave,
   [enKickflip.KICKFLIP_HOST]: enKickflip,
   [enGlitter.GLITTERCODEZ_HOST]: enGlitter,
+  [enPixlog.PIXLOG_HOST]: enPixlog,
 };
 
 export type SiteTexts = typeof EN_SITES;

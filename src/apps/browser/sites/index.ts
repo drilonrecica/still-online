@@ -10,6 +10,7 @@ import { KICKFLIP_SITE } from './kickflipkings';
 import { SEARCHLY_SITE } from './searchly';
 import { FRIENDSPACE_SITE } from './friendspace';
 import { GLITTERCODEZ_SITE } from './glittercodez';
+import { PIXLOG_SITE } from './pixlog';
 import { TINFOIL_SITE } from './tinfoilcomets';
 import { VIRUSGUARD_SITE } from './virusguard';
 import { WESTFIELD_SITE } from './westfieldhigh';
@@ -23,6 +24,7 @@ export const SITES: readonly SiteDefinition[] = [
   CHEATCAVE_SITE,
   KICKFLIP_SITE,
   GLITTERCODEZ_SITE,
+  PIXLOG_SITE,
   VIRUSGUARD_SITE,
   ABOUT_SITE,
 ];
