@@ -1,12 +1,13 @@
 // German canned answers (`src/content/mail/autoReplies.ts`): one per friend, in their German voice
 // (docs/localization-de.md → "The six German voices"). Later mails get `again`.
+import { g } from '../../gender';
 import type { AutoReply } from '../../mail/types';
 
 export const autoReplies: readonly AutoReply[] = [
   {
     contactId: 'jess',
     subject: 'AW: deine mail!!!',
-    body: 'OMG du hast mir echt ne MAIL geschrieben!! ok also das konzert is grad der einzige grund warum ich lebe. wir schreiben im messenger ok?? <3 hdgdl jess',
+    body: `OMG du hast mir echt ne MAIL geschrieben!! ok also das konzert is grad der einzige grund warum ich lebe. wir schreiben im messenger ok?? ${g('<3 hdgdl', '\\m/')} jess`,
     again: 'du mailst mir SCHON WIEDER lol. schreib mir einfach im messenger!!',
   },
   {
@@ -20,8 +21,7 @@ export const autoReplies: readonly AutoReply[] = [
     contactId: 'kayla',
     subject: 'AW: omg',
     body: 'ok ich hab deine mail und ich hab dir SO VIEL zu erzählen. brianna is echt das allerletzte *seufz*. schreib mir später, ich erklär dir alles ~*kayla*~',
-    again:
-      'du weißt schon dass du einfach chatten kannst?? ich bin doch ONLINE. egal. hdl',
+    again: `du weißt schon dass du einfach chatten kannst?? ich bin doch ONLINE. egal. ${g('hdl', 'cu')}`,
   },
   {
     contactId: 'marco',

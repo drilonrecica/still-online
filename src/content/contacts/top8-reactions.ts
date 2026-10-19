@@ -176,7 +176,7 @@ export const kaylaTop8Readded: Script = {
       lines: [
         { text: 'omg im back in ur top 8!!!', delayMs: 2500 },
         { text: 'ok ur forgiven. this time', delayMs: 1000 },
-        { text: '<3', delayMs: 700 },
+        { text: g('<3', '(Y)'), delayMs: 700 },
         { delayMs: 600, personalMessageChange: '~*back where i belong*~ <3' },
       ],
       end: true,

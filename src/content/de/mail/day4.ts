@@ -80,7 +80,7 @@ export const day4Mail: readonly MailContent[] = [
       '',
       'ich werd heute nacht nich schlafen. ich seh dich morgen. ich seh ZIGGY morgen. ich muss mich hinlegen',
       '',
-      '<3 <3 <3 hdgdl jess',
+      g('<3 <3 <3 hdgdl jess', '\\m/ \\m/ ROCK ON. bis morgen. jess'),
       '',
       'p.s. wenn ziggy nen drumstick wirft und der in unsere richtung fliegt is er MEINER. hab ich zuerst gesagt. diese mail is ein rechtsgültiges dokument',
     ].join('\n'),

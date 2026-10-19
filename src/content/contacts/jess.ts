@@ -121,7 +121,13 @@ export const jess: ContactContent = {
         yes: {
           lines: [
             { text: 'AAAAAHHHHH', delayMs: 500, nudge: true },
-            { text: 'best night of our lives (L)', delayMs: 700 },
+            {
+              text: g(
+                'best night of our lives (L)',
+                'best night of our lives (Y)',
+              ),
+              delayMs: 700,
+            },
             {
               delayMs: 1500,
               personalMessageChange: 'TINFOIL COMETS W/ {name}!!!!',
@@ -276,13 +282,23 @@ export const jess: ContactContent = {
           ],
           choices: [
             { text: 'ok ok i promise!!', label: 'I promise', next: 'sign' },
-            { text: 'pinky promise (Y)', label: 'Pinky promise', next: 'sign' },
+            {
+              text: g('pinky promise (Y)', 'i swear on my skateboard (Y)'),
+              label: g('Pinky promise', 'Swear on my board'),
+              next: 'sign',
+            },
           ],
         },
         sign: {
           lines: [
             { text: 'ok ANYWAY', delayMs: 900 },
-            { text: 'im making us a SIGN for the concert!!', delayMs: 700 },
+            {
+              text: g(
+                'im making us a SIGN for the concert!!',
+                'im making us a SIGN for the concert!! u said FLAMES so it has flames',
+              ),
+              delayMs: 700,
+            },
             {
               text: 'theres glitter EVERYWHERE. my cat is sparkly now',
               delayMs: 900,
@@ -320,7 +336,13 @@ export const jess: ContactContent = {
               text: 'but he does the drumstick spin thing so... worth it',
               delayMs: 1000,
             },
-            { text: 'writing it in pink. BIG pink', delayMs: 700 },
+            {
+              text: g(
+                'writing it in pink. BIG pink',
+                'writing it in black like u said. w pink glitter around it. COMPROMISE',
+              ),
+              delayMs: 700,
+            },
             {
               delayMs: 1500,
               personalMessageChange: g(

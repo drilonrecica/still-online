@@ -15,7 +15,7 @@ export const day2Mail: readonly MailContent[] = [
     body: [
       g(
         'i dont believe in these BUT just in case. do NOT send it to brianna. xoxo k',
-        'i dont believe in these BUT its about consoles so i thought of u. do NOT send it to brianna. xoxo k',
+        'i dont believe in these BUT its about consoles so i thought of u. do NOT send it to brianna. later. k',
       ),
       '',
       '----- Forwarded Message -----',

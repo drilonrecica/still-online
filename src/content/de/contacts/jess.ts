@@ -174,13 +174,22 @@ export const jess: ContactOverlay = {
         ],
         choices: [
           { text: 'ok ok ich versprechs!!', label: 'Versprochen' },
-          { text: 'großes ehrenwort (Y)', label: 'Großes Ehrenwort' },
+          {
+            text: g(
+              'großes ehrenwort (Y)',
+              'ich schwörs auf mein skateboard (Y)',
+            ),
+            label: g('Großes Ehrenwort', 'Schwör aufs Board'),
+          },
         ],
       },
       sign: {
         lines: [
           'ok EGAL',
-          'ich mach uns ein SCHILD fürs konzert!!',
+          g(
+            'ich mach uns ein SCHILD fürs konzert!!',
+            'ich mach uns ein SCHILD fürs konzert!! du wolltest FLAMMEN also kriegt es flammen',
+          ),
           'überall GLITZER. meine katze glitzert jetzt',
           'was soll draufstehen?? :D',
         ],
@@ -206,7 +215,10 @@ export const jess: ContactOverlay = {
             'JAAA der wirft jedes mal einen. JEDES MAL',
           ),
           'aber er macht das ding wo er den drumstick wirbelt also... lohnt sich',
-          'ich schreibs in rosa. GROSS in rosa',
+          g(
+            'ich schreibs in rosa. GROSS in rosa',
+            'ich schreibs in schwarz wie du gesagt hast. mit rosa glitzer drumrum. KOMPROMISS',
+          ),
           '',
         ],
         personalMessages: {
@@ -372,8 +384,11 @@ export const jess: ContactOverlay = {
         choices: [
           { text: 'ok ok lass es so lol' },
           {
-            text: 'leih dir glitzer von der katze',
-            label: 'Von der Katze leihen',
+            text: g(
+              'leih dir glitzer von der katze',
+              'kratz was von der katze runter lol',
+            ),
+            label: g('Von der Katze leihen', 'Katze abkratzen'),
           },
         ],
       },
@@ -382,7 +397,10 @@ export const jess: ContactOverlay = {
           'ok WARTE update',
           'meine katze is grad drübergelaufen',
           'jetzt is in der mitte n PFOTENABDRUCK',
-          'ehrlich gesagt siehts besser aus',
+          g(
+            'ehrlich gesagt siehts besser aus',
+            'ehrlich gesagt siehts besser aus. und auf der cd die du mir geliehen hast is jetzt auch glitzer. sorry',
+          ),
           '',
         ],
         personalMessages: { 4: 'SCHILD-STATUS: hat n pfotenabdruck (L)' },
@@ -401,9 +419,9 @@ export const jess: ContactOverlay = {
           {
             text: g(
               'das glitzernde lila top!!',
-              'das lila glänzende ding?? keine ahnung wie das heißt',
+              'keine ahnung. was schwarzes? schwarz passt immer',
             ),
-            label: g('Glitzertop', 'Das lila Ding'),
+            label: g('Glitzertop', 'Was Schwarzes'),
           },
           {
             text: 'zieh echtes tinfoil an. also alufolie lol',
@@ -423,15 +441,27 @@ export const jess: ContactOverlay = {
         ],
       },
       sparkly: {
-        lines: ['OMG JA', 'mit der jeans mit den sternen auf der tasche??'],
+        lines: [
+          g('OMG JA', 'SCHWARZ?? das is n KONZERT und keine beerdigung'),
+          g(
+            'mit der jeans mit den sternen auf der tasche??',
+            'und was ziehst DU an?? und NICHT den hoodie mit dem loch',
+          ),
+        ],
         choices: [
-          { text: 'JA die sternchenjeans', label: 'Sternchenjeans' },
+          {
+            text: g(
+              'JA die sternchenjeans',
+              'mein schwarzes bandshirt. logisch',
+            ),
+            label: g('Sternchenjeans', 'Bandshirt'),
+          },
           {
             text: g(
               'und glitzer. logisch',
-              'und glitzer halt?? du liebst glitzer',
+              'den hoodie mit dem loch. der bringt GLÜCK',
             ),
-            label: g('Und Glitzer', 'Glitzer halt'),
+            label: g('Und Glitzer', 'Glücks-Hoodie'),
           },
         ],
       },
@@ -485,7 +515,10 @@ export const jess: ContactOverlay = {
         lines: [
           'karten: hat meine mama. SICHER (Y)',
           'schild: mit pfotenabdruck und allem. PERFEKT',
-          'outfit: liegt auf meinem stuhl. starrt mich an',
+          g(
+            'outfit: liegt auf meinem stuhl. starrt mich an',
+            'outfit: liegt auf meinem stuhl. deine stacheln: HAARGEL NICH VERGESSEN',
+          ),
           'einwegkamera: CHECK',
           'was vergess ich??',
         ],
@@ -583,7 +616,10 @@ export const jess: ContactOverlay = {
       keep: {
         lines: [
           'ECHT. der liegt unter meinem kopfkissen',
-          'beste. nacht. ALLER ZEITEN. (L)',
+          g(
+            'beste. nacht. ALLER ZEITEN. (L)',
+            'beste. nacht. ALLER ZEITEN. (Y)',
+          ),
           `danke dass du mitgekommen bist {name}. du bist ${g('die BESTE', 'der BESTE')}`,
           '',
         ],

@@ -22,7 +22,7 @@ export const TOP8_REACTIONS: readonly Top8Reaction[] = [
   {
     contactId: 'kayla',
     dropped: 'wow. WOW. i see how it is {name}. real friends stay true',
-    readded: 'ok fine ur forgiven. ONLY bc u put me back <3',
+    readded: `ok fine ur forgiven. ONLY bc u put me back ${g('<3', ';)')}`,
   },
   {
     contactId: 'marco',

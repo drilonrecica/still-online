@@ -13,6 +13,7 @@
     "test": "vitest run",
     "e2e": "playwright test",
     "size": "node scripts/check-bundle.mjs",
+    "gender-audit": "vitest run src/content/genderAudit.test.ts",
     "verify": "npm run typecheck && npm run lint && npm run test && npm run build"
   },
   "dependencies": {

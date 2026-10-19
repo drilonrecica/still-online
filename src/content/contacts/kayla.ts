@@ -1,4 +1,5 @@
 // Kayla: the ~*drama*~ friend. Everything is a crisis and the personal message changes constantly.
+import { g } from '../gender';
 import type { ContactContent } from '../types';
 import { kaylaDayScripts, kaylaDays } from './kayla-days';
 import { kaylaGameScore } from './game-reactions';
@@ -342,7 +343,10 @@ export const kayla: ContactContent = {
           ],
           choices: [
             {
-              text: 'maybe she just thinks its cute?',
+              text: g(
+                'maybe she just thinks its cute?',
+                'maybe she means it nice?',
+              ),
               label: 'Maybe its nice?',
               next: 'literal',
             },
@@ -364,10 +368,20 @@ export const kayla: ContactContent = {
               text: 'cute like CUTE or cute like "aww how sad"',
               delayMs: 1300,
             },
-            { text: 'there is a HUGE difference {name}', delayMs: 1000 },
+            {
+              text: g(
+                'there is a HUGE difference {name}',
+                'there is a HUGE difference {name}. ugh BOYS',
+              ),
+              delayMs: 1000,
+            },
           ],
           choices: [
-            { text: 'cute like cute. relax', label: 'Relax', next: 'thanks' },
+            {
+              text: g('cute like cute. relax', 'its 2 words kayla. its fine'),
+              label: g('Relax', 'Its fine'),
+              next: 'thanks',
+            },
             {
               text: 'ok yeah thats the sad kind',
               label: 'The sad kind',

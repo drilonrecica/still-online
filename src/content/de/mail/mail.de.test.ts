@@ -30,7 +30,10 @@ describe('German mail', () => {
     expect(getMailContent('de', 'boy')).toEqual(
       resolveGender(MAIL_CONTENT, 'boy'),
     );
-    expect(getAutoReplies('de', 'girl')).toBe(autoReplies);
+    expect(rawContentFor('de').autoReplies).toBe(autoReplies);
+    expect(getAutoReplies('de', 'girl')).toEqual(
+      resolveGender(autoReplies, 'girl'),
+    );
   });
 
   it('has the English ids, days and sender addresses, in order', () => {

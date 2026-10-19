@@ -41,7 +41,11 @@ export const kaylaDayScripts: readonly Script[] = [
             label: 'Popular hoodie?',
             next: 'popular',
           },
-          { text: 'lol twinsies', label: 'Twinsies', next: 'twins' },
+          {
+            text: g('lol twinsies', 'lol twins'),
+            label: g('Twinsies', 'Twins'),
+            next: 'twins',
+          },
         ],
       },
       notice: {
@@ -110,8 +114,20 @@ export const kaylaDayScripts: readonly Script[] = [
       invite: {
         lines: [
           { text: '{name} r u there', delayMs: 4000 },
-          { text: 'so brianna is having a sleepover', delayMs: 1200 },
-          { text: 'everyone in our grade got invited', delayMs: 1100 },
+          {
+            text: g(
+              'so brianna is having a sleepover',
+              'so brianna is having a bday party. and a sleepover after',
+            ),
+            delayMs: 1200,
+          },
+          {
+            text: g(
+              'everyone in our grade got invited',
+              'everyone in our grade got invited. u boys just to the party part',
+            ),
+            delayMs: 1100,
+          },
           { text: 'EVERYONE', delayMs: 800 },
           { text: 'guess who didnt', delayMs: 1300 },
         ],
@@ -131,7 +147,7 @@ export const kaylaDayScripts: readonly Script[] = [
           {
             text: g(
               'theyre doing face masks and scary movies. i HATE fun',
-              'theyre doing pizza and scary movies. i HATE fun',
+              'u guys get cake and then they do scary movies all night. i HATE fun',
             ),
             delayMs: 1400,
           },
@@ -270,7 +286,14 @@ export const kaylaDayScripts: readonly Script[] = [
         ],
         choices: [
           { text: 'so shes a fan lol', label: 'Shes a fan', next: 'go' },
-          { text: 'awww thats kinda sweet', label: 'Kinda sweet', next: 'go' },
+          {
+            text: g(
+              'awww thats kinda sweet',
+              'ha ok thats actually kinda nice',
+            ),
+            label: g('Kinda sweet', 'Kinda nice'),
+            next: 'go',
+          },
         ],
       },
       told: {
@@ -289,7 +312,10 @@ export const kaylaDayScripts: readonly Script[] = [
             next: 'go',
           },
           {
-            text: 'so r u going to the sleepover?',
+            text: g(
+              'so r u going to the sleepover?',
+              'so r u going? im going to the party part anyway',
+            ),
             label: 'Going?',
             next: 'go',
           },
@@ -298,13 +324,26 @@ export const kaylaDayScripts: readonly Script[] = [
       go: {
         lines: [
           {
-            text: 'the sleepover is tmrw. and im invited. technically',
+            text: g(
+              'the sleepover is tmrw. and im invited. technically',
+              'the party is tmrw. and the sleepover. and im invited. technically',
+            ),
             delayMs: 1400,
           },
-          { text: 'do i go?? after EVERYTHING??', delayMs: 1100 },
+          {
+            text: g(
+              'do i go?? after EVERYTHING??',
+              'ur going to the party part right?? do i go?? after EVERYTHING??',
+            ),
+            delayMs: 1100,
+          },
         ],
         choices: [
-          { text: 'GO. obviously', label: 'Go!', next: 'going' },
+          {
+            text: g('GO. obviously', 'GO. ill be there for the cake part'),
+            label: 'Go!',
+            next: 'going',
+          },
           { text: 'only if u want to', label: 'If u want to', next: 'want' },
         ],
       },
@@ -342,7 +381,13 @@ export const kaylaDayScripts: readonly Script[] = [
         lines: [
           { text: '{name}', delayMs: 4000 },
           { text: 'i survived', delayMs: 1200 },
-          { text: 'the sleepover', delayMs: 1000 },
+          {
+            text: g(
+              'the sleepover',
+              'the sleepover. u boys left after the cake. LUCKY',
+            ),
+            delayMs: 1000,
+          },
         ],
         choices: [
           { text: 'HOW WAS IT', label: 'How was it??', next: 'how' },
@@ -377,8 +422,17 @@ export const kaylaDayScripts: readonly Script[] = [
       },
       laugh: {
         lines: [
-          { text: 'then she said "cute pajamas"', delayMs: 1300 },
-          { text: 'and i said "u too"', delayMs: 1100 },
+          {
+            text: g(
+              'then she said "cute pajamas"',
+              'then she asked about u. she said ur "kinda funny"',
+            ),
+            delayMs: 1300,
+          },
+          {
+            text: g('and i said "u too"', 'and i said "he IS. sometimes"'),
+            delayMs: 1100,
+          },
           { text: 'and then we LAUGHED. like actually laughed', delayMs: 1300 },
           {
             text: 'were not best friends. were like... peace treaty friends',
@@ -395,7 +449,10 @@ export const kaylaDayScripts: readonly Script[] = [
           { text: 'stop ur gonna make me cry', delayMs: 1200 },
           { text: 'ok i AM crying. drama princess things', delayMs: 1400 },
           {
-            text: 'here. feelings. dont make it weird',
+            text: g(
+              'here. feelings. dont make it weird',
+              'here. hearts. theyre for ME. i earned them',
+            ),
             delayMs: 1000,
             wink: 'hearts',
           },

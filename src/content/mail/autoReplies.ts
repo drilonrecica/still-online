@@ -1,12 +1,13 @@
 // Canned answers when the player mails a friend: one per friend, in voice. The second and later
 // mails to the same friend get `again`.
+import { g } from '../gender';
 import type { AutoReply } from './types';
 
 export const autoReplies: readonly AutoReply[] = [
   {
     contactId: 'jess',
     subject: 'RE: ur email!!!',
-    body: 'omg u actually emailed me!! ok so the concert is the whole reason i am alive rn. ttyl on messenger ok?? <3 jess',
+    body: `omg u actually emailed me!! ok so the concert is the whole reason i am alive rn. ttyl on messenger ok?? ${g('<3', '\\m/')} jess`,
     again: 'ur emailing me AGAIN lol. just msg me on messenger!!',
   },
   {
@@ -19,8 +20,7 @@ export const autoReplies: readonly AutoReply[] = [
     contactId: 'kayla',
     subject: 'RE: omg',
     body: "ok i got ur email and i HAVE SO MUCH to tell u. brianna is literally the worst. msg me later i'll explain everything ~*kayla*~",
-    again:
-      "u know u can just chat right?? i'm literally online. whatever. xoxo",
+    again: `u know u can just chat right?? i'm literally online. whatever. ${g('xoxo', 'later')}`,
   },
   {
     contactId: 'marco',

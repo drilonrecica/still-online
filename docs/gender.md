@@ -41,6 +41,17 @@ Saves store ids and references, never rendered text, so a gender switch re-rende
 - **Mail:** `renderMail`/`renderMails` take the gender. Attachments saved to disk are frozen copies and don't change.
 - **Sites:** `useSiteText(host)` reads `useGender()`; `meta(locale)` reads `getGender()`, and Searchly rebuilds its index on a switch.
 
+## Audit
+
+`src/content/genderAudit.test.ts` (G2) resolves all content as a boy (`contentFor(locale, 'boy')`, EN and DE) and scans every readable string for girly cue words (`<3`, `(L)`, `glitter`, `sleepover`, `cute`, „hdgdl", „Glitzer", „Übernachtungsparty" …; the list is in `src/content/genderAudit.ts`). Ids, styling, links and author screen names are skipped.
+
+- Paths are stable: `en/contacts/jess/day3/sparkly/lines[1]`, `…/choices[0]/text|label`, `de/pixlog/kayla/albums/kayla-sleepover/title`.
+- Every hit must be on the allowlist (`src/content/genderAudit.allow.ts`) as `{ where, match, reason }`. Reasons: `friend-self-talk` (her own glitter, outfit or PM), `story-fact` (Jess's glitter sign, Brianna's sleepover as Kayla's story, Pia's ponies), `site-content` (a site's text or what others wrote on a friend's page; only these may use a `/*` prefix with `match: '*'`), and `pending` (seeded before G2; G2-02 removes them).
+- What the boy types (choice `text` and `label`) is never allowed with a real reason. Stale entries fail the test, so the list only shrinks.
+- `npm run gender-audit` runs the test and prints, per module, the hits and how many strings differ by gender.
+
+**Patterns for a boy** (G2): the friend keeps her voice and her girly things; what changes is what she says to him and pulls him into. He teases the glitter, gets (Y) or „dude" instead of (L) or <3, is the outsider or reluctant helper in girls' plans (never at the sleepover), and answers with short guy-talk.
+
 ## Tests
 
 - `src/test/setup.ts` pins `gender: 'girl'`. A test of the boy side sets `useSettingsStore.setState({ gender: 'boy' })` (or passes `'boy'` to an accessor) itself.

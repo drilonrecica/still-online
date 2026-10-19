@@ -83,8 +83,11 @@ export const jessDayScripts: readonly Script[] = [
         choices: [
           { text: 'ok ok keep it lol', next: 'cat' },
           {
-            text: 'borrow glitter from the cat',
-            label: 'Borrow from the cat',
+            text: g(
+              'borrow glitter from the cat',
+              'scrape some back off the cat lol',
+            ),
+            label: g('Borrow from the cat', 'Scrape the cat'),
             next: 'cat',
           },
         ],
@@ -94,7 +97,13 @@ export const jessDayScripts: readonly Script[] = [
           { text: 'ok WAIT update', delayMs: 1200 },
           { text: 'my cat just walked across it', delayMs: 700 },
           { text: 'theres a PAW PRINT in the middle now', delayMs: 800 },
-          { text: 'honestly it looks better', delayMs: 900 },
+          {
+            text: g(
+              'honestly it looks better',
+              'honestly it looks better. also the cd u lent me has glitter on it now. sorry',
+            ),
+            delayMs: 900,
+          },
           {
             delayMs: 1500,
             personalMessageChange: 'SIGN STATUS: has a paw print (L)',
@@ -125,9 +134,9 @@ export const jessDayScripts: readonly Script[] = [
           {
             text: g(
               'the sparkly purple top!!',
-              'the shiny purple thing?? idk what its called',
+              'idk. something black? black goes w everything',
             ),
-            label: g('Sparkly top', 'The purple thing'),
+            label: g('Sparkly top', 'Something black'),
             next: 'sparkly',
           },
           {
@@ -154,17 +163,31 @@ export const jessDayScripts: readonly Script[] = [
       },
       sparkly: {
         lines: [
-          { text: 'OMG YES', delayMs: 600, nudge: true },
-          { text: 'with the jeans w the stars on the pocket??', delayMs: 900 },
+          {
+            text: g('OMG YES', 'BLACK?? its a CONCERT not a funeral'),
+            delayMs: 600,
+            nudge: true,
+          },
+          {
+            text: g(
+              'with the jeans w the stars on the pocket??',
+              'what r U wearing?? and NOT the hoodie w the hole',
+            ),
+            delayMs: 900,
+          },
         ],
         choices: [
-          { text: 'YES the star jeans', label: 'Star jeans', next: 'mirror' },
+          {
+            text: g('YES the star jeans', 'my black band shirt. obviously'),
+            label: g('Star jeans', 'Band shirt'),
+            next: 'mirror',
+          },
           {
             text: g(
               'and glitter. obviously',
-              'and glitter i guess?? u love glitter',
+              'the hoodie w the hole. its LUCKY',
             ),
-            label: g('And glitter', 'Glitter i guess'),
+            label: g('And glitter', 'The lucky hoodie'),
             next: 'mirror',
           },
         ],
@@ -241,7 +264,13 @@ export const jessDayScripts: readonly Script[] = [
         lines: [
           { text: 'tickets: my mom has them. SAFE (Y)', delayMs: 800 },
           { text: 'sign: paw print and all. PERFECT', delayMs: 800 },
-          { text: 'outfit: on my chair. staring at me', delayMs: 800 },
+          {
+            text: g(
+              'outfit: on my chair. staring at me',
+              'outfit: on my chair. ur spikes: BRING THE HAIR GEL',
+            ),
+            delayMs: 800,
+          },
           { text: 'disposable camera: CHECK', delayMs: 700 },
           { text: 'what am i forgetting??', delayMs: 700 },
         ],
@@ -282,7 +311,11 @@ export const jessDayScripts: readonly Script[] = [
       night: {
         lines: [
           { text: 'ok im gonna TRY to sleep', delayMs: 900 },
-          { text: 'nite {name}!!!! (L)', delayMs: 600, nudge: true },
+          {
+            text: g('nite {name}!!!! (L)', 'nite {name}!!!! (Y)'),
+            delayMs: 600,
+            nudge: true,
+          },
           {
             delayMs: 1500,
             personalMessageChange: 'sleeping (NOT) 1 MORE SLEEP!!!',
@@ -376,7 +409,10 @@ export const jessDayScripts: readonly Script[] = [
       keep: {
         lines: [
           { text: 'WAY. its under my pillow', delayMs: 800 },
-          { text: 'best. night. EVER. (L)', delayMs: 700 },
+          {
+            text: g('best. night. EVER. (L)', 'best. night. EVER. (Y)'),
+            delayMs: 700,
+          },
           { text: 'thx for coming w me {name}. ur the best', delayMs: 900 },
           {
             delayMs: 1500,

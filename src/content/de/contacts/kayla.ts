@@ -219,7 +219,10 @@ export const kayla: ContactOverlay = {
         personalMessages: { 4: '???????' },
         choices: [
           {
-            text: 'vllt findet sie ihn einfach süß?',
+            text: g(
+              'vllt findet sie ihn einfach süß?',
+              'vllt meint sies einfach nett?',
+            ),
             label: 'Vllt nett gemeint?',
           },
           { text: 'das is TOTAL ironisch', label: 'Ironisch' },
@@ -229,10 +232,19 @@ export const kayla: ContactOverlay = {
       literal: {
         lines: [
           'süß wie SÜSS oder süß wie „ooch wie traurig“',
-          'das is ein RIESEN unterschied {name}',
+          g(
+            'das is ein RIESEN unterschied {name}',
+            'das is ein RIESEN unterschied {name}. boah JUNGS',
+          ),
         ],
         choices: [
-          { text: 'süß wie süß. chill ma', label: 'Chill ma' },
+          {
+            text: g(
+              'süß wie süß. chill ma',
+              'kayla. das sind 2 wörter. passt schon',
+            ),
+            label: g('Chill ma', 'Passt schon'),
+          },
           {
             text: 'ok ja das is die traurige sorte',
             label: 'Die traurige Sorte',
@@ -344,8 +356,14 @@ export const kayla: ContactOverlay = {
       invite: {
         lines: [
           '{name} bist du da',
-          'also brianna macht ne übernachtungsparty',
-          'alle aus unserer stufe sind eingeladen',
+          g(
+            'also brianna macht ne übernachtungsparty',
+            'also brianna macht ne geburtstagsparty. und danach ne übernachtungsparty',
+          ),
+          g(
+            'alle aus unserer stufe sind eingeladen',
+            'alle aus unserer stufe sind eingeladen. ihr jungs nur zur party',
+          ),
           'ALLE',
           'rate ma wer nich',
         ],
@@ -363,7 +381,7 @@ export const kayla: ContactOverlay = {
           '',
           g(
             'die machen gesichtsmasken und horrorfilme. ich HASSE spaß. ich kann nich mehr',
-            'die machen pizza und horrorfilme. ich HASSE spaß. ich kann nich mehr',
+            'ihr kriegt kuchen und danach gucken die die ganze nacht horrorfilme. ich HASSE spaß. ich kann nich mehr',
           ),
         ],
         personalMessages: { 1: '~*GUT*~' },
@@ -466,7 +484,13 @@ export const kayla: ContactOverlay = {
         ],
         choices: [
           { text: 'also is sie n fan lol', label: 'Sie is n Fan' },
-          { text: 'ooch das is irgendwie süß', label: 'Irgendwie süß' },
+          {
+            text: g(
+              'ooch das is irgendwie süß',
+              'ha ok das is eigentlich ganz nett',
+            ),
+            label: g('Irgendwie süß', 'Ganz nett'),
+          },
         ],
       },
       told: {
@@ -481,18 +505,30 @@ export const kayla: ContactOverlay = {
             label: 'Nich um dich',
           },
           {
-            text: 'und gehst du jetzt zur übernachtungsparty?',
+            text: g(
+              'und gehst du jetzt zur übernachtungsparty?',
+              'und gehst du jetzt hin? ich geh eh zur party',
+            ),
             label: 'Gehst du hin?',
           },
         ],
       },
       go: {
         lines: [
-          'die übernachtungsparty is morgen. und ich bin eingeladen. theoretisch',
-          'soll ich hin?? nach ALLEM??',
+          g(
+            'die übernachtungsparty is morgen. und ich bin eingeladen. theoretisch',
+            'die party is morgen. und die übernachtungsparty. und ich bin eingeladen. theoretisch',
+          ),
+          g(
+            'soll ich hin?? nach ALLEM??',
+            'du bist doch bei der party oder?? soll ich hin?? nach ALLEM??',
+          ),
         ],
         choices: [
-          { text: 'GEH. natürlich', label: 'Geh hin!' },
+          {
+            text: g('GEH. natürlich', 'GEH. ich bin beim kuchen dabei'),
+            label: 'Geh hin!',
+          },
           { text: 'nur wenn du willst', label: 'Wenn du willst' },
         ],
       },
@@ -516,7 +552,14 @@ export const kayla: ContactOverlay = {
     },
     day5: {
       survived: {
-        lines: ['{name}', 'ich hab überlebt', 'die übernachtungsparty'],
+        lines: [
+          '{name}',
+          'ich hab überlebt',
+          g(
+            'die übernachtungsparty',
+            'die übernachtungsparty. ihr jungs seid nach dem kuchen gegangen. GLÜCKSPILZE',
+          ),
+        ],
         choices: [
           { text: 'WIE WARS', label: 'Wie wars??' },
           { text: 'habt ihr euch gestritten??', label: 'Gestritten?' },
@@ -546,8 +589,14 @@ export const kayla: ContactOverlay = {
       },
       laugh: {
         lines: [
-          'dann hat sie gesagt „süßer schlafanzug“',
-          'und ich hab gesagt „du auch“',
+          g(
+            'dann hat sie gesagt „süßer schlafanzug“',
+            'dann hat sie nach dir gefragt. sie findet dich „irgendwie witzig“',
+          ),
+          g(
+            'und ich hab gesagt „du auch“',
+            'und ich hab gesagt „is er auch. manchmal“',
+          ),
           'und dann haben wir GELACHT. so richtig gelacht',
           'wir sind keine besten freundinnen. wir sind so... friedensvertrag-freundinnen',
         ],
@@ -560,7 +609,10 @@ export const kayla: ContactOverlay = {
         lines: [
           'hör auf sonst muss ich heulen',
           'ok ich heul SCHON. drama-prinzessinnen-kram',
-          'hier. gefühle. mach es nich komisch',
+          g(
+            'hier. gefühle. mach es nich komisch',
+            'hier. herzchen. die sind für MICH. hab ich mir verdient',
+          ),
           '',
         ],
         personalMessages: { 3: '~*frieden (irgendwie)*~ <3' },
@@ -676,7 +728,7 @@ export const kayla: ContactOverlay = {
         lines: [
           'omg ich bin wieder in deiner top 8!!!',
           'ok dir is verziehen. dieses mal',
-          '<3',
+          g('<3', '(Y)'),
           '',
         ],
         personalMessages: { 3: '~*wieder da wo ich hingehöre*~ <3' },
