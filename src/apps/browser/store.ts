@@ -16,9 +16,11 @@ import type { ContactId, FavoriteRecord } from '@/content/types';
 import { getGender } from '@/i18n/settingsText';
 import { translate } from '@/i18n/t';
 import type { Locale, MessageKey } from '@/i18n/types';
+import { events } from '@/os/events';
 import { isRecord, persistOptions } from '@/os/persist';
 import type { Gender } from '@/os/types';
 import { LEGACY_DEFAULT_FAVORITE_NAMES } from './legacyHosts';
+import { savedTop8Contacts, top8Diff } from './top8Drama';
 import { normalizeUrl } from './url';
 import {
   PIXLOG_DEFAULTS,
@@ -134,7 +136,10 @@ export interface WebStore extends WebState {
   hit: (host: string) => number;
   /** Appends a player entry to `host`'s guestbook. */
   signGuestbook: (host: string, entry: PlayerGuestbookEntry) => void;
-  /** Saves the player's Friendspace `/me` profile. */
+  /**
+   * Saves the player's Friendspace `/me` profile. Friends it drops from or adds to the Top 8 go
+   * out as one `web:top8Changed` (Messenger's Top 8 drama, P0-03).
+   */
   saveProfile: (profile: PlayerProfile) => void;
   /** Records the player's answer to poll `pollId`; the first vote sticks ("u already voted!!"). */
   vote: (pollId: string, option: number) => void;
@@ -296,7 +301,15 @@ export const useWebStore = create<WebStore>()(
             [host]: [...(s.guestbook[host] ?? []), entry],
           },
         })),
-      saveProfile: (profile) => set({ myProfile: profile }),
+      saveProfile: (profile) => {
+        const change = top8Diff(
+          savedTop8Contacts(get().myProfile?.top8),
+          profile.top8,
+        );
+        set({ myProfile: profile });
+        if (change.dropped.length > 0 || change.added.length > 0)
+          events.emit('web:top8Changed', change);
+      },
       markBulletinsSeen: (day) =>
         set((s) =>
           Number.isInteger(day) && day > (s.bulletinsSeen ?? 0)

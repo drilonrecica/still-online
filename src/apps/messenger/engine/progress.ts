@@ -15,6 +15,7 @@ import {
   type QueuedTrigger,
   type Script,
   type ScriptProgress,
+  type Top8Record,
   type TriggerContext,
 } from '@/content/types';
 import { sanitizeCustomEmoticons } from '../customEmoticons';
@@ -261,6 +262,18 @@ function contactProgress(v: unknown): ContactProgress | null {
   };
 }
 
+/** Top 8 bookkeeping: entries with a known state and a whole day >= 1; others are dropped. */
+export function sanitizeTop8Records(v: unknown): Record<string, Top8Record> {
+  if (!isRecord(v)) return {};
+  const out: Record<string, Top8Record> = {};
+  for (const [id, r] of Object.entries(v)) {
+    if (!isRecord(r) || (r.state !== 'dropped' && r.state !== 'reacted'))
+      continue;
+    if (isCount(r.day) && r.day >= 1) out[id] = { state: r.state, day: r.day };
+  }
+  return out;
+}
+
 /**
  * Builds progress from any persisted value. Invalid parts fall back to defaults. A contact with
  * unusable core fields is dropped, and the engine recreates it from content.
@@ -298,7 +311,12 @@ export function sanitizeProgress(v: unknown): MessengerProgress {
       if (sane) contacts[id] = sane;
     }
   }
-  return { player, contacts };
+  const top8 = sanitizeTop8Records(v.top8);
+  return {
+    player,
+    contacts,
+    ...(Object.keys(top8).length > 0 ? { top8 } : {}),
+  };
 }
 
 /**

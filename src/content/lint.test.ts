@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { g, gendered } from './gender';
-import { lintContentStrings, lintText } from './lint';
+import { kayla } from './contacts/kayla';
+import { kaylaTop8Dropped } from './contacts/top8-reactions';
+import { lintContact, lintContentStrings, lintText } from './lint';
+import type { ContactContent, Script } from './types';
 
 describe('gender variants', () => {
   it('passes well-formed variants and lints both sides', () => {
@@ -129,5 +132,39 @@ describe('lint per locale', () => {
       expect(lintText(bad, 'p', de), bad).toHaveLength(1);
     expect(lintText('kayla.example/blog', 'p', de)).toEqual([]);
     expect(lintContentStrings({ a: 'meine Story' }, 'r', 'de')).toHaveLength(1);
+  });
+});
+
+describe('Top 8 drama triggers (P0-03)', () => {
+  const contact = (scripts: Script[]): ContactContent => ({
+    contact: kayla.contact,
+    scripts,
+  });
+  const once = (id: string, type: 'onTop8Dropped' | 'onTop8Readded') => ({
+    ...kaylaTop8Dropped,
+    id,
+    trigger: { type },
+  });
+
+  it('accepts one reaction pair; Kayla ships one', () => {
+    expect(lintContact(kayla)).toEqual([]);
+    const types = kayla.scripts.map((s) => s.trigger.type);
+    expect(types.filter((t) => t === 'onTop8Dropped')).toHaveLength(1);
+    expect(types.filter((t) => t === 'onTop8Readded')).toHaveLength(1);
+  });
+
+  it('allows at most one script per new trigger', () => {
+    const problems = lintContact(
+      contact([
+        once('a', 'onTop8Dropped'),
+        once('b', 'onTop8Dropped'),
+        once('c', 'onTop8Readded'),
+        once('d', 'onTop8Readded'),
+      ]),
+    );
+    expect(problems).toEqual([
+      'kayla: more than one onTop8Dropped script',
+      'kayla: more than one onTop8Readded script',
+    ]);
   });
 });

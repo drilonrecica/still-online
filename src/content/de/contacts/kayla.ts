@@ -637,5 +637,47 @@ export const kayla: ContactOverlay = {
         ],
       },
     },
+    // P4 replaces this with German (Top 8 drama, P0-03).
+    'top8-dropped': {
+      noticed: {
+        lines: [
+          'so.',
+          'i checked ur friendspace last nite',
+          'and im not in ur top 8 anymore??',
+          'like. wow. ok {name}',
+        ],
+        choices: [
+          { text: 'it was an accident i swear', label: 'It was an accident' },
+          {
+            text: 'i was just changing stuff around',
+            label: 'Just changing stuff',
+          },
+        ],
+      },
+      accident: {
+        lines: [
+          'an ACCIDENT',
+          'ur mouse just slipped and deleted me. sure.',
+          '',
+        ],
+        personalMessages: { 2: '~*replaceable apparently*~' },
+      },
+      changing: {
+        lines: ['changing stuff around = taking ME out', 'noted.', ''],
+        personalMessages: { 2: '~*replaceable apparently*~' },
+      },
+    },
+    // P4 replaces this with German.
+    'top8-readded': {
+      back: {
+        lines: [
+          'omg im back in ur top 8!!!',
+          'ok ur forgiven. this time',
+          '<3',
+          '',
+        ],
+        personalMessages: { 3: '~*back where i belong*~ <3' },
+      },
+    },
   },
 };

@@ -35,6 +35,12 @@ export interface ConversationEngine {
   nowPlaying: (track: NowPlayingTrack) => void;
   /** A finished game (`game:score`): fires matching `onGameScore` scripts while signed in. */
   gameScore: (game: GameId, score: number) => void;
+  /**
+   * The player's Top 8 lost or gained friends (`web:top8Changed`), signed in or not. A drop is
+   * recorded for the next day's sign-in; a re-add after the friend reacted fires
+   * `onTop8Readded` (queued while they're offline), a re-add before that just forgets the drop.
+   */
+  top8Changed: (change: { dropped: ContactId[]; added: ContactId[] }) => void;
   on: ReturnType<typeof createEventBus<EngineEventMap>>['on'];
   off: ReturnType<typeof createEventBus<EngineEventMap>>['off'];
   dispose: () => void;
@@ -46,6 +52,7 @@ export function createConversationEngine(
   const ctx = createEngineContext(options);
   const { contents, store, scheduler, bus, data, contentOf } = ctx;
   const { patchContact, progressOf, visit, after, clearTimers, getDay } = ctx;
+  const { top8Of, setTop8 } = ctx;
   const {
     running,
     fire,
@@ -166,6 +173,19 @@ export function createConversationEngine(
           if (t.minScore === undefined || score >= t.minScore)
             fire(contact.id, script, context);
         }
+      }
+    },
+    top8Changed({ dropped, added }) {
+      const day = getDay();
+      for (const id of dropped) {
+        if (!contentOf(id) || top8Of(id)?.state === 'dropped') continue;
+        setTop8(id, { state: 'dropped', day });
+      }
+      for (const id of added) {
+        const record = top8Of(id);
+        if (!record) continue;
+        setTop8(id, undefined);
+        if (record.state === 'reacted') fireAll(id, 'onTop8Readded');
       }
     },
     on: bus.on,

@@ -58,13 +58,26 @@ function playPath(
         ]
       : [];
   const solo: ContactContent = { ...content, scripts: [...target, script] };
-  // A day script needs the world on its day before sign-in.
-  const day = trigger.type === 'onDay' ? trigger.day : 1;
+  // A day script needs the world on its day before sign-in; a Top 8 drop reacts a day later.
+  const day =
+    trigger.type === 'onDay'
+      ? trigger.day
+      : trigger.type === 'onTop8Dropped'
+        ? 2
+        : 1;
   const t = setup([solo], {
     getDay: () => day,
     onUnlock,
     getGender: () => gender,
   });
+  // Top 8 drama: dropped on day 1, and for a re-add already reacted to.
+  if (trigger.type === 'onTop8Dropped' || trigger.type === 'onTop8Readded') {
+    const state = trigger.type === 'onTop8Dropped' ? 'dropped' : 'reacted';
+    const { progress } = t.store.getState();
+    t.store.setState({
+      progress: { ...progress, top8: { [id]: { state, day: 1 } } },
+    });
+  }
   t.engine.signIn();
   vi.advanceTimersByTime(content.contact.signInAfterMs + 1);
 
@@ -84,6 +97,8 @@ function playPath(
     t.engine.gameScore(trigger.game, Math.max(trigger.minScore ?? 0, 420));
   } else if (trigger.type === 'onPlayerNudge') {
     t.engine.playerNudge(id);
+  } else if (trigger.type === 'onTop8Readded') {
+    t.engine.top8Changed({ dropped: [], added: [id] });
   }
 
   const visited: string[] = [];

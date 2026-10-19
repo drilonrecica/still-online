@@ -75,6 +75,7 @@ const formatters = (render: Render): Formatters => ({
     `${p.from === 'player' ? '>' : '<'} ${p.contactId}: ${render.entry(p.contactId, p.entry)}`,
   nudge: (p) => `nudge ${p.from} ${p.contactId}`,
   wink: (p) => `wink ${p.from} ${p.contactId} ${p.wink}`,
+  top8Reacted: (p) => `top8Reacted ${p.contactId} ${p.kind}`,
   statusChange: (p) => `status ${p.contactId} ${p.status}`,
   personalMessageChange: (p) =>
     `pm ${p.contactId} ${render.pm(p.contactId, p.personalMessage)}`,

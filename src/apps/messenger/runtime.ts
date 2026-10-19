@@ -180,6 +180,11 @@ function createEngine(): ConversationEngine {
     useWindowsStore.subscribe(syncAttention),
   ];
 
+  // A Top 8 reaction ended: the friend's line goes on the player's Friendspace wall.
+  created.on('top8Reacted', (reacted) =>
+    events.emit('messenger:top8Reacted', reacted),
+  );
+
   // Friends react to finished games (`onGameScore` scripts).
   const stopGames = events.on('game:score', ({ game, score }) =>
     created.gameScore(game, score),

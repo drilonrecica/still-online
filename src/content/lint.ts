@@ -299,6 +299,15 @@ function lintGameScores(content: ContactContent): string[] {
   });
 }
 
+/** At most one `onTop8Dropped` and one `onTop8Readded` script per contact (one reaction pair). */
+function lintTop8(content: ContactContent): string[] {
+  return (['onTop8Dropped', 'onTop8Readded'] as const).flatMap((type) =>
+    content.scripts.filter((s) => s.trigger.type === type).length > 1
+      ? [`${content.contact.id}: more than one ${type} script`]
+      : [],
+  );
+}
+
 /** All checks for one contact, including unique script ids; text rules follow `locale`. */
 export function lintContact(
   content: ContactContent,
@@ -322,6 +331,7 @@ export function lintContact(
     ...lintUnlocks(content),
     ...lintWinks(content),
     ...lintGameScores(content),
+    ...lintTop8(content),
     ...content.scripts.flatMap((s) =>
       lintScriptGraph(s).map((p) => `${content.contact.id}: ${p}`),
     ),

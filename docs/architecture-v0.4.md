@@ -64,7 +64,7 @@ German: each module has a twin under `src/content/de/**`, a `structuredClone` of
 
 **Actions:** `saveProfile` (widened to the new profile shape), `markBulletinsSeen(day)` (only raises), `appendTop8Wall(entry)`, `setPixlogSkin`, `setAlbum`, `saveSurvey(surveyId, answers)`, `giveKudos(contactId, day)` (false if already given to that friend that day, or an unknown friend). Persisted text is only what the player typed (captions, answers, layout code, mood); everything else is ids and days.
 
-Top 8 reaction **bookkeeping** (`top8: Record<ContactId, {state, day}>`) lives in the Messenger store (P0-03), not here.
+Top 8 reaction **bookkeeping** (`top8: Record<ContactId, {state, day}>`) lives in the Messenger store (P0-03), not here: `progress.top8` (`still-online:v1:messenger`, absent when empty, sanitized by `sanitizeTop8Records`). Both Top 8 events are routed by boot-installed listeners (`apps/messenger/top8Route.ts`, `apps/browser/top8WallRoute.ts`) that load the lazy Messenger runtime or `web` store only when an event arrives, so a drop counts even before Messenger was ever opened.
 
 ## Events (`src/os/events.ts`)
 

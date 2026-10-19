@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { migrateLegacyNotepad } from '@/apps/notepad/migrate';
 import { installMailDelivery } from '@/apps/mail/store';
+import { installTop8WallRoute } from '@/apps/browser/top8WallRoute';
 import { installDisplayPictureRoute } from '@/apps/messenger/displayPictureRoute';
+import { installTop8Route } from '@/apps/messenger/top8Route';
 import { getApp } from '@/apps/registry';
 import { getGender } from '@/i18n/settingsText';
 import { getLocale } from '@/i18n/t';
@@ -84,6 +86,8 @@ export function App() {
   useEffect(() => installBrowserRouter(), []);
   useEffect(() => installMailDelivery(), []);
   useEffect(() => installDisplayPictureRoute(), []);
+  useEffect(() => installTop8Route(), []);
+  useEffect(() => installTop8WallRoute(), []);
   useEffect(() => installIdle(), []);
   useEffect(() => (state === 'desktop' ? installKonami() : undefined), [state]);
 

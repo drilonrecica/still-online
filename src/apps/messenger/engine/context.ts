@@ -8,6 +8,7 @@ import type {
   ContactContent,
   ContactId,
   ContactProgress,
+  Top8Record,
 } from '@/content/types';
 import { defaultContactProgress, defaultScriptProgress } from './progress';
 import { realScheduler } from './scheduler';
@@ -85,6 +86,18 @@ export function createEngineContext(options: ConversationEngineOptions) {
       },
     });
   };
+  const top8Of = (id: ContactId): Top8Record | undefined =>
+    data().progress.top8?.[id];
+  /** Sets (or with `undefined` deletes) a contact's Top 8 record; `top8` is omitted when empty. */
+  const setTop8 = (id: ContactId, record: Top8Record | undefined) => {
+    const progress = { ...data().progress };
+    const top8 = { ...progress.top8 };
+    if (record) top8[id] = record;
+    else delete top8[id];
+    if (Object.keys(top8).length > 0) progress.top8 = top8;
+    else delete progress.top8;
+    store.setState({ progress });
+  };
   const setFlag = (key: 'online' | 'typing', id: ContactId, value: boolean) =>
     store.setState({ [key]: { ...data()[key], [id]: value } });
   const isOnline = (id: ContactId) => data().online[id] === true;
@@ -139,6 +152,8 @@ export function createEngineContext(options: ConversationEngineOptions) {
     textOf,
     progressOf,
     patchContact,
+    top8Of,
+    setTop8,
     setFlag,
     isOnline,
     visit,

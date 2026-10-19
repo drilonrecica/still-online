@@ -1,4 +1,5 @@
 // Typed event bus. The only channel for cross-app communication.
+import type { ContactId } from '@/content/types';
 import type { GameId } from '@/os/types';
 
 /** Event name → payload. Namespace names as `<app>:<event>`; add new events here. */
@@ -33,6 +34,14 @@ export interface OsEventMap {
   'notepad:letter': Record<string, never>;
   /** fs nodes created, changed, moved or removed. */
   'fs:changed': { ids: string[] };
+  // v0.4 (docs/architecture-v0.4.md → "Events")
+  /** The player saved a Top 8 that lost or gained these friends (Friendspace → Messenger). */
+  'web:top8Changed': { dropped: ContactId[]; added: ContactId[] };
+  /** A friend's Top 8 drop or re-add script ended (Messenger → the Friendspace wall). */
+  'messenger:top8Reacted': {
+    contactId: ContactId;
+    kind: 'dropped' | 'readded';
+  };
 }
 
 export type Listener<P> = (payload: P) => void;

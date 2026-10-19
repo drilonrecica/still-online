@@ -56,6 +56,8 @@ export function createRunner(ctx: EngineContext) {
     textOf,
     progressOf,
     patchContact,
+    top8Of,
+    setTop8,
     setFlag,
     isOnline,
     visit,
@@ -80,6 +82,12 @@ export function createRunner(ctx: EngineContext) {
   };
 
   const eligible = (id: ContactId, script: Script, context: TriggerContext) => {
+    // Top 8 reactions run once per drop / re-add: the record decides, not `runs`.
+    const record = top8Of(id);
+    if (script.trigger.type === 'onTop8Dropped')
+      return record?.state === 'dropped' && record.day < getDay();
+    if (script.trigger.type === 'onTop8Readded')
+      return record?.state !== 'dropped';
     const s = progressOf(id).scripts[script.id] ?? defaultScriptProgress();
     if (context.trackId !== undefined && s.trackIds.includes(context.trackId))
       return false;
@@ -134,6 +142,10 @@ export function createRunner(ctx: EngineContext) {
       active,
       scripts: visit(c, script.id, script.start),
     }));
+    // The friend has reacted: a re-add from now on fires `onTop8Readded`.
+    const record = top8Of(id);
+    if (script.trigger.type === 'onTop8Dropped' && record)
+      setTop8(id, { ...record, state: 'reacted' });
     bus.emit('scriptStarted', { contactId: id, scriptId: script.id });
     playNext(id);
   };
@@ -156,6 +168,12 @@ export function createRunner(ctx: EngineContext) {
       };
     });
     bus.emit('scriptEnded', { contactId: id, scriptId: script.id });
+    const t = script.trigger.type;
+    if (t === 'onTop8Dropped' || t === 'onTop8Readded')
+      bus.emit('top8Reacted', {
+        contactId: id,
+        kind: t === 'onTop8Dropped' ? 'dropped' : 'readded',
+      });
     armFollowUps(id, script.id);
     pump(id);
   };
@@ -284,7 +302,7 @@ export function createRunner(ctx: EngineContext) {
         (!wasOnline || before.status === 'offline')
       ) {
         bus.emit('contactSignedIn', { contactId: id, status, toast: true });
-        if (!wasOnline) fireAll(id, 'onSignIn');
+        if (!wasOnline) signInTriggers(id);
       }
     }
     if (personalMessage !== undefined) {
@@ -358,8 +376,14 @@ export function createRunner(ctx: EngineContext) {
     } else if (r) {
       playNext(id);
     }
-    fireAll(id, 'onSignIn');
+    signInTriggers(id);
     pump(id);
+  };
+
+  /** What a contact's sign-in fires: `onSignIn`, then a pending Top 8 drop from an earlier day. */
+  const signInTriggers = (id: ContactId) => {
+    fireAll(id, 'onSignIn');
+    fireAll(id, 'onTop8Dropped');
   };
 
   return {

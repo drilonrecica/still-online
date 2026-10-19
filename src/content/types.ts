@@ -164,7 +164,17 @@ export type Trigger =
    * When the player finishes a game (`game:score`) with `score >= minScore` (raw score: Mines
    * reports seconds). Ignored while signed out of Messenger.
    */
-  | { type: 'onGameScore'; game: GameId; minScore?: number };
+  | { type: 'onGameScore'; game: GameId; minScore?: number }
+  /**
+   * The player dropped this contact from their Friendspace Top 8: armed on the contact's sign-in
+   * on a later day than the drop ("noticed overnight"). Runs once per drop, not `repeat`.
+   */
+  | { type: 'onTop8Dropped' }
+  /**
+   * The player put this contact back after their `onTop8Dropped` script ran: on the next
+   * sign-in, or at once if they are online. Runs once per re-add, not `repeat`.
+   */
+  | { type: 'onTop8Readded' };
 
 export type TriggerType = Trigger['type'];
 
@@ -291,9 +301,20 @@ export interface CustomEmoticon {
   fileId: string;
 }
 
+/**
+ * Top 8 drama bookkeeping for one contact (P0-03): `dropped` = waiting to react, `reacted` = their
+ * `onTop8Dropped` script ran (a re-add now fires `onTop8Readded`). `day` = the day of the drop.
+ */
+export interface Top8Record {
+  state: 'dropped' | 'reacted';
+  day: number;
+}
+
 export interface MessengerProgress {
   player: PlayerProgress;
   contacts: Record<ContactId, ContactProgress>;
+  /** Contacts dropped from the player's Friendspace Top 8; absent = none. */
+  top8?: Record<ContactId, Top8Record>;
 }
 
 // ---------------------------------------------------------------------------

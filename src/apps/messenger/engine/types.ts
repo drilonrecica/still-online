@@ -70,6 +70,8 @@ export interface EngineEventMap {
   choices: { contactId: ContactId; choices: ResolvedChoice[] };
   scriptStarted: { contactId: ContactId; scriptId: ScriptId };
   scriptEnded: { contactId: ContactId; scriptId: ScriptId };
+  /** A contact's `onTop8Dropped`/`onTop8Readded` script ended (the runtime tells the web). */
+  top8Reacted: { contactId: ContactId; kind: 'dropped' | 'readded' };
   /** The player signed out of Messenger (all timers stopped). */
   signedOut: Record<string, never>;
 }

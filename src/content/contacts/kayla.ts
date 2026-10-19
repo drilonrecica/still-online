@@ -3,6 +3,7 @@ import type { ContactContent } from '../types';
 import { kaylaDayScripts, kaylaDays } from './kayla-days';
 import { kaylaGameScore } from './game-reactions';
 import { kaylaNowPlaying2 } from './now-playing';
+import { kaylaTop8Dropped, kaylaTop8Readded } from './top8-reactions';
 
 export const kayla: ContactContent = {
   contact: {
@@ -423,5 +424,7 @@ export const kayla: ContactContent = {
     ...kaylaDayScripts,
     kaylaNowPlaying2,
     kaylaGameScore,
+    kaylaTop8Dropped,
+    kaylaTop8Readded,
   ],
 };
