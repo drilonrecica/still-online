@@ -766,6 +766,8 @@ export const en = {
       'Flippers: [Z] or left [Shift], and [/] or right [Shift]. Clicking the left or right half of the table works too.',
     helpNudge:
       '[T] nudges the table. Three warnings, then the next nudge tilts and the ball is lost.',
+    helpTap:
+      'Without a mouse: hold the launch lane to launch, tap either half of the table for its flipper, and tap the score display to nudge.',
     helpLanes:
       'Light all three top lanes for a 2× multiplier. The flippers shift the lit lanes.',
     helpRanks: 'Drop S-T-A-R to rank up: {ranks}.',

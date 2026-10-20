@@ -1,6 +1,12 @@
 // Renders a fixed-size stage (a game) zoomed to fit its parent, keeping the aspect ratio, and
 // centred. CSS `zoom`, not `transform`, so native hit-testing keeps working. See docs/touch.md.
-import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 import { fitScale } from './scaleToFit';
 import styles from './ScaleToFit.module.css';
 
@@ -49,7 +55,16 @@ export function ScaleToFit({
         className={styles.stage}
         data-testid="scale-stage"
         data-scale={scale}
-        style={{ width, height, zoom: scale }}
+        // `--stage-scale` lets a game keep a control finger-sized on screen:
+        // `calc(36px / var(--stage-scale))` inside the stage is 36 px after the zoom.
+        style={
+          {
+            width,
+            height,
+            zoom: scale,
+            '--stage-scale': scale,
+          } as CSSProperties
+        }
       >
         {children}
       </div>

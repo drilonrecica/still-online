@@ -766,6 +766,8 @@ export const de: Messages = {
       'Flipper: [Z] oder linke [Umschalt], und [/] oder rechte [Umschalt]. Ein Klick auf die linke oder rechte Tischhälfte geht auch.',
     helpNudge:
       '[T] rüttelt am Tisch. Nach drei Warnungen kippt der nächste Stoß den Tisch („Tilt“) und die Kugel ist weg.',
+    helpTap:
+      'Ohne Maus: Halten Sie die Abschussbahn gedrückt, um abzuschießen, tippen Sie auf eine Tischhälfte für ihren Flipper und auf die Anzeige, um am Tisch zu rütteln.',
     helpLanes:
       'Bringen Sie alle drei oberen Bahnen zum Leuchten, dann gibt es den 2×-Multiplikator. Die Flipper verschieben die leuchtenden Bahnen.',
     helpRanks: 'Räumen Sie S-T-A-R ab, um befördert zu werden: {ranks}.',

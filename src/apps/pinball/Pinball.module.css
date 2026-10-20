@@ -184,3 +184,10 @@
   justify-content: center;
   margin-top: 8px;
 }
+
+/* Phone (v0.6): the stage is zoomed, so the menu and panel buttons are sized to stay 36 px tall
+   on screen (`--stage-scale` comes from ScaleToFit). */
+:global(.desktop-root[data-device='phone']) .big,
+:global(.desktop-root[data-device='phone']) .panel button {
+  min-height: calc(36px / var(--stage-scale, 1));
+}

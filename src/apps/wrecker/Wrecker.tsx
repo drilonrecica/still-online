@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { useT } from '@/i18n/useT';
+import { useDevice } from '@/os/device';
 import { Z_INDEX } from '@/os/overlay/slots';
 import { seedFrom } from '@/os/random';
 import { scaleMs } from '@/os/speed';
@@ -50,6 +51,7 @@ export default function Wrecker({ windowId }: AppComponentProps) {
   );
   const reduced = useReducedMotion();
   const t = useT();
+  const device = useDevice();
   const engineRef = useRef(
     createEngine(SEED, window.innerWidth, window.innerHeight),
   );
@@ -151,6 +153,8 @@ export default function Wrecker({ windowId }: AppComponentProps) {
       style={{ zIndex: Z_INDEX.wrecker }}
       hidden={minimized}
       data-wrecker=""
+      // Portalled outside `.desktop-root`, so it carries the device class itself (phone sizes).
+      data-device={device}
       onPointerDownCapture={(e) => setTouch(e.pointerType === 'touch')}
     >
       <canvas ref={damageRef} className={styles.canvas} aria-hidden="true" />

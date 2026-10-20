@@ -18,7 +18,7 @@ import { useGamesStore } from '@/os/store/games';
 import { ScaleToFit } from '@/os/touch/ScaleToFit';
 import { useGameStatus, SR_ONLY } from '@/os/useGameStatus';
 import { useReducedMotion } from '@/os/useReducedMotion';
-import { TABLE_X, VIEW_W } from './display';
+import { DMD, TABLE_X, VIEW_W } from './display';
 import type { Side } from './physics';
 import {
   type GameResult,
@@ -179,6 +179,12 @@ export default function Pinball({ windowId }: Partial<AppComponentProps>) {
     rootRef.current?.focus();
     const p = toView(e.currentTarget, e.clientX, e.clientY);
     const g = gameRef.current;
+    // A finger has no T key: a tap on the score display shoves the table (v0.6). A mouse there
+    // still works the flippers, as in v0.5.
+    if (e.pointerType === 'touch' && p.y < DMD.y + DMD.h + 4) {
+      nudge(g);
+      return;
+    }
     // The launch lane works the plunger while a ball waits there; elsewhere, flippers.
     const lane = p.x - TABLE_X > LANE_X - 14 && onPlunger(g);
     const c: Control = lane ? 'plunger' : p.x < VIEW_W / 2 ? 'left' : 'right';

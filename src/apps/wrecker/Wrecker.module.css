@@ -109,3 +109,18 @@
   min-width: 0;
   padding: 2px 4px;
 }
+
+/* Phone (v0.6): every palette button is a 36 px tap target. */
+.root[data-device='phone'] .tool,
+.root[data-device='phone'] .exit,
+.root[data-device='phone'] .touchKeys button {
+  min-height: 36px;
+}
+
+.root[data-device='phone'] .tool {
+  height: 36px;
+}
+
+.root[data-device='phone'] .tools {
+  grid-template-columns: repeat(3, 36px);
+}

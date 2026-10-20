@@ -7,8 +7,14 @@ import { useSettingsStore } from '@/os/store/settings';
 import '@/apps/registry';
 import { VIEW_H, VIEW_W, displayLines } from './display';
 import { formatScore, textDots } from './font';
-import { createGame } from './sim';
+import { createGame, nudge } from './sim';
 import Pinball, { STAGE_H, STAGE_W, keyControl } from './Pinball';
+
+// `nudge` is watched, not replaced: the touch nudge test checks a tap on the display calls it.
+vi.mock('./sim', async (importOriginal) => {
+  const sim = await importOriginal<typeof import('./sim')>();
+  return { ...sim, nudge: vi.fn(sim.nudge) };
+});
 
 const FRAME_MS = 100;
 let pending: FrameRequestCallback | null = null;
@@ -221,5 +227,36 @@ describe('Star Pinball on a phone (v0.6)', () => {
     expect(stage.style.width).toBe('460px');
     expect(stage.style.height).toBe('640px');
     expect(stage.querySelector('canvas')).toBeTruthy();
+  });
+
+  it('shows the "without a mouse" help line on a touch device only', () => {
+    const desktop = render(<Pinball />);
+    fireEvent.click(screen.getByRole('button', { name: 'Help' }));
+    expect(screen.queryByText(/^Without a mouse/)).toBeNull();
+    desktop.unmount();
+    useDeviceStore.setState({ device: 'phone' });
+    render(<Pinball />);
+    fireEvent.click(screen.getByRole('button', { name: 'Help' }));
+    expect(screen.getByText(/^Without a mouse/)).toBeTruthy();
+  });
+
+  it('nudges on a finger on the score display; a mouse there flips, as in v0.5', () => {
+    const { canvas } = setup();
+    fireEvent.click(screen.getByRole('button', { name: 'Play' }));
+    vi.mocked(nudge).mockClear();
+    const press = (pointerType: string, pointerId: number) => {
+      fireEvent.pointerDown(canvas, {
+        clientX: 100,
+        clientY: 20,
+        button: 0,
+        pointerId,
+        pointerType,
+      });
+      fireEvent.pointerUp(canvas, { pointerId, pointerType });
+    };
+    press('mouse', 1);
+    expect(nudge).not.toHaveBeenCalled();
+    press('touch', 2);
+    expect(nudge).toHaveBeenCalledTimes(1);
   });
 });

@@ -262,3 +262,21 @@
   outline: 1px dotted #000;
   outline-offset: -4px;
 }
+
+/* Phone (v0.6): the Game menu and its items are 36 px tap targets, as in Notepad. */
+:global(.desktop-root[data-device='phone']) .menuButton {
+  min-height: 36px;
+  padding-inline: 12px;
+}
+
+:global(.desktop-root[data-device='phone']) .item {
+  min-height: 36px;
+  align-items: center;
+}
+
+/* Phone (v0.6): the face and the flag-mode toggle stay 36 px on screen at any zoom (landscape
+   and Expert zoom the board down), never smaller than the classic 26 px. */
+:global(.desktop-root[data-device='phone']) .face {
+  width: max(26px, calc(36px / var(--stage-scale, 1)));
+  height: max(26px, calc(36px / var(--stage-scale, 1)));
+}

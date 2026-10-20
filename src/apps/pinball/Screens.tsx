@@ -2,6 +2,7 @@
 import { useState, type ReactNode } from 'react';
 import { scoreName } from '@/i18n/scoreName';
 import { useLocale, useT } from '@/i18n/useT';
+import { useDevice } from '@/os/device';
 import { MAX_SCORE_NAME, useGamesStore } from '@/os/store/games';
 import { rankName } from './display';
 import { formatScore } from './font';
@@ -73,6 +74,7 @@ export function MenuScreen({
 export function HelpScreen({ onBack }: { onBack: () => void }) {
   const t = useT();
   const locale = useLocale();
+  const touchDevice = useDevice() !== 'desktop';
   return (
     <Panel label={t('pinball.helpTitle')}>
       <h2>{t('pinball.helpTitle')}</h2>
@@ -80,6 +82,7 @@ export function HelpScreen({ onBack }: { onBack: () => void }) {
         <li>{withKeys(t('pinball.helpLaunch'))}</li>
         <li>{withKeys(t('pinball.helpFlippers'))}</li>
         <li>{withKeys(t('pinball.helpNudge'))}</li>
+        {touchDevice && <li>{t('pinball.helpTap')}</li>}
         <li>{t('pinball.helpLanes')}</li>
         <li>
           {t('pinball.helpRanks', {
