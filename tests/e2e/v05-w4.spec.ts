@@ -4,10 +4,12 @@ import {
   closeNudgeChats,
   go,
   logIn,
+  openFromStart,
   openBrowserOnline,
   pickGender,
   playChat,
   quietIdle,
+  setDay,
 } from './helpers';
 import { seedStoryDay, signInMessenger } from './week2';
 
@@ -165,4 +167,80 @@ test.describe('German', () => {
     await display.getByRole('button', { name: 'OK' }).click();
     await expect(display).toHaveCount(0);
   });
+});
+
+// W4-G: the release playthrough's switch. A girl plays day 8 in English, switches to Boy in User
+// Accounts and to German in the tray, and day 9 boots in German for a boy.
+test('day 8 girl in English, switch to boy and German, day 9 in German as a boy', async ({
+  page,
+}) => {
+  test.setTimeout(120_000);
+  await setDay(page, 8);
+  await logIn(page, 'Ada', { gender: 'girl' });
+
+  let web = await openBrowserOnline(page);
+  await go(web, 'http://friendspace.example/bulletins');
+  await expect(web).toContainText('Ada better come too');
+  await web
+    .getByRole('button', { name: 'Close', exact: true })
+    .dispatchEvent('click');
+
+  await openFromStart(page, 'User Accounts');
+  const accounts = page.getByRole('region', { name: 'User Accounts' });
+  await accounts.getByRole('radio', { name: 'Boy' }).click();
+  await accounts.getByRole('button', { name: 'OK' }).click();
+  await expect(accounts).toBeHidden();
+  await page.getByTestId('tray-language').dispatchEvent('click');
+  await page
+    .getByRole('menuitemradio', { name: 'Deutsch' })
+    .dispatchEvent('click');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'de');
+
+  await page.locator('[data-start-button]').click();
+  await page
+    .getByRole('menuitem', { name: 'Ausschalten', exact: true })
+    .dispatchEvent('click');
+  await page.getByTestId('off-screen').click();
+  await expect(page.getByTestId('boot-day')).toHaveText('Tag 9');
+  await page.getByRole('button', { name: 'Als Ada anmelden' }).click();
+  await expect(page.getByTestId('desktop')).toBeVisible();
+
+  await page
+    .getByRole('option', { name: 'Web Explorer' })
+    .dispatchEvent('dblclick');
+  web = page.getByRole('region', { name: /Web Explorer$/ }).first();
+  // The day may boot still dialled in; otherwise the offline page offers Verbinden.
+  const connect = web
+    .getByTestId('page-cannot-be-displayed')
+    .getByRole('button', { name: 'Verbinden' });
+  const ready = web.getByRole('status').last().filter({ hasText: 'Fertig' });
+  await expect(connect.or(ready)).toBeVisible({ timeout: 10_000 });
+  if (await connect.isVisible()) await connect.click();
+  await expect(page.getByTestId('tray-network')).toHaveAttribute(
+    'data-status',
+    'online',
+    { timeout: 15_000 },
+  );
+  const open = async (url: string) => {
+    const address = web.getByLabel('Adresse');
+    await address.fill(url);
+    await address.press('Enter');
+    await expect(web.getByRole('status').last()).toHaveText('Fertig', {
+      timeout: 10_000,
+    });
+  };
+  await open('http://friendspace.example/bulletins');
+  await expect(web).toContainText('Ada kommt gefälligst mit');
+  await open('http://friendspace.example/me');
+  await expect(web).toContainText('skaten bis zum umfallen');
+  await web
+    .getByRole('button', { name: 'Schließen', exact: true })
+    .dispatchEvent('click');
+
+  await page.getByRole('option', { name: 'Mail' }).dispatchEvent('dblclick');
+  const mail = page.getByRole('region', { name: /Mail$/ }).first();
+  await mail.getByRole('button', { name: 'Senden/Empfangen' }).click();
+  await expect(
+    mail.locator('tbody tr').filter({ hasText: '~*61 zu 61*~ (HILFE)' }),
+  ).toBeVisible({ timeout: 15_000 });
 });

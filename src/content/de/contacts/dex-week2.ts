@@ -271,7 +271,7 @@ export const dexWeek2Scripts: ContactOverlay['scripts'] = {
       lines: [
         'übrigens. hab deine mutter getroffen',
         'als sie dich abgesetzt hat',
-        'hab Sie gesagt. zweimal. sie hat was aufgeschrieben',
+        'hab „Sie“ gesagt. zweimal. sie hat was aufgeschrieben',
         g(
           'sie hat gefragt ob ich der mit dem video bin',
           'sie hat nach helmen gefragt. fürs filmen',
