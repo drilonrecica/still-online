@@ -490,7 +490,7 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
 | W4-01 | **v0.5 e2e + docs** — e2e flows from the spec's Testing section; README, architecture notes, `docs/release-notes-v0.5.0.md` (EN + „Auf Deutsch"), screenshots. | W3-G | done | sonnet | agent | — | e2e | — | New `tests/e2e/v05-*.spec.ts` pass in the default suite; README says days 1–10; notes list user-visible changes. | §W4-01 |
-| W4-G | **Release-ready gate (self-review)** — Gate procedure; play days 6–8 in English as a girl and 9–10 in German as a boy. **Do not tag, push or release.** | W4-01 | in progress | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W4.md`; bundle sizes reported (German stays lazy); nothing pushed or tagged. | §W4-G |
+| W4-G | **Release-ready gate (self-review)** — Gate procedure; play days 6–8 in English as a girl and 9–10 in German as a boy. **Do not tag, push or release.** | W4-01 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W4.md`; bundle sizes reported (German stays lazy); nothing pushed or tagged. | §W4-G |
 
 ---
 
