@@ -1,13 +1,12 @@
-# still online — v0.4.1 fixes + v0.5 plan (week two, days 6–10)
+# still online — v0.6 plan (phones and tablets)
 
 <!-- igris:format 1 -->
 
-This is the build plan for still online v0.4.1 and v0.5, written for [igris](https://github.com/drilonrecica/igris). Each task row runs in its own fresh Claude Code session, so **everything a session needs is written down in this file** and in the design spec it points to. Read the whole brief, the global rules, the v0.4 and v0.5 rules and your task's spec before starting. Earlier plans (all done) are archived in `docs/plans/` (`v0.1-tasks.md` … `v0.4-tasks.md`).
+This is the build plan for still online v0.6, written for [igris](https://github.com/drilonrecica/igris). Each task row runs in its own fresh Claude Code session, so **everything a session needs is written down in this file** and in the design spec it points to. Read the whole brief, the global rules, the v0.6 touch rules and your task's spec before starting. Earlier plans (all done) are archived in `docs/plans/` (`v0.1-tasks.md` … `v0.5-tasks.md`).
 
 ```sh
 igris check --strict          # validate this plan
-igris arise F --through W4    # run everything (yolo mode is the default in igris.toml)
-igris arise F                 # only the v0.4.1 fixes
+igris arise M0 --through M4   # run everything (yolo mode is the default in igris.toml)
 ```
 
 ---
@@ -16,63 +15,31 @@ igris arise F                 # only the v0.4.1 fixes
 
 still online is a browser-based nostalgia simulator: an XP-style desktop frozen in **2007**, bilingual (English and German).
 
-**Shipped so far:**
+**Shipped so far (v0.1–v0.5.1):**
 - the shell
-- Messenger with 6 scripted friends and a 5-day living world
+- Messenger with 6 scripted friends and a 10-day living world
 - Amplifier
-- a fictional internet: Web Explorer, Searchly, Mail, TuneMole and the sites
-- Paint, Snapshot Booth, games, Fluff and Tacki/Stapley
+- a fictional internet: Web Explorer, Searchly, Mail, TuneMole and the sites, including Friendspace, Pixlog, GlitterCodez, CheatCave and Kickflip Kings
+- Paint, Snapshot Booth, four games, Fluff and Stapley
 - full German localization
-- **v0.4:**
-  - the player is a girl or a boy, with a User Accounts app
-  - CheatCave and Kickflip Kings
-  - Friendspace (the MySpace homage), Pixlog (the Netlog homage) and GlitterCodez
-  - **G2**, the boyish pass: a gender audit test and boy-only chat threads (`Script.forGender`)
+- the player as a girl or a boy
 
-**This plan:**
-1. **Phase F (v0.4.1):** fixes every known gap the v0.4 reviews listed.
-2. **Phases W0–W4 (v0.5):** add a **second school week, days 6–10**. It ends with the Velvet Lantern show at the rec hall on day 10.
+All of it assumes a mouse and a big screen. Phones and tablets only get a "best experienced on a desktop computer" notice.
 
-**The agreed designs are binding; read the ones your task touches:**
-- `docs/superpowers/specs/2026-10-19-v05-week-two-design.md` (W0–W4: the arcs day by day)
-- `docs/superpowers/specs/2026-10-16-player-gender-design.md` (gender, incl. the G2 addendum)
-- `docs/superpowers/specs/2026-10-15-v04-social-design.md` (Friendspace, Pixlog, GlitterCodez)
-- `docs/review/v04-*.md` (what v0.4 built and its known gaps; F fixes them)
+**This plan (v0.6, phases M0–M4)** makes **everything work on phones and tablets**, with the **same XP desktop** adapted for touch:
+- On a phone, every window is full-screen, a tap opens things, a long-press is right-click, and controls are finger-sized.
+- On a tablet, windows keep floating and the controls get touch-sized.
 
-## Phase F scope (v0.4.1, runs first)
-
-Small fixes only, no new features:
-- **Friendspace/Pixlog player profile:** the saved profile no longer freezes default text, the player picture comes from User Accounts, and the page scrolls to the top after Save.
-- **Content polish:** the boy diary, the boy favorites order, the boy mood, the timeline wording, British spellings, a German rhyme, „adden".
-- **Visual fixes:**
-  - story-dated photo stamps
-  - the pixel-font digit spacing
-  - bulletins in one column
-  - Theo's transcript after a language switch
-- **Messenger engine:** stale `afterScript` follow-ups from an earlier day no longer arrive after the next day's chat.
-
-## v0.5 scope (W0–W4)
-
-- **W0 (foundations):**
-  - story days 1–10 everywhere: lint, balloons, tests, docs
-  - an e2e `setDay` helper
-  - the week-two story bible
-  - three new photo scenes (`stage`, `classroom`, `livingroom`)
-  - the `lantern-poster` wallpaper unlock
-- **W1 (English chats days 6–10):** all six friends, gender-aware, plus 3 boy-only and 3 girl-only threads.
-- **W2 (English mail, sites and social, days 6–10):** mail, the sites, Friendspace and Pixlog.
-- **W3:** real German for everything W1 and W2 wrote.
-- **W4:** e2e, docs, release notes and the release-ready gate.
+**The agreed design is binding:** `docs/superpowers/specs/2026-10-20-v06-touch-design.md`. Read it before you start. The "v0.6 touch rules" below condense it.
 
 ## Explicitly out of scope (do NOT build these)
 
-- Story days past 10. From day 11 on, the day-10 state stays.
-- New apps, new sites or new games. Player-written comments on friends' walls, photos or blogs; friend requests, messages or groups on the sites.
-- Real CSS/HTML in layout codes, or any `dangerouslySetInnerHTML` of player or content text.
-- Any backend, real (online) accounts, real networking, real web access or AI-generated text.
-- A third gender option, or gender-star forms in German.
-- Changing the six friends' personalities to fit a gender. Only what is about or addressed to the player varies, plus `forGender` threads.
-- Real product names, logos or brand-alike names. Homages only.
+- A separate phone UI, app grid or launcher. It is the XP desktop everywhere.
+- An app-store wrapper, PWA install or offline service worker.
+- New content, apps, sites, games or story days.
+- Pinch-zoom of the whole shell. Only Web Explorer's Fit to screen / Actual size and the game `ScaleToFit` scale things.
+- Changing desktop behaviour at 1280×800, beyond the window re-clamp on resize.
+- Smartphones, apps or touch screens inside the fiction. The story stays in 2007.
 - New runtime dependencies.
 - Tagging, pushing or publishing a release.
 
@@ -397,7 +364,7 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 
 ---
 
-## v0.5 rules (apply to every task in this plan; they override older text above)
+## v0.5 rules (story and content rules from v0.5; still valid)
 
 **German:**
 - **Phase F** writes real German in the same task, as v0.3 did.
@@ -437,386 +404,383 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 - e2e reaches a day with `setDay(page, n)` (W0-01), never by hand-writing localStorage in a spec.
 
 
+## v0.6 touch rules (apply to every task in this plan; they override older text above)
+
+**Device class (M0-01 builds it; everyone uses it):**
+- `src/os/device.ts` exports `getDevice(): 'phone' | 'tablet' | 'desktop'`, a `useDevice()` hook, and sets `data-device` on `.desktop-root`. It updates live on `resize` and `orientationchange`.
+- `phone` = `innerWidth < 600 || innerHeight < 500`. `tablet` = not phone and `matchMedia('(pointer: coarse)')`. `desktop` = everything else.
+- **Never** detect devices any other way: no user-agent sniffing, no new breakpoints. CSS uses `[data-device='phone']` / `[data-device='tablet']` selectors on the root, not new `@media` width queries.
+- **Gestures are decided per event** by `pointerType === 'touch'`, never by device class.
+
+**Touch primitives (M0-02 builds them):**
+- `useLongPress` (500 ms, cancelled by a 10 px move, fires the context-menu handler at the touch point, suppresses the following click) and `useActivate` (mouse double-click, touch single tap, or Enter), both in `src/os/touch/`.
+- Every new double-click or context-menu interaction uses them, so nothing is mouse-only.
+
+**Sizes:**
+- On a phone, every tap target is at least 36×36 px. Taskbar buttons are 40 px.
+- On a tablet, title bars are 36 px, resize grips have 16 px touch zones, and the taskbar is 40 px.
+- The desktop keeps every v0.5 size (30 px taskbar and title bar). The "Visual reference" values are the desktop values.
+
+**Windows on a phone:** they render maximized (`effectiveMaximized = maximized || device === 'phone'`). Never write that into the windows store: stored geometry must survive a trip from desktop to phone and back.
+
+**No horizontal page scroll** on a phone or tablet anywhere, except inside Web Explorer's "Actual size" and inside a canvas or game area that scrolls on purpose.
+
+**The keyboard:** the work area height comes from `visualViewport.height` (M0-01). A focused text input is never hidden behind the on-screen keyboard.
+
+**Desktop stays identical:** every existing desktop e2e spec must pass unchanged. When a phone or tablet change touches shared CSS, scope it under `[data-device=…]`.
+
+**i18n:** every new UI string goes into `en.ts` and `de.ts` (real German, system UI uses „Sie") in the same task. Use the terms in the design spec's i18n table.
+
+**Testing:**
+- **Projects:** M0-01 adds the Playwright projects `phone` (Chromium + `devices['Pixel 7']`), `phone-landscape` (Chromium, 915×412, `hasTouch`, `isMobile`) and `tablet` (Chromium, 1024×768, `hasTouch`, `isMobile`).
+- **Tags:**
+  - A spec for a touch project is tagged `@phone` (it runs in `phone` and `phone-landscape`) or `@tablet`.
+  - The desktop project `chromium` excludes `@phone` and `@tablet`.
+  - `@review` and `@screenshots` stay opt-in for every project.
+- **Helpers:** touch specs use the helpers from M0-01 (`tap`, `longPress`, `swipe`, `logInTouch`, `openAppTouch`). They never `dblclick` and never hand-write localStorage (use `setDay`).
+- **Verify:** `npm run e2e` runs all four projects, and every task with Verify `e2e` must leave all of them green.
+
+**Screenshots in gates:** phone 412×915 (portrait) and 915×412 (landscape), tablet 1024×768, desktop 1280×800. Each is taken in English and German, as before.
+
 ---
 
 # Phases
 
-## F — v0.4.1 fixes
+## M0 — Touch foundations
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| F-01 | **Player profile fixes** — Friendspace saves only fields the player typed (defaults resolve at render, old saves migrate), `/me` scrolls to top after Save, Friendspace + Pixlog use the User Accounts picture for the player. | — | done | opus | agent | — | e2e | — | After Save with only a pasted layout, switching to German or to boy changes headline/mood/about to that side's defaults; typed fields stay; v0.4 saves with default text migrate; player picture = User Accounts tile on both sites; tests. | §F-01 |
-| F-02 | **Content polish** — boy diary, boy favorites order, boy mood, concert timeline wording, American spellings, German song rhyme, „adden", d2 visitors mail; EN + DE. | F-01 | done | opus | agent | — | fast | — | Every item in §F-02 done or logged as decided; untouched favorites still detected (old order counts); audit + parity + playthrough green; boy assertions. | §F-02 |
-| F-03 | **Visual fixes** — story-dated photo stamps (`PhotoSpec.day`), pixel-font digit spacing on reply buttons, bulletins in one column, Theo's transcript after a language switch, Stapley's balloon not covering the browser. | F-02 | done | opus | agent | — | e2e | — | Concert album stamps read `'07 10 11`; „1 obviously" keeps its space; survey bulletins don't wrap under the picture; a language flip mid-chat shows the whole transcript; balloon avoids the active browser window; tests. | §F-03 |
-| F-04 | **Stale follow-ups** — `afterScript` follow-ups armed on an earlier day expire when the contact's next `onDay` script starts; docs. | F-03 | done | opus | agent | — | fast | — | Skipping Dex's day-1 follow-ups never delivers them after his day-2 chat; same-day follow-ups unchanged; boy-only threads still fire; engine tests; `docs/content-format.md` updated. | §F-04 |
-| F-G | **F gate (self-review) + v0.4.1 notes** — Gate procedure + Gender rubric; `docs/release-notes-v0.4.1.md`. | F-01…F-04 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v041-F.md` + screenshots (`/me` after Save girl→boy, Pixlog `/me` picture, concert album stamp, a reply button with a digit, a survey bulletin); notes written; nothing pushed or tagged. | §F-G |
+| M0-01 | **Device class + viewport + test projects** — `src/os/device.ts`, viewport meta, safe areas, shell touch CSS, `visualViewport` work area, re-clamp on resize, remove `SmallScreenNotice`, Playwright `phone`/`phone-landscape`/`tablet` projects + touch helpers, docs. | — | ready | opus | agent | — | e2e | — | `data-device` is right for 412×915, 915×412, 1024×768 touch and 1280×800; the notice and its setting are gone (old saves load); windows re-clamp after a resize; the 4 projects run with the tag rules; one `@phone` and one `@tablet` smoke spec pass; desktop suite unchanged; unit tests. | §M0-01 |
+| M0-02 | **Touch primitives** — `useLongPress`, `useActivate`; applied at every double-click open and context menu (desktop, folder view, Messenger list, Amplifier, title bar, Stapley); Amplifier long-press Move up/down/Remove; Paint long-press secondary colour; EN + DE. | M0-01 | blocked | opus | agent | — | e2e | — | No `onDoubleClick`/`onContextMenu` left without a touch path (grep in §M0-02); a tap opens a desktop icon, a folder item and a Messenger chat in the `phone` project; long-press opens the desktop and Stapley menus; mouse behaviour unchanged; unit tests for both hooks. | §M0-02 |
 
-## W0 — Week-two foundations
+## M1 — Touch shell
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| W0-01 | **Days 1–10 plumbing** — `STORY_DAYS` 1–10 shared, lint range, balloons' vague line from day 11, per-day tests via `STORY_DAYS`, mail `day6`…`day10` modules (empty + DE), e2e `setDay` helper, docs/README. | F-G | done | opus | agent | — | e2e | — | No literal 1–5 day cap left (grep listed in §W0-01); lint accepts day 10, rejects 11; empty day 6–10 modules wired EN + DE; existing specs use `setDay`; all tests green. | §W0-01 |
-| W0-02 | **Story bible** — `docs/story-week2.md`: day-by-day beats per friend, mails, sites, social, gender variants, gender-only threads, cross-links, facts table. | W0-01 | done | opus | agent | — | fast | — | Covers days 6–10 for all six friends, Mom, Mr Dalton, every site, Friendspace, Pixlog; every cross-reference named once with its day; girl/boy differences listed; consistent with days 1–5 (facts table). | §W0-02 |
-| W0-03 | **Scenes + poster wallpaper** — photo scenes `stage`, `classroom`, `livingroom`; `lantern-poster` procedural wallpaper + unlock id. | W0-01 | done | opus | agent | — | fast | — | Scenes deterministic per seed, in the XP-era photo style; wallpaper renders in Display Properties once unlocked; `CONTENT_UNLOCKS` includes `lantern-poster`; tests. | §W0-03 |
+| M1-01 | **Window manager** — phone: render-only maximize, Max/Restore hidden, 36 px title bar and buttons, no drag/grips, min sizes capped; tablet: 36 px title bar, 16 px grip zones, oversize windows open maximized. | M0-02 | blocked | opus | agent | — | e2e | — | Every app opens full-screen on a phone and restores its stored desktop geometry at 1280×800; on a tablet windows drag and resize by touch; HenHunt opens maximized on a tablet; tests. | §M1-01 |
+| M1-02 | **Shell pieces** — 40 px taskbar, icon-only window buttons, tray "Show hidden icons" chevron, Start menu + All Programs on tap, desktop icon reflow, toasts/balloons/Stapley/dialogs sized, login stacked, screensaver touch dismiss; EN + DE. | M1-01 | blocked | opus | agent | — | e2e | — | On a phone: log in, open Start → All Programs → Mines, switch windows from the taskbar, open the hidden tray icons, toggle the language; nothing overflows at 412 or 360 px wide; tablet + desktop unchanged where specified; tests. | §M1-02 |
+| M1-G | **M1 gate (self-review)** — Gate procedure + Touch rubric; the shell on phone (portrait + landscape), tablet and desktop. | M1-01, M1-02 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v06-M1.md` + screenshots (login, desktop, Start menu, All Programs, taskbar with 4 windows, tray chevron open, a toast, Stapley, a dialog) per device, EN + DE, girl + boy once; fixes made. | §Gate |
 
-## W1 — English chats, days 6–10
-
-| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
-|---|---|---|---|---|---|---|---|---|---|---|
-| W1-01 | **Jess + Kayla, days 6–10** — `onDay` scripts 6–10, presence per day, gender variants, Jess's girl-only threads (day 8 call, day 9 sign workshop) + Kayla's (day 9 outfit); DE placeholders. | W0-02, W0-03 | done | opus | agent | — | fast | — | Bible beats delivered in voice; per-day test (≥ 4 nodes, a real branch, new PM) passes for 6–10; audit green; boy assertions; playthrough green 1–10 × 4 combos. | §W1 |
-| W1-02 | **Pia + Theo, days 6–10** — scripts 6–10, presence, gender variants (Theo's girl crush step, boy buddy), Theo's day-10 `lantern-poster` unlock; DE placeholders. | W1-01 | done | opus | agent | — | fast | — | As W1-01; the unlock fires once on day 10 for both genders. | §W1 |
-| W1-03 | **Marco + Dex, days 6–10** — scripts 6–10, presence, the 3 boy-only threads (Dex Jam course d8, Marco LAN rematch d7, Marco load-in crew d10); DE placeholders. | W1-02 | done | opus | agent | — | fast | — | As W1-01; boy-only threads never run for a girl; Marco never uses „!"; Dex stays Away. | §W1 |
-| W1-G | **W1 gate (content self-review)** — Gate procedure + Content rubric + Gender rubric; read days 6–10 as a girl and as a boy. | W1-01…W1-03 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W1.md` + screenshots (one chat per friend per gender on its key day, EN); fixes made. | §W1-G |
-
-## W2 — English mail, sites + social, days 6–10
+## M2 — Apps on touch
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| W2-01 | **Mail days 6–10** — 4–6 mails a day: Mom, Mr Dalton, Westfield High, fan club, CheatCave/Kickflip notices, spam, Friendspace/Pixlog notifications, a chain letter; gender variants; DE placeholders. | W1-G | done | opus | agent | — | fast | — | Per bible; ≥ 4 mails a day; Mom's day-10 mail per gender (no romance for a boy, none on Dex for either beyond the girl's „So THAT is Dex"); audit green; tests. | §W2-01 |
-| W2-02 | **Sites days 6–10** — Celeb Gossip 07, Westfield High (election, show listing), Tinfoil Comets (contest, winners, sold out), CheatCave, Kickflip Kings (Jam, views); DE placeholders. | W2-01 | done | opus | agent | — | fast | — | Every site posts on days 6–10 at its days-1–5 rate; cross-links match the bible; `after` states move to day 10 where the story moved; tests per site. | §W2-02 |
-| W2-03 | **Friendspace + Pixlog days 6–10** — bulletins, walls, `commentsOnPlayer`, Velvet Lantern band page show + blog, one new album per friend (day-10 show album with `stage`), blog posts, shouts, guestbooks, kudos; DE placeholders. | W2-02 | done | opus | agent | — | fast | — | `lintSocial` green for 1–10; a wall comment every day; 1–2 shouts a day; the show album uses `stage` and day stamps; gender variants on lines to the player; audit green. | §W2-03 |
-| W2-G | **W2 gate (content self-review)** — Gate procedure + Content rubric + Gender rubric; English playthrough days 6–10 across mail, sites, Friendspace, Pixlog as girl and boy. | W2-01…W2-03 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W2.md` + day-by-day screenshots; cross-links checked; fixes made. | §W2-G |
+| M2-01 | **Messenger, Mail, folders, system apps, Notepad, TuneMole** — phone layouts per the design spec. | M1-G | blocked | opus | agent | — | e2e | — | On a phone: chat with Jess with the keyboard open and the input visible, read and reply to a mail with Back, browse My Documents, change the picture in User Accounts, write in Notepad, download a track in TuneMole; no horizontal scroll; tests. | §M2-01 |
+| M2-02 | **Web Explorer** — 800 px virtual width with Fit to screen / Actual size (persisted), condensed toolbar, Favorites sheet; every site checked on day 1 and day 10. | M2-01 | blocked | opus | agent | — | e2e | — | Every site in `SITES` renders in Fit to screen on a phone with no horizontal page scroll and working links/forms (Searchly search, a Tinfoil Comets guestbook entry, Friendspace `/me` edit + Save, a Pixlog album); Actual size scrolls sideways; desktop browser unchanged; tests. | §M2-02 |
+| M2-03 | **Paint, Snapshot Booth, Amplifier** — Paint strip + phone canvas size + one-finger draw / two-finger scroll; Booth stacked + front camera; Amplifier full-width touch player. | M2-02 | blocked | opus | agent | — | e2e | — | On a phone: draw a line, fill, pick a secondary colour by long-press, save and reopen a picture; take a Booth photo with the cartoon fallback; play, pause and skip in Amplifier and reorder the playlist by long-press; tests. | §M2-03 |
+| M2-G | **M2 gate (self-review)** — Gate procedure + Touch rubric; every app on phone (portrait + landscape) and tablet. | M2-01…M2-03 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v06-M2.md` + a screenshot of every app per device (phone portrait, phone landscape, tablet), EN + DE, plus four sites on a phone; fixes made. | §Gate |
 
-## W3 — German, days 6–10
-
-| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
-|---|---|---|---|---|---|---|---|---|---|---|
-| W3-01 | **German chats days 6–10** — overlays for every W1 script, presence and gender-only thread; glossary additions. | W2-G | done | opus | agent | — | fast | — | No W1 placeholder left in `src/content/de/contacts`; overlay fallback test green; German voices per style guide; natural gendered forms via `g()`; fallback assertions added. | §W3 |
-| W3-02 | **German mail, sites, social days 6–10** — every W2 placeholder module. | W3-01 | done | opus | agent | — | fast | — | No `W3 replaces` comment left in `src/content/de`; parity + fallback green; audit green in DE. | §W3 |
-| W3-G | **W3 gate (German content self-review)** — Gate procedure + German content rubric + Gender rubric; German playthrough days 6–10 as girl and boy. | W3-01, W3-02 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W3.md`; DE screenshots of the key days; fixes made. | §Gate |
-
-## W4 — Release v0.5
+## M3 — Games and the full phone playthrough
 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
-| W4-01 | **v0.5 e2e + docs** — e2e flows from the spec's Testing section; README, architecture notes, `docs/release-notes-v0.5.0.md` (EN + „Auf Deutsch"), screenshots. | W3-G | done | sonnet | agent | — | e2e | — | New `tests/e2e/v05-*.spec.ts` pass in the default suite; README says days 1–10; notes list user-visible changes. | §W4-01 |
-| W4-G | **Release-ready gate (self-review)** — Gate procedure; play days 6–8 in English as a girl and 9–10 in German as a boy. **Do not tag, push or release.** | W4-01 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W4.md`; bundle sizes reported (German stays lazy); nothing pushed or tagged. | §W4-G |
+| M3-01 | **Games on touch** — `ScaleToFit`; Pinball scaled; HenHunt tap-to-shoot + drag-to-pan; Mines pointer events + flag mode + long-press flag; Wrecker Reset/Spin buttons; EN + DE. | M2-G | blocked | opus | agent | — | e2e | — | On a phone each game is fully playable by touch: Pinball flips and launches, HenHunt hits a hen and pans, Mines opens and flags (both ways) and wins a seeded board, Wrecker uses every tool; scores still saved; desktop controls unchanged; tests incl. `ScaleToFit` mapping. | §M3-01 |
+| M3-02 | **Easter eggs + the phone playthrough** — Konami swipe, Fluff by touch; then play day 1 as a girl in English and day 10 as a boy in German on a phone and fix everything that blocks or looks broken. | M3-01 | blocked | opus | agent | — | e2e | — | The swipe code unlocks what the key code unlocks; Fluff can be dragged and petted by touch; `tests/e2e/v06-playthrough.spec.ts` (`@phone`) covers both playthroughs; every fix logged in `docs/decisions.md`. | §M3-02 |
+| M3-G | **M3 gate (self-review)** — Gate procedure + Touch rubric; games and the playthrough on phone and tablet. | M3-01, M3-02 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v06-M3.md` + screenshots of each game per device, EN + DE; fixes made. | §Gate |
+
+## M4 — Release v0.6
+
+| ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
+|---|---|---|---|---|---|---|---|---|---|---|
+| M4-01 | **v0.6 e2e + docs** — release flows per device; README ("Play on your phone", gap removed, phone screenshot); `docs/architecture-v0.6.md`; `docs/release-notes-v0.6.0.md` (EN + „Auf Deutsch"). | M3-G | blocked | sonnet | agent | — | e2e | — | `tests/e2e/v06-*.spec.ts` pass in the default run on all four projects; README and notes list user-visible changes; architecture note explains device class, touch hooks, `ScaleToFit` and the browser zoom. | §M4-01 |
+| M4-G | **Release-ready gate (self-review)** — Gate procedure + Touch rubric; phone portrait day 1 girl EN, phone landscape day 6 boy DE, tablet day 10 girl EN, desktop regression. **Do not tag, push or release.** | M4-01 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v06-M4.md`; bundle sizes reported vs v0.5 (German stays lazy); nothing pushed or tagged. | §M4-G |
 
 ---
 
 # Task specs
 
-Full descriptions for every task. The row's Acceptance cell always applies too, and so does the design spec named in the brief. When a spec and the existing code disagree about a detail the spec doesn't care about, follow the code's existing pattern.
+Full descriptions for every task. The row's Acceptance cell always applies too, and so does the design spec (`docs/superpowers/specs/2026-10-20-v06-touch-design.md`). When a spec and the existing code disagree about a detail the spec doesn't care about, follow the code's existing pattern.
 
 ## Specs
 
 ### Gate — Gate procedure (all phase gates)
 
-`<ver>` is `v041` for phase F and `v05` for the W phases (lowercase phase in file names, e.g. `tests/e2e/v05-w1.spec.ts`, `docs/review/v05-W1.md`).
+`<ver>` is `v06`. File names use the lowercase phase, e.g. `tests/e2e/v06-m1.spec.ts` and `docs/review/v06-M1.md`.
 
-1. Run `npm run verify` and `npm run e2e` and fix any failure.
-2. Add one e2e happy-path spec for the phase's main user flows: `tests/e2e/<ver>-<phase>.spec.ts` (lowercase phase, e.g. `v05-w0.spec.ts`), using the helpers in `tests/e2e/helpers.ts`. It runs in the default suite.
-3. Write `tests/e2e/<ver>-review-<phase>.spec.ts`, tagged `@review` (already excluded from the default run by `grepInvert`). It saves the screenshots named in the gate's row to `docs/review/<ver>-<phase>/` at 1280×800. Run it with `npx playwright test --grep @review`. Collect console errors and page errors and assert there are none, like the v0.1 review specs.
+1. Run `npm run verify` and `npm run e2e` (all four projects) and fix any failure.
+2. Add happy-path specs for the phase's main flows, using the touch helpers from `tests/e2e/helpers.ts`:
+   - `tests/e2e/<ver>-<phase>.spec.ts`: `@phone` tests, plus `@tablet` tests where the phase changed the tablet
+   - one desktop test that proves the 1280×800 behaviour is unchanged
+3. Write `tests/e2e/<ver>-review-<phase>.spec.ts`, tagged `@review`:
+   - It saves the screenshots named in the gate's row to `docs/review/<ver>-<phase>/`, at the sizes in "v0.6 touch rules", named `<nn>-<what>-<device>-<en|de>.png`.
+   - It collects console errors and page errors and asserts there are none.
+   - Run it with `npx playwright test --grep @review` (with `--project` per device).
 4. **Look at every screenshot** with your image-reading tool and fix the obvious problems:
-   - broken layout or overlap
-   - missing icons
-   - unstyled elements
-   - text overflow
+   - broken layout, overlap or cut-off text
+   - horizontal scrollbars
+   - tiny tap targets
+   - missing icons or unstyled elements
    - anything that looks un-XP-like or breaks the asset rules
 5. Review the phase's code against the Acceptance cells of its tasks. Do missing work that is small (≤ ~30 min); list larger gaps as follow-ups.
 6. Write `docs/review/<ver>-<phase>.md`:
    - what was built
-   - how to try it (`npm run dev` plus steps, mentioning `?speed=fast`)
+   - how to try it: `npm run dev`, then Chrome DevTools device mode, or a real phone on the same network with `npm run dev -- --host`, mentioning `?speed=fast`
    - the screenshots, linked
    - fixes made in this gate
    - known gaps and follow-ups
 7. Re-run verify + e2e, then `igris done`. Don't push.
 
-**Content rubric** (gates P3, P4, P5, and any gate whose phase added authored text):
-- Every friend keeps their established voice:
-  - Jess: ALL CAPS, nudges
-  - Kayla: ~*drama*~, ever-changing personal message
-  - Dex: slow, always Away
-  - Theo: shy, apologises
-  - Marco: dry, lowercase, never "!"
-  - Pia: bossy little sibling, ponies, tells mom
-- It feels like 2007: lowercase chat-speak, emoticon codes, ~*decorated*~ names, guestbooks, glitter. No anachronisms (smartphones, apps, "DM", "selfie", streaming, social-media terms coined after 2007).
-- PG-13. Fictional people only. No real celebrities, brands as characters, or real emails/URLs. Only `.example` domains.
-- Storylines stay consistent across chat, mail, sites and profiles: the Tinfoil Comets concert, the bio cell project with Mr Dalton, Velvet Lantern band life, Pia's ponies, Kayla vs Brianna, Dex's kickflip and skate video.
-- No typos except intentional chat-speak.
+**Touch rubric (every M gate):**
+- **Targets:** every tap target is at least 36×36 px on a phone, and 40 px in the taskbar. Measure a sample with `boundingBox()` in the review spec.
+- **Hover:** no feature is reachable only by hover, double-click, right-click or keyboard. Each has a tap or long-press path.
+- **Scrolling:** no horizontal page scroll, except in Actual size or a deliberate canvas or game area.
+- **Keyboard:** the on-screen keyboard never hides the focused input. In Playwright, emulate it by shrinking the viewport height while focused.
+- **Orientation:** portrait and landscape both work, and a rotation mid-use keeps the open windows usable.
+- **Desktop:** 1280×800 looks and behaves as in v0.5. Compare one screenshot against `docs/review/v05-W4/`.
+- **XP look:** it still looks like the XP desktop, just bigger where fingers need it. There is no flat "mobile app" styling.
 
 **Bilingual checks in every gate:**
-- Take each screenshot **twice**, once with `language: 'en'` and once with `'de'` (suffix `-en`/`-de`), and look at both.
-- Run the P1 leftover-literal check (§P1 common procedure, step 5) over `src/os` and `src/apps`; anything left must be a proper noun.
-- `catalog.test.ts`, `parity.test.ts` and (from P2-07) `fallback.test.ts` must be green.
+- Take each screenshot **twice**, once with `language: 'en'` and once with `'de'` (suffix `-en`/`-de`), and look at both. German strings are longer, so check them for overflow at 360 px.
+- `catalog.test.ts`, `parity.test.ts` and `fallback.test.ts` must be green.
 
-**Gender rubric** (G-G, and every later gate whose phase added player-facing content):
-- **Girl vs boy:** play the same day as a girl and as a boy.
-  - The girl's stuff is girly 2007.
-  - The boy's stuff is boyish 2007, with no crush, no hair clips or outfit talk aimed at him, and no „Mädchen" words for him in German.
-  - Nothing reads as "girl text with the nouns swapped"; the boy side has its own jokes and topics.
-- **What stays the same:** friends keep their voices and storylines for both, and the story facts (who goes to the concert, the bio project, Dex's video) are the same.
-- **German:**
-  - It uses natural gendered forms for the player („die Beste" / „der Beste").
-  - None of the old neutral workarounds are left where a gendered word reads better.
-  - No gender-star forms.
-- **Switching gender in User Accounts:**
-  - re-renders chats, mail and untouched files
-  - edited files keep their text
-  - favorites follow only if the player never changed them
+**Gender check:** at least one screenshot set per gate as a boy. Touch changes must not change any content.
 
-**German content rubric** (P4-G and P5-G, on top of the Content rubric):
-- Each friend sounds like the German voice in `docs/localization-de.md`, not like a translation. Read 3 random scripts per friend: would a German 15-year-old in 2007 have typed that?
-- System UI uses „Sie", friends/Tacki/Fluff use „du"; terms match the "German defaults" table everywhere.
-- No anglicisms beyond the allowed list; no English left in DE (except proper nouns, band names, track titles, brand-name apps).
-- Umlauts and ß correct; German quotes „…"; no ae/oe/ue substitutes outside deliberate chat voice.
-- Storylines still consistent across chat, mail, sites and profiles in German (the glossary in `docs/localization-de.md`).
+### M0-01 — Device class, viewport and test projects
 
+- **`src/os/device.ts`:**
+  - `getDevice()`, a zustand-backed `useDevice()` (or `useSyncExternalStore`), and `installDevice(target = window)`.
+  - It listens to `resize`, `orientationchange` and `visualViewport` `resize`, and sets `document.querySelector('.desktop-root')?.dataset.device`. Do this from `App.tsx`, where `.desktop-root` renders.
+  - Rules exactly as in "v0.6 touch rules". Without `matchMedia` (jsdom), `pointer: coarse` is false.
+  - Export `DEVICE_PHONE_MAX_WIDTH = 600` and `DEVICE_PHONE_MAX_HEIGHT = 500`.
+- **`index.html`:** the viewport meta becomes `width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content`.
+- **Global CSS** (`src/os/theme/global.css`):
+  - `touch-action: manipulation`, `-webkit-touch-callout: none` and `-webkit-tap-highlight-color: transparent` on `.desktop-root`.
+  - `user-select: text` and `-webkit-touch-callout: default` on `input`, `textarea` and `[contenteditable]`.
+  - Safe-area custom properties: `--safe-top/right/bottom/left` from `env(safe-area-inset-*, 0px)`. M1 uses them.
+- **Work area:**
+  - `viewportWorkArea()` (`src/os/store/windows.ts`) uses `visualViewport.height` when present, else `innerHeight`, minus the taskbar height.
+  - The taskbar height becomes device-aware through one function, `taskbarHeight(device)`: 30 on desktop, 40 on phone and tablet. M1-02 changes the taskbar itself; M0-01 only adds the function and uses it in the work area. Keep `TASKBAR_HEIGHT` as the desktop constant.
+- **Re-clamp:**
+  - A windows-store action `reclampAll()` runs every window through `clampPosition` and caps `w`/`h` to the work area.
+  - `installDevice` calls it, debounced by 100 ms, on resize. It is a no-op when nothing changes, so desktop e2e stays the same.
+- **Remove `SmallScreenNotice`:**
+  - Delete the component, its CSS and its test, and unmount it from `App.tsx` and the overlay slot.
+  - Remove `smallScreenNoticeDismissed` and `dismissSmallScreenNotice` from the settings store and its types. The sanitizer must ignore the field in old saves; add a test with a v0.5 save that has it.
+  - Remove the catalog keys in EN and DE.
+  - The README line about small screens stays until M4-01.
+- **Playwright** (`playwright.config.ts`):
+  - **Projects:**
+    - `chromium` (desktop, `grepInvert` also excludes `@phone|@tablet`)
+    - `phone` (`...devices['Pixel 7']`, `grep: /@phone/`)
+    - `phone-landscape` (`...devices['Pixel 7']`, `viewport: { width: 915, height: 412 }`, `grep: /@phone/`)
+    - `tablet` (`viewport: { width: 1024, height: 768 }`, `hasTouch: true`, `isMobile: true`, `deviceScaleFactor: 2`, `grep: /@tablet/`)
+  - All on Chromium; no WebKit or Firefox downloads.
+  - Keep the existing `@review` and `@screenshots` opt-in logic working for every project. When the CLI asks for `@review`, the touch projects still restrict to their own tag combined with it. Implement it as a small function and comment it.
+- **Helpers** (`tests/e2e/helpers.ts`):
+  - `tap(locator)` uses `locator.tap()`.
+  - `longPress(page, locator, ms = 600)` dispatches touch pointer events via `page.touchscreen` or CDP `Input.dispatchTouchEvent`.
+  - `swipe(page, from, to)`.
+  - `logInTouch(page, opts)`: the same as `logIn`, but tap-only.
+  - `openAppTouch(page, name)`: tap the desktop icon (it works after M0-02) or use the Start menu.
+  - Until M0-02 lands, `openAppTouch` uses the Start menu.
+- **Smoke specs:** `tests/e2e/v06-m0.spec.ts` with one `@phone` test (log in by touch, `data-device="phone"`, the desktop renders, no notice) and one `@tablet` test (`data-device="tablet"`).
+- **Docs:** `docs/touch.md` (short): the device classes, the rules, the test projects and how to try on a real phone (`npm run dev -- --host`). Add a `docs/decisions.md` line.
 
-### F-01 — Player profile fixes
+### M0-02 — Touch primitives
 
-**Default text frozen on Save** (`docs/review/v04-P5.md`, "Known gaps"):
-- **The bug:** Save Changes in the Friendspace editor (`src/apps/browser/sites/friendspace/`, `myProfile` in `src/apps/browser/store.ts`) stores the headline, mood and "About me" even when the player only pasted a layout. Those are the girl's English defaults, and they stay after a switch to German or to boy.
-- **The fix:**
-  - Only fields the player changed are persisted. A field equal to the current default for the current locale and gender is stored as absent.
-  - `effectiveProfile` fills absent fields from the defaults at render, like untouched seed files.
-- **Migration** in `sanitizeProfile`: a saved headline, mood or about text equal to **any** default (girl/boy × en/de) becomes absent. Other saved values stay.
-- `docs/i18n.md` currently says `myProfile` is player data. Change it to "only what the player typed".
-
-**`/me` after Save:** scroll the page to the top (the review screenshots `d1-05`, `d2-03` show it halfway down the wall).
-
-**Player picture:**
-- Friendspace and Pixlog build the player's picture from the name (`playerPicture(playerName)` in `src/apps/browser/sites/friendspace/people.ts:34`). Use the effective User Accounts picture instead (`getUserPicture()`, the tiles in `src/os/user/pictures.ts`).
-- Render the tile SVG wherever the player's picture shows: `/me`, wall comments by the player, the Pixlog `/me`, visitors, and the Top 8 if the player appears.
-- Friends keep their pattern pictures. A switch in User Accounts updates live.
-
-**Tests:**
-- the store migration (all four defaults → absent; typed text stays)
-- a render test that switches locale and gender after Save
-- the picture follows User Accounts
-- one e2e: paste a layout, Save, switch to boy in User Accounts, and `/me` shows the boy's default headline
-
-### F-02 — Content polish (EN + DE, real German)
-
-1. **Boy diary** (`diary_age_11.txt`, `src/content/files/recycleBin.ts` `DIARY_BOY` + de): its last four entries are shared with the girl's. Write boy-only ones (skate, Dex, a dumb dare, Pia), with the same entry count.
-2. **Boy favorites order** (`src/apps/browser/store.ts` `DEFAULT_FAVORITE_URLS`/`defaultFavoritesFor`):
-   - The boy list becomes Searchly, CheatCave, Kickflip Kings, Friendspace, Westfield High.
-   - `isUntouchedFavorites` must also accept the **old** boy order (add it as a legacy list) so saved untouched lists still follow the gender.
-   - Test it with a v0.4 boy save.
-3. **Boy mood:** the Friendspace boy default mood „pumped" with the (8) emoticon becomes a pair that fits, e.g. „bored" with :|, or a games mood. Pick one and make the DE side natural (not „voll motiviert").
-4. **Concert timeline:**
-   - Jess says „next friday"/„in like a week" (`jess.ts:110`) and „3 more days" in her day-1 status, but the concert falls between days 4 and 5.
-   - Make the day-1 wording match: „in 4 days", „OMG 4 more days", or a relative phrase without weekdays. Check her day 2–4 statuses count down consistently (EN + DE).
-   - Leave Marco's day-1 rec hall line: it is the **day-10 show** in v0.5 (decisions P2-04).
-5. **American spellings** in English player-voiced and friend content: grep `maths`, `colour`, `favourite`, `mum`, `realise`, `organise`, `grey`, `holiday` (as vacation). Fix them, except proper nouns and lines that are deliberately British. `homework_maths.txt` becomes `homework_math.txt`: the seed id stays; check the tests that refer to the name.
-6. **German song rhyme:** `meine_songs_fuer_tinfoil_comets.txt`, song 3: „stift / gleich" → a real rhyme.
-7. **„adden"**: add it to the allowed anglicisms in `docs/localization-de.md`.
-8. **d2 visitors mail** (`d2-pixlog-visitors`): it says „3 new visitors", but the day-2 visitors box lists more. Make the mail count match what the box shows on day 2 for friends (count friends only, or say "new visitors" without a number). Decide, log it, EN + DE.
-9. **Minor German wording** from `docs/review/v04-P4.md`: „kicherig" → a more natural girl mood. Keep „emo_kind_93" and „stiefel. das ist ein look".
-
-### F-03 — Visual fixes
-
-1. **Story-dated photo stamps:**
-   - Add an optional `day?: number` to `PhotoSpec` (`src/os/fs/types.ts`). `src/os/fs/photos.ts` prints `'07 10 <7 + day>` when it's set, otherwise the seeded stamp.
-   - Set `day` on story photos whose day is known: the Pixlog albums (concert = day 4 → `'07 10 11`), Dex's premiere, Theo's cell, etc.
-   - Seed photos in My Pictures stay seeded (they are older).
-   - Test: `day: 4` → `'07 10 11`.
-2. **Pixel-font digit spacing:** on reply buttons, „1 obviously" renders as „1obviously" because the pixel font's „1" glyph eats the following space. Find the font (Messenger reply buttons) and fix the glyph's advance width, or use `word-spacing`. Test by rendering, or in the gate's screenshot.
-3. **Bulletins in one column:** long survey bulletins wrap under the floated sender picture. Give the bulletin body a `margin-left` (or `overflow: hidden`) so numbered lists stay in one column (`docs/review/v04-P4.md`).
-4. **Theo's transcript after a language switch:**
-   - The transcript can stop short of the last line when it re-renders in a longer language (`docs/review/v04-G.md`, `06-theo-chat-girl-de.png`).
-   - Find why. Likely the scroll-to-bottom or a height measured before the re-render. Fix it so the last line is visible after a flip.
-   - Add a test if it can be unit-tested, otherwise the gate checks the screenshot.
-5. **Stapley's balloon** covers the bottom-right of the browser content in every review screenshot.
-   - When the browser (or any window) is maximized or covers the balloon's corner, the balloon sits above the taskbar tray but must not cover page content that matters.
-   - Pick one: shift it left of the scrollbar and make it smaller, or auto-hide it after its timeout while a browser is focused. Log the choice. Keep the existing "Hide Stapley" behaviour.
-
-### F-04 — Stale follow-ups
-
-- **The problem:**
-  - `afterScript` follow-ups (`src/content/types.ts` Trigger docs) are re-armed on each Messenger sign-in when their target already ran.
-  - If the player never answered Dex's day-1 follow-ups, they arrive **after** Dex's day-2 chat, e.g. „tmrw for sure" → „tried the kickflip again. landed it 0 times" after he already landed it (`docs/review/v04-G2.md`).
-- **The fix** (in `src/apps/messenger/engine/`):
-  - An `afterScript` follow-up whose chain started on an earlier world day than the contact's newest due `onDay` script expires when that `onDay` script starts. It's marked as skipped, not run.
-  - Same-day chains are unchanged, and so are `forGender` threads hanging off `afterScript: 'dayN'` on day N.
-- Persist nothing new unless needed. If a field is needed, add it optional and sanitized, without a version bump.
+- **`src/os/touch/useLongPress.ts`:**
+  - Returns pointer handlers (`onPointerDown/Move/Up/Cancel`) plus `onContextMenu` passthrough.
+  - It acts only for `pointerType === 'touch'` (and `'pen'`). After 500 ms (`LONG_PRESS_MS`; not scaled by `scaleMs`, because it is a human gesture) it calls `handler({ clientX, clientY, target })`.
+  - A move of more than 10 px (`LONG_PRESS_SLOP`), a lift or a cancel aborts it.
+  - It calls `navigator.vibrate?.(10)`, and swallows the next `click` on the same element when it fired.
+  - It also calls `preventDefault` on the native `contextmenu` that Android fires on long-press, so the menu doesn't open twice.
+- **`src/os/touch/useActivate.ts`:**
+  - Returns `{ onClick, onDoubleClick, onKeyDown }`.
+  - A touch `click` (track the last `pointerType` from `onPointerDown`) opens, a mouse `dblclick` opens, and Enter opens.
+  - A mouse single click keeps its current meaning, such as selecting.
+- **Apply to every site:**
+  - Run `grep -rn "onDoubleClick\|onContextMenu" src --include=*.tsx`, excluding tests.
+  - **Each real action gets a touch path:**
+    - desktop icons
+    - FolderView items (both sites)
+    - the Messenger contact list
+    - the Amplifier playlist and Amplifier's main menu
+    - the window title bar double-click (maximize: on a tablet only, since phones are always maximized)
+    - the desktop context menu
+    - Stapley's menu
+  - **`preventDefault`-only sites** (Paint canvas, the games) stay as they are; M3 handles the games.
+  - List the result in the done note.
+- **Amplifier playlist:** a long-press opens a small XP context menu with Play, Move up, Move down and Remove, reusing the existing menu styling. Mouse drag stays.
+- **Paint ColorBox:** a long-press on a swatch sets the secondary colour, as a right-click does.
+- **Strings:** add EN and DE for Move up / Move down („Nach oben" / „Nach unten") and any new menu labels.
 - **Tests:**
-  - Dex: skip the day-1 follow-ups, advance to day 2, and the follow-ups never deliver.
-  - A same-day follow-up still fires.
-  - The boy-only `afterScript` threads still fire.
-- **Unanswered chats from earlier days** (a script awaiting a choice) stay by design. Document both behaviours in `docs/content-format.md`.
+  - Unit tests for both hooks, with fake timers and pointer events with `pointerType`.
+  - An e2e spec (`@phone`) where a tap opens My Documents, then a document, and a long-press on the desktop opens its menu.
+  - A desktop spec proving double-click still opens and a single click only selects.
 
-### F-G — F gate + v0.4.1 notes
+### M1-01 — Window manager
 
-- **Gate procedure:** use `<ver>` = `v041`, the e2e `v041-f.spec.ts`, the review spec `v041-review-f.spec.ts` and `docs/review/v041-F.md`. Apply the Gender rubric to F-01/F-02.
-- **Screenshots** (EN + DE):
-  1. `/me` after Save, then switched to boy
-  2. Pixlog `/me` with the User Accounts picture
-  3. the concert album with its stamp
-  4. a reply button with a digit
-  5. a long survey bulletin
-  6. Theo's chat after a language flip
-  7. the browser with Stapley's balloon
-- **Release notes:** `docs/release-notes-v0.4.1.md`, short, English + „Auf Deutsch", in the v0.3.1 style. Don't tag.
-
-### W0-01 — Days 1–10 plumbing
-
-- **`STORY_DAYS`:**
-  - Export `STORY_DAYS = { first: 1, last: 10 }` from one place (`src/content/storyDays.ts`).
-  - Use it in `src/content/lintSocial.ts:18` (replace the local constant; message „outside days 1–10"; `lintSocial.test.ts:23` uses 11).
-  - Add a `days` key ≤ 10 check to `src/content/lint.ts` (`Contact.days` and `onDay` ≤ `STORY_DAYS.last`).
-- **Balloons:** `src/content/balloons.ts:103` and `src/content/de/balloons.ts:78` switch to the vague line from day `STORY_DAYS.last + 1`. Update their doc comments and `src/os/balloon/schedule.test.ts:58`.
-- **Types doc:** `src/content/types.ts:42-46` `Contact.days` says "From day 11 on, the day-10 entry stays".
-- **Mail:** add empty `day6.ts`…`day10.ts` to `src/content/mail/` and `src/content/de/mail/` and wire both indexes. The empty arrays stay valid until W2-01, so loosen the per-day mail test for days > 5 until W2-01 (with a `// W2-01 tightens this` comment).
-- **Per-day tests:** loop over `STORY_DAYS` but keep the days-6–10 expectations off until their content task. Use a helper `contentDays()` that returns 1–5 now. Each W task raises it, and W2-03 finally makes it 1–10.
-  - `mail.test.ts:15`
-  - `contacts.test.ts:64-81`
-  - `pixlog.test.ts:8,32`
-  - `profiles.test.ts:36,43`
-  - `gossipSchool.test.ts:7,10`
-  - `cheatcave.test.ts:8,17`
-  - `kickflipkings.test.ts:16`
-  - `cheatcave/logic.test.ts:28,67`
-  - Document the helper in `docs/content-format.md`.
-- **e2e:**
-  - Add `setDay(page, n)` to `tests/e2e/helpers.ts`. It writes `still-online:v1:world` like the specs do today, then reloads.
-  - Replace the hand-written world writes in `v04-p2`, `v04-p3`, `v04-p4`, `v04-review-p2`, `v04-review-p3` and `v04-review-g`.
-  - Day-looping review specs keep 1–5.
-- **Docs:** `docs/content-format.md:72`, `README.md:22,86` (say days 1–10 only in W4-01; for now add nothing user-facing), and a `docs/decisions.md` line.
-
-### W0-02 — Story bible
-
-Write `docs/story-week2.md` (≤ 6 pages) from `docs/superpowers/specs/2026-10-19-v05-week-two-design.md`. It is binding for W1–W3.
-
-**Per friend and per day 6–10:**
-- the status and personal message
-- the beats of the `onDay` script, including what the player can choose
-- the girl/boy differences
-- any link to a site, file or mail
-
-**Also cover:**
-- **Gender-only threads:** 3 boy, 3 girl, with day, trigger (`onDay` or `afterScript: 'dayN'`) and beats.
-- **Mail per day:** id, sender, subject, the gist and gender variants.
-- **Sites per day:** what each posts.
-- **Friendspace:** bulletins, wall comments, `commentsOnPlayer`, and the band page show and blog.
-- **Pixlog:** the album per friend with its day, scene and photo count; blog posts, shouts, guestbooks, kudos days.
-
-**A facts table:**
-- everything days 1–5 established that week two touches, with file references
-- the new week-two facts: dates, counts, names, the Jam placing, the vote tie, the goldfish name, the poster
-
-**Rules for the bible:**
-- Read days 1–5 first:
-  - every `*-days.ts` file
-  - the mails
-  - the sites' day-5 states
-  - `docs/review/v04-P3.md` and `v04-G2.md`
-- Keep every voice. No new main characters; Kev, Brianna, Derek and Mr Dalton already exist. New side characters must be named in the bible.
-
-### W0-03 — Scenes + poster wallpaper
-
-- **Scenes:** add `stage` (a rec hall stage, a low ceiling, string lights, a band silhouette, a raised hand with a pick), `classroom` (a whiteboard, desks, cell drawings on the wall) and `livingroom` (a TV glow, a couch, a VHS stack). Add them to `PhotoScene` and `SCENE_PAINTERS` (`src/os/fs/photoScenes*.ts`), in the existing style, deterministic per seed, with the date stamp.
-- **Wallpaper:**
-  - `lantern-poster` is a procedural wallpaper of Theo's show poster: a lantern drawing, „VELVET LANTERN · LIVE AT THE REC HALL", hand-lettered look, original.
-  - Register it in `src/os/wallpapers/registry.ts` as an unlockable like `ponies`, and add it to `CONTENT_UNLOCKS` (`src/content/types.ts:89`).
-  - German title in `de.ts`.
-- **Tests:** scenes render; the unlock shows the wallpaper in Display Properties.
-
-### W1 — English chats days 6–10 (W1-01…W1-03)
-
-- **Content per friend** (`src/content/contacts/<friend>-days.ts`):
-  - `onDay` scripts `day6`…`day10` and `days` entries 6–10, following the bible.
-  - Same density as days 2–5: one script a day, 4–6 nodes, 2–3 choices per branch, a mid-script `personalMessageChange`, about 20–35 contact lines.
-- **Gender-only threads:** in `<friend>-boy.ts` / `<friend>-girl.ts` (create the girl files like `dex-boy.ts`), with `forGender`.
-- **German:** placeholder overlays (`src/content/de/contacts/<friend>.ts`, `boy-threads.ts`, plus a new `girl-threads.ts`).
+- **Phone:**
+  - `Window.tsx` reads `useDevice()`. When it is `'phone'`, it renders the maximized class (`effectiveMaximized`) and fills the work area above the 40 px taskbar.
+  - Hide the Maximize/Restore button, disable title-bar drag and don't render `ResizeHandles`.
+  - Title bar 36 px; Minimize and Close 36×36 with the same XP glyphs, scaled.
+  - The stored `maximized`, `x`, `y`, `w` and `h` are never changed by the phone render.
+  - Apps with `minSize` or fixed sizes get them capped to the work area on a phone, for layout only.
+- **Tablet:**
+  - Title bar 36 px and buttons 32 px.
+  - Resize grips get an invisible 16 px touch zone, with the visual grip unchanged.
+  - Title-bar drag works by touch (pointer events already do; check `touch-action: none` on the bar).
+  - In `openApp`, if the default size is larger than the work area, the window opens with `maximized: true`. This is stored, because the user can restore it.
+- **Desktop:** unchanged.
 - **Tests:**
-  - Raise `contentDays()` for contacts to 1–10 in W1-03; until then, test each finished friend's days 6–10 directly.
-  - Add boy assertions.
-  - The playthrough stays green for days 1–10 × girl/boy × en/de.
-- **Voices** (Content rubric): Jess ALL CAPS; Kayla ~*drama*~ and a new PM; Dex slow and always Away; Theo shy and apologising; Marco dry, lowercase, never „!"; Pia bossy and tells mom.
-- **W1-02:** Theo's day-10 line carries `unlock: 'lantern-poster'`, once, for both genders.
+  - Unit tests: phone render with a stored geometry; tablet oversize-open.
+  - e2e:
+    - `@phone`: every app in the registry opens full-screen, measured by its bounding box ≈ the work area.
+    - `@tablet`: drag a window by the title bar with touch, resize from the corner.
+    - Desktop: geometry restored after the viewport goes 412 → 1280.
 
-### W1-G — W1 gate
+### M1-02 — Shell pieces
 
-- **Gate procedure:** `<ver>` = `v05`, with the Content rubric and the Gender rubric.
-- **Read every chat:** days 6–10 in full, as a girl and as a boy (English; use the playthrough transcripts, or `?speed=fast`). Fix what reads off.
-- **Screenshots** (`-girl-en`, `-boy-en`):
-  1. Jess day 9
-  2. Kayla day 9
-  3. Pia day 10
-  4. Theo day 9
-  5. Marco day 8
-  6. Dex day 9
-  7. one boy-only thread
-  8. one girl-only thread
-- **Note:** German shows English placeholders (expected).
+- **Taskbar on phone and tablet:**
+  - 40 px tall, with `padding-bottom: var(--safe-bottom)`.
+  - **Window buttons:**
+    - On a phone they are icon-only, 40×40 px, with the title as `aria-label` and tooltip, in a row that scrolls sideways (no scrollbar shown).
+    - On a tablet they keep their labels, min 110 px as today.
+  - **Tray on a phone:** shows the language, volume and clock. A „‹" chevron button („Show hidden icons" / „Ausgeblendete Symbole einblenden") opens a small XP flyout above the tray with the network, Fluff and Messenger tray items, and closes on an outside tap.
+- **Start menu:**
+  - On a phone: `width: min(380px, 100vw)`, `max-height` = work area, and the inner list scrolls.
+  - All Programs opens on tap as a full-height panel inside the Start menu, with a Back row, instead of the hover flyout. The hover flyout stays for a mouse.
+  - On a tablet: as on desktop, but the flyout also opens on tap. It already has an `onClick`; make sure the hover timer doesn't fight it.
+- **Desktop icons:** on a phone the grid uses the screen height (the column wrap uses the work area), with labels at least 11 px. A tap opens (M0-02).
+- **Overlays:**
+  - Toasts: `width: min(220px, 92vw)`.
+  - Balloons: `max-width: min(250px, 92vw)`.
+  - Stapley on a phone: `scale(0.8)` from the bottom-right, balloon `max-width: 70vw`, and his drag clamps updated for the 40 px taskbar.
+  - XP dialogs (the `.dialog` patterns in Notepad, Paint and the shared ones): `max-width: 94vw`.
+  - Fluff: clamps updated for the taskbar height.
+- **Login:** on a phone the XP welcome screen stacks vertically (the logo/text above, the account tile and fields below) and stays usable with the keyboard open (the work area from M0-01). The gender and language pickers stay tappable at 36 px.
+- **Screensaver:** dismiss on `touchstart` and `pointerdown` as well. The idle tracker already counts `touchstart`.
+- **Strings:** EN and DE for Show hidden icons and Back.
+- **Tests:** e2e `@phone` covering the Acceptance flow, at 412 and 360 px wide (use `page.setViewportSize` in one test); a desktop screenshot comparison of the taskbar at 1280×800.
 
-### W2-01 — Mail days 6–10
+### M2-01 — Messenger, Mail, folders, system apps, Notepad, TuneMole
 
-- **Files:** `src/content/mail/day6.ts`…`day10.ts` per the bible, 4–6 mails a day. Senders and ids follow the existing pattern (`d6-mom-week`, …).
-- **Gender variants:** through `g()`/`gendered()`, keeping the same ids, senders and days.
-- **Mom's day-10 mail:**
-  - girl: „So THAT is Dex. He was very polite. He called me ma'am. Twice."
-  - boy: the helmet humour, no romance
-- **Tests:** tighten the per-day mail test to 1–10; add boy assertions; DE placeholders.
+- **Messenger:**
+  - The contact list fits a phone.
+  - The chat window has the transcript scrolling, the reply buttons wrap to full width, the input and Send are pinned to the bottom, and the winks, nudge and emoticon buttons are 36 px.
+  - The emoticon picker fits 92vw.
+  - Opening a chat from a toast works by tap.
+- **Mail on a phone:**
+  - A stacked layout (CSS under `[data-device='phone']` plus a small state flag in the component).
+  - The folder pane becomes a `<select>` above the list.
+  - The message list is full width; tapping a message shows the reading pane full screen with a Back button ("Back" / „Zurück") in the toolbar.
+  - Compose is full screen with To, Subject and Body stacked.
+  - Attachments open as before.
+- **Explorer, FolderView, My Computer and Recycle Bin on a phone:**
+  - Hide the 140 px task pane. Its actions are already in the toolbar; add any missing ones.
+  - Icons flow in a grid; Details view becomes a single-column list.
+- **System apps:**
+  - Display, User Accounts, Regional, Disk Cleanup and Dial-up drop their fixed sizes on a phone (M1-01 makes the window full-screen) and reflow to one column.
+  - Tab strips scroll sideways inside the window if needed.
+  - Display's wallpaper preview scales.
+- **Notepad:** the menu bar works by tap; the text area fills the window; Save dialogs are 94vw.
+- **TuneMole:** the search results condense to Title / Artist / a download button. The downloads list wraps.
+- **Tests:** an e2e `@phone` spec for each Acceptance flow. Emulate the keyboard by focusing the chat input and setting the viewport height to 500, then assert the input is visible. Unit tests for the Mail phone state.
 
-### W2-02 — Sites days 6–10
+### M2-02 — Web Explorer
 
-- **Posting rate:** each site posts on days 6–10 at its days-1–5 rate (counts in the bible).
-  - Celeb Gossip 07: 2 posts a day.
-  - Westfield High:
-    - 2 a day
-    - the class rep election (posters day 7, the tie day 9, co-reps day 10)
-    - the rec hall show listing
-    - Theo's drawings on the art wall (day 6)
-  - Tinfoil Comets: the fan art contest (day 7), the sold-out Lakeview Fairgrounds show (day 8), the winners with Jess second (day 9).
-  - CheatCave: news and forum days 6–10 (Theo, Dex, Marco cameos per the bible).
-  - Kickflip Kings: the video view counter (41 on day 6), the Westfield Jam (announced day 7, results day 9: Dex third), Kev's clip of Dex's kickflip.
-- **`after` states:** move them to day 10 where the story moved, e.g. the tour list in `tinfoilcomets.ts:170` and the crew in `kickflipkings.ts:221,358`.
-- **Searchly:** keep indexing the new pages.
-- **Tests:** per-site day tests to 1–10; DE placeholders.
+- **Fit to screen** (default on a phone; never on a tablet or desktop, where it is Actual size):
+  - The page container lays out at `width: 800px` (`PAGE_VIRTUAL_WIDTH`) and gets CSS `zoom: <container width / 800>`, recomputed on resize with a `ResizeObserver`.
+  - Use `zoom`, not `transform`, so hit-testing and scrolling stay native.
+  - Vertical scroll stays inside the page container.
+- **Actual size:** no zoom; the container scrolls sideways.
+- **The toggle:** View menu → „Fit to screen" / „An Bildschirm anpassen" (a checked menu item). Persist it in the `web` store as `fitToScreen?: boolean`, optional and sanitized; the default comes from the device.
+- **Toolbar on a phone:**
+  - Back, Forward, Refresh and Home as 36 px icon buttons, and the address bar on its own row.
+  - The Favorites button opens the favorites as an overlay sheet over the page (the same list component), closed by a tap outside or by choosing a site.
+  - Hide the 180 px pane.
+  - The status bar stays (20 px).
+- **Sites:** no per-site redesign.
+  - Go through **every** host in `SITES` (sites/index.ts) on day 1 and day 10, in Fit to screen on a phone.
+  - Fix only real breakage: an element wider than 800 px, a fixed-position element, a form field under 16 px font that makes Chrome zoom on focus (set inputs inside the browser page to `font-size: max(16px, 1em)` under `[data-device='phone']`), or a hover-only control.
+  - List each site and its result in the done note.
+- **Links that open other apps** (mailto-style or the `.example` linkify) work by tap.
+- **Tests:** e2e `@phone` covering the Acceptance flows, plus an assertion that `document.scrollingElement.scrollWidth <= innerWidth` on every site. Unit tests for the zoom maths and the `fitToScreen` sanitizer.
 
-### W2-03 — Friendspace + Pixlog days 6–10
+### M2-03 — Paint, Snapshot Booth, Amplifier
 
-- **Friendspace:**
-  - bulletins at about 3 a day
-  - each friend's wall comments and `commentsOnPlayer` (gender variants)
-  - the Velvet Lantern band page: the rec hall show on day 10 and a blog post after it
-- **Pixlog** (per friend):
-  - one new album with `day` stamps; the day-10 show album uses `stage`, and `classroom`/`livingroom` where they fit
-  - blog posts, 1–2 shouts a day, guestbook entries
-  - `kudosToPlayer` days
+- **Paint on a phone:**
+  - The tool box becomes a horizontal, sideways-scrolling strip at the top, with 36 px tools. The colour box becomes a scrolling strip at the bottom.
+  - The menu bar works by tap.
+  - A **new** image on a phone defaults to the canvas area's size (rounded down to whole pixels, min 200×200). Saved or opened images keep their size.
+  - **Drawing:** one pointer draws. When a second touch pointer goes down, cancel the current stroke (undo it if it already painted) and pan the canvas area with two fingers. Implement it in `useCanvasTools.ts` by tracking active pointers.
+  - Secondary colour by long-press (from M0-02).
+  - Dialogs are 94vw.
+- **Snapshot Booth on a phone:**
+  - The preview on top, the controls below, and the photo strip in a sideways-scrolling row.
+  - `getUserMedia` asks for `facingMode: 'user'`.
+  - The cartoon fallback stays the e2e path.
+- **Amplifier on a phone:**
+  - The window is the full width (M1-01 handles the window). The skin scales to the width with CSS `zoom`, keeping its look.
+  - Buttons are at least 36 px after zoom.
+  - The playlist uses the long-press menu (M0-02); the EQ and windowshade stay usable.
 - **Tests:**
-  - `lintSocial` covers 1–10.
-  - Set `contentDays()` to 1–10 everywhere and remove the `// W2-01 tightens this` comments.
-  - The audit stays green.
-  - DE placeholders.
+  - e2e `@phone` for the Acceptance flows: draw by pointer events with `pointerType: 'touch'`, then use the Booth cartoon fallback.
+  - Unit tests for the two-pointer cancel logic and the phone canvas size.
 
-### W2-G — W2 gate
+### M3-01 — Games on touch
 
-- **Gate procedure:** `<ver>` = `v05`, with the Content rubric and the Gender rubric.
-- **Playthrough:** play days 6–10 in English as a girl, then as a boy, across mail, every site, Friendspace and Pixlog.
-- **Cross-links:** check each one in the bible against the content (a fact mentioned in chat appears on the site that day, or earlier).
-- **Screenshots:**
-  - per day 6–10: mail inbox and one site
-  - day 10: Westfield High election result, the Pixlog show album, Friendspace's Velvet Lantern band page, Theo's poster wallpaper on the desktop
+- **`src/os/touch/ScaleToFit.tsx`:**
+  - `<ScaleToFit width height>` renders children at their fixed size, scaled with CSS `zoom` (or `transform: scale` plus the mapping, if a canvas needs it) to fit the parent while keeping the aspect ratio, and centred.
+  - Export `toStage(clientX, clientY, rect, scale)` for apps that read pointer coordinates. With `zoom`, check `getBoundingClientRect` and `offsetX` behaviour in Chromium and document the choice.
+  - Use it on a phone and on any device where the stage doesn't fit.
+- **Pinball:** wrapped in `ScaleToFit` (460×640). The existing tap zones must map correctly after scaling. Multi-touch flippers keep working.
+- **HenHunt:**
+  - `ScaleToFit` (800×540).
+  - On touch: tap = aim at the point and shoot; one-finger drag (move > 10 px) pans the view instead of shooting.
+  - The hover edge-pan stays for a mouse only.
+  - Show the crosshair at the last tap for 300 ms.
+- **Mines:**
+  - Replace the mouse handlers with pointer events, keeping mouse behaviour identical: left reveals, right flags, both or middle chords.
+  - Touch:
+    - A tap reveals, or flags when flag mode is on.
+    - A long-press (M0-02) flags.
+    - A tap on an opened number chords.
+  - Add a 🚩 toggle button beside the face (`aria-pressed`, label „Flag mode" / „Markiermodus").
+  - Wrap the board in `ScaleToFit` when it is wider than the window (Expert on a phone).
+- **Wrecker:** when the last pointer was touch, show two extra palette buttons, Reset (R) and Spin (Space), in EN and DE. Tools 1–5 are already on the palette.
+- **Scores** still emit `game:score`.
+- **Tests:**
+  - e2e `@phone` per game per the Acceptance cell. Use the games' existing seeds or test hooks for a deterministic Mines win.
+  - Unit tests for `toStage` and Mines' input reducer.
+  - Desktop game specs unchanged.
 
-### W3 — German (W3-01, W3-02)
+### M3-02 — Easter eggs and the phone playthrough
 
-- **What to replace:** every W1/W2 placeholder, with real German in the German voices (`docs/localization-de.md`), natural gendered forms via `g()`, and the glossary terms.
-- **Glossary:** add the new terms, e.g. rec hall → „Jugendzentrum" (already in the glossary), class rep → „Klassensprecher/Klassensprecherin", the Westfield Jam, the goldfish's name.
-- **Tests:** add fallback assertions ("differs from English") for the new modules, and keep the audit green in DE.
-- **W3-02 acceptance:** `grep -rn "W3 replaces" src/content/de` is empty.
+- **Konami swipe:**
+  - `src/os/konami.ts` gets a swipe matcher: on the desktop background, touch swipes longer than 40 px are classified up, down, left or right; the sequence is U U D D L R L R, then two taps.
+  - It unlocks `KONAMI_UNLOCK` with the same first-time announcement.
+  - Unit-test the classifier.
+- **Fluff:** drag and pet by touch (pointer events already exist; check `touch-action` and the hit area at 36 px minimum).
+- **The playthrough** (`tests/e2e/v06-playthrough.spec.ts`, `@phone`):
+  1. Day 1 as a girl in English: log in by touch, connect, read every mail, chat with every online friend through to the end of their day-1 script, visit Searchly and two sites from the favorites, open My Documents and a file, change the wallpaper, then Turn Off.
+  2. Day 10 as a boy in German: `setDay(page, 10)`, open the show album on Pixlog, set the poster wallpaper, play one Mines game, then chat with Marco.
+- Fix everything that blocks the playthrough or looks broken, with tests. Log each fix in `docs/decisions.md`.
 
-### W4-01 — v0.5 e2e + docs
+### M4-01 — v0.6 e2e and docs
 
-- **e2e `tests/e2e/v05-w4.spec.ts`:**
-  1. A girl at day 10 opens the Pixlog show album, finds the poster wallpaper in Display Properties, and sees the Westfield High election result.
-  2. A boy at day 10: the same, plus a boy-only thread appears in Messenger.
-  3. German: run 1 with `locale: 'de-DE'`.
-- **Docs:**
-  - README: days 1–10, the week-two features, known gaps.
-  - `docs/architecture-v0.4.md`: a short "v0.5" section.
-  - `docs/release-notes-v0.5.0.md`: English + „Auf Deutsch", in the v0.4.0 style.
-  - Screenshots.
+- **Release flows** (`tests/e2e/v06-m4.spec.ts`), all in the default run:
+  - phone portrait: log in, a chat, a site, a game
+  - phone landscape: Mail and Paint
+  - tablet: drag and resize windows, Start menu
+  - desktop: unchanged smoke
+- **README:**
+  - Remove "Mobile and touch layouts" from Known gaps.
+  - Add a short "Play on your phone or tablet" section (same desktop, tap/long-press, Fit to screen in Web Explorer).
+  - Add one phone screenshot (from M3-G's review images; copy it to the README image folder used by existing screenshots).
+  - Update the version line to v0.6.
+- **`docs/architecture-v0.6.md`:** the device class, `[data-device]` CSS, the touch hooks, render-only maximize, the work area and keyboard, `ScaleToFit`, browser zoom, and the test projects.
+- **`docs/release-notes-v0.6.0.md`:** the same format as `release-notes-v0.5.0.md`, in EN and „Auf Deutsch". Under Known issues, drop "Not designed for phones or tablets" and add any real gaps from the M gates.
 
-### W4-G — release-ready gate
+### M4-G — Release-ready gate
 
-- **Gate procedure:** `<ver>` = `v05`, with the Content rubric, the German content rubric and the Gender rubric.
-- **Play:** days 6–8 in English as a girl, then switch in User Accounts and play days 9–10 in German as a boy, across Messenger, Mail, every site, Friendspace and Pixlog.
-- **Bundle sizes:** report the `npm run build` chunk sizes against v0.4. German must stay lazy (`tests/e2e/i18n-detect.spec.ts` green).
-- **Do not tag, push or release.**
-
+- Gate procedure + Touch rubric. Play:
+  - day 1 as a girl in English on a phone in portrait
+  - day 6 as a boy in German on a phone in landscape
+  - day 10 as a girl in English on a tablet
+  - a desktop regression at 1280×800 (compare with `docs/review/v05-W4/`)
+- Report bundle sizes against v0.5 (`npm run build` output). German stays lazy (`i18n-detect.spec.ts` green). The touch code adds no new runtime dependency.
+- Write `docs/review/v06-M4.md`. **Do not tag, push or release.**
 
 ---
 
@@ -839,20 +803,22 @@ Write `docs/story-week2.md` (≤ 6 pages) from `docs/superpowers/specs/2026-10-1
 Corner radius on titlebars is 8px top-left/top-right. Taskbar height 30px. Start menu ~380×480.
 
 
+On a phone and a tablet the taskbar is 40px and title bars are 36px (see "v0.6 touch rules"); the values above are the desktop ones.
+
 
 # Notes for the owner
 
-- **Run it:** `igris arise F --through W4` inside herdr or tmux (`igris.toml`: yolo, auto-commit, 5 verify attempts). Run `igris arise F` alone first if you want to ship v0.4.1 before v0.5. Nothing is pushed or tagged.
-- **Before the run:** read `docs/superpowers/specs/2026-10-19-v05-week-two-design.md`. It holds the story decisions for days 6–10 (the rec hall show finale, Kayla's election, Pia's hamster, Dex's Jam, Jess's contest, Theo's poster). Change it before W0-02 turns it into the story bible.
+- **Run it:** `igris arise M0 --through M4` inside herdr or tmux (`igris.toml`: yolo, auto-commit, 5 verify attempts). Nothing is pushed or tagged.
+- **Before the run:**
+  - read `docs/superpowers/specs/2026-10-20-v06-touch-design.md`
+  - push the v0.5.1 commits if you want them live first (not during the run)
 - **Afterwards, review:**
-  - `docs/review/v041-F.md`
-  - `docs/review/v05-W1.md` … `v05-W4.md`
-  - `docs/story-week2.md`
+  - `docs/review/v06-M1.md` … `v06-M4.md` and their screenshots
   - `docs/decisions.md`
-  - `docs/release-notes-v0.4.1.md` and `v0.5.0.md`
-- **Then:** push, check the live site, and tag `v0.4.1`/`v0.5.0` if you want.
-- **The old v0.4 plan** is archived in `docs/plans/v0.4-tasks.md`.
-- **The old stash** "igris P0-02 WIP (before phase G)" can be dropped.
+  - `docs/release-notes-v0.6.0.md`
+  - try it on a real phone: `npm run dev -- --host`, then open the shown network address
+- **Then:** push (GitHub Pages deploys automatically), check the live site on your phone, and tag `v0.6.0` if you want.
+- **The old v0.4.1/v0.5 plan** is archived in `docs/plans/v0.5-tasks.md`.
 - igris can still stop for any of these:
   - verify failing 5× in a row
   - a crashed session
