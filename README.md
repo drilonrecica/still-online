@@ -4,7 +4,7 @@ _everyone you knew, still online._
 
 A browser-based nostalgia simulator recreating Windows XP and the social internet of 2007 through MSN, Netlog, MySpace, Winamp, and a living fictional desktop.
 
-> **v0.4 — Friendspace, Pixlog and GlitterCodez, for a girl or a boy.** Play it now: **<https://drilonrecica.github.io/still-online/>**
+> **v0.5 — week two: days 6–10, up to the Velvet Lantern rec hall show.** Play it now: **<https://drilonrecica.github.io/still-online/>**
 
 ![The still online desktop](docs/screenshots/desktop.png)
 
@@ -19,9 +19,9 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 ### Desktop
 
 - **Windows XP–style shell**: boot and login screens, Start menu with an All Programs flyout, taskbar and tray (mute, network, clock), draggable/resizable windows, desktop icons, synthesized system sounds
-- **A world that moves on**: the in-game day advances after a shutdown or a new real date, and each day brings new chats, mail, guestbook entries and profile comments (days 1–5 are scripted; later days keep the day-5 state)
+- **A world that moves on**: the in-game day advances after a shutdown or a new real date, and each day brings new chats, mail, guestbook entries and profile comments (days 1–10 are scripted, two school weeks ending with the Velvet Lantern show; later days keep the day-10 state)
 - **User Accounts**: pick your name, a picture (eight to choose from) and whether you play as a **girl or a boy**. The friends, voices and story stay the same; what is addressed to or about you changes: files, favorites, chats, mail and a few sites. Switch any time, live
-- **Display Properties**: eleven procedurally drawn wallpapers (nine homages and two easter eggs), Blue / Olive / Silver appearance, and screensavers (Pipes, Flying Panes, Marquee, My Pictures Slideshow)
+- **Display Properties**: thirteen procedurally drawn wallpapers (ten homages, two easter eggs and Theo's Velvet Lantern show poster, unlocked on day 10), Blue / Olive / Silver appearance, and screensavers (Pipes, Flying Panes, Marquee, My Pictures Slideshow)
 - **Explorer**: My Documents, My Pictures and My Music on a persistent virtual file system, plus a Recycle Bin you can restore from
 - **Balloon tips**, a dial-up connection dialog with a synthesized modem handshake, and a **Disk Cleanup** that scans forever and frees nothing
 - **Notepad** that opens and saves files in My Documents
@@ -29,6 +29,7 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 ### Messenger
 
 - Six fictional friends with statuses, personal messages, emoticons (including your own, made from your pictures), nudges, winks, sign-in toasts and a "now playing" line
+- **Week two (days 6–10)**: Marco's gig at the rec hall, Kayla's class rep election, Theo's poster, Jess's fan art contest, Pia's hamster and Dex's skate jam, each with girl-only and boy-only threads; the arcs meet on day 10, show night
 - Conversations continue over days; friends react to the music you play and to your game scores
 - Away messages with a "while you were away" summary, a per-contact **Message History** and display pictures from My Pictures
 
@@ -66,6 +67,10 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 | ![User Accounts: girl or boy](docs/screenshots/useraccounts.png) | ![Paint with a drawing](docs/screenshots/paint.png) |
 | **Mines** | **Hen Hunt** |
 | ![Mines mid-game](docs/screenshots/mines.png) | ![Hen Hunt mid-round](docs/screenshots/henhunt.png) |
+| **Show night, day 10** | **Poster wallpaper** |
+| ![Marco's show album on Pixlog](docs/screenshots/pixlog-show-album.png) | ![Theo's poster as the desktop wallpaper](docs/screenshots/poster-wallpaper.png) |
+| **A boy-only thread** | **Day 10 mail, in German** |
+| ![Marco's crew report, boy only](docs/screenshots/marco-crew-report.png) | ![Mom's day-10 mail in German](docs/screenshots/mail-day10-de.png) |
 
 ## Deutsch
 
@@ -83,7 +88,7 @@ See [docs/i18n.md](docs/i18n.md) for how it works and [docs/localization-de.md](
 
 ## Known gaps and planned
 
-- Content beyond day 5: stories for later days currently repeat the day-5 state
+- Content beyond day 10: stories for later days keep the day-10 state
 - Friendspace, Pixlog and GlitterCodez are read-and-tweak, not social networks: you can't message strangers, upload to Pixlog beyond your own pictures, or add your own band
 - German has been reviewed by the project, not by a native-speaker editor
 - More friends, sites and games

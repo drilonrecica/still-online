@@ -112,3 +112,15 @@ Pure functions in `sites/pixlog/logic.ts`, not saved. `shoutsFeed(profiles, day)
 ## Pixlog shell (P2-01)
 
 `sites/pixlog/`: `Layout` (orange bar, shutter-"o" wordmark; `data-skin` recolours bar and tabs, six skins in `Pixlog.module.css`), `Home` (login splash → `/me`, shouts feed, visitors box), `Friend` (one fixed path per Pixlog profile plus the `/*` catch-all, tabs via `?tab=`, unknown values fall back to `profile`), `Album` (`?id=` and `?n=` photo position, `PhotoCanvas` at 480×360, prev/next, caption, comments out by today). Albums, blog posts, guestbook entries and photo comments are day-gated. Names use `profileName` (like Friendspace pages), not the Messenger display names. Text lives in `content/sites/pixlog.ts` (+ German twin); Searchly indexes `/`, `/album` and every friend page from the site meta. `/me` arrives with P2-03 (until then it shows "Page not found").
+
+## v0.5: week two (days 6–10)
+
+No new app, site or game: v0.5 is content plus three small pieces of plumbing. The story bible is [story-week2.md](story-week2.md).
+
+- **Days 1–10.** `STORY_DAYS` (`src/content/storyDays.ts`) is the single source of the day range. The lint accepts day 10 and rejects 11; the balloons' vague line starts from day 11, and later days keep the day-10 state. Each friend's week two lives in `src/content/contacts/<friend>-week2.ts` (German twin in `src/content/de/contacts/`), mail in the `day6`…`day10` modules, and the site, Friendspace and Pixlog text in the existing modules.
+- **Scenes.** `stage`, `classroom` and `livingroom` join the procedural photo scenes; Marco's day-10 show album is all `stage`.
+- **Poster wallpaper.** `lantern-poster` is a hidden wallpaper (`src/os/wallpapers/poster.ts`, drawn procedurally like Pony Paradise). Theo's day-10 chat unlocks it (`unlock: 'lantern-poster'` on a script node) and Display Properties lists it from then on.
+- **Gender-only threads** follow the v0.4 rules: `forGender` scripts such as Marco's boy-only `loadInCrew` and Jess's girl-only late-night call. The gender audit stays green.
+- **German** is real text from W3 on; the `// W3 replaces` placeholders are gone and `fallback.test.ts` asserts the new modules differ from English.
+
+**Testing.** `tests/e2e/helpers.ts` has `setDay(page, n)`, and `tests/e2e/week2.ts` has `seedStoryDay(page, day, keep)`, which marks every Messenger script as already run except the ones to play. The v0.5 specs are `v05-w1` (poster unlock, crew thread), `v05-w2` (English day 10 outside Messenger), `v05-w3` (German day 10) and `v05-w4` (the release flows: show album, poster wallpaper and election result for a girl, a boy and a German girl).
