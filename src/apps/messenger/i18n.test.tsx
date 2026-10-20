@@ -9,7 +9,8 @@ import type {
   Script,
 } from '@/content/types';
 import { useSettingsStore } from '@/os/store/settings';
-import { useToastStore } from '@/os/toast/store';
+import { toastText, useToastStore } from '@/os/toast/store';
+import { ToastLayer } from '@/os/toast/ToastLayer';
 import { useWindowsStore } from '@/os/store/windows';
 import Chat from './chat/Chat';
 import { renderTranscript } from './engine';
@@ -168,8 +169,29 @@ describe('live language switch', () => {
       getMessengerEngine().choose('lena', 0);
     });
     await act(() => vi.advanceTimersByTimeAsync(5000));
-    const texts = useToastStore.getState().toasts.map((t) => t.text);
+    const texts = useToastStore
+      .getState()
+      .toasts.map((t) => t.text && toastText(t.text));
     expect(texts).toContain('nix, und du?');
+  });
+
+  it('re-renders a toast that is up during a language switch', async () => {
+    render(<ToastLayer />);
+    await act(async () => {
+      getMessengerEngine().signIn();
+      await vi.advanceTimersByTimeAsync(3000);
+    });
+    act(() => {
+      getMessengerEngine().choose('lena', 0);
+    });
+    await act(() => vi.advanceTimersByTimeAsync(1500));
+    expect(screen.getAllByText('Lena says:').length).toBeGreaterThan(0);
+    expect(screen.getByText('nm, u?')).toBeTruthy();
+    setLanguage('de');
+    expect(screen.queryByText('Lena says:')).toBeNull();
+    expect(screen.getAllByText('Lena sagt:').length).toBeGreaterThan(0);
+    expect(screen.getByText('nix, und du?')).toBeTruthy();
+    expect(screen.queryByText('nm, u?')).toBeNull();
   });
 });
 

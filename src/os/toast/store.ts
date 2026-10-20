@@ -6,11 +6,17 @@ export const MAX_TOASTS = 3;
 /** How long a toast stays before sliding away. */
 export const TOAST_MS = 4000;
 
+/** A toast line: fixed, or built at each render so it follows a language or gender switch. */
+export type ToastText = string | (() => string);
+
+export const toastText = (text: ToastText): string =>
+  typeof text === 'function' ? text() : text;
+
 export interface ToastInput {
   /** Bold first line. */
-  title: string;
+  title: ToastText;
   /** Optional second line. */
-  text?: string;
+  text?: ToastText;
   /** Icon URL (16px-ish). */
   icon?: string;
   /** Runs when the toast is clicked; the toast is dismissed afterwards. */

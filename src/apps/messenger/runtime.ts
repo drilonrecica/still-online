@@ -5,7 +5,11 @@ import type { Locale } from '@/i18n/types';
 import { useLocale } from '@/i18n/useT';
 import { resolvedFor } from '@/content/gender';
 import { getContacts, rawContentFor } from '@/content/locale';
-import type { ContactContent, ContactId } from '@/content/types';
+import type {
+  ContactContent,
+  ContactId,
+  NeutralTranscriptEntry,
+} from '@/content/types';
 import { events } from '@/os/events';
 import { useNowPlayingStore } from '@/os/nowPlaying';
 import { attentionKey, useAttentionStore } from '@/os/store/attention';
@@ -72,12 +76,13 @@ function createEngine(): ConversationEngine {
     if (from === 'contact')
       useWindowsStore.getState().openApp('messenger-chat', { contactId });
   });
-  // Toasts: never for the chat the player is already looking at.
+  // Toasts: never for the chat the player is already looking at. Their lines are built at each
+  // render, so a toast that is up during a language or gender switch follows it.
   const toast = (
     contactId: string,
     sound: SoundName,
-    title: string,
-    text?: string,
+    title: () => string,
+    text?: () => string,
   ) => {
     if (isChatFocused(contactId)) return;
     playSound(sound);
@@ -94,14 +99,12 @@ function createEngine(): ConversationEngine {
       .displayName ?? contactId;
   created.on('contactSignedIn', ({ contactId, toast: show }) => {
     if (show)
-      toast(
-        contactId,
-        'online',
+      toast(contactId, 'online', () =>
         t('messenger.toasts.signedIn', { name: nameOf(contactId) }),
       );
   });
-  created.on('message', ({ contactId, from, entry }) => {
-    if (from !== 'contact') return;
+  /** The entry as a toast preview in today's language and gender; null when it is no message. */
+  const previewOf = (contactId: string, entry: NeutralTranscriptEntry) => {
     const locale = getLocale();
     const gender = getGender();
     const content = getMessengerContent(contactId, locale, gender);
@@ -112,17 +115,21 @@ function createEngine(): ConversationEngine {
       getPlayerName(),
       gender,
     );
-    if (rendered?.kind !== 'message') return;
+    if (rendered?.kind !== 'message') return null;
     const { text } = rendered;
-    const preview =
-      text.length > TOAST_PREVIEW_CHARS
-        ? `${text.slice(0, TOAST_PREVIEW_CHARS)}…`
-        : text;
+    return text.length > TOAST_PREVIEW_CHARS
+      ? `${text.slice(0, TOAST_PREVIEW_CHARS)}…`
+      : text;
+  };
+  created.on('message', ({ contactId, from, entry }) => {
+    if (from !== 'contact') return;
+    const first = previewOf(contactId, entry);
+    if (first === null) return;
     toast(
       contactId,
       'notify',
-      t('messenger.toasts.says', { name: nameOf(contactId) }),
-      preview,
+      () => t('messenger.toasts.says', { name: nameOf(contactId) }),
+      () => previewOf(contactId, entry) ?? first,
     );
   });
   // Now playing follows state, not single events, so a track that started before

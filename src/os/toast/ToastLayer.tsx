@@ -1,12 +1,16 @@
 // Renders the toast stack bottom-right, above the tray.
 import { useEffect } from 'react';
-import { useT } from '@/i18n/useT';
-import { TOAST_MS, useToastStore, type Toast } from './store';
+import { useGender } from '@/i18n/settingsText';
+import { useLocale, useT } from '@/i18n/useT';
+import { TOAST_MS, toastText, useToastStore, type Toast } from './store';
 import styles from './Toast.module.css';
 
 function ToastItem({ toast }: { toast: Toast }) {
   const dismiss = useToastStore((s) => s.dismiss);
   const t = useT();
+  // Lazy lines read the language and gender when they render: subscribe so a switch re-renders.
+  useLocale();
+  useGender();
 
   useEffect(() => {
     const timer = setTimeout(() => dismiss(toast.id), TOAST_MS);
@@ -34,8 +38,10 @@ function ToastItem({ toast }: { toast: Toast }) {
           />
         )}
         <span className={styles.lines}>
-          <span className={styles.title}>{toast.title}</span>
-          {toast.text && <span className={styles.text}>{toast.text}</span>}
+          <span className={styles.title}>{toastText(toast.title)}</span>
+          {toast.text && (
+            <span className={styles.text}>{toastText(toast.text)}</span>
+          )}
         </span>
       </button>
       <button
