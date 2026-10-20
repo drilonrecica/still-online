@@ -979,6 +979,7 @@ export const en = {
     },
     ui: {
       toolbar: 'Mail',
+      back: 'Back',
       create: 'Create Mail',
       reply: 'Reply',
       forward: 'Forward',

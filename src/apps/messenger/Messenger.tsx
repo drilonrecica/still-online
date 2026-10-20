@@ -427,7 +427,7 @@ function ContactListView() {
 export default function Messenger() {
   const signedIn = useMessengerStore((s) => s.signedIn);
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} touch-controls`}>
       {signedIn ? <ContactListView /> : <SignInView />}
     </div>
   );

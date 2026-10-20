@@ -167,7 +167,7 @@ export default function DiskCleanup({ windowId }: AppComponentProps) {
         })
       : t('diskcleanup.cleaning');
     return (
-      <div className={styles.root}>
+      <div className={`${styles.root} touch-controls`}>
         <p className={styles.intro}>
           {scanning
             ? t('diskcleanup.introScanning')
@@ -204,7 +204,7 @@ export default function DiskCleanup({ windowId }: AppComponentProps) {
   }
 
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} touch-controls`}>
       <p className={styles.intro}>
         {t('diskcleanup.intro', { size: formatKb(total) })}
       </p>

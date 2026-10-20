@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/apps/registry';
 import { IDLE_JOKES, TIPS } from '@/content/assistant';
+import { useDeviceStore } from '@/os/device';
 import { events } from '@/os/events';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
@@ -233,6 +234,35 @@ describe('Assistant overlay', () => {
     expect(balloon()).not.toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Hide Stapley' }));
     expect(useSettingsStore.getState().assistantEnabled).toBe(false);
+  });
+
+  it('steps out over a full-screen phone window until the next tip', () => {
+    useDeviceStore.setState({ device: 'phone' });
+    try {
+      render(<Assistant />);
+      const here = () => document.querySelector('[data-assistant]');
+      expect(here()).not.toBeNull();
+      // Every phone window is full-screen: with nothing to say he leaves its buttons free.
+      act(() => {
+        useWindowsStore.getState().openApp('notepad');
+      });
+      expect(here()).toBeNull();
+      // A tip brings him back with his balloon; it folds away and so does he.
+      act(() => {
+        useAssistantStore.getState().offer(tip('stapley-mines'));
+      });
+      expect(balloon()).not.toBeNull();
+      act(() => vi.advanceTimersByTime(8000));
+      expect(here()).toBeNull();
+      // The desktop (no window in front) has room for him again.
+      act(() => {
+        const [win] = useWindowsStore.getState().windows;
+        useWindowsStore.getState().minimizeWindow(win!.id);
+      });
+      expect(here()).not.toBeNull();
+    } finally {
+      useDeviceStore.setState({ device: 'desktop' });
+    }
   });
 
   it('stands above the status bar of a maximized active window', () => {

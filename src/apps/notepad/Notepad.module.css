@@ -133,3 +133,28 @@
 :global(.desktop-root[data-device='phone']) .dialog {
   max-width: 94vw;
 }
+
+/* Phone (v0.6): the menu bar and its items are 36 px tap targets; the text fills the window. */
+:global(.desktop-root[data-device='phone']) .menuButton {
+  min-height: 36px;
+  padding-inline: 12px;
+}
+
+:global(.desktop-root[data-device='phone']) .item {
+  min-height: 36px;
+  align-items: center;
+}
+
+:global(.desktop-root[data-device='phone']) .editor {
+  font-size: 14px;
+}
+
+:global(.desktop-root[data-device='phone']) .fileDialog {
+  width: 94vw;
+}
+
+/* A landscape phone is short: a tall dialog scrolls inside the window. */
+:global(.desktop-root[data-device='phone']) .dialog {
+  max-height: 100%;
+  overflow-y: auto;
+}

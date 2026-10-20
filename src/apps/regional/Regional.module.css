@@ -52,3 +52,22 @@
 .buttons button {
   min-width: 75px;
 }
+
+/* Phone (v0.6): one column; the tab strip scrolls sideways if it ever needs to. */
+:global(.desktop-root[data-device='phone']) .tabs {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+:global(.desktop-root[data-device='phone']) .tabs button {
+  flex: none;
+}
+
+:global(.desktop-root[data-device='phone']) .row,
+:global(.desktop-root[data-device='phone']) .buttons {
+  flex-wrap: wrap;
+}
+
+:global(.desktop-root[data-device='phone']) .grow {
+  min-width: 0;
+}

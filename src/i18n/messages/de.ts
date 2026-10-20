@@ -980,6 +980,7 @@ export const de: Messages = {
     },
     ui: {
       toolbar: 'Mail',
+      back: 'Zurück',
       create: 'Neue Nachricht',
       reply: 'Antworten',
       forward: 'Weiterleiten',

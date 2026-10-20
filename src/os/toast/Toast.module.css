@@ -101,3 +101,9 @@
 :global(.desktop-root[data-device='phone']) .body {
   padding-right: 36px;
 }
+/* Phone (v0.6): toasts drop in under the full-screen window's title bar, so they never cover a
+   chat's reply row or input at the bottom. */
+:global(.desktop-root[data-device='phone']) .layer {
+  top: calc(var(--safe-top) + 44px);
+  bottom: auto;
+}

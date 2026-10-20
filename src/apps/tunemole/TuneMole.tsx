@@ -8,6 +8,7 @@ import type { MessageKey } from '@/i18n/types';
 import { formatNumber } from '@/i18n/format';
 import { useGender } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
+import { useDevice } from '@/os/device';
 import { events } from '@/os/events';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
@@ -65,8 +66,12 @@ function Mascot() {
   );
 }
 
+const sizeMb = (r: TuneMoleResult) => `${(r.sizeKb / 1024).toFixed(1)} MB`;
+
 function SearchTab({ online }: { online: boolean }) {
   const t = useT();
+  // Phone: the result columns condense into the file name over a size · bitrate · peer line.
+  const phone = useDevice() === 'phone';
   const [text, setText] = useState('');
   const [query, setQuery] = useState<string | null>(null);
   const locale = useLocale();
@@ -114,19 +119,34 @@ function SearchTab({ online }: { online: boolean }) {
           <thead>
             <tr>
               <th>{t('tunemole.search.fileName')}</th>
-              <th>{t('tunemole.search.size')}</th>
-              <th>{t('tunemole.search.bitrate')}</th>
-              <th>{t('tunemole.search.peer')}</th>
+              {!phone && (
+                <>
+                  <th>{t('tunemole.search.size')}</th>
+                  <th>{t('tunemole.search.bitrate')}</th>
+                  <th>{t('tunemole.search.peer')}</th>
+                </>
+              )}
               <th />
             </tr>
           </thead>
           <tbody>
             {results.map((r) => (
               <tr key={`${r.fileName}|${r.peer}`}>
-                <td>{r.fileName}</td>
-                <td>{(r.sizeKb / 1024).toFixed(1)} MB</td>
-                <td>{r.bitrate} kbps</td>
-                <td>{r.peer}</td>
+                {phone ? (
+                  <td className={styles.condensed}>
+                    <span className={styles.fileName}>{r.fileName}</span>
+                    <span className={styles.meta}>
+                      {sizeMb(r)} · {r.bitrate} kbps · {r.peer}
+                    </span>
+                  </td>
+                ) : (
+                  <>
+                    <td>{r.fileName}</td>
+                    <td>{sizeMb(r)}</td>
+                    <td>{r.bitrate} kbps</td>
+                    <td>{r.peer}</td>
+                  </>
+                )}
                 <td>
                   <button
                     type="button"
@@ -153,7 +173,10 @@ function DownloadsTab() {
   if (downloads.length === 0)
     return <p className={styles.empty}>{t('tunemole.downloads.empty')}</p>;
   return (
-    <table className={styles.table} aria-label={t('tunemole.downloads.label')}>
+    <table
+      className={`${styles.table} ${styles.downloads}`}
+      aria-label={t('tunemole.downloads.label')}
+    >
       <thead>
         <tr>
           <th>{t('tunemole.downloads.fileName')}</th>
@@ -285,7 +308,7 @@ export default function TuneMole({ windowId }: AppComponentProps) {
   }, [windowId]);
 
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} touch-controls`}>
       <div className={styles.header}>
         <Mascot />
         <h1>{APP_NAME}</h1>

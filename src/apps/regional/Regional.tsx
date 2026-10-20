@@ -28,7 +28,7 @@ export default function Regional({ windowId }: AppComponentProps) {
   const apply = () => dirty && setLanguage(draft);
 
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} touch-controls`}>
       <div role="tablist" className={styles.tabs}>
         <button type="button" role="tab" aria-selected="true">
           {t('language.regional.tab')}

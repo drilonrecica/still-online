@@ -91,7 +91,7 @@ export default function Dialup({ windowId }: AppComponentProps) {
 
   return (
     <form
-      className={styles.root}
+      className={`${styles.root} touch-controls`}
       onSubmit={(e) => {
         e.preventDefault();
         dial();

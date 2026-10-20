@@ -182,3 +182,49 @@
   font-family: Arial, sans-serif;
   font-size: 12px;
 }
+
+.folderSelect {
+  margin: 4px;
+}
+
+/* Phone (v0.6): one pane at a time (`mailPhoneView`). The toolbar wraps, the list and the
+   message fill the window, and the list's rows are 36 px tap targets. */
+:global(.desktop-root[data-device='phone']) .toolbar {
+  flex-wrap: wrap;
+}
+
+:global(.desktop-root[data-device='phone']) .offline {
+  gap: 6px;
+}
+
+:global(.desktop-root[data-device='phone']) .list {
+  flex: 1;
+  height: auto;
+  border-bottom: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .list td {
+  height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .subject {
+  max-width: 34vw;
+}
+
+:global(.desktop-root[data-device='phone']) .body {
+  font-size: 13px;
+}
+
+:global(.desktop-root[data-device='phone']) .compose label {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+}
+
+:global(.desktop-root[data-device='phone']) .compose label span {
+  width: auto;
+}
+
+:global(.desktop-root[data-device='phone']) .compose textarea {
+  font-size: 13px;
+}

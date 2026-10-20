@@ -118,3 +118,29 @@
 .buttons button {
   min-width: 75px;
 }
+
+/* Phone (v0.6): one column; the picture grid flows with 44 px tiles. */
+:global(.desktop-root[data-device='phone']) .row,
+:global(.desktop-root[data-device='phone']) .genders {
+  flex-wrap: wrap;
+}
+
+:global(.desktop-root[data-device='phone']) .grow {
+  min-width: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .genderOption {
+  flex: 1;
+}
+
+:global(.desktop-root[data-device='phone']) .pictures {
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+}
+
+:global(.desktop-root[data-device='phone']) .picture {
+  min-height: 44px;
+}
+
+:global(.desktop-root[data-device='phone']) .buttons {
+  flex-wrap: wrap;
+}

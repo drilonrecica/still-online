@@ -112,3 +112,12 @@
 :global(.desktop-root[data-device='phone']) .dialog {
   max-width: 94vw;
 }
+
+/* Phone (v0.6): the list's rows are 36 px tap targets and the buttons wrap. */
+:global(.desktop-root[data-device='phone']) .item {
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .buttons {
+  flex-wrap: wrap;
+}

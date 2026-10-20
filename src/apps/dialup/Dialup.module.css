@@ -64,3 +64,16 @@
 .buttons button {
   min-width: 75px;
 }
+
+/* Phone (v0.6): labels stack over their fields, and the buttons wrap. */
+:global(.desktop-root[data-device='phone']) .grid {
+  grid-template-columns: 1fr;
+}
+
+:global(.desktop-root[data-device='phone']) .check {
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .buttons {
+  flex-wrap: wrap;
+}

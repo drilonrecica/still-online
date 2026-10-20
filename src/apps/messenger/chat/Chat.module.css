@@ -291,3 +291,58 @@ span.emoticon > canvas {
 .emoWrap {
   position: relative;
 }
+
+/* Phone (v0.6): the chat fills the window. The transcript scrolls, the reply buttons wrap to full
+   width, and the input and Send stay pinned to the bottom (above the on-screen keyboard, since
+   the window follows `visualViewport`). The player's own picture makes room for them. */
+:global(.desktop-root[data-device='phone']) .header {
+  padding: 4px 8px;
+}
+
+:global(.desktop-root[data-device='phone']) .picture > * {
+  width: 36px;
+  height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .toolbar {
+  flex-wrap: wrap;
+}
+
+:global(.desktop-root[data-device='phone']) .tool {
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .transcript {
+  font-size: 13px;
+}
+
+:global(.desktop-root[data-device='phone']) .choices {
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+:global(.desktop-root[data-device='phone']) .choice {
+  flex: 1 1 100%;
+  min-height: 36px;
+  text-align: left;
+  white-space: normal;
+}
+
+:global(.desktop-root[data-device='phone']) .myPicture {
+  display: none;
+}
+
+:global(.desktop-root[data-device='phone']) .bottom {
+  padding-right: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .emoMenu {
+  grid-template-columns: 1fr;
+  min-width: 0;
+  width: min(290px, 92vw);
+  max-height: min(240px, 50vh);
+}
+
+:global(.desktop-root[data-device='phone']) .emoItem {
+  min-height: 36px;
+}

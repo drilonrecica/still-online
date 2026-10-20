@@ -262,3 +262,8 @@
   background: #f4f7fd;
   border: 1px solid #c9d6f2;
 }
+
+/* Phone (v0.6): the 3×2 grid stays inside 92vw. */
+:global(.desktop-root[data-device='phone']) .menu {
+  max-width: 92vw;
+}

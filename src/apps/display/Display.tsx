@@ -154,7 +154,11 @@ function Tabs({
 }) {
   const t = useT();
   return (
-    <menu role="tablist" aria-label={t('apps.display.title')}>
+    <menu
+      role="tablist"
+      className={styles.tabs}
+      aria-label={t('apps.display.title')}
+    >
       {TABS.map((item) => (
         <button
           key={item.id}
@@ -326,7 +330,7 @@ export default function Display({ windowId }: AppComponentProps) {
     patch({ screensaver: { ...saver, ...p } });
 
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} touch-controls`}>
       <Tabs tab={tab} onChange={setTab} />
       <div
         className={`window ${styles.panel}`}

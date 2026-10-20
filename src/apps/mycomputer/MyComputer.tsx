@@ -17,6 +17,7 @@ export default function MyComputer() {
 
   return (
     <div
+      className="touch-controls"
       style={{
         padding: 12,
         background: '#fff',

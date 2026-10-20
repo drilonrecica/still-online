@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/apps/registry';
+import { useDeviceStore } from '@/os/device';
 import { events } from '@/os/events';
 import { useWindowsStore } from '@/os/store/windows';
 import { FolderView } from './FolderView';
@@ -190,5 +191,26 @@ describe('openFsNode', () => {
     off.forEach((f) => f());
     expect(enqueue).toHaveBeenCalledWith({ trackId: 'cool-rock', play: true });
     expect(browse).toHaveBeenCalledWith({ url: 'http://a.example/' });
+  });
+
+  it('on a phone, puts the task actions in the toolbar instead of a task pane', () => {
+    useDeviceStore.setState({ device: 'phone' });
+    try {
+      act(() => {
+        addFile('a.txt');
+      });
+      render(<Harness />);
+      expect(screen.queryByRole('navigation')).toBeNull();
+      const tasks = screen.getByRole('group', {
+        name: 'File and Folder Tasks',
+      });
+      const rename = screen.getByRole('button', { name: 'Rename' });
+      expect(tasks).toContainElement(rename);
+      expect(rename).toBeDisabled();
+      fireEvent.click(screen.getByRole('option', { name: /a\.txt/ }));
+      expect(rename).toBeEnabled();
+    } finally {
+      useDeviceStore.setState({ device: 'desktop' });
+    }
   });
 });

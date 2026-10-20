@@ -242,7 +242,10 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
   const startFolder = file?.parentId ?? FS_FOLDERS.docs;
 
   return (
-    <div className={styles.root} onClick={() => menu && setMenu(null)}>
+    <div
+      className={`${styles.root} touch-controls`}
+      onClick={() => menu && setMenu(null)}
+    >
       <div
         className={styles.menubar}
         role="menubar"
@@ -260,7 +263,11 @@ export default function Notepad({ windowId, props }: AppComponentProps) {
                 e.stopPropagation();
                 setMenu(menu === id ? null : id);
               }}
-              onMouseEnter={() => menu && setMenu(id)}
+              // Hover switching is for a mouse: a tap's compatibility events must not open the
+              // menu just before its own click toggles it shut again.
+              onPointerEnter={(e) => {
+                if (e.pointerType === 'mouse' && menu) setMenu(id);
+              }}
             >
               {menus[id].label}
             </button>

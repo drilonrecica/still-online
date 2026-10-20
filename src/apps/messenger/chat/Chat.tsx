@@ -129,7 +129,7 @@ function ChatView({
         : ''));
 
   return (
-    <div ref={root} className={styles.root}>
+    <div ref={root} className={`${styles.root} touch-controls`}>
       <header className={styles.header}>
         <div className={styles.headerText}>
           <div className={styles.to}>

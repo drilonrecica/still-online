@@ -107,3 +107,56 @@
   color: #666;
   margin: 8px 0;
 }
+
+.condensed {
+  overflow-wrap: anywhere;
+}
+
+.fileName {
+  display: block;
+  font-weight: bold;
+}
+
+.meta {
+  display: block;
+  color: #555;
+}
+
+/* Phone (v0.6): results are condensed (`SearchTab`); the downloads table wraps each download into
+   a block: the name on its own line, then status, progress, speed, ETA and the button. */
+:global(.desktop-root[data-device='phone']) .panel {
+  margin-inline: 4px;
+  padding: 4px;
+}
+
+:global(.desktop-root[data-device='phone']) .header {
+  flex-wrap: wrap;
+}
+
+:global(.desktop-root[data-device='phone']) .downloads thead {
+  display: none;
+}
+
+:global(.desktop-root[data-device='phone']) .downloads tr {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+:global(.desktop-root[data-device='phone']) .downloads td {
+  padding: 0;
+  border: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .downloads td:first-child {
+  flex-basis: 100%;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+:global(.desktop-root[data-device='phone']) .downloads td:last-child {
+  margin-left: auto;
+}

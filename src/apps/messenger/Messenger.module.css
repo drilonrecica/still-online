@@ -364,3 +364,31 @@
   background: #316ac5;
   color: #fff;
 }
+
+/* Phone (v0.6): the contact list fills the full-screen window; rows and the menu bar are 36 px
+   tap targets. A tap opens a chat (`useActivate`). */
+:global(.desktop-root[data-device='phone']) .contact {
+  height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .groupHeader,
+:global(.desktop-root[data-device='phone']) .menuButton,
+:global(.desktop-root[data-device='phone']) .menuItem {
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .nameRow {
+  flex-wrap: wrap;
+}
+
+:global(.desktop-root[data-device='phone']) .nowPlaying {
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .footer {
+  align-items: center;
+}
+
+:global(.desktop-root[data-device='phone']) .pictureOption {
+  min-height: 36px;
+}

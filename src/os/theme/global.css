@@ -50,6 +50,14 @@ textarea,
   min-height: 36px;
 }
 
+/* Phone: an app root with `.touch-controls` gets 36 px tap targets for its XP buttons, drop-downs
+   and text fields (the touch rubric). The look stays XP; only the height grows. */
+.desktop-root[data-device='phone']
+  .touch-controls
+  :is(button, select, input:not([type='checkbox'], [type='radio'])) {
+  min-height: 36px;
+}
+
 /* Touch: no double-tap zoom, no long-press callout and no tap flash on the shell. */
 .desktop-root {
   touch-action: manipulation;

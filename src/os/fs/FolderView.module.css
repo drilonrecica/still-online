@@ -199,3 +199,65 @@
   background: var(--xp-face, #ece9d8);
   border-top: 1px solid #aca899;
 }
+
+.phoneTasks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* Phone (v0.6): no 140 px task pane; its actions sit in the wrapping toolbar, with the address on
+   its own row. Icons flow in a grid, and Details is a single-column list of 36 px rows. */
+:global(.desktop-root[data-device='phone']) .toolbar {
+  flex-wrap: wrap;
+}
+
+:global(.desktop-root[data-device='phone']) .address {
+  order: 1;
+  flex-basis: 100%;
+}
+
+:global(.desktop-root[data-device='phone']) .list[data-mode='icons'] {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+}
+
+:global(.desktop-root[data-device='phone']) .list[data-mode='icons'] .item {
+  width: auto;
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .list[data-mode='details'] .item {
+  display: flex;
+  gap: 6px;
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .list[data-mode='details'] .icon {
+  display: inline-flex;
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
+:global(.desktop-root[data-device='phone'])
+  .list[data-mode='details']
+  .icon
+  canvas,
+:global(.desktop-root[data-device='phone'])
+  .list[data-mode='details']
+  .icon
+  img {
+  width: 24px;
+  height: 24px;
+}
+
+:global(.desktop-root[data-device='phone']) .list[data-mode='details'] .name {
+  flex: 1;
+  min-width: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .header,
+:global(.desktop-root[data-device='phone']) .meta {
+  display: none;
+}

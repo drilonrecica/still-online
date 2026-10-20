@@ -6,8 +6,10 @@ import { useT } from '@/i18n/useT';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent, MouseEvent } from 'react';
 import folderIcon16 from '@/assets/icons/folder-16.svg';
+import { useDevice } from '@/os/device';
 import { composeHandlers } from '@/os/touch/compose';
 import { useActivate } from '@/os/touch/useActivate';
+import { useLongPress, type LongPressHandlers } from '@/os/touch/useLongPress';
 import { FsIcon } from './FsIcon';
 import { compareNodes, isInRecycle, pathOf } from './nodes';
 import { useFsStore } from './store';
@@ -30,6 +32,13 @@ export interface FolderViewProps {
 
 type ViewMode = 'icons' | 'details';
 
+/** Long-press handlers without the right-click path: a mouse keeps the browser's own menu here. */
+function touchOnly(handlers: LongPressHandlers): Partial<LongPressHandlers> {
+  const rest: Partial<LongPressHandlers> = { ...handlers };
+  delete rest.onContextMenu;
+  return rest;
+}
+
 function formatDate(ms: number): string {
   return formatDateTime(new Date(ms), getLocale());
 }
@@ -48,6 +57,7 @@ function FolderViewInner({
   filter,
 }: FolderViewProps) {
   const t = useT();
+  const phone = useDevice() === 'phone';
   const nodes = useFsStore((s) => s.nodes);
   const remove = useFsStore((s) => s.remove);
   const restore = useFsStore((s) => s.restore);
@@ -93,6 +103,11 @@ function FolderViewInner({
   }
   // Double-click or a tap opens; the list's own keys handle Enter.
   const activate = useActivate((node: FsNode) => open(node));
+  // A tap opens, so a held finger selects instead (for Rename and Delete on a phone).
+  const holdToSelect = useLongPress((_point, id: string) => {
+    setSelectedId(id);
+    listRef.current?.focus();
+  });
 
   function deleteSelected() {
     if (!selected || !canDelete) return;
@@ -179,12 +194,42 @@ function FolderViewInner({
     }
   }
 
+  // The task pane's actions. A phone has no room for the pane: they join the toolbar.
+  const tasks = (
+    <>
+      {isBinRoot && (
+        <>
+          <button
+            type="button"
+            disabled={!binItemSelected}
+            onClick={restoreSelected}
+          >
+            {t('fs.view.restore')}
+          </button>
+          <button
+            type="button"
+            disabled={items.length === 0}
+            onClick={emptyBin}
+          >
+            {t('fs.view.emptyBin')}
+          </button>
+        </>
+      )}
+      <button type="button" disabled={!canRename} onClick={startRename}>
+        {t('fs.view.rename')}
+      </button>
+      <button type="button" disabled={!canDelete} onClick={deleteSelected}>
+        {t('fs.view.delete')}
+      </button>
+    </>
+  );
+
   if (!folder) {
     return <p className={styles.empty}>{t('fs.view.unavailable')}</p>;
   }
 
   return (
-    <div className={styles.view}>
+    <div className={`${styles.view} touch-controls`}>
       <div className={styles.toolbar}>
         <button
           type="button"
@@ -222,40 +267,22 @@ function FolderViewInner({
             {t('fs.view.details')}
           </button>
         </div>
+        {!picker && phone && (
+          <div
+            className={styles.phoneTasks}
+            role="group"
+            aria-label={t('fs.view.tasks')}
+          >
+            {tasks}
+          </div>
+        )}
       </div>
 
       <div className={styles.body}>
-        {!picker && (
+        {!picker && !phone && (
           <nav className={styles.tasks} aria-label={t('fs.view.tasks')}>
             <h2>{t('fs.view.tasks')}</h2>
-            {isBinRoot && (
-              <>
-                <button
-                  type="button"
-                  disabled={!binItemSelected}
-                  onClick={restoreSelected}
-                >
-                  {t('fs.view.restore')}
-                </button>
-                <button
-                  type="button"
-                  disabled={items.length === 0}
-                  onClick={emptyBin}
-                >
-                  {t('fs.view.emptyBin')}
-                </button>
-              </>
-            )}
-            <button type="button" disabled={!canRename} onClick={startRename}>
-              {t('fs.view.rename')}
-            </button>
-            <button
-              type="button"
-              disabled={!canDelete}
-              onClick={deleteSelected}
-            >
-              {t('fs.view.delete')}
-            </button>
+            {tasks}
           </nav>
         )}
 
@@ -297,6 +324,7 @@ function FolderViewInner({
                   },
                 },
                 activate(node),
+                touchOnly(holdToSelect(node.id)),
               )}
             >
               <span className={styles.icon}>

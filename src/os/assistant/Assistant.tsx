@@ -173,6 +173,9 @@ function Stapley() {
     : -1;
   const reply =
     current?.reply && (tip?.options?.[replyIndex]?.reply ?? current.reply);
+  // Phone: a full-screen window has no free corner, and he would sit on its Send or OK button.
+  // He steps out while he has nothing to say, and comes back with the next tip.
+  if (device === 'phone' && maximized && !tip && !menu) return null;
   return (
     <div
       className={styles.root}

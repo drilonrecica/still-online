@@ -1,6 +1,7 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { useDeviceStore } from '@/os/device';
 import { searchTuneMole, TUNEMOLE_RESULTS } from '@/content/tunemole';
 import type { TuneMoleResult } from '@/content/types';
 import { events, type OsEventMap } from '@/os/events';
@@ -168,6 +169,25 @@ describe('TuneMole window', () => {
     render(<TuneMole windowId={windowId} props={{}} />);
     return user;
   }
+
+  it('condenses the results on a phone: file name, a size · bitrate · peer line, Download', async () => {
+    useDeviceStore.setState({ device: 'phone' });
+    try {
+      const user = renderApp();
+      await user.type(screen.getByLabelText('Search for music'), 'surf');
+      await user.click(screen.getByRole('button', { name: 'Search' }));
+      const table = screen.getByRole('table', { name: 'Search results' });
+      expect(within(table).getAllByRole('columnheader')).toHaveLength(2);
+      const row = within(table).getAllByRole('row')[1]!;
+      expect(within(row).getAllByRole('cell')).toHaveLength(2);
+      expect(row).toHaveTextContent(/MB · \d+ kbps · /);
+      expect(
+        within(row).getByRole('button', { name: /^Download / }),
+      ).toBeInTheDocument();
+    } finally {
+      useDeviceStore.setState({ device: 'desktop' });
+    }
+  });
 
   it('shows the peer count when online', () => {
     renderApp();

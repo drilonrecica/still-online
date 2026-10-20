@@ -38,6 +38,17 @@ still online is the same XP desktop on every device, adapted for touch. The desi
 - **Login:** on a phone the wordmark, then the prompt over a divider, then the tile and fields. The middle scrolls when the keyboard shrinks the screen.
 - `tests/e2e/v06-m1-02.spec.ts-snapshots/` holds the v0.5 desktop taskbar and Start menu (1280×800). The desktop test compares against them.
 
+## Apps on a phone (M2-01)
+
+- **Tap targets:** an app root with the class `touch-controls` gets 36 px buttons, drop-downs and text fields on a phone (`global.css`). Rows in lists (contacts, mail, folder items, menus) are 36 px in each app's CSS.
+- **Messenger:** contact rows are 36 px and a tap opens a chat. The chat's transcript scrolls, the reply buttons wrap to full width, and the input and Send stay at the bottom above the keyboard. The emoticon picker is one column `min(290px, 92vw)` wide. On a phone, toasts drop in under the title bar, so they never cover the reply row.
+- **Mail:** one pane at a time (`mailPhoneView`): a Folders drop-down over the full-width list, a message full screen with Back in the toolbar, or Compose full screen with the fields stacked.
+- **Folders** (Explorer, Recycle Bin, the Notepad file dialogs): no task pane, and its actions (Rename, Delete, Restore, Empty Recycle Bin) join the wrapping toolbar, with the address on its own row. A tap opens and a long-press selects. Details is a single-column list.
+- **System apps:** Display, User Accounts, Regional, Disk Cleanup and Dial-up reflow to one column. Tab strips scroll sideways and Display's monitor preview scales.
+- **Notepad:** menus open by tap (hover switching is mouse-only); dialogs are 94vw and scroll when the screen is short.
+- **TuneMole:** results show the file name over size · bitrate · peer, plus Download. Each download wraps into its own block.
+- **Stapley** steps out while a full-screen window is in front and he has nothing to say, so he never covers a Send or OK button. A new tip brings him back.
+
 ## Touch primitives
 
 Both hooks live in `src/os/touch/` and return a binder, so one hook serves a whole list: `const press = useLongPress((point, i) => …)`, then `<li {...press(i)}>`. Every double-click or context-menu interaction goes through them, so nothing is mouse-only.

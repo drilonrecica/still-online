@@ -165,3 +165,61 @@
     var(--xp-taskbar-to)
   );
 }
+
+/* Phone (v0.6): the window is full-screen (M1-01). The tab strip scrolls sideways inside it,
+   rows wrap to one column and the monitor preview scales to the width. */
+:global(.desktop-root[data-device='phone']) .tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+:global(.desktop-root[data-device='phone']) .tabs button {
+  flex: none;
+}
+
+:global(.desktop-root[data-device='phone']) .row {
+  flex-wrap: wrap;
+}
+
+:global(.desktop-root[data-device='phone']) .row label {
+  white-space: normal;
+}
+
+:global(.desktop-root[data-device='phone']) .grow {
+  min-width: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .option {
+  padding-block: 9px;
+}
+
+:global(.desktop-root[data-device='phone']) .monitorFrame {
+  box-sizing: border-box;
+  width: min(100%, 300px);
+  padding: 7% 8% 12%;
+}
+
+:global(.desktop-root[data-device='phone']) .screen {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 152 / 112;
+}
+
+:global(.desktop-root[data-device='phone']) .swatches {
+  grid-template-columns: repeat(8, minmax(0, 36px));
+}
+
+:global(.desktop-root[data-device='phone']) .swatch {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+:global(.desktop-root[data-device='phone']) .schemeWindow {
+  width: min(150px, 60%);
+}
+
+:global(.desktop-root[data-device='phone']) .buttons {
+  flex-wrap: wrap;
+}

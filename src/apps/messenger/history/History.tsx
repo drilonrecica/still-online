@@ -84,7 +84,7 @@ export default function History({ props }: AppComponentProps) {
   }
 
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} touch-controls`}>
       <div
         className={styles.list}
         role="listbox"

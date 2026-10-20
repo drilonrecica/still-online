@@ -47,7 +47,7 @@ export default function UserAccounts({ windowId }: AppComponentProps) {
   };
 
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} touch-controls`}>
       <div className={styles.panel}>
         <div className={styles.account}>
           <img
