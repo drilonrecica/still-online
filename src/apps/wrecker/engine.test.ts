@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { gunPose, flamePose } from './pose';
 import {
+  JOLT_EVERY,
   RATE,
   createEngine,
   drain,
@@ -173,5 +175,97 @@ describe('wrecker tool state machine', () => {
       return drain(e).marks;
     };
     expect(run()).toEqual(run());
+  });
+
+  it('hammer: a flash and a shockwave, glass and chips flying, a crater under the face', () => {
+    const e = engine('hammer');
+    pointerDown(e, 200, 200);
+    const [crack] = drain(e).marks;
+    expect(crack?.kind === 'crack' && crack.crater?.length).toBeGreaterThan(8);
+    expect(e.fx.map((f) => f.kind).sort()).toEqual(['flash', 'ring']);
+    const kinds = new Set(e.particles.map((p) => p.kind));
+    for (const k of ['shard', 'chip', 'spark', 'smoke'])
+      expect(kinds).toContain(k);
+    // Effects fade away.
+    update(e, 1);
+    expect(e.fx).toHaveLength(0);
+  });
+
+  it('machine gun: muzzle flash and tracer from the barrel to the hole, sparks at the hit', () => {
+    const e = engine('machinegun');
+    pointerDown(e, 400, 300);
+    const [hole] = drain(e).marks;
+    const muzzle = e.fx.find((f) => f.kind === 'muzzle');
+    const trace = e.fx.find((f) => f.kind === 'tracer');
+    const tip = gunPose(400, 300).tip;
+    expect(muzzle?.x).toBeCloseTo(tip.x);
+    expect(muzzle?.y).toBeCloseTo(tip.y);
+    expect(trace).toMatchObject({ x: muzzle?.x, y: muzzle?.y });
+    if (hole?.kind !== 'hole') throw new Error('no bullet hole');
+    expect([trace?.x2, trace?.y2]).toEqual([hole.x, hole.y]);
+    expect(e.particles.filter((p) => p.kind === 'spark').length).toBe(6);
+  });
+
+  it('machine gun: jolts the screen every few shots, never under reduced motion', () => {
+    const e = engine('machinegun');
+    pointerDown(e, 400, 300);
+    update(e, RATE.bullet * (JOLT_EVERY - 1) + 0.001);
+    expect(drain(e).jolt).toBe(true);
+    const calm = engine('machinegun');
+    calm.reduced = true;
+    pointerDown(calm, 400, 300);
+    update(calm, RATE.bullet * 8);
+    expect(drain(calm).jolt).toBe(false);
+  });
+
+  it('flamethrower: flames leave the nozzle heading for the target', () => {
+    const e = engine('flamethrower');
+    pointerDown(e, 300, 300);
+    const nozzle = flamePose(300, 300).tip;
+    const stream = e.particles.filter(
+      (p) =>
+        p.kind === 'flame' && Math.hypot(p.x - nozzle.x, p.y - nozzle.y) < 6,
+    );
+    expect(stream.length).toBeGreaterThanOrEqual(5);
+    // Moving up-left, towards the target.
+    for (const p of stream) {
+      expect(p.vx).toBeLessThan(0);
+      expect(p.vy).toBeLessThan(0);
+    }
+  });
+
+  it('chainsaw: throws sparks and sawdust back against the drag, with torn edges', () => {
+    const e = engine('chainsaw');
+    pointerDown(e, 0, 0);
+    drain(e);
+    e.particles.length = 0;
+    pointerMove(e, 60, 0);
+    const [cut] = drain(e).marks;
+    expect(cut?.kind === 'cut' && cut.tears).toBeTruthy();
+    const thrown = e.particles.filter((p) => p.kind === 'sawdust');
+    expect(thrown.length).toBeGreaterThan(10);
+    // Dragged right: most of it flies left.
+    expect(thrown.filter((p) => p.vx < 0).length).toBeGreaterThan(
+      thrown.length * 0.7,
+    );
+    expect(e.particles.some((p) => p.kind === 'spark')).toBe(true);
+  });
+
+  it('reduced motion spawns half the particles', () => {
+    const count = (reduced: boolean) => {
+      const e = engine('hammer');
+      e.reduced = reduced;
+      pointerDown(e, 100, 100);
+      return e.particles.length;
+    };
+    expect(count(true)).toBe(Math.ceil(count(false) / 2));
+  });
+
+  it('repair clears the light effects along with the damage', () => {
+    const e = engine('hammer');
+    pointerDown(e, 100, 100);
+    pointerUp(e);
+    startRepair(e, 0);
+    expect(e.fx).toHaveLength(0);
   });
 });

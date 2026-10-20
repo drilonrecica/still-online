@@ -11,11 +11,39 @@ export type StampKind = 'tread' | 'boom';
 
 /** A mark painted once onto the damage canvas. Coordinates are CSS px in the viewport. */
 export type Mark =
-  | { kind: 'crack'; x: number; y: number; lines: Point[][] }
-  | { kind: 'cut'; points: Point[] }
+  | {
+      kind: 'crack';
+      x: number;
+      y: number;
+      lines: Point[][];
+      /** The crushed, frosted spot under the hammer face (a jagged outline). */
+      crater?: Point[];
+    }
+  | {
+      kind: 'cut';
+      points: Point[];
+      /** Short torn fibres sticking out of the cut's lips. */
+      tears?: Point[][];
+    }
   | { kind: 'scorch'; x: number; y: number; r: number }
-  | { kind: 'hole'; x: number; y: number; r: number; cracks: Point[][] }
-  | { kind: 'stamp'; x: number; y: number; stamp: StampKind; angle: number };
+  | {
+      kind: 'hole';
+      x: number;
+      y: number;
+      r: number;
+      cracks: Point[][];
+      /** The chipped, frosted ring around the hole (a jagged outline). */
+      halo?: Point[];
+    }
+  | {
+      kind: 'stamp';
+      x: number;
+      y: number;
+      stamp: StampKind;
+      angle: number;
+      /** Ink spatter around the print, in the stamp's own (rotated) frame. */
+      dots?: { x: number; y: number; r: number }[];
+    };
 
 const TAU = Math.PI * 2;
 
@@ -96,6 +124,34 @@ export function crackPattern(
   return lines;
 }
 
+/** A jagged ring around (x, y), between `inner` and `outer` px out. */
+export function jaggedRing(
+  rand: Rand,
+  x: number,
+  y: number,
+  inner: number,
+  outer: number,
+): Point[] {
+  const n = randInt(rand, 9, 14);
+  const offset = rand() * TAU;
+  return Array.from({ length: n }, (_, i) => {
+    const a = offset + (i / n) * TAU + (rand() - 0.5) * 0.3;
+    const d = inner + rand() * (outer - inner);
+    return { x: x + Math.cos(a) * d, y: y + Math.sin(a) * d };
+  });
+}
+
+/** A hammer hit: the crack pattern plus the crushed spot under the hammer's face. */
+export function hammerHit(rand: Rand, x: number, y: number): Mark {
+  return {
+    kind: 'crack',
+    x,
+    y,
+    lines: crackPattern(rand, x, y),
+    crater: jaggedRing(rand, x, y, 9, 17),
+  };
+}
+
 /**
  * A chainsaw cut from `from` to `to`: points every ~5 px, pushed sideways at random so the
  * edge is jagged. It starts and ends exactly on the endpoints, so drags join up.
@@ -118,6 +174,32 @@ export function jaggedCut(rand: Rand, from: Point, to: Point): Point[] {
   }
   points.push(to);
   return points;
+}
+
+/** A cut with torn fibres poking out of its lips every few points. */
+export function sawCut(rand: Rand, from: Point, to: Point): Mark {
+  const points = jaggedCut(rand, from, to);
+  const tears: Point[][] = [];
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const nx = -dy / len;
+  const ny = dx / len;
+  for (let i = 1; i < points.length; i += 2) {
+    const p = points[i];
+    if (!p || rand() < 0.35) continue;
+    const side = rand() < 0.5 ? -1 : 1;
+    const reach = 4 + rand() * 6;
+    const lean = (rand() - 0.5) * 6;
+    tears.push([
+      { x: p.x + nx * side * 3, y: p.y + ny * side * 3 },
+      {
+        x: p.x + nx * side * (3 + reach) + (dx / len) * lean,
+        y: p.y + ny * side * (3 + reach) + (dy / len) * lean,
+      },
+    ]);
+  }
+  return { kind: 'cut', points, tears };
 }
 
 /** A spot within `radius` of (x, y), denser towards the middle: where a bullet lands. */
@@ -155,7 +237,14 @@ export function bulletHole(rand: Rand, x: number, y: number): Mark {
       },
     ]);
   }
-  return { kind: 'hole', x, y, r, cracks };
+  return {
+    kind: 'hole',
+    x,
+    y,
+    r,
+    cracks,
+    halo: jaggedRing(rand, x, y, r * 1.7, r * 2.6),
+  };
 }
 
 /** One puff of scorch under the flamethrower; many of them accumulate into a burn. */
@@ -175,11 +264,16 @@ export function stampMark(
   x: number,
   y: number,
 ): Mark {
-  return {
-    kind: 'stamp',
-    x,
-    y,
-    stamp: count % 2 === 0 ? 'tread' : 'boom',
-    angle: (rand() - 0.5) * 0.5,
-  };
+  const stamp: StampKind = count % 2 === 0 ? 'tread' : 'boom';
+  // Ink squeezed out past the stamp's edge.
+  const dots = Array.from({ length: randInt(rand, 5, 9) }, () => {
+    const a = rand() * TAU;
+    const d = (stamp === 'tread' ? 70 : 80) + rand() * 30;
+    return {
+      x: Math.cos(a) * d * (stamp === 'tread' ? 1.3 : 1.1),
+      y: Math.sin(a) * d * 0.5,
+      r: 1 + rand() * 3,
+    };
+  });
+  return { kind: 'stamp', x, y, stamp, angle: (rand() - 0.5) * 0.5, dots };
 }

@@ -45,6 +45,14 @@ const SHAKE: Keyframe[] = [
   { transform: 'translate(0, 0)' },
 ];
 
+/** The machine gun's little jolt every few shots. */
+const JOLT: Keyframe[] = [
+  { transform: 'translate(0, 0)' },
+  { transform: 'translate(2px, -1px)' },
+  { transform: 'translate(-1px, 2px)' },
+  { transform: 'translate(0, 0)' },
+];
+
 export default function Wrecker({ windowId }: AppComponentProps) {
   const minimized = useWindowsStore(
     (s) => s.windows.find((w) => w.id === windowId)?.minimized ?? false,
@@ -71,10 +79,11 @@ export default function Wrecker({ windowId }: AppComponentProps) {
     [windowId],
   );
 
-  const shake = useCallback(() => {
+  const shake = useCallback((strength: 'hit' | 'jolt') => {
     const targets = [document.querySelector('.desktop-root'), rootRef.current];
+    const [frames, duration] = strength === 'hit' ? [SHAKE, 220] : [JOLT, 90];
     for (const el of targets)
-      if (el instanceof HTMLElement) el.animate?.(SHAKE, { duration: 220 });
+      if (el instanceof HTMLElement) el.animate?.(frames, { duration });
   }, []);
 
   useWreckerLoop(damageRef, fxRef, engineRef, {

@@ -11,7 +11,7 @@ import {
 import { playSound } from '@/os/sound';
 import { drawCursor } from './cursors';
 import type { Mark } from './damage';
-import { drawParticles, drawSweep, paintMark } from './draw';
+import { drawFx, drawParticles, drawSweep, paintMark } from './draw';
 import {
   CURSOR_KICK,
   drain,
@@ -28,9 +28,10 @@ const MAX_HISTORY = 6000;
 export interface LoopOptions {
   /** Hidden (window minimized): skip drawing. */
   paused: boolean;
-  /** Reduced motion: no shake, no cursor wobble. */
+  /** Reduced motion: no shake, no cursor wobble, half the particles, dimmer flashes. */
   reduced: boolean;
-  onShake: () => void;
+  /** A heavy hit (hammer) or a light jolt (machine-gun bursts). */
+  onShake: (strength: 'hit' | 'jolt') => void;
   /** Repair finished and the damage is gone. */
   onCleared: () => void;
 }
@@ -81,10 +82,12 @@ export function useWreckerLoop(
       const w = window.innerWidth;
       const h = window.innerHeight;
       if (w !== e.w || h !== e.h) resize(e, w, h);
+      e.reduced = o.reduced;
       update(e, dt);
       const out = drain(e);
       for (const name of out.sounds) playSound(name);
-      if (out.shake && !o.reduced) o.onShake();
+      if (out.shake && !o.reduced) o.onShake('hit');
+      else if (out.jolt && !o.reduced) o.onShake('jolt');
       if (out.cleared) {
         history.length = 0;
         o.onCleared();
@@ -113,6 +116,7 @@ export function useWreckerLoop(
       fctx.setTransform(...base);
       fctx.clearRect(0, 0, w, h);
       if (sweep !== null) drawSweep(fctx, sweep, h);
+      drawFx(fctx, e.fx, o.reduced);
       drawParticles(fctx, e.particles);
       if (e.pointer && e.phase !== 'repairing')
         drawCursor(fctx, {
