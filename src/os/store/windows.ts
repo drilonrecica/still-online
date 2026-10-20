@@ -28,6 +28,7 @@ export type WindowAppSpec = Pick<
   | 'minSize'
   | 'singleInstance'
   | 'instanceKey'
+  | 'swapProps'
 >;
 
 export type AppResolver = (appId: AppId) => WindowAppSpec | undefined;
@@ -252,6 +253,9 @@ export function createWindowsStore(deps: WindowsStoreDeps) {
             instanceMatches(app, win, props),
           );
           if (existing) {
+            if (app.swapProps && Object.keys(props).length > 0) {
+              update(existing.id, () => ({ props }));
+            }
             focus(existing.id);
             return existing.id;
           }

@@ -6,6 +6,7 @@ import { useT } from '@/i18n/useT';
 import { useBlobUrl } from '@/os/blobStore';
 import { useFsStore } from '@/os/fs/store';
 import { playSound } from '@/os/sound';
+import { useWindowsStore } from '@/os/store/windows';
 import type { AppComponentProps } from '@/os/types';
 import { useAnimationFrame, useWindowMinimized } from '@/os/useAnimationFrame';
 import {
@@ -47,7 +48,17 @@ function Thumb({ id }: { id: string }) {
   if (!node) return null;
   return (
     <li className={styles.thumb}>
-      {url ? <img src={url} alt={node.name} /> : <span>{node.name}</span>}
+      <button
+        type="button"
+        className={styles.thumbOpen}
+        title={t('photobooth.openPhoto', { name: node.name })}
+        aria-label={t('photobooth.openPhoto', { name: node.name })}
+        onClick={() =>
+          useWindowsStore.getState().openApp('pictureviewer', { fileId: id })
+        }
+      >
+        {url ? <img src={url} alt="" /> : <span>{node.name}</span>}
+      </button>
       <button type="button" onClick={() => setAsDisplayPicture(id)}>
         {t('photobooth.setDisplayPicture')}
       </button>

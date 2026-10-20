@@ -5,6 +5,8 @@ import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS } from '@/os/fs/types';
 import { events } from '@/os/events';
 import { useSettingsStore } from '@/os/store/settings';
+import { useWindowsStore } from '@/os/store/windows';
+import '@/apps/registry';
 import Photobooth from './Photobooth';
 import { nextBoothName } from './photos';
 
@@ -162,5 +164,12 @@ describe('Snapshot Booth', () => {
     expect(saved?.blobKey).toBeTruthy();
     expect(got).toEqual([saved?.id]);
     expect(nextBoothName()).toBe('booth_2.png');
+
+    // The photo itself opens in the Picture Viewer.
+    await user.click(screen.getByRole('button', { name: 'Open booth_1.png' }));
+    const viewer = useWindowsStore
+      .getState()
+      .windows.find((w) => w.appId === 'pictureviewer');
+    expect(viewer?.props).toEqual({ fileId: saved?.id });
   });
 });

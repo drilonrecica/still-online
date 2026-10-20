@@ -156,14 +156,16 @@ describe('FolderView', () => {
 describe('openFsNode', () => {
   beforeEach(reset);
   const base = { parentId: 'docs', createdAt: 0, modifiedAt: 0 };
-  const handlers = () => ({ navigate: vi.fn(), viewImage: vi.fn() });
+  const handlers = () => ({ navigate: vi.fn() });
 
-  it('navigates folders and views images', () => {
+  it('navigates folders and opens images in the Picture Viewer', () => {
     const h = handlers();
     openFsNode({ ...base, id: 'a', name: 'A', type: 'folder' }, h);
     openFsNode({ ...base, id: 'b', name: 'b.jpg', type: 'image' }, h);
     expect(h.navigate).toHaveBeenCalledWith('a');
-    expect(h.viewImage).toHaveBeenCalledWith('b');
+    const win = useWindowsStore.getState().windows[0];
+    expect(win?.appId).toBe('pictureviewer');
+    expect(win?.props).toEqual({ fileId: 'b' });
   });
 
   it('opens txt in Notepad with its file id', () => {

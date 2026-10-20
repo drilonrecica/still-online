@@ -73,7 +73,7 @@ export function useAttachmentOpener() {
     }
     const windows = useWindowsStore.getState();
     if (att.type === 'txt') windows.openApp('notepad', { fileId: id });
-    else windows.openApp('explorer', { folder: FS_FOLDERS.pics });
+    else windows.openApp('pictureviewer', { fileId: id });
   };
 }
 

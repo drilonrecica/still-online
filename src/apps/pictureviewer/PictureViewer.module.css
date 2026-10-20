@@ -8,8 +8,9 @@
   font-size: 11px;
 }
 
-.viewerBar {
+.bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 4px;
   padding: 3px 4px;
@@ -17,18 +18,16 @@
   border-bottom: 1px solid #aca899;
 }
 
-.viewerBar button[aria-pressed='true'] {
+.bar button[aria-pressed='true'] {
   box-shadow: inset 0 0 0 1px #316ac5;
 }
 
-.viewerTitle {
+.position {
   margin-left: auto;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.viewerStage {
+.stage {
   flex: 1;
   min-height: 0;
   overflow: auto;
@@ -38,20 +37,35 @@
   background: #404040;
 }
 
-.viewerStage[data-fit='true'] .viewerImage,
-.viewerStage[data-fit='true'] img {
+.stage[data-fit='true'] {
+  touch-action: pan-y;
+}
+
+.stage[data-fit='true'] .image,
+.stage[data-fit='true'] img {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
-.viewerStage[data-fit='false'] {
+.stage[data-fit='false'] {
   display: block;
 }
 
-.viewerCaption {
+.message {
+  color: #fff;
+  padding: 0 16px;
+  text-align: center;
+}
+
+.caption {
   margin: 0;
   padding: 4px 8px;
   background: var(--xp-face, #ece9d8);
   border-top: 1px solid #aca899;
+}
+
+:global(.desktop-root[data-device='phone']) .bar button {
+  min-height: 36px;
+  min-width: 36px;
 }

@@ -32,6 +32,8 @@ import paint16 from '@/assets/icons/paint-16.svg';
 import paint32 from '@/assets/icons/paint-32.svg';
 import photobooth16 from '@/assets/icons/photobooth-16.svg';
 import photobooth32 from '@/assets/icons/photobooth-32.svg';
+import pictureViewer16 from '@/assets/icons/pictureviewer-16.svg';
+import pictureViewer32 from '@/assets/icons/pictureviewer-32.svg';
 import regional16 from '@/assets/icons/regional-16.svg';
 import regional32 from '@/assets/icons/regional-32.svg';
 import userAccounts16 from '@/assets/icons/useraccounts-16.svg';
@@ -297,6 +299,22 @@ export const APPS: Readonly<Partial<Record<AppId, AppDefinition>>> = {
     singleInstance: true,
     chrome: 'xp',
     showOnDesktop: true,
+    showInStartMenu: true,
+    category: 'accessories',
+  },
+  pictureviewer: {
+    id: 'pictureviewer',
+    titleKey: 'apps.pictureviewer.title',
+    icon16: pictureViewer16,
+    icon32: pictureViewer32,
+    component: lazy(() => import('./pictureviewer/PictureViewer')),
+    defaultSize: { w: 680, h: 560 },
+    minSize: { w: 320, h: 260 },
+    // One viewer that switches to whatever picture was opened last, as in 2007.
+    singleInstance: true,
+    swapProps: true,
+    chrome: 'xp',
+    showOnDesktop: false,
     showInStartMenu: true,
     category: 'accessories',
   },

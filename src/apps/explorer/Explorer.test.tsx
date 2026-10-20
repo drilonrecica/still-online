@@ -74,7 +74,7 @@ describe('explorer app', () => {
     expect(openApp('explorer', { folder: 'music' })).not.toBe(a);
   });
 
-  it('views images with prev/next', async () => {
+  it('opens a picture in the Picture Viewer, not inside the folder', async () => {
     act(() => {
       const { createFile } = useFsStore.getState();
       createFile('pics', {
@@ -90,11 +90,15 @@ describe('explorer app', () => {
     });
     openExplorer('pics');
     fireEvent.doubleClick(await screen.findByText('a.jpg'));
-    expect(screen.getByText('a.jpg (1 of 2)')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
-    expect(screen.getByText('b.jpg (2 of 2)')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Back to folder' }));
+    // The folder stays a folder; the picture opens in its own Picture Viewer window.
     expect(screen.getByRole('listbox')).toBeInTheDocument();
+    const viewer = useWindowsStore
+      .getState()
+      .windows.find((w) => w.appId === 'pictureviewer');
+    expect(viewer?.props).toEqual({ fileId: expect.any(String) });
+    await waitFor(() =>
+      expect(titleOf(viewer?.id)).toBe('a.jpg - Picture Viewer'),
+    );
   });
 
   it('opens a recycle-bin window with the shared view', async () => {

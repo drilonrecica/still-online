@@ -6,8 +6,6 @@ import type { FsNode } from './types';
 export interface OpenHandlers {
   /** Folder → show it in the current Explorer window. */
   navigate: (folderId: string) => void;
-  /** Image → show it in the viewer pane. */
-  viewImage: (imageId: string) => void;
 }
 
 export function openFsNode(node: FsNode, handlers: OpenHandlers): void {
@@ -19,7 +17,7 @@ export function openFsNode(node: FsNode, handlers: OpenHandlers): void {
       useWindowsStore.getState().openApp('notepad', { fileId: node.id });
       return;
     case 'image':
-      handlers.viewImage(node.id);
+      useWindowsStore.getState().openApp('pictureviewer', { fileId: node.id });
       return;
     case 'audio':
       if (node.trackId) {

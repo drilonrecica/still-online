@@ -113,6 +113,19 @@
   font-size: 10px;
 }
 
+/* The photo itself opens it in the Picture Viewer. */
+.thumb .thumbOpen {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.thumb .thumbOpen:focus-visible {
+  outline: 1px dotted #000;
+}
+
 /* Phone (v0.6): stacked — the preview on top keeps a usable height, the controls below are
    tap-sized, and the photo strip scrolls sideways. */
 :global(.desktop-root[data-device='phone']) .stage {

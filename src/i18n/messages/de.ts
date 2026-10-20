@@ -45,6 +45,7 @@ export const de: Messages = {
     notepad: { title: 'Unbenannt - Editor', label: 'Editor' },
     paint: { title: 'Unbenannt - Paint', label: 'Paint' },
     photobooth: { title: 'Fotobox' },
+    pictureviewer: { title: 'Bildanzeige' },
     mines: { title: 'Minen' },
     henhunt: { title: 'Hühnerjagd' },
     pinball: { title: 'Sternen-Flipper' },
@@ -375,6 +376,7 @@ export const de: Messages = {
     useCartoon: 'Keine Kamera — Comic-Ich verwenden',
     cartoonMe: 'Comic-Ich',
     takePhoto: 'Foto aufnehmen',
+    openPhoto: '{name} öffnen',
     setDisplayPicture: 'Als Anzeigebild festlegen',
     previewCamera: 'Kameravorschau',
     previewCartoon: 'Comic-Vorschau',
@@ -530,14 +532,18 @@ export const de: Messages = {
     confirmReset:
       '{app} zurücksetzen? Alle gespeicherten Daten werden gelöscht.',
   },
-  explorer: {
+  pictureviewer: {
+    title: '{file} - Bildanzeige',
     loading: 'Wird geladen…',
-    back: 'Zum Ordner',
     previous: 'Zurück',
     next: 'Weiter',
     actualSize: 'Originalgröße',
     bestFit: 'Einpassen',
-    position: '{name} ({n} von {count})',
+    editInPaint: 'In Paint bearbeiten',
+    openFolder: 'Ordner öffnen',
+    position: '{n} von {count}',
+    noPicture:
+      'Es ist kein Bild geöffnet. Öffnen Sie eines aus „Eigene Bilder“.',
     cannotDisplay: 'Dieses Bild kann nicht angezeigt werden.',
   },
   amplifier: {

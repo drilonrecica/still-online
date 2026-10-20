@@ -39,7 +39,10 @@ const CONTENT: MailContent[] = [
     from: { name: 'Jess', address: 'jess@livemail.example' },
     subject: 'itinerary',
     body: 'attached!',
-    attachments: [{ name: 'itinerary.txt', type: 'txt', text: 'Fri: concert' }],
+    attachments: [
+      { name: 'itinerary.txt', type: 'txt', text: 'Fri: concert' },
+      { name: 'stage.jpg', type: 'image', photo: { scene: 'camp', seed: 3 } },
+    ],
   },
   {
     id: 'd2-a',
@@ -212,6 +215,21 @@ describe('Mail app', () => {
     expect(
       useWindowsStore.getState().windows.some((w) => w.appId === 'notepad'),
     ).toBe(true);
+  });
+
+  it('saves an image attachment to My Pictures and opens it in the Picture Viewer', async () => {
+    const user = renderMail();
+    await user.click(screen.getByText('itinerary'));
+    await user.click(screen.getByRole('button', { name: /stage\.jpg/ }));
+    const saved = useFsStore
+      .getState()
+      .list(FS_FOLDERS.pics)
+      .find((n) => n.name === 'stage.jpg');
+    expect(saved?.type).toBe('image');
+    const viewer = useWindowsStore
+      .getState()
+      .windows.find((w) => w.appId === 'pictureviewer');
+    expect(viewer?.props).toEqual({ fileId: saved?.id });
   });
 
   it('composes, sends and files the mail under Sent Items', async () => {

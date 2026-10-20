@@ -63,6 +63,7 @@ export type AppId =
   | 'tunemole'
   | 'paint'
   | 'photobooth'
+  | 'pictureviewer'
   | 'mines'
   | 'henhunt'
   | 'pinball'
@@ -138,6 +139,11 @@ export interface AppDefinition {
    */
   singleInstance: boolean;
   instanceKey?: (props: WindowProps) => string;
+  /**
+   * A single-instance app that takes the new props when it is opened again (the Picture
+   * Viewer shows the picture just opened instead of keeping the old one).
+   */
+  swapProps?: boolean;
   /** `'none'`: no XP frame; the app draws its own and uses `useWindowDrag(id)`. */
   chrome: 'xp' | 'none';
   showOnDesktop: boolean;
