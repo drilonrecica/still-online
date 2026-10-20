@@ -4,7 +4,7 @@ _everyone you knew, still online._
 
 A browser-based nostalgia simulator recreating Windows XP and the social internet of 2007 through MSN, Netlog, MySpace, Winamp, and a living fictional desktop.
 
-> **v0.5 — week two: days 6–10, up to the Velvet Lantern rec hall show.** Play it now: **<https://drilonrecica.github.io/still-online/>**
+> **v0.6 — play on your phone or tablet.** The same desktop now works by touch, with the days 1–10 story from v0.5. Play it now: **<https://drilonrecica.github.io/still-online/>**
 
 ![The still online desktop](docs/screenshots/desktop.png)
 
@@ -72,6 +72,21 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 | **A boy-only thread** | **Day 10 mail, in German** |
 | ![Marco's crew report, boy only](docs/screenshots/marco-crew-report.png) | ![Mom's day-10 mail in German](docs/screenshots/mail-day10-de.png) |
 
+## Play on your phone or tablet
+
+Open the same link on a phone or tablet. It is the same XP desktop, adapted for touch:
+
+- **Tap** opens things (icons, menu items, list rows), **long-press** is the right-click, and a double-tap on a title bar maximizes on a tablet.
+- On a **phone** every window is full screen. The taskbar has icon-only buttons, and Start → All Programs opens as a full-height panel.
+- A **tablet** keeps floating windows you can drag by the title bar and resize from the edges.
+- **Web Explorer** has **Fit to screen** (View menu, the phone default) to shrink 2007's fixed-width pages to your screen, and **Actual size** to scroll sideways.
+- Paint draws with one finger and pans with two. Mines flags by long-press or with the 🚩 button. Pinball, Hen Hunt, Amplifier and Snapshot Booth all work by touch.
+- It works in portrait and landscape, in English and German.
+
+![still online on a phone: Mines](docs/screenshots/phone-mines.png)
+
+See [docs/touch.md](docs/touch.md) and [docs/architecture-v0.6.md](docs/architecture-v0.6.md) for how it works.
+
 ## Deutsch
 
 still online is fully playable in **German** as well as English. It is not a word-for-word translation: the six friends, the mail, the websites and the files were rewritten for a German 2007 (SchülerVZ-era chat-speak, a Gymnasium instead of a US high school, euros and Fischstäbchen), with the same storylines and the same ids underneath.
@@ -93,7 +108,6 @@ See [docs/i18n.md](docs/i18n.md) for how it works and [docs/localization-de.md](
 - German has been reviewed by the project, not by a native-speaker editor
 - More friends, sites and games
 - Further languages (the i18n system is built for them, see [docs/i18n.md](docs/i18n.md))
-- Mobile and touch layouts (small screens only get a notice)
 
 Ideas are welcome in the [issues](https://github.com/drilonrecica/still-online/issues).
 
@@ -109,7 +123,7 @@ Other useful scripts: `npm run verify` (typecheck, lint, unit tests, build) and 
 
 ## Tech stack
 
-React 18, TypeScript, Vite, Zustand, [xp.css](https://botoxparty.github.io/XP.css/) for the window chrome, Vitest and Playwright. Everything runs client-side and is deployed to GitHub Pages. See [docs/architecture.md](docs/architecture.md) for how it fits together, [docs/architecture-v0.4.md](docs/architecture-v0.4.md) for the social sites and [docs/gender.md](docs/gender.md) for the girl/boy content model.
+React 18, TypeScript, Vite, Zustand, [xp.css](https://botoxparty.github.io/XP.css/) for the window chrome, Vitest and Playwright. Everything runs client-side and is deployed to GitHub Pages. See [docs/architecture.md](docs/architecture.md) for how it fits together, [docs/architecture-v0.4.md](docs/architecture-v0.4.md) for the social sites, [docs/architecture-v0.6.md](docs/architecture-v0.6.md) for touch and [docs/gender.md](docs/gender.md) for the girl/boy content model.
 
 ## Contributing
 
