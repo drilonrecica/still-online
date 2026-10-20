@@ -5,7 +5,7 @@ import { CELEBS, GOSSIP_POLLS, GOSSIP_POSTS } from './celebgossip07';
 import { VIRUSGUARD_TEXT } from './virusguard';
 import { WESTFIELD_NEWS, WESTFIELD_STAFF } from './westfieldhigh';
 
-const days = contentDays('sites');
+const days = contentDays();
 
 describe('celebgossip07 content', () => {
   it('has two posts on each written day with unique ids', () => {

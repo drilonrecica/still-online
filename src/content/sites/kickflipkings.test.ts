@@ -15,7 +15,7 @@ describe.each(COMBOS)('kickflipkings content (%s, %s)', (locale, gender) => {
   const en = getSiteText(KICKFLIP_HOST, 'en', gender);
 
   it('posts news every written day and keeps days, authors and handles across languages', () => {
-    for (const day of contentDays('sites'))
+    for (const day of contentDays())
       expect(
         site.KICKFLIP_NEWS.some((p) => p.day === day),
         `day ${day}`,

@@ -102,3 +102,18 @@ export interface MoodHistoryEntry {
   emoticon: string;
   day: number;
 }
+
+/** What a later story week adds to a profile's walls (W2-03: days 6–10). */
+export type ProfileWeek = Pick<ProfileContent, 'comments' | 'commentsOnPlayer'>;
+
+/** `profile` with `week`'s comments appended; earlier comments keep their positions. */
+export function withWallWeek(
+  profile: ProfileContent,
+  week: ProfileWeek,
+): ProfileContent {
+  return {
+    ...profile,
+    comments: [...profile.comments, ...week.comments],
+    commentsOnPlayer: [...profile.commentsOnPlayer, ...week.commentsOnPlayer],
+  };
+}

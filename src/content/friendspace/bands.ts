@@ -3,9 +3,10 @@
 // Velvet Lantern at the bean cellar (Marco's band: flyer 2, Derek quits 3 and un-quits 4, 11
 // people 5), The Grip Tapes (the skatepark band on kickflipkings.example, Dex's video week) and
 // The Sugarcube Parade (Pia's profile song; Stardust goes missing 2, comes home 4).
+import { BANDS_WEEK2, withBandWeeks } from './bands-week2';
 import type { Band } from './types';
 
-export const BANDS: readonly Band[] = [
+const DAYS_1_TO_5: readonly Band[] = [
   {
     id: 'tinfoil-comets',
     name: 'Tinfoil Comets',
@@ -195,3 +196,6 @@ export const BANDS: readonly Band[] = [
     },
   },
 ];
+
+/** Days 1–5 above, plus week two (`bands-week2.ts`, W2-03). */
+export const BANDS = withBandWeeks(DAYS_1_TO_5, BANDS_WEEK2);

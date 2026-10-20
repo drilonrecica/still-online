@@ -5,6 +5,7 @@ import { getSeedFiles } from '@/content/locale';
 import { PIXLOG_PROFILES } from '@/content/pixlog';
 import { SURVEYS } from '@/content/pixlog/surveys';
 import { PIXLOG_HOST } from '@/content/sites/pixlog';
+import { STORY_DAYS } from '@/content/storyDays';
 import { putBlob } from '@/os/blobStore';
 import { useFsStore } from '@/os/fs/store';
 import { FS_FOLDERS, type FsNode } from '@/os/fs/types';
@@ -71,6 +72,10 @@ describe('pixlog kudos and album logic', () => {
   it('counts kudos received by day', () => {
     expect(kudosReceived(PIXLOG_PROFILES, 1)).toBe(0);
     expect(kudosReceived(PIXLOG_PROFILES, 5)).toBe(
+      PIXLOG_PROFILES.flatMap((p) => p.kudosToPlayer).filter((d) => d <= 5)
+        .length,
+    );
+    expect(kudosReceived(PIXLOG_PROFILES, STORY_DAYS.last)).toBe(
       PIXLOG_PROFILES.flatMap((p) => p.kudosToPlayer).length,
     );
   });

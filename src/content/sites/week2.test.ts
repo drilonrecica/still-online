@@ -12,7 +12,7 @@ import { KICKFLIP_HOST } from './kickflipkings';
 import { TINFOIL_HOST } from './tinfoilcomets';
 import { WESTFIELD_HOST } from './westfieldhigh';
 
-const WEEK2 = contentDays('sites').filter((d) => d > 5);
+const WEEK2 = contentDays().filter((d) => d > 5);
 const COMBOS = LOCALES.flatMap((locale) =>
   GENDERS.map((gender) => [locale, gender] as const),
 );

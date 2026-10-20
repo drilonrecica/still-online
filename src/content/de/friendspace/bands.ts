@@ -2,12 +2,13 @@
 // and themes stay; the bands talk like 2007 band pages („danke fürs adden!!“), Velvet Lantern like
 // Marco (lowercase, never „!“).
 import { BANDS as EN_BANDS } from '../../friendspace/bands';
+import { BANDS_WEEK2, withBandWeeks } from '../../friendspace/bands-week2';
 import type { Band } from '../../friendspace/types';
 
 const theme = (id: string): Band['theme'] =>
   EN_BANDS.find((b) => b.id === id)!.theme;
 
-export const BANDS: readonly Band[] = [
+const DAYS_1_TO_5: readonly Band[] = [
   {
     id: 'tinfoil-comets',
     name: 'Tinfoil Comets',
@@ -167,3 +168,7 @@ export const BANDS: readonly Band[] = [
     theme: theme('sugarcube-parade'),
   },
 ];
+
+// Days 6–10 (W2-03): the English shows and posts as placeholders until W3.
+// W3 replaces this with German
+export const BANDS = withBandWeeks(DAYS_1_TO_5, BANDS_WEEK2);

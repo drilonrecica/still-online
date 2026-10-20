@@ -149,13 +149,17 @@ function collect(value: unknown, path: string, out: Map<string, string>) {
   }
   if (typeof value !== 'object' || value === null) return;
   if (Array.isArray(value)) {
+    const keys = value.map((item: unknown, i) => itemKey(item, i));
     value.forEach((item: unknown, i) => {
-      const key = itemKey(item, i);
-      collect(
-        item,
-        key.startsWith('[') ? `${path}${key}` : `${path}/${key}`,
-        out,
-      );
+      const key = keys[i]!;
+      // A key shared by several items (one friend's many wall comments) gets the index too, so
+      // no item hides another.
+      const seg = key.startsWith('[')
+        ? key
+        : keys.indexOf(key) === keys.lastIndexOf(key)
+          ? `/${key}`
+          : `/${key}[${i}]`;
+      collect(item, `${path}${seg}`, out);
     });
     return;
   }

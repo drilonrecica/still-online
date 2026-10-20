@@ -2,8 +2,9 @@
 // following that day's chat. Chain letters (luck 2, crush 3, "if u dont repost" 3, Marco's
 // "not a chain letter" 2), surveys (Kayla 1, Jess 3), the Tinfoil Comets countdown and aftermath,
 // Pia's pony club, and "NEW PICS on pixlog!!" on the days the friends' albums go up
-// (Dex 2, Pia 4, Jess and Kayla 5).
+// (Dex 2, Pia 4, Jess and Kayla 5). Week two (days 6–10) lives in `bulletins-week2.ts`.
 import { g } from '../gender';
+import { BULLETINS_WEEK2 } from './bulletins-week2';
 import type { Bulletin } from './types';
 
 export const BULLETINS: readonly Bulletin[] = [
@@ -193,4 +194,6 @@ export const BULLETINS: readonly Bulletin[] = [
     body: 'the sleepover pics r up. yes brianna is in them. yes we have the same ice cream. no i will not explain',
     link: 'http://pixlog.example/kayla',
   },
+  // Days 6–10: `bulletins-week2.ts` (W2-03).
+  ...BULLETINS_WEEK2,
 ];

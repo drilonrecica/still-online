@@ -1,19 +1,26 @@
-// Pixlog profiles, one per friend, in sign-in order.
+// Pixlog profiles, one per friend, in sign-in order. Each module holds days 1–5; `<friend>-week2.ts`
+// adds days 6–10 (W2-03).
 import { dexPixlog } from './dex';
 import { jessPixlog } from './jess';
 import { kaylaPixlog } from './kayla';
 import { marcoPixlog } from './marco';
 import { piaPixlog } from './pia';
 import { theoPixlog } from './theo';
-import type { PixlogProfile } from './types';
+import { dexPixlogWeek2 } from './dex-week2';
+import { jessPixlogWeek2 } from './jess-week2';
+import { kaylaPixlogWeek2 } from './kayla-week2';
+import { marcoPixlogWeek2 } from './marco-week2';
+import { piaPixlogWeek2 } from './pia-week2';
+import { theoPixlogWeek2 } from './theo-week2';
+import { withWeek, type PixlogProfile } from './types';
 
 export const PIXLOG_PROFILES: readonly PixlogProfile[] = [
-  jessPixlog,
-  piaPixlog,
-  kaylaPixlog,
-  marcoPixlog,
-  theoPixlog,
-  dexPixlog,
+  withWeek(jessPixlog, jessPixlogWeek2),
+  withWeek(piaPixlog, piaPixlogWeek2),
+  withWeek(kaylaPixlog, kaylaPixlogWeek2),
+  withWeek(marcoPixlog, marcoPixlogWeek2),
+  withWeek(theoPixlog, theoPixlogWeek2),
+  withWeek(dexPixlog, dexPixlogWeek2),
 ];
 
 /** Screen names of strangers who drop by the player's page (P2-02 `visitors`, seeded per day). */

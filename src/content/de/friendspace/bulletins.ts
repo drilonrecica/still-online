@@ -2,6 +2,7 @@
 // "repost" is „weiterschicken" (how German chain letters said it), "fw:" is „WG:".
 import { g } from '../../gender';
 import type { Bulletin } from '../../friendspace/types';
+import { BULLETINS_WEEK2 } from './bulletins-week2';
 
 export const BULLETINS: readonly Bulletin[] = [
   // Tag 1: die Karten vom Radio-Gewinnspiel, Briannas Spruch, das Bio-Referat geht los.
@@ -190,4 +191,6 @@ export const BULLETINS: readonly Bulletin[] = [
     body: 'die fotos von der übernachtungsparty sind drin. ja brianna is drauf. ja wir haben das gleiche eis. nein ich erklär das nich',
     link: 'http://pixlog.example/kayla',
   },
+  // Days 6–10 (W2-03): placeholders until W3.
+  ...BULLETINS_WEEK2,
 ];

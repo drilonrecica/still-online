@@ -6,7 +6,7 @@ import { LOCALES } from '@/i18n/types';
 import { contentDays } from '../storyDays';
 import { CHEATCAVE_HOST } from './cheatcave';
 
-const days = contentDays('sites');
+const days = contentDays();
 const COMBOS = LOCALES.flatMap((locale) =>
   GENDERS.map((gender) => [locale, gender] as const),
 );

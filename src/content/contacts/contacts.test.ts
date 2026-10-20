@@ -91,7 +91,7 @@ describe('content lint: shipped contacts', () => {
     (_id, content) =>
       expectDayScripts(
         content,
-        contentDays('contacts').filter((d) => d >= 2),
+        contentDays().filter((d) => d >= 2),
       ),
   );
 
@@ -143,7 +143,7 @@ describe('content lint: shipped contacts', () => {
   ] as const)('dex is always away (%s, %s)', (locale, gender) => {
     const dex = getContacts(locale, gender).find((c) => c.contact.id === 'dex');
     expect(dex?.contact.initialStatus).toBe('away');
-    for (const day of contentDays('contacts').filter((d) => d >= 2))
+    for (const day of contentDays().filter((d) => d >= 2))
       expect(dex?.contact.days?.[day]?.status, `day ${day}`).toBe('away');
     const changes = (dex?.scripts ?? []).flatMap((s) =>
       Object.values(s.nodes).flatMap((n) =>

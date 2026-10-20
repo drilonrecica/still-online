@@ -14,10 +14,10 @@ const texts = (m: (typeof MAIL_CONTENT)[number]) => [
 
 describe('mail content', () => {
   it('has mail on every story day (3+ in week one, 4–6 in week two), none after the last', () => {
-    expect(contentDays('mail')).toEqual(
+    expect(contentDays()).toEqual(
       Array.from({ length: STORY_DAYS.last }, (_, i) => i + STORY_DAYS.first),
     );
-    for (const day of contentDays('mail')) {
+    for (const day of contentDays()) {
       const count = MAIL_CONTENT.filter((m) => m.day === day).length;
       if (day <= 5) expect(count, `day ${day}`).toBeGreaterThanOrEqual(3);
       else {

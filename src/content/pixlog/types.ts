@@ -51,3 +51,24 @@ export interface Survey {
   title: string;
   questions: readonly string[];
 }
+
+/** What a later story week adds to a profile (W2-03: days 6–10). */
+export type PixlogWeek = Pick<
+  PixlogProfile,
+  'albums' | 'blog' | 'shouts' | 'kudosToPlayer' | 'guestbook'
+>;
+
+/** `profile` with `week` appended; earlier items keep their positions (and audit paths). */
+export function withWeek(
+  profile: PixlogProfile,
+  week: PixlogWeek,
+): PixlogProfile {
+  return {
+    ...profile,
+    albums: [...profile.albums, ...week.albums],
+    blog: [...profile.blog, ...week.blog],
+    shouts: [...profile.shouts, ...week.shouts],
+    kudosToPlayer: [...profile.kudosToPlayer, ...week.kudosToPlayer],
+    guestbook: [...profile.guestbook, ...week.guestbook],
+  };
+}

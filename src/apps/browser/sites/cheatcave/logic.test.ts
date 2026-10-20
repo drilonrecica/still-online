@@ -67,7 +67,7 @@ describe('cheatcave logic', () => {
     expect(day5).toHaveLength(3);
     expect(day5.every((s) => s.lastDay === 5)).toBe(true);
     // The forum is busy on every written day: the top thread has a post from that day.
-    for (const day of contentDays('sites'))
+    for (const day of contentDays())
       expect(
         visibleThreads(CHEATCAVE_THREADS, day)[0]?.lastDay,
         `day ${day}`,

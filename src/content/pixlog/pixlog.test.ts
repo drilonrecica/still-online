@@ -12,9 +12,10 @@ const DAYS = contentDays();
 describe.each(PIXLOG_PROFILES.map((p) => [p.contactId, p] as const))(
   'pixlog content: %s',
   (_, p) => {
-    it('has 1–2 albums of 4–6 photos with 0–3 comments each', () => {
-      expect(p.albums.length).toBeGreaterThanOrEqual(1);
-      expect(p.albums.length).toBeLessThanOrEqual(2);
+    it('has 2–3 albums (one in week two) of 4–6 photos with 0–3 comments each', () => {
+      expect(p.albums.length).toBeGreaterThanOrEqual(2);
+      expect(p.albums.length).toBeLessThanOrEqual(3);
+      expect(p.albums.filter((a) => a.day > 5)).toHaveLength(1);
       for (const a of p.albums) {
         expect(a.photos.length).toBeGreaterThanOrEqual(4);
         expect(a.photos.length).toBeLessThanOrEqual(6);
@@ -25,9 +26,10 @@ describe.each(PIXLOG_PROFILES.map((p) => [p.contactId, p] as const))(
       }
     });
 
-    it('has 2–4 blog posts on different days', () => {
-      expect(p.blog.length).toBeGreaterThanOrEqual(2);
-      expect(p.blog.length).toBeLessThanOrEqual(4);
+    it('has 4–6 blog posts on different days, 2 in week two', () => {
+      expect(p.blog.length).toBeGreaterThanOrEqual(4);
+      expect(p.blog.length).toBeLessThanOrEqual(6);
+      expect(p.blog.filter((b) => b.day > 5)).toHaveLength(2);
       expect(new Set(p.blog.map((b) => b.day)).size).toBe(p.blog.length);
     });
 
@@ -39,11 +41,13 @@ describe.each(PIXLOG_PROFILES.map((p) => [p.contactId, p] as const))(
       }
     });
 
-    it('gives kudos on 1–3 days and has 3–6 guestbook entries', () => {
-      expect(p.kudosToPlayer.length).toBeGreaterThanOrEqual(1);
-      expect(p.kudosToPlayer.length).toBeLessThanOrEqual(3);
-      expect(p.guestbook.length).toBeGreaterThanOrEqual(3);
-      expect(p.guestbook.length).toBeLessThanOrEqual(6);
+    it('gives kudos on 2–4 days and has 5–8 guestbook entries', () => {
+      expect(p.kudosToPlayer.length).toBeGreaterThanOrEqual(2);
+      expect(p.kudosToPlayer.length).toBeLessThanOrEqual(4);
+      expect(p.kudosToPlayer.filter((d) => d > 5)).toHaveLength(1);
+      expect(p.guestbook.length).toBeGreaterThanOrEqual(5);
+      expect(p.guestbook.length).toBeLessThanOrEqual(8);
+      expect(p.guestbook.filter((g) => g.day > 5)).toHaveLength(2);
     });
 
     it('answers every question of its survey', () => {
