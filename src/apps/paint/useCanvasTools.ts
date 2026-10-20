@@ -1,8 +1,10 @@
 // Pointer handling on the canvas: turns presses and drags into tool actions on the document.
+// On touch, one finger draws and a second finger cancels the stroke and pans the work area.
 import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import { drawText } from './codec';
 import { pickColor } from './fill';
 import {
+  assignBuffer,
   cloneBuffer,
   rectFrom,
   sameBuffer,
@@ -27,6 +29,7 @@ import {
   type ToolOptions,
   type Zoom,
 } from './tools';
+import { createTouchTracker } from './touch';
 import type { PaintDocument } from './useDocument';
 
 /** Airbrush puffs per second while the button is held still. */
@@ -70,6 +73,7 @@ export function useCanvasTools(doc: PaintDocument, s: ToolSettings) {
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   // The image before the selection was lifted, until the move is committed as one undo step.
   const liftBase = useRef<ReturnType<typeof cloneBuffer> | null>(null);
+  const touches = useRef(createTouchTracker());
 
   const stopTimer = () => {
     if (timer.current !== null) clearInterval(timer.current);
@@ -109,6 +113,8 @@ export function useCanvasTools(doc: PaintDocument, s: ToolSettings) {
 
   function onPointerDown(e: PointerEvent<HTMLElement>) {
     if (e.button !== 0 && e.button !== 2) return;
+    // Another finger is already down: this one pans (see `area`), it never draws.
+    if (e.pointerType === 'touch' && touches.current.count > 1) return;
     e.preventDefault();
     const p = pointOf(e);
     const right = e.button === 2;
@@ -174,11 +180,8 @@ export function useCanvasTools(doc: PaintDocument, s: ToolSettings) {
     }
   }
 
-  function onPointerUp() {
-    const d = drag.current;
-    drag.current = null;
-    stopTimer();
-    if (!d) return;
+  /** Ends a drag: commits the stroke, turns the marquee into a selection, commits a move. */
+  function finish(d: Drag) {
     if (d.kind === 'stroke') {
       if (!sameBuffer(d.stroke.base, doc.buf)) doc.commit(d.stroke.base);
     } else if (d.kind === 'marquee') {
@@ -189,6 +192,52 @@ export function useCanvasTools(doc: PaintDocument, s: ToolSettings) {
       doc.commit(liftBase.current);
       liftBase.current = null;
     }
+  }
+
+  function onPointerUp() {
+    const d = drag.current;
+    drag.current = null;
+    stopTimer();
+    if (d) finish(d);
+  }
+
+  /** A second finger came down: the stroke or marquee so far never happened. */
+  function cancelDrag() {
+    const d = drag.current;
+    drag.current = null;
+    stopTimer();
+    if (d?.kind === 'stroke') {
+      assignBuffer(doc.buf, d.stroke.base);
+      doc.redraw();
+    } else if (d?.kind === 'marquee') {
+      setMarquee(null);
+    } else if (d) {
+      finish(d);
+    }
+  }
+
+  // The work area's handlers: they see every touch on it, the canvas's included (the canvas
+  // keeps its pointer capture, and captured events still bubble). Capture phase on the way
+  // down, so a second finger cancels the stroke before the canvas handles it.
+  const point = (e: PointerEvent<HTMLElement>) => ({
+    x: e.clientX,
+    y: e.clientY,
+  });
+  function onAreaDown(e: PointerEvent<HTMLElement>) {
+    if (e.pointerType !== 'touch') return;
+    if (touches.current.down(e.pointerId, point(e)) === 'draw') return;
+    cancelDrag();
+    e.currentTarget.setPointerCapture?.(e.pointerId);
+  }
+  function onAreaMove(e: PointerEvent<HTMLElement>) {
+    if (e.pointerType !== 'touch') return;
+    const { x, y } = touches.current.move(e.pointerId, point(e));
+    if (x === 0 && y === 0) return;
+    e.currentTarget.scrollLeft += x;
+    e.currentTarget.scrollTop += y;
+  }
+  function onAreaUp(e: PointerEvent<HTMLElement>) {
+    if (e.pointerType === 'touch') touches.current.up(e.pointerId);
   }
 
   function selectAll() {
@@ -223,6 +272,13 @@ export function useCanvasTools(doc: PaintDocument, s: ToolSettings) {
       onPointerMove,
       onPointerUp,
       onPointerCancel: onPointerUp,
+    },
+    /** For the work area around the canvas: two-finger panning. */
+    area: {
+      onPointerDownCapture: onAreaDown,
+      onPointerMove: onAreaMove,
+      onPointerUp: onAreaUp,
+      onPointerCancel: onAreaUp,
     },
   };
 }

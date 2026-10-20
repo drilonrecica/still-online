@@ -115,7 +115,8 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
     let stream: MediaStream;
     try {
       stream = await devices.getUserMedia({
-        video: { width: 640, height: 480 },
+        // The front camera on a phone or tablet (v0.6); a webcam ignores it.
+        video: { width: 640, height: 480, facingMode: 'user' },
         audio: false,
       });
     } catch (e) {
@@ -232,7 +233,7 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
 
   if (mode === 'start') {
     return (
-      <div className={styles.root}>
+      <div className={`${styles.root} touch-controls`}>
         <div className={styles.consent}>
           <h2>{t('apps.photobooth.title')}</h2>
           <p>{t('photobooth.consent')}</p>
@@ -250,7 +251,7 @@ export default function Photobooth({ windowId }: Partial<AppComponentProps>) {
   }
 
   return (
-    <div className={styles.root}>
+    <div className={`${styles.root} touch-controls`}>
       {notice && (
         <p className={styles.notice} role="status">
           {t(notice)}

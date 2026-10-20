@@ -63,7 +63,7 @@ describe('Snapshot Booth', () => {
       await screen.findByRole('img', { name: 'Camera preview' }),
     ).toBeInTheDocument();
     expect(navigator.mediaDevices.getUserMedia).toHaveBeenCalledWith({
-      video: { width: 640, height: 480 },
+      video: { width: 640, height: 480, facingMode: 'user' },
       audio: false,
     });
     expect(track.stop).not.toHaveBeenCalled();

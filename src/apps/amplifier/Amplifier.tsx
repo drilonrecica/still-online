@@ -1,7 +1,14 @@
 // Amplifier main window: original dark-metal player skin driven by the amplifier store.
 import { useT } from '@/i18n/useT';
 import { useWindowMinimized } from '@/os/useAnimationFrame';
-import { useEffect, useState, type KeyboardEvent } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type KeyboardEvent,
+} from 'react';
+import { useDevice } from '@/os/device';
 import { useWindowsStore } from '@/os/store/windows';
 import { composeHandlers } from '@/os/touch/compose';
 import { useActivate } from '@/os/touch/useActivate';
@@ -19,6 +26,7 @@ import {
   useAmplifierStore,
   type AmplifierSkin,
 } from './store';
+import { TAP_PX, useSkinFit } from './skinZoom';
 import { Visualizer } from './Visualizer';
 import styles from './Amplifier.module.css';
 
@@ -39,6 +47,20 @@ export default function Amplifier({ windowId }: AppComponentProps) {
   const [shaded, setShaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [skinsOpen, setSkinsOpen] = useState(false);
+  // On a phone the skin fills the full-screen window, scaled with CSS zoom.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const fit = useSkinFit(rootRef, useDevice() === 'phone', {
+    eq: showEq && !shaded,
+    playlist: showPlaylist && !shaded,
+  });
+  const fitStyle = fit
+    ? ({
+        zoom: fit.zoom,
+        width: fit.width,
+        height: fit.height,
+        '--amp-tap': `${TAP_PX / fit.zoom}px`,
+      } as CSSProperties)
+    : undefined;
   // Title bar: double-click or double-tap shades, right-click or long-press opens the menu.
   const activateTitle = useActivate(
     (_: void, _via, target) => {
@@ -141,7 +163,10 @@ export default function Amplifier({ windowId }: AppComponentProps) {
 
   return (
     <div
+      ref={rootRef}
       className={styles.root}
+      style={fitStyle}
+      data-fit={fit ? true : undefined}
       tabIndex={0}
       role="group"
       aria-label={t('amplifier.name')}

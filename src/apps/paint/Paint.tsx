@@ -1,6 +1,7 @@
 // Paint: the classic drawing app. Logic lives in plain TS on a PixelBuffer; this component wires it up.
-import { useState, type KeyboardEvent } from 'react';
+import { useRef, useState, type KeyboardEvent } from 'react';
 import { useT } from '@/i18n/useT';
+import { useDevice } from '@/os/device';
 import type { AppComponentProps } from '@/os/types';
 import { ColorBox } from './ColorBox';
 import { AttributesDialog, ImageFileDialog, MessageBox } from './dialogs';
@@ -9,6 +10,7 @@ import { DEFAULT_PRIMARY, DEFAULT_SECONDARY } from './palette';
 import { PaintCanvas } from './PaintCanvas';
 import { createBuffer, hexToRgba, resizeBuffer, rgbaToHex } from './pixels';
 import { Toolbox } from './Toolbox';
+import { phoneCanvasSize } from './touch';
 import {
   DEFAULT_OPTIONS,
   ZOOMS,
@@ -17,9 +19,12 @@ import {
   type Zoom,
 } from './tools';
 import { useCanvasTools } from './useCanvasTools';
-import { usePaintDocument } from './useDocument';
+import { DEFAULT_SIZE, usePaintDocument } from './useDocument';
 import { usePaintFiles } from './usePaintFiles';
 import styles from './Paint.module.css';
+
+/** `.workspace` padding in Paint.module.css (px). */
+const WORKSPACE_PADDING = 4;
 
 export default function Paint({ windowId, props }: AppComponentProps) {
   const t = useT();
@@ -31,6 +36,8 @@ export default function Paint({ windowId, props }: AppComponentProps) {
   const [options, setOptions] = useState<ToolOptions>(DEFAULT_OPTIONS);
   const [zoom, setZoom] = useState<Zoom>(1);
   const [magnify, setMagnify] = useState<Zoom>(4);
+  const device = useDevice();
+  const areaRef = useRef<HTMLDivElement>(null);
 
   const tools = useCanvasTools(doc, {
     tool,
@@ -49,6 +56,13 @@ export default function Paint({ windowId, props }: AppComponentProps) {
     windowId,
     typeof props.fileId === 'string' ? props.fileId : null,
     tools.settle,
+    () => {
+      const area = areaRef.current;
+      if (device !== 'phone' || !area) return DEFAULT_SIZE;
+      // The work area inside its padding, less the sheet's 1 px shadow, so nothing scrolls.
+      const pad = WORKSPACE_PADDING * 2 + 1;
+      return phoneCanvasSize(area.clientWidth - pad, area.clientHeight - pad);
+    },
   );
 
   function setTool(next: ToolId) {
@@ -231,7 +245,7 @@ export default function Paint({ windowId, props }: AppComponentProps) {
 
   const d = files.dialog;
   return (
-    <div className={styles.root} onKeyDown={onKeyDown}>
+    <div className={`${styles.root} touch-controls`} onKeyDown={onKeyDown}>
       <MenuBar menus={menus} />
       <div className={styles.main}>
         <Toolbox
@@ -242,7 +256,13 @@ export default function Paint({ windowId, props }: AppComponentProps) {
           onOptions={(patch) => setOptions((o) => ({ ...o, ...patch }))}
           onZoom={chooseZoom}
         />
-        <PaintCanvas doc={doc} tools={tools} tool={tool} zoom={zoom} />
+        <PaintCanvas
+          doc={doc}
+          tools={tools}
+          tool={tool}
+          zoom={zoom}
+          areaRef={areaRef}
+        />
       </div>
       <ColorBox
         primary={primary}

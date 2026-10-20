@@ -112,3 +112,22 @@
   padding: 1px 2px;
   font-size: 10px;
 }
+
+/* Phone (v0.6): stacked — the preview on top keeps a usable height, the controls below are
+   tap-sized, and the photo strip scrolls sideways. */
+:global(.desktop-root[data-device='phone']) .stage {
+  min-height: 140px;
+}
+
+:global(.desktop-root[data-device='phone']) .count {
+  font-size: 72px;
+}
+
+:global(.desktop-root[data-device='phone']) .strip {
+  flex: none;
+  scrollbar-width: none;
+}
+
+:global(.desktop-root[data-device='phone']) .thumb button {
+  min-height: 36px;
+}

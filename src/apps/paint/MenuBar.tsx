@@ -1,4 +1,5 @@
-// Paint's classic menu bar: click a title to open its menu, hover to switch while one is open.
+// Paint's classic menu bar: click (or tap) a title to open its menu, hover to switch while one is
+// open. Hover is mouse-only: a tap's compatibility mouseenter would switch the menu it opens.
 import { useState } from 'react';
 import { useT } from '@/i18n/useT';
 import styles from './Paint.module.css';
@@ -41,7 +42,9 @@ export function MenuBar({ menus }: { menus: Menu[] }) {
             aria-expanded={open === menu.id}
             className={styles.menuButton}
             onClick={() => setOpen(open === menu.id ? null : menu.id)}
-            onMouseEnter={() => open && setOpen(menu.id)}
+            onPointerEnter={(e) => {
+              if (e.pointerType === 'mouse' && open) setOpen(menu.id);
+            }}
             onKeyDown={(e) => {
               if (e.key === 'Escape') setOpen(null);
             }}

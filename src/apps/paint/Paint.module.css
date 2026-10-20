@@ -409,3 +409,83 @@
 :global(.desktop-root[data-device='phone']) .dialog {
   max-width: 94vw;
 }
+
+/* Phone (v0.6): the tool box is a sideways-scrolling strip on top, the colour box one at the
+   bottom, and every tool, option, swatch and menu is a 36 px tap target. */
+:global(.desktop-root[data-device='phone']) .menuButton {
+  min-height: 36px;
+  padding: 0 10px;
+}
+
+:global(.desktop-root[data-device='phone']) .item {
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .dropdown {
+  max-width: 94vw;
+}
+
+:global(.desktop-root[data-device='phone']) .main {
+  flex-direction: column;
+}
+
+:global(.desktop-root[data-device='phone']) .toolbox {
+  flex: none;
+  flex-direction: row;
+  align-items: stretch;
+  width: auto;
+  padding: 3px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-right: 0;
+  border-bottom: 1px solid #aca899;
+}
+
+:global(.desktop-root[data-device='phone']) .tools,
+:global(.desktop-root[data-device='phone']) .options {
+  display: flex;
+  flex: none;
+  flex-direction: row;
+  gap: 2px;
+}
+
+:global(.desktop-root[data-device='phone']) .tool,
+:global(.desktop-root[data-device='phone']) .option {
+  flex: none;
+  width: 36px;
+  height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .options {
+  width: auto;
+  min-height: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .options:empty {
+  display: none;
+}
+
+:global(.desktop-root[data-device='phone']) .colorBox {
+  flex: none;
+}
+
+:global(.desktop-root[data-device='phone']) .current {
+  flex: none;
+  width: 36px;
+  height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .palette {
+  grid-template-columns: none;
+  grid-template-rows: 36px;
+  grid-auto-flow: column;
+  grid-auto-columns: 36px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+:global(.desktop-root[data-device='phone']) .swatch {
+  width: 36px;
+  height: 36px;
+}

@@ -57,13 +57,18 @@ export default function Playlist({
   const activateRow = useActivate((index: number) => onPlay(index));
   // Mouse drag still reorders; the menu is the touch path to Move up/down and Remove.
   const pressRow = useLongPress(({ clientX, clientY }, index: number) => {
-    const box = panelRef.current?.getBoundingClientRect();
-    if (!box) return;
+    const panel = panelRef.current;
+    if (!panel) return;
+    const box = panel.getBoundingClientRect();
+    // A phone zooms the skin: the box is in screen px, the menu's left/top in skin px.
+    const scale = panel.offsetWidth > 0 ? box.width / panel.offsetWidth : 1;
+    const w = box.width / scale;
+    const h = box.height / scale;
     setSelected(index);
     setRowMenu({
       index,
-      x: Math.max(0, Math.min(clientX - box.left, box.width - ROW_MENU_W)),
-      y: Math.max(0, Math.min(clientY - box.top, box.height - ROW_MENU_H)),
+      x: Math.max(0, Math.min((clientX - box.left) / scale, w - ROW_MENU_W)),
+      y: Math.max(0, Math.min((clientY - box.top) / scale, h - ROW_MENU_H)),
     });
   });
 

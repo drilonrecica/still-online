@@ -1,5 +1,5 @@
 // The grey work area with the picture, the selection marquee and the text tool's box.
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 import { useT } from '@/i18n/useT';
 import { TEXT_FONT, TEXT_LINE_HEIGHT } from './codec';
 import { rgbaToHex, type Rect } from './pixels';
@@ -13,6 +13,8 @@ export interface PaintCanvasProps {
   tools: ReturnType<typeof useCanvasTools>;
   tool: ToolId;
   zoom: Zoom;
+  /** The work area (Paint measures it for a new picture on a phone). */
+  areaRef?: RefObject<HTMLDivElement>;
 }
 
 const box = (r: Rect, zoom: Zoom) => ({
@@ -22,7 +24,13 @@ const box = (r: Rect, zoom: Zoom) => ({
   height: r.h * zoom,
 });
 
-export function PaintCanvas({ doc, tools, tool, zoom }: PaintCanvasProps) {
+export function PaintCanvas({
+  doc,
+  tools,
+  tool,
+  zoom,
+  areaRef,
+}: PaintCanvasProps) {
   const t = useT();
   const textRef = useRef<HTMLTextAreaElement>(null);
   const { text } = tools;
@@ -36,10 +44,12 @@ export function PaintCanvas({ doc, tools, tool, zoom }: PaintCanvasProps) {
 
   return (
     <div
+      ref={areaRef}
       className={styles.workspace}
       role="region"
       aria-label={t('paint.canvas')}
       tabIndex={0}
+      {...tools.area}
     >
       <div
         className={styles.sheet}

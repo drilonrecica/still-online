@@ -13,7 +13,7 @@ import {
   setAsBackground,
 } from './files';
 import { createBuffer } from './pixels';
-import { DEFAULT_SIZE, type PaintDocument } from './useDocument';
+import type { PaintDocument } from './useDocument';
 
 /** Actions that may need the picture saved first. */
 export type Pending = 'new' | 'open' | 'exit' | 'close' | 'dp';
@@ -30,6 +30,8 @@ export function usePaintFiles(
   windowId: string,
   initialFileId: string | null,
   settle: () => void,
+  /** The size of a new picture (the work area on a phone, else 640×480). */
+  newSize: () => { w: number; h: number },
 ) {
   const t = useT();
   const [fileId, setFileId] = useState<string | null>(null);
@@ -78,7 +80,8 @@ export function usePaintFiles(
     }
   }
 
-  // A restored window (or one opened on a file) shows its picture again.
+  // A restored window (or one opened on a file) shows its picture again; otherwise the
+  // blank picture takes the new-picture size (a phone's work area).
   const opened = useRef(false);
   useEffect(() => {
     if (opened.current) return;
@@ -87,13 +90,18 @@ export function usePaintFiles(
       ? useFsStore.getState().get(initialFileId)
       : undefined;
     if (node?.type === 'image') void open(node);
+    else {
+      const { w, h } = newSize();
+      if (w !== doc.buf.w || h !== doc.buf.h) run('new');
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once, on mount
   }, []);
 
   function run(action: Pending, savedId: string | null = fileId) {
     setDialog(null);
     if (action === 'new') {
-      doc.replace(createBuffer(DEFAULT_SIZE.w, DEFAULT_SIZE.h), true);
+      const { w, h } = newSize();
+      doc.replace(createBuffer(w, h), true);
       setSavedRev(doc.getRevision());
       track(null);
     } else if (action === 'open') {
