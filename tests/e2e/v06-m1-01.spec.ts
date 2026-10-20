@@ -55,8 +55,14 @@ async function checkAndClear(page: Page, label: string) {
     if (!box) continue;
     expectFills(box, work);
     if (await page.locator('[data-wrecker]').count()) {
-      // Desktop Wrecker's overlay covers everything; its touch exit is M3-01.
-      await page.keyboard.press('Escape');
+      // Desktop Wrecker's overlay covers everything; its touch exit is M3-01. It is lazy, and
+      // under load an Escape can land before its key listener exists: press until it is gone.
+      await expect(async () => {
+        await page.keyboard.press('Escape');
+        await expect(page.locator('[data-wrecker]')).toHaveCount(0, {
+          timeout: 500,
+        });
+      }).toPass({ timeout: 10_000 });
     } else {
       // The XP frame's Minimize, or Amplifier's own (unless the window closed itself).
       await frame
