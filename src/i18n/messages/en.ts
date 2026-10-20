@@ -1023,6 +1023,8 @@ export const en = {
       aboutItem: 'About Web Explorer',
       addFavorite: 'Add to Favorites...',
       removeFavorite: 'Remove from Favorites',
+      fitToScreen: 'Fit to screen',
+      actualSize: 'Actual size',
     },
     toolbar: {
       label: 'Standard Buttons',

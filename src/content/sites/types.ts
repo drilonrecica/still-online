@@ -246,6 +246,8 @@ export interface WebState {
   top8Wall?: Top8WallEntry[];
   /** v0.4: the player's Pixlog page. */
   pixlog?: PixlogState;
+  /** v0.6: Web Explorer's View → Fit to screen on a phone; absent = the device default (fit). */
+  fitToScreen?: boolean;
 }
 
 export interface Top8WallEntry {

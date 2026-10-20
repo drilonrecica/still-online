@@ -48,6 +48,7 @@ still online is the same XP desktop on every device, adapted for touch. The desi
 - **Notepad:** menus open by tap (hover switching is mouse-only); dialogs are 94vw and scroll when the screen is short.
 - **TuneMole:** results show the file name over size · bitrate · peer, plus Download. Each download wraps into its own block.
 - **Stapley** steps out while a full-screen window is in front and he has nothing to say, so he never covers a Send or OK button. A new tip brings him back.
+- **Web Explorer (M2-02):** on a phone every page lays out at 800 px (`PAGE_VIRTUAL_WIDTH`, `src/apps/browser/zoom.ts`). **Fit to screen** (the phone default) gives the page CSS `zoom` = page-area width / 800, rounded down to 1/1000 and recomputed by a `ResizeObserver`. `zoom` rather than `transform`, so hit-testing and scrolling stay native; code that reads pointer positions inside a page divides by `getBoundingClientRect().width / offsetWidth` (the rect is zoomed, `offsetWidth` isn't). **Actual size** drops the zoom and the page area scrolls sideways. View → Fit to screen / Actual size (radio items, phone only) saves `fitToScreen` in the `web` store. A tablet and a desktop always show pages at actual size, with no wrapper and the v0.5 chrome. The phone toolbar is Back, Forward, Refresh, Home and Favorites as 36 px icons, the address on its own row (16 px text), and Favorites is a sheet over the page that closes on a choice or a tap beside it. Form fields inside a page are `max(16px, 1em)`.
 
 ## Touch primitives
 

@@ -1025,6 +1025,8 @@ export const de: Messages = {
       aboutItem: 'Info über Web Explorer',
       addFavorite: 'Zu Favoriten hinzufügen...',
       removeFavorite: 'Aus Favoriten entfernen',
+      fitToScreen: 'An Bildschirm anpassen',
+      actualSize: 'Originalgröße',
     },
     toolbar: {
       label: 'Standardschaltflächen',

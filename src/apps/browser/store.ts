@@ -42,6 +42,7 @@ import {
   sanitizeTop8,
   sanitizeTop8Wall,
 } from './webSanitize';
+import { sanitizeFitToScreen } from './zoom';
 
 /** The default favorites' names, by url. */
 const DEFAULT_FAVORITE_KEYS: Readonly<Record<string, MessageKey>> = {
@@ -173,6 +174,8 @@ export interface WebStore extends WebState {
   saveSurvey: (surveyId: string, answers: readonly string[]) => void;
   /** One kudo per friend per day; returns false if already given that day. */
   giveKudos: (contactId: ContactId, day: number) => boolean;
+  /** View → Fit to screen (true) or Actual size (false), for pages on a phone. */
+  setFitToScreen: (fit: boolean) => void;
 }
 
 const str = (v: unknown): v is string => typeof v === 'string';
@@ -307,6 +310,7 @@ export function sanitizeWeb(persisted: unknown, current: WebState): WebState {
     ...optional('bulletinsSeen', persisted, current, sanitizeBulletinsSeen),
     ...optional('top8Wall', persisted, current, sanitizeTop8Wall),
     ...optional('pixlog', persisted, current, sanitizePixlog),
+    ...optional('fitToScreen', persisted, current, sanitizeFitToScreen),
   };
 }
 
@@ -407,6 +411,7 @@ export const useWebStore = create<WebStore>()(
           const shown = effectiveFavorites(s.favorites, getGender());
           return { favorites: shown.filter((f) => f.url !== key) };
         }),
+      setFitToScreen: (fit) => set({ fitToScreen: fit }),
     }),
     persistOptions<WebStore, WebState>({
       name: 'web',
@@ -419,6 +424,7 @@ export const useWebStore = create<WebStore>()(
         bulletinsSeen,
         top8Wall,
         pixlog,
+        fitToScreen,
       }) => ({
         favorites,
         counters,
@@ -428,6 +434,7 @@ export const useWebStore = create<WebStore>()(
         bulletinsSeen,
         top8Wall,
         pixlog,
+        fitToScreen,
       }),
       sanitize: (persisted, current) => ({
         ...current,

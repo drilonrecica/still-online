@@ -394,3 +394,101 @@
 :global(.desktop-root[data-device='phone']) .dialog {
   max-width: 94vw;
 }
+
+/* A checked radio item (View → Fit to screen / Actual size): an XP bullet in the left margin. */
+.item[role='menuitemradio'] {
+  position: relative;
+}
+
+.item[aria-checked='true']::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 7px;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  border-radius: 50%;
+  background: currentcolor;
+}
+
+/* Phone (v0.6): pages lay out at the 800 px virtual width (PAGE_VIRTUAL_WIDTH); Fit to screen
+   zooms them to the page area, Actual size scrolls it sideways. */
+.virtualPage {
+  width: 800px;
+}
+
+.viewport[data-view='fit'] {
+  overflow-x: hidden;
+}
+
+:global(.desktop-root[data-device='phone']) .body {
+  position: relative;
+}
+
+/* Phone: finger-sized chrome. The menus, the condensed toolbar and the address bar get 36 px
+   targets; the status bar stays 20 px. */
+:global(.desktop-root[data-device='phone']) .menuButton {
+  min-height: 36px;
+  padding: 2px 8px;
+}
+
+:global(.desktop-root[data-device='phone']) .item {
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .tool {
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .addressField input {
+  height: 34px;
+}
+
+:global(.desktop-root[data-device='phone']) .go {
+  min-height: 36px;
+}
+
+/* Phone: no field zooms Chrome on focus (the address bar and every form inside a page). */
+:global(.desktop-root[data-device='phone']) .addressField input,
+:global(.desktop-root[data-device='phone'])
+  .virtualPage
+  :is(input:not([type='checkbox'], [type='radio']), textarea, select) {
+  font-size: max(16px, 1em);
+}
+
+/* Phone: Favorites is a sheet over the page; the backdrop beside it closes it. */
+.sheetBackdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  align-items: flex-start;
+  background: rgb(0 0 0 / 25%);
+}
+
+.sheetBackdrop .pane {
+  width: min(320px, 85%);
+  max-height: 100%;
+  box-shadow: 2px 2px 6px rgb(0 0 0 / 40%);
+}
+
+:global(.desktop-root[data-device='phone']) .paneHeader {
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) :is(.paneClose, .paneDelete) {
+  width: 36px;
+  height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .paneActions button {
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .paneLink {
+  min-height: 36px;
+}

@@ -2,29 +2,23 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useGender } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
+import { useDevice } from '@/os/device';
 import { requireOnline } from '@/os/network';
 import { useWindowsStore } from '@/os/store/windows';
 import type { AppComponentProps } from '@/os/types';
 import styles from './Browser.module.css';
 import { ErrorPage } from './ErrorPage';
 import { FavoritesPane } from './FavoritesPane';
-import {
-  BackIcon,
-  ForwardIcon,
-  GlobeIcon,
-  GoIcon,
-  HomeIcon,
-  PageIcon,
-  RefreshIcon,
-  StarIcon,
-  StopIcon,
-} from './icons';
+import { GlobeIcon, GoIcon, PageIcon } from './icons';
 import { MenuBar, type Menu, type MenuEntry } from './MenuBar';
 import { NavigatorContext, type BrowserNavigator } from './navigator';
 import { LoadProgress } from './LoadProgress';
+import { PageView } from './PageView';
 import { pageTitle as sitePageTitle, resolve } from './sites';
 import { renderFavorites, useWebStore } from './store';
+import { Toolbar } from './Toolbar';
 import { useNavigation } from './useNavigation';
+import { isFitToScreen } from './zoom';
 
 export const APP_NAME = 'Web Explorer';
 
@@ -37,6 +31,12 @@ export default function Browser({ windowId, props }: AppComponentProps) {
   const [paneOpen, setPaneOpen] = useState(false);
   const [about, setAbout] = useState(false);
   const favoriteRecords = useWebStore((s) => s.favorites);
+  const device = useDevice();
+  const phone = device === 'phone';
+  const fit = isFitToScreen(
+    useWebStore((s) => s.fitToScreen),
+    device,
+  );
   const t = useT();
   const locale = useLocale();
   // Page titles come from site metadata, which resolves for the gender: re-render on a switch.
@@ -113,7 +113,26 @@ export default function Browser({ windowId, props }: AppComponentProps) {
   const menus: Menu[] = [
     { label: t('browser.menu.file'), items: [] },
     { label: t('browser.menu.edit'), items: [] },
-    { label: t('browser.menu.view'), items: [] },
+    // View → Fit to screen / Actual size: pages only scale on a phone.
+    {
+      label: t('browser.menu.view'),
+      items: phone
+        ? [
+            {
+              kind: 'item',
+              label: t('browser.menu.fitToScreen'),
+              checked: fit,
+              onSelect: () => useWebStore.getState().setFitToScreen(true),
+            },
+            {
+              kind: 'item',
+              label: t('browser.menu.actualSize'),
+              checked: !fit,
+              onSelect: () => useWebStore.getState().setFitToScreen(false),
+            },
+          ]
+        : [],
+    },
     { label: t('browser.menu.favorites'), items: favoriteItems },
     { label: t('browser.menu.tools'), items: [] },
     {
@@ -140,6 +159,20 @@ export default function Browser({ windowId, props }: AppComponentProps) {
         ? t('browser.status.done')
         : '');
 
+  const favoritesPane = (
+    <FavoritesPane
+      favorites={favorites}
+      canAdd={Boolean(page)}
+      onAdd={addCurrent}
+      onOpen={(url) => {
+        if (phone) setPaneOpen(false);
+        nav.go(url);
+      }}
+      onRemove={(url) => useWebStore.getState().removeFavorite(url)}
+      onClose={() => setPaneOpen(false)}
+    />
+  );
+
   let content = null;
   if (shown && page) {
     const Page = page.page.component;
@@ -163,67 +196,12 @@ export default function Browser({ windowId, props }: AppComponentProps) {
     <div className={styles.root}>
       <MenuBar menus={menus} />
 
-      <div
-        className={styles.toolbar}
-        role="toolbar"
-        aria-label={t('browser.toolbar.label')}
-      >
-        <button
-          type="button"
-          className={styles.tool}
-          onClick={nav.back}
-          disabled={!nav.canBack}
-          aria-label={t('browser.toolbar.back')}
-        >
-          <BackIcon />
-          <span>{t('browser.toolbar.back')}</span>
-        </button>
-        <button
-          type="button"
-          className={styles.tool}
-          onClick={nav.forward}
-          disabled={!nav.canForward}
-          aria-label={t('browser.toolbar.forward')}
-        >
-          <ForwardIcon />
-        </button>
-        <button
-          type="button"
-          className={styles.tool}
-          onClick={nav.stop}
-          disabled={!nav.loading}
-          aria-label={t('browser.toolbar.stop')}
-        >
-          <StopIcon />
-        </button>
-        <button
-          type="button"
-          className={styles.tool}
-          onClick={nav.refresh}
-          aria-label={t('browser.toolbar.refresh')}
-        >
-          <RefreshIcon />
-        </button>
-        <button
-          type="button"
-          className={styles.tool}
-          onClick={nav.home}
-          aria-label={t('browser.toolbar.home')}
-        >
-          <HomeIcon />
-        </button>
-        <span className={styles.toolSep} aria-hidden="true" />
-        <button
-          type="button"
-          className={styles.tool}
-          onClick={() => setPaneOpen(!paneOpen)}
-          aria-pressed={paneOpen}
-          aria-label={t('browser.toolbar.favorites')}
-        >
-          <StarIcon />
-          <span>{t('browser.toolbar.favorites')}</span>
-        </button>
-      </div>
+      <Toolbar
+        nav={nav}
+        phone={phone}
+        favoritesOpen={paneOpen}
+        onToggleFavorites={() => setPaneOpen(!paneOpen)}
+      />
 
       <form
         className={styles.addressBar}
@@ -252,26 +230,27 @@ export default function Browser({ windowId, props }: AppComponentProps) {
       </form>
 
       <div className={styles.body}>
-        {paneOpen && (
-          <FavoritesPane
-            favorites={favorites}
-            canAdd={Boolean(page)}
-            onAdd={addCurrent}
-            onOpen={nav.go}
-            onRemove={(url) => useWebStore.getState().removeFavorite(url)}
-            onClose={() => setPaneOpen(false)}
-          />
-        )}
-        <div
-          ref={viewport}
-          className={styles.viewport}
-          data-testid="browser-viewport"
-          aria-busy={Boolean(nav.loading)}
+        {paneOpen && !phone && favoritesPane}
+        <PageView
+          viewportRef={viewport}
+          virtual={phone}
+          fit={fit}
+          busy={Boolean(nav.loading)}
         >
           <NavigatorContext.Provider value={navigator}>
             {content}
           </NavigatorContext.Provider>
-        </div>
+        </PageView>
+        {/* Phone: the favorites are a sheet over the page; a tap beside it closes it. */}
+        {paneOpen && phone && (
+          <div
+            className={styles.sheetBackdrop}
+            data-testid="favorites-sheet"
+            onClick={(e) => e.target === e.currentTarget && setPaneOpen(false)}
+          >
+            {favoritesPane}
+          </div>
+        )}
       </div>
 
       <div className={styles.statusBar}>

@@ -1,10 +1,18 @@
-// IE6-style menu bar. Menus without items render disabled.
+// IE6-style menu bar. Menus without items render disabled. Hover switching is mouse-only, so a
+// tap's compatibility `mouseenter` never switches menus under the finger (v0.6).
 import { useEffect, useState } from 'react';
 import { useT } from '@/i18n/useT';
 import styles from './Browser.module.css';
 
 export type MenuEntry =
-  | { kind: 'item'; label: string; onSelect: () => void; disabled?: boolean }
+  | {
+      kind: 'item';
+      label: string;
+      onSelect: () => void;
+      disabled?: boolean;
+      /** A radio item (one of a group): renders a bullet when true. */
+      checked?: boolean;
+    }
   | { kind: 'separator' };
 
 export interface Menu {
@@ -50,7 +58,10 @@ export function MenuBar({ menus }: { menus: readonly Menu[] }) {
               disabled={!enabled}
               className={styles.menuButton}
               onClick={() => setOpen(open === menu.label ? null : menu.label)}
-              onMouseEnter={() => open && enabled && setOpen(menu.label)}
+              onPointerEnter={(e) => {
+                if (e.pointerType === 'mouse' && open && enabled)
+                  setOpen(menu.label);
+              }}
             >
               {menu.label}
             </button>
@@ -67,7 +78,12 @@ export function MenuBar({ menus }: { menus: readonly Menu[] }) {
                     <button
                       key={`${item.label}-${i}`}
                       type="button"
-                      role="menuitem"
+                      role={
+                        item.checked === undefined
+                          ? 'menuitem'
+                          : 'menuitemradio'
+                      }
+                      aria-checked={item.checked}
                       className={styles.item}
                       disabled={item.disabled}
                       onClick={() => {

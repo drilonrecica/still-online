@@ -30,10 +30,12 @@ export function useCursorTrail(cursor: CursorId | undefined) {
       if (t - last.current < TRAIL_THROTTLE_MS) return;
       last.current = t;
       const box = e.currentTarget.getBoundingClientRect();
+      // Fit to screen zooms the page (v0.6): client px → the page's own CSS px.
+      const scale = box.width / e.currentTarget.offsetWidth || 1;
       const node = {
         id: nextId.current++,
-        x: (e.clientX ?? 0) - box.left,
-        y: (e.clientY ?? 0) - box.top,
+        x: ((e.clientX ?? 0) - box.left) / scale,
+        y: ((e.clientY ?? 0) - box.top) / scale,
       };
       setNodes((old) => [...old, node].slice(-TRAIL_MAX));
     },
