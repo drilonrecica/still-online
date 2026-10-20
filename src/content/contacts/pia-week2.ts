@@ -409,7 +409,7 @@ export const piaWeek2Scripts: readonly Script[] = [
           },
         ],
         choices: [
-          { text: 'deal', next: 'fish' },
+          { text: g('deal', 'ok. busted'), next: 'fish' },
           { text: 'ill tell u everything tmrw', next: 'fish' },
         ],
       },

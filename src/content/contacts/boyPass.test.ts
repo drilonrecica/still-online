@@ -330,6 +330,10 @@ describe('Theo and Pia in week two (W1-02) for a boy', () => {
     expect(node('en', 'boy', 'pia', 'day10', 'next').lines[0]).toBe(
       'LIAR. i saw the PICS',
     );
+    expect(node('en', 'boy', 'pia', 'day10', 'next').choices[0]).toBe(
+      'ok. busted',
+    );
+    expect(node('en', 'girl', 'pia', 'day10', 'next').choices[0]).toBe('deal');
     expect(node('en', 'girl', 'pia', 'day6', 'hamster').choices[0]).toBe(
       'omg a hamster!!',
     );
