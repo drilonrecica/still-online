@@ -75,7 +75,7 @@ export const GOSSIP_POSTS_WEEK2: readonly BlogPost[] = [
     comments: [
       {
         user: 'pia (L) ponies (L)',
-        text: 'GOOD. brenda deserves a hotel. i am asking my mom 4 a hamster and she says no and bianca got a WHOLE COW',
+        text: 'GOOD. brenda deserves a hotel. i am asking my mom 4 a hamster TONIGHT and bianca got a WHOLE COW',
       },
       { user: 'ranch_hand_rick', text: 'finally someone treats brenda right' },
       {

@@ -25,7 +25,7 @@ export const BULLETINS_WEEK2: readonly Bulletin[] = [
     subject: 'velvet lantern. rec hall. for real',
     body:
       'the westfield rec hall. saturday. doors at 6. all ages. fits 80. ' +
-      'yes this is the day-one show. bingo took the first date. bingo always wins. ' +
+      'yes. the saturday show i told u about. bingo took the first date. bingo always wins. ' +
       'we need a poster. not soup',
     link: 'http://friendspace.example/band/velvet-lantern',
   },
@@ -71,9 +71,9 @@ export const BULLETINS_WEEK2: readonly Bulletin[] = [
     from: { contactId: 'jess' },
     subject: 'LAKEVIEW SOLD OUT. I AM NOT OK',
     body:
-      'NINE MINUTES. it sold out in NINE MINUTES. i was on the phone for 8 of them. ' +
+      'NINE MINUTES. it sold out in NINE MINUTES. i was on the phone the WHOLE time. ' +
       'BUT. its the same night as marcos show. so im going 2 the rec hall. ' +
-      `{name} is coming w me ${g('(L)', '(Y)')}. I NEED A NEW SIGN`,
+      `{name} better come too ${g('(L)', '(Y)')}. I NEED A NEW SIGN`,
   },
   {
     id: 'd8-pia-petition',

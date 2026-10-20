@@ -65,7 +65,7 @@ export const JESS_WEEK2: ProfileWeek = {
       day: 10,
       from: 'dex',
       contactId: 'dex',
-      text: 'got the catch on tape. with ur hand this time',
+      text: 'got the catch on tape. u can hear it. with ur hand this time',
     },
   ],
   commentsOnPlayer: [
@@ -191,7 +191,7 @@ export const THEO_WEEK2: ProfileWeek = {
     {
       day: 10,
       from: 'Mom',
-      text: 'Your poster is on the fridge. All three of them. Love, Mom',
+      text: 'Your poster is on the fridge. Love, Mom',
     },
   ],
   commentsOnPlayer: [
@@ -214,7 +214,7 @@ export const MARCO_WEEK2: ProfileWeek = {
       day: 6,
       from: 'jess',
       contactId: 'jess',
-      text: 'REC HALL!!! FOR REAL THIS TIME??? I AM THERE!!!',
+      text: 'REC HALL!!! FOR REAL THIS TIME??? CONGRATS MARCO!!!',
     },
     { day: 7, from: 'derek (drums)', text: 'every song' },
     {
@@ -232,7 +232,7 @@ export const MARCO_WEEK2: ProfileWeek = {
       day: 8,
       from: 'dex',
       contactId: 'dex',
-      text: 'can i film the show. new tape',
+      text: 'can i film the show. if i find a tape',
     },
     {
       day: 9,
@@ -325,7 +325,7 @@ export const DEX_WEEK2: ProfileWeek = {
       day: 6,
       from: 'jess',
       contactId: 'jess',
-      text: 'I WATCHED IT 3 TIMES!!! thats 3 of the real ones!!!',
+      text: '41 VIEWS!!! DEX UR FAMOUS!!!',
     },
     { day: 7, from: 'Kickflip_Kev', text: 'JAM. U. DAY 9' },
     {

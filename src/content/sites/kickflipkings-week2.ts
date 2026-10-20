@@ -20,7 +20,7 @@ export const KICKFLIP_NEWS_WEEK2: readonly NewsPost[] = [
     day: 8,
     title: 'show alert: velvet lantern @ the rec hall (dex is filming)',
     author: 'Kickflip_Kev',
-    body: 'saturday at the westfield rec hall. doors at 6, all ages. The Grip Tapes open!!! (skate punk, 3 songs, one about rain.) dex is filming the whole thing on a new tape. boards stay outside again. check the gigs page',
+    body: 'saturday at the westfield rec hall. doors at 6, all ages. The Grip Tapes open!!! (skate punk, 3 songs, one about rain.) dex is filming the whole thing (he says he will find a tape). boards stay outside again. check the gigs page',
   },
   {
     day: 9,

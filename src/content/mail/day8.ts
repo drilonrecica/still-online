@@ -128,7 +128,7 @@ export const day8Mail: readonly MailContent[] = [
     body: [
       'I AM NOT OK',
       '',
-      'LAKEVIEW SOLD OUT. IN 9 MINUTES. NINE. i was on the phone with the ticket place and it played the same song 4 times and then a lady said "sold out" and i said "WHAT" and she said "sold out" again. SHE DIDNT HAVE TO SAY IT TWICE',
+      'LAKEVIEW SOLD OUT. IN 9 MINUTES. NINE. i was on the phone the WHOLE time. busy beep. 40 TIMES. then i got thru and a lady said "sold out" and i said "WHAT" and she said "sold out" again. SHE DIDNT HAVE TO SAY IT TWICE',
       '',
       'cometgirl didnt get tickets either. we are in mourning together. it says so on the site: tinfoilcomets.example',
       '',

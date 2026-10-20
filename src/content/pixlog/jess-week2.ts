@@ -41,7 +41,7 @@ export const jessPixlogWeek2: PixlogWeek = {
             day: 8,
             look: 'long',
             caption:
-              'the collage. 40% glitter 60% LOVE. ziggys drumstick spin + my ticket stub',
+              'me + the collage. 40% glitter 60% LOVE. ziggys drumstick spin. IN SPACE',
           },
           comments: [
             { day: 9, from: 'xX_CometGirl_Xx', text: 'IT WAS SO GOOD!!!' },
@@ -98,7 +98,7 @@ export const jessPixlogWeek2: PixlogWeek = {
       body:
         'FAN ART CONTEST RESULTS: 1st spacegirl4eva. a KEYTAR. made of MACARONI. 2nd ME!!! 3rd robot_cover_guy (kevin the robot)\n\n' +
         'i lost to pasta. i am ok.\n\n' +
-        'my prize: the riverside setlist. SIGNED BY ALL FOUR. ziggy signed TWICE. it goes next to the drumstick. its a SHRINE now',
+        'my prize: the riverside setlist. SIGNED BY ALL FOUR. ziggy signed TWICE. it goes next to the drumstick. the MUSEUM grows',
     },
   ],
   shouts: [

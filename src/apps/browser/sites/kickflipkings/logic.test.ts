@@ -56,7 +56,7 @@ describe('kickflipkings logic', () => {
     expect(next(9).played).toBe(false);
     expect(next(10)).toMatchObject({
       venue: 'the westfield rec hall',
-      when: 'played saturday',
+      when: 'played tonight',
       played: true,
       updates: [],
     });

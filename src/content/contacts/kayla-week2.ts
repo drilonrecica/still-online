@@ -199,7 +199,7 @@ export const kaylaWeek2Scripts: readonly Script[] = [
       posters: {
         lines: [
           {
-            text: 'posters go up in the east hallway tmrw morning',
+            text: 'posters r up in the east hallway. go look',
             delayMs: 1300,
           },
           { delayMs: 800, personalMessageChange: '~*kayla 4 class rep*~' },

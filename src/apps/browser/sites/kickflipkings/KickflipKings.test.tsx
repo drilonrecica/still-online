@@ -203,7 +203,7 @@ describe('kickflipkings.example', () => {
     await finishLoad();
     const day10 = await screen.findByRole('list', { name: 'Shows' });
     expect(within(day10).getAllByRole('listitem')[2]).toHaveTextContent(
-      /the westfield rec hall.*played saturday.*83 ppl/,
+      /the westfield rec hall.*played tonight.*83 ppl/,
     );
   });
 

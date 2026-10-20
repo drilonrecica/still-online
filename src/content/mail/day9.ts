@@ -43,7 +43,7 @@ export const day9Mail: readonly MailContent[] = [
       '',
       'and 1 person wrote MYSTERY LOAF. on a BALLOT. if it wasnt 4 the loaf i would have WON. or lost. but SOMETHING would have happened',
       '',
-      'we had to sit in the office. on the same bench. brianna smelled like my shampoo. SHE USES MY SHAMPOO NOW',
+      'we have to sit in the office. on 2 chairs. next to each other. brianna smells like my shampoo. SHE USES MY SHAMPOO NOW',
       '',
       'u voted 4 me right. RIGHT.',
       '',

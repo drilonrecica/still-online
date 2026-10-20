@@ -412,7 +412,7 @@ export const KICKFLIP_GIGS: readonly Gig[] = [
     ],
     after: {
       day: 10,
-      when: 'played saturday',
+      when: 'played tonight',
       note: 'played. 83 ppl. kev filmed nothing, dex filmed everything',
     },
   },

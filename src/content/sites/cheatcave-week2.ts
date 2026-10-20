@@ -8,7 +8,7 @@ export const CHEATCAVE_NEWS_WEEK2: readonly NewsPost[] = [
     day: 6,
     title: 'Galaxy Raiders 3: the BIGBRAIN code still works',
     author: 'CaveKing',
-    body: 'a reader asked if BIGBRAIN still works after the patch. we checked. TWICE. pause, type it, big brain, 99 lives. if it doesnt work for u, u typed BIGBRIAN. everyone types BIGBRIAN',
+    body: 'a reader asked if BIGBRAIN still works after the patch. we checked. TWICE. title screen, type it, everyone gets a giant head. if it doesnt work for u, u typed BIGBRIAN. everyone types BIGBRIAN',
   },
   {
     day: 7,

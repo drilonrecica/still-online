@@ -14,7 +14,7 @@ export const WESTFIELD_NEWS_WEEK2: readonly NewsPost[] = [
     day: 6,
     title: 'Class Representative Elections: Sign-Ups Tomorrow',
     author: 'Dr. Hargrove, Principal',
-    body: 'Sign-ups for class representative open tomorrow morning in the Main Office. Candidates may put up one poster each in the east hallway. Posters must be smaller than a door. Glitter is permitted but must be swept up by the candidate. The vote will be held in homeroom later this week.',
+    body: 'Sign-ups for class representative open tomorrow morning in the Main Office. Candidates may put up posters in the east hallway, twelve each at most. Posters must be smaller than a door. Glitter is permitted but must be swept up by the candidate. The vote will be held in homeroom later this week.',
   },
   {
     day: 7,
@@ -32,7 +32,7 @@ export const WESTFIELD_NEWS_WEEK2: readonly NewsPost[] = [
     day: 8,
     title: 'Community Board: Velvet Lantern at the Westfield Rec Hall',
     author: 'Mr Pruitt, Office Manager',
-    body: 'Local band Velvet Lantern plays the Westfield Rec Hall on Saturday. Doors open at 6. All ages. Opening act: The Grip Tapes. Mr Dalton has kindly agreed to chaperone. The poster on the office door was drawn by Theo K. and is the nicest poster we have had on that door. Please do not take it. There are more at the rec hall.',
+    body: 'Local band Velvet Lantern plays the Westfield Rec Hall on Saturday. Doors open at 6. All ages. Opening act: The Grip Tapes. Mr Dalton has kindly agreed to chaperone. The poster is being drawn by Theo K. and will go up on the office door and at the rec hall this week. Please do not take them.',
   },
   {
     day: 8,

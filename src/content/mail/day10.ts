@@ -26,7 +26,7 @@ export const day10Mail: readonly MailContent[] = [
       '',
       'He filmed me saying goodbye to you. I hope that one does not end up on the internet.',
       '',
-      'Your teacher Mr Dalton was there too. He told me there were 83 people. He said it like a man who had counted them himself.',
+      'When I picked you up, your teacher Mr Dalton was at the door. He told me there were 83 people. He said it like a man who had counted them himself.',
       '',
       'Your sister is in her room "not talking to anyone". The fish is allowed in. I told her next year. She said "you said that LAST year". I did not say that last year. I am fairly sure.',
       '',
@@ -69,7 +69,7 @@ export const day10Mail: readonly MailContent[] = [
     body: [
       'thanks. all 83 of u',
       '',
-      'the room fits 80. fire code is a suggestion. his words. i am writing them down for the next time',
+      'the room fits 80. the guy said fire code is a suggestion. his words. i am writing them down for the next time',
       '',
       'the bucket says thanks too. it was in 3 songs. derek kicked it over in a 4th. nobody planned that. it was the best part',
       '',

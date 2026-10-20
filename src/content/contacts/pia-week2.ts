@@ -92,7 +92,7 @@ export const piaWeek2Scripts: readonly Script[] = [
           { text: 'anyway i wrote it down', delayMs: 1000 },
           { text: 'WHY I NEED A HAMSTER. on dads laptop', delayMs: 1100 },
           {
-            text: 'it has 10 reasons. number 10 is "i will be SO responsible"',
+            text: 'it has 10 reasons. number 10 is "i am almost 10"',
             delayMs: 1300,
           },
           { text: 'i mailed it to u. READ IT. ur my witness', delayMs: 1200 },

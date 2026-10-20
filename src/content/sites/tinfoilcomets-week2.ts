@@ -30,7 +30,7 @@ export const TINFOIL_PICS_WEEK2: readonly ConcertPic[] = [
     seed: 7110,
     scene: 'party',
     caption:
-      '2ND!!! the glitter collage by jess (w a real ticket stub + a paw print)',
+      '2ND!!! the glitter collage by jess (ziggys drumstick spin. IN SPACE)',
   },
   {
     day: 9,

@@ -73,7 +73,7 @@ export const piaPixlogWeek2: PixlogWeek = {
       title: 'WHY I NEED A HAMSTER',
       body:
         'there r 10 reasons. i mailed them to everyone. here r the best ones.\n\n' +
-        '1. professor nibbles needs a home. 4. biscuit needs a friend. 7. a wheel is exercise. for him. 10. i am VERY responsible. ask biscuit.\n\n' +
+        '1. hamsters are small. he can live on my desk. 4. when stardust went missing i made a POSTER. 7. biscuit needs a friend. 10. i am almost 10.\n\n' +
         'the end. vote YES',
     },
     {
