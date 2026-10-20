@@ -4,8 +4,10 @@ import { useT } from '@/i18n/useT';
 // XP Explorer-style folder window content: address bar, task pane, icon/details list.
 // Shared by the Explorer app and the Recycle Bin.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent, MouseEvent } from 'react';
 import folderIcon16 from '@/assets/icons/folder-16.svg';
+import { composeHandlers } from '@/os/touch/compose';
+import { useActivate } from '@/os/touch/useActivate';
 import { FsIcon } from './FsIcon';
 import { compareNodes, isInRecycle, pathOf } from './nodes';
 import { useFsStore } from './store';
@@ -89,6 +91,8 @@ function FolderViewInner({
     if (node.type === 'folder') onNavigate(node.id);
     else onOpenFile?.(node);
   }
+  // Double-click or a tap opens; the list's own keys handle Enter.
+  const activate = useActivate((node: FsNode) => open(node));
 
   function deleteSelected() {
     if (!selected || !canDelete) return;
@@ -284,15 +288,16 @@ function FolderViewInner({
               aria-selected={node.id === selectedId}
               className={styles.item}
               data-selected={node.id === selectedId}
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedId(node.id);
-                listRef.current?.focus();
-              }}
-              onDoubleClick={(e) => {
-                e.stopPropagation();
-                open(node);
-              }}
+              {...composeHandlers(
+                {
+                  onClick: (e: MouseEvent) => {
+                    e.stopPropagation();
+                    setSelectedId(node.id);
+                    listRef.current?.focus();
+                  },
+                },
+                activate(node),
+              )}
             >
               <span className={styles.icon}>
                 <FsIcon node={node} />

@@ -605,6 +605,10 @@ export const en = {
       shipped: 'Shipped tracks…',
       burn: 'Burn CD…',
       summary: '{n} tracks / {time}',
+      trackMenu: 'Track menu',
+      moveUp: 'Move up',
+      moveDown: 'Move down',
+      remove: 'Remove',
     },
     dialog: {
       close: 'Close dialog',

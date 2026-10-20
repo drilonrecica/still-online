@@ -258,6 +258,7 @@
 }
 
 .playlist {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -648,14 +649,21 @@ input[type='range'].eqSlider:focus-visible::-moz-range-thumb {
   border: 0;
 }
 
+/* The track menu opens at the press point instead of above the footer buttons. */
+.rowMenu {
+  bottom: auto;
+  width: max-content;
+}
+
 .playlistMenus > button:hover,
-.playlistMenu button:hover,
+.playlistMenu button:hover:not(:disabled),
 .dialogButtons button:hover:not(:disabled),
 .dialogList button:hover:not(:disabled) {
   color: var(--amp-lcd-bg);
   background: var(--amp-lcd);
 }
 
+.playlistMenu button:disabled,
 .dialogButtons button:disabled,
 .dialogList button:disabled {
   opacity: 0.5;

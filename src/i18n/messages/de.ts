@@ -606,6 +606,10 @@ export const de: Messages = {
       shipped: 'Mitgelieferte Titel…',
       burn: 'CD brennen…',
       summary: '{n} Titel / {time}',
+      trackMenu: 'Titelmenü',
+      moveUp: 'Nach oben',
+      moveDown: 'Nach unten',
+      remove: 'Entfernen',
     },
     dialog: {
       close: 'Dialog schließen',

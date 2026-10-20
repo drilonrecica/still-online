@@ -343,10 +343,17 @@ export async function logInTouch(
 }
 
 /**
- * Opens an app by touch from Start → All Programs (tapping each folder until the item shows up).
- * Desktop icons open with a tap once M0-02 lands; until then the Start menu is the touch path.
+ * Opens an app by touch: a tap on its desktop icon, or else from Start → All Programs
+ * (tapping each folder until the item shows up).
  */
 export async function openAppTouch(page: Page, name: string) {
+  const icon = page
+    .getByTestId('desktop')
+    .getByRole('option', { name, exact: true });
+  if (await icon.isVisible()) {
+    await tap(icon);
+    return;
+  }
   await tap(page.locator('[data-start-button]'));
   await tap(page.getByRole('menuitem', { name: /All Programs/ }));
   const programs = page.getByRole('menu', { name: 'All Programs' });

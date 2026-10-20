@@ -1,7 +1,10 @@
 // One window: the XP frame (chrome 'xp') or a bare positioned box (chrome 'none').
-import { Suspense, useId, type CSSProperties, type MouseEvent } from 'react';
+import { Suspense, useId, type CSSProperties } from 'react';
 import { useLocale, useT } from '@/i18n/useT';
+import { getDevice } from '@/os/device';
 import { useWindowsStore } from '@/os/store/windows';
+import { composeHandlers } from '@/os/touch/compose';
+import { useActivate } from '@/os/touch/useActivate';
 import { WM_MIN_SIZE, type AppDefinition, type WindowState } from '@/os/types';
 import { requestClose } from './closeGuard';
 import { ResizeHandles } from './ResizeHandles';
@@ -39,6 +42,15 @@ export function Window({ win, app, active }: WindowProps) {
   const title = renderWindowTitle(win, app, useLocale());
   const t = useT();
   const labelId = useId();
+  // Double-click, or a double-tap on a tablet (phone windows are always maximized).
+  const activateTitle = useActivate(
+    (_: void, via, target) => {
+      if (isFromControl(target) || app.fixedSize) return;
+      if (via === 'touch' && getDevice() === 'phone') return;
+      actions().toggleMaximize(win.id);
+    },
+    { touchTaps: 2, enter: false },
+  );
 
   const focus = () => actions().focusWindow(win.id);
   const content = (
@@ -69,11 +81,6 @@ export function Window({ win, app, active }: WindowProps) {
     );
   }
 
-  function onTitleDoubleClick(e: MouseEvent<HTMLDivElement>) {
-    if (isFromControl(e.target) || app.fixedSize) return;
-    actions().toggleMaximize(win.id);
-  }
-
   return (
     <section
       {...rootProps}
@@ -86,8 +93,7 @@ export function Window({ win, app, active }: WindowProps) {
     >
       <div
         className={cx('title-bar', styles.titleBar)}
-        onDoubleClick={onTitleDoubleClick}
-        {...drag}
+        {...composeHandlers(drag, activateTitle())}
       >
         <img
           className={styles.icon}

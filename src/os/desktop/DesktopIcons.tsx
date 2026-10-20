@@ -1,6 +1,6 @@
 // Desktop icon grid: one icon per resolved shortcut, in a column top-left.
 import { useEffect, useState } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent, MouseEvent } from 'react';
 import recycleBinFull32 from '@/assets/icons/recyclebin-full-32.svg';
 import { useT } from '@/i18n/useT';
 import { FS_FOLDERS } from '@/os/fs/types';
@@ -11,6 +11,9 @@ import {
   resolveShortcuts,
 } from '@/os/shortcuts';
 import { useWindowsStore } from '@/os/store/windows';
+import { composeHandlers } from '@/os/touch/compose';
+import { useActivate } from '@/os/touch/useActivate';
+import { useLongPress } from '@/os/touch/useLongPress';
 import type { AppDefinition, Shortcut } from '@/os/types';
 import styles from './DesktopIcons.module.css';
 
@@ -35,6 +38,14 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
   );
   const [selected, setSelected] = useState<string | null>(null);
   const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
+  // Double-click or a tap opens; a right-click or a long-press opens the desktop menu.
+  const activate = useActivate((icon: (typeof icons)[number]) =>
+    openApp(icon.appId, icon.props),
+  );
+  const press = useLongPress(({ clientX, clientY }) => {
+    setSelected(null);
+    setMenu({ x: clientX, y: clientY });
+  });
 
   // Any click elsewhere, Escape or a blur closes the context menu.
   useEffect(() => {
@@ -78,11 +89,7 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
       tabIndex={0}
       onKeyDown={onKeyDown}
       onClick={() => setSelected(null)}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        setSelected(null);
-        setMenu({ x: e.clientX, y: e.clientY });
-      }}
+      {...press()}
     >
       {icons.map((app) => (
         <div
@@ -91,14 +98,15 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
           aria-selected={selected === app.key}
           className={styles.icon}
           data-selected={selected === app.key}
-          onClick={(e) => {
-            e.stopPropagation();
-            setSelected(app.key);
-          }}
-          onDoubleClick={(e) => {
-            e.stopPropagation();
-            openApp(app.appId, app.props);
-          }}
+          {...composeHandlers(
+            {
+              onClick: (e: MouseEvent) => {
+                e.stopPropagation();
+                setSelected(app.key);
+              },
+            },
+            activate(app),
+          )}
         >
           <span className={styles.art}>
             <img

@@ -8,6 +8,7 @@ import { playSound } from '@/os/sound';
 import { scaleMs } from '@/os/speed';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
+import { useActivate } from '@/os/touch/useActivate';
 import { AwayPrompt, OptionsDialog } from './AwayDialogs';
 import { buildContactList, type ListGroupId } from './contactList';
 import styles from './Messenger.module.css';
@@ -211,6 +212,8 @@ function ContactListView() {
   function openChat(contactId: string) {
     useWindowsStore.getState().openApp('messenger-chat', { contactId });
   }
+  // Double-click or a tap opens a chat; the row's own keys add Space to Enter.
+  const activateContact = useActivate((id: string) => openChat(id));
 
   return (
     <>
@@ -357,7 +360,7 @@ function ContactListView() {
                           : 'messenger.list.contactTitle',
                         { name: contact.displayName, handle: contact.handle },
                       )}
-                      onDoubleClick={() => openChat(contact.id)}
+                      {...activateContact(contact.id)}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault();

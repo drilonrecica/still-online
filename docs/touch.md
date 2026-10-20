@@ -24,6 +24,15 @@ still online is the same XP desktop on every device, adapted for touch. The desi
 - **Re-clamp:** 100 ms after resizing stops, `reclampAll()` moves every window back into the work area and caps its size to it. It changes nothing when everything fits. A phone skips it, because phone windows render maximized and their stored desktop geometry has to survive the trip.
 - A swipe over the shell becomes a browser pan and ends in `pointercancel`. Anything that tracks a swipe itself needs `touch-action: none`.
 
+## Touch primitives
+
+Both hooks live in `src/os/touch/` and return a binder, so one hook serves a whole list: `const press = useLongPress((point, i) => …)`, then `<li {...press(i)}>`. Every double-click or context-menu interaction goes through them, so nothing is mouse-only.
+
+- **`useActivate(onActivate, { touchTaps, enter })`** opens: a mouse double-click, a touch (or pen) tap, or Enter. A mouse single click keeps the site's own meaning (usually select). A habitual double-tap opens once. Title bars pass `touchTaps: 2` (a double-tap) and `enter: false`.
+- **`useLongPress(handler)`** opens a context menu: a touch or pen held for 500 ms (`LONG_PRESS_MS`, not scaled by `scaleMs`) without moving more than 10 px, or a mouse right-click. It vibrates briefly, swallows the click that ends the press, and blocks the native `contextmenu` Android fires, so the menu opens once.
+- `composeHandlers(a, b, c)` merges them with a site's own handlers (title-bar drag, select-on-click).
+- Sites that only `preventDefault` the native menu (the Paint canvas, the games) don't use them.
+
 ## Tests
 
 | Project           | Device                           | Runs                                 |

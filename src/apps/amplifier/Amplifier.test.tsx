@@ -179,6 +179,57 @@ describe('Amplifier', () => {
       expect(ids()).toEqual(['t1', 't2']);
     });
 
+    it('a long-press opens the track menu: Play, Move up/down, Remove', async () => {
+      const three = [...tracks, { ...track, id: 't2', title: 'Third' }];
+      const playIndex = vi.fn();
+      renderAmp({ playlist: three, index: -1, playIndex });
+      await userEvent.click(screen.getByRole('button', { name: 'Playlist' }));
+      const ids = () => useAmplifierStore.getState().playlist.map((t) => t.id);
+      vi.useFakeTimers();
+      const longPress = (row: number) => {
+        const el = screen.getAllByRole('option')[row] as HTMLElement;
+        const touch = { pointerType: 'touch', pointerId: 1, isPrimary: true };
+        fireEvent.pointerDown(el, touch);
+        act(() => vi.advanceTimersByTime(500));
+        fireEvent.pointerUp(el, touch);
+        act(() => vi.advanceTimersByTime(1000));
+      };
+      const choose = (name: string) =>
+        fireEvent.click(screen.getByRole('menuitem', { name }));
+      try {
+        longPress(0);
+        const menu = screen.getByRole('menu', { name: 'Track menu' });
+        expect(
+          screen.getByRole('menuitem', { name: 'Move up' }),
+        ).toBeDisabled();
+        choose('Move down');
+        expect(ids()).toEqual(['t1', 't0', 't2']);
+        expect(menu).not.toBeInTheDocument();
+
+        longPress(2);
+        expect(
+          screen.getByRole('menuitem', { name: 'Move down' }),
+        ).toBeDisabled();
+        choose('Move up');
+        expect(ids()).toEqual(['t1', 't2', 't0']);
+
+        longPress(1);
+        choose('Play');
+        expect(playIndex).toHaveBeenLastCalledWith(1);
+
+        longPress(1);
+        choose('Remove');
+        expect(ids()).toEqual(['t1', 't0']);
+
+        // Escape closes it without acting.
+        longPress(0);
+        fireEvent.keyDown(window, { key: 'Escape' });
+        expect(screen.queryByRole('menu', { name: 'Track menu' })).toBeNull();
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
     it('ADD ▸ Shipped tracks adds a track', async () => {
       renderAmp({ playlist: [track], index: -1 });
       await userEvent.click(screen.getByRole('button', { name: 'Playlist' }));

@@ -1,6 +1,8 @@
 // The colour box: current colours (primary over secondary) and the 28-colour palette.
-// Left click picks the primary colour, right click (or Shift+click / Shift+Enter) the secondary.
+// Left click (or a tap) picks the primary colour; right click, a long-press, Shift+click or
+// Shift+Enter the secondary.
 import { useT } from '@/i18n/useT';
+import { useLongPress } from '@/os/touch/useLongPress';
 import { PALETTE } from './palette';
 import styles from './Paint.module.css';
 
@@ -12,6 +14,7 @@ export interface ColorBoxProps {
 
 export function ColorBox({ primary, secondary, onPick }: ColorBoxProps) {
   const t = useT();
+  const pressSwatch = useLongPress((_, hex: string) => onPick(hex, true));
   return (
     <div className={styles.colorBox}>
       <div
@@ -36,10 +39,7 @@ export function ColorBox({ primary, secondary, onPick }: ColorBoxProps) {
             aria-label={t('paint.color', { hex })}
             title={hex}
             onClick={(e) => onPick(hex, e.shiftKey)}
-            onContextMenu={(e) => {
-              e.preventDefault();
-              onPick(hex, true);
-            }}
+            {...pressSwatch(hex)}
           />
         ))}
       </div>

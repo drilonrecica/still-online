@@ -1,13 +1,11 @@
 // Amplifier main window: original dark-metal player skin driven by the amplifier store.
 import { useT } from '@/i18n/useT';
 import { useWindowMinimized } from '@/os/useAnimationFrame';
-import {
-  useEffect,
-  useState,
-  type KeyboardEvent,
-  type MouseEvent,
-} from 'react';
+import { useEffect, useState, type KeyboardEvent } from 'react';
 import { useWindowsStore } from '@/os/store/windows';
+import { composeHandlers } from '@/os/touch/compose';
+import { useActivate } from '@/os/touch/useActivate';
+import { useLongPress } from '@/os/touch/useLongPress';
 import { isFromControl, useWindowDrag } from '@/os/wm/useWindowDrag';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import type { AppComponentProps } from '@/os/types';
@@ -41,6 +39,17 @@ export default function Amplifier({ windowId }: AppComponentProps) {
   const [shaded, setShaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [skinsOpen, setSkinsOpen] = useState(false);
+  // Title bar: double-click or double-tap shades, right-click or long-press opens the menu.
+  const activateTitle = useActivate(
+    (_: void, _via, target) => {
+      if (!isFromControl(target)) toggleShade();
+    },
+    { touchTaps: 2, enter: false },
+  );
+  const pressTitle = useLongPress(() => {
+    setSkinsOpen(false);
+    setMenuOpen((o) => !o);
+  });
 
   // The audio element outlives this window: closing it (✕, log off, shut down) stops
   // the music. Minimizing only hides the window, so playback continues.
@@ -124,17 +133,6 @@ export default function Amplifier({ windowId }: AppComponentProps) {
     resizeTo(next ? SHADE_HEIGHT : fullHeight(showPlaylist, showEq));
   }
 
-  function onTitleDoubleClick(e: MouseEvent<HTMLElement>) {
-    if (isFromControl(e.target)) return;
-    toggleShade();
-  }
-
-  function onTitleContextMenu(e: MouseEvent<HTMLElement>) {
-    e.preventDefault();
-    setSkinsOpen(false);
-    setMenuOpen((o) => !o);
-  }
-
   function chooseSkin(skin: AmplifierSkin) {
     s.setSkin(skin);
     setMenuOpen(false);
@@ -154,9 +152,7 @@ export default function Amplifier({ windowId }: AppComponentProps) {
       <div
         className={styles.titlebar}
         data-testid="titlebar"
-        {...drag}
-        onDoubleClick={onTitleDoubleClick}
-        onContextMenu={onTitleContextMenu}
+        {...composeHandlers(drag, activateTitle(), pressTitle())}
       >
         {shaded ? (
           <>

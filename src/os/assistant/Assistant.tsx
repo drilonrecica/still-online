@@ -3,7 +3,7 @@
 // covers his corner (a maximized browser), the balloon folds away after FOLD_MS; a click on him
 // brings it back. Over a maximized window he stands STATUS_BAR_LIFT higher, above its status bar.
 import { useEffect, useRef, useState } from 'react';
-import type { KeyboardEvent, MouseEvent, PointerEvent } from 'react';
+import type { KeyboardEvent, PointerEvent } from 'react';
 import type { Tip } from '@/content/assistant';
 import { getTips } from '@/content/locale';
 import { useGender } from '@/i18n/settingsText';
@@ -12,6 +12,8 @@ import { useLocale, useT } from '@/i18n/useT';
 import type { Gender } from '@/os/types';
 import { useSettingsStore } from '@/os/store/settings';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
+import { composeHandlers } from '@/os/touch/compose';
+import { useLongPress } from '@/os/touch/useLongPress';
 import { TASKBAR_HEIGHT, type WindowState } from '@/os/types';
 import { StapleySprite } from './StapleySprite';
 import { useAssistantStore } from './store';
@@ -74,6 +76,11 @@ function Stapley() {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [menu, setMenu] = useState(false);
   const drag = useRef<Drag | null>(null);
+  // A right-click or a long-press opens the menu. A long-press is not a click: no wake.
+  const press = useLongPress(() => {
+    drag.current = null;
+    setMenu(true);
+  });
   const active = useWindowsStore((s) => {
     const id = selectActiveWindowId(s);
     return s.windows.find((w) => w.id === id);
@@ -141,10 +148,6 @@ function Stapley() {
   function onPointerUp() {
     if (drag.current && !drag.current.moved) setWakes((n) => n + 1);
     drag.current = null;
-  }
-  function onContextMenu(e: MouseEvent) {
-    e.preventDefault();
-    setMenu(true);
   }
   function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
     if (e.key === 'Escape') setMenu(false);
@@ -225,11 +228,12 @@ function Stapley() {
         className={styles.stapley}
         aria-label={t('assistant.label')}
         title={t('assistant.name')}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerCancel}
-        onContextMenu={onContextMenu}
+        {...composeHandlers(press(), {
+          onPointerDown,
+          onPointerMove,
+          onPointerUp,
+          onPointerCancel,
+        })}
       >
         <StapleySprite talking={!!tip} />
       </button>
