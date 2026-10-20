@@ -18,11 +18,11 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 
 ### Desktop
 
-- **Windows XP–style shell**: boot and login screens, Start menu with an All Programs flyout, taskbar and tray (mute, network, clock), draggable/resizable windows, desktop icons, synthesized system sounds
+- **Windows XP–style shell**: boot and login screens, Start menu with an All Programs flyout, taskbar and tray (mute, network, clock), draggable/resizable windows, desktop icons you can drag into place (Arrange Icons By puts them back), synthesized system sounds
 - **A world that moves on**: the in-game day advances after a shutdown or a new real date, and each day brings new chats, mail, guestbook entries and profile comments (days 1–10 are scripted, two school weeks ending with the Velvet Lantern show; later days keep the day-10 state)
 - **User Accounts**: pick your name, a picture (eight to choose from) and whether you play as a **girl or a boy**. The friends, voices and story stay the same; what is addressed to or about you changes: files, favorites, chats, mail and a few sites. Switch any time, live
 - **Display Properties**: thirteen procedurally drawn wallpapers (ten homages, two easter eggs and Theo's Velvet Lantern show poster, unlocked on day 10), Blue / Olive / Silver appearance, and screensavers (Pipes, Flying Panes, Marquee, My Pictures Slideshow)
-- **Explorer**: My Documents, My Pictures and My Music on a persistent virtual file system, plus a Recycle Bin you can restore from
+- **Explorer**: My Documents, My Pictures and My Music on a persistent virtual file system, plus a Recycle Bin you can restore from. Pictures open in the **Picture Viewer** (previous/next, best fit or actual size, Edit in Paint)
 - **Balloon tips**, a dial-up connection dialog with a synthesized modem handshake, and a **Disk Cleanup** that scans forever and frees nothing
 - **Notepad** that opens and saves files in My Documents
 
@@ -51,7 +51,7 @@ It isn't meant to be a static museum piece. The desktop is meant to feel *lived 
 
 ### Games and extras
 
-- **Mines**, **Hen Hunt** (a shooting gallery), **Star Pinball** and **Desktop Wrecker** (smash the desktop, then Repair it), each with high scores
+- **Mines**, **Hen Hunt** (a shooting gallery), **Star Pinball** and **Desktop Wrecker** (smash the desktop with a hammer, chainsaw, flamethrower, machine gun or stamp, with sparks, smoke and flying glass, then Repair it), each with high scores
 - **Fluff** the desktop sheep and **Stapley**, an original stapler assistant with contextual tips
 
 | Desktop | Messenger |
