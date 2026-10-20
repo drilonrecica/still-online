@@ -113,6 +113,18 @@ export const GENDER_AUDIT_ALLOW: readonly AllowEntry[] = [
   { where: 'de/contacts/kayla/followup2/literal/lines[0]', match: 'süß', reason: 'friend-self-talk' },
   { where: 'de/contacts/kayla/day5/proud/lines[3]/personalMessageChange', match: '<3', reason: 'friend-self-talk' },
   { where: 'de/contacts/kayla/top8-readded/back/lines[3]/personalMessageChange', match: '<3', reason: 'friend-self-talk' },
+  // Week two (W3-01): Kayla's „Pony" is her haircut (bangs), not a horse; day7/win/lines[2] is Brianna's.
+  { where: 'de/contacts/kayla/day6/bangs/lines[2]', match: 'Pony', reason: 'friend-self-talk' },
+  { where: 'de/contacts/kayla/day6/brave/lines[1]', match: 'Pony', reason: 'friend-self-talk' },
+  { where: 'de/contacts/kayla/day6/brave/lines[2]', match: 'Pony', reason: 'friend-self-talk' },
+  { where: 'de/contacts/kayla/day6/lifestyle/lines[1]/personalMessageChange', match: 'Pony', reason: 'friend-self-talk' },
+  { where: 'de/contacts/kayla/day6/lifestyle/lines[3]', match: 'Pony', reason: 'friend-self-talk' },
+  { where: 'de/contacts/kayla/day7/on/lines[2]', match: 'Pony', reason: 'friend-self-talk' },
+  { where: 'de/contacts/kayla/day7/win/lines[1]', match: 'Pony', reason: 'friend-self-talk' },
+  { where: 'de/contacts/kayla/day7/win/lines[2]', match: 'Pony', reason: 'story-fact' },
+  { where: 'de/contacts/kayla/day8/slogan/lines[1]', match: 'Pony', reason: 'friend-self-talk' },
+  { where: 'de/contacts/kayla/day8/a/lines[2]/personalMessageChange', match: 'Pony', reason: 'friend-self-talk' },
+  { where: 'de/contacts/kayla/day10/co/lines[2]', match: 'Pony', reason: 'friend-self-talk' },
   { where: 'de/profiles/jess/aboutMe', match: 'Glitzer', reason: 'friend-self-talk' },
   { where: 'de/profiles/jess/wantToMeet', match: 'Glitzer', reason: 'friend-self-talk' },
   { where: 'de/profiles/pia/comments/jess/text', match: 'süß', reason: 'friend-self-talk' },
@@ -166,11 +178,11 @@ export const GENDER_AUDIT_ALLOW: readonly AllowEntry[] = [
   { where: 'en/pixlog/kayla/blog/kayla-plot-twist/body', match: 'sleepover', reason: 'story-fact' },
   { where: 'en/pixlog/kayla/shouts[6]/text', match: 'sleepover', reason: 'story-fact' },
   { where: 'de/contacts/jess/day2/cat/lines[3]', match: 'Glitzer', reason: 'story-fact' },
-  // Week two (W1-01): English placeholders until W3 writes the German.
-  { where: 'de/contacts/jess/day7/soon/lines[1]', match: 'glitter', reason: 'friend-self-talk' },
-  { where: 'de/contacts/jess/day7/done/lines[1]', match: 'glitter', reason: 'friend-self-talk' },
-  { where: 'de/contacts/jess/day7/done/lines[2]/personalMessageChange', match: 'glitter', reason: 'friend-self-talk' },
-  { where: 'de/contacts/jess/day9/robbed/lines[0]', match: 'glitter', reason: 'friend-self-talk' },
+  // Week two (W3-01): her contest collage and her glitter.
+  { where: 'de/contacts/jess/day7/soon/lines[1]', match: 'Glitzer', reason: 'friend-self-talk' },
+  { where: 'de/contacts/jess/day7/done/lines[1]', match: 'Glitzer', reason: 'friend-self-talk' },
+  { where: 'de/contacts/jess/day7/done/lines[2]/personalMessageChange', match: 'Glitzer', reason: 'friend-self-talk' },
+  { where: 'de/contacts/jess/day9/robbed/lines[0]', match: 'Glitzer', reason: 'friend-self-talk' },
   // Week two (W2-03): English Pixlog placeholders until W3 writes the German.
   { where: 'de/pixlog/jess/albums/jess-second-place/photos[1]/photo/caption', match: 'glitter', reason: 'friend-self-talk' },
   { where: 'de/pixlog/jess/albums/jess-second-place/photos[2]/photo/caption', match: 'glitter', reason: 'friend-self-talk' },
@@ -270,6 +282,7 @@ export const GENDER_AUDIT_ALLOW: readonly AllowEntry[] = [
   { where: 'en/contacts/pia/day5/what/lines[1]', match: 'ponies', reason: 'friend-self-talk' },
   // Week two (W1-02): the fish lives next to her ponies.
   { where: 'en/contacts/pia/day10/fish/lines[1]', match: 'ponies', reason: 'friend-self-talk' },
+  { where: 'de/contacts/pia/day10/fish/lines[1]', match: 'Ponys', reason: 'friend-self-talk' },
   { where: 'en/pixlog/pia/albums/pia-sir-stardust/photos[2]/photo/caption', match: 'ponies', reason: 'friend-self-talk' },
   { where: 'en/contacts/pia/nowPlaying2/floor/lines[2]', match: 'pony', reason: 'friend-self-talk' },
   { where: 'en/seedFiles/seed:top-8-drama/text', match: 'pony', reason: 'story-fact' },

@@ -1,13 +1,10 @@
 // German text for Marco's and Dex's boy-only threads (G2-03; `src/content/contacts/marco-boy.ts`,
 // `dex-boy.ts`). Same ids, same line and choice counts; '' = a line without text. One side only.
-// The week-two threads (W1-03) are placeholders until W3.
+// The week-two threads (W1-03: Marco's LAN rematch and load-in crew, Dex's Jam course) live with
+// each friend's week two (`marco-week2.ts`, `dex-week2.ts`).
 import type { ContactOverlay } from '../../types';
-import { dexBoyThreads as enDex } from '../../contacts/dex-boy';
-import { marcoBoyThreads as enMarco } from '../../contacts/marco-boy';
-import { placeholderScripts } from './placeholder';
-
-/** Marco's LAN rematch (day 7) and load-in crew (10), Dex's Jam course (8). */
-const WEEK_TWO = new Set(['lanRematch', 'loadInCrew', 'jamCourse']);
+import { dexBoyWeek2 } from './dex-week2';
+import { marcoBoyWeek2 } from './marco-week2';
 
 export const marcoBoyThreads: ContactOverlay['scripts'] = {
   lanParty: {
@@ -106,8 +103,7 @@ export const marcoBoyThreads: ContactOverlay['scripts'] = {
       personalMessages: { 3: 'suchen roadies. bezahlung: 1 shirt' },
     },
   },
-  // W3 replaces this with German
-  ...placeholderScripts(enMarco.filter((s) => WEEK_TWO.has(s.id))),
+  ...marcoBoyWeek2,
 };
 
 export const dexBoyThreads: ContactOverlay['scripts'] = {
@@ -219,6 +215,6 @@ export const dexBoyThreads: ContactOverlay['scripts'] = {
         'ok bis gleich. is ne große pizza',
       ],
     },
-  }, // W3 replaces this with German
-  ...placeholderScripts(enDex.filter((s) => WEEK_TWO.has(s.id))),
+  },
+  ...dexBoyWeek2,
 };

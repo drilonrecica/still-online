@@ -1,9 +1,8 @@
 // German text for dex (docs/localization-de.md → "Dex: slow, short, always Abwesend"). Same ids,
 // same line and choice counts as `src/content/contacts/dex*.ts`; '' = a line without text.
 import type { ContactOverlay } from '../../types';
-import { dexWeek2Days, dexWeek2Scripts } from '../../contacts/dex-week2';
 import { dexBoyThreads } from './boy-threads';
-import { placeholderDays, placeholderScripts } from './placeholder';
+import { dexWeek2Days, dexWeek2Scripts } from './dex-week2';
 
 export const dex: ContactOverlay = {
   personalMessage: 'skaten. schreib halt was',
@@ -12,8 +11,8 @@ export const dex: ContactOverlay = {
     3: { personalMessage: 'ruhe in frieden kassette nr. 1 (1998-2007)' },
     4: { personalMessage: 'gestanden. kamera: in der tasche' },
     5: { personalMessage: 'weltpremiere. 30 sek. kein geld zurück' },
-    // Days 6–10: placeholders until W3.
-    ...placeholderDays(dexWeek2Days),
+    // Days 6–10 (W1, German in W3-01).
+    ...dexWeek2Days,
   },
   scripts: {
     opening: {
@@ -550,8 +549,8 @@ export const dex: ContactOverlay = {
       },
     },
     ...dexBoyThreads,
-    // Days 6–10 (W1-03): placeholders until W3.
-    ...placeholderScripts(dexWeek2Scripts),
+    // Days 6–10 (W1, German in W3-01).
+    ...dexWeek2Scripts,
     // Top 8 drama (P0-03).
     'top8-dropped': {
       noticed: {

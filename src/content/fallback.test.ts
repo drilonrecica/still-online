@@ -9,7 +9,7 @@ import { SEED_FILES } from './files';
 import { MAIL_CONTENT } from './mail';
 import { PROFILES } from './friendspace/profiles';
 import { TUNEMOLE_RESULTS } from './tunemole';
-import type { ContactLine } from './types';
+import type { ContactLine, Script } from './types';
 import type { Gender } from '../os/types';
 
 const de = contentFor('de', 'girl');
@@ -147,6 +147,75 @@ describe.each(GENDERS)(
     });
   },
 );
+
+/** Week two (W3-01): the day 6–10 scripts and the threads that follow them. */
+const isWeekTwo = (s: Script, all: readonly Script[]): boolean =>
+  s.trigger.type === 'onDay'
+    ? s.trigger.day > 5
+    : s.trigger.type === 'afterScript' &&
+      all.some(
+        (t) =>
+          t.id === (s.trigger as { scriptId: string }).scriptId &&
+          isWeekTwo(t, all),
+      );
+
+describe.each(GENDERS)('v0.5 week-two chats German (%s)', (gender) => {
+  const enContacts = getContacts('en', gender);
+
+  it.each(getContacts('de', gender).map((c) => [c.contact.id, c] as const))(
+    '%s: days 6–10 differ from English at every node, choice and PM',
+    (id, c) => {
+      const e = enContacts.find((x) => x.contact.id === id)!;
+      for (const [day, presence] of Object.entries(e.contact.days ?? {})) {
+        if (Number(day) <= 5 || presence?.personalMessage === undefined) {
+          continue;
+        }
+        const de = c.contact.days?.[Number(day)]?.personalMessage;
+        expect(de, `${id}/days/${day}`).not.toBe(presence.personalMessage);
+      }
+      const weekTwo = e.scripts.filter((s) => isWeekTwo(s, e.scripts));
+      expect(weekTwo.length, id).toBeGreaterThanOrEqual(5);
+      for (const en of weekTwo) {
+        const de = c.scripts.find((s) => s.id === en.id)!;
+        for (const [nodeId, enNode] of Object.entries(en.nodes)) {
+          const node = de.nodes[nodeId]!;
+          const where = `${id}/${en.id}/${nodeId}`;
+          const texts = (lines: readonly ContactLine[]) =>
+            lines.map((l) => l.text ?? '').join('\n');
+          expect(texts(node.lines), where).not.toBe(texts(enNode.lines));
+          enNode.lines.forEach((l, j) => {
+            if (l.personalMessageChange !== undefined) {
+              expect(node.lines[j]!.personalMessageChange, where).not.toBe(
+                l.personalMessageChange,
+              );
+            }
+          });
+          if ('choices' in enNode && 'choices' in node) {
+            enNode.choices.forEach((ch, j) => {
+              expect(node.choices[j]!.text, where).not.toBe(ch.text);
+              if (ch.label !== undefined) {
+                expect(node.choices[j]!.label, where).not.toBe(ch.label);
+              }
+            });
+          }
+        }
+      }
+    },
+  );
+
+  it('the gender-only week-two threads are German', () => {
+    const script = (contact: string, scriptId: string) =>
+      getContacts('de', gender)
+        .find((c) => c.contact.id === contact)!
+        .scripts.find((s) => s.id === scriptId)!;
+    expect(script('jess', 'lateNight').forGender).toBe('girl');
+    expect(JSON.stringify(script('jess', 'signWorkshop'))).toContain(
+      'PFOTENABDRUCK',
+    );
+    expect(script('marco', 'loadInCrew').forGender).toBe('boy');
+    expect(JSON.stringify(script('dex', 'jamCourse'))).toContain('drachenhelm');
+  });
+});
 
 const PIXLOG_DE = ['jess', 'kayla', 'pia', 'marco', 'theo', 'dex'];
 /** Pixlog lines that are the same in German: a name, „pizza", „COMETS LIVE!!!", Pia shouting „DEX". */

@@ -2,9 +2,8 @@
 // same line and choice counts as `src/content/contacts/jess*.ts`; '' = a line without text.
 import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
-import { jessWeek2Days, jessWeek2Scripts } from '../../contacts/jess-week2';
 import { jessGirlThreads } from './girl-threads';
-import { placeholderDays, placeholderScripts } from './placeholder';
+import { jessWeek2Days, jessWeek2Scripts } from './jess-week2';
 
 export const jess: ContactOverlay = {
   personalMessage: 'OMG noch 4 TAGE!!!1 (L)',
@@ -14,8 +13,8 @@ export const jess: ContactOverlay = {
     3: { personalMessage: 'NIX ZUM ANZIEHEN. NIX!!!! :(' },
     4: { personalMessage: 'NUR NOCH 1 MAL SCHLAFEN!!!!! (L) (L)' },
     5: { personalMessage: 'ERSTE REIHE!!!!! da musste man dabei sein (L)' },
-    // Days 6–10: placeholders until W3.
-    ...placeholderDays(jessWeek2Days),
+    // Days 6–10 (W1, German in W3-01).
+    ...jessWeek2Days,
   },
   scripts: {
     opening: {
@@ -733,8 +732,8 @@ export const jess: ContactOverlay = {
         personalMessages: { 3: 'WIEDER IN DER TOP 8!!! :D' },
       },
     },
-    // Days 6–10 and the girl-only threads (W1-01): placeholders until W3.
-    ...placeholderScripts(jessWeek2Scripts),
+    // Days 6–10 (W1, German in W3-01).
+    ...jessWeek2Scripts,
     ...jessGirlThreads,
   },
 };

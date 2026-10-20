@@ -2,9 +2,8 @@
 // and choice counts as `src/content/contacts/kayla*.ts`; '' = a line without text.
 import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
-import { kaylaWeek2Days, kaylaWeek2Scripts } from '../../contacts/kayla-week2';
 import { kaylaGirlThreads } from './girl-threads';
-import { placeholderDays, placeholderScripts } from './placeholder';
+import { kaylaWeek2Days, kaylaWeek2Scripts } from './kayla-week2';
 
 export const kayla: ContactOverlay = {
   personalMessage: 'manche leute sollten ma lernen was treue heißt...',
@@ -13,8 +12,8 @@ export const kayla: ContactOverlay = {
     3: { personalMessage: '~*nich eingeladen und heul NICHT*~' },
     4: { personalMessage: '~*wart drauf dass das universum sich erklärt*~' },
     5: { personalMessage: '~*übernachtungsparty überlebt*~' },
-    // Days 6–10: placeholders until W3.
-    ...placeholderDays(kaylaWeek2Days),
+    // Days 6–10 (W1, German in W3-01).
+    ...kaylaWeek2Days,
   },
   scripts: {
     opening: {
@@ -739,8 +738,8 @@ export const kayla: ContactOverlay = {
         personalMessages: { 3: '~*wieder da wo ich hingehöre*~ <3' },
       },
     },
-    // Days 6–10 and the girl-only threads (W1-01): placeholders until W3.
-    ...placeholderScripts(kaylaWeek2Scripts),
+    // Days 6–10 (W1, German in W3-01).
+    ...kaylaWeek2Scripts,
     ...kaylaGirlThreads,
   },
 };

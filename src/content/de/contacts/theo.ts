@@ -2,8 +2,7 @@
 // line and choice counts as `src/content/contacts/theo*.ts`; '' = a line without text.
 import { g } from '../../gender';
 import type { ContactOverlay } from '../../types';
-import { theoWeek2Days, theoWeek2Scripts } from '../../contacts/theo-week2';
-import { placeholderDays, placeholderScripts } from './placeholder';
+import { theoWeek2Days, theoWeek2Scripts } from './theo-week2';
 
 export const theo: ContactOverlay = {
   personalMessage: 'bio-referat am freitag…',
@@ -12,8 +11,8 @@ export const theo: ContactOverlay = {
     3: { personalMessage: 'der wackelpudding ist… wackelig' },
     4: { personalMessage: 'morgen referat. 14 karteikarten' },
     5: { personalMessage: 'ne 2+ :) (sorry fürs angeben)' },
-    // Days 6–10: placeholders until W3.
-    ...placeholderDays(theoWeek2Days),
+    // Days 6–10 (W1, German in W3-01).
+    ...theoWeek2Days,
   },
   scripts: {
     opening: {
@@ -630,7 +629,7 @@ export const theo: ContactOverlay = {
         personalMessages: { 3: 'wieder in einer top 8 :) sorry' },
       },
     },
-    // Days 6–10 (W1-02): placeholders until W3.
-    ...placeholderScripts(theoWeek2Scripts),
+    // Days 6–10 (W1, German in W3-01).
+    ...theoWeek2Scripts,
   },
 };
