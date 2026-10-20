@@ -59,6 +59,10 @@ export default function Wrecker({ windowId }: AppComponentProps) {
   const fxRef = useRef<HTMLCanvasElement>(null);
   const [tool, setTool] = useState<ToolId>('hammer');
   const [repairing, setRepairing] = useState(false);
+  /** The last pointer was a finger: the palette adds Reset and Use buttons. */
+  const [touch, setTouch] = useState(false);
+  /** Where the surface was last pressed or crossed: Use (Space) works there. */
+  const lastPoint = useRef<{ x: number; y: number } | null>(null);
 
   const exit = useCallback(
     () => useWindowsStore.getState().closeWindow(windowId),
@@ -106,22 +110,34 @@ export default function Wrecker({ windowId }: AppComponentProps) {
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
     if (e.button !== 0) return;
     e.currentTarget.setPointerCapture?.(e.pointerId);
+    lastPoint.current = { x: e.clientX, y: e.clientY };
     pointerDown(engineRef.current, e.clientX, e.clientY);
   };
-  const onPointerMove = (e: PointerEvent<HTMLDivElement>) =>
+  const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    lastPoint.current = { x: e.clientX, y: e.clientY };
     pointerMove(engineRef.current, e.clientX, e.clientY);
+  };
   const onPointerUp = () => pointerUp(engineRef.current);
+
+  /** Space, or the palette's Use button: the tool at the pointer (else the centre). */
+  const applyTool = () => {
+    const engine = engineRef.current;
+    // A lifted finger leaves no pointer, so touch falls back to the last point first.
+    const p = engine.pointer ??
+      (touch ? lastPoint.current : null) ?? {
+        x: engine.w / 2,
+        y: engine.h / 2,
+      };
+    pointerDown(engine, p.x, p.y);
+  };
 
   // Keyboard: 1–5 pick a tool, R repairs, Space/Enter uses the tool at the pointer (or centre).
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    const engine = engineRef.current;
     const picked = TOOL_IDS[Number(e.key) - 1];
     if (picked) choose(picked);
     else if (e.key === 'r' || e.key === 'R') repair();
-    else if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) {
-      const p = engine.pointer ?? { x: engine.w / 2, y: engine.h / 2 };
-      pointerDown(engine, p.x, p.y);
-    } else return;
+    else if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) applyTool();
+    else return;
     e.preventDefault();
   };
   const onKeyUp = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -135,6 +151,7 @@ export default function Wrecker({ windowId }: AppComponentProps) {
       style={{ zIndex: Z_INDEX.wrecker }}
       hidden={minimized}
       data-wrecker=""
+      onPointerDownCapture={(e) => setTouch(e.pointerType === 'touch')}
     >
       <canvas ref={damageRef} className={styles.canvas} aria-hidden="true" />
       <canvas ref={fxRef} className={styles.canvas} aria-hidden="true" />
@@ -159,6 +176,9 @@ export default function Wrecker({ windowId }: AppComponentProps) {
         onSelect={choose}
         onRepair={repair}
         onExit={exit}
+        touch={touch}
+        onUse={applyTool}
+        onUseEnd={onPointerUp}
       />
     </div>,
     document.body,

@@ -11,6 +11,7 @@ import { drawFrame } from './draw';
 import { VIEW_H, VIEW_W } from './layout';
 import { buildScenery, type Scenery } from './scene';
 import { STEP, drainEvents, step, type Game, type GameEvent } from './sim';
+import { toStage } from '@/os/touch/scaleToFit';
 import { useAnimationFrame } from '@/os/useAnimationFrame';
 
 const SCENERY_SEED = 0x4e4e;
@@ -23,14 +24,14 @@ export function viewTransform(w: number, h: number) {
   return { s, ox: (w - VIEW_W * s) / 2, oy: (h - VIEW_H * s) / 2 };
 }
 
-/** A pointer event's position in logical view pixels. */
+/**
+ * A pointer event's position in logical view pixels. The rect is on-screen pixels, also under a
+ * `ScaleToFit` zoom, so the letterbox scale already includes the zoom.
+ */
 export function toView(canvas: HTMLElement, clientX: number, clientY: number) {
   const rect = canvas.getBoundingClientRect();
   const { s, ox, oy } = viewTransform(rect.width, rect.height);
-  return {
-    x: (clientX - rect.left - ox) / s,
-    y: (clientY - rect.top - oy) / s,
-  };
+  return toStage(clientX - ox, clientY - oy, rect, s);
 }
 
 export interface LoopOptions {

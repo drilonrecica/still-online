@@ -662,6 +662,7 @@ export const en = {
       intermediate: 'intermediate',
       expert: 'expert',
     },
+    flagMode: 'Flag mode',
     minesLeft: 'Mines left',
     time: 'Time',
     newGame: 'New game (F2)',
@@ -717,6 +718,8 @@ export const en = {
       'The gun holds {shells} shells. Right-click or press Space to reload — it takes a second.',
     helpScroll:
       'Move to the left or right edge to look around the countryside.',
+    helpTap:
+      'Without a mouse: tap to shoot, drag the field to look around, and tap with an empty gun to reload.',
     helpHens: 'Far hens are worth {far}, middle ones {mid}, close ones {near}.',
     helpBonus:
       'Keep an eye on the windmill window ({window}) and the golden hen ({golden}, once a round, and quick!).',
@@ -735,6 +738,7 @@ export const en = {
       score: 'SCORE',
       lastSeconds: 'Last {seconds} seconds!',
       reload: 'Reload! (right-click or Space)',
+      reloadTouch: 'Reload! (tap the field)',
     },
   },
   pinball: {
@@ -815,6 +819,8 @@ export const en = {
     palette: 'Wrecking tools',
     grip: 'Wrecker',
     repair: 'Repair',
+    touchReset: 'Reset (R)',
+    touchUse: 'Use (Space)',
     repairHint: 'Repair: sweep the glass away',
     exit: 'Exit',
     /** Comic burst stamped onto the screen. */

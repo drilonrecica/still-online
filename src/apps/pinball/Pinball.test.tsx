@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { useDeviceStore } from '@/os/device';
 import { events } from '@/os/events';
 import { useGamesStore } from '@/os/store/games';
 import { useSettingsStore } from '@/os/store/settings';
@@ -7,7 +8,7 @@ import '@/apps/registry';
 import { VIEW_H, VIEW_W, displayLines } from './display';
 import { formatScore, textDots } from './font';
 import { createGame } from './sim';
-import Pinball, { keyControl } from './Pinball';
+import Pinball, { STAGE_H, STAGE_W, keyControl } from './Pinball';
 
 const FRAME_MS = 100;
 let pending: FrameRequestCallback | null = null;
@@ -203,5 +204,22 @@ describe('score display', () => {
     expect(width).toBe(5);
     expect(dots).toHaveLength(10);
     expect(textDots('AB').width).toBe(11);
+  });
+});
+
+describe('Star Pinball on a phone (v0.6)', () => {
+  afterEach(() => useDeviceStore.setState({ device: 'desktop' }));
+
+  it('zooms the whole 460×640 window to fit; a desktop has no wrapper', () => {
+    const desktop = render(<Pinball />);
+    expect(desktop.queryByTestId('scale-stage')).toBeNull();
+    desktop.unmount();
+    useDeviceStore.setState({ device: 'phone' });
+    render(<Pinball />);
+    const stage = screen.getByTestId('scale-stage');
+    expect([STAGE_W, STAGE_H]).toEqual([460, 640]);
+    expect(stage.style.width).toBe('460px');
+    expect(stage.style.height).toBe('640px');
+    expect(stage.querySelector('canvas')).toBeTruthy();
   });
 });

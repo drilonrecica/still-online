@@ -48,9 +48,13 @@ async function connect(
   const offline = web.getByTestId('page-cannot-be-displayed');
   const status = web.getByRole('status').last();
   await expect(offline.or(status)).toBeVisible();
-  if (await offline.isVisible())
-    await press(offline.getByRole('button', { name: 'Connect' }));
-  await expect(offline).toHaveCount(0, { timeout: 15_000 });
+  // The offline page can land just after the loading status shows, so keep checking for it
+  // (a single check raced it on a loaded machine and never pressed Connect).
+  await expect(async () => {
+    if (await offline.isVisible())
+      await press(offline.getByRole('button', { name: 'Connect' }));
+    await expect(offline).toHaveCount(0, { timeout: 4_000 });
+  }).toPass({ timeout: 20_000 });
   await expect(status).toHaveText('Done', { timeout: 10_000 });
   return web;
 }

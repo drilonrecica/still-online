@@ -19,9 +19,11 @@ import {
   createGame,
   drainEvents,
   hitTest,
+  panBy,
   qualifies,
   reload,
   setPointer,
+  setTouch,
   shoot,
   step,
   type Game,
@@ -252,6 +254,24 @@ describe('Hen Hunt simulation', () => {
     setPointer(g, null);
     run(g, 1);
     expect(g.camX).toBe(0);
+  });
+
+  it('drags the view by touch, and a finger never edge-pans (v0.6)', () => {
+    const g = quiet();
+    const start = g.camX;
+    setTouch(g, true);
+    setPointer(g, VIEW_W - 2, 200);
+    run(g, 1);
+    expect(g.camX).toBe(start);
+    panBy(g, 120);
+    expect(g.camX).toBe(start + 120);
+    panBy(g, 99999);
+    expect(g.camX).toBe(MAX_CAM);
+    panBy(g, -99999);
+    expect(g.camX).toBe(0);
+    setTouch(g, false);
+    run(g, 0.2);
+    expect(g.camX).toBeGreaterThan(0);
   });
 
   it('hit-tests through parallax: a panned layer moves less than the near one', () => {

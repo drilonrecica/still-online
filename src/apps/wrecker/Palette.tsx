@@ -11,6 +11,11 @@ export interface PaletteProps {
   onSelect: (tool: ToolId) => void;
   onRepair: () => void;
   onExit: () => void;
+  /** The last pointer was a finger: show Reset (R) and Use (Space) as buttons too (v0.6). */
+  touch?: boolean;
+  /** Use (Space): starts the current tool at the last point; `onUseEnd` lets go. */
+  onUse?: () => void;
+  onUseEnd?: () => void;
 }
 
 const WIDTH = 116;
@@ -26,6 +31,9 @@ export function Palette({
   onSelect,
   onRepair,
   onExit,
+  touch = false,
+  onUse = () => {},
+  onUseEnd = () => {},
 }: PaletteProps) {
   const [pos, setPos] = useState(() => ({
     x: Math.max(MARGIN, window.innerWidth - WIDTH - 24),
@@ -97,6 +105,30 @@ export function Palette({
           <PaletteIcon id="repair" />
         </button>
       </div>
+      {touch && (
+        <div className={styles.touchKeys}>
+          <button type="button" disabled={repairing} onClick={onRepair}>
+            {t('wrecker.touchReset')}
+          </button>
+          <button
+            type="button"
+            disabled={repairing}
+            // Held like the Space bar: a hold tool keeps going until the finger lifts.
+            onPointerDown={(e) => e.button === 0 && onUse()}
+            onPointerUp={onUseEnd}
+            onPointerCancel={onUseEnd}
+            onPointerLeave={onUseEnd}
+            onClick={(e) => {
+              // Enter or Space on the focused button: one use.
+              if (e.detail !== 0) return;
+              onUse();
+              onUseEnd();
+            }}
+          >
+            {t('wrecker.touchUse')}
+          </button>
+        </div>
+      )}
       <button type="button" className={styles.exit} onClick={onExit}>
         <PaletteIcon id="exit" />
         {t('wrecker.exit')}

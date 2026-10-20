@@ -145,4 +145,49 @@ describe('Hen Hunt', () => {
     advance(ROUND_SECONDS);
     expect(scores).toHaveLength(0);
   });
+
+  describe('on touch (v0.6)', () => {
+    const finger = { pointerType: 'touch', pointerId: 3, isPrimary: true };
+
+    it('a tap aims and shoots; a drag pans the field instead of shooting', () => {
+      const { canvas } = setup();
+      fireEvent.click(screen.getByRole('button', { name: 'Play' }));
+      const peek = createGame(SEED).windowHen.nextIn;
+      advance(peek + 0.5);
+      const x = toScreenX(WINDMILL.window.x, 'far', MAX_CAM / 2);
+      const y = WINDMILL.window.y;
+      // Drag 100 px right: the view looks left, so the far window moves 35 px right.
+      fireEvent.pointerDown(canvas, { ...finger, clientX: 400, clientY: 300 });
+      fireEvent.pointerMove(canvas, { ...finger, clientX: 450, clientY: 300 });
+      fireEvent.pointerMove(canvas, { ...finger, clientX: 500, clientY: 300 });
+      fireEvent.pointerUp(canvas, { ...finger, clientX: 500, clientY: 300 });
+      const moved = toScreenX(WINDMILL.window.x, 'far', MAX_CAM / 2 - 100);
+      expect(moved - x).toBeCloseTo(35);
+      const tap = { ...finger, clientX: moved, clientY: y };
+      fireEvent.pointerDown(canvas, tap);
+      fireEvent.pointerUp(canvas, tap);
+      advance(ROUND_SECONDS);
+      expect(screen.getByText(/^1 hits from 1 shots/)).toBeTruthy();
+      expect(screen.getByText('Score: 50')).toBeTruthy();
+    });
+
+    it('a tap with an empty gun reloads', () => {
+      const scores: { score: number }[] = [];
+      events.on('game:score', (p) => scores.push(p));
+      const { canvas } = setup();
+      fireEvent.click(screen.getByRole('button', { name: 'Play' }));
+      const tap = { ...finger, clientX: 400, clientY: 500 };
+      for (let i = 0; i < 9; i++) {
+        fireEvent.pointerDown(canvas, tap);
+        fireEvent.pointerUp(canvas, tap);
+      }
+      advance(1.2);
+      fireEvent.pointerDown(canvas, tap);
+      fireEvent.pointerUp(canvas, tap);
+      advance(ROUND_SECONDS);
+      // 8 shots, a reload tap, then one more shot.
+      expect(screen.getByText(/from 9 shots/)).toBeTruthy();
+      expect(scores).toHaveLength(1);
+    });
+  });
 });

@@ -227,3 +227,38 @@
   min-width: 0;
   padding: 0 8px;
 }
+
+/* v0.6: on a phone or tablet the framed game zooms to fit (ScaleToFit) under the menu bar. */
+.fit {
+  flex: 1;
+  min-height: 0;
+}
+
+.fit .game {
+  margin: 6px;
+}
+
+/* A field finger-drag is never a page pan, so a press isn't cancelled mid-tap. */
+.grid {
+  touch-action: none;
+}
+
+.faceGroup {
+  display: flex;
+  gap: 4px;
+}
+
+.flagMode {
+  display: grid;
+  place-items: center;
+}
+
+.flagMode[aria-pressed='true'] {
+  border-color: #7b7b7b #fff #fff #7b7b7b;
+  background: #fff3c4;
+}
+
+.flagMode:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -4px;
+}

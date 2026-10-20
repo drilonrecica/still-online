@@ -128,4 +128,25 @@ describe('Desktop Wrecker', () => {
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(useWindowsStore.getState().windows).toHaveLength(1);
   });
+
+  it('adds Reset (R) and Use (Space) to the palette after a touch (v0.6)', async () => {
+    const surface = await openWrecker();
+    expect(screen.queryByRole('button', { name: 'Reset (R)' })).toBeNull();
+    const finger = { pointerType: 'touch', pointerId: 4, button: 0 };
+    fireEvent.pointerDown(surface, { ...finger, clientX: 60, clientY: 60 });
+    fireEvent.pointerUp(surface, finger);
+    const use = screen.getByRole('button', { name: 'Use (Space)' });
+    fireEvent.click(screen.getByRole('button', { name: 'Machine Gun' }));
+    fireEvent.pointerDown(use, finger);
+    advance(200);
+    fireEvent.pointerUp(use, finger);
+    fireEvent.click(screen.getByRole('button', { name: 'Reset (R)' }));
+    expect(screen.getByRole('button', { name: 'Hammer' })).toBeDisabled();
+    expect(use).toBeDisabled();
+    advance(1500);
+    expect(screen.getByRole('button', { name: 'Hammer' })).toBeEnabled();
+    // A mouse again: the extra buttons go.
+    fireEvent.pointerDown(surface, { pointerType: 'mouse', button: 0 });
+    expect(screen.queryByRole('button', { name: 'Use (Space)' })).toBeNull();
+  });
 });

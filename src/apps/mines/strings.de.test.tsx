@@ -2,6 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { useDeviceStore } from '@/os/device';
 import { useGamesStore } from '@/os/store/games';
 import { useSettingsStore } from '@/os/store/settings';
 import Mines from './Mines';
@@ -11,7 +12,10 @@ beforeEach(() => {
   useGamesStore.getState().resetScores('mines');
   useSettingsStore.setState({ language: 'de' });
 });
-afterEach(() => useSettingsStore.setState({ language: 'en' }));
+afterEach(() => {
+  useSettingsStore.setState({ language: 'en' });
+  useDeviceStore.setState({ device: 'desktop' });
+});
 
 describe('Mines in German', () => {
   it('localizes the menu, levels and field labels', async () => {
@@ -51,5 +55,11 @@ describe('Mines in German', () => {
     expect(
       screen.getByRole('button', { name: 'Zeiten zurücksetzen' }),
     ).toBeVisible();
+  });
+
+  it('names the flag-mode toggle (v0.6)', () => {
+    useDeviceStore.setState({ device: 'phone' });
+    render(<Mines windowId="w1" props={{}} />);
+    expect(screen.getByRole('button', { name: 'Markiermodus' })).toBeVisible();
   });
 });

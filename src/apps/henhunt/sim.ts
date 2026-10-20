@@ -85,6 +85,8 @@ export interface Game {
   camX: number;
   /** Aim point in screen pixels, or null when the pointer is outside. */
   pointer: { x: number; y: number } | null;
+  /** The last aim came from a finger: no edge pan (a drag pans instead), tap-to-reload hint. */
+  touch: boolean;
   hens: Hen[];
   feathers: Feather[];
   popups: Popup[];
@@ -115,6 +117,7 @@ export function createGame(seed: number, opts: GameOptions = {}): Game {
     hits: 0,
     camX: MAX_CAM / 2,
     pointer: null,
+    touch: false,
     hens: [],
     feathers: [],
     popups: [],
@@ -140,6 +143,16 @@ export function setPointer(g: Game, x: number | null, y = 0): void {
   g.pointer = x === null ? null : { x, y };
 }
 
+/** Marks where the aim comes from: a finger (true) or a mouse / the keys (false). */
+export function setTouch(g: Game, touch: boolean): void {
+  g.touch = touch;
+}
+
+/** Drags the view by `dx` near-layer pixels (positive looks right), clamped to the world. */
+export function panBy(g: Game, dx: number): void {
+  g.camX = Math.min(MAX_CAM, Math.max(0, g.camX + dx));
+}
+
 /** The visible part of a depth's layer starts here (layer px). */
 export const visibleLeft = (g: Game, depth: Depth) =>
   toLayerX(0, depth, g.camX);
@@ -162,7 +175,7 @@ function pickDepth(r: number): Depth {
 
 function pan(g: Game, dt: number): void {
   const p = g.pointer;
-  if (!p) return;
+  if (!p || g.touch) return;
   let push = 0;
   if (p.x < PAN_EDGE) push = -(PAN_EDGE - Math.max(0, p.x)) / PAN_EDGE;
   else if (p.x > VIEW_W - PAN_EDGE)

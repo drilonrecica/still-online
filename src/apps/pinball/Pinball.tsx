@@ -11,9 +11,11 @@ import {
   type PointerEvent,
 } from 'react';
 import { now } from '@/os/clock';
+import { useDevice } from '@/os/device';
 import { events } from '@/os/events';
 import { playSound } from '@/os/sound';
 import { useGamesStore } from '@/os/store/games';
+import { ScaleToFit } from '@/os/touch/ScaleToFit';
 import { useGameStatus, SR_ONLY } from '@/os/useGameStatus';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import { TABLE_X, VIEW_W } from './display';
@@ -44,6 +46,10 @@ import styles from './Pinball.module.css';
 
 type Screen = 'menu' | 'play' | 'over' | 'scores' | 'help';
 type Control = Side | 'plunger';
+
+/** The window's content size on a desktop: a phone zooms this whole stage to fit (v0.6). */
+export const STAGE_W = 460;
+export const STAGE_H = 640;
 
 const newSeed = () => (Math.random() * 0x100000000) >>> 0;
 const isoDate = (d: Date) =>
@@ -83,6 +89,7 @@ export default function Pinball({ windowId }: Partial<AppComponentProps>) {
   const pointers = useRef(new Map<number, Control>());
   const playerName = usePlayerName();
   const t = useT();
+  const phone = useDevice() === 'phone';
 
   const onEvents = useCallback((list: GameEvent[]) => {
     for (const e of list) {
@@ -199,49 +206,51 @@ export default function Pinball({ windowId }: Partial<AppComponentProps>) {
   }
 
   return (
-    <div
-      ref={rootRef}
-      className={styles.root}
-      tabIndex={-1}
-      onKeyDown={onKeyDown}
-      onKeyUp={onKeyUp}
-      onBlur={releaseAll}
-    >
-      <canvas
-        ref={canvasRef}
-        className={styles.canvas}
-        role="img"
-        aria-describedby={playing ? 'pinball-status' : undefined}
-        aria-label={t(playing ? 'pinball.tablePlaying' : 'pinball.table')}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
-        onContextMenu={(e) => e.preventDefault()}
-      />
-      {playing && (
-        <p id="pinball-status" style={SR_ONLY}>
-          {status}
-        </p>
-      )}
-      {screen === 'menu' && (
-        <MenuScreen
-          onPlay={start}
-          onScores={() => setScreen('scores')}
-          onHelp={() => setScreen('help')}
+    <ScaleToFit width={STAGE_W} height={STAGE_H} active={phone}>
+      <div
+        ref={rootRef}
+        className={styles.root}
+        tabIndex={-1}
+        onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
+        onBlur={releaseAll}
+      >
+        <canvas
+          ref={canvasRef}
+          className={styles.canvas}
+          role="img"
+          aria-describedby={playing ? 'pinball-status' : undefined}
+          aria-label={t(playing ? 'pinball.tablePlaying' : 'pinball.table')}
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          onContextMenu={(e) => e.preventDefault()}
         />
-      )}
-      {screen === 'help' && <HelpScreen onBack={toMenu} />}
-      {screen === 'scores' && <ScoresScreen onBack={toMenu} onPlay={start} />}
-      {screen === 'over' && result && (
-        <OverScreen
-          result={result}
-          defaultName={playerName}
-          onSaveName={saveName}
-          onPlay={start}
-          onScores={() => setScreen('scores')}
-          onMenu={toMenu}
-        />
-      )}
-    </div>
+        {playing && (
+          <p id="pinball-status" style={SR_ONLY}>
+            {status}
+          </p>
+        )}
+        {screen === 'menu' && (
+          <MenuScreen
+            onPlay={start}
+            onScores={() => setScreen('scores')}
+            onHelp={() => setScreen('help')}
+          />
+        )}
+        {screen === 'help' && <HelpScreen onBack={toMenu} />}
+        {screen === 'scores' && <ScoresScreen onBack={toMenu} onPlay={start} />}
+        {screen === 'over' && result && (
+          <OverScreen
+            result={result}
+            defaultName={playerName}
+            onSaveName={saveName}
+            onPlay={start}
+            onScores={() => setScreen('scores')}
+            onMenu={toMenu}
+          />
+        )}
+      </div>
+    </ScaleToFit>
   );
 }

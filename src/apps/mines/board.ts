@@ -205,6 +205,15 @@ export function cycleMark(board: Board, i: number): Board {
   return { ...board, cells };
 }
 
+/** Touch flagging (flag mode, long-press): a hidden cell's flag on or off, skipping "?". */
+export function toggleFlag(board: Board, i: number): Board {
+  const c = board.cells[i];
+  if (!c || finished(board) || c.revealed) return board;
+  const cells = [...board.cells];
+  cells[i] = { ...c, mark: c.mark === 'flag' ? 'none' : 'flag' };
+  return { ...board, cells };
+}
+
 /**
  * Chord on a revealed number: when the flags around it match the number, reveals the other
  * neighbours (a wrong flag means this can hit a mine). Otherwise nothing happens.

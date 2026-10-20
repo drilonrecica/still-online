@@ -2,6 +2,7 @@
 import { useState, type ReactNode } from 'react';
 import { scoreName } from '@/i18n/scoreName';
 import { useT } from '@/i18n/useT';
+import { useDevice } from '@/os/device';
 import { MAX_SCORE_NAME, useGamesStore } from '@/os/store/games';
 import {
   DEPTH,
@@ -84,6 +85,7 @@ export function MenuScreen({
 
 export function HelpScreen({ onBack }: { onBack: () => void }) {
   const t = useT();
+  const touchDevice = useDevice() !== 'desktop';
   return (
     <Panel label={t('henhunt.helpTitle')}>
       <h2>{t('henhunt.helpTitle')}</h2>
@@ -91,6 +93,7 @@ export function HelpScreen({ onBack }: { onBack: () => void }) {
         <li>{t('henhunt.helpAim', { seconds: ROUND_SECONDS })}</li>
         <li>{t('henhunt.helpReload', { shells: SHELLS })}</li>
         <li>{t('henhunt.helpScroll')}</li>
+        {touchDevice && <li>{t('henhunt.helpTap')}</li>}
         <li>
           {t('henhunt.helpHens', {
             far: DEPTH.far.points,

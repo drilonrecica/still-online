@@ -662,6 +662,7 @@ export const de: Messages = {
       intermediate: 'Fortgeschrittene',
       expert: 'Profis',
     },
+    flagMode: 'Markiermodus',
     minesLeft: 'Verbleibende Minen',
     time: 'Zeit',
     newGame: 'Neues Spiel (F2)',
@@ -717,6 +718,8 @@ export const de: Messages = {
       'Die Flinte fasst {shells} Patronen. Mit Rechtsklick oder Leertaste laden Sie nach – das dauert eine Sekunde.',
     helpScroll:
       'Fahren Sie an den linken oder rechten Rand, um sich auf dem Land umzusehen.',
+    helpTap:
+      'Ohne Maus: Tippen Sie zum Schießen, ziehen Sie das Feld, um sich umzusehen, und tippen Sie mit leerer Flinte, um nachzuladen.',
     helpHens:
       'Ferne Hühner sind {far} Punkte wert, mittlere {mid}, nahe {near}.',
     helpBonus:
@@ -737,6 +740,7 @@ export const de: Messages = {
       score: 'PUNKTE',
       lastSeconds: 'Noch {seconds} Sekunden!',
       reload: 'Nachladen! (Rechtsklick oder Leertaste)',
+      reloadTouch: 'Nachladen! (aufs Feld tippen)',
     },
   },
   pinball: {
@@ -813,6 +817,8 @@ export const de: Messages = {
     palette: 'Randale-Werkzeuge',
     grip: 'Randale',
     repair: 'Reparieren',
+    touchReset: 'Zurücksetzen (R)',
+    touchUse: 'Benutzen (Leertaste)',
     repairHint: 'Reparieren: Scherben wegfegen',
     exit: 'Beenden',
     boom: 'BUMM!',

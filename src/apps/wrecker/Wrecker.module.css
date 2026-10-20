@@ -96,3 +96,16 @@
   min-width: 0;
   padding: 2px 6px;
 }
+
+/* v0.6: the keyboard's R and Space as buttons, once the last pointer was a finger. */
+.touchKeys {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 4px;
+}
+
+.touchKeys button {
+  min-width: 0;
+  padding: 2px 4px;
+}

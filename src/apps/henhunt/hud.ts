@@ -108,7 +108,12 @@ function drawShells(c: Ctx, g: Game) {
     c.textAlign = 'right';
     c.font = `bold 15px ${FONT}`;
     c.fillStyle = '#ffd23a';
-    c.fillText(t('henhunt.hud.reload'), VIEW_W - 16, y0 - 18, VIEW_W - 32);
+    c.fillText(
+      t(g.touch ? 'henhunt.hud.reloadTouch' : 'henhunt.hud.reload'),
+      VIEW_W - 16,
+      y0 - 18,
+      VIEW_W - 32,
+    );
   }
 }
 

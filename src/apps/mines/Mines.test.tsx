@@ -1,6 +1,8 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { events } from '@/os/events';
+import { useDeviceStore } from '@/os/device';
+import { LONG_PRESS_MS } from '@/os/touch/useLongPress';
 import { useGamesStore } from '@/os/store/games';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
@@ -16,13 +18,21 @@ function setup() {
   const view = render(<Mines windowId={windowId} props={{}} />);
   const cell = (i: number) =>
     view.container.querySelector<HTMLElement>(`[data-index="${i}"]`)!;
+  const mouse = { pointerType: 'mouse', pointerId: 1 };
   const click = (i: number) => {
-    fireEvent.mouseDown(cell(i), { button: 0, buttons: 1 });
-    fireEvent.mouseUp(cell(i), { button: 0, buttons: 0 });
+    fireEvent.pointerDown(cell(i), { ...mouse, button: 0, buttons: 1 });
+    fireEvent.pointerUp(cell(i), { ...mouse, button: 0, buttons: 0 });
   };
-  const rightClick = (i: number) =>
-    fireEvent.mouseDown(cell(i), { button: 2, buttons: 2 });
-  return { windowId, cell, click, rightClick, view };
+  const rightClick = (i: number) => {
+    fireEvent.pointerDown(cell(i), { ...mouse, button: 2, buttons: 2 });
+    fireEvent.pointerUp(cell(i), { ...mouse, button: 2, buttons: 0 });
+  };
+  const finger = { pointerType: 'touch', pointerId: 7, isPrimary: true };
+  const tap = (i: number) => {
+    fireEvent.pointerDown(cell(i), { ...finger, button: 0, buttons: 1 });
+    fireEvent.pointerUp(cell(i), { ...finger, button: 0, buttons: 0 });
+  };
+  return { windowId, cell, click, rightClick, tap, finger, mouse, view };
 }
 
 /** First click at 0, then every other safe cell: wins a Beginner game. */
@@ -46,6 +56,7 @@ beforeEach(() => {
 afterEach(() => {
   vi.restoreAllMocks();
   vi.useRealTimers();
+  useDeviceStore.setState({ device: 'desktop' });
 });
 
 describe('Mines', () => {
@@ -160,8 +171,12 @@ describe('Mines', () => {
       }
     }
     for (const n of ring) if (solved.cells[n]!.mine) rightClick(n);
-    fireEvent.mouseDown(cell(target), { button: 0, buttons: 3 });
-    fireEvent.mouseUp(cell(target), { button: 0, buttons: 0 });
+    // Pointer events: the second button is a move with `button` set; only the last lift is an up.
+    const mouse = { pointerType: 'mouse', pointerId: 1 };
+    fireEvent.pointerDown(cell(target), { ...mouse, button: 0, buttons: 1 });
+    fireEvent.pointerMove(cell(target), { ...mouse, button: 2, buttons: 3 });
+    fireEvent.pointerMove(cell(target), { ...mouse, button: 0, buttons: 2 });
+    fireEvent.pointerUp(cell(target), { ...mouse, button: 2, buttons: 0 });
     for (const n of ring) {
       if (!solved.cells[n]!.mine) {
         expect(cell(n).getAttribute('aria-label')).not.toMatch(/hidden/);
@@ -220,5 +235,75 @@ describe('Mines', () => {
     expect(
       useWindowsStore.getState().windows.some((w) => w.id === windowId),
     ).toBe(false);
+  });
+
+  describe('on touch (v0.6)', () => {
+    const flagged = (el: HTMLElement) =>
+      expect(el.getAttribute('aria-label')).toMatch(/: flag$/);
+
+    it('shows no flag-mode button on a desktop', () => {
+      setup();
+      expect(screen.queryByRole('button', { name: 'Flag mode' })).toBeNull();
+    });
+
+    it('a tap reveals, and a tap on an opened number chords', () => {
+      const { tap, cell, rightClick } = setup();
+      const solved = reveal(createBoard(LEVELS.beginner, SEED), 0);
+      tap(0);
+      expect(cell(0).getAttribute('aria-label')).not.toMatch(/hidden/);
+      const w = solved.width;
+      const inner = (i: number) =>
+        i % w > 0 && i % w < w - 1 && i >= w && i < solved.cells.length - w;
+      const target = solved.cells.findIndex(
+        (c, i) => c.revealed && c.adjacent > 0 && inner(i),
+      );
+      expect(target).toBeGreaterThanOrEqual(0);
+      const ring = [-w - 1, -w, -w + 1, -1, 1, w - 1, w, w + 1].map(
+        (d) => target + d,
+      );
+      for (const n of ring) if (solved.cells[n]!.mine) rightClick(n);
+      tap(target);
+      for (const n of ring)
+        if (!solved.cells[n]!.mine)
+          expect(cell(n).getAttribute('aria-label')).not.toMatch(/hidden/);
+    });
+
+    it('flag mode makes a tap flag and unflag; the toggle is pressed', () => {
+      useDeviceStore.setState({ device: 'phone' });
+      const { tap, cell } = setup();
+      const toggle = screen.getByRole('button', { name: 'Flag mode' });
+      expect(toggle.getAttribute('aria-pressed')).toBe('false');
+      fireEvent.click(toggle);
+      expect(toggle.getAttribute('aria-pressed')).toBe('true');
+      tap(40);
+      flagged(cell(40));
+      tap(40);
+      expect(cell(40).getAttribute('aria-label')).toMatch(/hidden/);
+      fireEvent.click(toggle);
+      tap(40);
+      expect(cell(40).getAttribute('aria-label')).not.toMatch(/hidden/);
+    });
+
+    it('a long-press flags without revealing, both ways', () => {
+      vi.useFakeTimers();
+      const { cell, finger } = setup();
+      const hold = (i: number) => {
+        fireEvent.pointerDown(cell(i), { ...finger, button: 0, buttons: 1 });
+        act(() => vi.advanceTimersByTime(LONG_PRESS_MS + 10));
+        fireEvent.pointerUp(cell(i), { ...finger, button: 0, buttons: 0 });
+      };
+      hold(40);
+      flagged(cell(40));
+      hold(40);
+      expect(cell(40).getAttribute('aria-label')).toMatch(/hidden/);
+    });
+
+    it('zooms the framed game to fit on a phone', () => {
+      useDeviceStore.setState({ device: 'phone' });
+      setup();
+      const stage = screen.getByTestId('scale-stage');
+      expect(stage.style.width).toBe(`${LEVELS.beginner.width * 16 + 30}px`);
+      expect(stage.querySelector('[role="group"]')).toBeTruthy();
+    });
   });
 });

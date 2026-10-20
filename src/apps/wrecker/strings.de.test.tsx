@@ -30,6 +30,25 @@ describe('Desktop Wrecker in German', () => {
     expect(screen.getByRole('button', { name: /Beenden/ })).toBeVisible();
   });
 
+  it('labels the touch buttons for R and Space (v0.6)', () => {
+    render(
+      <Palette
+        tool="hammer"
+        repairing={false}
+        onSelect={() => undefined}
+        onRepair={() => undefined}
+        onExit={() => undefined}
+        touch
+      />,
+    );
+    expect(
+      screen.getByRole('button', { name: 'Zurücksetzen (R)' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('button', { name: 'Benutzen (Leertaste)' }),
+    ).toBeVisible();
+  });
+
   it('stamps BUMM! instead of BOOM!', () => {
     expect(t('wrecker.boom')).toBe('BUMM!');
   });
