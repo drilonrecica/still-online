@@ -7,6 +7,7 @@ import {
   clockTime,
   shouldAutoplay,
   visibleBandBlog,
+  pastShows,
   visibleShows,
 } from './band';
 
@@ -66,6 +67,26 @@ describe('band shows and blog', () => {
   it('gates by day', () => {
     expect(visibleShows(band, 3).map((s) => s.text)).toEqual(['a']);
     expect(visibleShows(band, 5).map((s) => s.text)).toEqual(['a', 'b']);
+  });
+
+  it('hides a show from its `until` day and lists recaps as past, newest first', () => {
+    const toured = {
+      shows: [
+        { day: 1, text: 'soon', until: 5 },
+        { day: 5, text: 'recap 5', past: true },
+        { day: 6, text: 'next', until: 10 },
+        { day: 10, text: 'recap 10', past: true },
+      ],
+    } as unknown as Band;
+    const up = (day: number) => visibleShows(toured, day).map((s) => s.text);
+    const past = (day: number) => pastShows(toured, day).map((s) => s.text);
+    expect(up(1)).toEqual(['soon']);
+    expect(up(5)).toEqual([]);
+    expect(up(8)).toEqual(['next']);
+    expect(up(10)).toEqual([]);
+    expect(past(1)).toEqual([]);
+    expect(past(6)).toEqual(['recap 5']);
+    expect(past(10)).toEqual(['recap 10', 'recap 5']);
   });
 
   it('puts the newest blog entry first', () => {

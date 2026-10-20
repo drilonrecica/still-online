@@ -120,12 +120,33 @@ describe('friendspace band pages', () => {
 
   it('reveals later shows and blog posts on later days', async () => {
     useSettingsStore.setState({ muted: true });
-    useWorldStore.setState({ day: 5 });
+    useWorldStore.setState({ day: 4 });
     open('/band/tinfoil-comets');
     await finishLoad();
     await screen.findByTestId('band');
     expect(screen.getByText(/the big show/)).toBeTruthy();
     expect(screen.getByText('practice update')).toBeTruthy();
+    expect(screen.queryByRole('heading', { name: 'Past Shows' })).toBeNull();
+  });
+
+  it('moves played shows from Upcoming Shows to Past Shows', async () => {
+    useSettingsStore.setState({ muted: true });
+    useWorldStore.setState({ day: 10 });
+    open('/band/velvet-lantern');
+    await finishLoad();
+    const page = await screen.findByTestId('band');
+    const box = (name: string) =>
+      within(page).getByRole('heading', { name }).parentElement!;
+    expect(
+      within(box('Upcoming Shows')).getByText(/No shows booked yet/),
+    ).toBeTruthy();
+    const past = within(box('Past Shows'))
+      .getAllByRole('listitem')
+      .map((li) => li.textContent);
+    expect(past).toEqual([
+      'played. 83 people. the mic was upside down. so were we',
+      'the bean cellar. 11 people. 6 songs. the bucket is in the act now',
+    ]);
   });
 
   it('is linked from a friend’s Top 8', async () => {

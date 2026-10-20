@@ -29,9 +29,19 @@ export interface Band {
   /** Playlist track ids (`src/content/playlist.ts`) the band player lists, in order. */
   trackIds: readonly string[];
   /** Day-gated: shown from `day` on. */
-  shows: readonly { day: number; text: string }[];
+  shows: readonly BandShow[];
   blog: readonly { day: number; title: string; body: string }[];
   theme: ProfileTheme;
+}
+
+/** A line under a band's shows, out from `day`. */
+export interface BandShow {
+  day: number;
+  text: string;
+  /** Hidden from this day on: the show happened, or a later line replaced it. */
+  until?: number;
+  /** A recap of a played show: listed under Past Shows instead of Upcoming Shows. */
+  past?: true;
 }
 
 /** One friend's wall lines on the player's `/me` after a Top 8 drop and a re-add. */

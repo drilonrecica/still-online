@@ -1,5 +1,6 @@
 // friendspace.example `/band/<id>`: a band's profile in its theme: name, genre and hometown card,
-// bio, the inline BandPlayer, day-gated upcoming shows and the band blog. Its first song autoplays.
+// bio, the inline BandPlayer, day-gated upcoming and past shows and the band blog. Its first song
+// autoplays.
 import { getBands } from '@/content/locale';
 import { FRIENDSPACE_HOST } from '@/content/sites/friendspace';
 import type { SitePageProps } from '@/content/sites/types';
@@ -9,7 +10,7 @@ import { now } from '@/os/clock';
 import { useWorldStore } from '@/os/world';
 import { SiteLink } from '../../SiteLink';
 import { useSiteText } from '../useSiteText';
-import { visibleBandBlog, visibleShows } from './band';
+import { pastShows, visibleBandBlog, visibleShows } from './band';
 import { BandPlayer } from './BandPlayer';
 import { Layout } from './Layout';
 import { dayLabel, extraColors, shortDate } from './logic';
@@ -42,6 +43,7 @@ export default function Band({ path }: SitePageProps) {
   }
 
   const shows = visibleShows(band, day);
+  const played = pastShows(band, day);
   const blog = visibleBandBlog(band, day);
   const seed = `band:${band.id}`;
   return (
@@ -85,6 +87,15 @@ export default function Band({ path }: SitePageProps) {
                 </ul>
               )}
             </Box>
+            {played.length > 0 && (
+              <Box title={t('sites.friendspace.band.pastShows')}>
+                <ul className={bandStyles.list}>
+                  {played.map((s, i) => (
+                    <li key={i}>{s.text}</li>
+                  ))}
+                </ul>
+              </Box>
+            )}
           </div>
           <div className={styles.right}>
             <BandPlayer name={band.name} trackIds={band.trackIds} />

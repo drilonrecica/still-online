@@ -21,16 +21,19 @@ const DAYS_1_TO_5: readonly Band[] = [
       {
         day: 1,
         text: 'FRIDAY - Riverside Arena - SOLD OUT!!! radio contest winners: we see u',
+        until: 5,
       },
-      { day: 1, text: 'next saturday - Lakeview Fairgrounds' },
-      { day: 1, text: 'in 2 weeks - The Rocket Room' },
+      { day: 1, text: 'next saturday - Lakeview Fairgrounds', until: 6 },
+      { day: 1, text: 'in 2 weeks - The Rocket Room', until: 6 },
       {
         day: 4,
         text: 'TOMORROW NIGHT the big show. Riverside. bring ur signs, Ziggy reads all of them',
+        until: 5,
       },
       {
         day: 5,
         text: 'RIVERSIDE U WERE AMAZING. to whoever caught the drumstick: Ziggy says sorry about ur forehead',
+        past: true,
       },
     ],
     blog: [
@@ -73,8 +76,14 @@ const DAYS_1_TO_5: readonly Band[] = [
       {
         day: 2,
         text: 'the bean cellar. one night only. 11 people max. fire code is a suggestion (his words)',
+        until: 5,
       },
-      { day: 5, text: 'next show: tba. bigger. 12 people' },
+      {
+        day: 5,
+        text: 'the bean cellar. 11 people. 6 songs. the bucket is in the act now',
+        past: true,
+      },
+      { day: 5, text: 'next show: tba. bigger. 12 people', until: 6 },
     ],
     blog: [
       {
@@ -119,6 +128,7 @@ const DAYS_1_TO_5: readonly Band[] = [
       {
         day: 5,
         text: 'the bean cellar?? its a basement. "no boards inside". we r thinking about it',
+        until: 8,
       },
     ],
     blog: [
@@ -162,10 +172,17 @@ const DAYS_1_TO_5: readonly Band[] = [
       {
         day: 1,
         text: 'saturday morning - pancake picnic at the duck pond. free!! bring a spoon',
+        until: 5,
       },
       {
         day: 3,
         text: 'sunday - the library kids corner. we will be quiet-ish',
+        until: 5,
+      },
+      {
+        day: 5,
+        text: 'the duck pond + the library. best (and quietest) crowd ever. the ducks clapped. kind of',
+        past: true,
       },
     ],
     blog: [

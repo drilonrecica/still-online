@@ -1320,6 +1320,7 @@ export const de: Messages = {
         playTrack: '{title} abspielen',
         progress: 'Songfortschritt',
         shows: 'Nächste Auftritte',
+        pastShows: 'Vergangene Auftritte',
         noShows: 'Noch keine Auftritte geplant. Schau bald wieder vorbei!',
         blog: 'Band-Blog von {name}',
         noBlog: 'Noch keine Blogeinträge.',

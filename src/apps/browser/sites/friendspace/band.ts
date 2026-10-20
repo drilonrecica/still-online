@@ -41,9 +41,23 @@ export function clockTime(seconds: number): string {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 }
 
-/** Shows out by `day`, in content order (they are upcoming, so the soonest stays first). */
+/**
+ * Upcoming shows out by `day`, in content order (the soonest stays first): no recaps, and none
+ * past its `until`.
+ */
 export function visibleShows(band: Band, day: number): Band['shows'] {
-  return band.shows.filter((s) => s.day <= day);
+  return band.shows.filter(
+    (s) => s.day <= day && !s.past && (s.until === undefined || day < s.until),
+  );
+}
+
+/** Recaps of played shows out by `day`, newest day first (later lines of a day first). */
+export function pastShows(band: Band, day: number): Band['shows'] {
+  return band.shows
+    .map((s, i) => ({ s, i }))
+    .filter(({ s }) => s.past && s.day <= day)
+    .sort((x, y) => y.s.day - x.s.day || y.i - x.i)
+    .map(({ s }) => s);
 }
 
 /** Blog entries out by `day`, newest day first (later entries of a day first). */

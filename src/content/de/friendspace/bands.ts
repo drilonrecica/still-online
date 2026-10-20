@@ -24,16 +24,19 @@ const DAYS_1_TO_5: readonly Band[] = [
       {
         day: 1,
         text: 'FREITAG - Riverside Arena - AUSVERKAUFT!!! gewinner vom radio-gewinnspiel: wir sehen euch',
+        until: 5,
       },
-      { day: 1, text: 'nächsten samstag - Lakeview Festwiese' },
-      { day: 1, text: 'in 2 wochen - The Rocket Room' },
+      { day: 1, text: 'nächsten samstag - Lakeview Festwiese', until: 6 },
+      { day: 1, text: 'in 2 wochen - The Rocket Room', until: 6 },
       {
         day: 4,
         text: 'MORGEN ABEND die große show. Riverside. bringt eure schilder mit, Ziggy liest ALLE',
+        until: 5,
       },
       {
         day: 5,
         text: 'RIVERSIDE IHR WART DER WAHNSINN. wer auch immer den drumstick gefangen hat: Ziggy sagt sorry wegen deiner stirn',
+        past: true,
       },
     ],
     blog: [
@@ -69,8 +72,18 @@ const DAYS_1_TO_5: readonly Band[] = [
       {
         day: 2,
         text: 'der bean cellar. nur eine nacht. höchstens 11 leute. brandschutz ist eine empfehlung (seine worte)',
+        until: 5,
       },
-      { day: 5, text: 'nächste show: steht noch nicht fest. größer. 12 leute' },
+      {
+        day: 5,
+        text: 'der bean cellar. 11 leute. 6 songs. der eimer gehört jetzt zur show',
+        past: true,
+      },
+      {
+        day: 5,
+        text: 'nächste show: steht noch nicht fest. größer. 12 leute',
+        until: 6,
+      },
     ],
     blog: [
       {
@@ -108,6 +121,7 @@ const DAYS_1_TO_5: readonly Band[] = [
       {
         day: 5,
         text: 'der bean cellar?? das is n keller. „keine boards drinnen“. wir überlegens uns',
+        until: 8,
       },
     ],
     blog: [
@@ -143,10 +157,17 @@ const DAYS_1_TO_5: readonly Band[] = [
       {
         day: 1,
         text: 'samstag vormittag - pfannkuchen-picknick am ententeich. eintritt frei!! löffel mitbringen',
+        until: 5,
       },
       {
         day: 3,
         text: 'sonntag - die kinderecke in der stadtbücherei. wir sind auch so halbwegs leise',
+        until: 5,
+      },
+      {
+        day: 5,
+        text: 'ententeich + stadtbücherei. bestes (und leisestes) publikum ever. die enten haben geklatscht. so ungefähr',
+        past: true,
       },
     ],
     blog: [

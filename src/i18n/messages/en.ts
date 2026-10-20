@@ -1313,6 +1313,7 @@ export const en = {
         playTrack: 'Play {title}',
         progress: 'Song progress',
         shows: 'Upcoming Shows',
+        pastShows: 'Past Shows',
         noShows: 'No shows booked yet. Check back soon!',
         blog: '{name} Band Blog',
         noBlog: 'No blog entries yet.',

@@ -8,9 +8,17 @@ import type { BandId } from '../../friendspace/types';
 
 const TINFOIL_COMETS_WEEK2: BandWeek = {
   shows: [
+    { day: 6, text: 'DIESEN SAMSTAG - Lakeview Festwiese', until: 8 },
     {
       day: 8,
       text: 'Lakeview Festwiese - in 9 minuten AUSVERKAUFT!!! wir sind genauso geschockt wie ihr',
+      until: 10,
+    },
+    { day: 6, text: 'nächste woche - The Rocket Room' },
+    {
+      day: 10,
+      text: 'Lakeview Festwiese. windig. ausverkauft. danke, regencapes',
+      past: true,
     },
   ],
   blog: [
@@ -27,11 +35,17 @@ const VELVET_LANTERN_WEEK2: BandWeek = {
     {
       day: 6,
       text: 'das jugendzentrum westfield. samstag. 80 leute. ohne altersgrenze. diesmal echt',
+      until: 10,
     },
-    { day: 8, text: 'vorband: the grip tapes. 3 songs. einer über regen' },
+    {
+      day: 8,
+      text: 'vorband: the grip tapes. 3 songs. einer über regen',
+      until: 10,
+    },
     {
       day: 10,
       text: 'gespielt. 83 leute. das mikro hing verkehrt rum. wir auch',
+      past: true,
     },
   ],
   blog: [
@@ -58,6 +72,22 @@ const GRIP_TAPES_WEEK2: BandWeek = {
     {
       day: 8,
       text: 'samstag - vorband für velvet lantern im jugendzentrum. drinnen. keine boards. wir haben zugesagt',
+      until: 10,
+    },
+    {
+      day: 10,
+      text: 'das jugendzentrum. 3 songs. der über regen. es hat nich geregnet. keiner is hingefallen',
+      past: true,
+    },
+  ],
+  blog: [],
+};
+
+export const SUGARCUBE_PARADE_WEEK2: BandWeek = {
+  shows: [
+    {
+      day: 6,
+      text: 'nächsten monat - das herbstfest am ententeich. löffel mitbringen (schon wieder)',
     },
   ],
   blog: [],
@@ -68,4 +98,5 @@ export const BANDS_WEEK2: Readonly<Record<BandId, BandWeek>> = {
   'tinfoil-comets': TINFOIL_COMETS_WEEK2,
   'velvet-lantern': VELVET_LANTERN_WEEK2,
   'grip-tapes': GRIP_TAPES_WEEK2,
+  'sugarcube-parade': SUGARCUBE_PARADE_WEEK2,
 };
