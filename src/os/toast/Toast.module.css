@@ -89,3 +89,15 @@
     animation: none;
   }
 }
+
+/* Phone (v0.6): the × is a 36 px tap target in the corner; the text keeps clear of it. */
+:global(.desktop-root[data-device='phone']) .close {
+  top: 0;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+:global(.desktop-root[data-device='phone']) .body {
+  padding-right: 36px;
+}

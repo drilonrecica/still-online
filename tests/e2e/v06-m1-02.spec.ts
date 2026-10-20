@@ -230,6 +230,8 @@ test('desktop: the 1280×800 taskbar and Start menu look as in v0.5', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
+  // The masked clock's width still moves the tray: pin a two-digit hour, as in the baseline.
+  await page.clock.setFixedTime(new Date(2026, 9, 20, 12, 49));
   await logIn(page);
   await expect(page.locator('.desktop-root')).toHaveAttribute(
     'data-device',

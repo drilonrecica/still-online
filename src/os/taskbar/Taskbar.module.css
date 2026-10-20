@@ -261,7 +261,7 @@
 }
 
 :global(.desktop-root[data-device='tablet']) .windowButton {
-  flex: 0 0 160px;
+  flex: 0 1 160px;
   min-width: 110px;
 }
 

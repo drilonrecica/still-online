@@ -45,6 +45,11 @@ textarea,
   --xp-taskbar-height: calc(40px + var(--safe-bottom));
 }
 
+/* Phone: an XP dialog's buttons are 36 px tap targets (the touch rubric), still XP buttons. */
+.desktop-root[data-device='phone'] [role='dialog'] .window-body button {
+  min-height: 36px;
+}
+
 /* Touch: no double-tap zoom, no long-press callout and no tap flash on the shell. */
 .desktop-root {
   touch-action: manipulation;

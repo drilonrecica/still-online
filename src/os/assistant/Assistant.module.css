@@ -248,3 +248,22 @@
 :global(.desktop-root[data-device='phone']) .balloon {
   max-width: 70vw;
 }
+
+/* Phone: each option is a full-width row of 45 px, 36 px once Stapley is drawn at 0.8. */
+:global(.desktop-root[data-device='phone']) .options {
+  align-items: stretch;
+  gap: 0;
+}
+:global(.desktop-root[data-device='phone']) .link,
+:global(.desktop-root[data-device='phone']) .menuItem {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 45px;
+}
+:global(.desktop-root[data-device='phone']) .hide {
+  margin-top: 0;
+}
+:global(.desktop-root[data-device='phone']) .link::before {
+  white-space: pre;
+}

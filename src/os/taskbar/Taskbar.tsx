@@ -1,7 +1,7 @@
 // Taskbar: Start button, one button per open window, and the tray (network, Messenger, Fluff, mute, clock).
 // On a phone the window buttons are icon-only and network, Messenger and Fluff sit behind the
 // tray's "Show hidden icons" chevron.
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { getApp } from '@/apps/registry';
 import { useLocale, useT } from '@/i18n/useT';
@@ -94,7 +94,17 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
   const muted = useSettingsStore((s) => s.muted);
   const toggleMuted = useSettingsStore((s) => s.toggleMuted);
   const attention = useAttentionStore((s) => s.keys);
-  const phone = useDevice() === 'phone';
+  const device = useDevice();
+  const phone = device === 'phone';
+  const windowsRef = useRef<HTMLDivElement>(null);
+
+  // A touch taskbar's button row scrolls sideways: keep the front window's button in view.
+  useEffect(() => {
+    if (device === 'desktop') return;
+    windowsRef.current
+      ?.querySelector<HTMLElement>('[data-active="true"]')
+      ?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+  }, [device, activeId, windows.length]);
 
   // The icons a phone tucks behind the chevron.
   const hidden: ReactNode = (
@@ -127,7 +137,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
       >
         <span className={styles.startText}>{t('taskbar.start')}</span>
       </button>
-      <div className={styles.windows}>
+      <div className={styles.windows} ref={windowsRef}>
         {windows.map((win) => {
           const active = win.id === activeId;
           const app = getApp(win.appId);
