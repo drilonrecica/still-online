@@ -540,7 +540,12 @@
   white-space: pre-line;
 }
 
+/* On the panel like a box: on a dark pasted background the theme's text colour stays readable. */
 .autoplayToggle {
+  display: inline-block;
   margin: 4px 0;
+  padding: 2px 6px;
+  background: var(--sp-panel);
+  border: 1px solid var(--sp-accent);
   font-size: 11px;
 }
