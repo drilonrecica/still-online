@@ -7,7 +7,8 @@ import { useT } from '@/i18n/useT';
 import { mulberry32, seedFrom } from '@/os/random';
 import { playSound } from '@/os/sound';
 import { useSettingsStore } from '@/os/store/settings';
-import { useWindowsStore } from '@/os/store/windows';
+import { getDevice } from '@/os/device';
+import { effectiveMaximized, useWindowsStore } from '@/os/store/windows';
 import { TASKBAR_HEIGHT } from '@/os/types';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import { dragTo, grab, release } from './drag';
@@ -33,6 +34,7 @@ const BLINK_MS = 150;
 /** The current surfaces, read fresh from the windows store. */
 function readWorld(): PetWorld {
   const { windows } = useWindowsStore.getState();
+  const device = getDevice();
   const chromeless = new Set(
     windows
       .filter((win) => getApp(win.appId)?.chrome === 'none')
@@ -41,7 +43,10 @@ function readWorld(): PetWorld {
   const viewport = { w: window.innerWidth, h: window.innerHeight };
   return {
     surfaces: computeSurfaces({
-      windows,
+      windows: windows.map((win) => ({
+        ...win,
+        maximized: effectiveMaximized(win, device),
+      })),
       viewport,
       taskbarHeight: TASKBAR_HEIGHT,
       hasTitleBar: (id) => !chromeless.has(id),

@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { isMessageKey, sanitizeTextParams } from '@/i18n/refs';
-import { getDevice, taskbarHeight } from '@/os/device';
+import { getDevice, taskbarHeight, type Device } from '@/os/device';
 import { isRecord, persistOptions } from '@/os/persist';
 import {
   CASCADE_ORIGIN,
@@ -36,6 +36,8 @@ export interface WindowsStoreDeps {
   getApp: AppResolver;
   /** Work area size in px: the viewport minus the taskbar. */
   getWorkArea: () => Size;
+  /** The device class; defaults to `getDevice` (tests pass their own). */
+  getDevice?: () => Device;
 }
 
 /**
@@ -48,6 +50,17 @@ export function viewportWorkArea(): Size {
     w: window.innerWidth,
     h: Math.max(0, Math.floor(height) - taskbarHeight(getDevice())),
   };
+}
+
+/**
+ * Whether `win` renders maximized: a phone renders every window maximized without storing it,
+ * so its desktop geometry survives the trip (v0.6 touch rules).
+ */
+export function effectiveMaximized(
+  win: Pick<WindowState, 'maximized'>,
+  device: Device,
+): boolean {
+  return win.maximized || device === 'phone';
 }
 
 /** Keeps ≥ MIN_VISIBLE_TITLEBAR px of the titlebar on screen and its top edge ≥ 0. */
@@ -138,9 +151,13 @@ function restoreWindow(
   const app = deps.getApp(appId as AppId);
   if (!app) return null;
   const min = app.minSize ?? WM_MIN_SIZE;
-  const work = deps.getWorkArea();
   const width = Math.max(w, min.w);
   const height = Math.max(h, min.h);
+  // A phone renders every window maximized: keep the stored desktop position as it is.
+  const position =
+    (deps.getDevice ?? getDevice)() === 'phone'
+      ? { x, y }
+      : clampPosition(x, y, width, deps.getWorkArea());
   const titleParams = sanitizeTextParams(raw.titleParams);
   return {
     id,
@@ -148,7 +165,7 @@ function restoreWindow(
     ...(isMessageKey(raw.titleKey)
       ? { titleKey: raw.titleKey, ...(titleParams ? { titleParams } : {}) }
       : {}),
-    ...clampPosition(x, y, width, work),
+    ...position,
     w: width,
     h: height,
     z,
@@ -241,8 +258,15 @@ export function createWindowsStore(deps: WindowsStoreDeps) {
         }
 
         const work = deps.getWorkArea();
-        const w = Math.min(app.defaultSize.w, work.w);
-        const h = Math.min(app.defaultSize.h, work.h);
+        const device = (deps.getDevice ?? getDevice)();
+        const { defaultSize } = app;
+        const oversize = defaultSize.w > work.w || defaultSize.h > work.h;
+        // A phone renders the window maximized, so it stores the desktop default size; a tablet
+        // opens an oversize window maximized (stored, so the user can restore it).
+        const w =
+          device === 'phone' ? defaultSize.w : Math.min(defaultSize.w, work.w);
+        const h =
+          device === 'phone' ? defaultSize.h : Math.min(defaultSize.h, work.h);
         const cascaded = cascadePosition(windows.at(-1), { w, h }, work);
         const { x, y } = clampPosition(cascaded.x, cascaded.y, w, work);
         // Derived from existing ids so they stay unique after a persisted reload.
@@ -263,7 +287,7 @@ export function createWindowsStore(deps: WindowsStoreDeps) {
               h,
               z: topZ + 1,
               minimized: false,
-              maximized: false,
+              maximized: device === 'tablet' && oversize,
               props,
             },
           ],

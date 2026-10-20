@@ -1,8 +1,8 @@
 // One window: the XP frame (chrome 'xp') or a bare positioned box (chrome 'none').
 import { Suspense, useId, type CSSProperties } from 'react';
 import { useLocale, useT } from '@/i18n/useT';
-import { getDevice } from '@/os/device';
-import { useWindowsStore } from '@/os/store/windows';
+import { useDevice } from '@/os/device';
+import { effectiveMaximized, useWindowsStore } from '@/os/store/windows';
 import { composeHandlers } from '@/os/touch/compose';
 import { useActivate } from '@/os/touch/useActivate';
 import { WM_MIN_SIZE, type AppDefinition, type WindowState } from '@/os/types';
@@ -23,9 +23,9 @@ function cx(...names: (string | false | null | undefined)[]): string {
   return names.filter(Boolean).join(' ');
 }
 
-function frameStyle(win: WindowState): CSSProperties {
+function frameStyle(win: WindowState, maximized: boolean): CSSProperties {
   // Maximized fills the work area via CSS; x/y/w/h stay the restore geometry.
-  if (win.maximized) return { zIndex: win.z };
+  if (maximized) return { zIndex: win.z };
   return {
     left: win.x,
     top: win.y,
@@ -42,11 +42,15 @@ export function Window({ win, app, active }: WindowProps) {
   const title = renderWindowTitle(win, app, useLocale());
   const t = useT();
   const labelId = useId();
+  // A phone renders every window maximized, never storing it, with no Maximize/Restore,
+  // no drag and no grips.
+  const device = useDevice();
+  const phone = device === 'phone';
+  const maximized = effectiveMaximized(win, device);
   // Double-click, or a double-tap on a tablet (phone windows are always maximized).
   const activateTitle = useActivate(
-    (_: void, via, target) => {
-      if (isFromControl(target) || app.fixedSize) return;
-      if (via === 'touch' && getDevice() === 'phone') return;
+    (_: void, _via, target) => {
+      if (phone || isFromControl(target) || app.fixedSize) return;
       actions().toggleMaximize(win.id);
     },
     { touchTaps: 2, enter: false },
@@ -64,7 +68,7 @@ export function Window({ win, app, active }: WindowProps) {
     'data-window-id': win.id,
     'data-active': active,
     hidden: win.minimized,
-    style: frameStyle(win),
+    style: frameStyle(win, maximized),
     // Capture phase: focus even when the app stops propagation.
     onMouseDownCapture: focus,
     onFocusCapture: focus,
@@ -74,7 +78,7 @@ export function Window({ win, app, active }: WindowProps) {
     return (
       <section
         {...rootProps}
-        className={cx(styles.frame, win.maximized && styles.maximized)}
+        className={cx(styles.frame, maximized && styles.maximized)}
       >
         {content}
       </section>
@@ -88,7 +92,7 @@ export function Window({ win, app, active }: WindowProps) {
         'window',
         styles.frame,
         !active && styles.inactive,
-        win.maximized && styles.maximized,
+        maximized && styles.maximized,
       )}
     >
       <div
@@ -112,13 +116,16 @@ export function Window({ win, app, active }: WindowProps) {
             aria-labelledby={`${labelId}-min`}
             onClick={() => actions().minimizeWindow(win.id)}
           />
-          <button
-            type="button"
-            aria-label={win.maximized ? 'Restore' : 'Maximize'}
-            aria-labelledby={`${labelId}-max`}
-            disabled={app.fixedSize}
-            onClick={() => actions().toggleMaximize(win.id)}
-          />
+          {!phone && (
+            <button
+              type="button"
+              aria-label={win.maximized ? 'Restore' : 'Maximize'}
+              aria-labelledby={`${labelId}-max`}
+              // A fixed-size window can only be maximized by a tablet opening it; it can restore.
+              disabled={app.fixedSize && !win.maximized}
+              onClick={() => actions().toggleMaximize(win.id)}
+            />
+          )}
           <button
             type="button"
             aria-label="Close"
@@ -137,7 +144,7 @@ export function Window({ win, app, active }: WindowProps) {
         </div>
       </div>
       <div className={styles.body}>{content}</div>
-      {!win.maximized && !app.fixedSize && (
+      {!maximized && !app.fixedSize && (
         <ResizeHandles windowId={win.id} minSize={app.minSize ?? WM_MIN_SIZE} />
       )}
     </section>

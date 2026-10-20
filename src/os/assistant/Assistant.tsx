@@ -11,7 +11,12 @@ import type { Locale } from '@/i18n/types';
 import { useLocale, useT } from '@/i18n/useT';
 import type { Gender } from '@/os/types';
 import { useSettingsStore } from '@/os/store/settings';
-import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
+import { useDevice } from '@/os/device';
+import {
+  effectiveMaximized,
+  selectActiveWindowId,
+  useWindowsStore,
+} from '@/os/store/windows';
 import { composeHandlers } from '@/os/touch/compose';
 import { useLongPress } from '@/os/touch/useLongPress';
 import { TASKBAR_HEIGHT, type WindowState } from '@/os/types';
@@ -85,8 +90,10 @@ function Stapley() {
     const id = selectActiveWindowId(s);
     return s.windows.find((w) => w.id === id);
   });
-  const covered = coversCorner(active, offset);
-  const lift = active?.maximized ? STATUS_BAR_LIFT : 0;
+  const device = useDevice();
+  const maximized = !!active && effectiveMaximized(active, device);
+  const covered = maximized || coversCorner(active, offset);
+  const lift = maximized ? STATUS_BAR_LIFT : 0;
   // Each tip (and each click on Stapley) gets one FOLD_MS over a covering window.
   const [wakes, setWakes] = useState(0);
   const [foldedKey, setFoldedKey] = useState<string | null>(null);

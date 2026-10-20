@@ -1,6 +1,7 @@
 // Pointer-driven window dragging. The XP frame uses it on its titlebar; apps with
 // `chrome: 'none'` spread the returned handlers on their own drag handle.
 import { useRef, type PointerEvent } from 'react';
+import { useDeviceStore } from '@/os/device';
 import { useWindowsStore } from '@/os/store/windows';
 
 interface DragStart {
@@ -57,7 +58,10 @@ export function useWindowDrag(id: string): WindowDragHandlers {
       if (!win) return;
       // No preventDefault: it would suppress the mousedown that focuses the window.
       focusWindow(id);
-      if (win.maximized) return;
+      // A phone renders every window maximized, so nothing drags there.
+      if (win.maximized || useDeviceStore.getState().device === 'phone') {
+        return;
+      }
       e.currentTarget.setPointerCapture?.(e.pointerId);
       drag.current = {
         pointerId: e.pointerId,

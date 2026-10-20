@@ -159,3 +159,99 @@
   right: -3px;
   cursor: nwse-resize;
 }
+
+/* Touch (v0.6): phones and tablets. The desktop keeps the v0.5 sizes above. */
+
+/* The work area ends above the 40 px touch taskbar (`taskbarHeight` in device.ts). */
+:global(.desktop-root:is([data-device='phone'], [data-device='tablet']))
+  .layer {
+  bottom: 40px;
+}
+
+/* Maximized windows clear the notch. */
+:global(.desktop-root:is([data-device='phone'], [data-device='tablet']))
+  .maximized {
+  padding-top: var(--safe-top);
+}
+
+/* Phone: every window is maximized; a 36 px title bar with 36×36 Minimize and Close. */
+:global(.desktop-root[data-device='phone']) .titleBar {
+  height: 36px;
+  padding: 0 0 0 6px;
+  border-top: 0;
+  border-radius: 0;
+}
+
+:global(.desktop-root[data-device='phone'])
+  .titleBar
+  :global(.title-bar-controls)
+  button {
+  width: 36px;
+  height: 36px;
+  margin-left: 0;
+  background-size: 100% 100%;
+}
+
+/* Tablet: a 36 px title bar with 32 px buttons. */
+:global(.desktop-root[data-device='tablet']) .titleBar {
+  height: 36px;
+  padding-block: 1px;
+}
+
+:global(.desktop-root[data-device='tablet'])
+  .titleBar
+  :global(.title-bar-controls)
+  button {
+  width: 32px;
+  height: 32px;
+  background-size: 100% 100%;
+}
+
+/* Tablet: the grips stay invisible, with 16 px touch zones straddling the frame edge. */
+:global(.desktop-root[data-device='tablet']) .resize-n,
+:global(.desktop-root[data-device='tablet']) .resize-s {
+  left: 12px;
+  right: 12px;
+  height: 16px;
+}
+:global(.desktop-root[data-device='tablet']) .resize-e,
+:global(.desktop-root[data-device='tablet']) .resize-w {
+  top: 12px;
+  bottom: 12px;
+  width: 16px;
+}
+:global(.desktop-root[data-device='tablet']) .resize-n {
+  top: -8px;
+}
+:global(.desktop-root[data-device='tablet']) .resize-s {
+  bottom: -8px;
+}
+:global(.desktop-root[data-device='tablet']) .resize-e {
+  right: -8px;
+}
+:global(.desktop-root[data-device='tablet']) .resize-w {
+  left: -8px;
+}
+:global(.desktop-root[data-device='tablet']) .resize-ne,
+:global(.desktop-root[data-device='tablet']) .resize-nw,
+:global(.desktop-root[data-device='tablet']) .resize-se,
+:global(.desktop-root[data-device='tablet']) .resize-sw {
+  width: 24px;
+  height: 24px;
+}
+:global(.desktop-root[data-device='tablet']) .resize-ne {
+  top: -8px;
+  right: -8px;
+}
+:global(.desktop-root[data-device='tablet']) .resize-sw {
+  bottom: -8px;
+  left: -8px;
+}
+:global(.desktop-root[data-device='tablet']) .resize-nw {
+  top: -8px;
+  left: -8px;
+}
+:global(.desktop-root[data-device='tablet']) .resize-se {
+  bottom: -8px;
+  right: -8px;
+}

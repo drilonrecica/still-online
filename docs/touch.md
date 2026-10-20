@@ -24,6 +24,12 @@ still online is the same XP desktop on every device, adapted for touch. The desi
 - **Re-clamp:** 100 ms after resizing stops, `reclampAll()` moves every window back into the work area and caps its size to it. It changes nothing when everything fits. A phone skips it, because phone windows render maximized and their stored desktop geometry has to survive the trip.
 - A swipe over the shell becomes a browser pan and ends in `pointercancel`. Anything that tracks a swipe itself needs `touch-action: none`.
 
+## Windows
+
+- **Phone:** every window renders maximized (`effectiveMaximized(win, device)`), but this is never stored, so the desktop geometry comes back on a desktop. Maximize/Restore are hidden. The title bar is 36 px with 36×36 Minimize and Close buttons, and there's no drag and no resize grips.
+- **Tablet:** windows float. The title bar is 36 px with 32 px buttons, and the invisible resize grips get 16 px touch zones. `openApp` opens a window maximized (stored, so it can restore) when its default size doesn't fit the work area.
+- **Desktop:** unchanged.
+
 ## Touch primitives
 
 Both hooks live in `src/os/touch/` and return a binder, so one hook serves a whole list: `const press = useLongPress((point, i) => …)`, then `<li {...press(i)}>`. Every double-click or context-menu interaction goes through them, so nothing is mouse-only.

@@ -1,7 +1,10 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import type { Device } from '@/os/device';
+import { STORAGE_VERSION } from '@/os/persist';
 import {
   clampPosition,
   createWindowsStore,
+  effectiveMaximized,
   selectActiveWindowId,
   type WindowAppSpec,
 } from '@/os/store/windows';
@@ -335,6 +338,88 @@ describe('reclampAll', () => {
     work = { w: 0, h: 0 };
     s().reclampAll();
     expect(win(id)).toMatchObject({ w: 400, h: 300, maximized: true });
+  });
+});
+
+describe('touch devices', () => {
+  let device: Device;
+  let work: Size;
+  beforeEach(() => {
+    device = 'desktop';
+    work = { ...WORK };
+    store = createWindowsStore({
+      getApp: (id) => APPS[id],
+      getWorkArea: () => work,
+      getDevice: () => device,
+    });
+  });
+  afterEach(() => localStorage.clear());
+
+  it('a tablet opens an oversize window maximized, stored, so it can restore', () => {
+    device = 'tablet';
+    const big = s().openApp('amplifier');
+    expect(win(big)).toMatchObject({ maximized: true, w: 1000, h: 700 });
+    s().toggleMaximize(big);
+    expect(win(big).maximized).toBe(false);
+    expect(win(s().openApp('notepad')).maximized).toBe(false);
+  });
+
+  it('a desktop never opens a window maximized', () => {
+    expect(win(s().openApp('amplifier')).maximized).toBe(false);
+  });
+
+  it('a phone stores the desktop default size, never maximized', () => {
+    device = 'phone';
+    work = { w: 412, h: 800 };
+    const id = s().openApp('notepad');
+    expect(win(id)).toMatchObject({
+      x: CASCADE_ORIGIN,
+      y: CASCADE_ORIGIN,
+      w: 400,
+      h: 300,
+      maximized: false,
+    });
+    expect(win(s().openApp('amplifier'))).toMatchObject({
+      w: 5000,
+      h: 5000,
+      maximized: false,
+    });
+  });
+
+  it('a phone keeps the stored desktop position when it restores a save', async () => {
+    localStorage.setItem(
+      'still-online:v1:windows',
+      JSON.stringify({
+        state: {
+          windows: [
+            {
+              id: 'win-1',
+              appId: 'notepad',
+              x: 900,
+              y: 600,
+              w: 400,
+              h: 300,
+              z: 1,
+              minimized: false,
+              maximized: false,
+              props: {},
+            },
+          ],
+          topZ: 1,
+        },
+        version: STORAGE_VERSION,
+      }),
+    );
+    device = 'phone';
+    work = { w: 412, h: 800 };
+    await store.persist.rehydrate();
+    expect(win('win-1')).toMatchObject({ x: 900, y: 600, w: 400, h: 300 });
+  });
+
+  it('effectiveMaximized is the stored flag, or always on a phone', () => {
+    expect(effectiveMaximized({ maximized: false }, 'phone')).toBe(true);
+    expect(effectiveMaximized({ maximized: false }, 'tablet')).toBe(false);
+    expect(effectiveMaximized({ maximized: true }, 'desktop')).toBe(true);
   });
 });
 

@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { lazy } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { useDeviceStore } from '@/os/device';
 import { useSettingsStore } from '@/os/store/settings';
 import { setAppResolver, useWindowsStore } from '@/os/store/windows';
 import type {
@@ -100,6 +101,7 @@ const initialState = useWindowsStore.getState();
 beforeEach(() => {
   setAppResolver(getApp);
   useWindowsStore.setState(initialState, true);
+  useDeviceStore.setState({ device: 'desktop' });
 });
 
 describe('Window frame', () => {
@@ -329,5 +331,81 @@ describe('Window resizing', () => {
     const [id = ''] = await renderWith('notepad');
     act(() => store().toggleMaximize(id));
     expect(frame(id).querySelectorAll('[data-resize]')).toHaveLength(0);
+  });
+});
+
+describe('Window on a phone', () => {
+  beforeEach(() => useDeviceStore.setState({ device: 'phone' }));
+
+  it('renders maximized without touching the stored geometry', async () => {
+    const [id = ''] = await renderWith('notepad');
+    act(() => store().moveWindow(id, 300, 200));
+    const stored = { ...win(id) };
+    expect(stored).toMatchObject({ x: 300, y: 200, maximized: false });
+
+    expect(frame(id).className).toMatch(/maximized/);
+    expect(frame(id).style.left).toBe('');
+    expect(frame(id).style.width).toBe('');
+    expect(frame(id).querySelectorAll('[data-resize]')).toHaveLength(0);
+    expect(win(id)).toEqual(stored);
+
+    // Back on a desktop, the stored geometry renders again.
+    act(() => useDeviceStore.setState({ device: 'desktop' }));
+    expect(frame(id).className).not.toMatch(/maximized/);
+    expect(frame(id)).toHaveStyle({
+      left: '300px',
+      top: '200px',
+      width: '400px',
+    });
+    expect(frame(id).querySelectorAll('[data-resize]')).toHaveLength(8);
+  });
+
+  it('hides Maximize/Restore and keeps Minimize and Close', async () => {
+    const [id = ''] = await renderWith('notepad');
+    expect(screen.queryByRole('button', { name: 'Maximize' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Restore' })).toBeNull();
+    fireEvent.click(screen.getByRole('button', { name: 'Minimize' }));
+    expect(win(id).minimized).toBe(true);
+  });
+
+  it('does not drag or maximize from the title bar', async () => {
+    const [id = ''] = await renderWith('notepad');
+    drag(titleBar(id), [100, 30], [200, 130]);
+    fireEvent.doubleClick(titleBar(id));
+    expect(win(id)).toMatchObject({ x: 24, y: 24, maximized: false });
+  });
+
+  it('does not drag a chrome "none" window either', async () => {
+    const [id = ''] = await renderWith('amplifier');
+    expect(frame(id).className).toMatch(/maximized/);
+    drag(screen.getByTestId('bare-handle'), [30, 30], [130, 130]);
+    expect(win(id)).toMatchObject({ x: 24, y: 24 });
+  });
+});
+
+describe('Window on a tablet', () => {
+  beforeEach(() => useDeviceStore.setState({ device: 'tablet' }));
+
+  it('floats, drags and resizes as on a desktop', async () => {
+    const [id = ''] = await renderWith('notepad');
+    expect(frame(id).className).not.toMatch(/maximized/);
+    expect(screen.getByRole('button', { name: 'Maximize' })).toBeEnabled();
+    drag(titleBar(id), [100, 30], [150, 80]);
+    expect(win(id)).toMatchObject({ x: 74, y: 74 });
+    expect(frame(id).querySelectorAll('[data-resize]')).toHaveLength(8);
+  });
+
+  it('a fixed-size window opened maximized can restore, then not maximize again', async () => {
+    const notepad = APPS.notepad!;
+    APPS.notepad = { ...notepad, fixedSize: true };
+    try {
+      const [id = ''] = await renderWith('notepad');
+      act(() => store().toggleMaximize(id));
+      fireEvent.click(screen.getByRole('button', { name: 'Restore' }));
+      expect(win(id).maximized).toBe(false);
+      expect(screen.getByRole('button', { name: 'Maximize' })).toBeDisabled();
+    } finally {
+      APPS.notepad = notepad;
+    }
   });
 });
