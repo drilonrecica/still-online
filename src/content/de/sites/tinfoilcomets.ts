@@ -185,16 +185,14 @@ export const TINFOIL_TOUR: readonly TourDate[] = [
     date: 'nächsten samstag',
     venue: 'Lakeview Festwiese',
     note: 'open air!!! regencape mitnehmen',
-    // W3 replaces this with German
     soldOut: {
       day: 8,
-      note: 'SOLD OUT. 9 minutes. i did not get tickets. AGAIN',
+      note: 'AUSVERKAUFT. 9 minuten. ich hab keine karten bekommen. SCHON WIEDER',
     },
-    // W3 replaces this with German
     after: {
       day: 10,
-      date: 'saturday',
-      note: 'it happened. i listened on the radio. it was windy. buzz lost his hat',
+      date: 'samstag',
+      note: 'es is passiert. ich habs im radio gehört. es war windig. buzz hat seinen hut verloren',
     },
   },
   {

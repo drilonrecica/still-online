@@ -191,6 +191,6 @@ export const BULLETINS: readonly Bulletin[] = [
     body: 'die fotos von der übernachtungsparty sind drin. ja brianna is drauf. ja wir haben das gleiche eis. nein ich erklär das nich',
     link: 'http://pixlog.example/kayla',
   },
-  // Days 6–10 (W2-03): placeholders until W3.
+  // Tag 6–10: die zweite Woche (`./bulletins-week2`).
   ...BULLETINS_WEEK2,
 ];

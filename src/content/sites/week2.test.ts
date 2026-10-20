@@ -1,6 +1,6 @@
 // Week two on the sites (bible §5, §8): every site keeps its days 1–5 rate on days 6–10, and the
 // cross-links the friends' chats point at are there on their day. Structure in every language and
-// gender; story text in English (German shows English placeholders until W3).
+// gender; story text in English (the German text is checked in `fallback.test.ts`).
 import { describe, expect, it } from 'vitest';
 import { LOCALES } from '@/i18n/types';
 import { GENDERS } from '../gender';

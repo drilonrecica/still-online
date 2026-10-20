@@ -1,19 +1,18 @@
-// German Pixlog profiles, same contact ids and order as `src/content/pixlog`.
+// German Pixlog profiles, same contact ids and order as `src/content/pixlog`: days 1–5 in
+// `<friend>.ts`, days 6–10 (W3-02) in `<friend>-week2.ts`, appended with `withWeek`.
 import { withWeek, type PixlogProfile } from '../../pixlog/types';
-// Days 6–10 (W2-03): the English weeks as placeholders until W3.
-// W3 replaces this with German
-import { dexPixlogWeek2 } from '../../pixlog/dex-week2';
-import { jessPixlogWeek2 } from '../../pixlog/jess-week2';
-import { kaylaPixlogWeek2 } from '../../pixlog/kayla-week2';
-import { marcoPixlogWeek2 } from '../../pixlog/marco-week2';
-import { piaPixlogWeek2 } from '../../pixlog/pia-week2';
-import { theoPixlogWeek2 } from '../../pixlog/theo-week2';
 import { dexPixlog } from './dex';
+import { dexPixlogWeek2 } from './dex-week2';
 import { jessPixlog } from './jess';
+import { jessPixlogWeek2 } from './jess-week2';
 import { kaylaPixlog } from './kayla';
+import { kaylaPixlogWeek2 } from './kayla-week2';
 import { marcoPixlog } from './marco';
+import { marcoPixlogWeek2 } from './marco-week2';
 import { piaPixlog } from './pia';
+import { piaPixlogWeek2 } from './pia-week2';
 import { theoPixlog } from './theo';
+import { theoPixlogWeek2 } from './theo-week2';
 
 export const PIXLOG_PROFILES: readonly PixlogProfile[] = [
   withWeek(jessPixlog, jessPixlogWeek2),

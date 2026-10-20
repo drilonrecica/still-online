@@ -2,8 +2,9 @@
 // and themes stay; the bands talk like 2007 band pages („danke fürs adden!!“), Velvet Lantern like
 // Marco (lowercase, never „!“).
 import { BANDS as EN_BANDS } from '../../friendspace/bands';
-import { BANDS_WEEK2, withBandWeeks } from '../../friendspace/bands-week2';
+import { withBandWeeks } from '../../friendspace/bands-week2';
 import type { Band } from '../../friendspace/types';
+import { BANDS_WEEK2 } from './bands-week2';
 
 const theme = (id: string): Band['theme'] =>
   EN_BANDS.find((b) => b.id === id)!.theme;
@@ -169,6 +170,5 @@ const DAYS_1_TO_5: readonly Band[] = [
   },
 ];
 
-// Days 6–10 (W2-03): the English shows and posts as placeholders until W3.
-// W3 replaces this with German
+// Tag 6–10: die Shows und Posts der zweiten Woche (`./bands-week2`).
 export const BANDS = withBandWeeks(DAYS_1_TO_5, BANDS_WEEK2);

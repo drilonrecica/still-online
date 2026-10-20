@@ -1,10 +1,9 @@
 // German Friendspace profiles, same contact ids and order as `src/content/friendspace/profiles`.
-// Days 6–10 (W2-03) are the English walls as placeholders until W3.
+// Days 6–10: the German week-two walls (`./week2`).
 import {
   withWallWeek,
   type ProfileContent,
 } from '../../../friendspace/profiles/types';
-// W3 replaces this with German
 import {
   DEX_WEEK2,
   JESS_WEEK2,
@@ -12,7 +11,7 @@ import {
   MARCO_WEEK2,
   PIA_WEEK2,
   THEO_WEEK2,
-} from '../../../friendspace/profiles/week2';
+} from './week2';
 import { dexProfile } from './dex';
 import { jessProfile } from './jess';
 import { kaylaProfile } from './kayla';

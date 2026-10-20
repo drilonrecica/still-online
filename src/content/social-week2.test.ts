@@ -1,7 +1,7 @@
 // Week two on Friendspace and Pixlog (bible §6, §7): the lint over days 1–10, three bulletins a day,
 // one album per friend with story-dated photos (the day-10 show album on `stage`), Velvet Lantern's
 // rec hall show and post, and what friends say to the player per gender. Structure in every
-// language and gender; story text in English (German shows English placeholders until W3).
+// language and gender; story text in English (the German text is checked in `fallback.test.ts`).
 import { describe, expect, it } from 'vitest';
 import { LOCALES } from '@/i18n/types';
 import { photoDateStamp } from '@/os/fs/photos';

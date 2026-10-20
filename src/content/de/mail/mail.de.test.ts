@@ -58,8 +58,6 @@ describe('German mail', () => {
 
   it('translates every subject and body', () => {
     MAIL_CONTENT.forEach((m, i) => {
-      // W3 tightens this: days 6–10 show the English mail until W3 writes the German.
-      if (m.day > 5) return;
       expect(m.body, m.id).not.toBe(EN[i]!.body);
       // Marco's subject is two words that are the same in German.
       if (m.id !== 'd2-marco-flyer')

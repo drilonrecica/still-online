@@ -2,7 +2,17 @@
 import { describe, expect, it } from 'vitest';
 import { CONTACT_OVERLAYS } from './de/bundle';
 import { contacts } from './contacts';
-import { contentFor, getContacts, overlayFallbacks } from './locale';
+import {
+  contentFor,
+  getContacts,
+  getSiteText,
+  overlayFallbacks,
+} from './locale';
+import { CHEATCAVE_HOST } from './sites/cheatcave';
+import { GOSSIP_HOST } from './sites/celebgossip07';
+import { KICKFLIP_HOST } from './sites/kickflipkings';
+import { TINFOIL_HOST } from './sites/tinfoilcomets';
+import { WESTFIELD_HOST } from './sites/westfieldhigh';
 import { TIPS, IDLE_JOKES } from './assistant';
 import { SCHEDULED_BALLOONS, WELCOME_BALLOON } from './balloons';
 import { SEED_FILES } from './files';
@@ -73,8 +83,6 @@ describe.each(GENDERS)(
       );
       deG.bulletins.forEach((b, i) => {
         const e = enG.bulletins[i]!;
-        // W3 tightens this: days 6–10 show the English bulletins until W3 writes the German.
-        if (b.day > 5) return;
         expect(b.subject, b.id).not.toBe(e.subject);
         expect(b.body, b.id).not.toBe(e.body);
       });
@@ -88,13 +96,8 @@ describe.each(GENDERS)(
         const e = enG.bands[i]!;
         expect(b.bio, b.id).not.toBe(e.bio);
         expect(b.hometown, b.id).not.toBe(e.hometown);
-        // W3 tightens this: days 6–10 show the English shows and posts until W3.
-        b.shows.forEach((s, j) => {
-          if (s.day <= 5) expect(s.text).not.toBe(e.shows[j]!.text);
-        });
-        b.blog.forEach((p, j) => {
-          if (p.day <= 5) expect(p.body).not.toBe(e.blog[j]!.body);
-        });
+        b.shows.forEach((s, j) => expect(s.text).not.toBe(e.shows[j]!.text));
+        b.blog.forEach((p, j) => expect(p.body).not.toBe(e.blog[j]!.body));
       });
     });
 
@@ -217,6 +220,108 @@ describe.each(GENDERS)('v0.5 week-two chats German (%s)', (gender) => {
   });
 });
 
+/** Week two (W3-02): every day 6–10 site text, side by side with its English source. */
+describe.each(GENDERS)('v0.5 week-two sites German (%s)', (gender) => {
+  const site = <H extends Parameters<typeof getSiteText>[0]>(host: H) =>
+    [getSiteText(host, 'de', gender), getSiteText(host, 'en', gender)] as const;
+  const pairs = <T extends { day: number }>(
+    de: readonly T[],
+    en: readonly T[],
+    text: (x: T) => readonly (string | undefined)[],
+  ) =>
+    de.flatMap((x, i) =>
+      x.day > 5 ? text(x).map((t, j) => [t, text(en[i]!)[j]] as const) : [],
+    );
+  const expectGerman = (
+    all: readonly (readonly [string | undefined, string | undefined])[],
+  ) => {
+    expect(all.length).toBeGreaterThan(0);
+    for (const [de, en] of all) expect(de, en).not.toBe(en);
+  };
+
+  it('Celeb Gossip 07, Westfield High and Tinfoil Comets', () => {
+    const [gossip, gossipEn] = site(GOSSIP_HOST);
+    expectGerman(
+      pairs(gossip.GOSSIP_POSTS, gossipEn.GOSSIP_POSTS, (p) => [
+        p.title,
+        p.body,
+        p.photo?.caption,
+        ...p.comments.map((c) => c.text),
+      ]).filter(([, en]) => en !== undefined),
+    );
+    expectGerman(
+      pairs(gossip.GOSSIP_POLLS, gossipEn.GOSSIP_POLLS, (p) => [p.question]),
+    );
+    const [school, schoolEn] = site(WESTFIELD_HOST);
+    expectGerman(
+      pairs(school.WESTFIELD_NEWS, schoolEn.WESTFIELD_NEWS, (n) => [
+        n.title,
+        n.body,
+      ]),
+    );
+    const [tinfoil, tinfoilEn] = site(TINFOIL_HOST);
+    expectGerman(
+      pairs(tinfoil.TINFOIL_NEWS, tinfoilEn.TINFOIL_NEWS, (n) => [n.text]),
+    );
+    expectGerman(
+      pairs(tinfoil.TINFOIL_PICS, tinfoilEn.TINFOIL_PICS, (p) => [p.caption]),
+    );
+    expectGerman(
+      pairs(tinfoil.TINFOIL_GUESTBOOK, tinfoilEn.TINFOIL_GUESTBOOK, (e) => [
+        e.message,
+      ]),
+    );
+    tinfoil.TINFOIL_TOUR.forEach((t, i) => {
+      const e = tinfoilEn.TINFOIL_TOUR[i]!;
+      if (e.soldOut) expect(t.soldOut?.note).not.toBe(e.soldOut.note);
+      if (e.after) expect(t.after?.note).not.toBe(e.after.note);
+    });
+  });
+
+  it('Cheat Cave and Kickflip Kings', () => {
+    const [cave, caveEn] = site(CHEATCAVE_HOST);
+    expectGerman(
+      pairs(cave.CHEATCAVE_NEWS, caveEn.CHEATCAVE_NEWS, (n) => [
+        n.title,
+        n.body,
+      ]),
+    );
+    expectGerman(
+      pairs(cave.CHEATCAVE_CLIPS, caveEn.CHEATCAVE_CLIPS, (c) => [c.title]),
+    );
+    expectGerman(
+      cave.CHEATCAVE_THREADS.flatMap((t, i) =>
+        pairs(t.posts, caveEn.CHEATCAVE_THREADS[i]!.posts, (p) => [p.text]),
+      ),
+    );
+    const [kings, kingsEn] = site(KICKFLIP_HOST);
+    expectGerman(
+      pairs(kings.KICKFLIP_NEWS, kingsEn.KICKFLIP_NEWS, (n) => [
+        n.title,
+        n.body,
+      ]),
+    );
+    expectGerman(
+      pairs(kings.KICKFLIP_SHOUTS, kingsEn.KICKFLIP_SHOUTS, (s) => [s.text]),
+    );
+    const { clip } = kings.KICKFLIP_VIDEO;
+    expect(clip.title).not.toBe(kingsEn.KICKFLIP_VIDEO.clip.title);
+    expect(clip.text).not.toBe(kingsEn.KICKFLIP_VIDEO.clip.text);
+    kings.KICKFLIP_CREW.forEach((m, i) => {
+      const e = kingsEn.KICKFLIP_CREW[i]!;
+      if (e.later) expect(m.later?.bestTrick).not.toBe(e.later.bestTrick);
+    });
+    kings.KICKFLIP_GIGS.forEach((g, i) => {
+      const e = kingsEn.KICKFLIP_GIGS[i]!;
+      if (e.moved) expect(g.moved?.when).not.toBe(e.moved.when);
+      e.updates?.forEach((u, j) =>
+        expect(g.updates?.[j]?.text).not.toBe(u.text),
+      );
+      if (e.after) expect(g.after?.note).not.toBe(e.after.note);
+    });
+  });
+});
+
 const PIXLOG_DE = ['jess', 'kayla', 'pia', 'marco', 'theo', 'dex'];
 /** Pixlog lines that are the same in German: a name, „pizza", „COMETS LIVE!!!", Pia shouting „DEX". */
 const SAME_IN_GERMAN = new Set(['kayla', 'pizza', 'COMETS LIVE!!!', 'DEX']);
@@ -232,13 +337,9 @@ describe.each(GENDERS)('v0.4 Pixlog German (%s)', (gender) => {
     const d = deG.pixlog.find((p) => p.contactId === id)!;
     const e = enG.pixlog.find((p) => p.contactId === id)!;
     expect(d.about).not.toBe(e.about);
-    // W3 tightens this: days 6–10 show the English Pixlog until W3 writes the German.
-    const week1 = <T extends { day: number }>(items: readonly T[]) =>
-      items.filter((x) => x.day <= 5);
     d.albums.forEach((a, i) => {
       const ea = e.albums[i]!;
       expect([a.id, a.day]).toEqual([ea.id, ea.day]);
-      if (a.day > 5) return;
       differs(a.title, ea.title, a.id);
       a.photos.forEach((ph, j) => {
         const ep = ea.photos[j]!;
@@ -248,15 +349,13 @@ describe.each(GENDERS)('v0.4 Pixlog German (%s)', (gender) => {
         );
       });
     });
-    week1(d.blog).forEach((b, i) => {
+    d.blog.forEach((b, i) => {
       differs(b.title, e.blog[i]!.title, b.id);
       differs(b.body, e.blog[i]!.body, b.id);
     });
     d.survey.answers.forEach((a, i) => differs(a, e.survey.answers[i]!, id));
-    week1(d.shouts).forEach((s, i) => differs(s.text, e.shouts[i]!.text, id));
-    week1(d.guestbook).forEach((gb, i) =>
-      differs(gb.text, e.guestbook[i]!.text, id),
-    );
+    d.shouts.forEach((s, i) => differs(s.text, e.shouts[i]!.text, id));
+    d.guestbook.forEach((gb, i) => differs(gb.text, e.guestbook[i]!.text, id));
   });
 
   it('surveys and strangers differ from English', () => {

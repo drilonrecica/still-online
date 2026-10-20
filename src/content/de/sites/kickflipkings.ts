@@ -255,10 +255,9 @@ export const KICKFLIP_CREW: readonly CrewMember[] = [
       day: 4,
       bestTrick: 'kickflip. GESTANDEN. frag das kind',
     },
-    // W3 replaces this with German
     later: {
       day: 9,
-      bestTrick: 'kickflip. LANDED. on tape. 3rd at the jam',
+      bestTrick: 'kickflip. GESTANDEN. auf kassette. 3. beim jam',
     },
   },
 ];
@@ -394,26 +393,25 @@ export const KICKFLIP_GIGS: readonly Gig[] = [
     venue: 'kommt noch',
     when: 'bald',
     note: 'marco sagt, das nächste konzert wird „größer“. wir haben gefragt, wie groß. er hat „12“ gesagt',
-    // W3 replaces this with German (moved, updates, after)
     moved: {
       day: 6,
-      venue: 'the westfield rec hall',
-      when: 'saturday. doors at 6. all ages',
+      venue: 'das jugendzentrum westfield (das juz)',
+      when: 'samstag. einlass ab 6. ohne altersbeschränkung',
     },
     updates: [
       {
         day: 6,
-        text: 'update: its the REC HALL. for real this time. the first date went to bingo. marco says bingo always wins',
+        text: 'update: es is das JUZ. diesmal echt. der erste termin is an bingo gegangen. marco sagt, bingo gewinnt immer',
       },
       {
         day: 8,
-        text: 'update: The Grip Tapes open!!! dex is filming. boards stay outside',
+        text: 'update: The Grip Tapes spielen vorher!!! dex filmt. boards bleiben draußen',
       },
     ],
     after: {
       day: 10,
-      when: 'played tonight',
-      note: 'played. 83 ppl. kev filmed nothing, dex filmed everything',
+      when: 'heute abend gespielt',
+      note: 'gespielt. 83 leute. kev hat nix gefilmt, dex hat alles gefilmt',
     },
   },
 ];
