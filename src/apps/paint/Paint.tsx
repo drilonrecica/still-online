@@ -271,7 +271,13 @@ export default function Paint({ windowId, props }: AppComponentProps) {
       />
       <div className={styles.status} aria-live="off">
         <span>
-          {tool === 'text' ? t('paint.status.text') : t('paint.status.draw')}
+          {device === 'desktop'
+            ? tool === 'text'
+              ? t('paint.status.text')
+              : t('paint.status.draw')
+            : tool === 'text'
+              ? t('paint.status.textTouch')
+              : t('paint.status.drawTouch')}
         </span>
         <span className={styles.statusCell}>
           {tools.cursor ? `${tools.cursor.x},${tools.cursor.y}` : ''}

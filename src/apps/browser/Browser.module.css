@@ -429,6 +429,7 @@
 /* Phone: finger-sized chrome. The menus, the condensed toolbar and the address bar get 36 px
    targets; the status bar stays 20 px. */
 :global(.desktop-root[data-device='phone']) .menuButton {
+  min-width: 36px;
   min-height: 36px;
   padding: 2px 8px;
 }

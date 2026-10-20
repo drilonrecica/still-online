@@ -1,0 +1,7 @@
+/* Phone: the Credits link is a 36 px tap target (touch rubric); the text keeps its XP look. */
+:global(.desktop-root[data-device='phone']) .credits {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  min-width: 36px;
+}

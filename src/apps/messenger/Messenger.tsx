@@ -1,7 +1,7 @@
 import { formatNumber } from '@/i18n/format';
 import { useGender, usePlayerName } from '@/i18n/settingsText';
 import { useLocale, useT } from '@/i18n/useT';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import type { ContactStatus, PlayerStatus } from '@/content/types';
 import { requireOnline } from '@/os/network';
 import { playSound } from '@/os/sound';
@@ -186,6 +186,7 @@ function ContactListView() {
     (s) => s.progress.player.showNowPlaying,
   );
   const setShowNowPlaying = useMessengerStore((s) => s.setShowNowPlaying);
+  const nowPlayingId = useId();
   const progress = useMessengerStore((s) => s.progress.contacts);
   const online = useMessengerStore((s) => s.online);
   const [collapsed, setCollapsed] = useState<ReadonlySet<ListGroupId>>(
@@ -304,14 +305,18 @@ function ContactListView() {
             </select>
           </div>
           <PersonalMessage />
-          <label className={styles.nowPlaying}>
+          {/* xp.css draws the box on `input + label`, so the label follows the input. */}
+          <div className={styles.nowPlaying}>
             <input
+              id={`${nowPlayingId}-now-playing`}
               type="checkbox"
               checked={showNowPlaying}
               onChange={(e) => setShowNowPlaying(e.target.checked)}
             />
-            {t('messenger.list.showNowPlaying')}
-          </label>
+            <label htmlFor={`${nowPlayingId}-now-playing`}>
+              {t('messenger.list.showNowPlaying')}
+            </label>
+          </div>
         </div>
       </div>
       <div

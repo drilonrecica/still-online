@@ -489,3 +489,8 @@
   width: 36px;
   height: 36px;
 }
+
+/* Phone: the touch hint wraps instead of ending in an ellipsis. */
+:global(.desktop-root[data-device='phone']) .status > span:first-child {
+  white-space: normal;
+}

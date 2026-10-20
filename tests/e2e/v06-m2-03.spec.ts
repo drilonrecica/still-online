@@ -255,8 +255,12 @@ test('Amplifier: play, pause, skip and reorder the playlist by long-press @phone
   await tap(amp.getByRole('button', { name: 'Next' }));
   await expect(marquee).toContainText('2. ');
 
-  // The playlist: a long-press on a row opens its menu at the finger; Move down reorders.
-  await tap(amp.getByRole('button', { name: 'Playlist' }));
+  // The playlist (open from the start on a phone): a long-press on a row opens its menu at the
+  // finger; Move down reorders.
+  await expect(amp.getByRole('button', { name: 'Playlist' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
   const rows = amp.getByTestId('playlist').getByRole('option');
   const first = (await rows.nth(0).innerText()).replace(/^1\.\s*/, '');
   const second = (await rows.nth(1).innerText()).replace(/^2\.\s*/, '');
@@ -296,7 +300,9 @@ test('Amplifier: the track menu in German @phone', async ({ page }) => {
   await expect(page.getByTestId('tray-language')).toContainText('DE');
   await openAppTouch(page, 'Amplifier');
   const amp = page.getByRole('group', { name: 'Amplifier' });
-  await tap(amp.getByRole('button', { name: 'Wiedergabeliste' }));
+  await expect(
+    amp.getByRole('button', { name: 'Wiedergabeliste' }),
+  ).toHaveAttribute('aria-pressed', 'true');
   await longPress(
     page,
     amp.getByTestId('playlist').getByRole('option').first(),

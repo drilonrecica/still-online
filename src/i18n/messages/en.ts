@@ -340,6 +340,9 @@ export const en = {
     status: {
       text: 'Click to place text, Enter to finish.',
       draw: 'Left click draws with the primary color, right click with the secondary.',
+      textTouch: 'Tap to place text, Enter to finish.',
+      drawTouch:
+        'Drag to draw, two fingers to scroll. Hold a color for the secondary.',
     },
     error: {
       read: 'Paint cannot read this file.\n{file}',

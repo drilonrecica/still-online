@@ -223,3 +223,8 @@
 :global(.desktop-root[data-device='phone']) .buttons {
   flex-wrap: wrap;
 }
+
+/* A short phone (landscape): the tab panel scrolls instead of squeezing the monitor preview. */
+:global(.desktop-root[data-device='phone']) .panel > * {
+  flex-shrink: 0;
+}

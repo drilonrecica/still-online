@@ -144,3 +144,8 @@
 :global(.desktop-root[data-device='phone']) .buttons {
   flex-wrap: wrap;
 }
+
+/* A short phone (landscape): the panel scrolls instead of squeezing its groups. */
+:global(.desktop-root[data-device='phone']) .panel > * {
+  flex-shrink: 0;
+}

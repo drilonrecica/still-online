@@ -338,6 +338,10 @@ export const de: Messages = {
     status: {
       text: 'Klicken Sie, um Text zu platzieren, und beenden Sie mit der Eingabetaste.',
       draw: 'Linksklick zeichnet mit der Vordergrundfarbe, Rechtsklick mit der Hintergrundfarbe.',
+      textTouch:
+        'Tippen Sie, um Text zu platzieren, und beenden Sie mit der Eingabetaste.',
+      drawTouch:
+        'Ziehen Sie zum Zeichnen; zwei Finger verschieben das Bild. Halten Sie eine Farbe gedrückt für die Hintergrundfarbe.',
     },
     error: {
       read: 'Paint kann diese Datei nicht lesen.\n{file}',

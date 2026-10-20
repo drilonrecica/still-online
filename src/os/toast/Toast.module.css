@@ -107,3 +107,9 @@
   top: calc(var(--safe-top) + 44px);
   bottom: auto;
 }
+
+/* Phone (v0.6): only the newest toast shows, so a stack never covers a full-screen chat. The
+   older ones still time out as usual. */
+:global(.desktop-root[data-device='phone']) .toast:not(:last-child) {
+  display: none;
+}

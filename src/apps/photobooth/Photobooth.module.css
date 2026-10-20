@@ -117,6 +117,8 @@
    tap-sized, and the photo strip scrolls sideways. */
 :global(.desktop-root[data-device='phone']) .stage {
   min-height: 140px;
+  /* The tall portrait stage would letterbox the 4:3 picture in thick black bars. */
+  background: transparent;
 }
 
 :global(.desktop-root[data-device='phone']) .count {

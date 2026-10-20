@@ -77,3 +77,12 @@
 :global(.desktop-root[data-device='phone']) .buttons {
   flex-wrap: wrap;
 }
+
+/* A short phone (landscape): the dialog scrolls so its buttons stay reachable. */
+:global(.desktop-root[data-device='phone']) .root {
+  overflow-y: auto;
+}
+
+:global(.desktop-root[data-device='phone']) .root > * {
+  flex-shrink: 0;
+}

@@ -1,6 +1,7 @@
 import { useT } from '@/i18n/useT';
 import { APP_NAME } from '@/os/brand/brand';
 import { Wordmark } from '@/os/brand/Wordmark';
+import styles from './MyComputer.module.css';
 import { resetStillOnline } from './reset';
 
 const CREDITS_URL =
@@ -36,7 +37,12 @@ export default function MyComputer() {
         {t('mycomputer.disclaimerAfter')}
       </p>
       <p>
-        <a href={CREDITS_URL} target="_blank" rel="noreferrer">
+        <a
+          className={styles.credits}
+          href={CREDITS_URL}
+          target="_blank"
+          rel="noreferrer"
+        >
           {t('mycomputer.credits')}
         </a>
       </p>

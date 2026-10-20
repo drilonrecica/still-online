@@ -221,10 +221,11 @@ async function review(
   const toast = page
     .getByRole('status')
     .filter({ has: page.getByRole('button', { name: m.toast.close }) });
-  await expect(toast.first()).toBeVisible({ timeout: 10_000 });
+  // `.last()`: a phone shows only the newest toast.
+  await expect(toast.last()).toBeVisible({ timeout: 10_000 });
   if (phone)
     await expectTarget(
-      toast.first().getByRole('button', { name: m.toast.close }),
+      toast.last().getByRole('button', { name: m.toast.close }),
       36,
     );
   await shoot(page, device, suffix, '07', 'toast');

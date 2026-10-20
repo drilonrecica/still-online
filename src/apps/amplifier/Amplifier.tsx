@@ -42,14 +42,16 @@ export default function Amplifier({ windowId }: AppComponentProps) {
   const minimized = useWindowMinimized(windowId);
   const reduced = useReducedMotion();
   const [remaining, setRemaining] = useState(false);
-  const [showPlaylist, setShowPlaylist] = useState(false);
+  const device = useDevice();
+  // A phone's full-screen skin has room for the playlist, so it starts open there.
+  const [showPlaylist, setShowPlaylist] = useState(device === 'phone');
   const [showEq, setShowEq] = useState(false);
   const [shaded, setShaded] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [skinsOpen, setSkinsOpen] = useState(false);
   // On a phone the skin fills the full-screen window, scaled with CSS zoom.
   const rootRef = useRef<HTMLDivElement>(null);
-  const fit = useSkinFit(rootRef, useDevice() === 'phone', {
+  const fit = useSkinFit(rootRef, device === 'phone', {
     eq: showEq && !shaded,
     playlist: showPlaylist && !shaded,
   });
