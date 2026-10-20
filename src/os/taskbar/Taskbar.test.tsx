@@ -1,6 +1,7 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import '@/apps/registry';
+import { useDeviceStore } from '@/os/device';
 import { useAttentionStore } from '@/os/store/attention';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
@@ -116,5 +117,80 @@ describe('Taskbar', () => {
     render(<Taskbar onStartClick={() => clicks++} />);
     fireEvent.click(screen.getByRole('button', { name: 'start' }));
     expect(clicks).toBe(1);
+  });
+});
+
+describe('Taskbar on a phone', () => {
+  beforeEach(() => {
+    useWindowsStore.setState({ windows: [], topZ: 0 });
+    useDeviceStore.setState({ device: 'phone' });
+  });
+  afterEach(() => useDeviceStore.setState({ device: 'desktop' }));
+
+  it('window buttons are icon-only, named and titled by the window', () => {
+    state().openApp('notepad');
+    render(<Taskbar />);
+    const button = screen.getByRole('button', { name: 'Untitled - Notepad' });
+    expect(button).toHaveAttribute('title', 'Untitled - Notepad');
+    expect(button.textContent).toBe('');
+  });
+
+  it('tucks network, Messenger and Fluff behind the chevron', () => {
+    render(<Taskbar />);
+    expect(screen.getByTestId('tray-language')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Mute sound' })).toBeTruthy();
+    expect(screen.getByTestId('tray-clock')).toBeInTheDocument();
+    expect(screen.queryByTestId('tray-network')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Messenger' })).toBeNull();
+
+    const chevron = screen.getByRole('button', { name: 'Show hidden icons' });
+    expect(chevron).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(chevron);
+    const hidden = screen.getByRole('group', { name: 'Show hidden icons' });
+    expect(within(hidden).getByTestId('tray-network')).toBeInTheDocument();
+    expect(
+      within(hidden).getByRole('button', { name: 'Messenger' }),
+    ).toBeTruthy();
+    expect(
+      within(hidden).getByRole('button', { name: 'Desktop sheep' }),
+    ).toBeTruthy();
+
+    // Fluff toggles in place; an outside tap folds the icons away.
+    fireEvent.click(
+      within(hidden).getByRole('button', { name: 'Desktop sheep' }),
+    );
+    expect(screen.getByTestId('tray-hidden')).toBeInTheDocument();
+    fireEvent.pointerDown(document.body);
+    expect(screen.queryByTestId('tray-hidden')).toBeNull();
+  });
+
+  it('a window coming to the front closes the flyout', () => {
+    render(<Taskbar />);
+    fireEvent.click(screen.getByRole('button', { name: 'Show hidden icons' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Messenger' }));
+    expect(state().windows.map((w) => w.appId)).toEqual(['messenger']);
+    expect(screen.queryByTestId('tray-hidden')).toBeNull();
+  });
+
+  it('German: „Ausgeblendete Symbole einblenden"', () => {
+    useSettingsStore.setState({ language: 'de' });
+    render(<Taskbar />);
+    expect(
+      screen.getByRole('button', { name: 'Ausgeblendete Symbole einblenden' }),
+    ).toBeTruthy();
+  });
+});
+
+describe('Taskbar on a desktop', () => {
+  it('keeps every tray icon and the window titles', () => {
+    useWindowsStore.setState({ windows: [], topZ: 0 });
+    state().openApp('notepad');
+    render(<Taskbar />);
+    expect(
+      screen.queryByRole('button', { name: 'Show hidden icons' }),
+    ).toBeNull();
+    expect(screen.getByTestId('tray-network')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Messenger' })).toBeTruthy();
+    expect(screen.getByText('Untitled - Notepad')).toBeInTheDocument();
   });
 });

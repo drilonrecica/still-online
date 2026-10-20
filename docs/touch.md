@@ -30,6 +30,14 @@ still online is the same XP desktop on every device, adapted for touch. The desi
 - **Tablet:** windows float. The title bar is 36 px with 32 px buttons, and the invisible resize grips get 16 px touch zones. `openApp` opens a window maximized (stored, so it can restore) when its default size doesn't fit the work area.
 - **Desktop:** unchanged.
 
+## Taskbar, Start menu and overlays
+
+- **Taskbar:** 40 px on touch devices. `--xp-taskbar-height` becomes `calc(40px + var(--safe-bottom))` on `.desktop-root` (`global.css`), so the window layer, desktop icons, Start menu, toasts and balloons all clear it. Stapley and Fluff read `taskbarHeight(device)`. On a phone the window buttons are icon-only 40×40 (title as `aria-label` and tooltip) and scroll sideways. The tray shows language, sound and clock, and a „‹" chevron (`HiddenIcons.tsx`) opens network, Messenger and Fluff. An outside tap, Escape or a window coming to the front closes it. On a tablet the buttons keep their labels (min 110 px).
+- **Start menu:** on a phone it is `min(380px, 100vw)` wide and capped to the work area. All Programs is a full-height panel over the menu with a Back row, and its folders unfold in place on a tap. A tablet keeps the flyouts, and a tap's compatibility `mouseenter` starts no hover timer.
+- **Overlays:** toasts are `min(220px, 92vw)` and balloons `min(250px, 92vw)`. Stapley is drawn at 0.8 on a phone (balloon `max-width: 70vw`). App `.dialog`s are `max-width: 94vw` on a phone. The screensaver also stops on `touchstart`.
+- **Login:** on a phone the wordmark, then the prompt over a divider, then the tile and fields. The middle scrolls when the keyboard shrinks the screen.
+- `tests/e2e/v06-m1-02.spec.ts-snapshots/` holds the v0.5 desktop taskbar and Start menu (1280×800). The desktop test compares against them.
+
 ## Touch primitives
 
 Both hooks live in `src/os/touch/` and return a binder, so one hook serves a whole list: `const press = useLongPress((point, i) => …)`, then `<li {...press(i)}>`. Every double-click or context-menu interaction goes through them, so nothing is mouse-only.

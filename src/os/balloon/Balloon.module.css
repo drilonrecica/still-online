@@ -4,6 +4,7 @@
   right: 12px;
   bottom: calc(var(--xp-taskbar-height) + 10px);
   width: 250px;
+  max-width: min(250px, 92vw);
   box-sizing: border-box;
   border: 1px solid #000;
   border-radius: 8px;

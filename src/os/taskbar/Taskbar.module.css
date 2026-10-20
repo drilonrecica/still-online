@@ -239,3 +239,122 @@
   margin-left: -12px;
   margin-right: 4px;
 }
+
+/* Touch (v0.6). The 40 px height comes from `--xp-taskbar-height` (global.css); the home-bar
+   inset sits below the buttons. The desktop keeps the v0.5 taskbar above. */
+:global(.desktop-root:is([data-device='phone'], [data-device='tablet']))
+  .taskbar {
+  padding: 0 var(--safe-right) var(--safe-bottom) var(--safe-left);
+}
+
+/* Many windows scroll sideways (by finger), without a scrollbar. */
+:global(.desktop-root:is([data-device='phone'], [data-device='tablet']))
+  .windows {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+:global(.desktop-root:is([data-device='phone'], [data-device='tablet']))
+  .windows::-webkit-scrollbar {
+  display: none;
+}
+
+:global(.desktop-root[data-device='tablet']) .windowButton {
+  flex: 0 0 160px;
+  min-width: 110px;
+}
+
+/* Phone: a compact Start button, icon-only 40×40 window buttons, 36 px wide tray buttons. */
+:global(.desktop-root[data-device='phone']) .taskbar {
+  gap: 2px;
+}
+
+:global(.desktop-root[data-device='phone']) .start {
+  min-width: 0;
+  padding: 0 12px 0 8px;
+}
+
+:global(.desktop-root[data-device='phone']) .windows {
+  gap: 0;
+  padding: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .windowButton {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  padding: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .windowButton img {
+  width: 20px;
+  height: 20px;
+}
+
+:global(.desktop-root[data-device='phone']) .tray {
+  gap: 0;
+  padding: 0 6px 0 0;
+}
+
+:global(.desktop-root[data-device='phone']) .tray .mute {
+  min-width: 36px;
+  min-height: 40px;
+  height: 40px;
+}
+
+/* The language badge keeps its 18 px box, drawn inside the taller button. */
+:global(.desktop-root[data-device='phone']) .tray .langBadge {
+  position: relative;
+  justify-content: center;
+  border: 0;
+}
+
+:global(.desktop-root[data-device='phone']) .tray .langBadge::before {
+  content: '';
+  position: absolute;
+  inset: 11px 3px;
+  border: 1px solid #e8ecf2;
+  pointer-events: none;
+}
+
+:global(.desktop-root[data-device='phone']) .clock {
+  padding-left: 4px;
+}
+
+/* XP's "Show hidden icons" chevron: a small round button with an arrow. */
+.chevron span {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #e8ecf2;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 15%);
+  font:
+    bold 13px Tahoma,
+    sans-serif;
+  line-height: 1;
+}
+
+/* The hidden icons, in a little tray-coloured flyout above the chevron. */
+.hiddenFlyout {
+  position: absolute;
+  left: -2px;
+  bottom: calc(100% + 4px);
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  border: 1px solid #0a3a9a;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(
+    to bottom,
+    var(--xp-tray-from),
+    var(--xp-tray-to)
+  );
+  box-shadow:
+    inset 1px 1px 0 #3fa5f5,
+    2px -2px 4px rgb(0 0 0 / 35%);
+  z-index: 1;
+}

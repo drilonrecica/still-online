@@ -32,11 +32,12 @@ function expectFills(box: Box, work: { w: number; h: number }) {
 
 async function expectFullScreen(page: Page, frame: Locator) {
   await expect(frame).toBeVisible();
-  // A chat that opens with a nudge shakes first.
-  await expect
-    .poll(async () => Math.round((await frame.boundingBox())?.x ?? -1))
-    .toBe(0);
-  expectFills((await frame.boundingBox())!, await workArea(page));
+  // A chat that opens with a nudge shakes first, and passes x = 0 mid-shake: retry the whole
+  // check on one measurement until the window has settled.
+  const work = await workArea(page);
+  await expect(async () => {
+    expectFills((await frame.boundingBox())!, work);
+  }).toPass({ timeout: 5000 });
 }
 
 /**

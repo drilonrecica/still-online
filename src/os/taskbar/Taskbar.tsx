@@ -1,5 +1,8 @@
 // Taskbar: Start button, one button per open window, and the tray (network, Messenger, Fluff, mute, clock).
+// On a phone the window buttons are icon-only and network, Messenger and Fluff sit behind the
+// tray's "Show hidden icons" chevron.
 import { useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import { getApp } from '@/apps/registry';
 import { useLocale, useT } from '@/i18n/useT';
 import {
@@ -11,10 +14,12 @@ import {
 import { attentionKey, useAttentionStore } from '@/os/store/attention';
 import { selectActiveWindowId, useWindowsStore } from '@/os/store/windows';
 import { useSettingsStore } from '@/os/store/settings';
+import { useDevice } from '@/os/device';
 import { useWorldStore } from '@/os/world';
 import { useMessengerStore } from '@/apps/messenger/store';
 import { StatusIcon } from '@/apps/messenger/StatusIcon';
 import { PetTray } from '@/os/pet/PetTray';
+import { HiddenIcons } from './HiddenIcons';
 import { LanguageTray } from './LanguageTray';
 import { NetworkTray } from './NetworkTray';
 import { renderWindowTitle } from '@/os/wm/title';
@@ -60,6 +65,27 @@ function TrayClock() {
   );
 }
 
+function MessengerTray() {
+  const t = useT();
+  const signedIn = useMessengerStore((s) => s.signedIn);
+  return (
+    <button
+      type="button"
+      className={styles.mute}
+      aria-label={t('taskbar.messenger')}
+      title={
+        signedIn
+          ? t('taskbar.messengerSignedIn')
+          : t('taskbar.messengerSignedOut')
+      }
+      data-signed-in={signedIn}
+      onClick={() => useWindowsStore.getState().openApp('messenger')}
+    >
+      <StatusIcon status={signedIn ? 'online' : 'offline'} />
+    </button>
+  );
+}
+
 export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
   const windows = useWindowsStore((s) => s.windows);
   const locale = useLocale();
@@ -67,8 +93,17 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
   const activeId = useWindowsStore(selectActiveWindowId);
   const muted = useSettingsStore((s) => s.muted);
   const toggleMuted = useSettingsStore((s) => s.toggleMuted);
-  const messengerSignedIn = useMessengerStore((s) => s.signedIn);
   const attention = useAttentionStore((s) => s.keys);
+  const phone = useDevice() === 'phone';
+
+  // The icons a phone tucks behind the chevron.
+  const hidden: ReactNode = (
+    <>
+      <NetworkTray />
+      <MessengerTray />
+      <PetTray className={styles.mute} />
+    </>
+  );
 
   function onWindowButton(id: string) {
     const actions = useWindowsStore.getState();
@@ -103,6 +138,7 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
             attention[
               attentionKey(win.appId, app?.instanceKey?.(win.props))
             ] === true;
+          const title = renderWindowTitle(win, app, locale);
           return (
             <button
               key={win.id}
@@ -112,7 +148,8 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
               data-active={active}
               data-attention={flashing}
               aria-description={flashing ? t('taskbar.attention') : undefined}
-              title={renderWindowTitle(win, app, locale)}
+              aria-label={phone ? title : undefined}
+              title={title}
               onClick={() => onWindowButton(win.id)}
             >
               {icon && (
@@ -124,31 +161,23 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
                   draggable={false}
                 />
               )}
-              <span className={styles.windowTitle}>
-                {renderWindowTitle(win, app, locale)}
-              </span>
+              {!phone && <span className={styles.windowTitle}>{title}</span>}
             </button>
           );
         })}
       </div>
       <div className={styles.tray}>
-        <LanguageTray />
-        <NetworkTray />
-        <button
-          type="button"
-          className={styles.mute}
-          aria-label={t('taskbar.messenger')}
-          title={
-            messengerSignedIn
-              ? t('taskbar.messengerSignedIn')
-              : t('taskbar.messengerSignedOut')
-          }
-          data-signed-in={messengerSignedIn}
-          onClick={() => useWindowsStore.getState().openApp('messenger')}
-        >
-          <StatusIcon status={messengerSignedIn ? 'online' : 'offline'} />
-        </button>
-        <PetTray className={styles.mute} />
+        {phone ? (
+          <>
+            <HiddenIcons>{hidden}</HiddenIcons>
+            <LanguageTray />
+          </>
+        ) : (
+          <>
+            <LanguageTray />
+            {hidden}
+          </>
+        )}
         <button
           type="button"
           className={styles.mute}

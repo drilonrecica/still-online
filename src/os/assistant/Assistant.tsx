@@ -2,6 +2,7 @@
 // with blue bullet options; right-click (or the balloon's link) hides him. While the active window
 // covers his corner (a maximized browser), the balloon folds away after FOLD_MS; a click on him
 // brings it back. Over a maximized window he stands STATUS_BAR_LIFT higher, above its status bar.
+// On a phone he is drawn at PHONE_SCALE above the 40 px taskbar.
 import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, PointerEvent } from 'react';
 import type { Tip } from '@/content/assistant';
@@ -11,7 +12,7 @@ import type { Locale } from '@/i18n/types';
 import { useLocale, useT } from '@/i18n/useT';
 import type { Gender } from '@/os/types';
 import { useSettingsStore } from '@/os/store/settings';
-import { useDevice } from '@/os/device';
+import { taskbarHeight, useDevice } from '@/os/device';
 import {
   effectiveMaximized,
   selectActiveWindowId,
@@ -19,7 +20,7 @@ import {
 } from '@/os/store/windows';
 import { composeHandlers } from '@/os/touch/compose';
 import { useLongPress } from '@/os/touch/useLongPress';
-import { TASKBAR_HEIGHT, type WindowState } from '@/os/types';
+import type { WindowState } from '@/os/types';
 import { StapleySprite } from './StapleySprite';
 import { useAssistantStore } from './store';
 import styles from './Assistant.module.css';
@@ -36,16 +37,19 @@ const BALLOON_HEIGHT = 170;
 const FOLD_MS = 8000;
 /** A window's status bar (20px + its top border): how far he rises over a maximized window. */
 export const STATUS_BAR_LIFT = 22;
+/** On a phone he and his balloon are drawn smaller, from his bottom-right corner. */
+const PHONE_SCALE = 0.8;
 
 /** Whether `win` (the active window) lies over Stapley's balloon corner, moved by `offset`. */
 function coversCorner(
   win: WindowState | undefined,
   offset: { x: number; y: number },
+  taskbar: number,
 ): boolean {
   if (!win) return false;
   if (win.maximized) return true;
   const right = window.innerWidth - 16 + offset.x;
-  const bottom = window.innerHeight - TASKBAR_HEIGHT - 8 + offset.y;
+  const bottom = window.innerHeight - taskbar - 8 + offset.y;
   const left = right - BALLOON_WIDTH;
   const top = bottom - HEIGHT - 4 - BALLOON_HEIGHT;
   return (
@@ -91,8 +95,9 @@ function Stapley() {
     return s.windows.find((w) => w.id === id);
   });
   const device = useDevice();
+  const taskbar = taskbarHeight(device);
   const maximized = !!active && effectiveMaximized(active, device);
-  const covered = maximized || coversCorner(active, offset);
+  const covered = maximized || coversCorner(active, offset, taskbar);
   const lift = maximized ? STATUS_BAR_LIFT : 0;
   // Each tip (and each click on Stapley) gets one FOLD_MS over a covering window.
   const [wakes, setWakes] = useState(0);
@@ -143,7 +148,7 @@ function Stapley() {
     // Stay inside the viewport: offsets are relative to the bottom-right rest position.
     const minX = WIDTH + 16 - window.innerWidth;
     const maxY = 0;
-    const minY = HEIGHT + TASKBAR_HEIGHT + 8 + lift - window.innerHeight;
+    const minY = HEIGHT + taskbar + 8 + lift - window.innerHeight;
     setOffset({
       x: Math.min(16, Math.max(minX, d.originX + dx)),
       y: Math.min(maxY, Math.max(minY, d.originY + dy)),
@@ -173,8 +178,8 @@ function Stapley() {
       className={styles.root}
       data-assistant
       style={{
-        bottom: TASKBAR_HEIGHT + 8 + lift,
-        transform: `translate(${offset.x}px, ${offset.y}px)`,
+        bottom: taskbar + 8 + lift,
+        transform: `translate(${offset.x}px, ${offset.y}px)${device === 'phone' ? ` scale(${PHONE_SCALE})` : ''}`,
       }}
       onKeyDown={onKeyDown}
     >

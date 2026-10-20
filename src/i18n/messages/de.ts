@@ -91,6 +91,7 @@ export const de: Messages = {
     unmute: 'Ton einschalten',
     muted: 'Ton ist ausgeschaltet',
     soundOn: 'Ton ist eingeschaltet',
+    showHidden: 'Ausgeblendete Symbole einblenden',
     network: {
       label: 'Netzwerk: {status}',
       title: 'DFÜ-Verbindung: {status}',
@@ -111,6 +112,7 @@ export const de: Messages = {
     logOff: 'Abmelden',
     turnOff: 'Ausschalten',
     controlPanel: 'Systemsteuerung',
+    back: 'Zurück',
     categories: {
       accessories: 'Zubehör',
       games: 'Spiele',

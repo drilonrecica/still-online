@@ -7,9 +7,8 @@ import { useT } from '@/i18n/useT';
 import { mulberry32, seedFrom } from '@/os/random';
 import { playSound } from '@/os/sound';
 import { useSettingsStore } from '@/os/store/settings';
-import { getDevice } from '@/os/device';
+import { getDevice, taskbarHeight } from '@/os/device';
 import { effectiveMaximized, useWindowsStore } from '@/os/store/windows';
-import { TASKBAR_HEIGHT } from '@/os/types';
 import { useReducedMotion } from '@/os/useReducedMotion';
 import { dragTo, grab, release } from './drag';
 import {
@@ -48,7 +47,7 @@ function readWorld(): PetWorld {
         maximized: effectiveMaximized(win, device),
       })),
       viewport,
-      taskbarHeight: TASKBAR_HEIGHT,
+      taskbarHeight: taskbarHeight(device),
       hasTitleBar: (id) => !chromeless.has(id),
     }),
     width: viewport.w,

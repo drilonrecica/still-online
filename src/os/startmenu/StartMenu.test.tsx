@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import '@/apps/registry';
+import { useDeviceStore } from '@/os/device';
 import { useSessionStore } from '@/os/store/session';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
@@ -268,5 +269,120 @@ describe('StartMenu', () => {
     expect(
       screen.getByText('Sie können den Computer jetzt ausschalten.'),
     ).toBeTruthy();
+  });
+});
+
+describe('StartMenu on a phone', () => {
+  beforeEach(() => {
+    useWindowsStore.setState({ windows: [], topZ: 0 });
+    useSessionStore.setState({ state: 'desktop' });
+    useDeviceStore.setState({ device: 'phone' });
+  });
+  afterEach(() => useDeviceStore.setState({ device: 'desktop' }));
+
+  it('All Programs is a panel with Back; folders unfold on tap', () => {
+    const onClose = vi.fn();
+    render(<StartMenu open onClose={onClose} />);
+    fireEvent.click(screen.getByRole('menuitem', { name: /All Programs/ }));
+    const panel = screen.getByRole('menu', { name: 'All Programs' });
+    const items = within(panel).getAllByRole('menuitem');
+    expect(items[0]).toHaveTextContent('Back');
+
+    const games = within(panel).getByRole('menuitem', { name: /Games/ });
+    fireEvent.click(games);
+    expect(games).toHaveAttribute('aria-expanded', 'true');
+    // The folder unfolds inside the panel, so the other folders stay tappable.
+    const sub = within(panel).getByRole('menu', { name: 'Games' });
+    expect(
+      within(panel).getByRole('menuitem', { name: /Internet/ }),
+    ).toBeTruthy();
+    fireEvent.click(games);
+    expect(within(panel).queryByRole('menu', { name: 'Games' })).toBeNull();
+
+    fireEvent.click(games);
+    fireEvent.click(
+      within(screen.getByRole('menu', { name: 'Games' })).getByRole(
+        'menuitem',
+        { name: 'Mines' },
+      ),
+    );
+    expect(sub).not.toBeInTheDocument();
+    expect(useWindowsStore.getState().windows.map((w) => w.appId)).toEqual([
+      'mines',
+    ]);
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('Back returns to the main menu', () => {
+    render(<StartMenu open onClose={() => {}} />);
+    fireEvent.click(screen.getByRole('menuitem', { name: /All Programs/ }));
+    fireEvent.click(screen.getByRole('menuitem', { name: /Games/ }));
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Back' }));
+    expect(screen.queryByRole('menu', { name: 'All Programs' })).toBeNull();
+    expect(
+      screen.getByRole('menuitem', { name: /All Programs/ }),
+    ).toHaveFocus();
+  });
+
+  it('hover does not open folders', () => {
+    vi.useFakeTimers();
+    render(<StartMenu open onClose={() => {}} />);
+    fireEvent.click(screen.getByRole('menuitem', { name: /All Programs/ }));
+    const cat = screen.getByRole('menuitem', { name: /System Tools/ });
+    fireEvent.mouseEnter(cat.parentElement as HTMLElement);
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
+    expect(screen.queryByRole('menu', { name: 'System Tools' })).toBeNull();
+    vi.useRealTimers();
+  });
+
+  it('German: „Zurück"', () => {
+    useSettingsStore.setState({ language: 'de' });
+    render(<StartMenu open onClose={() => {}} />);
+    fireEvent.click(screen.getByRole('menuitem', { name: /Alle Programme/ }));
+    expect(screen.getByRole('menuitem', { name: 'Zurück' })).toBeTruthy();
+  });
+});
+
+describe('StartMenu on a tablet', () => {
+  beforeEach(() => {
+    useWindowsStore.setState({ windows: [], topZ: 0 });
+    useDeviceStore.setState({ device: 'tablet' });
+  });
+  afterEach(() => {
+    useDeviceStore.setState({ device: 'desktop' });
+    vi.useRealTimers();
+  });
+
+  it('a tap opens a flyout, and its compatibility mouseenter starts no hover timer', () => {
+    vi.useFakeTimers();
+    render(<StartMenu open onClose={() => {}} />);
+    fireEvent.click(screen.getByRole('menuitem', { name: /All Programs/ }));
+    const games = screen.getByRole('menuitem', { name: /Games/ });
+    fireEvent.pointerDown(games, { pointerType: 'touch' });
+    fireEvent.click(games);
+    expect(screen.getByRole('menu', { name: 'Games' })).toBeTruthy();
+    // The finger then lands on another folder: its mouseenter must not open it under the tap.
+    const tools = screen.getByRole('menuitem', { name: /System Tools/ });
+    fireEvent.mouseEnter(tools.parentElement as HTMLElement);
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
+    expect(screen.getByRole('menu', { name: 'Games' })).toBeTruthy();
+    expect(screen.queryByRole('menu', { name: 'System Tools' })).toBeNull();
+  });
+
+  it('a mouse still opens flyouts by hover', () => {
+    vi.useFakeTimers();
+    render(<StartMenu open onClose={() => {}} />);
+    fireEvent.click(screen.getByRole('menuitem', { name: /All Programs/ }));
+    const tools = screen.getByRole('menuitem', { name: /System Tools/ });
+    fireEvent.pointerDown(tools, { pointerType: 'mouse' });
+    fireEvent.mouseEnter(tools.parentElement as HTMLElement);
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
+    expect(screen.getByRole('menu', { name: 'System Tools' })).toBeTruthy();
   });
 });

@@ -162,12 +162,6 @@
 
 /* Touch (v0.6): phones and tablets. The desktop keeps the v0.5 sizes above. */
 
-/* The work area ends above the 40 px touch taskbar (`taskbarHeight` in device.ts). */
-:global(.desktop-root:is([data-device='phone'], [data-device='tablet']))
-  .layer {
-  bottom: 40px;
-}
-
 /* Maximized windows clear the notch. */
 :global(.desktop-root:is([data-device='phone'], [data-device='tablet']))
   .maximized {

@@ -157,3 +157,48 @@
   font-weight: bold;
   box-shadow: 0 0 0 2px #f9a63a;
 }
+
+/* Phone (v0.6): one column, the wordmark and the prompt on top, a divider, then the account
+   tile and its fields. The middle scrolls when the on-screen keyboard shrinks the screen. */
+:global(.desktop-root[data-device='phone']) .header {
+  justify-content: center;
+  padding: calc(10px + var(--safe-top)) 16px 10px;
+}
+
+:global(.desktop-root[data-device='phone']) .body {
+  min-height: 0;
+  justify-content: safe center;
+  gap: 14px;
+  padding: 16px 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+:global(.desktop-root[data-device='phone']) .prompt {
+  align-self: stretch;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(255 255 255 / 35%);
+  font-size: 14px;
+  text-align: center;
+}
+
+:global(.desktop-root[data-device='phone']) .field input {
+  min-height: 36px;
+  font-size: 16px;
+}
+
+:global(.desktop-root[data-device='phone']) .languageOption {
+  min-height: 36px;
+  min-width: 120px;
+  padding-block: 6px;
+}
+
+:global(.desktop-root[data-device='phone']) .language {
+  margin-top: 0;
+  padding-top: 12px;
+}
+
+:global(.desktop-root[data-device='phone']) .footer {
+  padding: 8px 16px calc(8px + var(--safe-bottom));
+  font-size: 12px;
+}

@@ -770,3 +770,8 @@ input[type='range'].eqSlider:focus-visible::-moz-range-thumb {
   margin: 0;
   color: #ff6b6b;
 }
+
+/* Phone (v0.6): dialogs never run past the screen. */
+:global(.desktop-root[data-device='phone']) .dialog {
+  max-width: 94vw;
+}

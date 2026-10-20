@@ -81,6 +81,24 @@ describe('Screensaver overlay', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
+  it('a touch stops it, and its tap does not reach the desktop', () => {
+    const onClick = vi.fn();
+    render(
+      <>
+        <button type="button" onClick={onClick}>
+          Start
+        </button>
+        <OverlayLayer />
+      </>,
+    );
+    start();
+    const button = screen.getByRole('button', { name: 'Start' });
+    fireEvent.touchStart(button);
+    expect(useScreensaverStore.getState().running).toBeNull();
+    fireEvent.click(button);
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
   it('ignores the input that started Preview', () => {
     render(<OverlayLayer />);
     now = 0;

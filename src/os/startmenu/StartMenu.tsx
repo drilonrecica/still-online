@@ -1,4 +1,6 @@
 // Start menu: pinned programs + All Programs flyout | places, user header, Log Off / Turn Off footer.
+// On a phone All Programs is a full-height panel over the menu (a Back row on top) whose folders
+// unfold in place on a tap; the mouse keeps the hover flyouts.
 import { useT } from '@/i18n/useT';
 import { usePlayerName, useUserPicture } from '@/i18n/settingsText';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -9,11 +11,11 @@ import {
   resolveShortcuts,
   type ResolvedShortcut,
 } from '@/os/shortcuts';
+import { taskbarHeight, useDevice } from '@/os/device';
 import { useSessionStore } from '@/os/store/session';
 import { useWindowsStore } from '@/os/store/windows';
 import {
   APP_CATEGORIES,
-  TASKBAR_HEIGHT,
   type AppCategory,
   type AppDefinition,
   type AppId,
@@ -42,6 +44,10 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
   const [flyout, setFlyout] = useState(false);
   const [category, setCategory] = useState<AppCategory | null>(null);
   const hoverTimer = useRef<number | undefined>(undefined);
+  // A tap sends compatibility mouse events too; the hover timer only listens to a real mouse.
+  const lastPointer = useRef<string>('mouse');
+  const device = useDevice();
+  const phone = device === 'phone';
   // What to focus after the next render, when a keyboard action changed the open levels.
   const focusAfter = useRef<
     'flyout' | 'sub' | 'allPrograms' | 'category' | null
@@ -96,17 +102,19 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
 
   // A submenu opens down from its folder; like XP, shift it up when it would run past the
   // taskbar (System Tools sits low and keeps growing).
+  // A phone unfolds the folder in place instead.
   useLayoutEffect(() => {
     const sub =
       rootRef.current?.querySelector<HTMLElement>('[data-level="sub"]');
     if (!sub) return;
     sub.style.top = '';
+    if (phone) return;
     const rect = sub.getBoundingClientRect();
-    const overflow = rect.bottom - (window.innerHeight - TASKBAR_HEIGHT);
+    const overflow = rect.bottom - (window.innerHeight - taskbarHeight(device));
     if (overflow <= 0) return;
     const top = parseFloat(getComputedStyle(sub).top) || 0;
     sub.style.top = `${top - Math.min(overflow, Math.max(0, rect.top))}px`;
-  }, [category]);
+  }, [category, phone, device]);
 
   useEffect(() => {
     const what = focusAfter.current;
@@ -116,8 +124,9 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
     if (!root) return;
     const first = (sel: string) =>
       root.querySelector<HTMLElement>(`${sel} button`)?.focus();
-    if (what === 'allPrograms') first('[data-all-programs]');
-    else if (what === 'flyout') first('[data-level="flyout"]');
+    if (what === 'allPrograms') {
+      root.querySelector<HTMLElement>('button[data-all-programs]')?.focus();
+    } else if (what === 'flyout') first('[data-level="flyout"]');
     else if (what === 'sub') first('[data-level="sub"]');
     else if (what === 'category') {
       root
@@ -223,7 +232,11 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
       className={styles.menu}
       role="menu"
       aria-label={t('startMenu.label')}
+      data-phone={phone || undefined}
       onKeyDown={onKeyDown}
+      onPointerDownCapture={(e) => {
+        lastPointer.current = e.pointerType;
+      }}
     >
       <div className={styles.header}>
         <img
@@ -272,12 +285,32 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
           aria-label={t('startMenu.allPrograms')}
           data-level="flyout"
         >
+          {phone && (
+            <li role="none">
+              <button
+                type="button"
+                role="menuitem"
+                className={`${styles.item} ${styles.back}`}
+                onClick={() => {
+                  focusAfter.current = 'allPrograms';
+                  setCategory(null);
+                  setFlyout(false);
+                }}
+              >
+                <span className={styles.backArrow} aria-hidden="true">
+                  ◀
+                </span>
+                <span>{t('startMenu.back')}</span>
+              </button>
+            </li>
+          )}
           {categories.map((c) => (
             <li
               key={c.id}
               role="none"
               className={styles.categoryItem}
               onMouseEnter={() => {
+                if (phone || lastPointer.current === 'touch') return;
                 window.clearTimeout(hoverTimer.current);
                 hoverTimer.current = window.setTimeout(
                   () => setCategory(c.id),
@@ -293,7 +326,10 @@ export function StartMenu({ open, onClose, apps }: StartMenuProps) {
                 aria-expanded={category === c.id}
                 data-category={c.id}
                 className={styles.item}
-                onClick={() => openCategory(c.id, false)}
+                onClick={() => {
+                  if (phone && category === c.id) setCategory(null);
+                  else openCategory(c.id, false);
+                }}
               >
                 <img
                   src={c.apps[0]?.icon16}

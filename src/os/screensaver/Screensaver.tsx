@@ -75,9 +75,13 @@ function useDismiss(ref: React.RefObject<HTMLDivElement | null>) {
       if (shouldStop({ kind: 'move', x: e.clientX, y: e.clientY, time }))
         stop();
     };
-    const onDown = (e: PointerEvent) => {
-      e.preventDefault();
-      if (!shouldStop({ kind: 'down', time: performance.now() })) return;
+    // A finger stops it too: `touchstart` and its `pointerdown` both arrive, only the first counts.
+    let stopped = false;
+    const onDown = (e: PointerEvent | TouchEvent) => {
+      if (e.cancelable) e.preventDefault();
+      if (stopped || !shouldStop({ kind: 'down', time: performance.now() }))
+        return;
+      stopped = true;
       swallowNextClick();
       stop();
     };
@@ -90,11 +94,16 @@ function useDismiss(ref: React.RefObject<HTMLDivElement | null>) {
     };
     window.addEventListener('pointermove', onMove, true);
     window.addEventListener('pointerdown', onDown, true);
+    window.addEventListener('touchstart', onDown, {
+      capture: true,
+      passive: false,
+    });
     window.addEventListener('keydown', onKey, true);
     window.addEventListener('wheel', onWheel, { capture: true, passive: true });
     return () => {
       window.removeEventListener('pointermove', onMove, true);
       window.removeEventListener('pointerdown', onDown, true);
+      window.removeEventListener('touchstart', onDown, true);
       window.removeEventListener('keydown', onKey, true);
       window.removeEventListener('wheel', onWheel, true);
       if (previousFocus instanceof HTMLElement && previousFocus.isConnected)

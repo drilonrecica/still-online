@@ -39,6 +39,12 @@ textarea,
   --safe-left: env(safe-area-inset-left, 0px);
 }
 
+/* Phones and tablets: the 40 px touch taskbar (`TOUCH_TASKBAR_HEIGHT`), plus the home-bar inset
+   below it. Everything that sits on the taskbar reads this token. */
+.desktop-root:is([data-device='phone'], [data-device='tablet']) {
+  --xp-taskbar-height: calc(40px + var(--safe-bottom));
+}
+
 /* Touch: no double-tap zoom, no long-press callout and no tap flash on the shell. */
 .desktop-root {
   touch-action: manipulation;

@@ -13,7 +13,6 @@ poll_interval = "2s"
 [columns]
 
 [claude]
-  command = "claude"
   extra_args = []
 
 [run]

@@ -94,6 +94,7 @@ export const en = {
     unmute: 'Unmute sound',
     muted: 'Sound is muted',
     soundOn: 'Sound is on',
+    showHidden: 'Show hidden icons',
     network: {
       label: 'Network: {status}',
       title: 'Dial-up Connection: {status}',
@@ -114,6 +115,7 @@ export const en = {
     logOff: 'Log Off',
     turnOff: 'Turn Off Computer',
     controlPanel: 'Control Panel',
+    back: 'Back',
     categories: {
       accessories: 'Accessories',
       games: 'Games',

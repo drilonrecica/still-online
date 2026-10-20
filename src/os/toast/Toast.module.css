@@ -12,7 +12,7 @@
 
 .toast {
   position: relative;
-  width: 220px;
+  width: min(220px, 92vw);
   pointer-events: auto;
   border: 1px solid #0c3a9b;
   border-radius: 6px;

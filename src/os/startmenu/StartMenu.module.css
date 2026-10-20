@@ -187,3 +187,65 @@
   background: rgb(255 255 255 / 25%);
   outline: none;
 }
+
+/* Touch (v0.6). The desktop keeps the v0.5 menu above. */
+
+/* Phone: as wide as fits, capped to the work area; the lists scroll inside. */
+:global(.desktop-root[data-device='phone']) .menu {
+  left: var(--safe-left);
+  width: min(380px, 100vw - var(--safe-left) - var(--safe-right));
+  max-height: calc(100dvh - var(--xp-taskbar-height));
+}
+
+:global(.desktop-root[data-device='phone']) .columns {
+  height: auto;
+  flex: 0 1 calc(var(--xp-startmenu-height) - 80px);
+}
+
+:global(.desktop-root[data-device='phone']) .item,
+:global(.desktop-root[data-device='phone']) .allProgramsButton {
+  min-height: 36px;
+}
+
+:global(.desktop-root[data-device='phone']) .footerButton {
+  min-height: 36px;
+  padding: 0 10px;
+}
+
+/* All Programs: a full-height white panel over the whole menu. */
+:global(.desktop-root[data-device='phone']) .flyout {
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  min-width: 0;
+  border: 0;
+  border-radius: 7px 7px 0 0;
+  box-shadow: none;
+  z-index: 1;
+}
+
+/* Folders unfold below their row instead of flying out. */
+:global(.desktop-root[data-device='phone']) .submenu {
+  position: static;
+  min-width: 0;
+  padding: 0 0 2px 20px;
+  border: 0;
+  box-shadow: none;
+}
+
+:global(.desktop-root[data-device='phone'])
+  .categoryItem
+  > .item[aria-expanded='true']
+  .arrow {
+  transform: rotate(90deg);
+}
+
+.back {
+  border-bottom: 1px solid #d3d3d3;
+  font-weight: bold;
+}
+
+.backArrow {
+  font-size: 8px;
+  color: #3a9a3a;
+}
