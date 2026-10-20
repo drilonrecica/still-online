@@ -361,6 +361,10 @@ From `docs/story-week2.md`; W3-01 (chats) set these, W3-02 (mail, sites, social)
 | Marco's show album                                            | „juz. platz für 80. (83)"                                                               | Pixlog and his day-10 mail                                                               |
 | space cadet (the player)                                      | „Weltraumkadettin/Weltraumkadett"                                                       | `g()`                                                                                    |
 | lyrics by my cousin                                           | „meine cousine/mein cousin"                                                             | Marco, `g()`                                                                             |
+| shrine (day 6) · MUSEUM · THE SHRINE (day 10)                 | „schrein" · „MUSEUM" · „DER SCHREIN"                                                    | W3-G: day 6 sets up the day-10 callback                                                  |
+| the mic only works upside down                                | „das mikro geht nur verkehrt rum"                                                       | W3-G: everywhere (chats, sites, social)                                                  |
+| the soda (roadie pay)                                         | „ne Limo"                                                                               | W3-G: same as week one's roadie pay                                                      |
+| not blurry (Dex in chat)                                      | „nich verschwommen"                                                                     | W3-G: chats, as in week one; his photos keep „der wischer"                               |
 
 ### Chain letters and spam: German 2007 tropes
 

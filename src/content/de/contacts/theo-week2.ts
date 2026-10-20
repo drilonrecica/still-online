@@ -71,7 +71,7 @@ export const theoWeek2Scripts: ContactOverlay['scripts'] = {
       ],
       choices: [
         { text: 'nächstes mal isst du mit mir' },
-        { text: 'die reden gut über dich', label: 'Nur gutes' },
+        { text: 'die reden gut über dich', label: 'Nur Gutes' },
       ],
       personalMessages: { 3: 'hängt an der wand. (immer noch sorry)' },
     },
@@ -111,7 +111,7 @@ export const theoWeek2Scripts: ContactOverlay['scripts'] = {
       ],
       choices: [
         { text: 'jep. velvet lantern' },
-        { text: 'er hat nach dir gefragt', label: 'Er will dich' },
+        { text: 'er hat nach dir gefragt', label: 'Er fragt nach dir' },
       ],
     },
     ask: {
@@ -131,13 +131,13 @@ export const theoWeek2Scripts: ContactOverlay['scripts'] = {
       ],
     },
     no: {
-      lines: ['ich weiß', 'deswegen will ich ja ja sagen', 'glaub ich'],
+      lines: ['ich weiß', 'genau deswegen will ich ja sagen', 'glaub ich'],
       choices: [{ text: 'dann sag ja' }, { text: 'lass dir zeit' }],
     },
     please: {
       lines: [
         g(
-          'noch nie hat jemand bitte zu meinen zeichnungen gesagt',
+          'zu meinen zeichnungen hat noch nie jemand bitte gesagt',
           'der einzige?? herr dalton hat ne ganze wand voller zeichnungen',
         ),
         g('ok', 'ok. meine sind die neben der tür. sorry'),
@@ -169,7 +169,7 @@ export const theoWeek2Scripts: ContactOverlay['scripts'] = {
       ],
       choices: [
         { text: 'was is der unterschied?', label: 'Unterschied?' },
-        { text: 'du hast die GEMAILT? so offiziell' },
+        { text: 'du hast die GEMAILT? voll offiziell' },
       ],
     },
     diff: {
@@ -277,10 +277,7 @@ export const theoWeek2Scripts: ContactOverlay['scripts'] = {
           label: g('Das fänd ich schön :)', 'Logisch'),
         },
         {
-          text: g(
-            'nur wenn du aufhörst, sorry zu sagen',
-            'die crew von der letzten reihe',
-          ),
+          text: g('nur wenn du aufhörst, sorry zu sagen', 'letzte-reihe-crew'),
           label: g('Hör auf mit sorry', 'Letzte-Reihe-Crew'),
         },
       ],
@@ -288,10 +285,7 @@ export const theoWeek2Scripts: ContactOverlay['scripts'] = {
     yes: {
       lines: [
         g(':)', 'ok cool'),
-        g(
-          'ok. hinten. das is ein plan',
-          'ok. ganz hinten. da sieht marco uns nicht',
-        ),
+        g('ok. hinten. abgemacht', 'ok. ganz hinten. da sieht marco uns nicht'),
         '',
       ],
       personalMessages: { 2: 'bis zur show (sorry) (nicht sorry)' },
@@ -346,7 +340,7 @@ export const theoWeek2Scripts: ContactOverlay['scripts'] = {
     stood: {
       lines: [
         g(
-          'danke, dass du mit mir gestanden hast. da hinten',
+          'danke, dass du bei mir gestanden hast. da hinten',
           'danke, dass ich bei dir stehen durfte',
         ),
         g(

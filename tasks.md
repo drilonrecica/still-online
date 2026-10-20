@@ -482,8 +482,8 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
 | W3-01 | **German chats days 6–10** — overlays for every W1 script, presence and gender-only thread; glossary additions. | W2-G | done | opus | agent | — | fast | — | No W1 placeholder left in `src/content/de/contacts`; overlay fallback test green; German voices per style guide; natural gendered forms via `g()`; fallback assertions added. | §W3 |
-| W3-02 | **German mail, sites, social days 6–10** — every W2 placeholder module. | W3-01 | in progress | opus | agent | — | fast | — | No `W3 replaces` comment left in `src/content/de`; parity + fallback green; audit green in DE. | §W3 |
-| W3-G | **W3 gate (German content self-review)** — Gate procedure + German content rubric + Gender rubric; German playthrough days 6–10 as girl and boy. | W3-01, W3-02 | blocked | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W3.md`; DE screenshots of the key days; fixes made. | §Gate |
+| W3-02 | **German mail, sites, social days 6–10** — every W2 placeholder module. | W3-01 | done | opus | agent | — | fast | — | No `W3 replaces` comment left in `src/content/de`; parity + fallback green; audit green in DE. | §W3 |
+| W3-G | **W3 gate (German content self-review)** — Gate procedure + German content rubric + Gender rubric; German playthrough days 6–10 as girl and boy. | W3-01, W3-02 | in progress | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v05-W3.md`; DE screenshots of the key days; fixes made. | §Gate |
 
 ## W4 — Release v0.5
 

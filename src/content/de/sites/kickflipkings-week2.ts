@@ -68,7 +68,7 @@ export const KICKFLIP_SHOUTS_WEEK2: readonly Shout[] = [
   {
     day: 9,
     user: 'sam_grabs',
-    text: '1.!!! big mike wurde beschissen. dex wurde NICH beschissen. dex war der hammer',
+    text: '1.!!! big mike hätte mehr verdient. dex hat sichs VERDIENT. dex war der hammer',
   },
   { day: 9, user: 'PizzaRolls4Life', text: 'is der jam ein spiel' },
   {
@@ -98,6 +98,6 @@ export const KICKFLIP_VIDEO_WEEK2: Pick<SkateVideo, 'views' | 'clip'> = {
     day: 9,
     title: 'NEU: kevs clip. dex beim westfield jam',
     length: '0:06',
-    text: '6 sekunden. deckel AB. man sieht den pop, den flip, die landung und dann wackelt die kamera, weil ich FETT geschrien hab. lädt nich mal. is zu kurz zum laden',
+    text: '6 sekunden. deckel AB. man sieht den pop, den flip, die landung und dann wackelt die kamera, weil ich „FETT“ geschrien hab. lädt nich mal. is zu kurz zum laden',
   },
 };

@@ -29,7 +29,7 @@ export const dexWeek2Scripts: ContactOverlay['scripts'] = {
       ],
     },
     fans: {
-      lines: ['hä', '11 echte fans', 'so viele wie bei marcos erster show', ''],
+      lines: ['hm', '11 echte fans', 'so viele wie bei marcos erster show', ''],
       choices: [
         { text: 'du bist quasi berühmt' },
         { text: 'minus deine mutter' },
@@ -50,10 +50,13 @@ export const dexWeek2Scripts: ContactOverlay['scripts'] = {
       lines: [
         'teil 2',
         'hab noch 1 kassette. da steht auch 1999 drauf',
-        'ry sagt teil 2 is nie so gut. ry hat nie nen teil 1 gemacht',
+        'ry sagt teil 2 is nie so gut wie teil 1. ry hat nie nen teil 1 gemacht',
         '',
       ],
-      choices: [{ text: 'hör nich auf ry' }, { text: 'teil 2: mehr wischer' }],
+      choices: [
+        { text: 'hör nich auf ry' },
+        { text: 'teil 2: noch verschwommener' },
+      ],
       personalMessages: { 3: '11 echte fans. wahrscheinlich' },
     },
     tell: {
@@ -146,10 +149,10 @@ export const dexWeek2Scripts: ContactOverlay['scripts'] = {
     eat: {
       lines: [
         'hat meine mutter auch gesagt',
-        'sie hat n brot in den park gebracht. vor kev',
+        'sie hat mir n butterbrot in den park gebracht. vor kevs augen',
         'kev hat die hälfte gegessen',
       ],
-      choices: [{ text: 'kev is ne gefahr' }, { text: 'schon hingefallen?' }],
+      choices: [{ text: 'kev is ne plage' }, { text: 'schon hingefallen?' }],
     },
     once: {
       lines: [
@@ -179,13 +182,13 @@ export const dexWeek2Scripts: ContactOverlay['scripts'] = {
       lines: [
         '{name}',
         'der jam',
-        'hab ihn gestanden',
+        'kickflip gestanden',
         'vor allen. so 40 leute',
         'dritter platz',
       ],
       choices: [
         { text: 'DRITTER!!!', label: 'DRITTER!!!' },
-        { text: 'hat kev das drauf??', label: 'Kev hat’s drauf?' },
+        { text: 'hat kev das gefilmt??', label: 'Kev hat’s gefilmt?' },
         { text: 'wer hat gewonnen?', label: 'Wer hat gewonnen?' },
       ],
     },
@@ -204,10 +207,10 @@ export const dexWeek2Scripts: ContactOverlay['scripts'] = {
       lines: [
         'hat er. 6 sekunden',
         'man sieht das board. und mich',
-        'zum ersten mal bin ich kein wischer',
+        'zum ersten mal bin ich nich verschwommen',
       ],
       choices: [
-        { text: 'kein wischer!!' },
+        { text: 'nich verschwommen!!' },
         { text: 'wer hat gewonnen?', label: 'Wer hat gewonnen?' },
       ],
     },
@@ -258,7 +261,7 @@ export const dexWeek2Scripts: ContactOverlay['scripts'] = {
     },
     pick: {
       lines: [
-        'jo. is n bisschen n wischer',
+        'jo. is n bisschen verschwommen',
         'jess hats gefangen. man hört sie',
         'man siehts nich. aber man hörts',
       ],
@@ -267,7 +270,7 @@ export const dexWeek2Scripts: ContactOverlay['scripts'] = {
     mom: {
       lines: [
         'übrigens. hab deine mutter getroffen',
-        'als sie dich hergebracht hat',
+        'als sie dich abgesetzt hat',
         'hab Sie gesagt. zweimal. sie hat was aufgeschrieben',
         g(
           'sie hat gefragt ob ich der mit dem video bin',
@@ -298,7 +301,7 @@ export const dexBoyWeek2: ContactOverlay['scripts'] = {
       ],
       choices: [
         { text: 'bin dabei', label: 'Bin dabei' },
-        { text: 'ich stopp deinen lauf', label: 'Ich stopp die Zeit' },
+        { text: 'ich stopp dir die zeit', label: 'Ich stopp die Zeit' },
       ],
     },
     there: {

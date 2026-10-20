@@ -39,9 +39,9 @@ export const day8Mail: readonly MailContent[] = [
     },
     subject: 'Exkursion: Einverständniserklärung',
     body: [
-      'Liebe Klasse 9b, liebe Eltern,',
+      'Liebe Klasse 9b,',
       '',
-      'nächsten Monat besuchen wir das Naturkundezentrum Westfield. Die Einverständniserklärung ist im Anhang. Bitte druckt sie aus, lasst sie unterschreiben und bringt sie in Raum 12.',
+      'nächsten Monat besuchen wir das Naturkundezentrum Westfield. Die Einverständniserklärung ist im Anhang. Bitte druckt sie aus, lasst sie von euren Eltern unterschreiben und bringt sie in Raum 12.',
       '',
       'Wir sehen einen Teich, einen Waldlehrpfad und eine sehr alte Schildkröte. Die Schildkröte mag es nicht, angestupst zu werden. Ich werde die Schildkröte nicht anstupsen.',
       '',

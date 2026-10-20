@@ -10,13 +10,13 @@ export const WESTFIELD_NEWS_WEEK2: readonly NewsPost[] = [
     day: 6,
     title: 'Biologie: Zellzeichnungen an der Kunstwand',
     author: 'Herr Dalton',
-    body: 'Die besten Zeichnungen aus dem Zell-Referat hängen jetzt an der Kunstwand in Raum 12, an der Wand neben der Tür. Herzlichen Glückwunsch an Theo K., dessen Zeichnungen so sorgfältig beschriftet sind, dass ich zwei Dinge daraus gelernt habe. Bitte schaut sie euch an. Bitte stupst sie nicht an. Ich weiß. Ich bin derjenige, der Dinge anstupst. Ich bitte trotzdem darum.',
+    body: 'Die besten Zeichnungen aus dem Zell-Referat hängen jetzt an der Kunstwand in Raum 12 (die Wand neben der Tür). Herzlichen Glückwunsch an Theo K., dessen Zeichnungen so sorgfältig beschriftet sind, dass ich zwei Dinge daraus gelernt habe. Bitte schaut sie euch an. Bitte stupst sie nicht an. Ich weiß. Ich bin derjenige, der Dinge anstupst. Ich bitte trotzdem darum.',
   },
   {
     day: 6,
     title: 'Klassensprecherwahl: Anmeldung ab morgen',
     author: 'Dr. Hargrove, Schulleiter',
-    body: 'Ab morgen früh können Sie sich im Sekretariat für das Amt der Klassensprecherin oder des Klassensprechers anmelden. Die Kandidatinnen und Kandidaten dürfen im Ostflur Plakate aufhängen, höchstens zwölf pro Person. Plakate müssen kleiner als eine Tür sein. Glitzer ist erlaubt, muss aber von der Kandidatin oder dem Kandidaten selbst wieder aufgefegt werden. Gewählt wird im Laufe der Woche in der ersten Stunde in der Klasse.',
+    body: 'Ab morgen früh ist die Anmeldung für das Amt der Klassensprecherin oder des Klassensprechers im Sekretariat möglich. Die Kandidatinnen und Kandidaten dürfen im Ostflur Plakate aufhängen, höchstens zwölf pro Person. Plakate müssen kleiner als eine Tür sein. Glitzer ist erlaubt, muss aber von der Kandidatin oder dem Kandidaten selbst wieder aufgefegt werden. Gewählt wird im Laufe der Woche in der ersten Stunde in der Klasse.',
   },
   {
     day: 7,
@@ -28,7 +28,7 @@ export const WESTFIELD_NEWS_WEEK2: readonly NewsPost[] = [
     day: 7,
     title: 'Biologie: Projekt Blättersammlung',
     author: 'Herr Dalton',
-    body: 'Liebe Biologie-Kurse: Sammelt 10 verschiedene Blätter, presst sie flach und beschriftet jedes mit dem Namen seines Baumes. Abgabe ist in zwei Wochen. Zum Pressen eignen sich dicke Bücher. Das Wörterbuch in der Bibliothek gehört nicht euch. Blätter von der Topfpflanze im Sekretariat sind nicht erlaubt. Dr. Hargrove zählt sie nach.',
+    body: 'Liebe 9. Klassen: Sammelt 10 verschiedene Blätter, presst sie flach und beschriftet jedes mit dem Namen seines Baumes. Abgabe ist in zwei Wochen. Zum Pressen eignen sich dicke Bücher. Das Wörterbuch in der Bibliothek gehört nicht euch. Blätter von der Topfpflanze im Sekretariat sind nicht erlaubt. Dr. Hargrove zählt sie nach.',
   },
   {
     day: 8,
@@ -40,7 +40,7 @@ export const WESTFIELD_NEWS_WEEK2: readonly NewsPost[] = [
     day: 8,
     title: 'Exkursion: Einverständniserklärungen',
     author: 'Herr Dalton',
-    body: 'Die Biologie-Kurse besuchen nächsten Monat das Naturkundezentrum Westfield. Die Einverständniserklärungen habt ihr heute mit nach Hause bekommen. Bitte gebt sie bis Ende nächster Woche unterschrieben zurück. Bitte bringt ein Pausenbrot, feste Schuhe und eine Jacke mit. Im Teich lebt eine Schildkröte. Wir werden die Schildkröte nicht anstupsen.',
+    body: 'Die 9. Klassen besuchen nächsten Monat das Naturkundezentrum Westfield. Die Einverständniserklärungen habt ihr heute mit nach Hause bekommen. Bitte gebt sie bis Ende nächster Woche unterschrieben zurück. Bitte bringt ein Pausenbrot, feste Schuhe und eine Jacke mit. Im Teich lebt eine Schildkröte. Wir werden die Schildkröte nicht anstupsen.',
   },
   {
     day: 9,
@@ -59,7 +59,7 @@ export const WESTFIELD_NEWS_WEEK2: readonly NewsPost[] = [
     title:
       'Klassensprecherwahl: Kayla und Brianna sind Co-Klassensprecherinnen',
     author: 'Dr. Hargrove, Schulleiter',
-    body: 'Nach dem Unentschieden freue ich mich, bekannt zu geben, dass Kayla und Brianna das Amt in diesem Schuljahr gemeinsam als Co-Klassensprecherinnen ihrer Klasse übernehmen. In einem Punkt sind sie sich bereits einig: der Frisur (Pony). Ich habe sie gebeten, sich bis Ende des Monats auf einen zweiten Punkt zu einigen. Herzlichen Glückwunsch an beide und vielen Dank an alle, die kandidiert haben.',
+    body: 'Nach dem Unentschieden freue ich mich, bekannt zu geben, dass Kayla und Brianna das Amt in diesem Schuljahr gemeinsam als Co-Klassensprecherinnen ihrer Klasse übernehmen. Auf eine Sache haben sich die beiden bereits geeinigt: die Frisur. Ich habe sie gebeten, sich bis Ende des Monats auf einen zweiten Punkt zu einigen. Herzlichen Glückwunsch an beide und vielen Dank an alle, die kandidiert haben.',
   },
   {
     day: 10,

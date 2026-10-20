@@ -21,7 +21,7 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
         '{name}!!!!',
         'STIRN-UPDATE',
         'die is jetzt LILA. so traubensaft-lila',
-        'mein bruder sagt das is ein stern wenn man die augen zukneift. ICH KNEIF JETZT VIEL',
+        'mein bruder sagt das is ein stern wenn man die augen zukneift. ICH KNEIF JETZT DAUERND DIE AUGEN ZU',
       ],
       choices: [
         { text: 'is deine stirn ok??', label: 'Stirn ok?' },
@@ -62,8 +62,8 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
     mom: {
       lines: [
         'sie hat gefragt warum ich ne lila stirn UND nen drumstick hab',
-        'ich so „rock n roll mama"',
-        'sie so „ab ins bett jessica"',
+        'ich so „rock n roll mama“',
+        'sie so „ab ins bett jessica“',
         'es war 4 uhr nachmittags',
       ],
       choices: [{ text: 'LOOOL jessica' }, { text: 'na ja. fair' }],
@@ -78,7 +78,7 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
         '',
       ],
       choices: [
-        { text: 'das is ein altar!!', label: 'Ein Altar!' },
+        { text: 'das is ein schrein!!', label: 'Ein Schrein!' },
         {
           text: g('der is perfekt (L)', 'respekt. \\m/'),
           label: g('Perfekt', 'Respekt'),
@@ -88,7 +88,7 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
     },
     museum: {
       lines: [
-        'das is kein altar. das is ein MUSEUM',
+        'das is kein schrein. das is ein MUSEUM',
         'führungen sind gratis. für dich',
         g('alle anderen zahlen in glitzer (L)', 'alle anderen zahlen (Y)'),
       ],
@@ -99,12 +99,12 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
       lines: [
         '{name} {name}',
         'WETTBEWERB. AUF DER FANSEITE',
-        'FAN-ART. thema: „die comets im weltall"',
+        'FAN-ART. thema: „die comets im weltall“',
         'und abgabe is MORGEN',
       ],
       choices: [
         { text: 'was machst du??', label: 'Was machst du?' },
-        { text: 'morgen?? das is ja voll bald', label: 'So bald!' },
+        { text: 'morgen?? das is ja voll knapp', label: 'Voll knapp!' },
       ],
     },
     soon: {
@@ -149,7 +149,7 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
       ],
       choices: [
         { text: 'ich weiß :P' },
-        { text: 'das is ein heiliger abriss', label: 'Heiliger Abriss' },
+        { text: 'das is ein heiliger kartenabriss', label: 'Heiliger Abriss' },
       ],
     },
     extra: {
@@ -189,7 +189,7 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
         'LAKEVIEW',
         'AUSVERKAUFT',
         'IN 9 MINUTEN',
-        'ich war die GANZE zeit am telefon. 40 mal besetztzeichen',
+        'ich war die GANZE zeit am telefon. hab 40 mal das besetztzeichen gehört',
         'mir gehts NICH gut',
       ],
       choices: [
@@ -242,7 +242,7 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
         'WARTE',
         'lakeview is samstag',
         'marcos show is samstag',
-        'DAS IS DER SELBE ABEND',
+        'DAS IS DERSELBE ABEND',
         'ok is entschieden. ich geh zu marcos show',
         '',
         'und das heißt',
@@ -265,8 +265,8 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
       choices: [
         { text: '2. platz is der hammer!!', label: '2. ist der Hammer' },
         {
-          text: g('die haben dich beschissen', 'nudeln sind keine kunst'),
-          label: g('Beschissen!', 'Nudeln ≠ Kunst'),
+          text: g('das war BETRUG', 'nudeln sind keine kunst'),
+          label: g('Betrug!', 'Nudeln ≠ Kunst'),
         },
         {
           text: 'häng sie neben den drumstick',
@@ -288,7 +288,7 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
     robbed: {
       lines: [
         g(
-          'BESCHISSEN. von NUDELN. danke {name}',
+          'BETRUG. von NUDELN. danke {name}',
           'du darfst nich in die nähe von meinem glitzer. du wolltest FLAMMEN',
         ),
         g(
@@ -330,7 +330,7 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
         '{name}!!!!!!',
         'ER HATS GEWORFEN',
         'MARCO. HAT. EIN PLEKTRUM. GEWORFEN',
-        'er hat mein schild gelesen und „nein" ins verkehrtrum hängende mikro gesagt',
+        'er hat mein schild gelesen und „nein“ ins mikro gesagt. das hing verkehrt rum',
         'und dann beim LETZTEN SONG hat ers einfach. geworfen',
         'UND ICH HABS GEFANGEN',
       ],
@@ -344,7 +344,7 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
       lines: [
         'MIT DER HAND',
         'wie ein NORMALER mensch',
-        'ich bin gewachsen {name}',
+        'ich bin ERWACHSEN geworden {name}',
       ],
       choices: [{ text: 'bin so stolz' }, { text: 'charakterentwicklung' }],
     },
@@ -355,7 +355,7 @@ export const jessWeek2Scripts: ContactOverlay['scripts'] = {
         'mit der hand gefangen. beim ersten versuch',
       ],
       choices: [
-        { text: g('ne echte fängerin', 'ein echter fänger') },
+        { text: 'ein echter profi' },
         { text: 'die stirn hat sich die pause verdient' },
       ],
     },
@@ -422,7 +422,7 @@ export const jessGirlThreads: ContactOverlay['scripts'] = {
         'das juz is klein. da sieht man die band wenigstens RICHTIG',
         'und mein neues schild wird das beste schild der GESCHICHTE',
         'und noch was',
-        'theo sagt sorry zu dir auf so ne SÜSSE art. ich mein ja nur',
+        'theo sagt so SÜSS sorry zu dir. ich mein ja nur',
       ],
       choices: [
         { text: '...vielleicht', label: '...vielleicht' },

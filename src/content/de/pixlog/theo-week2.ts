@@ -38,7 +38,7 @@ export const theoPixlogWeek2: PixlogWeek = {
               'die mit den mitochondrien. herr dalton hat sie in die mitte gehängt',
           },
           comments: [
-            { day: 6, from: 'marco', text: 'eingerahmt. das ist wachstum' },
+            { day: 6, from: 'marco', text: 'eingerahmt. das ist fortschritt' },
             { day: 6, from: 'dex', text: 'schön. gute farben' },
           ],
         },

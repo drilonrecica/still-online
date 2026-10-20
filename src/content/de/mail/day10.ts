@@ -34,7 +34,7 @@ export const day10Mail: readonly MailContent[] = [
       'Hab dich lieb,',
       'Mama',
       '',
-      'P.S. Papa hat gefragt, wie die Show war. Ich habe gesagt: „laut“. Er hat gesagt: „dufte“.',
+      'P.S. Papa hat gefragt, wie die Show war. Ich habe gesagt: „laut“. Er hat gesagt: „Aha. Schön.“',
     ].join('\n'),
   },
   {
@@ -48,7 +48,7 @@ export const day10Mail: readonly MailContent[] = [
     body: [
       'Liebe Schülerinnen und Schüler des Westfield-Gymnasiums,',
       '',
-      'nach dem gestrigen Unentschieden freue ich mich, euch mitzuteilen, dass Kayla und Brianna ihre Klasse in diesem Schuljahr gemeinsam vertreten, als Co-Klassensprecherinnen.',
+      'nach dem gestrigen Unentschieden freue ich mich, euch mitzuteilen, dass Kayla und Brianna ihre Klasse in diesem Schuljahr gemeinsam als Co-Klassensprecherinnen vertreten.',
       '',
       'Auf eine Sache haben sich die beiden bereits geeinigt: die Frisur.',
       '',
@@ -70,7 +70,7 @@ export const day10Mail: readonly MailContent[] = [
     body: [
       'danke. an alle 83',
       '',
-      'in den raum passen 80. der typ meinte, brandschutz is eher ne empfehlung. seine worte. ich schreib sie mir fürs nächste mal auf',
+      'in den raum passen 80. der typ meinte, brandschutz ist eher ne empfehlung. seine worte. ich schreib sie mir fürs nächste mal auf',
       '',
       'der eimer sagt auch danke. er war in 3 songs dabei. im 4. hat derek ihn umgetreten. das war nicht geplant. es war der beste teil',
       '',
@@ -157,7 +157,7 @@ export const day10Mail: readonly MailContent[] = [
         '',
         '>> forum: Kickflip_Kev sagt „ich war da“. wir glauben dir, kev',
         '',
-        '>> NINJA TURBO KOMBAT: Oma Ninja hat ne geheime spott-geste. runter halten + tritt. sie strickt. macht 0 schaden. bester move im ganzen spiel',
+        '>> NINJA TURBO KOMBAT: Oma Ninja hat ne geheime VERHÖHNUNG. runter halten + tritt. sie strickt. macht 0 schaden. bester move im ganzen spiel',
         '',
         '>> MUSIK-ECKE: die tinfoil comets haben heute abend in lakeview gespielt. es war windig. ein leser sagt, dem gitarrentyp is der alufolienhut weggeflogen. fanseite: tinfoilcomets.example',
         '',

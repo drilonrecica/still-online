@@ -31,7 +31,7 @@ const VELVET_LANTERN_WEEK2: BandWeek = {
     { day: 8, text: 'vorband: the grip tapes. 3 songs. einer über regen' },
     {
       day: 10,
-      text: 'gespielt. 83 leute. das mikro hing kopfüber. wir auch',
+      text: 'gespielt. 83 leute. das mikro hing verkehrt rum. wir auch',
     },
   ],
   blog: [
@@ -43,12 +43,12 @@ const VELVET_LANTERN_WEEK2: BandWeek = {
     {
       day: 8,
       title: 'neuer song',
-      body: `neuer song im set. ${g('„laternenherz“', '„56k“')}. der text ist von ${g('meiner cousine', 'meinem cousin')}. alles klein geschrieben. wie der abspann in dex' video. ich habe ein wort geändert. ok vier`,
+      body: `neuer song im set. ${g('„laternenherz“', '„56k“')}. der text ist von ${g('meiner cousine', 'meinem cousin')}. alles kleingeschrieben. wie der abspann in dex' video. ich habe ein wort geändert. ok vier`,
     },
     {
       day: 10,
       title: '83 statt 12',
-      body: 'ich hatte so 12 gesagt. ich lag 71 daneben. jemand hat ein plektrum geworfen. das war ich. der eimer wurde bei einem 4. song umgetreten. herr dalton hat ihn angestupst. danke an alle 83',
+      body: 'ich hatte so 12 gesagt. ich lag 71 daneben. jemand hat ein plektrum geworfen. das war ich. der eimer wurde in einem vierten song umgetreten. herr dalton hat ihn angestupst. danke an alle 83',
     },
   ],
 };
@@ -57,7 +57,7 @@ const GRIP_TAPES_WEEK2: BandWeek = {
   shows: [
     {
       day: 8,
-      text: 'samstag - vorband für velvet lantern im jugendzentrum. drinnen. keine boards. wir haben ja gesagt',
+      text: 'samstag - vorband für velvet lantern im jugendzentrum. drinnen. keine boards. wir haben zugesagt',
     },
   ],
   blog: [],

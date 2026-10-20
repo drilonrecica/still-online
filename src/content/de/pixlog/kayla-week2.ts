@@ -38,7 +38,7 @@ export const kaylaPixlogWeek2: PixlogWeek = {
             caption: '~*pony. tag 2. bereue immer noch nix. ok n bisschen*~',
           },
           comments: [
-            { day: 7, from: 'Brianna', text: 'schicke frisur ;)' },
+            { day: 7, from: 'Brianna', text: 'schöne fransen ;)' },
             { day: 7, from: 'kayla', text: 'ich WEISS' },
           ],
         },
@@ -132,7 +132,7 @@ export const kaylaPixlogWeek2: PixlogWeek = {
     {
       day: 7,
       from: 'Brianna',
-      text: 'schicke frisur. möge die bessere frisur gewinnen ;)',
+      text: 'schöne fransen. mögen die besseren fransen gewinnen ;)',
     },
     {
       day: 10,

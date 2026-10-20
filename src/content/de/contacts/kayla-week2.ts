@@ -152,14 +152,14 @@ export const kaylaWeek2Scripts: ContactOverlay['scripts'] = {
           'wähl mich. und sags den jungs (Y)',
         ),
       ],
-      personalMessages: { 1: '~*kayla als klassensprecherin*~' },
+      personalMessages: { 1: '~*wählt kayla zur klassensprecherin*~' },
     },
   },
   day8: {
     drafts: {
       lines: [
         '{name}',
-        'reden-notfall',
+        'rede-notfall',
         'ich hab 11 entwürfe. die sind alle SCHLECHT',
       ],
       choices: [
@@ -178,7 +178,7 @@ export const kaylaWeek2Scripts: ContactOverlay['scripts'] = {
         'such einen aus. sei ehrlich',
       ],
       choices: [
-        { text: 'A!! die mit dem köpfchen', label: 'A: köpfchen' },
+        { text: 'A!! der mit dem köpfchen', label: 'A: köpfchen' },
         {
           text: g(
             'B. nie wieder hackbraten',
@@ -265,7 +265,7 @@ export const kaylaWeek2Scripts: ContactOverlay['scripts'] = {
     recount: {
       lines: [
         'sie HABEN nachgezählt',
-        'zwei mal. immer noch 61 zu 61',
+        'zweimal. immer noch 61 zu 61',
         'und der hackbraten-zettel is immer noch der hackbraten-zettel',
       ],
       choices: [
@@ -400,7 +400,7 @@ export const kaylaGirlThreads: ContactOverlay['scripts'] = {
     sealed: {
       lines: [
         'und das beste',
-        'brianna zieht NIEMALS zwei mal hintereinander das gleiche an',
+        'brianna zieht NIEMALS zweimal hintereinander das gleiche an',
         'statistisch gesehen',
         '',
       ],

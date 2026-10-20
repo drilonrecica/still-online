@@ -36,7 +36,7 @@ export const jessPixlogWeek2: PixlogWeek = {
             seed: 5122,
             day: 8,
             caption:
-              'die katze is SCHON WIEDER durch den glitzer gelaufen. er gehört jetzt zur collage',
+              'die katze is SCHON WIEDER durch den glitzer gelaufen. die gehört jetzt zur collage',
           },
           comments: [
             { day: 9, from: 'pia', text: 'darf deine katze auf MEINE fotos' },

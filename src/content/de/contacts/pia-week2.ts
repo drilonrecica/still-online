@@ -62,10 +62,10 @@ export const piaWeek2Scripts: ContactOverlay['scripts'] = {
       lines: [
         'jedenfalls hab ichs aufgeschrieben',
         'WARUM ICH EINEN HAMSTER BRAUCHE. an papas laptop',
-        'mit 10 gründen. grund 10 is „ich bin fast 10"',
+        'mit 10 gründen. grund 10 is „ich bin fast 10“',
         `ich habs dir gemailt. LIES ES. du bist ${g('meine zeugin', 'mein zeuge')}`,
         '',
-        'sags mama noch nich. mama was sagen is MEIN job',
+        'sags mama noch nich. mama alles erzählen is MEIN job',
       ],
       personalMessages: { 4: 'WARUM ICH EINEN HAMSTER BRAUCHE: 10 gründe' },
     },
@@ -117,7 +117,7 @@ export const piaWeek2Scripts: ContactOverlay['scripts'] = {
         'ok es is VORBEI',
         'danke fürs klatschen',
         'keks hat auch geklatscht. er hat gebellt. is dasselbe',
-        'mama hat gesagt „ich denk drüber nach"',
+        'mama hat gesagt „ich denk drüber nach“',
         '',
         'nachdenken is GUT. nachdenken is fast ja',
       ],
@@ -128,7 +128,7 @@ export const piaWeek2Scripts: ContactOverlay['scripts'] = {
     weSee: {
       lines: [
         '{name}!!',
-        'mama hat „mal sehen" gesagt',
+        'mama hat „mal sehen“ gesagt',
         'jeder weiß dass mal sehen NEIN heißt',
         'das is so ne mama-regel',
       ],
@@ -173,7 +173,7 @@ export const piaWeek2Scripts: ContactOverlay['scripts'] = {
         'phase 2 bist DU',
         '',
         'sag mama nich dass ich dich geschickt hab',
-        'mama was sagen is MEIN job',
+        'mama alles erzählen is MEIN job',
       ],
       personalMessages: { 2: 'operation hamster: phase 2 (du)' },
     },
@@ -185,7 +185,7 @@ export const piaWeek2Scripts: ContactOverlay['scripts'] = {
         'ich hab ein HAUSTIER',
         'is kein hamster',
         'is ein FISCH. ein goldfisch. aus der zoohandlung im einkaufszentrum',
-        'mama sagt ein fisch is ein „anfänger-haustier". ich FANGE AN',
+        'mama sagt ein fisch is ein „anfänger-haustier“. ich FANGE AN',
       ],
       choices: [
         {
@@ -268,7 +268,10 @@ export const piaWeek2Scripts: ContactOverlay['scripts'] = {
           'marco hat ein GANZES album reingestellt',
         ),
       ],
-      choices: [{ text: 'abgemacht' }, { text: 'ich erzähl dir morgen alles' }],
+      choices: [
+        { text: g('abgemacht', 'ok. erwischt') },
+        { text: 'ich erzähl dir morgen alles' },
+      ],
     },
     tell: {
       lines: [

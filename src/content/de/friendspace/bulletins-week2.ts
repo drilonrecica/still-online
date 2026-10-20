@@ -25,7 +25,7 @@ export const BULLETINS_WEEK2: readonly Bulletin[] = [
     from: { contactId: 'marco' },
     subject: 'velvet lantern. jugendzentrum. diesmal echt',
     body:
-      'das jugendzentrum westfield. samstag. einlass um 18 uhr. ohne altersgrenze. passen 80 rein. ' +
+      'das jugendzentrum westfield. samstag. einlass ab 18 uhr. ohne altersgrenze. passen 80 rein. ' +
       'ja. die show am samstag, von der ich erzählt habe. bingo hatte den ersten termin. bingo gewinnt immer. ' +
       'wir brauchen ein poster. laterne. keine suppe',
     link: 'http://friendspace.example/band/velvet-lantern',
@@ -115,7 +115,7 @@ export const BULLETINS_WEEK2: readonly Bulletin[] = [
     day: 9,
     from: { contactId: 'dex' },
     subject: 'neue fotos auf pixlog. der jam',
-    body: 'dritter. hab ihn gestanden. kev hat die fotos gemacht. objektivdeckel war diesmal ab',
+    body: 'dritter. kickflip gestanden. kev hat die fotos gemacht. objektivdeckel war diesmal ab',
     link: 'http://pixlog.example/dex',
   },
   // Tag 10: nach der Show. 83 Leute, der Fisch, Co-Klassensprecherinnen.
@@ -126,7 +126,7 @@ export const BULLETINS_WEEK2: readonly Bulletin[] = [
     subject: '83 leute',
     body:
       'in den raum passen 80. gekommen sind 83. brandschutz ist eine empfehlung. ' +
-      'das mikro geht nur kopfüber. also wir auch. der eimer wurde bei einem 4. song umgetreten. ' +
+      'das mikro geht nur verkehrt rum. also wir auch. der eimer wurde in einem vierten song umgetreten. ' +
       'danke an alle. alle 83. die fotos sind drin',
     link: 'http://pixlog.example/marco',
   },

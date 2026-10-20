@@ -43,12 +43,12 @@ export const JESS_WEEK2: ProfileWeek = {
       day: 8,
       from: 'kayla',
       contactId: 'kayla',
-      text: 'in 9 MIN ausverkauft?? das is ein verbrechen. ich würd für ein gesetz stimmen',
+      text: 'in 9 MIN ausverkauft?? das is ein verbrechen. ich würd für ein gesetz dagegen stimmen',
     },
     {
       day: 9,
       from: 'xX_CometGirl_Xx',
-      text: '2. PLATZ!!! glückwunsch jess!!! gegen die nudeln zu verlieren war raub aber TROTZDEM!!!',
+      text: '2. PLATZ!!! glückwunsch jess!!! die nudeln haben gewonnen?? BETRUG!!! aber TROTZDEM!!!',
       graphic: 'thanks',
     },
     {
@@ -135,7 +135,7 @@ export const KAYLA_WEEK2: ProfileWeek = {
     {
       day: 9,
       text: g(
-        'hilf mir morgen beim outfit aussuchen!! du hast den besten blick ~*~',
+        'hilf mir morgen beim outfit aussuchen!! du hast den besten geschmack ~*~',
         '61 zu 61. eine jungsstimme mehr und ich hätt gewonnen. trotzdem danke fürs wählen (Y)',
       ),
     },
@@ -249,7 +249,7 @@ export const MARCO_WEEK2: ProfileWeek = {
       day: 9,
       from: 'kayla',
       contactId: 'kayla',
-      text: 'in ein kopfüber hängendes mikro singen is SO avantgarde ~*~',
+      text: 'in ein verkehrt rum hängendes mikro singen is SO avantgarde ~*~',
     },
     {
       day: 10,
@@ -264,12 +264,12 @@ export const MARCO_WEEK2: ProfileWeek = {
     },
   ],
   commentsOnPlayer: [
-    { day: 8, text: 'dein song. mach es nicht komisch' },
+    { day: 8, text: 'dein song. mach kein ding draus' },
     {
       day: 10,
       text: g(
         'erste reihe. na ja. eine reihe',
-        'beste crew im geschäft. einzige crew',
+        'beste crew der branche. einzige crew',
       ),
     },
   ],
@@ -329,7 +329,7 @@ export const PIA_WEEK2: ProfileWeek = {
     },
   ],
   commentsOnPlayer: [
-    { day: 6, text: 'STIMM FÜR DEN HAMSTER' },
+    { day: 6, text: 'STIMM MIT JA FÜR DEN HAMSTER' },
     { day: 9, text: 'komm SIR STERNENSTAUB DEN 2. kennenlernen (anklopfen)' },
   ],
 };

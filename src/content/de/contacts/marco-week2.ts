@@ -73,7 +73,7 @@ export const marcoWeek2Scripts: ContactOverlay['scripts'] = {
     theo: {
       lines: [
         'genau der',
-        'sag ihm, es ist bezahlt. in ruhm. und einer cola',
+        'sag ihm, bezahlt wird in ruhm. und in limo',
         'und sag ihm: laterne. keine suppe',
         'bis dann zwerg',
       ],
@@ -177,14 +177,14 @@ export const marcoWeek2Scripts: ContactOverlay['scripts'] = {
         ),
       },
       choices: [
-        { text: 'NEIN WIE GEIL', label: 'Echt jetzt' },
+        { text: 'NEIN. ECHT JETZT??', label: 'Echt jetzt?' },
         { text: 'welche wörter??', label: 'Welche Wörter?' },
-        { text: 'werd ich genannt?', label: 'Credits?' },
+        { text: 'werd ich genannt?', label: 'Werd ich genannt?' },
       ],
     },
     way: {
       lines: [
-        'echt jetzt',
+        'doch. echt',
         g(
           'derek mag den refrain. er sagt, „oh oh laterne“ ist ein ohrwurm',
           'derek mag den piiiep-krrrsch-teil. er macht ihn auf dem eimer',
@@ -193,7 +193,7 @@ export const marcoWeek2Scripts: ContactOverlay['scripts'] = {
       ],
       choices: [
         { text: 'hast du was geändert?', label: 'Änderungen?' },
-        { text: 'bester tag meines lebens', label: 'Bester Tag ever' },
+        { text: 'bester tag meines lebens', label: 'Bester Tag überhaupt' },
       ],
     },
     words: {
@@ -254,7 +254,7 @@ export const marcoWeek2Scripts: ContactOverlay['scripts'] = {
       ],
       personalMessages: { 3: 'mikro geht nur verkehrt rum. wir auch' },
       choices: [
-        { text: 'voll rock', label: 'Voll Rock' },
+        { text: 'voll rock’n’roll', label: 'Voll Rock’n’Roll' },
         {
           text: 'siehst du überhaupt die leute',
           label: 'Siehst du die Leute?',
@@ -270,7 +270,7 @@ export const marcoWeek2Scripts: ContactOverlay['scripts'] = {
       ],
       personalMessages: { 3: 'mikro geht nur verkehrt rum. wir auch' },
       choices: [
-        { text: 'ne fledermaus. voll rock', label: 'Voll Rock' },
+        { text: 'ne fledermaus. voll rock’n’roll', label: 'Voll Rock’n’Roll' },
         { text: 'das wird schon', label: 'Wird schon' },
       ],
     },
@@ -280,7 +280,7 @@ export const marcoWeek2Scripts: ContactOverlay['scripts'] = {
         'es ist gut. ist ne laterne. keiner hat nach suppe gefragt',
         g(
           'du stehst auf der liste. deine mutter hat ja gesagt. diesmal 8 reihen. such dir eine aus',
-          'du bist morgen crew. aufbau um 4. deine mutter hat ja gesagt. diesmal auch zur show',
+          'du bist morgen in der crew. aufbau um 4. deine mutter hat ja gesagt. diesmal auch zur show',
         ),
       ],
       choices: [
@@ -307,10 +307,10 @@ export const marcoWeek2Scripts: ContactOverlay['scripts'] = {
     show: {
       lines: [
         'zwerg',
-        'die show ist passiert',
+        'die show ist gelaufen',
         '83 leute',
-        'the grip tapes haben angefangen. wir haben aufgehört',
-        'passen 80 rein. der typ meinte, brandschutz ist eher ne empfehlung. seine worte. schon wieder',
+        'the grip tapes haben eröffnet. wir haben den schluss gemacht',
+        'passen 80 rein. der hausmeister meinte, brandschutz ist eher ne empfehlung. seine worte. schon wieder',
         '',
       ],
       personalMessages: { 5: '83 leute. lag um 71 daneben' },
@@ -334,7 +334,7 @@ export const marcoWeek2Scripts: ContactOverlay['scripts'] = {
     pick: {
       lines: [
         'jess hatte ein schild. MARCO WIRF EIN PLEKTRUM',
-        'ich hab nein gesagt. ins verkehrte mikro',
+        'ich hab nein gesagt. verkehrt rum ins mikro',
         'dann hab ich im letzten song eins geworfen',
         'sag ihr nicht, dass ich gezielt hab',
       ],
@@ -410,8 +410,8 @@ export const marcoBoyWeek2: ContactOverlay['scripts'] = {
         'diesmal bist du zur show geblieben. deine mutter hat ja gesagt. ich hab zweimal gefragt',
       ],
       choices: [
-        { text: 'bester crew-job ever', label: 'Bester Crew-Job' },
-        { text: 'krieg ich die cola', label: 'Die Cola?' },
+        { text: 'bester crew-job aller zeiten', label: 'Bester Crew-Job' },
+        { text: 'krieg ich die limo', label: 'Die Limo?' },
       ],
     },
     best: {
@@ -424,8 +424,8 @@ export const marcoBoyWeek2: ContactOverlay['scripts'] = {
     },
     soda: {
       lines: [
-        '2 colas. gewerkschaftsregel',
-        'derek hat eine getrunken. ich schulde dir ne cola',
+        '2 limos. gewerkschaftsregel',
+        'derek hat eine getrunken. ich schulde dir ne limo',
         '',
       ],
       personalMessages: { 2: 'crew: 1. bezahlt in shirts' },

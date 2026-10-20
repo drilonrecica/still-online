@@ -127,7 +127,7 @@ export const GOSSIP_POSTS_WEEK2: readonly BlogPost[] = [
     id: 'duchess-recall',
     day: 8,
     title: 'Eau de Duchess ZURÜCKGERUFEN. es „riecht nach Hund“',
-    body: 'es hat 3 tage gehalten. Eau de Duchess, das parfüm für 80 €, benannt nach dem chihuahua von Bianca Goldcrest, is aus allen läden geflogen. offizieller grund: „rückmeldungen von kunden“. echter grund: es riecht nach hund.\n\nnich nach nem hund nach nem wellness-tag. einfach nach hund. eine verkäuferin hat meinem cousin erzählt, die ganze parfümtheke hat danach gerochen wie ne zoohandlung. Duchess is angeblich „einverstanden“. sie hat schon wieder in ner handtasche geschlafen',
+    body: 'es hat 3 tage gehalten. Eau de Duchess, das parfüm für 80 €, benannt nach dem chihuahua von Bianca Goldcrest, is aus allen läden geflogen. offizieller grund: „rückmeldungen von kunden“. echter grund: es riecht nach hund.\n\nnich nach nem hund, nach nem wellness-tag. einfach nach hund. eine verkäuferin hat meinem cousin erzählt, die ganze parfümtheke hat danach gerochen wie ne zoohandlung. Duchess is angeblich „einverstanden“. sie hat schon wieder in ner handtasche geschlafen',
     tags: ['bianca goldcrest', 'animals', 'rumors'],
     comments: [
       {
@@ -167,7 +167,7 @@ export const GOSSIP_POSTS_WEEK2: readonly BlogPost[] = [
       },
       {
         user: 'boulevard_girl_99',
-        text: '@popfan4life wir sind sowas von zurück',
+        text: '@popfan4life die guten zeiten sind ZURÜCK',
       },
     ],
   },

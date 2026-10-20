@@ -34,6 +34,9 @@ export const SITE_META: SiteMeta = {
     'crew',
     'skatepark',
     'rollbrett',
+    'jam',
+    'contest',
+    'skate-contest',
   ],
   pages: {
     '/': {
@@ -68,6 +71,8 @@ export const SITE_META: SiteMeta = {
         'velvet lantern',
         'bean cellar',
         'band',
+        'jugendzentrum',
+        'juz',
       ],
     },
   },
