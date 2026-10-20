@@ -1,6 +1,7 @@
-// Desktop icon grid: one icon per resolved shortcut, in a column top-left.
-import { useEffect, useState } from 'react';
-import type { KeyboardEvent, MouseEvent } from 'react';
+// Desktop icon grid: one icon per resolved shortcut on 75 px cells, top-left down. Icons can
+// be dragged to another cell (saved); "Arrange Icons By" puts them back in order.
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import type { KeyboardEvent, MouseEvent, RefObject } from 'react';
 import recycleBinFull32 from '@/assets/icons/recyclebin-full-32.svg';
 import { useT } from '@/i18n/useT';
 import { FS_FOLDERS } from '@/os/fs/types';
@@ -16,6 +17,40 @@ import { useActivate } from '@/os/touch/useActivate';
 import { useLongPress } from '@/os/touch/useLongPress';
 import type { AppDefinition, Shortcut } from '@/os/types';
 import styles from './DesktopIcons.module.css';
+import {
+  cellKey,
+  cellLeft,
+  cellTop,
+  gridSize,
+  layoutIcons,
+  nearestFreeCell,
+  type Cell,
+} from './grid';
+import { useDesktopStore } from './store';
+import { useIconDrag } from './useIconDrag';
+
+/** The desktop's size; jsdom (no layout) falls back to the window's. */
+function useAreaSize(ref: RefObject<HTMLDivElement | null>) {
+  const [size, setSize] = useState({ w: 0, h: 0 });
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () =>
+      setSize({
+        w: el.clientWidth || window.innerWidth,
+        h: el.clientHeight || window.innerHeight,
+      });
+    measure();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', measure);
+      return () => window.removeEventListener('resize', measure);
+    }
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref]);
+  return size;
+}
 
 export interface DesktopIconsProps {
   /** Defaults to `DESKTOP_SHORTCUTS`. */
@@ -38,6 +73,36 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
   );
   const [selected, setSelected] = useState<string | null>(null);
   const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const size = useAreaSize(rootRef);
+  const saved = useDesktopStore((s) => s.positions);
+  const grid = gridSize(size.w, size.h);
+  const keys = icons.map((icon) => icon.key).join('|');
+  const layout = useMemo(
+    () => layoutIcons(keys.split('|'), saved, grid),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by value
+    [keys, saved, grid.cols, grid.rows],
+  );
+  const drag = useIconDrag((id, dx, dy) => {
+    const from = layout.get(id);
+    if (!from) return;
+    const others = new Set(
+      [...layout]
+        .filter(([key]) => key !== id)
+        .map(([, cell]) => cellKey(cell)),
+    );
+    const to = nearestFreeCell(
+      cellLeft(from) + dx,
+      cellTop(from) + dy,
+      others,
+      grid,
+    );
+    // The whole layout is saved, so no other icon shifts to fill the gap.
+    const next: Record<string, Cell> = Object.fromEntries(layout);
+    next[id] = to;
+    useDesktopStore.getState().place(next);
+    setSelected(id);
+  });
   // Double-click or a tap opens; a right-click or a long-press opens the desktop menu.
   const activate = useActivate((icon: (typeof icons)[number]) =>
     openApp(icon.appId, icon.props),
@@ -82,6 +147,7 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
 
   return (
     <div
+      ref={rootRef}
       className={styles.desktop}
       data-testid="desktop"
       data-desktop-background
@@ -92,46 +158,52 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
       onClick={() => setSelected(null)}
       {...press()}
     >
-      {icons.map((app) => (
-        <div
-          key={app.key}
-          role="option"
-          aria-selected={selected === app.key}
-          className={styles.icon}
-          data-selected={selected === app.key}
-          {...composeHandlers(
-            {
-              onClick: (e: MouseEvent) => {
-                e.stopPropagation();
-                setSelected(app.key);
+      {icons.map((app) => {
+        const cell = layout.get(app.key) ?? { col: 0, row: 0 };
+        return (
+          <div
+            key={app.key}
+            role="option"
+            aria-selected={selected === app.key}
+            className={styles.icon}
+            data-selected={selected === app.key}
+            data-icon={app.key}
+            style={{ left: cellLeft(cell), top: cellTop(cell) }}
+            {...composeHandlers(
+              {
+                onClick: (e: MouseEvent) => {
+                  e.stopPropagation();
+                  setSelected(app.key);
+                },
               },
-            },
-            activate(app),
-          )}
-        >
-          <span className={styles.art}>
-            <img
-              src={
-                app.appId === 'recyclebin' && binFull
-                  ? recycleBinFull32
-                  : app.icon32
-              }
-              alt=""
-              width={32}
-              height={32}
-              draggable={false}
-            />
-            {app.shortcut && (
-              <span
-                className={styles.arrow}
-                data-testid="shortcut-arrow"
-                aria-hidden
-              />
+              activate(app),
+              drag(app.key),
             )}
-          </span>
-          <span className={styles.label}>{app.label}</span>
-        </div>
-      ))}
+          >
+            <span className={styles.art}>
+              <img
+                src={
+                  app.appId === 'recyclebin' && binFull
+                    ? recycleBinFull32
+                    : app.icon32
+                }
+                alt=""
+                width={32}
+                height={32}
+                draggable={false}
+              />
+              {app.shortcut && (
+                <span
+                  className={styles.arrow}
+                  data-testid="shortcut-arrow"
+                  aria-hidden
+                />
+              )}
+            </span>
+            <span className={styles.label}>{app.label}</span>
+          </div>
+        );
+      })}
       {menu && (
         <ul
           className={styles.menu}
@@ -154,7 +226,10 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
           <li
             role="menuitem"
             className={styles.menuItem}
-            onClick={() => setMenu(null)}
+            onClick={() => {
+              setMenu(null);
+              useDesktopStore.getState().arrange();
+            }}
           >
             {t('desktop.menu.arrangeIcons')}
           </li>

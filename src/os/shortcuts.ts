@@ -5,7 +5,10 @@ import type { AppDefinition, AppId, Shortcut, WindowProps } from '@/os/types';
 
 /** A shortcut whose app is registered, with icons filled in from the app. */
 export interface ResolvedShortcut {
-  /** Unique within a list (several shortcuts can share an app). */
+  /**
+   * Unique within a list and stable across releases (`explorer:docs`, `notepad`): the desktop
+   * saves icon positions under it.
+   */
   key: string;
   appId: AppId;
   props: WindowProps;
@@ -70,11 +73,17 @@ export function resolveShortcuts(
   lookup: (id: AppId) => AppDefinition | undefined = getApp,
 ): ResolvedShortcut[] {
   const out: ResolvedShortcut[] = [];
+  const keys = new Set<string>();
   shortcuts.forEach((s, i) => {
     const app = lookup(s.appId);
     if (!app) return;
+    const folder = s.props?.folder;
+    let key = typeof folder === 'string' ? `${s.appId}:${folder}` : s.appId;
+    // Two shortcuts to the same thing still get their own keys.
+    if (keys.has(key)) key = `${key}:${i}`;
+    keys.add(key);
     out.push({
-      key: `${s.appId}:${i}`,
+      key,
       appId: s.appId,
       props: s.props ?? {},
       label: t(s.labelKey),

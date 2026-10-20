@@ -366,7 +366,8 @@ export type PersistedStoreName =
   | 'world'
   | 'mail'
   | 'web'
-  | 'games';
+  | 'games'
+  | 'desktop';
 
 // ---------------------------------------------------------------------------
 // Games

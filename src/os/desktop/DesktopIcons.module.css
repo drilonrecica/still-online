@@ -1,13 +1,9 @@
-/* Desktop icon column; 75×75 grid cells. Sits under the window layer. */
+/* Desktop icons on 75×75 grid cells (src/os/desktop/grid.ts). Sits under the window layer. */
 
 .desktop {
   position: absolute;
   inset: 0 0 var(--xp-taskbar-height) 0;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  padding: 5px;
+  overflow: hidden;
   outline: none;
   /* Nothing here scrolls, and a swipe the browser took as a pan would never reach the Konami
      swipe matcher (src/os/konami.ts). */
@@ -15,6 +11,7 @@
 }
 
 .icon {
+  position: absolute;
   width: 75px;
   height: 75px;
   box-sizing: border-box;
@@ -90,6 +87,12 @@
 .icon[data-selected='true'] .label {
   background: #316ac5;
   text-shadow: none;
+}
+
+/* XP drags a see-through copy of the icon. */
+.icon[data-dragging='true'] {
+  z-index: 1;
+  opacity: 0.6;
 }
 
 /* Desktop right-click menu. */

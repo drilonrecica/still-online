@@ -6,6 +6,7 @@ import { useWindowsStore } from '@/os/store/windows';
 import type { MessageKey } from '@/i18n/types';
 import type { AppDefinition, AppId } from '@/os/types';
 import { DesktopIcons } from './DesktopIcons';
+import { useDesktopStore } from './store';
 import '@/apps/registry';
 
 function app(
@@ -32,6 +33,8 @@ const apps = [
   app('notepad', 'apps.notepad.label'),
   app('recyclebin', 'apps.recyclebin.title'),
 ];
+
+beforeEach(() => useDesktopStore.setState({ positions: {} }));
 
 function openIds() {
   return useWindowsStore.getState().windows.map((w) => w.appId);
@@ -100,7 +103,7 @@ describe('DesktopIcons', () => {
     expect(openIds()).toEqual(['mycomputer']);
   });
 
-  it('Enter with nothing selected does nothing; icons are not draggable', () => {
+  it('Enter with nothing selected does nothing; the pictures never start a native drag', () => {
     render(<DesktopIcons apps={apps} />);
     fireEvent.keyDown(screen.getByTestId('desktop'), { key: 'Enter' });
     expect(openIds()).toEqual([]);
@@ -172,6 +175,86 @@ describe('DesktopIcons', () => {
 describe('desktop context menu', () => {
   beforeEach(() => {
     useWindowsStore.setState({ windows: [], topZ: 0 });
+  });
+
+  it('places icons down the first column, then the next', () => {
+    render(<DesktopIcons apps={apps} />);
+    const [a, b] = screen.getAllByRole('option');
+    expect(a).toHaveStyle({ left: '5px', top: '5px' });
+    expect(b).toHaveStyle({ left: '5px', top: '80px' });
+  });
+
+  it('drags an icon onto the nearest free cell, keeps the others put and saves it', () => {
+    render(<DesktopIcons apps={apps} />);
+    const notepad = screen.getByRole('option', { name: 'Notepad' });
+    const mouse = {
+      pointerId: 1,
+      pointerType: 'mouse',
+      isPrimary: true,
+      button: 0,
+    };
+    fireEvent.pointerDown(notepad, { ...mouse, clientX: 40, clientY: 110 });
+    fireEvent.pointerMove(notepad, { ...mouse, clientX: 120, clientY: 130 });
+    expect(notepad).toHaveAttribute('data-dragging', 'true');
+    // Dropped 230 px right and 20 px down from cell 0,1 → cell 3,1.
+    fireEvent.pointerMove(notepad, { ...mouse, clientX: 270, clientY: 130 });
+    fireEvent.pointerUp(notepad, { ...mouse, clientX: 270, clientY: 130 });
+    fireEvent.click(notepad);
+    expect(notepad).not.toHaveAttribute('data-dragging');
+    expect(notepad).toHaveStyle({ left: '230px', top: '80px' });
+    expect(useDesktopStore.getState().positions).toEqual({
+      mycomputer: { col: 0, row: 0 },
+      notepad: { col: 3, row: 1 },
+      recyclebin: { col: 0, row: 2 },
+    });
+    // The drop selected it; its own click did not open it.
+    expect(notepad).toHaveAttribute('aria-selected', 'true');
+    expect(openIds()).toEqual([]);
+  });
+
+  it('a press that barely moves is still a click, and Escape cancels a drag', () => {
+    render(<DesktopIcons apps={apps} />);
+    const notepad = screen.getByRole('option', { name: 'Notepad' });
+    const touch = {
+      pointerId: 2,
+      pointerType: 'touch',
+      isPrimary: true,
+      button: 0,
+    };
+    fireEvent.pointerDown(notepad, { ...touch, clientX: 40, clientY: 110 });
+    fireEvent.pointerMove(notepad, { ...touch, clientX: 47, clientY: 114 });
+    expect(notepad).not.toHaveAttribute('data-dragging');
+    fireEvent.pointerUp(notepad, { ...touch, clientX: 47, clientY: 114 });
+    fireEvent.click(notepad);
+    // A touch tap opens.
+    expect(openIds()).toEqual(['notepad']);
+
+    fireEvent.pointerDown(notepad, { ...touch, clientX: 40, clientY: 110 });
+    fireEvent.pointerMove(notepad, { ...touch, clientX: 240, clientY: 110 });
+    fireEvent.keyDown(window, { key: 'Escape' });
+    fireEvent.pointerUp(notepad, { ...touch, clientX: 240, clientY: 110 });
+    expect(notepad).toHaveStyle({ left: '5px', top: '80px' });
+    expect(useDesktopStore.getState().positions).toEqual({});
+  });
+
+  it('Arrange Icons By puts them back in order', () => {
+    useDesktopStore.setState({
+      positions: {
+        notepad: { col: 5, row: 5 },
+        mycomputer: { col: 0, row: 1 },
+      },
+    });
+    render(<DesktopIcons apps={apps} />);
+    expect(screen.getByRole('option', { name: 'Notepad' })).toHaveStyle({
+      left: '380px',
+    });
+    fireEvent.contextMenu(screen.getByTestId('desktop'));
+    fireEvent.click(screen.getByRole('menuitem', { name: /Arrange Icons By/ }));
+    expect(useDesktopStore.getState().positions).toEqual({});
+    expect(screen.getByRole('option', { name: 'Notepad' })).toHaveStyle({
+      left: '5px',
+      top: '80px',
+    });
   });
 
   it('right-click shows Properties, which opens Display Properties', () => {

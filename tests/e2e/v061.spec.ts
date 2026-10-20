@@ -62,3 +62,70 @@ test('a tap opens a picture and a swipe steps through them @phone', async ({
     page.getByRole('region', { name: 'biscuit_the_dog.jpg - Picture Viewer' }),
   ).toBeVisible();
 });
+
+test('desktop icons drag onto the grid, stay after a reload and arrange back', async ({
+  page,
+}) => {
+  await logIn(page);
+  const desktop = page.getByTestId('desktop');
+  const notepad = desktop.getByRole('option', { name: 'Notepad', exact: true });
+  const box = await notepad.boundingBox();
+  if (!box) throw new Error('no Notepad icon');
+  const start = { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+  // Cell 6,3 starts at 455,230 (5 + 75 × n); aim a little off its centre so it snaps.
+  await page.mouse.move(start.x, start.y);
+  await page.mouse.down();
+  await page.mouse.move(start.x + 40, start.y + 10, { steps: 4 });
+  await page.mouse.move(500, 255, { steps: 6 });
+  await page.mouse.up();
+  await expect(notepad).toHaveCSS('left', '455px');
+  await expect(notepad).toHaveCSS('top', '230px');
+  // The drop didn't open it, and every other icon stayed put.
+  await expect(page.getByRole('region', { name: /Notepad/ })).toHaveCount(0);
+  await expect(desktop.getByRole('option', { name: 'My Documents' })).toHaveCSS(
+    'left',
+    '5px',
+  );
+
+  await page.reload();
+  await page.getByTestId('boot-screen').click();
+  await page.getByRole('button', { name: 'Log on as Ada' }).click();
+  await expect(notepad).toHaveCSS('left', '455px');
+
+  await desktop.click({ button: 'right', position: { x: 900, y: 500 } });
+  await page.getByRole('menuitem', { name: /Arrange Icons By/ }).click();
+  await expect(notepad).toHaveCSS('left', '80px');
+});
+
+test('a finger drags a desktop icon and a tap still opens it @phone', async ({
+  page,
+}) => {
+  await logInTouch(page);
+  // Stapley's first-login greeting sits over the right of a landscape screen.
+  const balloon = page.locator('[data-assistant-balloon]');
+  await expect(balloon).toBeVisible({ timeout: 10_000 });
+  await tap(balloon.getByRole('button', { name: 'Hide Stapley' }));
+  const notepad = page
+    .getByTestId('desktop')
+    .getByRole('option', { name: 'Notepad', exact: true });
+  const box = await notepad.boundingBox();
+  if (!box) throw new Error('no Notepad icon');
+  const left = await notepad.evaluate((el) => (el as HTMLElement).offsetLeft);
+  // The rightmost column is empty in portrait and in landscape.
+  const width = page.viewportSize()?.width ?? 0;
+  const target = { x: width - 50, y: box.y + box.height / 2 };
+  await swipe(
+    page,
+    { x: box.x + box.width / 2, y: box.y + box.height / 2 },
+    target,
+    40,
+  );
+  await expect(notepad).not.toHaveCSS('left', `${left}px`);
+  await expect(page.getByRole('region', { name: /Notepad/ })).toHaveCount(0);
+
+  // Chrome swallows a tap right after a fast swipe (it stops the fling; decisions M3-01), so
+  // the drag above moves at a finger's pace and the tap waits a moment.
+  await page.waitForTimeout(500);
+  await tap(notepad);
+  await expect(page.getByRole('region', { name: /Notepad/ })).toBeVisible();
+});
