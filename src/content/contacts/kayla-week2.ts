@@ -287,7 +287,7 @@ export const kaylaWeek2Scripts: readonly Script[] = [
           {
             text: g(
               '...ok its kind of genius. every1 hates the loaf',
-              'every1 in our grade has suffered. its a movement',
+              'every1 in our grade has suffered. even the lunch ladies',
             ),
             delayMs: 1400,
           },

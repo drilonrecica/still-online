@@ -276,7 +276,7 @@ export const jessWeek2Scripts: readonly Script[] = [
         choices: [
           {
             text: g(
-              'thered be other shows',
+              'therell be other shows',
               'the comets will come back. bands always come back',
             ),
             label: g('Other shows', 'They come back'),

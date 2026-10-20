@@ -281,8 +281,8 @@ export const marcoWeek2Scripts: readonly Script[] = [
           { text: 'ok four', delayMs: 1100 },
           {
             text: g(
-              '"or maybe like a car" is now "or maybe like a star". the car was confusing people',
-              '"my sister picked up the phone" is now "my roommate". he really does pick up the phone',
+              '"like a car" is now "like a star". the car was confusing people. the other 3 r a secret',
+              '"my sister" is now "my roommate". he really does pick up the phone. the other 3 r dereks',
             ),
             delayMs: 1700,
           },

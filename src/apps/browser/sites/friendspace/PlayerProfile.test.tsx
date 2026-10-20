@@ -124,6 +124,8 @@ describe('/me default text after Save', () => {
   });
 });
 
+// A store change re-renders the page inside Browser's Suspense boundary; on a busy machine the
+// update can land after `act` returns, so the live checks wait for it.
 describe('the player picture is the User Accounts tile', () => {
   it('on /me, following gender and picture changes live', async () => {
     open(FRIENDSPACE_HOST, '/me');
@@ -131,9 +133,13 @@ describe('the player picture is the User Accounts tile', () => {
     await screen.findByRole('button', { name: 'Edit Profile' });
     expect(pictureSrc("Ada's picture")).toBe(userPictureSrc('butterfly'));
     act(() => useSettingsStore.setState({ gender: 'boy' }));
-    expect(pictureSrc("Ada's picture")).toBe(userPictureSrc('skateboard'));
+    await vi.waitFor(() =>
+      expect(pictureSrc("Ada's picture")).toBe(userPictureSrc('skateboard')),
+    );
     act(() => useSettingsStore.setState({ userPicture: 'rocket' }));
-    expect(pictureSrc("Ada's picture")).toBe(userPictureSrc('rocket'));
+    await vi.waitFor(() =>
+      expect(pictureSrc("Ada's picture")).toBe(userPictureSrc('rocket')),
+    );
   });
 
   it("in a friend's Top 8", async () => {
@@ -156,6 +162,8 @@ describe('the player picture is the User Accounts tile', () => {
     expect(await screen.findByRole('img', { name: 'Dein Bild' })).toBeTruthy();
     expect(pictureSrc('Dein Bild')).toBe(userPictureSrc('football'));
     act(() => useSettingsStore.setState({ userPicture: 'controller' }));
-    expect(pictureSrc('Dein Bild')).toBe(userPictureSrc('controller'));
+    await vi.waitFor(() =>
+      expect(pictureSrc('Dein Bild')).toBe(userPictureSrc('controller')),
+    );
   });
 });
