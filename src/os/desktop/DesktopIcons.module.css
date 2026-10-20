@@ -9,6 +9,9 @@
   align-content: flex-start;
   padding: 5px;
   outline: none;
+  /* Nothing here scrolls, and a swipe the browser took as a pan would never reach the Konami
+     swipe matcher (src/os/konami.ts). */
+  touch-action: none;
 }
 
 .icon {

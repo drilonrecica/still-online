@@ -1,6 +1,6 @@
 // v0.6 M2-02: Web Explorer on a phone (Fit to screen / Actual size, the condensed toolbar, the
 // Favorites sheet) and the unchanged desktop chrome.
-import { act, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useDeviceStore } from '@/os/device';
@@ -149,5 +149,20 @@ describe('Web Explorer on a desktop', () => {
     expect(
       screen.getByRole('complementary', { name: 'Favorites' }),
     ).toBeTruthy();
+  });
+
+  it("a finger's leftover hover never covers Done in the status bar", async () => {
+    renderBrowser();
+    await finishLoad();
+    const status = screen.getAllByRole('status').at(-1)!;
+    expect(status).toHaveTextContent('Done');
+    const link = within(viewport()).getAllByRole('link')[0]!;
+    fireEvent.pointerDown(viewport(), { pointerType: 'touch' });
+    fireEvent.mouseEnter(link);
+    expect(status).toHaveTextContent('Done');
+    // A real mouse brings the link's address back.
+    fireEvent.pointerMove(viewport(), { pointerType: 'mouse' });
+    fireEvent.mouseEnter(link);
+    expect(status).toHaveTextContent(/^http:\/\//);
   });
 });

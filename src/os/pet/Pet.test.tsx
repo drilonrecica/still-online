@@ -75,6 +75,28 @@ describe('Fluff overlay', () => {
     expect(mode()).not.toBe('fall');
   });
 
+  it('a finger that wobbles a little pets Fluff instead of dragging', () => {
+    useSettingsStore.setState({ petEnabled: true });
+    render(<Pet />);
+    act(() => {
+      vi.advanceTimersByTime(3000);
+    });
+    const sheep = screen.getByRole('button', { name: 'Fluff the sheep' });
+    const touch = { button: 0, pointerType: 'touch' };
+    fireEvent.pointerDown(sheep, { ...touch, clientX: 300, clientY: 700 });
+    fireEvent.pointerMove(sheep, { ...touch, clientX: 307, clientY: 694 });
+    fireEvent.pointerUp(sheep, { ...touch, clientX: 307, clientY: 694 });
+    expect(mode()).toBe('baa');
+    // A mouse moving as far drags.
+    act(() => {
+      vi.advanceTimersByTime(3000);
+    });
+    fireEvent.pointerDown(sheep, { button: 0, clientX: 300, clientY: 700 });
+    fireEvent.pointerMove(sheep, { clientX: 307, clientY: 694 });
+    fireEvent.pointerUp(sheep, { clientX: 307, clientY: 694 });
+    expect(mode()).not.toBe('baa');
+  });
+
   it('sits still on the taskbar under reduced motion', () => {
     vi.stubGlobal(
       'matchMedia',

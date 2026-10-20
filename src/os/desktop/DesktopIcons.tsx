@@ -84,6 +84,7 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
     <div
       className={styles.desktop}
       data-testid="desktop"
+      data-desktop-background
       role="listbox"
       aria-label={t('desktop.label')}
       tabIndex={0}

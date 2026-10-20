@@ -22,7 +22,7 @@ still online is the same XP desktop on every device, adapted for touch. The desi
 - `.desktop-root` sets `touch-action: manipulation` (no double-tap zoom), with no tap highlight and no long-press callout. Text fields keep text selection and the callout.
 - **Work area:** `viewportWorkArea()` uses `visualViewport.height` (so the on-screen keyboard shrinks it) minus `taskbarHeight(device)`, which is 30 px on a desktop and 40 px on touch devices.
 - **Re-clamp:** 100 ms after resizing stops, `reclampAll()` moves every window back into the work area and caps its size to it. It changes nothing when everything fits. A phone skips it, because phone windows render maximized and their stored desktop geometry has to survive the trip.
-- A swipe over the shell becomes a browser pan and ends in `pointercancel`. Anything that tracks a swipe itself needs `touch-action: none`.
+- A swipe over the shell becomes a browser pan and ends in `pointercancel`. Anything that tracks a swipe itself needs `touch-action: none`, as the desktop background has since M3-02.
 
 ## Windows
 
@@ -61,6 +61,12 @@ still online is the same XP desktop on every device, adapted for touch. The desi
 - **Hen Hunt:** the 800×540 field is the stage on a phone. A touch pointer never edge-pans (`game.touch`); a one-finger drag past 10 px pans the field (it follows the finger), otherwise the lift aims and shoots there, and the crosshair stays 300 ms. A tap with an empty gun reloads, and the HUD then says „tap the field". Mouse and keys are as before. Help adds a „Without a mouse" line on touch devices.
 - **Mines:** pointer events through a pure reducer (`src/apps/mines/input.ts`). A mouse keeps left = reveal on release, right = cycle the mark, both buttons or middle = chord; a second mouse button arrives as a `pointermove` with `button` set (`chordedChange`). A finger or pen taps: reveal, or flag in flag mode, and a tap on an opened number chords; a long-press toggles a flag (never „?"). On a phone or tablet a 🚩 Flag mode toggle (`aria-pressed`) sits beside the face and the framed game is zoomed to fit under the menu bar: grown on a phone (a Beginner cell is ~39 px), only shrunk on a tablet. A desktop has neither.
 - **Desktop Wrecker:** once the last pointer on the overlay was a finger, the palette adds Reset (R) and Use (Space) buttons. Use works the current tool where the finger last was, held like the Space bar.
+
+## Easter eggs (M3-02)
+
+- **Konami swipe** (`src/os/konami.ts`): on the desktop background, up, up, down, down, left, right, left, right, then two taps unlocks `KONAMI_UNLOCK` (Retro Grid) with the same toast as the key code. `classifySwipe` reads each touch at its lift: more than 40 px is a swipe along its main axis, at most 10 px a tap, anything else (or a `pointercancel`) starts over. Icons and the desktop menu don't count. The background (`[data-desktop-background]`) has `touch-action: none`, so a swipe isn't taken as a pan.
+- **Fluff:** a finger drags and throws him like a mouse (pointer events with capture, `touch-action: none`). On a phone or tablet his hit area grows 6 px each way, and a tap may wobble 10 px (`TOUCH_CLICK_SLOP`) and still pet him (a bleat).
+- **Web Explorer** shows a link's address in the status bar only for a mouse; a touch leaves „Done" in place.
 
 ## Touch primitives
 

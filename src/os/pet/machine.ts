@@ -49,6 +49,8 @@ export interface DragInfo {
   lastY: number;
   lastT: number;
   moved: boolean;
+  /** Pointer travel up to this is still a click (a finger wobbles more than a mouse). */
+  slop: number;
   /** Fluff as it was when grabbed; a click (no drag) resumes from it. */
   before: PetState;
 }

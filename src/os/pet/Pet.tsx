@@ -10,7 +10,7 @@ import { useSettingsStore } from '@/os/store/settings';
 import { getDevice, taskbarHeight } from '@/os/device';
 import { effectiveMaximized, useWindowsStore } from '@/os/store/windows';
 import { useReducedMotion } from '@/os/useReducedMotion';
-import { dragTo, grab, release } from './drag';
+import { dragTo, grab, release, CLICK_SLOP, TOUCH_CLICK_SLOP } from './drag';
 import {
   baa,
   PET_H,
@@ -90,7 +90,8 @@ function Fluff() {
   function onPointerDown(e: ReactPointerEvent<HTMLButtonElement>) {
     if (reduced || e.button !== 0) return;
     e.currentTarget.setPointerCapture?.(e.pointerId);
-    update(grab(ref.current, e.clientX, e.clientY, e.timeStamp));
+    const slop = e.pointerType === 'touch' ? TOUCH_CLICK_SLOP : CLICK_SLOP;
+    update(grab(ref.current, e.clientX, e.clientY, e.timeStamp, slop));
   }
   function onPointerMove(e: ReactPointerEvent<HTMLButtonElement>) {
     if (ref.current.mode !== 'drag') return;

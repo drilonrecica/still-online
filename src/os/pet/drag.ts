@@ -14,6 +14,8 @@ import {
 export const MAX_THROW_SPEED = 1200;
 /** Pointer travel below this is a click, not a drag. */
 export const CLICK_SLOP = 4;
+/** The same for a finger: a tap pets Fluff even if it wobbles (as `useLongPress`'s 10 px). */
+export const TOUCH_CLICK_SLOP = 10;
 /** A release this long after the last pointer move is a drop, not a throw. */
 const THROW_WINDOW_MS = 100;
 
@@ -23,6 +25,7 @@ export function grab(
   px: number,
   py: number,
   t: number,
+  slop = CLICK_SLOP,
 ): PetState {
   const before = state.drag ? state.drag.before : state;
   return {
@@ -43,6 +46,7 @@ export function grab(
       lastY: py,
       lastT: t,
       moved: false,
+      slop,
       before,
     },
   };
@@ -70,8 +74,7 @@ export function dragTo(
     -MAX_THROW_SPEED,
     MAX_THROW_SPEED,
   );
-  const moved =
-    d.moved || Math.hypot(px - d.startX, py - d.startY) > CLICK_SLOP;
+  const moved = d.moved || Math.hypot(px - d.startX, py - d.startY) > d.slop;
   return {
     ...state,
     x: clamp(px - d.offX, HALF_W, Math.max(HALF_W, world.width - HALF_W)),

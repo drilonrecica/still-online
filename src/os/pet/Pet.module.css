@@ -21,10 +21,19 @@
   border-radius: 6px;
   background: none;
   box-shadow: none;
+  position: relative;
   pointer-events: auto;
   cursor: grab;
   touch-action: none;
   user-select: none;
+}
+
+/* On a touch device the sheep takes a finger in a 52×44 box (the sprite is 40×32). */
+:global(.desktop-root:is([data-device='phone'], [data-device='tablet']))
+  .sheep::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
 }
 
 /* Beat xp.css's button hover/press/focus chrome: Fluff is just a sheep. */

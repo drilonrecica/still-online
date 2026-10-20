@@ -28,6 +28,10 @@ export default function Browser({ windowId, props }: AppComponentProps) {
   );
   const [address, setAddress] = useState(nav.url);
   const [hovered, setHovered] = useState<string | null>(null);
+  // A finger has no hover: Chromium's compatibility mouse events would leave the address of
+  // whatever link lands under the last tap stuck in the status bar, over „Done". Only a mouse
+  // (or keyboard focus while using one) shows a link's address.
+  const touching = useRef(false);
   const [paneOpen, setPaneOpen] = useState(false);
   const [about, setAbout] = useState(false);
   const favoriteRecords = useWebStore((s) => s.favorites);
@@ -75,7 +79,9 @@ export default function Browser({ windowId, props }: AppComponentProps) {
   const navigator: BrowserNavigator = useMemo(
     () => ({
       navigate: nav.follow,
-      hover: setHovered,
+      hover: (url) => {
+        if (url === null || !touching.current) setHovered(url);
+      },
       resolveHref: nav.resolveLink,
       scrollToTop: () => {
         if (viewport.current) viewport.current.scrollTop = 0;
@@ -193,7 +199,16 @@ export default function Browser({ windowId, props }: AppComponentProps) {
   }
 
   return (
-    <div className={styles.root}>
+    <div
+      className={styles.root}
+      onPointerDownCapture={(e) => {
+        touching.current = e.pointerType === 'touch' || e.pointerType === 'pen';
+        if (touching.current) setHovered(null);
+      }}
+      onPointerMoveCapture={(e) => {
+        if (e.pointerType === 'mouse') touching.current = false;
+      }}
+    >
       <MenuBar menus={menus} />
 
       <Toolbar

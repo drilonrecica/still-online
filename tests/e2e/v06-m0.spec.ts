@@ -31,12 +31,23 @@ test('phone: logs in by touch on the phone desktop, with no notice @phone', asyn
   await longPress(page, desktop, 600);
   const box = (await desktop.boundingBox())!;
   await swipe(page, { x: 100, y: 200 }, { x: 100 + box.width / 4, y: 200 });
+  // Over the rest of the shell (here the taskbar), `touch-action: manipulation` lets the browser
+  // take a swipe as a pan.
+  const bar = box.y + box.height + 20;
+  await swipe(
+    page,
+    { x: box.width / 2, y: bar },
+    { x: box.width / 2 + box.width / 4, y: bar },
+  );
   expect(await page.evaluate('window.touchLog')).toEqual([
     'pointerdown',
     'pointerup',
     'pointerdown',
     'pointermove',
-    // The shell is `touch-action: manipulation`, so the browser takes a swipe over as a pan.
+    // The desktop background is `touch-action: none` (the Konami swipe, M3-02): the page gets it.
+    'pointerup',
+    'pointerdown',
+    'pointermove',
     'pointercancel',
   ]);
 });
