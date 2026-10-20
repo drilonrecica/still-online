@@ -154,11 +154,6 @@ export const de: Messages = {
     label: 'Tacki, der Tacker',
     hide: 'Tacki ausblenden',
   },
-  notice: {
-    smallScreen:
-      '{app} kommt am besten auf einem Desktop-Computer zur Geltung.',
-    continue: 'Trotzdem fortfahren',
-  },
   wallpapers: {
     classic: 'Grüner Hügel',
     hill: 'Himmel über grünen Hügeln',

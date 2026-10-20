@@ -13,7 +13,7 @@ export type OverlaySlot = (typeof OVERLAY_SLOTS)[number];
 
 /**
  * Root stacking order of the desktop: windows < Fluff < Stapley < taskbar < balloons/toasts
- * < Start menu < Desktop Wrecker < boot/login < screensaver < small-screen notice.
+ * < Start menu < Desktop Wrecker < boot/login < screensaver.
  * `windows` is the window layer itself; window `z` values only order windows inside it.
  */
 export const Z_INDEX = {
@@ -26,5 +26,4 @@ export const Z_INDEX = {
   wrecker: 15000,
   screens: 20000,
   screensaver: 25000,
-  notice: 30000,
 } as const satisfies Record<OverlaySlot | string, number>;

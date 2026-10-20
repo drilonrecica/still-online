@@ -190,10 +190,15 @@ export interface WindowsStore {
   resizeWindow: (
     id: string,
     geometry: { x: number; y: number; w: number; h: number },
-  ) => void;
+  ) => void; /**
+   * After a viewport resize: clamps every window's position into the work area and caps its
+   * size to it. No-op (no state change) when everything already fits.
+   */
+  reclampAll: () => void;
 }
 
 // Window manager constants (see "Defaults" in tasks.md).
+/** The desktop taskbar; touch devices use `taskbarHeight(device)` from `src/os/device.ts`. */
 export const TASKBAR_HEIGHT = 30;
 export const WM_MIN_SIZE: Size = { w: 240, h: 140 };
 export const CASCADE_ORIGIN = 24;
@@ -224,8 +229,6 @@ export interface SettingsStore {
   /** 0..1 */
   volume: number;
   firstBootDone: boolean;
-  /** The "best on a desktop computer" notice was dismissed. */
-  smallScreenNoticeDismissed: boolean;
   wallpaper: WallpaperChoice;
   wallpaperPosition: WallpaperPosition;
   theme: ThemeId;
@@ -259,7 +262,6 @@ export interface SettingsStore {
   toggleMuted: () => void;
   setVolume: (volume: number) => void;
   markFirstBootDone: () => void;
-  dismissSmallScreenNotice: () => void;
   setWallpaper: (wallpaper: WallpaperChoice) => void;
   setWallpaperPosition: (position: WallpaperPosition) => void;
   setTheme: (theme: ThemeId) => void;

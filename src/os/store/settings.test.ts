@@ -373,3 +373,35 @@ describe('gender and user picture', () => {
     expect(s()).toMatchObject({ gender: 'girl', userPicture: 'flower' });
   });
 });
+
+describe('removed small-screen notice (v0.6)', () => {
+  it('loads a v0.5 save that still has the field, and drops it', async () => {
+    localStorage.setItem(
+      storageKey('settings'),
+      JSON.stringify({
+        version: 1,
+        state: {
+          playerName: 'Ada',
+          gender: 'boy',
+          firstBootDone: true,
+          smallScreenNoticeDismissed: true,
+          petEnabled: true,
+        },
+      }),
+    );
+    await useSettingsStore.persist.rehydrate();
+    const state = useSettingsStore.getState();
+    expect(state).toMatchObject({
+      playerName: 'Ada',
+      gender: 'boy',
+      firstBootDone: true,
+      petEnabled: true,
+    });
+    expect('smallScreenNoticeDismissed' in state).toBe(false);
+    state.setMuted(true);
+    const saved = localStorage.getItem(storageKey('settings')) ?? '';
+    expect(JSON.parse(saved).state).not.toHaveProperty(
+      'smallScreenNoticeDismissed',
+    );
+  });
+});

@@ -256,3 +256,115 @@ export async function nextDay(page: Page, day: number, name = 'Ada') {
   await page.getByRole('button', { name: `Log on as ${name}` }).click();
   await expect(page.getByTestId('desktop')).toBeVisible();
 }
+
+// ---------------------------------------------------------------------------
+// Touch (v0.6): for specs tagged @phone or @tablet. They never dblclick or hover.
+// ---------------------------------------------------------------------------
+
+export interface Point {
+  x: number;
+  y: number;
+}
+
+async function centerOf(locator: Locator): Promise<Point> {
+  const box = await locator.boundingBox();
+  if (!box) throw new Error('touch target is not visible');
+  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+}
+
+/** A single finger tap (the project needs `hasTouch`). */
+export async function tap(locator: Locator) {
+  await locator.tap();
+}
+
+/** Holds one finger on the locator's centre for `ms`, then lifts it (real touch pointer events). */
+export async function longPress(page: Page, locator: Locator, ms = 600) {
+  const { x, y } = await centerOf(locator);
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [{ x, y }],
+    });
+    await page.waitForTimeout(ms);
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchEnd',
+      touchPoints: [],
+    });
+  } finally {
+    await cdp.detach();
+  }
+}
+
+/** Drags one finger from `from` to `to` (page coordinates) in `steps` moves. */
+export async function swipe(page: Page, from: Point, to: Point, steps = 10) {
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [from],
+    });
+    for (let i = 1; i <= steps; i++) {
+      await cdp.send('Input.dispatchTouchEvent', {
+        type: 'touchMove',
+        touchPoints: [
+          {
+            x: from.x + ((to.x - from.x) * i) / steps,
+            y: from.y + ((to.y - from.y) * i) / steps,
+          },
+        ],
+      });
+    }
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchEnd',
+      touchPoints: [],
+    });
+  } finally {
+    await cdp.detach();
+  }
+}
+
+/** `logIn` by touch: tap through the boot screen, type the name, tap the gender and Log On. */
+export async function logInTouch(
+  page: Page,
+  name = 'Ada',
+  { quiet = true, gender = 'girl' }: LogInOptions = {},
+) {
+  if (quiet) await quietIdle(page);
+  await page.goto('./?speed=fast');
+  await tap(page.getByTestId('boot-screen'));
+  await expect(page.getByTestId('login-screen')).toBeVisible();
+  const field = page.getByLabel('Your name');
+  await tap(field);
+  await field.fill(name);
+  await tap(page.locator(`[role="radio"][data-gender="${gender}"]`));
+  await tap(page.getByRole('button', { name: `Log on as ${name}` }));
+  await expect(page.getByTestId('desktop')).toBeVisible();
+}
+
+/**
+ * Opens an app by touch from Start → All Programs (tapping each folder until the item shows up).
+ * Desktop icons open with a tap once M0-02 lands; until then the Start menu is the touch path.
+ */
+export async function openAppTouch(page: Page, name: string) {
+  await tap(page.locator('[data-start-button]'));
+  await tap(page.getByRole('menuitem', { name: /All Programs/ }));
+  const programs = page.getByRole('menu', { name: 'All Programs' });
+  const item = page.getByRole('menuitem', { name, exact: true }).last();
+  if (
+    !(await programs.getByRole('menuitem', { name, exact: true }).isVisible())
+  ) {
+    for (const folder of [/Internet/, /Accessories/, /Games/, /System Tools/]) {
+      await tap(programs.getByRole('menuitem', { name: folder }));
+      if (
+        await item.waitFor({ timeout: 1500 }).then(
+          () => true,
+          () => false,
+        )
+      ) {
+        break;
+      }
+    }
+  }
+  await tap(item);
+}

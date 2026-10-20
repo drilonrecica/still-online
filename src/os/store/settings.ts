@@ -165,7 +165,6 @@ type PersistedSettings = Pick<
   | 'muted'
   | 'volume'
   | 'firstBootDone'
-  | 'smallScreenNoticeDismissed'
   | 'wallpaper'
   | 'wallpaperPosition'
   | 'theme'
@@ -193,7 +192,6 @@ export const useSettingsStore = create<SettingsStore>()(
         muted: false,
         volume: 0.7,
         firstBootDone: false,
-        smallScreenNoticeDismissed: false,
         wallpaper: SETTINGS_V02_DEFAULTS.wallpaper,
         wallpaperPosition: SETTINGS_V02_DEFAULTS.wallpaperPosition,
         theme: SETTINGS_V02_DEFAULTS.theme,
@@ -222,8 +220,6 @@ export const useSettingsStore = create<SettingsStore>()(
         toggleMuted: () => set((s) => ({ muted: !s.muted })),
         setVolume: (volume) => set({ volume: clamp01(volume) }),
         markFirstBootDone: () => set({ firstBootDone: true }),
-        dismissSmallScreenNotice: () =>
-          set({ smallScreenNoticeDismissed: true }),
         setWallpaper: (wallpaper) =>
           set((s) => ({
             wallpaper: sanitizeWallpaper(wallpaper) ?? s.wallpaper,
@@ -298,7 +294,6 @@ export const useSettingsStore = create<SettingsStore>()(
         muted,
         volume,
         firstBootDone,
-        smallScreenNoticeDismissed,
         wallpaper,
         wallpaperPosition,
         theme,
@@ -317,7 +312,6 @@ export const useSettingsStore = create<SettingsStore>()(
         muted,
         volume,
         firstBootDone,
-        smallScreenNoticeDismissed,
         wallpaper,
         wallpaperPosition,
         theme,
@@ -354,10 +348,6 @@ export const useSettingsStore = create<SettingsStore>()(
             typeof p.firstBootDone === 'boolean'
               ? p.firstBootDone
               : current.firstBootDone,
-          smallScreenNoticeDismissed:
-            typeof p.smallScreenNoticeDismissed === 'boolean'
-              ? p.smallScreenNoticeDismissed
-              : current.smallScreenNoticeDismissed,
           wallpaper: sanitizeWallpaper(p.wallpaper) ?? current.wallpaper,
           wallpaperPosition:
             sanitizeWallpaperPosition(p.wallpaperPosition) ??

@@ -301,6 +301,43 @@ describe('resizeWindow', () => {
   });
 });
 
+describe('reclampAll', () => {
+  let work: Size;
+  beforeEach(() => {
+    work = { ...WORK };
+    store = createWindowsStore({
+      getApp: (id) => APPS[id],
+      getWorkArea: () => work,
+    });
+  });
+
+  it('is a no-op (same state object) when every window fits', () => {
+    s().openApp('notepad');
+    const before = s().windows;
+    s().reclampAll();
+    expect(s().windows).toBe(before);
+  });
+
+  it('moves windows back into a smaller work area and caps their size', () => {
+    const id = s().openApp('notepad');
+    s().moveWindow(id, 900, 600);
+    work = { w: 500, h: 250 };
+    s().reclampAll();
+    expect(win(id)).toMatchObject({ x: 460, y: 220, w: 400, h: 250 });
+    work = { w: 300, h: 600 };
+    s().reclampAll();
+    expect(win(id)).toMatchObject({ x: 260, w: 300, h: 250 });
+  });
+
+  it('keeps maximized and minimized flags and ignores an empty work area', () => {
+    const id = s().openApp('notepad');
+    s().toggleMaximize(id);
+    work = { w: 0, h: 0 };
+    s().reclampAll();
+    expect(win(id)).toMatchObject({ w: 400, h: 300, maximized: true });
+  });
+});
+
 describe('clampPosition', () => {
   it('pins the top edge at 0 even in a tiny work area', () => {
     expect(clampPosition(0, 50, 300, { w: 20, h: 10 })).toEqual({

@@ -157,10 +157,6 @@ export const en = {
     label: 'Stapley the stapler',
     hide: 'Hide Stapley',
   },
-  notice: {
-    smallScreen: '{app} is best experienced on a desktop computer.',
-    continue: 'Continue anyway',
-  },
   wallpapers: {
     classic: 'Rolling Hill',
     hill: 'Green Hill Sky',

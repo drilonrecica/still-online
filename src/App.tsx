@@ -14,6 +14,7 @@ import { installBalloons } from '@/os/balloon/schedule';
 import { Boot } from '@/os/boot/Boot';
 import { installBrowserRouter } from '@/os/browserRouter';
 import { DesktopIcons } from '@/os/desktop/DesktopIcons';
+import { installDevice, useDevice } from '@/os/device';
 import { installIdle } from '@/os/idle';
 import { seedFilesFor } from '@/os/fs/seeds';
 import { useFsStore } from '@/os/fs/store';
@@ -21,7 +22,6 @@ import { installKonami } from '@/os/konami';
 import { Login } from '@/os/login/Login';
 // Side-effect import: track what's playing from boot, before any app that reads it loads.
 import '@/os/nowPlaying';
-import { SmallScreenNotice } from '@/os/notice/SmallScreenNotice';
 import { OverlayLayer } from '@/os/overlay/OverlayLayer';
 import { installScreensaver } from '@/os/screensaver/controller';
 import { installGestureUnlock, playSound } from '@/os/sound';
@@ -65,6 +65,7 @@ export function App() {
   const background = useDesktopBackground();
   const theme = useSettingsStore((s) => s.theme);
   const locale = useLocale();
+  const device = useDevice();
 
   // The colour scheme: tokens.css restyles the shell from this attribute.
   useEffect(() => {
@@ -81,6 +82,7 @@ export function App() {
     useFsStore.getState().seed(seedFilesFor(getLocale(), getGender()));
     migrateLegacyNotepad();
   }, []);
+  useEffect(() => installDevice(), []);
   useEffect(() => installGestureUnlock(), []);
   useEffect(() => installAmplifierRouter(), []);
   useEffect(() => installBrowserRouter(), []);
@@ -124,13 +126,12 @@ export function App() {
   }, [state, shutdownComplete]);
 
   return (
-    <div className="desktop-root" style={background}>
+    <div className="desktop-root" data-device={device} style={background}>
       <h1 hidden>still online</h1>
       {state === 'booting' && <Boot />}
       {state === 'login' && <Login />}
       {state === 'desktop' && <Desktop />}
       {state === 'off' && <OffScreen />}
-      <SmallScreenNotice />
     </div>
   );
 }

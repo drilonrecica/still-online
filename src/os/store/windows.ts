@@ -2,12 +2,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { isMessageKey, sanitizeTextParams } from '@/i18n/refs';
+import { getDevice, taskbarHeight } from '@/os/device';
 import { isRecord, persistOptions } from '@/os/persist';
 import {
   CASCADE_ORIGIN,
   CASCADE_STEP,
   MIN_VISIBLE_TITLEBAR,
-  TASKBAR_HEIGHT,
   TITLEBAR_HEIGHT,
   WM_MIN_SIZE,
   type AppDefinition,
@@ -38,10 +38,15 @@ export interface WindowsStoreDeps {
   getWorkArea: () => Size;
 }
 
+/**
+ * The visual viewport's height when there is one, so the on-screen keyboard shrinks the work
+ * area, minus the device's taskbar.
+ */
 export function viewportWorkArea(): Size {
+  const height = window.visualViewport?.height ?? window.innerHeight;
   return {
     w: window.innerWidth,
-    h: Math.max(0, window.innerHeight - TASKBAR_HEIGHT),
+    h: Math.max(0, Math.floor(height) - taskbarHeight(getDevice())),
   };
 }
 
@@ -307,6 +312,23 @@ export function createWindowsStore(deps: WindowsStoreDeps) {
       moveWindow(id, x, y) {
         const work = deps.getWorkArea();
         update(id, (win) => clampPosition(x, y, win.w, work));
+      },
+
+      reclampAll() {
+        const work = deps.getWorkArea();
+        if (work.w <= 0 || work.h <= 0) return;
+        let changed = false;
+        const windows = get().windows.map((win) => {
+          const w = Math.min(win.w, work.w);
+          const h = Math.min(win.h, work.h);
+          const { x, y } = clampPosition(win.x, win.y, w, work);
+          if (x === win.x && y === win.y && w === win.w && h === win.h) {
+            return win;
+          }
+          changed = true;
+          return { ...win, x, y, w, h };
+        });
+        if (changed) set({ windows });
       },
 
       resizeWindow(id, geometry) {
