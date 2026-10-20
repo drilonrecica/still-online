@@ -172,6 +172,8 @@ export interface CrewMember {
   bestTrick: string;
   bio: string;
   after?: { day: number; bestTrick: string };
+  /** A second change after `after` (Dex at the Westfield Jam, day 9). */
+  later?: { day: number; bestTrick: string };
 }
 
 /** A step-by-step trick tip on kickflipkings.example's `/tricks` page (ollie → kickflip). */
@@ -191,8 +193,27 @@ export interface Gig {
   venue: string;
   when: string;
   note: string;
+  /** From this day on the show has a venue and a date (a `TBA` listing gets booked). */
+  moved?: { day: number; venue: string; when: string };
   updates?: readonly DayLine[];
   after?: { day: number; when: string; note: string };
+}
+
+/** kickflipkings.example's `/video` page: Dex's video, its view counter and Kev's Jam clip. */
+export interface SkateVideo {
+  premiereDay: number;
+  teasers: readonly DayLine[];
+  title: string;
+  length: string;
+  timeline: readonly { at: string; text: string }[];
+  playLabel: string;
+  buffering: string;
+  stuck: string;
+  credits: string;
+  /** The view counter from `day` on (the newest entry out by today). */
+  views: readonly { day: number; views: number }[];
+  /** Kev's clip, shown below the video from `day` on. */
+  clip: { day: number; title: string; length: string; text: string };
 }
 
 // ---------------------------------------------------------------------------

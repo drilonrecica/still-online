@@ -18,7 +18,7 @@ export default function Gigs() {
       <h2 className={styles.heading}>{T.gigsHeading}</h2>
       <p>{T.gigsIntro}</p>
       <ul className={styles.gigs} aria-label={t('sites.kickflipkings.gigs')}>
-        {gigs.map(({ gig, when, note, updates, played }) => (
+        {gigs.map(({ gig, venue, when, note, updates, played }) => (
           <li
             key={gig.id}
             className={played ? `${styles.gig} ${styles.played}` : styles.gig}
@@ -26,7 +26,7 @@ export default function Gigs() {
           >
             <b className={styles.cardTitle}>{gig.band}</b>
             <br />
-            <b>{t('sites.kickflipkings.where')}</b> {gig.venue}
+            <b>{t('sites.kickflipkings.where')}</b> {venue}
             <br />
             <b>{t('sites.kickflipkings.when')}</b> {when}
             <p>{note}</p>

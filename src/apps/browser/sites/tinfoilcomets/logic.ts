@@ -5,7 +5,7 @@ import type {
   GuestbookEntry,
   PlayerGuestbookEntry,
 } from '@/content/sites/types';
-import { COUNTER_START } from '@/content/sites/tinfoilcomets';
+import { COUNTER_START, type TourDate } from '@/content/sites/tinfoilcomets';
 import type { Locale } from '@/i18n/types';
 
 export interface ShownEntry extends GuestbookEntry {
@@ -64,6 +64,21 @@ export function validateEntry(
     ok: true,
     entry: { name, message, day, ...(homepage ? { homepage } : {}) },
   };
+}
+
+/**
+ * A tour date as it reads on `day`: the show's `after` once it happened, else its `soldOut` note
+ * once it sold out, else as listed. `past` stops the blinking.
+ */
+export function tourRow(
+  show: TourDate,
+  day: number,
+): { date: string; note: string; past: boolean } {
+  if (show.after && day >= show.after.day)
+    return { date: show.after.date, note: show.after.note, past: true };
+  const note =
+    show.soldOut && day >= show.soldOut.day ? show.soldOut.note : show.note;
+  return { date: show.date, note, past: false };
 }
 
 /** Hits → the odometer value: the first visit shows `COUNTER_START`. */

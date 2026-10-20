@@ -3,6 +3,7 @@
 // „du“/„ihr“, lots of „!!!“. Every celeb, band, show and commenter is invented, as in English.
 import type { Celeb } from '../../sites/celebgossip07';
 import type { BlogPost, Poll, SiteMeta } from '../../sites/types';
+import { GOSSIP_POLLS_WEEK2, GOSSIP_POSTS_WEEK2 } from './celebgossip07-week2';
 
 export const GOSSIP_HOST = 'celebgossip07.example';
 
@@ -21,6 +22,8 @@ export const SITE_META: SiteMeta = {
     'top oder flop',
     'starla',
     'tinfoil comets',
+    'pony',
+    'lakeview',
   ],
   pages: {
     '/': {
@@ -378,6 +381,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
       },
     ],
   },
+  ...GOSSIP_POSTS_WEEK2,
 ];
 
 export const GOSSIP_POLLS: readonly Poll[] = [
@@ -411,4 +415,5 @@ export const GOSSIP_POLLS: readonly Poll[] = [
     question: 'Eau de Duchess (Hundeparfüm):',
     options: ['TOP', 'FLOP', 'igitt'],
   },
+  ...GOSSIP_POLLS_WEEK2,
 ];

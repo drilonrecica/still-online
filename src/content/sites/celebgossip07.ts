@@ -1,6 +1,7 @@
 // celebgossip07.example: "Celeb Gossip 07 ★ OMG!!" by Roxi. Every celebrity, band, show, movie and
-// commenter here is invented. Two posts a day for days 1–5 (day-gated); the Tinfoil Comets show
-// (between days 4 and 5) and Kayla's twin-hoodie feud echo the friends' storylines.
+// commenter here is invented. Two posts a day for days 1–10 (day-gated; days 6–10 live in
+// `celebgossip07-week2.ts`); the Tinfoil Comets shows and Kayla's feuds echo the friends' storylines.
+import { GOSSIP_POLLS_WEEK2, GOSSIP_POSTS_WEEK2 } from './celebgossip07-week2';
 import type { BlogPost, Poll, SiteMeta } from './types';
 
 export const GOSSIP_HOST = 'celebgossip07.example';
@@ -18,6 +19,8 @@ export const SITE_META: SiteMeta = {
     'hot or not',
     'starla',
     'tinfoil comets',
+    'bangs',
+    'lakeview',
   ],
   pages: {
     '/': {
@@ -374,6 +377,7 @@ export const GOSSIP_POSTS: readonly BlogPost[] = [
       },
     ],
   },
+  ...GOSSIP_POSTS_WEEK2,
 ];
 
 /** One "hot or not" poll a day; the sidebar shows the newest with `day <= currentDay`. */
@@ -408,4 +412,5 @@ export const GOSSIP_POLLS: readonly Poll[] = [
     question: 'Eau de Duchess (dog perfume):',
     options: ['HOT', 'NOT', 'ew'],
   },
+  ...GOSSIP_POLLS_WEEK2,
 ];

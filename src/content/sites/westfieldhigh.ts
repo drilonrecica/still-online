@@ -1,7 +1,9 @@
 // westfield-high.example: the school's official site, built from a template the district bought in
 // 2001 and never touched again. News posts are day-gated (`day <= currentDay`); Mr Dalton's cell
 // project notices follow Theo's arc (jello, presentations on day 5's first period, grades on day 5).
+// Days 6–10 (`westfieldhigh-week2.ts`) add the class rep election and the rec hall show listing.
 import type { NewsPost, SiteMeta } from './types';
+import { WESTFIELD_NEWS_WEEK2 } from './westfieldhigh-week2';
 
 export const WESTFIELD_HOST = 'westfield-high.example';
 
@@ -26,7 +28,16 @@ export const SITE_META: SiteMeta = {
     },
     '/news': {
       title: 'Westfield High School - News and Announcements',
-      keywords: ['bake sale', 'cell project', 'science fair', 'mp3'],
+      keywords: [
+        'bake sale',
+        'cell project',
+        'science fair',
+        'mp3',
+        'election',
+        'class rep',
+        'rec hall',
+        'velvet lantern',
+      ],
     },
     '/staff': {
       title: 'Westfield High School - Staff Directory',
@@ -121,6 +132,7 @@ export const WESTFIELD_NEWS: readonly NewsPost[] = [
     author: 'Mrs Okafor, PTA',
     body: "The Wildcat Bake Sale raised $212.50 for new band uniforms. Thank you! The leftover brownies were donated to the teachers' lounge, where they lasted nine minutes.",
   },
+  ...WESTFIELD_NEWS_WEEK2,
 ];
 
 export interface StaffMember {

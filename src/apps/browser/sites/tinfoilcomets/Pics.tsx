@@ -1,4 +1,5 @@
-// tinfoilcomets.example `/pics`: the "photo gallery" of procedural concert pics.
+// tinfoilcomets.example `/pics`: the "photo gallery" of procedural concert pics (and, from day 9,
+// the fan art contest winners).
 import { TINFOIL_HOST } from '@/content/sites/tinfoilcomets';
 import { useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
@@ -20,7 +21,7 @@ export default function Pics() {
         {pics.map((p) => (
           <figure key={p.seed} className={styles.pic}>
             <PhotoCanvas
-              photo={{ scene: 'concert', seed: p.seed }}
+              photo={{ scene: p.scene ?? 'concert', seed: p.seed }}
               width={160}
               height={120}
               label={p.caption}

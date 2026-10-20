@@ -9,6 +9,11 @@ import type {
   TourDate,
 } from '../../sites/tinfoilcomets';
 import type { GuestbookEntry, SiteMeta } from '../../sites/types';
+import {
+  TINFOIL_GUESTBOOK_WEEK2,
+  TINFOIL_NEWS_WEEK2,
+  TINFOIL_PICS_WEEK2,
+} from './tinfoilcomets-week2';
 
 export const TINFOIL_HOST = 'tinfoilcomets.example';
 
@@ -27,6 +32,7 @@ export const SITE_META: SiteMeta = {
     'musik',
     'konzert',
     'ziggy',
+    'lakeview',
   ],
   pages: {
     '/': {
@@ -43,7 +49,14 @@ export const SITE_META: SiteMeta = {
     },
     '/pics': {
       title: 'Tinfoil Comets Fanseite - Fotos',
-      keywords: ['fotos', 'bilder', 'galerie'],
+      keywords: [
+        'fotos',
+        'bilder',
+        'galerie',
+        'fan-art',
+        'wettbewerb',
+        'gewinner',
+      ],
     },
   },
 };
@@ -92,6 +105,7 @@ export const TINFOIL_NEWS: readonly DayText[] = [
     day: 5,
     text: 'jemand hat ziggys drumstick gefangen. MIT DEM GESICHT. legende',
   },
+  ...TINFOIL_NEWS_WEEK2,
 ];
 
 export const TINFOIL_MEMBERS: readonly BandMember[] = [
@@ -171,6 +185,17 @@ export const TINFOIL_TOUR: readonly TourDate[] = [
     date: 'nächsten samstag',
     venue: 'Lakeview Festwiese',
     note: 'open air!!! regencape mitnehmen',
+    // W3 replaces this with German
+    soldOut: {
+      day: 8,
+      note: 'SOLD OUT. 9 minutes. i did not get tickets. AGAIN',
+    },
+    // W3 replaces this with German
+    after: {
+      day: 10,
+      date: 'saturday',
+      note: 'it happened. i listened on the radio. it was windy. buzz lost his hat',
+    },
   },
   {
     date: 'in 2 wochen',
@@ -217,6 +242,7 @@ export const TINFOIL_PICS: readonly ConcertPic[] = [
     seed: 7108,
     caption: 'freitag!!! die erste reihe hat SO ein glück',
   },
+  ...TINFOIL_PICS_WEEK2,
 ];
 
 export const TINFOIL_GUESTBOOK: readonly GuestbookEntry[] = [
@@ -293,4 +319,5 @@ export const TINFOIL_GUESTBOOK: readonly GuestbookEntry[] = [
     message:
       '@jess DU HAST DEN DRUMSTICK GEFANGEN??? ich bin so neidisch ich muss mich hinlegen',
   },
+  ...TINFOIL_GUESTBOOK_WEEK2,
 ];

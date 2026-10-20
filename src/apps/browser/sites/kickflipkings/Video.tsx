@@ -1,16 +1,18 @@
 // kickflipkings.example `/video`: Dex's skate video. Teasers until the premiere (day 5), then a
 // "player": a procedural still (sky, ground, an orange blur), a fake PLAY button whose buffering
-// crawls to 99% and sticks there, and the scene-by-scene guide. Nothing ever plays.
+// crawls to 99% and sticks there, and the scene-by-scene guide. Nothing ever plays. From day 6 a
+// view counter climbs, and from day 9 Kev's 6-second clip of Dex at the Westfield Jam sits below.
 import { useEffect, useState } from 'react';
 import { KICKFLIP_HOST } from '@/content/sites/kickflipkings';
 import { useT } from '@/i18n/useT';
+import { PhotoCanvas } from '@/os/fs/FsIcon';
 import { scaleMs } from '@/os/speed';
 import { useWorldStore } from '@/os/world';
 import { upToDay } from '../daily';
 import { useSiteText } from '../useSiteText';
 import styles from './KickflipKings.module.css';
 import { Layout } from './Layout';
-import { BUFFER_MAX, bufferAt, daysToPremiere } from './logic';
+import { BUFFER_MAX, bufferAt, daysToPremiere, viewsOn } from './logic';
 
 const TICK_MS = 450;
 
@@ -21,6 +23,7 @@ export default function Video() {
   // null = not pressed yet; otherwise how many buffering ticks have passed.
   const [step, setStep] = useState<number | null>(null);
   const pct = step === null ? null : bufferAt(step);
+  const views = viewsOn(V.views, day);
 
   useEffect(() => {
     if (step === null || bufferAt(step) >= BUFFER_MAX) return;
@@ -79,6 +82,9 @@ export default function Video() {
         </div>
         <p className={styles.meta}>
           {t('sites.kickflipkings.length', { length: V.length })}
+          {views !== null && (
+            <> · {t('sites.kickflipkings.views', { n: views })}</>
+          )}
         </p>
         {pct !== null && pct >= BUFFER_MAX && (
           <p className={styles.closed}>{V.stuck}</p>
@@ -94,6 +100,21 @@ export default function Video() {
         ))}
       </dl>
       <p className={styles.meta}>{V.credits}</p>
+      {day >= V.clip.day && (
+        <section className={styles.card} aria-label={V.clip.title}>
+          <h3 className={styles.cardTitle}>{V.clip.title}</h3>
+          <PhotoCanvas
+            photo={{ scene: 'skatepark', seed: 7401, day: V.clip.day }}
+            width={160}
+            height={120}
+            label={V.clip.title}
+          />
+          <p className={styles.meta}>
+            {t('sites.kickflipkings.length', { length: V.clip.length })}
+          </p>
+          <p>{V.clip.text}</p>
+        </section>
+      )}
     </Layout>
   );
 }

@@ -1257,6 +1257,7 @@ export const de: Messages = {
           : p.n === 1
             ? 'Premiere: morgen!!'
             : `Premiere: in ${p.n} Tagen`,
+      views: (p: { n: number }) => (p.n === 1 ? '1 Aufruf' : `${p.n} Aufrufe`),
       gigs: 'Konzerte',
       where: 'wo:',
       when: 'wann:',

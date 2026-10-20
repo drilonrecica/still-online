@@ -2,7 +2,14 @@
 // only employee). Every game except Mines, Hen Hunt and Star Pinball is invented, and so is every
 // clip and forum handle. News and forum replies are day-gated (days 1–5); the forum has Theo's shy
 // level-4 question (the one CheatCave Weekly #12 brags about), Dex's one late post and Marco, dry.
+// Days 6–10 (news, two clips, forum replies) live in `cheatcave-week2.ts`.
 import { g } from '../gender';
+import {
+  CHEATCAVE_CLIPS_WEEK2,
+  CHEATCAVE_FORUM_WEEK2,
+  CHEATCAVE_NEWS_WEEK2,
+  withForumPosts,
+} from './cheatcave-week2';
 import type {
   CheatGame,
   ForumThread,
@@ -40,7 +47,7 @@ export const SITE_META: SiteMeta = {
     },
     '/clips': {
       title: 'CheatCave - Top 10 Funny Clips',
-      keywords: ['videos', 'funny', 'lol', 'top 10'],
+      keywords: ['videos', 'funny', 'lol', 'top 10', 'bingo', 'mic'],
     },
     '/forum': {
       title: 'CheatCave - Forum',
@@ -138,6 +145,7 @@ export const CHEATCAVE_NEWS: readonly NewsPost[] = [
     author: 'CaveKing',
     body: 'the cat vs ceiling fan era is OVER. the puddle wins. go see the new top 10!!',
   },
+  ...CHEATCAVE_NEWS_WEEK2,
 ];
 
 /** `/cheats?game=<id>`: six invented games, then the three that ship on this computer. */
@@ -467,118 +475,125 @@ export const CHEATCAVE_CLIPS: readonly FunnyClip[] = [
     uploader: 'sk8_or_die_88',
     photo: { scene: 'trip', seed: 7311, caption: 'the puddle wins' },
   },
+  ...CHEATCAVE_CLIPS_WEEK2,
 ];
 
-/** Three threads. Theo asks shyly, Dex posts once (late), Marco is dry; everyone else is a stranger. */
-export const CHEATCAVE_THREADS: readonly ForumThread[] = [
-  {
-    id: 'ntk-level-4',
-    title: 'how do u beat level 4?? (the umbrella guy)',
-    board: 'Ninja Turbo Kombat',
-    posts: [
-      {
-        day: 1,
-        user: 'theo_k',
-        text: 'hi. sorry if this is a dumb question. how do u beat level 4? the guy with the umbrella blocks everything. i tried 23 times. sorry for the long post',
-      },
-      { day: 1, user: 'xXSniperHawkXx', text: 'n00b' },
-      { day: 1, user: 'l33t_m4st3r_99', text: 'n00b' },
-      { day: 2, user: 'DarkFlame2007', text: 'n00b lol' },
-      {
-        day: 2,
-        user: 'PizzaRolls4Life',
-        text: 'ok for real: jump OVER him and kick his back when he opens the umbrella. he cant block from behind. thats it',
-      },
-      {
-        day: 2,
-        user: 'theo_k',
-        text: 'it WORKED. thank u PizzaRolls4Life. sorry for the double post. and thanks to everyone who said n00b too i guess',
-      },
-      {
-        day: 3,
-        user: 'CaveKing',
-        text: 'MOD NOTE: i deleted 22 more replies that just said n00b. be nice to new ppl or i lock this thread. (the helpful one stays)',
-      },
-      {
-        day: 3,
-        user: 'theo_k',
-        text: 'sorry, off topic, but i cant play this week. bio project. we made a cell out of jello. its... wobbly',
-      },
-      {
-        day: 5,
-        user: 'theo_k',
-        text: 'update: beat the whole game. AND got a B+ on the jello cell. sorry for bragging',
-      },
-    ],
-  },
-  {
-    id: 'pc-vs-console',
-    title: 'PC vs CONSOLE. settle it. GO',
-    board: 'General Gaming',
-    posts: [
-      {
-        day: 2,
-        user: 'DarkFlame2007',
-        text: 'pc vs console. whoever loses has to admit it. GO',
-      },
-      {
-        day: 2,
-        user: 'l33t_m4st3r_99',
-        text: 'CONSOLE. u can play on the couch. case closed',
-      },
-      {
-        day: 3,
-        user: 'marco.bassline',
-        text: `i have a pc that runs galaxy raiders 3 on max. i use it to email my landlord. so. console. my little cousin beats me at thunder kart anyway. ${g('she', 'he')} doesnt even look at the screen`,
-      },
-      { day: 3, user: 'DarkFlame2007', text: 'who even r u' },
-      {
-        day: 4,
-        user: 'marco.bassline',
-        text: 'someone who owns both and plays neither. i play bass',
-      },
-      {
-        day: 4,
-        user: 'l33t_m4st3r_99',
-        text: 'is velvet lantern a game?? never heard of it',
-      },
-      {
-        day: 5,
-        user: 'marco.bassline',
-        text: 'its a band. we played the bean cellar last night. sold out. capacity is 11',
-      },
-    ],
-  },
-  {
-    id: 'best-trick-irl',
-    title: 'best trick u ever landed IRL?',
-    board: 'Off Topic',
-    posts: [
-      {
-        day: 1,
-        user: 'Kickflip_Kev',
-        text: 'ok gamers go outside for 1 sec. best trick u ever landed in REAL LIFE? mine: a 50-50 on the curb at the gas station',
-      },
-      {
-        day: 2,
-        user: 'PizzaRolls4Life',
-        text: 'i landed on my back. does that count',
-      },
-      {
-        day: 2,
-        user: 'xXSniperHawkXx',
-        text: 'i landed a 900 in Rail Grind Pro 2. thats basically irl',
-      },
-      {
-        day: 3,
-        user: 'Kickflip_Kev',
-        text: 'a video game is NOT irl. anyone?? hello??',
-      },
-      {
-        day: 5,
-        user: 'dex.kickflip',
-        text: 'kickflip. yesterday. after like 400 tries. nobody filmed it. camera was in my bag. so u have to trust me',
-      },
-    ],
-  },
-];
+/**
+ * Three threads. Theo asks shyly, Dex posts late (day 5, then from the Jam), Marco is dry; everyone
+ * else is a stranger. Week two's replies are appended from `CHEATCAVE_FORUM_WEEK2`.
+ */
+export const CHEATCAVE_THREADS: readonly ForumThread[] = withForumPosts(
+  [
+    {
+      id: 'ntk-level-4',
+      title: 'how do u beat level 4?? (the umbrella guy)',
+      board: 'Ninja Turbo Kombat',
+      posts: [
+        {
+          day: 1,
+          user: 'theo_k',
+          text: 'hi. sorry if this is a dumb question. how do u beat level 4? the guy with the umbrella blocks everything. i tried 23 times. sorry for the long post',
+        },
+        { day: 1, user: 'xXSniperHawkXx', text: 'n00b' },
+        { day: 1, user: 'l33t_m4st3r_99', text: 'n00b' },
+        { day: 2, user: 'DarkFlame2007', text: 'n00b lol' },
+        {
+          day: 2,
+          user: 'PizzaRolls4Life',
+          text: 'ok for real: jump OVER him and kick his back when he opens the umbrella. he cant block from behind. thats it',
+        },
+        {
+          day: 2,
+          user: 'theo_k',
+          text: 'it WORKED. thank u PizzaRolls4Life. sorry for the double post. and thanks to everyone who said n00b too i guess',
+        },
+        {
+          day: 3,
+          user: 'CaveKing',
+          text: 'MOD NOTE: i deleted 22 more replies that just said n00b. be nice to new ppl or i lock this thread. (the helpful one stays)',
+        },
+        {
+          day: 3,
+          user: 'theo_k',
+          text: 'sorry, off topic, but i cant play this week. bio project. we made a cell out of jello. its... wobbly',
+        },
+        {
+          day: 5,
+          user: 'theo_k',
+          text: 'update: beat the whole game. AND got a B+ on the jello cell. sorry for bragging',
+        },
+      ],
+    },
+    {
+      id: 'pc-vs-console',
+      title: 'PC vs CONSOLE. settle it. GO',
+      board: 'General Gaming',
+      posts: [
+        {
+          day: 2,
+          user: 'DarkFlame2007',
+          text: 'pc vs console. whoever loses has to admit it. GO',
+        },
+        {
+          day: 2,
+          user: 'l33t_m4st3r_99',
+          text: 'CONSOLE. u can play on the couch. case closed',
+        },
+        {
+          day: 3,
+          user: 'marco.bassline',
+          text: `i have a pc that runs galaxy raiders 3 on max. i use it to email my landlord. so. console. my little cousin beats me at thunder kart anyway. ${g('she', 'he')} doesnt even look at the screen`,
+        },
+        { day: 3, user: 'DarkFlame2007', text: 'who even r u' },
+        {
+          day: 4,
+          user: 'marco.bassline',
+          text: 'someone who owns both and plays neither. i play bass',
+        },
+        {
+          day: 4,
+          user: 'l33t_m4st3r_99',
+          text: 'is velvet lantern a game?? never heard of it',
+        },
+        {
+          day: 5,
+          user: 'marco.bassline',
+          text: 'its a band. we played the bean cellar last night. sold out. capacity is 11',
+        },
+      ],
+    },
+    {
+      id: 'best-trick-irl',
+      title: 'best trick u ever landed IRL?',
+      board: 'Off Topic',
+      posts: [
+        {
+          day: 1,
+          user: 'Kickflip_Kev',
+          text: 'ok gamers go outside for 1 sec. best trick u ever landed in REAL LIFE? mine: a 50-50 on the curb at the gas station',
+        },
+        {
+          day: 2,
+          user: 'PizzaRolls4Life',
+          text: 'i landed on my back. does that count',
+        },
+        {
+          day: 2,
+          user: 'xXSniperHawkXx',
+          text: 'i landed a 900 in Rail Grind Pro 2. thats basically irl',
+        },
+        {
+          day: 3,
+          user: 'Kickflip_Kev',
+          text: 'a video game is NOT irl. anyone?? hello??',
+        },
+        {
+          day: 5,
+          user: 'dex.kickflip',
+          text: 'kickflip. yesterday. after like 400 tries. nobody filmed it. camera was in my bag. so u have to trust me',
+        },
+      ],
+    },
+  ],
+  CHEATCAVE_FORUM_WEEK2,
+);

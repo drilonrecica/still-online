@@ -6,7 +6,7 @@ import { LOCALES } from '@/i18n/types';
 import { contentDays } from '../storyDays';
 import { CHEATCAVE_HOST } from './cheatcave';
 
-const days = contentDays();
+const days = contentDays('sites');
 const COMBOS = LOCALES.flatMap((locale) =>
   GENDERS.map((gender) => [locale, gender] as const),
 );
@@ -59,7 +59,7 @@ describe.each(COMBOS)('cheatcave content (%s, %s)', (locale, gender) => {
     }
   });
 
-  it('ties the forum to the story: Theo asks shyly, Dex posts once and late, Marco is dry', () => {
+  it('ties the forum to the story: Theo asks shyly, Dex posts late and from the Jam, Marco is dry', () => {
     const posts = site.CHEATCAVE_THREADS.flatMap((t) => t.posts);
     const by = (user: string) => posts.filter((p) => p.user === user);
     const theo = by('theo_k');
@@ -67,8 +67,9 @@ describe.each(COMBOS)('cheatcave content (%s, %s)', (locale, gender) => {
     expect(theo[0]?.text).toMatch(
       locale === 'de' ? /dumme frage/ : /dumb question/,
     );
-    expect(by('dex.kickflip')).toHaveLength(1);
-    expect(by('dex.kickflip')[0]?.day).toBe(5);
+    expect(by('dex.kickflip').map((p) => p.day)).toEqual([5, 9]);
+    for (const p of by('dex.kickflip'))
+      expect(p.text).toBe(p.text.toLowerCase());
     const marco = by('marco.bassline');
     expect(marco.length).toBeGreaterThanOrEqual(2);
     for (const p of marco) {

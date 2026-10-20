@@ -1250,6 +1250,7 @@ export const en = {
           : p.n === 1
             ? 'premiere: tomorrow!!'
             : `premiere: in ${p.n} days`,
+      views: (p: { n: number }) => (p.n === 1 ? '1 view' : `${p.n} views`),
       gigs: 'Shows',
       where: 'where:',
       when: 'when:',

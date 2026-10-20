@@ -4,6 +4,7 @@ import { useT } from '@/i18n/useT';
 import { useSiteText } from '../useSiteText';
 import { useWorldStore } from '@/os/world';
 import { Layout } from './Layout';
+import { tourRow } from './logic';
 import styles from './TinfoilComets.module.css';
 
 export default function Band() {
@@ -60,15 +61,14 @@ export default function Band() {
       <table className={styles.box}>
         <tbody>
           {TINFOIL_TOUR.map((show) => {
-            const past =
-              show.after && day >= show.after.day ? show.after : null;
+            const row = tourRow(show, day);
             return (
               <tr key={show.venue}>
-                <th scope="row" className={past ? undefined : styles.blink}>
-                  {past?.date ?? show.date}
+                <th scope="row" className={row.past ? undefined : styles.blink}>
+                  {row.date}
                 </th>
                 <td>
-                  <b>{show.venue}</b> &mdash; {past?.note ?? show.note}
+                  <b>{show.venue}</b> &mdash; {row.note}
                 </td>
               </tr>
             );

@@ -154,6 +154,59 @@ describe('kickflipkings.example', () => {
     expect(screen.getByText(/stuck at 99%/)).toBeTruthy();
   });
 
+  it("week two: the view counter climbs from day 6 and Kev's Jam clip appears on day 9", async () => {
+    useWorldStore.setState({ day: 5 });
+    open('/video');
+    await finishLoad();
+    await screen.findByRole('region', { name: 'Video player' });
+    expect(screen.queryByText(/views/)).toBeNull();
+    cleanup();
+
+    useWorldStore.setState({ day: 6 });
+    open('/video');
+    await finishLoad();
+    expect(await screen.findByText(/length 0:30 · 41 views/)).toBeTruthy();
+    expect(screen.queryByText(/kevs clip/)).toBeNull();
+    cleanup();
+
+    useSettingsStore.setState({ gender: 'boy' });
+    useWorldStore.setState({ day: 9 });
+    open('/video');
+    await finishLoad();
+    expect(await screen.findByText(/length 0:30 · 140 views/)).toBeTruthy();
+    const clip = screen.getByRole('region', {
+      name: 'NEW: kevs clip. dex at the westfield jam',
+    });
+    expect(clip).toHaveTextContent(/length 0:06.*lens cap OFF/);
+    cleanup();
+
+    useSettingsStore.setState({ language: 'de' });
+    useWorldStore.setState({ day: 10 });
+    open('/video');
+    await finishLoad();
+    expect(await screen.findByText(/Länge 0:30 · 212 Aufrufe/)).toBeTruthy();
+  });
+
+  it('week two: the next Velvet Lantern show moves to the rec hall, then reads as played', async () => {
+    useWorldStore.setState({ day: 8 });
+    open('/gigs');
+    await finishLoad();
+    const day8 = await screen.findByRole('list', { name: 'Shows' });
+    const next = within(day8).getAllByRole('listitem')[2]!;
+    expect(next).toHaveTextContent(/the westfield rec hall/);
+    expect(next).toHaveTextContent(/saturday\. doors at 6/);
+    expect(next).toHaveTextContent(/bingo always wins.*The Grip Tapes open/);
+    cleanup();
+
+    useWorldStore.setState({ day: 10 });
+    open('/gigs');
+    await finishLoad();
+    const day10 = await screen.findByRole('list', { name: 'Shows' });
+    expect(within(day10).getAllByRole('listitem')[2]).toHaveTextContent(
+      /the westfield rec hall.*played saturday.*83 ppl/,
+    );
+  });
+
   it('gigs list the Velvet Lantern bean cellar show, then its review', async () => {
     open('/gigs');
     await finishLoad();

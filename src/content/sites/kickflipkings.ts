@@ -2,14 +2,20 @@
 // site; the crew is Kev, Sam, Rico and Dex. News and shouts are day-gated (days 1–5) and follow
 // Dex's story: filming (day 2), the eaten tape (3), the kickflip nobody filmed (4), the 30-second
 // blur premiering on `/video` (5). `/gigs` lists Velvet Lantern's bean cellar show (Marco's band).
+// Days 6–10 (`kickflipkings-week2.ts`): the view counter, the Westfield Jam and the rec hall show.
 import { g } from '../gender';
+import {
+  KICKFLIP_NEWS_WEEK2,
+  KICKFLIP_SHOUTS_WEEK2,
+  KICKFLIP_VIDEO_WEEK2,
+} from './kickflipkings-week2';
 import type {
   CrewMember,
-  DayLine,
   Gig,
   NewsPost,
   Shout,
   SiteMeta,
+  SkateVideo,
   Trick,
 } from './types';
 
@@ -30,11 +36,13 @@ export const SITE_META: SiteMeta = {
     'tricks',
     'crew',
     'skatepark',
+    'jam',
+    'contest',
   ],
   pages: {
     '/': {
       title: 'KICKFLIP KINGS - skate crew',
-      keywords: ['news', 'shoutbox', 'home'],
+      keywords: ['news', 'shoutbox', 'home', 'westfield jam', 'results'],
     },
     '/crew': {
       title: 'KICKFLIP KINGS - the crew',
@@ -46,7 +54,7 @@ export const SITE_META: SiteMeta = {
     },
     '/video': {
       title: 'KICKFLIP KINGS - skate video',
-      keywords: ['video', 'skate video', 'premiere', 'dex'],
+      keywords: ['video', 'skate video', 'premiere', 'dex', 'views', 'clip'],
     },
     '/gigs': {
       title: 'KICKFLIP KINGS - gigs',
@@ -57,6 +65,7 @@ export const SITE_META: SiteMeta = {
         'velvet lantern',
         'bean cellar',
         'band',
+        'rec hall',
       ],
     },
   },
@@ -96,7 +105,7 @@ export const KICKFLIP_TEXT = {
     '(c) 2007 Kickflip Kings. site by kev. hosted on my dads web space. dont break it',
 };
 
-/** Kev's news posts: one a day, two on day 2 (Marco's flyer). */
+/** Kev's news posts: one a day, two on day 2 (Marco's flyer); days 6–10 in the week-two module. */
 export const KICKFLIP_NEWS: readonly NewsPost[] = [
   {
     day: 1,
@@ -134,6 +143,7 @@ export const KICKFLIP_NEWS: readonly NewsPost[] = [
     author: 'Kickflip_Kev',
     body: 'its HERE. 30 seconds of pure skateboarding (and sky). my dad has a capture card so i put it on the video page. it might buffer a little. a lot. go watch it!!',
   },
+  ...KICKFLIP_NEWS_WEEK2,
 ];
 
 /** The shoutbox, read-only for visitors: crew, regulars and one lost CheatCave gamer. */
@@ -188,6 +198,7 @@ export const KICKFLIP_SHOUTS: readonly Shout[] = [
     user: 'sam_grabs',
     text: 'watched it at dexs house on the tv. bring snacks if u go',
   },
+  ...KICKFLIP_SHOUTS_WEEK2,
 ];
 
 export const KICKFLIP_CREW: readonly CrewMember[] = [
@@ -221,6 +232,10 @@ export const KICKFLIP_CREW: readonly CrewMember[] = [
     after: {
       day: 4,
       bestTrick: 'kickflip. LANDED. ask the kid',
+    },
+    later: {
+      day: 9,
+      bestTrick: 'kickflip. LANDED. on tape. 3rd at the jam',
     },
   },
 ];
@@ -280,18 +295,8 @@ export const DEX_STORY: { day: number; lines: readonly string[] } = {
   ],
 };
 
-/** The `/video` page: teasers until the premiere on day 5, then the video. */
-export const KICKFLIP_VIDEO: {
-  premiereDay: number;
-  teasers: readonly DayLine[];
-  title: string;
-  length: string;
-  timeline: readonly { at: string; text: string }[];
-  playLabel: string;
-  buffering: string;
-  stuck: string;
-  credits: string;
-} = {
+/** The `/video` page: teasers until the premiere on day 5, then the video (views from day 6). */
+export const KICKFLIP_VIDEO: SkateVideo = {
   premiereDay: 5,
   teasers: [
     {
@@ -327,6 +332,7 @@ export const KICKFLIP_VIDEO: {
     'stuck at 99%. like every video in 2007. watch it at dexs house instead, its on the tv there',
   credits:
     'filmed on a 1998 camcorder + the last of a 1999 tape. put online by kevs dads capture card. no refunds',
+  ...KICKFLIP_VIDEO_WEEK2,
 };
 
 export const KICKFLIP_GIGS: readonly Gig[] = [
@@ -368,5 +374,25 @@ export const KICKFLIP_GIGS: readonly Gig[] = [
     venue: 'TBA',
     when: 'soon',
     note: 'marco says the next show is "bigger". we asked how big. he said "12"',
+    moved: {
+      day: 6,
+      venue: 'the westfield rec hall',
+      when: 'saturday. doors at 6. all ages',
+    },
+    updates: [
+      {
+        day: 6,
+        text: 'update: its the REC HALL. for real this time. the first date went to bingo. marco says bingo always wins',
+      },
+      {
+        day: 8,
+        text: 'update: The Grip Tapes open!!! dex is filming. boards stay outside',
+      },
+    ],
+    after: {
+      day: 10,
+      when: 'played saturday',
+      note: 'played. 83 ppl. kev filmed nothing, dex filmed everything',
+    },
   },
 ];

@@ -15,7 +15,7 @@ describe.each(COMBOS)('kickflipkings content (%s, %s)', (locale, gender) => {
   const en = getSiteText(KICKFLIP_HOST, 'en', gender);
 
   it('posts news every written day and keeps days, authors and handles across languages', () => {
-    for (const day of contentDays())
+    for (const day of contentDays('sites'))
       expect(
         site.KICKFLIP_NEWS.some((p) => p.day === day),
         `day ${day}`,
@@ -23,12 +23,18 @@ describe.each(COMBOS)('kickflipkings content (%s, %s)', (locale, gender) => {
     const shape = (s: typeof site) => ({
       news: s.KICKFLIP_NEWS.map((p) => [p.day, p.author]),
       shouts: s.KICKFLIP_SHOUTS.map((p) => [p.day, p.user]),
-      crew: s.KICKFLIP_CREW.map((m) => [m.handle, m.name, m.after?.day]),
+      crew: s.KICKFLIP_CREW.map((m) => [
+        m.handle,
+        m.name,
+        m.after?.day,
+        m.later?.day,
+      ]),
       tricks: s.KICKFLIP_TRICKS.map((t) => [t.id, t.name, t.steps.length]),
       gigs: s.KICKFLIP_GIGS.map((g) => [
         g.id,
         g.day,
         g.band,
+        g.moved?.day,
         g.updates?.map((u) => u.day),
         g.after?.day,
       ]),
@@ -37,6 +43,8 @@ describe.each(COMBOS)('kickflipkings content (%s, %s)', (locale, gender) => {
         s.KICKFLIP_VIDEO.length,
         s.KICKFLIP_VIDEO.teasers.map((t) => t.day),
         s.KICKFLIP_VIDEO.timeline.map((t) => t.at),
+        s.KICKFLIP_VIDEO.views,
+        [s.KICKFLIP_VIDEO.clip.day, s.KICKFLIP_VIDEO.clip.length],
       ],
       story: [s.DEX_STORY.day, s.DEX_STORY.lines.length],
     });

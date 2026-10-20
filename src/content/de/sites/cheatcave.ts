@@ -9,6 +9,12 @@ import type {
   NewsPost,
   SiteMeta,
 } from '../../sites/types';
+import { withForumPosts } from '../../sites/cheatcave-week2';
+import {
+  CHEATCAVE_CLIPS_WEEK2,
+  CHEATCAVE_FORUM_WEEK2,
+  CHEATCAVE_NEWS_WEEK2,
+} from './cheatcave-week2';
 
 export const CHEATCAVE_HOST = 'cheatcave.example';
 
@@ -46,7 +52,7 @@ export const SITE_META: SiteMeta = {
     },
     '/clips': {
       title: 'CheatCave - Top 10 lustige Clips',
-      keywords: ['videos', 'lustig', 'lol', 'top 10'],
+      keywords: ['videos', 'lustig', 'lol', 'top 10', 'bingo', 'mikro'],
     },
     '/forum': {
       title: 'CheatCave - Forum',
@@ -146,6 +152,7 @@ export const CHEATCAVE_NEWS: readonly NewsPost[] = [
     author: 'CaveKing',
     body: 'die ära „katze gegen deckenventilator“ is VORBEI. die pfütze gewinnt. guckt euch die neuen top 10 an!!',
   },
+  ...CHEATCAVE_NEWS_WEEK2,
 ];
 
 /** `/cheats?game=<id>`: sechs erfundene Spiele, dann die drei auf diesem Computer. */
@@ -484,118 +491,122 @@ export const CHEATCAVE_CLIPS: readonly FunnyClip[] = [
     uploader: 'sk8_or_die_88',
     photo: { scene: 'trip', seed: 7311, caption: 'die pfütze gewinnt' },
   },
+  ...CHEATCAVE_CLIPS_WEEK2,
 ];
 
-/** Drei Threads. Theo fragt schüchtern, Dex schreibt einmal (spät), Marco is trocken. */
-export const CHEATCAVE_THREADS: readonly ForumThread[] = [
-  {
-    id: 'ntk-level-4',
-    title: 'wie schafft man level 4?? (der typ mit dem schirm)',
-    board: 'Ninja Turbo Kombat',
-    posts: [
-      {
-        day: 1,
-        user: 'theo_k',
-        text: 'hallo. sorry, falls das ne dumme frage ist. wie schafft man level 4? der typ mit dem schirm blockt alles. hab es 23 mal probiert. sorry für den langen beitrag',
-      },
-      { day: 1, user: 'xXSniperHawkXx', text: 'n00b' },
-      { day: 1, user: 'l33t_m4st3r_99', text: 'n00b' },
-      { day: 2, user: 'DarkFlame2007', text: 'n00b lol' },
-      {
-        day: 2,
-        user: 'PizzaRolls4Life',
-        text: 'ok jetzt mal ernst: ÜBER ihn springen und ihm in den rücken treten, wenn er den schirm aufmacht. von hinten kann er nich blocken. das wars',
-      },
-      {
-        day: 2,
-        user: 'theo_k',
-        text: 'es hat GEKLAPPT. danke PizzaRolls4Life. sorry für den doppelpost. und danke auch an alle, die n00b gesagt haben, glaub ich',
-      },
-      {
-        day: 3,
-        user: 'CaveKing',
-        text: 'MOD-HINWEIS: hab noch 22 antworten gelöscht, in denen nur n00b stand. seid nett zu neuen leuten oder ich mach den thread zu. (die hilfreiche bleibt)',
-      },
-      {
-        day: 3,
-        user: 'theo_k',
-        text: 'sorry, nicht ganz zum thema, aber ich kann diese woche nicht spielen. bio-projekt. wir haben ne zelle aus wackelpudding gebaut. sie ist… wackelig',
-      },
-      {
-        day: 5,
-        user: 'theo_k',
-        text: 'update: hab das ganze spiel durch. UND ne 2+ für die wackelpudding-zelle. sorry fürs angeben',
-      },
-    ],
-  },
-  {
-    id: 'pc-vs-console',
-    title: 'PC gegen KONSOLE. klärt das. LOS',
-    board: 'Spiele allgemein',
-    posts: [
-      {
-        day: 2,
-        user: 'DarkFlame2007',
-        text: 'pc gegen konsole. wer verliert, muss es zugeben. LOS',
-      },
-      {
-        day: 2,
-        user: 'l33t_m4st3r_99',
-        text: 'KONSOLE. da kann man auf der couch zocken. thema erledigt',
-      },
-      {
-        day: 3,
-        user: 'marco.bassline',
-        text: `ich hab nen pc, auf dem galaxy raiders 3 auf maximum läuft. ich schreib damit mails an meinen vermieter. also. konsole. ${g('meine kleine cousine', 'mein kleiner cousin')} schlägt mich in thunder kart sowieso. ohne auf den bildschirm zu gucken`,
-      },
-      { day: 3, user: 'DarkFlame2007', text: 'wer bist du überhaupt' },
-      {
-        day: 4,
-        user: 'marco.bassline',
-        text: 'einer, der beides hat und keins spielt. ich spiel bass',
-      },
-      {
-        day: 4,
-        user: 'l33t_m4st3r_99',
-        text: 'is velvet lantern ein spiel?? nie gehört',
-      },
-      {
-        day: 5,
-        user: 'marco.bassline',
-        text: 'ne band. wir haben gestern im bean cellar gespielt. ausverkauft. passen 11 leute rein',
-      },
-    ],
-  },
-  {
-    id: 'best-trick-irl',
-    title: 'bester trick, den ihr je IN ECHT gestanden habt?',
-    board: 'Off Topic',
-    posts: [
-      {
-        day: 1,
-        user: 'Kickflip_Kev',
-        text: 'ok zocker, geht mal kurz raus. bester trick, den ihr je IM ECHTEN LEBEN gestanden habt? meiner: ein 50-50 auf dem bordstein an der tanke',
-      },
-      {
-        day: 2,
-        user: 'PizzaRolls4Life',
-        text: 'ich bin auf dem rücken gelandet. zählt das',
-      },
-      {
-        day: 2,
-        user: 'xXSniperHawkXx',
-        text: 'ich hab in Rail Grind Pro 2 nen 900er gestanden. is quasi in echt',
-      },
-      {
-        day: 3,
-        user: 'Kickflip_Kev',
-        text: 'ein videospiel is NICH in echt. noch wer?? hallo??',
-      },
-      {
-        day: 5,
-        user: 'dex.kickflip',
-        text: 'kickflip. gestern. nach so 400 versuchen. keiner hats gefilmt. kamera war in meiner tasche. müsst ihr mir halt glauben',
-      },
-    ],
-  },
-];
+/** Drei Threads. Theo fragt schüchtern, Dex schreibt spät, Marco is trocken; dazu Woche zwei. */
+export const CHEATCAVE_THREADS: readonly ForumThread[] = withForumPosts(
+  [
+    {
+      id: 'ntk-level-4',
+      title: 'wie schafft man level 4?? (der typ mit dem schirm)',
+      board: 'Ninja Turbo Kombat',
+      posts: [
+        {
+          day: 1,
+          user: 'theo_k',
+          text: 'hallo. sorry, falls das ne dumme frage ist. wie schafft man level 4? der typ mit dem schirm blockt alles. hab es 23 mal probiert. sorry für den langen beitrag',
+        },
+        { day: 1, user: 'xXSniperHawkXx', text: 'n00b' },
+        { day: 1, user: 'l33t_m4st3r_99', text: 'n00b' },
+        { day: 2, user: 'DarkFlame2007', text: 'n00b lol' },
+        {
+          day: 2,
+          user: 'PizzaRolls4Life',
+          text: 'ok jetzt mal ernst: ÜBER ihn springen und ihm in den rücken treten, wenn er den schirm aufmacht. von hinten kann er nich blocken. das wars',
+        },
+        {
+          day: 2,
+          user: 'theo_k',
+          text: 'es hat GEKLAPPT. danke PizzaRolls4Life. sorry für den doppelpost. und danke auch an alle, die n00b gesagt haben, glaub ich',
+        },
+        {
+          day: 3,
+          user: 'CaveKing',
+          text: 'MOD-HINWEIS: hab noch 22 antworten gelöscht, in denen nur n00b stand. seid nett zu neuen leuten oder ich mach den thread zu. (die hilfreiche bleibt)',
+        },
+        {
+          day: 3,
+          user: 'theo_k',
+          text: 'sorry, nicht ganz zum thema, aber ich kann diese woche nicht spielen. bio-projekt. wir haben ne zelle aus wackelpudding gebaut. sie ist… wackelig',
+        },
+        {
+          day: 5,
+          user: 'theo_k',
+          text: 'update: hab das ganze spiel durch. UND ne 2+ für die wackelpudding-zelle. sorry fürs angeben',
+        },
+      ],
+    },
+    {
+      id: 'pc-vs-console',
+      title: 'PC gegen KONSOLE. klärt das. LOS',
+      board: 'Spiele allgemein',
+      posts: [
+        {
+          day: 2,
+          user: 'DarkFlame2007',
+          text: 'pc gegen konsole. wer verliert, muss es zugeben. LOS',
+        },
+        {
+          day: 2,
+          user: 'l33t_m4st3r_99',
+          text: 'KONSOLE. da kann man auf der couch zocken. thema erledigt',
+        },
+        {
+          day: 3,
+          user: 'marco.bassline',
+          text: `ich hab nen pc, auf dem galaxy raiders 3 auf maximum läuft. ich schreib damit mails an meinen vermieter. also. konsole. ${g('meine kleine cousine', 'mein kleiner cousin')} schlägt mich in thunder kart sowieso. ohne auf den bildschirm zu gucken`,
+        },
+        { day: 3, user: 'DarkFlame2007', text: 'wer bist du überhaupt' },
+        {
+          day: 4,
+          user: 'marco.bassline',
+          text: 'einer, der beides hat und keins spielt. ich spiel bass',
+        },
+        {
+          day: 4,
+          user: 'l33t_m4st3r_99',
+          text: 'is velvet lantern ein spiel?? nie gehört',
+        },
+        {
+          day: 5,
+          user: 'marco.bassline',
+          text: 'ne band. wir haben gestern im bean cellar gespielt. ausverkauft. passen 11 leute rein',
+        },
+      ],
+    },
+    {
+      id: 'best-trick-irl',
+      title: 'bester trick, den ihr je IN ECHT gestanden habt?',
+      board: 'Off Topic',
+      posts: [
+        {
+          day: 1,
+          user: 'Kickflip_Kev',
+          text: 'ok zocker, geht mal kurz raus. bester trick, den ihr je IM ECHTEN LEBEN gestanden habt? meiner: ein 50-50 auf dem bordstein an der tanke',
+        },
+        {
+          day: 2,
+          user: 'PizzaRolls4Life',
+          text: 'ich bin auf dem rücken gelandet. zählt das',
+        },
+        {
+          day: 2,
+          user: 'xXSniperHawkXx',
+          text: 'ich hab in Rail Grind Pro 2 nen 900er gestanden. is quasi in echt',
+        },
+        {
+          day: 3,
+          user: 'Kickflip_Kev',
+          text: 'ein videospiel is NICH in echt. noch wer?? hallo??',
+        },
+        {
+          day: 5,
+          user: 'dex.kickflip',
+          text: 'kickflip. gestern. nach so 400 versuchen. keiner hats gefilmt. kamera war in meiner tasche. müsst ihr mir halt glauben',
+        },
+      ],
+    },
+  ],
+  CHEATCAVE_FORUM_WEEK2,
+);

@@ -4,13 +4,18 @@
 import { g } from '../../gender';
 import type {
   CrewMember,
-  DayLine,
   Gig,
   NewsPost,
   Shout,
   SiteMeta,
+  SkateVideo,
   Trick,
 } from '../../sites/types';
+import {
+  KICKFLIP_NEWS_WEEK2,
+  KICKFLIP_SHOUTS_WEEK2,
+  KICKFLIP_VIDEO_WEEK2,
+} from './kickflipkings-week2';
 
 export const KICKFLIP_HOST = 'kickflipkings.example';
 
@@ -33,7 +38,14 @@ export const SITE_META: SiteMeta = {
   pages: {
     '/': {
       title: 'KICKFLIP KINGS - Skate-Crew',
-      keywords: ['news', 'neuigkeiten', 'shoutbox', 'startseite'],
+      keywords: [
+        'news',
+        'neuigkeiten',
+        'shoutbox',
+        'startseite',
+        'westfield jam',
+        'ergebnisse',
+      ],
     },
     '/crew': {
       title: 'KICKFLIP KINGS - die Crew',
@@ -45,7 +57,7 @@ export const SITE_META: SiteMeta = {
     },
     '/video': {
       title: 'KICKFLIP KINGS - Skatevideo',
-      keywords: ['video', 'skatevideo', 'premiere', 'dex'],
+      keywords: ['video', 'skatevideo', 'premiere', 'dex', 'aufrufe', 'clip'],
     },
     '/gigs': {
       title: 'KICKFLIP KINGS - Konzerte',
@@ -138,6 +150,7 @@ export const KICKFLIP_NEWS: readonly NewsPost[] = [
     author: 'Kickflip_Kev',
     body: 'es is DA. 30 sekunden pures skateboarden (und himmel). mein vater hat ne capture-karte, also is es jetzt auf der videoseite. kann sein, dass es bisschen lädt. sehr. guckts euch an!!',
   },
+  ...KICKFLIP_NEWS_WEEK2,
 ];
 
 export const KICKFLIP_SHOUTS: readonly Shout[] = [
@@ -207,6 +220,7 @@ export const KICKFLIP_SHOUTS: readonly Shout[] = [
     user: 'sam_grabs',
     text: 'habs bei dex am fernseher geguckt. wer hingeht: chips mitbringen',
   },
+  ...KICKFLIP_SHOUTS_WEEK2,
 ];
 
 export const KICKFLIP_CREW: readonly CrewMember[] = [
@@ -240,6 +254,11 @@ export const KICKFLIP_CREW: readonly CrewMember[] = [
     after: {
       day: 4,
       bestTrick: 'kickflip. GESTANDEN. frag das kind',
+    },
+    // W3 replaces this with German
+    later: {
+      day: 9,
+      bestTrick: 'kickflip. LANDED. on tape. 3rd at the jam',
     },
   },
 ];
@@ -297,17 +316,7 @@ export const DEX_STORY: { day: number; lines: readonly string[] } = {
   ],
 };
 
-export const KICKFLIP_VIDEO: {
-  premiereDay: number;
-  teasers: readonly DayLine[];
-  title: string;
-  length: string;
-  timeline: readonly { at: string; text: string }[];
-  playLabel: string;
-  buffering: string;
-  stuck: string;
-  credits: string;
-} = {
+export const KICKFLIP_VIDEO: SkateVideo = {
   premiereDay: 5,
   teasers: [
     {
@@ -343,6 +352,7 @@ export const KICKFLIP_VIDEO: {
     'hängt bei 99%. wie jedes video 2007. guck es lieber bei dex, da läuft es am fernseher',
   credits:
     'gefilmt mit nem camcorder von 1998 + dem rest von ner 1999er kassette. online dank der capture-karte von kevs vater. kein geld zurück',
+  ...KICKFLIP_VIDEO_WEEK2,
 };
 
 export const KICKFLIP_GIGS: readonly Gig[] = [
@@ -384,5 +394,26 @@ export const KICKFLIP_GIGS: readonly Gig[] = [
     venue: 'kommt noch',
     when: 'bald',
     note: 'marco sagt, das nächste konzert wird „größer“. wir haben gefragt, wie groß. er hat „12“ gesagt',
+    // W3 replaces this with German (moved, updates, after)
+    moved: {
+      day: 6,
+      venue: 'the westfield rec hall',
+      when: 'saturday. doors at 6. all ages',
+    },
+    updates: [
+      {
+        day: 6,
+        text: 'update: its the REC HALL. for real this time. the first date went to bingo. marco says bingo always wins',
+      },
+      {
+        day: 8,
+        text: 'update: The Grip Tapes open!!! dex is filming. boards stay outside',
+      },
+    ],
+    after: {
+      day: 10,
+      when: 'played saturday',
+      note: 'played. 83 ppl. kev filmed nothing, dex filmed everything',
+    },
   },
 ];

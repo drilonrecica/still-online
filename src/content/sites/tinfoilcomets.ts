@@ -1,6 +1,13 @@
 // tinfoilcomets.example: "The OFFICIAL UNOFFICIAL Tinfoil Comets Fan Page!!!1" by xX_CometGirl_Xx.
 // Everything is fictional: the band, its songs and every signer. Day-gated entries show when
-// `day <= currentDay`. Friends sign on their story days (Jess 1 + 5, Pia 3, Marco 4).
+// `day <= currentDay`. Friends sign on their story days (Jess 1 + 5, Pia 3, Marco 4); days 6–10
+// (the fan art contest, Lakeview) live in `tinfoilcomets-week2.ts`.
+import type { PhotoScene } from '@/os/fs/types';
+import {
+  TINFOIL_GUESTBOOK_WEEK2,
+  TINFOIL_NEWS_WEEK2,
+  TINFOIL_PICS_WEEK2,
+} from './tinfoilcomets-week2';
 import type { GuestbookEntry, SiteMeta } from './types';
 
 export const TINFOIL_HOST = 'tinfoilcomets.example';
@@ -9,7 +16,16 @@ export const SITE_META: SiteMeta = {
   title: 'The OFFICIAL UNOFFICIAL Tinfoil Comets Fan Page!!!1',
   description:
     'The #1 Tinfoil Comets fan page by xX_CometGirl_Xx: band news, tour dates, concert pics and a guestbook. Sign it!!!',
-  keywords: ['tinfoil', 'comets', 'band', 'fan', 'music', 'concert', 'ziggy'],
+  keywords: [
+    'tinfoil',
+    'comets',
+    'band',
+    'fan',
+    'music',
+    'concert',
+    'ziggy',
+    'lakeview',
+  ],
   pages: {
     '/': {
       title: 'Tinfoil Comets Fan Page - HOME',
@@ -25,7 +41,7 @@ export const SITE_META: SiteMeta = {
     },
     '/pics': {
       title: 'Tinfoil Comets Fan Page - Pics',
-      keywords: ['pics', 'photos', 'gallery'],
+      keywords: ['pics', 'photos', 'gallery', 'fan art', 'contest', 'winners'],
     },
   },
 };
@@ -55,6 +71,8 @@ export interface TourDate {
   date: string;
   venue: string;
   note: string;
+  /** From this day on (until `after`), the note reads this one (the show sold out). */
+  soldOut?: { day: number; note: string };
   /** From this day on, `date`/`note` are replaced (the show already happened). */
   after?: { day: number; date: string; note: string };
 }
@@ -62,6 +80,8 @@ export interface TourDate {
 export interface ConcertPic {
   day: number;
   seed: number;
+  /** The photo scene; without it, a concert pic. */
+  scene?: PhotoScene;
   caption: string;
 }
 
@@ -98,6 +118,7 @@ export const TINFOIL_NEWS: readonly DayText[] = [
   { day: 4, text: 'its TOMORROW. no wait its TONIGHT. i cant read calendars' },
   { day: 5, text: 'show review coming soon!!! (under construction)' },
   { day: 5, text: 'some1 caught ziggys drumstick. WITH THEIR FACE. legend' },
+  ...TINFOIL_NEWS_WEEK2,
 ];
 
 export const TINFOIL_MEMBERS: readonly BandMember[] = [
@@ -177,6 +198,15 @@ export const TINFOIL_TOUR: readonly TourDate[] = [
     date: 'next saturday',
     venue: 'Lakeview Fairgrounds',
     note: 'outdoor show!!! bring a poncho',
+    soldOut: {
+      day: 8,
+      note: 'SOLD OUT. 9 minutes. i did not get tickets. AGAIN',
+    },
+    after: {
+      day: 10,
+      date: 'saturday',
+      note: 'it happened. i listened on the radio. it was windy. buzz lost his hat',
+    },
   },
   {
     date: 'in 2 weeks',
@@ -204,6 +234,7 @@ export const TINFOIL_PICS: readonly ConcertPic[] = [
   },
   { day: 5, seed: 7107, caption: 'friday!!! sent in by a fan. thx 4 sharing' },
   { day: 5, seed: 7108, caption: 'friday!!! front row is SO lucky' },
+  ...TINFOIL_PICS_WEEK2,
 ];
 
 export const TINFOIL_GUESTBOOK: readonly GuestbookEntry[] = [
@@ -278,4 +309,5 @@ export const TINFOIL_GUESTBOOK: readonly GuestbookEntry[] = [
     message:
       '@jess U CAUGHT THE DRUMSTICK??? i am so jealous i have 2 lie down',
   },
+  ...TINFOIL_GUESTBOOK_WEEK2,
 ];

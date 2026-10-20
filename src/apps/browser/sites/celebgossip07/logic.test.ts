@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { GOSSIP_POLLS } from '@/content/sites/celebgossip07';
+import { STORY_DAYS } from '@/content/storyDays';
 import type { BlogPost, Poll } from '@/content/sites/types';
 import {
   currentPoll,
@@ -75,7 +76,10 @@ describe('polls', () => {
     expect(currentPoll(GOSSIP_POLLS, 0)).toBeNull();
     expect(currentPoll(GOSSIP_POLLS, 1)?.day).toBe(1);
     expect(currentPoll(GOSSIP_POLLS, 3)?.day).toBe(3);
-    expect(currentPoll(GOSSIP_POLLS, 12)?.day).toBe(5);
+    // After the story, the last story day's poll keeps running.
+    expect(currentPoll(GOSSIP_POLLS, STORY_DAYS.last + 2)?.day).toBe(
+      STORY_DAYS.last,
+    );
   });
 
   it('tallies deterministic reader votes plus the player vote', () => {

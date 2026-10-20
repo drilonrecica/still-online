@@ -19,6 +19,7 @@ export const GENDER_AUDIT_ALLOW: readonly AllowEntry[] = [
   { where: 'de/sites/glittercodez.example/*', match: '*', reason: 'site-content' },
   { where: 'de/sites/tinfoilcomets.example/*', match: '*', reason: 'site-content' },
   { where: 'de/sites/virusguard.example/*', match: '*', reason: 'site-content' },
+  { where: 'de/sites/westfield-high.example/*', match: '*', reason: 'site-content' },
   { where: 'en/bands/*', match: '*', reason: 'site-content' },
   { where: 'en/layouts/*', match: '*', reason: 'site-content' },
   { where: 'en/sites/celebgossip07.example/*', match: '*', reason: 'site-content' },

@@ -3,6 +3,7 @@
 // follow Theo's arc (Wackelpudding, Referate in der ersten Stunde, Noten an Tag 5).
 import type { NewsPost, SiteMeta } from '../../sites/types';
 import type { MenuDay, StaffMember } from '../../sites/westfieldhigh';
+import { WESTFIELD_NEWS_WEEK2 } from './westfieldhigh-week2';
 
 export const WESTFIELD_HOST = 'westfield-high.example';
 
@@ -27,7 +28,17 @@ export const SITE_META: SiteMeta = {
     },
     '/news': {
       title: 'Westfield-Gymnasium - Aktuelles und Mitteilungen',
-      keywords: ['kuchenbasar', 'zellmodell', 'referat', 'projektwoche', 'mp3'],
+      keywords: [
+        'kuchenbasar',
+        'zellmodell',
+        'referat',
+        'projektwoche',
+        'mp3',
+        'wahl',
+        'klassensprecher',
+        'jugendzentrum',
+        'velvet lantern',
+      ],
     },
     '/staff': {
       title: 'Westfield-Gymnasium - Lehrerkollegium',
@@ -122,6 +133,7 @@ export const WESTFIELD_NEWS: readonly NewsPost[] = [
     author: 'Frau Okafor, Elternbeirat',
     body: 'Der Kuchenbasar der Wildkatzen hat 212,50 € für neue Instrumente der Schulband eingebracht. Vielen Dank! Der übrig gebliebene Marmorkuchen wurde dem Lehrerzimmer gespendet, wo er neun Minuten überlebt hat.',
   },
+  ...WESTFIELD_NEWS_WEEK2,
 ];
 
 export const WESTFIELD_STAFF: readonly StaffMember[] = [

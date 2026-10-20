@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   COUNTER_START,
   TINFOIL_GUESTBOOK,
+  TINFOIL_TOUR,
 } from '@/content/sites/tinfoilcomets';
 import type { GuestbookEntry } from '@/content/sites/types';
 import {
@@ -9,6 +10,7 @@ import {
   counterValue,
   guestbookEntries,
   signedLabel,
+  tourRow,
   validateEntry,
   webring,
 } from './logic';
@@ -65,6 +67,9 @@ describe('guestbookEntries', () => {
     expect(at(3)).not.toContain('marco');
     expect(at(4)).toContain('marco');
     expect(at(5).filter((n) => n === jess)).toHaveLength(2);
+    expect(at(6)).toContain(pia);
+    expect(at(9).filter((n) => n === jess)).toHaveLength(5);
+    expect(at(10).filter((n) => n === 'marco')).toHaveLength(2);
     expect(
       TINFOIL_GUESTBOOK.find((e) => e.day === 3 && e.name === pia)?.message,
     ).toContain('this band is ok but PONIES r better');
@@ -104,6 +109,34 @@ describe('validateEntry', () => {
     expect(validateEntry({ name: 'A', message: '', homepage: '' }, 1)).toEqual({
       ok: false,
       error: 'noMessage',
+    });
+  });
+});
+
+describe('tourRow', () => {
+  const lakeview = TINFOIL_TOUR.find((t) => t.venue.startsWith('Lakeview'))!;
+  const riverside = TINFOIL_TOUR[0]!;
+
+  it('reads Lakeview as listed, sold out from day 8 and played from day 10', () => {
+    expect(tourRow(lakeview, 7)).toEqual({
+      date: 'next saturday',
+      note: lakeview.note,
+      past: false,
+    });
+    expect(tourRow(lakeview, 8).note).toMatch(/^SOLD OUT\. 9 minutes/);
+    expect(tourRow(lakeview, 8).past).toBe(false);
+    expect(tourRow(lakeview, 10)).toMatchObject({
+      date: 'saturday',
+      past: true,
+    });
+    expect(tourRow(lakeview, 10).note).toMatch(/radio/);
+  });
+
+  it('keeps Riverside as before: played from day 5', () => {
+    expect(tourRow(riverside, 4).past).toBe(false);
+    expect(tourRow(riverside, 5)).toMatchObject({
+      date: 'last friday',
+      past: true,
     });
   });
 });
