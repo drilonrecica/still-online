@@ -67,8 +67,8 @@ export function validateEntry(
 }
 
 /**
- * A tour date as it reads on `day`: the show's `after` once it happened, else its `soldOut` note
- * once it sold out, else as listed. `past` stops the blinking.
+ * A tour date as it reads on `day`: the show's `after` once it happened, else its `soon` date once
+ * it is close and its `soldOut` note once it sold out, else as listed. `past` stops the blinking.
  */
 export function tourRow(
   show: TourDate,
@@ -78,7 +78,8 @@ export function tourRow(
     return { date: show.after.date, note: show.after.note, past: true };
   const note =
     show.soldOut && day >= show.soldOut.day ? show.soldOut.note : show.note;
-  return { date: show.date, note, past: false };
+  const date = show.soon && day >= show.soon.day ? show.soon.date : show.date;
+  return { date, note, past: false };
 }
 
 /** Hits → the odometer value: the first visit shows `COUNTER_START`. */

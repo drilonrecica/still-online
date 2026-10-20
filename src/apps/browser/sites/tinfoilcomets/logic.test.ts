@@ -117,12 +117,18 @@ describe('tourRow', () => {
   const lakeview = TINFOIL_TOUR.find((t) => t.venue.startsWith('Lakeview'))!;
   const riverside = TINFOIL_TOUR[0]!;
 
-  it('reads Lakeview as listed, sold out from day 8 and played from day 10', () => {
-    expect(tourRow(lakeview, 7)).toEqual({
+  it('reads Lakeview as listed, this saturday from day 6, sold out from day 8 and played from day 10', () => {
+    expect(tourRow(lakeview, 5)).toEqual({
       date: 'next saturday',
       note: lakeview.note,
       past: false,
     });
+    expect(tourRow(lakeview, 7)).toEqual({
+      date: 'THIS SATURDAY!!!',
+      note: lakeview.note,
+      past: false,
+    });
+    expect(tourRow(lakeview, 8).date).toBe('THIS SATURDAY!!!');
     expect(tourRow(lakeview, 8).note).toMatch(/^SOLD OUT\. 9 minutes/);
     expect(tourRow(lakeview, 8).past).toBe(false);
     expect(tourRow(lakeview, 10)).toMatchObject({

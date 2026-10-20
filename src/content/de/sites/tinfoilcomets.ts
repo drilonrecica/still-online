@@ -185,6 +185,7 @@ export const TINFOIL_TOUR: readonly TourDate[] = [
     date: 'nächsten samstag',
     venue: 'Lakeview Festwiese',
     note: 'open air!!! regencape mitnehmen',
+    soon: { day: 6, date: 'DIESEN SAMSTAG!!!' },
     soldOut: {
       day: 8,
       note: 'AUSVERKAUFT. 9 minuten. ich hab keine karten bekommen. SCHON WIEDER',
@@ -199,6 +200,7 @@ export const TINFOIL_TOUR: readonly TourDate[] = [
     date: 'in 2 wochen',
     venue: 'The Rocket Room',
     note: 'ohne altersbeschränkung!!! (mama hat vielleicht gesagt)',
+    soon: { day: 6, date: 'nächste woche' },
   },
   {
     date: 'dezember',

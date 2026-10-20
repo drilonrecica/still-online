@@ -71,6 +71,8 @@ export interface TourDate {
   date: string;
   venue: string;
   note: string;
+  /** From this day on (until `after`), the date reads this one (the show is close now). */
+  soon?: { day: number; date: string };
   /** From this day on (until `after`), the note reads this one (the show sold out). */
   soldOut?: { day: number; note: string };
   /** From this day on, `date`/`note` are replaced (the show already happened). */
@@ -198,6 +200,7 @@ export const TINFOIL_TOUR: readonly TourDate[] = [
     date: 'next saturday',
     venue: 'Lakeview Fairgrounds',
     note: 'outdoor show!!! bring a poncho',
+    soon: { day: 6, date: 'THIS SATURDAY!!!' },
     soldOut: {
       day: 8,
       note: 'SOLD OUT. 9 minutes. i did not get tickets. AGAIN',
@@ -212,6 +215,7 @@ export const TINFOIL_TOUR: readonly TourDate[] = [
     date: 'in 2 weeks',
     venue: 'The Rocket Room',
     note: 'all ages!!! (my mom said maybe)',
+    soon: { day: 6, date: 'next week' },
   },
   {
     date: 'december',
