@@ -98,12 +98,17 @@ export function Taskbar({ startOpen = false, onStartClick }: TaskbarProps) {
   const phone = device === 'phone';
   const windowsRef = useRef<HTMLDivElement>(null);
 
-  // A touch taskbar's button row scrolls sideways: keep the front window's button in view.
+  // A touch taskbar's button row scrolls sideways: keep the front window's button in view, also
+  // when a rotation narrows the row.
   useEffect(() => {
     if (device === 'desktop') return;
-    windowsRef.current
-      ?.querySelector<HTMLElement>('[data-active="true"]')
-      ?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+    const show = () =>
+      windowsRef.current
+        ?.querySelector<HTMLElement>('[data-active="true"]')
+        ?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
+    show();
+    window.addEventListener('resize', show);
+    return () => window.removeEventListener('resize', show);
   }, [device, activeId, windows.length]);
 
   // The icons a phone tucks behind the chevron.

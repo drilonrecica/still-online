@@ -274,6 +274,9 @@ test('system apps and folders fit the phone without sideways scrolling @phone', 
     await openAppTouch(page, name);
     const win = page.getByRole('region', { name, exact: true });
     await expect(win).toBeVisible();
+    // Disk Cleanup's scan swaps its buttons when it ends; measure the list it settles on.
+    if (name === 'Disk Cleanup')
+      await expect(win.getByRole('list')).toBeVisible({ timeout: 15_000 });
     await expectNoSideScroll(page);
     for (const button of await win.getByRole('button').all()) {
       if (await button.isVisible()) await expectWithinWidth(page, button);

@@ -265,6 +265,13 @@
   min-width: 110px;
 }
 
+/* Tablet tray: 40 px icon buttons, not xp.css's 75 px button minimum. That made the tray 443 px
+   wide, so a portrait tablet (768 px) had room for only two window buttons. */
+:global(.desktop-root[data-device='tablet']) .tray .mute {
+  min-width: 40px;
+  height: 40px;
+}
+
 /* Phone: a compact Start button, icon-only 40×40 window buttons, 36 px wide tray buttons. */
 :global(.desktop-root[data-device='phone']) .taskbar {
   gap: 2px;
@@ -304,14 +311,18 @@
   height: 40px;
 }
 
-/* The language badge keeps its 18 px box, drawn inside the taller button. */
-:global(.desktop-root[data-device='phone']) .tray .langBadge {
+/* The language badge keeps its 18 px box, drawn inside the taller button (phone and tablet). */
+:global(.desktop-root:is([data-device='phone'], [data-device='tablet']))
+  .tray
+  .langBadge {
   position: relative;
   justify-content: center;
   border: 0;
 }
 
-:global(.desktop-root[data-device='phone']) .tray .langBadge::before {
+:global(.desktop-root:is([data-device='phone'], [data-device='tablet']))
+  .tray
+  .langBadge::before {
   content: '';
   position: absolute;
   inset: 11px 3px;

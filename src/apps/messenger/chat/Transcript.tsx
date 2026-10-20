@@ -111,6 +111,17 @@ export function Transcript({
     if (el && atBottom.current) el.scrollTop = el.scrollHeight;
   }, [locale]);
 
+  // So does a resize: a phone rotating, or the on-screen keyboard shrinking the window.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(() => {
+      if (atBottom.current) el.scrollTop = el.scrollHeight;
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
       ref={ref}

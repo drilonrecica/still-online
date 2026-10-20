@@ -46,7 +46,8 @@ async function connect(page: Page) {
   const web = page.getByRole('region', { name: /Web Explorer$/ });
   const offline = web.getByTestId('page-cannot-be-displayed');
   const status = web.getByRole('status').last();
-  await expect(offline.or(status)).toBeVisible();
+  // `.first()`: once the offline page has loaded, it and the "Done" status bar both show.
+  await expect(offline.or(status).first()).toBeVisible();
   await expect(async () => {
     if (await offline.isVisible())
       await tap(offline.getByRole('button', { name: 'Connect' }));
@@ -215,4 +216,116 @@ test('desktop: 1280×800 smoke is unchanged', async ({ page }) => {
     page.getByRole('region', { name: 'Untitled - Notepad' }),
   ).toBeVisible();
   await expectNoSideScroll(page);
+});
+
+test('phone: the login tile is finger-sized, and a chat keeps its newest line through a rotation @phone', async ({
+  page,
+}) => {
+  test.setTimeout(90_000);
+  // M4-G: a landscape phone squeezed the account tile to 23 px (its picture is 48).
+  await page.goto('./?speed=fast');
+  await tap(page.getByTestId('boot-screen'));
+  await page.getByLabel('Your name').fill('Ada');
+  const tile = page.getByRole('button', {
+    name: 'Choose Girl or Boy to log on',
+  });
+  expect((await tile.boundingBox())!.height).toBeGreaterThanOrEqual(36);
+  await page.goto('about:blank');
+
+  await logInTouch(page);
+  await hideStapley(page);
+  await openAppTouch(page, 'Messenger');
+  await tap(page.getByRole('button', { name: 'Sign in' }));
+  const chat = page.getByRole('region', { name: /JeSs.* - Conversation$/ });
+  await expect(chat).toBeVisible({ timeout: 15_000 });
+  const replies = chat
+    .getByRole('group', { name: 'Replies' })
+    .getByRole('button');
+  await expect(replies.first()).toBeVisible({ timeout: 15_000 });
+  // Played to the end, so no new line re-pins the scroll during the rotation.
+  for (let i = 0; i < 20; i++) {
+    const ready = await replies
+      .first()
+      .waitFor({ timeout: 4000 })
+      .then(
+        () => true,
+        () => false,
+      );
+    if (!ready) break;
+    await replies.first().dispatchEvent('click');
+    await chat
+      .getByRole('button', { name: 'Send', exact: true })
+      .dispatchEvent('click');
+  }
+  await expect(chat.getByText(/is typing/)).toHaveCount(0, { timeout: 10_000 });
+  const log = chat.getByRole('log');
+  const newest = log.locator(':scope > *').last();
+  await expect(newest).toBeInViewport();
+
+  // M4-G: rotating kept the old scroll offset, hiding the newest lines below the fold.
+  const size = page.viewportSize()!;
+  await page.setViewportSize({ width: size.height, height: size.width });
+  await expect(newest).toBeInViewport();
+  await expect
+    .poll(() =>
+      log.evaluate((el) => el.scrollHeight - el.scrollTop - el.clientHeight),
+    )
+    .toBeLessThan(4);
+  await page.setViewportSize(size);
+  await expect(newest).toBeInViewport();
+});
+
+test('tablet: the tray leaves room for window buttons, in portrait too @tablet', async ({
+  page,
+}) => {
+  test.setTimeout(60_000);
+  await logInTouch(page);
+  // M4-G: xp.css's 75 px button minimum made the tray 443 px wide.
+  const tray = page
+    .getByRole('toolbar', { name: 'Taskbar' })
+    .locator(':scope > :last-child');
+  expect((await tray.boundingBox())!.width).toBeLessThan(320);
+  for (const name of ['Mute sound', /^Input language/]) {
+    const b = (await tray.getByRole('button', { name }).boundingBox())!;
+    expect(b.width).toBeGreaterThanOrEqual(39.5);
+    expect(b.height).toBeGreaterThanOrEqual(39.5);
+  }
+  // Four windows in landscape, then a rotation: a portrait tablet shows three labelled window
+  // buttons beside the tray, and the row scrolls so the front window's button stays in view.
+  await hideStapley(page);
+  // From the Start menu: an open window covers the desktop icons.
+  for (const app of ['Notepad', 'My Computer', 'Recycle Bin', 'My Documents']) {
+    await tap(page.locator('[data-start-button]'));
+    await tap(
+      page
+        .getByRole('menu', { name: 'Start menu' })
+        .getByRole('menuitem', { name: app, exact: true }),
+    );
+    await expect(
+      page.getByRole('region', { name: new RegExp(app) }),
+    ).toBeVisible();
+  }
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await expect(page.locator('.desktop-root')).toHaveAttribute(
+    'data-device',
+    'tablet',
+  );
+  const buttons = page
+    .getByRole('toolbar', { name: 'Taskbar' })
+    .locator('button[data-active]');
+  await expect(buttons).toHaveCount(4);
+  await expect(
+    page.locator('button[data-active="true"]', { hasText: 'My Documents' }),
+  ).toBeInViewport({ ratio: 0.95 }); // fractional button widths; the bug left it 24 % visible
+  let inView = 0;
+  for (const b of await buttons.all())
+    if (
+      await b.evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        const row = el.parentElement!.getBoundingClientRect();
+        return r.left >= row.left - 0.5 && r.right <= row.right + 0.5;
+      })
+    )
+      inView++;
+  expect(inView).toBe(3);
 });

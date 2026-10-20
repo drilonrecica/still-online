@@ -47,7 +47,8 @@ async function connect(
   const web = page.getByRole('region', { name: /Web Explorer$/ });
   const offline = web.getByTestId('page-cannot-be-displayed');
   const status = web.getByRole('status').last();
-  await expect(offline.or(status)).toBeVisible();
+  // `.first()`: once the offline page has loaded, it and the "Done" status bar both show.
+  await expect(offline.or(status).first()).toBeVisible();
   // The offline page can land just after the loading status shows, so keep checking for it
   // (a single check raced it on a loaded machine and never pressed Connect).
   await expect(async () => {
