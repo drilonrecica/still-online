@@ -1,7 +1,7 @@
 // Stapley: the `assistant` overlay. Bottom-right above the taskbar, draggable; a yellow help balloon
 // with blue bullet options; right-click (or the balloon's link) hides him. While the active window
 // covers his corner (a maximized browser), the balloon folds away after FOLD_MS; a click on him
-// brings it back.
+// brings it back. Over a maximized window he stands STATUS_BAR_LIFT higher, above its status bar.
 import { useEffect, useRef, useState } from 'react';
 import type { KeyboardEvent, MouseEvent, PointerEvent } from 'react';
 import type { Tip } from '@/content/assistant';
@@ -27,6 +27,8 @@ const BALLOON_WIDTH = 230;
 const BALLOON_HEIGHT = 170;
 /** How long the balloon stays over a window that covers the corner. */
 const FOLD_MS = 8000;
+/** A window's status bar (20px + its top border): how far he rises over a maximized window. */
+export const STATUS_BAR_LIFT = 22;
 
 /** Whether `win` (the active window) lies over Stapley's balloon corner, moved by `offset`. */
 function coversCorner(
@@ -77,6 +79,7 @@ function Stapley() {
     return s.windows.find((w) => w.id === id);
   });
   const covered = coversCorner(active, offset);
+  const lift = active?.maximized ? STATUS_BAR_LIFT : 0;
   // Each tip (and each click on Stapley) gets one FOLD_MS over a covering window.
   const [wakes, setWakes] = useState(0);
   const [foldedKey, setFoldedKey] = useState<string | null>(null);
@@ -126,7 +129,7 @@ function Stapley() {
     // Stay inside the viewport: offsets are relative to the bottom-right rest position.
     const minX = WIDTH + 16 - window.innerWidth;
     const maxY = 0;
-    const minY = HEIGHT + TASKBAR_HEIGHT + 8 - window.innerHeight;
+    const minY = HEIGHT + TASKBAR_HEIGHT + 8 + lift - window.innerHeight;
     setOffset({
       x: Math.min(16, Math.max(minX, d.originX + dx)),
       y: Math.min(maxY, Math.max(minY, d.originY + dy)),
@@ -160,7 +163,7 @@ function Stapley() {
       className={styles.root}
       data-assistant
       style={{
-        bottom: TASKBAR_HEIGHT + 8,
+        bottom: TASKBAR_HEIGHT + 8 + lift,
         transform: `translate(${offset.x}px, ${offset.y}px)`,
       }}
       onKeyDown={onKeyDown}

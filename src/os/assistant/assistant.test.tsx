@@ -5,7 +5,8 @@ import { IDLE_JOKES, TIPS } from '@/content/assistant';
 import { events } from '@/os/events';
 import { useSettingsStore } from '@/os/store/settings';
 import { useWindowsStore } from '@/os/store/windows';
-import { Assistant } from './Assistant';
+import { TASKBAR_HEIGHT } from '@/os/types';
+import { Assistant, STATUS_BAR_LIFT } from './Assistant';
 import { createJokeCycle, installAssistant } from './controller';
 import { useAssistantStore } from './store';
 
@@ -232,6 +233,22 @@ describe('Assistant overlay', () => {
     expect(balloon()).not.toBeNull();
     fireEvent.click(screen.getByRole('button', { name: 'Hide Stapley' }));
     expect(useSettingsStore.getState().assistantEnabled).toBe(false);
+  });
+
+  it('stands above the status bar of a maximized active window', () => {
+    render(<Assistant />);
+    const root = document.querySelector<HTMLElement>('[data-assistant]')!;
+    const rest = `${TASKBAR_HEIGHT + 8}px`;
+    expect(root.style.bottom).toBe(rest);
+    let id = '';
+    act(() => {
+      id = useWindowsStore.getState().openApp('browser');
+    });
+    expect(root.style.bottom).toBe(rest);
+    act(() => useWindowsStore.getState().toggleMaximize(id));
+    expect(root.style.bottom).toBe(`${TASKBAR_HEIGHT + 8 + STATUS_BAR_LIFT}px`);
+    act(() => useWindowsStore.getState().minimizeWindow(id));
+    expect(root.style.bottom).toBe(rest);
   });
 
   it('drags', () => {

@@ -9,6 +9,13 @@
   gap: 4px;
   pointer-events: none;
   will-change: transform;
+  transition: bottom 150ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
+  }
 }
 
 .stapley {
