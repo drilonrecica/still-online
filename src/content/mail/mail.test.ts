@@ -13,15 +13,24 @@ const texts = (m: (typeof MAIL_CONTENT)[number]) => [
 ];
 
 describe('mail content', () => {
-  it('has at least 3 mails on each written story day, none after the last', () => {
-    const written = contentDays();
-    for (let day = STORY_DAYS.first; day <= STORY_DAYS.last; day++)
-      expect(
-        MAIL_CONTENT.filter((m) => m.day === day).length,
-        `day ${day}`,
-        // W2-01 tightens this: days 6–10 stay empty until their mail is written.
-      ).toBeGreaterThanOrEqual(written.includes(day) ? 3 : 0);
+  it('has mail on every story day (3+ in week one, 4–6 in week two), none after the last', () => {
+    expect(contentDays('mail')).toEqual(
+      Array.from({ length: STORY_DAYS.last }, (_, i) => i + STORY_DAYS.first),
+    );
+    for (const day of contentDays('mail')) {
+      const count = MAIL_CONTENT.filter((m) => m.day === day).length;
+      if (day <= 5) expect(count, `day ${day}`).toBeGreaterThanOrEqual(3);
+      else {
+        expect(count, `day ${day}`).toBeGreaterThanOrEqual(4);
+        expect(count, `day ${day}`).toBeLessThanOrEqual(6);
+      }
+    }
     expect(MAIL_CONTENT.every((m) => m.day <= STORY_DAYS.last)).toBe(true);
+  });
+
+  it('ids follow d<day>-<sender>-<topic>', () => {
+    for (const m of MAIL_CONTENT)
+      expect(m.id).toMatch(new RegExp(`^d${m.day}-[a-z0-9]+-[a-z0-9-]+$`));
   });
 
   it('has unique ids', () => {
@@ -101,5 +110,62 @@ describe('G-04: mail per gender', () => {
   it('a boy has no crush in any mail', () => {
     for (const m of resolveGender(MAIL_CONTENT, 'boy'))
       expect(`${m.subject} ${m.body}`, m.id).not.toMatch(/crush/i);
+  });
+
+  it("Mom's day-10 mail: Dex for a girl, his missing helmet for a boy, no romance for either", () => {
+    const girl = mail('girl', 'd10-mom-dex');
+    const boy = mail('boy', 'd10-mom-dex');
+    expect(girl.body).toContain(
+      "So THAT is Dex. He was very polite. He called me ma'am. Twice.",
+    );
+    expect(girl.body).toContain('to the show at 6');
+    expect(boy.body).toMatch(/^Hi buddy,/);
+    expect(boy.body).toContain('He was not wearing a helmet.');
+    expect(boy.body).toContain('to the load-in at 4');
+    expect(boy.body).not.toContain('So THAT');
+    for (const m of [girl, boy]) {
+      expect(m.body).toContain('next year');
+      expect(m.body).not.toMatch(/\b(?:cute|crush|boyfriend|date)\b|<3|\(L\)/i);
+    }
+  });
+
+  it('week two: a boy gets the CheatCave issues, the guy campaign mail and a brother', () => {
+    for (const id of [
+      'd6-fanclub-newsletter',
+      'd7-fanclub-contest',
+      'd9-fanclub-winners',
+      'd10-fanclub-lakeview',
+    ]) {
+      expect(mail('boy', id).from.address, id).toBe('news@cheatcave.example');
+      expect(mail('girl', id).from.address, id).toBe(
+        'cometgirl@tinfoilcomets.example',
+      );
+    }
+    expect(mail('boy', 'd9-fanclub-winners').body).toContain(
+      'GALAXY RAIDERS 4 is NOT coming',
+    );
+    expect(mail('girl', 'd9-fanclub-winners').body).toContain(
+      '2ND PLACE: jess',
+    );
+    expect(mail('boy', 'd6-spam-hair').subject).toContain('CHEATMASTER CD');
+    expect(mail('boy', 'd7-kayla-vote').subject).toBe(
+      'vote kayla. tell the guys',
+    );
+    expect(mail('boy', 'd6-pia-hamster').body).toContain('ur my brother');
+    expect(mail('girl', 'd6-pia-hamster').body).toContain('ur my sister');
+    expect(mail('boy', 'd8-mom-parent-teacher').body).toContain(
+      '"He always knows what to do.',
+    );
+    expect(mail('girl', 'd8-jess-soldout').body).toContain('<3 <3 jess');
+    expect(mail('boy', 'd8-jess-soldout').body).toContain('\\m/ jess');
+  });
+
+  it("week two: Marco credits the player's song per gender, without „!“", () => {
+    expect(mail('girl', 'd10-marco-thanks').body).toContain('"lantern heart"');
+    expect(mail('boy', 'd10-marco-thanks').body).toContain('"56k"');
+    for (const g of ['girl', 'boy'] as const) {
+      const m = mail(g, 'd10-marco-thanks');
+      expect(`${m.subject} ${m.body}`).not.toContain('!');
+    }
   });
 });
