@@ -483,7 +483,7 @@ src/content/de/      # German content, mirroring src/content/ (see "Content per 
 | ID | Task | Deps | Status | Model | Owner | Mode | Verify | Timeout | Acceptance | Spec |
 |---|---|---|---|---|---|---|---|---|---|---|
 | M4-01 | **v0.6 e2e + docs** — release flows per device; README ("Play on your phone", gap removed, phone screenshot); `docs/architecture-v0.6.md`; `docs/release-notes-v0.6.0.md` (EN + „Auf Deutsch"). | M3-G | done | sonnet | agent | — | e2e | — | `tests/e2e/v06-*.spec.ts` pass in the default run on all four projects; README and notes list user-visible changes; architecture note explains device class, touch hooks, `ScaleToFit` and the browser zoom. | §M4-01 |
-| M4-G | **Release-ready gate (self-review)** — Gate procedure + Touch rubric; phone portrait day 1 girl EN, phone landscape day 6 boy DE, tablet day 10 girl EN, desktop regression. **Do not tag, push or release.** | M4-01 | in progress | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v06-M4.md`; bundle sizes reported vs v0.5 (German stays lazy); nothing pushed or tagged. | §M4-G |
+| M4-G | **Release-ready gate (self-review)** — Gate procedure + Touch rubric; phone portrait day 1 girl EN, phone landscape day 6 boy DE, tablet day 10 girl EN, desktop regression. **Do not tag, push or release.** | M4-01 | done | opus | agent | — | e2e | — | verify + e2e pass; `docs/review/v06-M4.md`; bundle sizes reported vs v0.5 (German stays lazy); nothing pushed or tagged. | §M4-G |
 
 ---
 
