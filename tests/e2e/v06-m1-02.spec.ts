@@ -246,8 +246,10 @@ test('desktop: the 1280×800 taskbar and Start menu look as in v0.5', async ({
   await page.getByRole('menuitem', { name: /All Programs/ }).click();
   await page.getByRole('menuitem', { name: /Games/ }).click();
   await expect(page.getByRole('menu', { name: 'Games' })).toBeVisible();
-  // The menu and its flyouts (they hang outside the menu's own box).
+  // The menu and its flyouts (they hang outside the menu's own box). The baseline was made
+  // on Fedora; CI's Ubuntu draws the ▶ arrows and some text a few pixels differently.
   await expect(page).toHaveScreenshot('startmenu-desktop.png', {
     clip: { x: 0, y: 250, width: 800, height: 520 },
+    maxDiffPixels: 400,
   });
 });

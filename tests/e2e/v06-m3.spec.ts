@@ -19,14 +19,16 @@ async function expectNoSideScroll(page: Page) {
   expect(scrollWidth, 'no sideways page scroll').toBeLessThanOrEqual(width);
 }
 
-/** The zoomed stage sits inside the screen. */
+/** The zoomed stage sits inside the screen, once the layout has caught up with a rotation. */
 async function expectStageFits(page: Page, game: Locator) {
-  const b = (await game.getByTestId('scale-stage').boundingBox())!;
-  const vw = page.viewportSize()!;
-  expect(b.x).toBeGreaterThanOrEqual(-0.5);
-  expect(b.y).toBeGreaterThanOrEqual(-0.5);
-  expect(b.x + b.width).toBeLessThanOrEqual(vw.width + 0.5);
-  expect(b.y + b.height).toBeLessThanOrEqual(vw.height + 0.5);
+  await expect(async () => {
+    const b = (await game.getByTestId('scale-stage').boundingBox())!;
+    const vw = page.viewportSize()!;
+    expect(b.x).toBeGreaterThanOrEqual(-0.5);
+    expect(b.y).toBeGreaterThanOrEqual(-0.5);
+    expect(b.x + b.width).toBeLessThanOrEqual(vw.width + 0.5);
+    expect(b.y + b.height).toBeLessThanOrEqual(vw.height + 0.5);
+  }).toPass({ timeout: 5_000 });
 }
 
 /** Turns the phone: swaps the viewport's width and height. */
