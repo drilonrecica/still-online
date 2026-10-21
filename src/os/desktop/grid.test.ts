@@ -83,4 +83,9 @@ describe('desktop grid', () => {
       row: 0,
     });
   });
+
+  it('finds no cell on a full screen', () => {
+    const grid = { cols: 1, rows: 2 };
+    expect(nearestFreeCell(5, 5, new Set(['0,0', '0,1']), grid)).toBeNull();
+  });
 });

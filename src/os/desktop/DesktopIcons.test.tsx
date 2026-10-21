@@ -212,6 +212,27 @@ describe('desktop context menu', () => {
     expect(openIds()).toEqual([]);
   });
 
+  it('a drop keeps saved cells that are off a smaller screen', () => {
+    useDesktopStore.setState({
+      positions: { recyclebin: { col: 150, row: 0 } },
+    });
+    render(<DesktopIcons apps={apps} />);
+    const notepad = screen.getByRole('option', { name: 'Notepad' });
+    const mouse = {
+      pointerId: 1,
+      pointerType: 'mouse',
+      isPrimary: true,
+      button: 0,
+    };
+    fireEvent.pointerDown(notepad, { ...mouse, clientX: 40, clientY: 110 });
+    fireEvent.pointerMove(notepad, { ...mouse, clientX: 270, clientY: 130 });
+    fireEvent.pointerUp(notepad, { ...mouse, clientX: 270, clientY: 130 });
+    expect(useDesktopStore.getState().positions).toMatchObject({
+      notepad: { col: 3, row: 1 },
+      recyclebin: { col: 150, row: 0 },
+    });
+  });
+
   it('a press that barely moves is still a click, and Escape cancels a drag', () => {
     render(<DesktopIcons apps={apps} />);
     const notepad = screen.getByRole('option', { name: 'Notepad' });

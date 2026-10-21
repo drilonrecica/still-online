@@ -27,7 +27,7 @@ export const cellKey = ({ col, row }: Cell) => `${col},${row}`;
 export const cellLeft = (cell: Cell) => PAD + cell.col * CELL;
 export const cellTop = (cell: Cell) => PAD + cell.row * CELL;
 
-const inGrid = (cell: Cell, grid: Grid) =>
+export const inGrid = (cell: Cell, grid: Grid) =>
   cell.col >= 0 &&
   cell.row >= 0 &&
   cell.col < grid.cols &&
@@ -71,16 +71,17 @@ export function layoutIcons(
 /**
  * The free cell nearest to an icon dropped with its top-left corner at (`left`, `top`) px.
  * `occupied` holds the other icons' cells; the dropped icon's own cell counts as free.
+ * Null when every cell on screen is taken.
  */
 export function nearestFreeCell(
   left: number,
   top: number,
   occupied: ReadonlySet<string>,
   grid: Grid,
-): Cell {
+): Cell | null {
   const col = (left - PAD) / CELL;
   const row = (top - PAD) / CELL;
-  let best: Cell = { col: 0, row: 0 };
+  let best: Cell | null = null;
   let bestDistance = Infinity;
   for (let c = 0; c < grid.cols; c++) {
     for (let r = 0; r < grid.rows; r++) {

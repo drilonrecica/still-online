@@ -159,4 +159,15 @@ describe('Picture Viewer', () => {
       screen.getByRole('button', { name: 'Edit in Paint' }),
     ).toBeDisabled();
   });
+
+  it('stops showing a picture once it is in the Recycle Bin', async () => {
+    render(<WindowLayer getApp={getApp} />);
+    open(a);
+    await screen.findByText('1 of 2');
+    act(() => useFsStore.getState().remove(a));
+    expect(
+      await screen.findByText("This picture can't be displayed."),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
+  });
 });

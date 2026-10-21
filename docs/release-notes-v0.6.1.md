@@ -20,7 +20,6 @@ Three requests after v0.6: a proper picture viewer, desktop icons you can move, 
 - The social sites are for reading and decorating, not for posting to strangers.
 - Files you created keep the language and side they were made in.
 - German voices were reviewed by the project, not by a native-speaker editor.
-- Icons dragged on a small screen keep the small screen's layout when you go back to a big one (they are saved where you put them).
 
 ## Auf Deutsch
 

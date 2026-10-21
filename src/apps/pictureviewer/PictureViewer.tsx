@@ -6,6 +6,7 @@ import { useBlobUrl } from '@/os/blobStore';
 import { PhotoCanvas } from '@/os/fs/FsIcon';
 import { compareNodes } from '@/os/fs/nodes';
 import { useFsStore } from '@/os/fs/store';
+import { FS_FOLDERS } from '@/os/fs/types';
 import { useWindowsStore } from '@/os/store/windows';
 import type { AppComponentProps } from '@/os/types';
 import styles from './PictureViewer.module.css';
@@ -32,7 +33,11 @@ export default function PictureViewer({ windowId, props }: AppComponentProps) {
   const swipe = useRef<{ x: number; y: number } | null>(null);
 
   const image = fileId ? nodes[fileId] : undefined;
-  const picture = image?.type === 'image' ? image : undefined;
+  // A picture moved to the Recycle Bin is gone as far as the viewer is concerned.
+  const picture =
+    image?.type === 'image' && image.parentId !== FS_FOLDERS.recycle
+      ? image
+      : undefined;
   const parentId = picture?.parentId;
   const images = useMemo(
     () =>

@@ -22,6 +22,7 @@ import {
   cellLeft,
   cellTop,
   gridSize,
+  inGrid,
   layoutIcons,
   nearestFreeCell,
   type Cell,
@@ -91,14 +92,15 @@ export function DesktopIcons({ shortcuts, apps }: DesktopIconsProps) {
         .filter(([key]) => key !== id)
         .map(([, cell]) => cellKey(cell)),
     );
-    const to = nearestFreeCell(
-      cellLeft(from) + dx,
-      cellTop(from) + dy,
-      others,
-      grid,
-    );
-    // The whole layout is saved, so no other icon shifts to fill the gap.
+    const to =
+      nearestFreeCell(cellLeft(from) + dx, cellTop(from) + dy, others, grid) ??
+      from;
+    // The whole layout is saved, so no other icon shifts to fill the gap. Saved cells off
+    // this (smaller) screen are kept, so those icons go back to them on a bigger one.
     const next: Record<string, Cell> = Object.fromEntries(layout);
+    for (const [key, cell] of Object.entries(saved)) {
+      if (key in next && !inGrid(cell, grid)) next[key] = cell;
+    }
     next[id] = to;
     useDesktopStore.getState().place(next);
     setSelected(id);
