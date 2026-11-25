@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # A relative base makes the build relocatable, so the zip works from any
+      # folder on any static server (GitHub Pages uses /still-online/ instead).
+      - run: npm run build -- --base=./
+
+      - name: Check that the build has no absolute /still-online/ paths
+        # The lookbehind skips URLs such as github.com/drilonrecica/still-online/.
+        run: |
+          if grep -rlP '(?<![\w.-])/still-online/' dist --include='*.html' --include='*.js' --include='*.css'; then
+            echo "::error::dist still references /still-online/; the base override did not apply"
+            exit 1
+          fi
+
+      - name: Zip the build
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          cp LICENSE CREDITS.md dist/
+          (cd dist && zip -qr "../still-online-${TAG}.zip" .)
+          ls -l "still-online-${TAG}.zip"
+
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" "still-online-${TAG}.zip" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "still online $TAG" \
+            --generate-notes \
+            --verify-tag
