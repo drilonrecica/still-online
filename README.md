@@ -4,7 +4,9 @@ _everyone you knew, still online._
 
 A browser-based nostalgia simulator recreating Windows XP and the social internet of 2007 through MSN, Netlog, MySpace, Winamp, and a living fictional desktop.
 
-> **v0.6 — play on your phone or tablet.** The same desktop now works by touch, with the days 1–10 story from v0.5. Play it now: **<https://drilonrecica.github.io/still-online/>**
+**Try it:** <https://drilonrecica.github.io/still-online/> runs entirely in your browser, on a desktop, phone or tablet, in English and German.
+
+**Self-host:** download `still-online-vX.Y.Z.zip` from the [latest release](https://github.com/drilonrecica/still-online/releases/latest), unzip it and serve the folder with any static server (for example `python3 -m http.server` or `npx serve`). It needs no backend.
 
 ![The still online desktop](docs/screenshots/desktop.png)
 
